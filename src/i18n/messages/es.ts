@@ -2,12 +2,12 @@ import type { Messages } from ".";
 
 export const es: Messages = {
   meta: {
-    title: "Gooidy · Anuncios desde un solo enlace",
+    title: "Gooidy · Haz crecer tu negocio con un solo enlace",
     description:
-      "Pega el enlace de un producto y Gooidy crea anuncios listos para TikTok, Instagram y Facebook en unos dos minutos. Empieza gratis.",
+      "Haz crecer tu pequeño negocio con Gooidy. Pega el enlace de un producto y obtén anuncios de imagen y video que atraen nuevos clientes, listos para TikTok, Instagram y Facebook en minutos. Empieza gratis.",
     useCasesTitle: "Ejemplos reales · Gooidy",
     useCasesDescription:
-      "Anuncios reales y sin editar que Gooidy creó a partir de enlaces de productos reales. Mira cada enfoque y formato, y pruébalo gratis con tu tienda.",
+      "Anuncios reales y sin editar que Gooidy creó a partir de enlaces de productos reales. Mira cómo un enlace se convierte en una campaña y pruébalo gratis en tu propia tienda.",
     signInTitle: "Iniciar sesión · Gooidy",
     dashboardTitle: "Panel · Gooidy",
     brandTitle: "Kit de marca · Gooidy",
@@ -30,18 +30,18 @@ export const es: Messages = {
   urlForm: {
     label: "El enlace de tu producto o tienda",
     placeholder: "Pega el enlace de tu producto o tienda",
-    submit: "Crear anuncios",
+    submit: "Empieza a crecer",
   },
   footer: {
     tagline:
-      "Anuncios de imagen y vídeo desde un solo enlace de producto, pensados para pequeños negocios.",
+      "Ayudamos a las pequeñas empresas a crecer con anuncios de imagen y video creados a partir de un solo enlace.",
     product: "Producto",
     account: "Cuenta",
     legal: "Legal",
     privacy: "Privacidad",
     terms: "Términos",
   },
-  stickyCta: "Crea anuncios gratis",
+  stickyCta: "Empieza a crecer gratis",
   angles: {
     pain: {
       name: "Problema",
@@ -65,43 +65,43 @@ export const es: Messages = {
     },
   },
   home: {
-    badge: "Anuncios de imagen y vídeo para pequeños negocios",
-    titleLine1: "Anuncios que venden,",
+    badge: "Crecimiento para pequeñas empresas, con IA",
+    titleLine1: "Haz crecer tu negocio,",
     titleBefore: "desde un solo ",
     titleWord: "enlace",
     titleAfter: ".",
     intro:
-      "Pega la página de tu producto. Gooidy escribe los textos, diseña los anuncios, graba vídeos cortos con locución y lo adapta todo a TikTok, Instagram y Facebook.",
+      "Pega la página de tu producto. Gooidy descubre quién te compra y por qué, y crea los anuncios de imagen y video que llevan nuevos clientes a tu tienda.",
     facts: [
       "Empieza gratis, sin tarjeta",
-      "5 enfoques por tanda",
-      "9:16 y 1:1",
+      "Anuncios de imagen y video",
+      "5 formas de vender en cada tanda",
       "Anuncios en {count} idiomas",
     ],
     worksWith: "Funciona con cualquier tienda online",
-    anglesTitle: "Un producto, muchas formas de venderlo",
+    anglesTitle: "Un producto, muchas razones para comprarlo",
     anglesSub:
-      "Cada tanda prueba enfoques distintos. Estos son los anuncios reales para el feed que Gooidy creó a partir de un enlace de {store}.",
-    whereTitle: "Míralo donde se publica",
+      "La gente compra por motivos distintos, así que cada tanda prueba varios. Estos son los anuncios reales que Gooidy creó a partir de un enlace de {store}.",
+    whereTitle: "Aparece donde tus clientes hacen scroll",
     whereSub:
       "La misma tanda, en el tamaño justo para cada app en la que tus clientes hacen scroll.",
-    liveTitle: "Entra un enlace. Sale una campaña.",
+    liveTitle: "Pega un enlace. Recibe una campaña que vende.",
     liveSub:
       "Esta es una tanda real de Gooidy, reproducida paso a paso: el enlace, lo que Gooidy leyó en la página, los enfoques que escribió y los anuncios que creó.",
     howTitle: "Cómo funciona",
-    howSub: "Del enlace a anuncios listos para publicar en tres pasos.",
+    howSub: "De tu enlace de producto a anuncios que llegan a nuevos compradores, en tres pasos.",
     steps: [
       {
         title: "Pega un enlace",
         body: "Añade la página de un producto o tu tienda. Gooidy entiende qué vendes, para quién es y por qué la gente lo compra.",
       },
       {
-        title: "Recibe tus anuncios",
-        body: "Cinco ideas de anuncio con titulares, textos e imágenes, en formato vertical y cuadrado, con tu logo y tus colores.",
+        title: "Recibe anuncios que venden",
+        body: "Cinco razones por las que la gente compra, cada una con titulares, textos e imágenes en formato vertical y cuadrado, con tu logo y tus colores.",
       },
       {
-        title: "Publica",
-        body: "Descarga los que te gusten y publícalos en TikTok, Instagram y Facebook. Pronto podrás publicar directamente.",
+        title: "Llega a más compradores",
+        body: "Publícalos en TikTok, Instagram y Facebook para conseguir nuevos clientes. Pronto podrás publicar, programar y promocionar directamente desde Gooidy.",
       },
     ],
     examplesTitle: "Hechos para el feed",
@@ -127,9 +127,9 @@ export const es: Messages = {
       },
     ],
     videoFormat: "Vídeo de {seconds} s con locución",
-    featuresTitle: "Todo lo que necesita un buen anuncio",
+    featuresTitle: "Todo lo que necesitas para crecer",
     featuresSub:
-      "Gooidy se encarga de lo que normalmente requiere un diseñador, un redactor y una tarde.",
+      "Gooidy hace el trabajo que normalmente requiere un diseñador, un redactor y una tarde entera, para que tú te dediques a tu negocio.",
     briefTitle: "Brief de marca desde tu web",
     briefBody:
       "Gooidy lee tu página y deduce para quién es y por qué lo compran.",
@@ -137,11 +137,11 @@ export const es: Messages = {
     kitTitle: "Tu kit de marca",
     kitBody:
       "Define tu logo, el color del botón y la tipografía una sola vez. Todos los anuncios los siguen.",
-    languagesTitle: "Anuncios en el idioma de tu cliente",
+    languagesTitle: "Vende en el idioma de tu comprador",
     languagesBody:
-      "Cada anuncio se escribe en el idioma que elijas, como lo escribiría alguien de allí, y los anuncios en vídeo lo hablan con subtítulos a juego.",
-    pricingTitle: "Precios sencillos",
-    pricingSub: "Empieza gratis. Mejora tu plan cuando necesites más anuncios.",
+      "Cada anuncio se escribe en el idioma que elijas, como lo escribiría alguien de allí, para que puedas vender más allá de tu mercado. Los anuncios de video también lo hablan, con subtítulos a juego.",
+    pricingTitle: "Precios simples que crecen contigo",
+    pricingSub: "Empieza gratis. Mejora tu plan a medida que crece tu negocio.",
     popular: "Popular",
     perMonth: " / mes",
     plans: [
@@ -180,6 +180,10 @@ export const es: Messages = {
         a: "El enlace de tu producto o tienda. Gooidy funciona con Shopify, WooCommerce, Wix, Squarespace y la mayoría de tiendas online.",
       },
       {
+        q: "¿Cómo ayuda Gooidy a que crezca mi negocio?",
+        a: "Los anuncios son la forma en que la mayoría de las tiendas pequeñas consiguen nuevos clientes en internet, pero los buenos anuncios cuestan tiempo y dinero. Gooidy convierte un solo enlace en anuncios nuevos y fieles a tu marca, prueba distintas razones de compra para que veas qué funciona en tu tienda y habla a los compradores en {count} idiomas. Lo siguiente: publicar y promocionar con un clic.",
+      },
+      {
         q: "¿Qué es un crédito?",
         a: "Un crédito crea una imagen de anuncio. Cada tanda crea cinco anuncios en dos tamaños, así que usa 10 créditos.",
       },
@@ -193,18 +197,18 @@ export const es: Messages = {
       },
       {
         q: "¿Dónde puedo usar los anuncios?",
-        a: "En cualquier sitio donde te anuncies: TikTok, Instagram, Facebook, YouTube Shorts y más.",
+        a: "En cualquier lugar donde anuncies: TikTok, Instagram, Facebook, YouTube Shorts y más. Pronto podrás publicar, programar y promocionar directamente desde Gooidy.",
       },
       {
         q: "¿Puedo cancelar cuando quiera?",
         a: "Sí. Los planes son mensuales y mantienes el acceso hasta el final del periodo que pagaste.",
       },
     ],
-    finalTitle: "Tus próximos anuncios están a un enlace",
+    finalTitle: "Tus próximos clientes están a un enlace de distancia",
     finalSub: "100 créditos gratis. Sin tarjeta de crédito.",
   },
   beforeAfter: {
-    title: "De una foto de producto a anuncios que venden",
+    title: "De una foto de producto a anuncios que atraen compradores",
     sub: "A la izquierda, la foto de {store}. A la derecha, anuncios que Gooidy creó a partir de ella, sin editar.",
     before: "Antes: la página del producto",
     after: "Después: {count} de los anuncios de esa tanda",
@@ -252,7 +256,7 @@ export const es: Messages = {
     statLinks: "Enlaces de productos",
     statAds: "Anuncios creados",
     statPer: "Por enlace",
-    tryTitle: "Ahora prueba con tu tienda",
+    tryTitle: "Ahora haz crecer tu propia tienda",
     tryBody:
       "Pega el enlace de un producto. Recibes 5 enfoques en formato feed y story, con el texto del anuncio escrito. Tus primeras tandas son gratis.",
     worksWith:
@@ -318,12 +322,12 @@ export const es: Messages = {
     credits: "{count} créditos",
     plan: "· plan {plan}",
     creditsLeft: "Te quedan {count} créditos",
-    addTitle: "Crea anuncios desde el enlace de un producto",
+    addTitle: "Añade un producto para promocionar",
     addBody:
       "Pega la página de un producto. Gooidy la lee, escribe un brief de marca y la deja lista para anuncios.",
     noProducts: "Aún no hay productos",
     noProductsBody:
-      "Pega arriba el enlace de un producto. En unos dos minutos tendrás tus primeros cinco anuncios.",
+      "Pega arriba el enlace de un producto. En unos dos minutos tendrás tus primeros cinco anuncios, listos para atraer nuevos clientes.",
     urlLabel: "Enlace del producto o web",
     reading: "Leyendo la página…",
     addProduct: "Añadir producto",

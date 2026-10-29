@@ -3,12 +3,12 @@ import type { Messages } from ".";
 // Simplified Chinese.
 export const zh: Messages = {
   meta: {
-    title: "Gooidy · 一个链接，生成广告",
+    title: "Gooidy · 一个链接，让生意增长",
     description:
-      "粘贴商品链接，Gooidy 约两分钟即可为 TikTok、Instagram 和 Facebook 生成可直接投放的广告。免费开始。",
+      "用 Gooidy 让你的小生意增长。粘贴一个商品链接，几分钟内就能获得为 TikTok、Instagram 和 Facebook 准备好的图片和视频广告，帮你带来新客户。免费开始。",
     useCasesTitle: "真实案例 · Gooidy",
     useCasesDescription:
-      "Gooidy 用真实商品链接生成的真实广告，未经任何修改。查看每种卖点和尺寸，然后用你的店铺免费试试。",
+      "Gooidy 用真实商品链接做出的真实广告，未经任何修改。看看一个链接如何变成一场推广活动，然后在你自己的店铺免费试用。",
     signInTitle: "登录 · Gooidy",
     dashboardTitle: "控制台 · Gooidy",
     brandTitle: "品牌套件 · Gooidy",
@@ -31,17 +31,17 @@ export const zh: Messages = {
   urlForm: {
     label: "你的商品或店铺链接",
     placeholder: "粘贴你的商品或店铺链接",
-    submit: "生成广告",
+    submit: "开始增长",
   },
   footer: {
-    tagline: "一个商品链接，生成图片广告和视频广告，专为小企业打造。",
+    tagline: "用一个链接生成的图片和视频广告，帮助小企业成长。",
     product: "产品",
     account: "账户",
     legal: "法律信息",
     privacy: "隐私",
     terms: "条款",
   },
-  stickyCta: "免费生成广告",
+  stickyCta: "免费开始增长",
   angles: {
     pain: {
       name: "痛点",
@@ -65,42 +65,42 @@ export const zh: Messages = {
     },
   },
   home: {
-    badge: "为小企业打造的图片和视频广告",
-    titleLine1: "会带货的广告，",
+    badge: "AI 驱动，助小企业增长",
+    titleLine1: "让你的生意增长，",
     titleBefore: "只需",
     titleWord: "一个链接",
     titleAfter: "。",
     intro:
-      "粘贴商品页面，Gooidy 就会撰写文案、设计广告、拍摄带配音的短视频，并为 TikTok、Instagram 和 Facebook 调整好尺寸。",
+      "粘贴你的商品页面。Gooidy 会弄清楚谁在买、为什么买，然后制作能把新客户带到你店里的图片和视频广告。",
     facts: [
       "免费开始，无需信用卡",
-      "每次生成 5 种卖点",
-      "9:16 和 1:1",
+      "图片广告和视频广告",
+      "每次 5 种卖法",
       "支持 {count} 种语言",
     ],
     worksWith: "适用于任何网店",
-    anglesTitle: "同一个产品，多种卖法",
+    anglesTitle: "一个商品，很多购买理由",
     anglesSub:
-      "每次生成都会尝试不同的卖点。这些是 Gooidy 根据一个 {store} 链接生成的真实信息流广告。",
-    whereTitle: "看看投放后的样子",
+      "人们出于不同的理由购买，所以每次都会尝试多种角度。这些是 Gooidy 用一个 {store} 链接做出的真实广告。",
+    whereTitle: "出现在客户刷屏的地方",
     whereSub: "同一批广告，适配你的顾客常刷的每个应用。",
-    liveTitle: "放进一个链接，产出一整套广告。",
+    liveTitle: "粘贴一个链接，得到一场会卖货的推广。",
     liveSub:
       "这是一次真实的 Gooidy 生成过程，逐步回放：链接、Gooidy 从页面读到的内容、写出的卖点，以及生成的广告。",
     howTitle: "使用方法",
-    howSub: "三步，从链接到可投放的广告。",
+    howSub: "从商品链接到触达新买家的广告，只需三步。",
     steps: [
       {
         title: "粘贴链接",
         body: "添加商品页面或你的店铺。Gooidy 会读懂你卖什么、卖给谁、大家为什么买。",
       },
       {
-        title: "获取广告",
-        body: "五个广告创意，包含标题、文案和图片，提供竖版和方形尺寸，并使用你的 logo 和品牌色。",
+        title: "获得会卖货的广告",
+        body: "五个购买理由，每个都配有标题、文案和竖版、方形图片，并使用你的标志和品牌色。",
       },
       {
-        title: "发布",
-        body: "下载你喜欢的广告，投放到 TikTok、Instagram 和 Facebook。直接发布功能即将上线。",
+        title: "触达更多买家",
+        body: "在 TikTok、Instagram 和 Facebook 上投放，赢得新客户。直接从 Gooidy 发布、定时发布和加热推广的功能即将推出。",
       },
     ],
     examplesTitle: "为信息流而生",
@@ -125,18 +125,18 @@ export const zh: Messages = {
       },
     ],
     videoFormat: "{seconds} 秒带配音视频",
-    featuresTitle: "好广告需要的一切",
-    featuresSub: "通常需要设计师、文案和一个下午才能完成的工作，交给 Gooidy。",
+    featuresTitle: "增长所需的一切",
+    featuresSub: "原本需要设计师、文案和一个下午的工作，交给 Gooidy，你可以专心经营生意。",
     briefTitle: "从你的网站提炼品牌简介",
     briefBody: "Gooidy 阅读你的页面，弄清产品面向谁、大家为什么买。",
     briefCaption: "由 Gooidy 根据 {store} 撰写",
     kitTitle: "你的品牌套件",
     kitBody: "logo、按钮颜色和字体只需设置一次，所有广告都会沿用。",
-    languagesTitle: "用顾客的语言做广告",
+    languagesTitle: "用买家的语言销售",
     languagesBody:
-      "每条广告都用你选择的语言撰写，就像当地人写的一样；视频广告也用这种语言配音，并配上相应字幕。",
-    pricingTitle: "简单的价格",
-    pricingSub: "免费开始，需要更多广告时再升级。",
+      "每条广告都用你选择的语言，像当地人一样撰写，让你把生意做到本地市场之外。视频广告也会说这种语言，并配上相应字幕。",
+    pricingTitle: "简单的价格，随你一起成长",
+    pricingSub: "免费开始，生意增长时再升级。",
     popular: "热门",
     perMonth: " / 月",
     plans: [
@@ -163,6 +163,10 @@ export const zh: Messages = {
         a: "只需要你的商品或店铺链接。Gooidy 支持 Shopify、WooCommerce、Wix、Squarespace 和大多数网店。",
       },
       {
+        q: "Gooidy 如何帮助我的生意增长？",
+        a: "大多数小店都是靠广告在网上获得新客户，但好广告需要时间和金钱。Gooidy 把一个链接变成符合你品牌的新广告，尝试不同的购买理由，让你测试什么最适合你的店铺，并用 {count} 种语言与买家沟通。接下来：一键发布和加热推广。",
+      },
+      {
         q: "什么是积分？",
         a: "1 个积分生成 1 张广告图片。每次生成会做出 5 条广告、每条 2 种尺寸，所以使用 10 个积分。",
       },
@@ -176,18 +180,18 @@ export const zh: Messages = {
       },
       {
         q: "广告可以用在哪里？",
-        a: "任何你投放广告的地方：TikTok、Instagram、Facebook、YouTube Shorts 等。",
+        a: "任何你投放广告的地方：TikTok、Instagram、Facebook、YouTube Shorts 等。直接从 Gooidy 发布、定时发布和加热推广的功能即将推出。",
       },
       {
         q: "可以随时取消吗？",
         a: "可以。套餐按月计费，你可以一直使用到已付费周期结束。",
       },
     ],
-    finalTitle: "下一批广告，只差一个链接",
+    finalTitle: "你的下一批客户，只差一个链接",
     finalSub: "100 免费积分，无需信用卡。",
   },
   beforeAfter: {
-    title: "从一张商品照片到会带货的广告",
+    title: "从一张商品照片，到带来买家的广告",
     sub: "左边是 {store} 上的照片，右边是 Gooidy 用它生成的广告，未经修改。",
     before: "之前：商品页面",
     after: "之后：这次生成的 {count} 条广告",
@@ -235,7 +239,7 @@ export const zh: Messages = {
     statLinks: "商品链接",
     statAds: "生成的广告",
     statPer: "每个链接",
-    tryTitle: "现在用你的店铺试试",
+    tryTitle: "现在，让你自己的店铺增长",
     tryBody:
       "粘贴一个商品链接，就能获得信息流和快拍尺寸的 5 种卖点，并附上写好的广告文案。前几次生成免费。",
     worksWith: "适用于 Shopify、WooCommerce 和大多数商品页面。",
@@ -296,11 +300,11 @@ export const zh: Messages = {
     credits: "{count} 积分",
     plan: "· {plan} 套餐",
     creditsLeft: "剩余 {count} 积分",
-    addTitle: "用商品链接生成广告",
+    addTitle: "添加要推广的商品",
     addBody:
       "粘贴商品页面。Gooidy 会读取页面、撰写品牌简介，并为广告做好准备。",
     noProducts: "还没有商品",
-    noProductsBody: "在上方粘贴商品链接。大约两分钟后，你就会得到前五条广告。",
+    noProductsBody: "在上方粘贴商品链接。大约两分钟后，你就会得到前五条广告，随时可以带来新客户。",
     urlLabel: "商品或网站链接",
     reading: "正在读取页面…",
     addProduct: "添加商品",

@@ -2,12 +2,12 @@ import type { Messages } from ".";
 
 export const ja: Messages = {
   meta: {
-    title: "Gooidy · リンクひとつで広告を",
+    title: "Gooidy · リンクひとつでビジネスを伸ばす",
     description:
-      "商品リンクを貼るだけで、Gooidy が TikTok・Instagram・Facebook 向けの配信用広告を約2分で作ります。無料で始められます。",
+      "Gooidy で小さなビジネスを伸ばしましょう。商品リンクを貼るだけで、新しいお客様を呼び込む画像・動画広告が、TikTok・Instagram・Facebook 向けに数分で完成します。無料で始められます。",
     useCasesTitle: "実例 · Gooidy",
     useCasesDescription:
-      "Gooidy が実際の商品リンクから作った、無編集の広告です。すべての切り口とサイズを確認して、あなたのストアで無料でお試しください。",
+      "実際の商品リンクから Gooidy が作った、無編集のリアルな広告です。リンクひとつがキャンペーンになる様子を見て、あなたのストアで無料でお試しください。",
     signInTitle: "ログイン · Gooidy",
     dashboardTitle: "ダッシュボード · Gooidy",
     brandTitle: "ブランドキット · Gooidy",
@@ -30,18 +30,18 @@ export const ja: Messages = {
   urlForm: {
     label: "商品またはストアのリンク",
     placeholder: "商品またはストアのリンクを貼り付け",
-    submit: "広告を作成",
+    submit: "成長を始める",
   },
   footer: {
     tagline:
-      "商品リンクひとつから画像広告と動画広告を。小さなビジネスのためのツールです。",
+      "リンクひとつから作る画像・動画広告で、小さなビジネスの成長を支えます。",
     product: "プロダクト",
     account: "アカウント",
     legal: "法的情報",
     privacy: "プライバシー",
     terms: "利用規約",
   },
-  stickyCta: "無料で広告を作成",
+  stickyCta: "無料で成長を始める",
   angles: {
     pain: {
       name: "悩み",
@@ -65,42 +65,42 @@ export const ja: Messages = {
     },
   },
   home: {
-    badge: "小さなビジネスのための画像広告と動画広告",
-    titleLine1: "売れる広告を、",
+    badge: "AI で、小さなビジネスに成長を",
+    titleLine1: "ビジネスを伸ばそう、",
     titleBefore: "",
     titleWord: "リンクひとつ",
     titleAfter: "で。",
     intro:
-      "商品ページを貼るだけ。Gooidy がコピーを書き、広告をデザインし、ナレーション付きの短い動画を作り、TikTok・Instagram・Facebook 向けのサイズに整えます。",
+      "商品ページを貼り付けるだけ。Gooidy が誰がなぜ買うのかを読み取り、新しいお客様をストアに呼び込む画像・動画広告を作ります。",
     facts: [
       "無料で開始、カード不要",
-      "1回で5つの切り口",
-      "9:16 と 1:1",
+      "画像広告と動画広告",
+      "1回で5通りの売り方",
       "{count}言語の広告",
     ],
     worksWith: "あらゆるオンラインストアに対応",
-    anglesTitle: "ひとつの商品、たくさんの売り方",
+    anglesTitle: "ひとつの商品に、たくさんの買う理由",
     anglesSub:
-      "毎回ちがう切り口を試します。これは Gooidy が {store} のリンクひとつから作った、実際のフィード広告です。",
-    whereTitle: "配信先での見え方",
+      "人が買う理由はさまざま。だから毎回いくつもの切り口を試します。これは {store} のリンクひとつから Gooidy が作った実際の広告です。",
+    whereTitle: "お客様がスクロールする場所に",
     whereSub: "同じ広告を、お客様が見ているアプリごとのサイズで用意します。",
-    liveTitle: "リンクを入れると、キャンペーンが出てくる。",
+    liveTitle: "リンクを貼るだけで、売れるキャンペーンが届く。",
     liveSub:
       "実際の Gooidy の生成を順番に再生しています。リンク、ページから読み取った内容、書いた切り口、そして完成した広告です。",
     howTitle: "使い方",
-    howSub: "リンクから配信用の広告まで、3ステップ。",
+    howSub: "商品リンクから、新しい買い手に届く広告まで、3ステップで。",
     steps: [
       {
         title: "リンクを貼る",
         body: "商品ページかストアを追加します。Gooidy が、何を売っていて、誰向けで、なぜ買われるのかを読み取ります。",
       },
       {
-        title: "広告を受け取る",
-        body: "見出し・本文・画像がそろった5つの広告案を、縦型と正方形で。ロゴとブランドカラーも反映します。",
+        title: "売れる広告が届く",
+        body: "人が買う5つの理由それぞれに、見出し・本文・画像を縦型と正方形で。ロゴとブランドカラーも反映します。",
       },
       {
-        title: "配信する",
-        body: "気に入ったものをダウンロードして、TikTok・Instagram・Facebook で配信。直接投稿にも近日対応予定です。",
+        title: "もっと多くの買い手に届ける",
+        body: "TikTok・Instagram・Facebook で配信して新しいお客様を獲得しましょう。Gooidy からの投稿・予約投稿・広告ブーストも近日対応予定です。",
       },
     ],
     examplesTitle: "フィードのために",
@@ -126,9 +126,9 @@ export const ja: Messages = {
       },
     ],
     videoFormat: "{seconds}秒・ナレーション付き動画",
-    featuresTitle: "良い広告に必要なものを、すべて",
+    featuresTitle: "成長に必要なものがすべて",
     featuresSub:
-      "デザイナーとコピーライターで半日かかる作業を、Gooidy が引き受けます。",
+      "デザイナー、コピーライター、そして半日かかる作業を Gooidy が引き受けるので、あなたはビジネスに集中できます。",
     briefTitle: "サイトからブランド概要を作成",
     briefBody:
       "Gooidy がページを読み、誰のための商品で、なぜ買われるのかを整理します。",
@@ -136,11 +136,11 @@ export const ja: Messages = {
     kitTitle: "ブランドキット",
     kitBody:
       "ロゴ、ボタンの色、フォントを一度設定するだけ。すべての広告に反映されます。",
-    languagesTitle: "お客様の言語で広告を",
+    languagesTitle: "買い手の言語で売る",
     languagesBody:
-      "選んだ言語で、現地の人が書くような自然な広告文を作ります。動画広告はその言語で話し、字幕も合わせます。",
-    pricingTitle: "シンプルな料金",
-    pricingSub: "無料で開始。広告が足りなくなったらアップグレード。",
+      "どの広告も、選んだ言語で現地の人が書くように作られるので、国内市場の外にも販売を広げられます。動画広告もその言語で話し、字幕も合わせます。",
+    pricingTitle: "成長に合わせたシンプルな料金",
+    pricingSub: "無料で始めて、ビジネスの成長に合わせてアップグレード。",
     popular: "人気",
     perMonth: " / 月",
     plans: [
@@ -167,6 +167,10 @@ export const ja: Messages = {
         a: "商品またはストアのリンクだけです。Gooidy は Shopify、WooCommerce、Wix、Squarespace をはじめ、ほとんどのオンラインストアに対応しています。",
       },
       {
+        q: "Gooidy はどのようにビジネスの成長を助けますか？",
+        a: "小さなお店の多くは、広告を通じてオンラインで新しいお客様を獲得しています。ただ、良い広告には時間とお金がかかります。Gooidy はリンクひとつからブランドに合った新しい広告を作り、さまざまな買う理由を試して、あなたのお店で何が効くかを確かめられるようにし、{count} の言語で買い手に語りかけます。次は、ワンクリック投稿と広告ブーストに対応予定です。",
+      },
+      {
         q: "クレジットとは何ですか？",
         a: "1クレジットで広告画像を1枚作ります。1回の生成で5つの広告を2サイズずつ作るので、10クレジットを使います。",
       },
@@ -180,18 +184,18 @@ export const ja: Messages = {
       },
       {
         q: "広告はどこで使えますか？",
-        a: "TikTok、Instagram、Facebook、YouTube ショートなど、広告を出すあらゆる場所で使えます。",
+        a: "広告を出すあらゆる場所で使えます。TikTok、Instagram、Facebook、YouTube Shorts など。Gooidy から直接の投稿・予約投稿・ブーストも近日対応予定です。",
       },
       {
         q: "いつでも解約できますか？",
         a: "はい。プランは月単位で、お支払い済みの期間が終わるまでご利用いただけます。",
       },
     ],
-    finalTitle: "次の広告は、リンクひとつ先に",
+    finalTitle: "次のお客様は、リンクひとつ先に",
     finalSub: "100クレジット無料。クレジットカード不要。",
   },
   beforeAfter: {
-    title: "商品写真1枚から、売れる広告へ",
+    title: "商品写真1枚から、買い手を呼び込む広告へ",
     sub: "左は {store} の写真。右は Gooidy がそこから作った無編集の広告です。",
     before: "ビフォー：商品ページ",
     after: "アフター：その生成で作られた広告 {count}本",
@@ -239,7 +243,7 @@ export const ja: Messages = {
     statLinks: "商品リンク",
     statAds: "作成した広告",
     statPer: "1リンクあたり",
-    tryTitle: "次はあなたのストアで",
+    tryTitle: "次はあなたのストアを伸ばす番です",
     tryBody:
       "商品リンクを貼るだけ。フィードとストーリーズのサイズで5つの切り口を、広告文付きでお届けします。最初の生成は無料です。",
     worksWith: "Shopify、WooCommerce をはじめ、ほとんどの商品ページに対応。",
@@ -301,12 +305,12 @@ export const ja: Messages = {
     credits: "{count}クレジット",
     plan: "· {plan}プラン",
     creditsLeft: "残り{count}クレジット",
-    addTitle: "商品リンクから広告を作る",
+    addTitle: "宣伝する商品を追加",
     addBody:
       "商品ページを貼り付けてください。Gooidy が読み取り、ブランド概要を書いて、広告の準備を整えます。",
     noProducts: "まだ商品がありません",
     noProductsBody:
-      "上に商品リンクを貼り付けてください。約2分で最初の5本の広告ができあがります。",
+      "上に商品リンクを貼り付けてください。約2分で、新しいお客様を呼び込む最初の5つの広告ができあがります。",
     urlLabel: "商品またはサイトのリンク",
     reading: "ページを読み取り中…",
     addProduct: "商品を追加",
