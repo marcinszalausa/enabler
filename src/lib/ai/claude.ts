@@ -34,7 +34,7 @@ export const AdAngleSchema = z.object({
   image_prompt: z
     .string()
     .describe(
-      "Scene for the ad image, featuring the product. Describe setting, lighting, composition. Show the product once, in its real color and design; no second person or before/after split wearing or holding a different version. No text, words or logos in the image.",
+      "Scene for the ad image, featuring the product. Describe setting, lighting, composition. Show the product once, in its real color and design; no second person or before/after split wearing or holding a different version. Keep hands simple and natural: relaxed at the sides, in pockets or holding one large object; avoid crossed arms, interlaced fingers and close-ups of hands. No text, words or logos in the image.",
     ),
 });
 export type AdAngle = z.infer<typeof AdAngleSchema>;
@@ -153,4 +153,58 @@ export async function writeAdAngles(
   const ads = response.parsed_output?.ads;
   if (!ads?.length) throw new UserError("Couldn't write ad copy.");
   return ads.slice(0, count);
+}
+
+const ImageReviewSchema = z.object({
+  ok: z
+    .boolean()
+    .describe("True only if the image could run as a paid ad as is"),
+  issues: z
+    .string()
+    .describe("Short list of the visible defects; empty when ok"),
+});
+export type ImageReview = z.infer<typeof ImageReviewSchema>;
+
+// Checks a generated ad photo for the flaws image models make: broken
+// hands, warped faces, and a product that doesn't match the real one.
+export async function reviewAdImage(opts: {
+  imageUrl: string;
+  referenceImageUrl: string | null;
+  product: string;
+}): Promise<ImageReview> {
+  const content: Anthropic.Beta.BetaContentBlockParam[] = [];
+  if (opts.referenceImageUrl) {
+    content.push(
+      { type: "text", text: "The real product photo:" },
+      { type: "image", source: { type: "url", url: opts.referenceImageUrl } },
+    );
+  }
+  content.push(
+    { type: "text", text: "The generated ad photo to check:" },
+    { type: "image", source: { type: "url", url: opts.imageUrl } },
+    {
+      type: "text",
+      text: `Product: ${opts.product}. Check the generated photo closely. Reject it for any of: hands or fingers that are malformed, merged, extra or missing; distorted faces, eyes or limbs; garbled text or logos; the product shown in a different color, pattern or design than the real one; a second, different version of the product. Small stylistic differences in pose or setting are fine.`,
+    },
+  );
+
+  const response = await callClaude(() =>
+    client.beta.messages.parse({
+      model: MODEL,
+      max_tokens: 4000,
+      betas: [FALLBACK_BETA],
+      fallbacks: "default",
+      output_config: {
+        effort: "low",
+        format: betaZodOutputFormat(ImageReviewSchema),
+      },
+      system:
+        "You are a strict quality checker for advertising photos. A real brand will pay to show this image, so reject anything a shopper would notice as wrong.",
+      messages: [{ role: "user", content }],
+    }),
+  );
+  assertAnswered(response.stop_reason);
+  if (!response.parsed_output)
+    throw new Error("Image review returned no verdict.");
+  return response.parsed_output;
 }
