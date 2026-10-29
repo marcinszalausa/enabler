@@ -104,11 +104,16 @@ export async function getShowcase(): Promise<ShowcaseRun[]> {
   });
 }
 
-// Same product even if the link differs by www, query string or case.
+// Same product even if the link differs by www, query string, case or
+// collection path.
 function productKey(url: string) {
   try {
     const u = new URL(url);
-    const path = u.pathname.replace(/\/+$/, "").toLowerCase();
+    // Shopify serves one product under /collections/…/products/<handle> too.
+    const path = u.pathname
+      .replace(/^.*(\/products\/[^/]+).*$/, "$1")
+      .replace(/\/+$/, "")
+      .toLowerCase();
     return `${u.hostname.replace(/^www\./, "").toLowerCase()}${path}`;
   } catch {
     return url;
