@@ -243,7 +243,8 @@ html {
     0 10cqw 16cqw -6cqw rgb(0 0 0 / 0.45);
 }
 /* A phone with a body: stacked slices of titanium behind the front frame,
-   about 6% of its width deep. Only shows when the phone is turned in 3D. */
+   about 10% of its width deep like a real iPhone. Each slice is lit a little
+   differently (see IPhone) so the rail reads as rounded titanium. */
 .iphone-3d {
   position: relative;
   transform-style: preserve-3d;
@@ -252,25 +253,11 @@ html {
   position: absolute;
   inset: 0;
   border-radius: 16.6cqw;
-  transform: translateZ(calc(var(--i) * -0.5cqw));
-  background: linear-gradient(
-    90deg,
-    #7d7e85,
-    #d4d5da 18%,
-    #9a9ba2 50%,
-    #d4d5da 82%,
-    #7d7e85
-  );
+  transform: translateZ(calc(var(--i) * -0.7cqw));
+  background: #8e9098;
 }
 :root[data-theme="dark"] .iphone-slab {
-  background: linear-gradient(
-    90deg,
-    #2c2d33,
-    #6a6c75 18%,
-    #3d3e45 50%,
-    #6a6c75 82%,
-    #2c2d33
-  );
+  background: #5b5d66;
 }
 .iphone-bezel {
   background: #050506;
@@ -480,6 +467,10 @@ html {
   --half: 120px;
   --gap: 20px;
   --turn: 26deg;
+  /* Seen from a little to the right and above, like a product photo, so
+     the phones' sides are always in view. */
+  --view-x: -5deg;
+  --view-y: -24deg;
 }
 @media (min-width: 48rem) {
   .landing .stage {
@@ -499,23 +490,10 @@ html {
   transform-style: preserve-3d;
 }
 .landing .stage-inner {
-  transform: rotateX(var(--rx)) rotateY(var(--ry));
+  /* The turn pushes the group right; nudge it back to center. */
+  transform: translateX(-5%) rotateX(calc(var(--rx) + var(--view-x)))
+    rotateY(calc(var(--ry) + var(--view-y)));
   transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-/* Touch screens have no pointer to follow, so the stage sways slowly on its
-   own and the phones' edges still come into view. */
-@media (hover: none) and (prefers-reduced-motion: no-preference) {
-  .landing .stage-inner {
-    animation: stage-sway 7s ease-in-out infinite alternate;
-  }
-}
-@keyframes stage-sway {
-  from {
-    transform: rotateX(3deg) rotateY(-10deg);
-  }
-  to {
-    transform: rotateX(3deg) rotateY(10deg);
-  }
 }
 .landing .stage-side {
   position: absolute;

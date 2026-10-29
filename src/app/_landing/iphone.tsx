@@ -6,7 +6,7 @@ import type { CSSProperties, ReactNode } from "react";
 // a 71.9 × 150 mm body, thin even bezels, a 19.5:9 screen with Apple's corner
 // radius, the Dynamic Island, and the side buttons including Camera Control.
 // With `depth`, the body gets a phone's thickness for 3D scenes.
-const SLABS = 12;
+const SLABS = 14;
 export function IPhone({
   children,
   depth = false,
@@ -28,7 +28,7 @@ export function IPhone({
                 "--i": i + 1,
                 // The rail is rounded: brightest in the middle of its depth,
                 // falling off toward the front and back edges.
-                filter: `brightness(${(1.08 - 0.4 * Math.abs((i + 0.5) / SLABS - 0.5)).toFixed(3)})`,
+                filter: `brightness(${(1.25 - 0.9 * Math.abs((i + 0.5) / SLABS - 0.5)).toFixed(3)})`,
               } as CSSProperties
             }
             aria-hidden
