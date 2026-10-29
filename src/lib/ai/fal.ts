@@ -40,10 +40,19 @@ export async function generateAdImage(opts: {
 
 // Turns fal failures into messages that point at the likely fix.
 // The full error still goes to the server log.
-async function callFal<T>(request: () => Promise<T>): Promise<T> {
+async function callFal<T>(request: () => Promise<T>, attempt = 1): Promise<T> {
   try {
     return await request();
   } catch (err) {
+    // Busy or rate-limited: wait and retry a couple of times.
+    if (
+      err instanceof ApiError &&
+      (err.status === 429 || err.status >= 500) &&
+      attempt < 3
+    ) {
+      await new Promise((r) => setTimeout(r, 2000 * attempt));
+      return callFal(request, attempt + 1);
+    }
     if (err instanceof ApiError) {
       console.error(
         "fal API error",
