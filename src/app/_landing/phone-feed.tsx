@@ -18,14 +18,14 @@ const VIDEO_MAX_MS = 15000;
 export function PhoneFeed({
   ads,
   notes = false,
-  depth = false,
+  depth = 0,
   sizes,
   preload = false,
   className = "",
 }: {
   ads: FeedAd[];
   notes?: boolean;
-  depth?: boolean;
+  depth?: number;
   // The ad area's width on screen, for picking the image size.
   sizes: string;
   // The hero phone's first ad is the first thing people see.

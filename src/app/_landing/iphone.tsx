@@ -5,21 +5,29 @@ import type { CSSProperties, ReactNode } from "react";
 // phone's own width, so proportions hold from a thumbnail to the hero:
 // a 71.9 × 150 mm body, thin even bezels, a 19.5:9 screen with Apple's corner
 // radius, the Dynamic Island, and the side buttons including Camera Control.
-// With `depth`, the body gets a phone's thickness for 3D scenes.
-const SLABS = 14;
+// With `depth` (in % of its width), the body gets thickness for 3D scenes.
 export function IPhone({
   children,
-  depth = false,
+  depth = 0,
   className = "",
 }: {
   children: ReactNode;
-  depth?: boolean;
+  depth?: number;
   className?: string;
 }) {
+  // One slice of body per 0.7% of depth, so the rail stays solid when turned.
+  const slabs = Math.round(depth / 0.7);
   return (
-    <div className={`@container ${depth ? "iphone-3d" : ""} ${className}`}>
-      {depth &&
-        Array.from({ length: SLABS }, (_, i) => (
+    <div
+      className={`@container ${depth ? "iphone-3d" : ""} ${className}`}
+      style={
+        depth
+          ? ({ "--step": `${depth / slabs}cqw` } as CSSProperties)
+          : undefined
+      }
+    >
+      {depth > 0 &&
+        Array.from({ length: slabs }, (_, i) => (
           <span
             key={i}
             className="iphone-slab"
@@ -28,7 +36,7 @@ export function IPhone({
                 "--i": i + 1,
                 // The rail is rounded: brightest in the middle of its depth,
                 // falling off toward the front and back edges.
-                filter: `brightness(${(1.25 - 0.9 * Math.abs((i + 0.5) / SLABS - 0.5)).toFixed(3)})`,
+                filter: `brightness(${(1.25 - 0.9 * Math.abs((i + 0.5) / slabs - 0.5)).toFixed(3)})`,
               } as CSSProperties
             }
             aria-hidden

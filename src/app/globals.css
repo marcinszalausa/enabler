@@ -243,8 +243,8 @@ html {
     0 10cqw 16cqw -6cqw rgb(0 0 0 / 0.45);
 }
 /* A phone with a body: stacked slices of titanium behind the front frame,
-   about 10% of its width deep like a real iPhone. Each slice is lit a little
-   differently (see IPhone) so the rail reads as rounded titanium. */
+   --step apart (see IPhone). Each slice is lit a little differently so the
+   rail reads as rounded titanium. */
 .iphone-3d {
   position: relative;
   transform-style: preserve-3d;
@@ -253,7 +253,7 @@ html {
   position: absolute;
   inset: 0;
   border-radius: 16.6cqw;
-  transform: translateZ(calc(var(--i) * -0.7cqw));
+  transform: translateZ(calc(var(--i) * -1 * var(--step)));
   background: #8e9098;
 }
 :root[data-theme="dark"] .iphone-slab {
@@ -479,19 +479,20 @@ html {
   --rx: 0deg;
   --ry: 0deg;
   --half: 120px;
-  --gap: 20px;
+  /* Room for the side phones' thick edges, which turn in toward the center. */
+  --gap: 36px;
   --turn: 30deg;
 }
 @media (min-width: 48rem) {
   .landing .stage {
     --half: 145px;
-    --gap: 32px;
+    --gap: 60px;
   }
 }
 @media (min-width: 64rem) {
   .landing .stage {
     --half: 155px;
-    --gap: 44px;
+    --gap: 80px;
   }
 }
 .landing .stage-inner,
@@ -508,7 +509,9 @@ html {
   top: 50%;
   transform: translateX(calc(var(--dir) * (var(--half) + var(--gap))))
     translateY(-50%) rotateY(calc(var(--dir) * var(--turn)));
-  animation: stage-unfold 1.4s cubic-bezier(0.2, 0.8, 0.2, 1) 0.25s both;
+  /* "backwards", not "both": an animation still holding opacity after it
+     ends makes Chrome flatten the phone, and its thick edge disappears. */
+  animation: stage-unfold 1.4s cubic-bezier(0.2, 0.8, 0.2, 1) 0.25s backwards;
 }
 .landing .stage-left {
   --dir: -1;
@@ -528,6 +531,9 @@ html {
   }
 }
 /* On the stage the phones stand free, with no drop shadow. */
+.landing .stage .iphone-glare {
+  display: none;
+}
 .landing .stage .iphone-frame {
   box-shadow:
     inset 0 0 0 0.25cqw rgb(255 255 255 / 0.55),

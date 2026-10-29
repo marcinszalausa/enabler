@@ -8,8 +8,10 @@ import type { FeedAd } from "./reel";
 // the middle, single ads turned away on each side. The phones have real
 // thickness, and the whole stage leans a few degrees toward the pointer,
 // which makes them feel like objects, not images.
+// A real iPhone is 8.25 mm thick and 71.9 mm wide: 11.5% of its width.
+const DEPTH = 11.5;
 // Ad widths inside the side phones, which only show from 640 px up.
-const SIDE = "(min-width: 64rem) 285px, (min-width: 48rem) 250px, 200px";
+const SIDE = "(min-width: 64rem) 270px, (min-width: 48rem) 225px, 200px";
 
 export function HeroStage({
   feed,
@@ -54,9 +56,9 @@ export function HeroStage({
           <div className="stage-side stage-left hidden sm:block">
             <PhoneFeed
               ads={[left]}
-              depth
+              depth={DEPTH}
               sizes={SIDE}
-              className="stage-phone w-[200px] md:w-[250px] lg:w-[285px]"
+              className="stage-phone w-[200px] md:w-[225px] lg:w-[270px]"
             />
           </div>
         )}
@@ -64,15 +66,15 @@ export function HeroStage({
           <div className="stage-side stage-right hidden sm:block">
             <PhoneFeed
               ads={[right]}
-              depth
+              depth={DEPTH}
               sizes={SIDE}
-              className="stage-phone w-[200px] md:w-[250px] lg:w-[285px]"
+              className="stage-phone w-[200px] md:w-[225px] lg:w-[270px]"
             />
           </div>
         )}
         <PhoneFeed
           ads={feed}
-          depth
+          depth={DEPTH}
           sizes="(min-width: 64rem) 310px, (min-width: 48rem) 290px, (min-width: 40rem) 240px, 250px"
           preload
           className="stage-phone relative w-[250px] sm:w-[240px] md:w-[290px] lg:w-[310px]"
