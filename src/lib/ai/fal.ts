@@ -10,21 +10,28 @@ type FalImageOutput = { images: { url: string }[] };
 // Otherwise: generate the scene from text alone.
 export async function generateAdImage(opts: {
   prompt: string;
+  // Defects a reviewer found in an earlier try, to steer away from.
+  avoid?: string;
+  // Use the slower, more precise model (for retries).
+  best?: boolean;
   aspect: Aspect;
   referenceImageUrl: string | null;
 }): Promise<string> {
-  const prompt = `${opts.prompt}. Professional advertising photograph, clean composition, leave calm empty space near the top for a headline. No text, letters, logos or watermarks.`;
+  const prompt = `${opts.prompt}. Professional advertising photograph, clean composition, leave calm empty space near the top for a headline. Anatomically correct hands with five fingers each, relaxed and natural. No text, letters, logos or watermarks.${opts.avoid ? ` Avoid these problems: ${opts.avoid}.` : ""}`;
 
   const result = await callFal(() =>
     opts.referenceImageUrl
-      ? fal.subscribe("fal-ai/flux-pro/kontext", {
-          input: {
-            prompt: `Place this exact product in a new scene, keeping its color, fabric and design unchanged. Show it only once; nobody else in the scene wears or holds a similar item in another color: ${prompt}`,
-            image_url: opts.referenceImageUrl,
-            aspect_ratio: opts.aspect,
-            output_format: "jpeg",
+      ? fal.subscribe(
+          opts.best ? "fal-ai/flux-pro/kontext/max" : "fal-ai/flux-pro/kontext",
+          {
+            input: {
+              prompt: `Place this exact product in a new scene, keeping its color, fabric and design unchanged. Show it only once; nobody else in the scene wears or holds a similar item in another color: ${prompt}`,
+              image_url: opts.referenceImageUrl,
+              aspect_ratio: opts.aspect,
+              output_format: "jpeg",
+            },
           },
-        })
+        )
       : fal.subscribe("fal-ai/flux/dev", {
           input: {
             prompt,

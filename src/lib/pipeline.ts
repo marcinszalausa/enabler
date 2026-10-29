@@ -1,6 +1,6 @@
 import "server-only";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { writeAdAngles, type BrandBrief } from "@/lib/ai/claude";
+import { reviewAdImage, writeAdAngles, type BrandBrief } from "@/lib/ai/claude";
 import { generateAdImage, type Aspect } from "@/lib/ai/fal";
 import { userMessage } from "@/lib/errors";
 
@@ -12,6 +12,8 @@ export const GENERATION_COST =
 
 // fal limits how many requests an account may run at once; stay under it.
 const IMAGE_CONCURRENCY = 3;
+// Tries per image before giving up on it (and refunding its credit).
+const IMAGE_ATTEMPTS = 3;
 
 type Job = { generationId: string; workspaceId: string; productId: string };
 
@@ -42,10 +44,11 @@ export async function runGeneration({
 
     const tasks = angles.flatMap((ad, i) =>
       ASPECTS.map((aspect) => async () => {
-        const imageUrl = await generateAdImage({
+        const imageUrl = await generateCheckedImage({
           prompt: ad.image_prompt,
           aspect,
           referenceImageUrl,
+          product: brief.product_name,
         });
         const image = await fetch(imageUrl, {
           signal: AbortSignal.timeout(30_000),
@@ -107,8 +110,7 @@ export async function runGeneration({
       .update({
         status: "succeeded",
         prompt: angles.map((a) => a.image_prompt).join("\n"),
-        error:
-          failed > 0 ? `${failed} image(s) failed and were refunded.` : null,
+        error: failed > 0 ? failureNote(results, failed) : null,
       })
       .eq("id", generationId);
   } catch (err) {
@@ -123,6 +125,54 @@ export async function runGeneration({
       .update({ status: "failed", error: message })
       .eq("id", generationId);
   }
+}
+
+class QualityError extends Error {}
+
+// Generates an ad photo and has Claude check it for broken hands, faces or
+// a product that doesn't match; retries with the defects named. An image that
+// never passes fails, so its credit is refunded rather than shipping a flaw.
+async function generateCheckedImage(opts: {
+  prompt: string;
+  aspect: Aspect;
+  referenceImageUrl: string | null;
+  product: string;
+}): Promise<string> {
+  let avoid: string | undefined;
+  for (let attempt = 1; attempt <= IMAGE_ATTEMPTS; attempt++) {
+    // Retries use the more precise model.
+    const imageUrl = await generateAdImage({
+      ...opts,
+      avoid,
+      best: attempt > 1,
+    });
+    let review;
+    try {
+      review = await reviewAdImage({ ...opts, imageUrl });
+    } catch (err) {
+      // A checker outage shouldn't block ads; keep the image.
+      console.error("image review failed", err);
+      return imageUrl;
+    }
+    if (review.ok) return imageUrl;
+    console.warn("image rejected", attempt, review.issues);
+    avoid = review.issues;
+  }
+  throw new QualityError(avoid ?? "visible defects");
+}
+
+// Says why images were dropped, so the owner can see what the checker caught.
+function failureNote(
+  results: PromiseSettledResult<unknown>[],
+  failed: number,
+): string {
+  const rejected = results.find(
+    (r) => r.status === "rejected" && r.reason instanceof QualityError,
+  ) as PromiseRejectedResult | undefined;
+  const base = `${failed} image(s) were dropped and refunded.`;
+  return rejected
+    ? `${base} The quality check found, for example: ${(rejected.reason as Error).message}`
+    : base;
 }
 
 // Like Promise.allSettled, but runs at most `limit` tasks at a time.
