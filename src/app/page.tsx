@@ -11,6 +11,9 @@ import { AngleExplorer, type AngleAd } from "./_landing/angle-explorer";
 import { HeroStage } from "./_landing/hero-stage";
 import { RunDemo, type DemoRun } from "./_landing/run-demo";
 import { Reveal } from "./_landing/reveal";
+import { Placements, type PlacementAd } from "./_landing/placements";
+import { StickyCta } from "./_landing/sticky-cta";
+import { BeforeAfter } from "./_landing/before-after";
 
 export const metadata = {
   title: "Gooidy · Ads from a single link",
@@ -88,15 +91,18 @@ export default async function Home() {
   // Side phones show other ads than the one the middle phone opens on.
   const sides = images.length > 2 ? images.slice(-2) : [];
   const run = runs[0];
+  const pictured = runs.find((r) => r.productImage);
   return (
     <div className="landing flex flex-1 flex-col bg-bg text-fg">
       <Nav />
       <main className="flex-1">
         <Hero feed={feed} left={sides[0]} right={sides[1]} />
         <WorksWith />
+        {pictured && <FromPhoto run={pictured} />}
         {run ? <HowItWorksLive run={run} /> : <HowItWorks />}
         {videos.length > 0 && <VideoAds ads={videos} />}
         {run && <Angles run={run} />}
+        {run && <WhereItRuns run={run} />}
         {runs.length > 0 && <Examples runs={runs} />}
         <Features run={run} />
         <Compare />
@@ -105,6 +111,7 @@ export default async function Home() {
         <FinalCta />
       </main>
       <Footer />
+      <StickyCta />
       <Reveal />
     </div>
   );
@@ -269,6 +276,51 @@ function Angles({ run }: { run: ShowcaseRun }) {
       />
       <div className="mt-14">
         <AngleExplorer store={run.store} ads={ads} />
+      </div>
+    </section>
+  );
+}
+
+// The store's own product photo next to the ads Gooidy made from it.
+function FromPhoto({ run }: { run: ShowcaseRun }) {
+  const ads = run.ads
+    .filter((a) => a.aspect === "9:16")
+    .slice(0, 3)
+    .map((a) => ({ image: image(a.id), alt: a.headline }));
+  if (!run.productImage || ads.length === 0) return null;
+  return (
+    <BeforeAfter
+      photo={run.productImage}
+      name={run.productName}
+      url={run.productUrl}
+      madeIn={run.seconds ? duration(run.seconds) : undefined}
+      ads={ads}
+    />
+  );
+}
+
+// One real ad from the run, shown inside each app it runs in.
+function WhereItRuns({ run }: { run: ShowcaseRun }) {
+  const story = run.ads.find((a) => a.aspect === "9:16");
+  const square = run.ads.find((a) => a.aspect === "1:1");
+  if (!story || !square) return null;
+  const ad: PlacementAd = {
+    story: { image: image(story.id), alt: story.headline },
+    square: {
+      image: image(square.id),
+      alt: square.headline,
+      primaryText: square.primaryText,
+    },
+    store: run.store,
+  };
+  return (
+    <section className="reveal mx-auto max-w-6xl px-4 pb-24">
+      <SectionHeading
+        title="See it where it runs"
+        sub="The same run, sized and ready for every app your customers scroll."
+      />
+      <div className="mt-14">
+        <Placements ad={ad} />
       </div>
     </section>
   );
@@ -497,7 +549,7 @@ function Features({ run }: { run?: ShowcaseRun }) {
         title="Everything a good ad needs"
         sub="Gooidy handles the parts that usually take a designer, a copywriter and an afternoon."
       />
-      <div className="mt-14 grid gap-5 md:grid-cols-6">
+      <div className="stagger mt-14 grid gap-5 md:grid-cols-6">
         <div className="edge p-7 md:col-span-4">
           <h3 className="text-lg font-medium">Brand brief from your site</h3>
           <p className="mt-1.5 text-sm text-muted">
@@ -597,7 +649,7 @@ function Pricing() {
           title="Simple pricing"
           sub="Start free. Upgrade when you need more ads."
         />
-        <div className="mt-12 grid gap-6 md:grid-cols-3">
+        <div className="stagger mt-12 grid gap-6 md:grid-cols-3">
           {PLANS.map((plan) => (
             <div
               key={plan.name}

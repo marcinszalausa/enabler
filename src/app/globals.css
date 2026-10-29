@@ -167,17 +167,32 @@ html {
   mask-image: radial-gradient(70% 70% at 50% 35%, #000 30%, transparent 100%);
 }
 
-/* Sections fade up as they scroll into view (only once the script runs). */
-:root[data-reveal="on"] .landing .reveal {
+/* Sections fade up as they scroll into view (only once the script runs),
+   easing out softly. Items in a `.stagger` list follow one after another. */
+:root[data-reveal="on"] .landing .reveal,
+:root[data-reveal="on"] .landing .reveal .stagger > * {
   opacity: 0;
-  transform: translateY(16px);
+  transform: translateY(24px);
   transition:
-    opacity 0.6s ease,
-    transform 0.6s ease;
+    opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1),
+    transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
-:root[data-reveal="on"] .landing .reveal.in {
+:root[data-reveal="on"] .landing .reveal.in,
+:root[data-reveal="on"] .landing .reveal.in .stagger > * {
   opacity: 1;
   transform: none;
+}
+:root[data-reveal="on"] .landing .reveal .stagger > :nth-child(2) {
+  transition-delay: 90ms;
+}
+:root[data-reveal="on"] .landing .reveal .stagger > :nth-child(3) {
+  transition-delay: 180ms;
+}
+:root[data-reveal="on"] .landing .reveal .stagger > :nth-child(4) {
+  transition-delay: 270ms;
+}
+:root[data-reveal="on"] .landing .reveal .stagger > :nth-child(n + 5) {
+  transition-delay: 360ms;
 }
 
 .landing .angle-in {
