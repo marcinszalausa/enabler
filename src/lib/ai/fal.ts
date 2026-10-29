@@ -19,7 +19,7 @@ export async function generateAdImage(opts: {
     opts.referenceImageUrl
       ? fal.subscribe("fal-ai/flux-pro/kontext", {
           input: {
-            prompt: `Place this exact product in a new scene: ${prompt}`,
+            prompt: `Place this exact product in a new scene, keeping its color, fabric and design unchanged. Show it only once; nobody else in the scene wears or holds a similar item in another color: ${prompt}`,
             image_url: opts.referenceImageUrl,
             aspect_ratio: opts.aspect,
             output_format: "jpeg",
