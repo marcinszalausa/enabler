@@ -244,7 +244,7 @@ function GenerationBlock({
           {when}
           {g.error && <span className="ml-2 text-amber-600">{g.error}</span>}
         </h2>
-        {canShowcase && !video && (
+        {canShowcase && (
           <form action={setShowcase}>
             <input type="hidden" name="generationId" value={g.id} />
             <input

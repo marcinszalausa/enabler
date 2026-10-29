@@ -6,7 +6,8 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { SHOWCASE_TAG, isShowcaseAdmin } from "@/lib/showcase";
 
-// Puts a finished run on (or takes it off) the public /use-cases page.
+// Puts a finished run on (or takes it off) the public site: image runs on
+// /use-cases and the home page, video runs in the home page phones.
 export async function setShowcase(formData: FormData) {
   const user = await getCurrentUser();
   if (!isShowcaseAdmin(user.email)) return;
@@ -28,7 +29,7 @@ export async function setShowcase(formData: FormData) {
     .update({ showcased_at: show ? new Date().toISOString() : null })
     .eq("id", generation.id);
 
-  // Expire now, so the next visit to /use-cases shows the change.
+  // Expire now, so the next visit shows the change.
   updateTag(SHOWCASE_TAG);
   revalidatePath(`/dashboard/products/${generation.product_id}`);
 }

@@ -1,6 +1,9 @@
 import Link from "next/link";
-import { FALLBACK_AD, Reel, type FeedAd } from "./_landing/reel";
-import { getShowcase } from "@/lib/showcase";
+import { FALLBACK_AD, type FeedAd } from "./_landing/reel";
+import { PhoneFeed } from "./_landing/phone-feed";
+import { getShowcase, type ShowcaseRun } from "@/lib/showcase";
+import { LANGUAGES } from "@/lib/video-options";
+import { VIDEO_SECONDS } from "@/lib/video";
 import {
   THEME_BY_TIME,
   Nav,
@@ -108,17 +111,19 @@ const FAQ = [
 // they picked one with the toggle (saved on their device). ?theme=light|dark
 // forces one. Inline so it runs before the page paints.
 export default async function Home() {
-  const ads = await feedAds();
+  const { images, videos } = await showcaseAds();
+  const hero = heroFeed(images, videos);
   return (
     <div className="landing flex flex-1 flex-col bg-bg text-fg">
       <script dangerouslySetInnerHTML={{ __html: THEME_BY_TIME }} />
       <Nav />
       <main className="flex-1">
-        <Hero ads={ads} />
+        <Hero ads={hero} />
         <WorksWith />
         <HowItWorks />
+        {videos.length > 0 && <VideoAds ads={videos} />}
         <Angles />
-        {ads.some((a) => a.image) && <Examples ads={ads} />}
+        {images.length > 0 && <Examples ads={images.slice(0, 4)} />}
         <Features />
         <Compare />
         <Pricing />
@@ -131,46 +136,84 @@ export default async function Home() {
   );
 }
 
-// Up to four real 9:16 ads from the showcase: one per product first, then
-// more angles. Falls back to the Soft Mila clip before any run is picked.
-async function feedAds(): Promise<FeedAd[]> {
-  const runs = await getShowcase();
+// Real 9:16 ads from the showcase, one per product first, then more angles.
+async function showcaseAds() {
+  const [imageRuns, videoRuns] = await Promise.all([
+    getShowcase(),
+    getShowcase("video_ads"),
+  ]);
+  return {
+    images: roundRobin(imageRuns, (r, a) => ({
+      ...about(r, a),
+      image: `/api/creatives/${a.id}/image`,
+    })),
+    videos: roundRobin(videoRuns, (r, a) => ({
+      ...about(r, a),
+      video: { src: `/api/creatives/${a.id}/video` },
+      format: `${VIDEO_SECONDS} s video with a voiceover`,
+      sound: true,
+    })),
+  };
+}
+
+type Ad = ShowcaseRun["ads"][number];
+
+function about(r: ShowcaseRun, a: Ad): FeedAd {
+  return {
+    alt: a.headline,
+    angle: a.angle,
+    store: r.store,
+    madeIn: r.seconds ? duration(r.seconds) : undefined,
+  };
+}
+
+function roundRobin(
+  runs: ShowcaseRun[],
+  toAd: (r: ShowcaseRun, a: Ad) => FeedAd,
+): FeedAd[] {
   const stories = runs.map((r) =>
-    r.ads
-      .filter((a) => a.aspect === "9:16")
-      .map((a) => ({
-        handle: r.store.split(".")[0],
-        image: `/api/creatives/${a.id}/image`,
-        alt: a.headline,
-      })),
+    r.ads.filter((a) => a.aspect === "9:16").map((a) => toAd(r, a)),
   );
   const ads: FeedAd[] = [];
-  for (
-    let round = 0;
-    ads.length < 4 && stories.some((s) => s[round]);
-    round++
-  ) {
-    for (const s of stories) if (s[round] && ads.length < 4) ads.push(s[round]);
+  for (let round = 0; stories.some((s) => s[round]); round++)
+    for (const s of stories) if (s[round]) ads.push(s[round]);
+  return ads;
+}
+
+// The hero phone opens on a video ad when there is one, then alternates.
+// Falls back to the Soft Mila clip before any run is picked.
+function heroFeed(images: FeedAd[], videos: FeedAd[]): FeedAd[] {
+  const feed: FeedAd[] = [];
+  for (let i = 0; feed.length < 6 && (videos[i] || images[i]); i++) {
+    if (videos[i]) feed.push(videos[i]);
+    if (images[i] && feed.length < 6) feed.push(images[i]);
   }
-  return ads.length ? ads : [FALLBACK_AD];
+  return feed.length ? feed : [FALLBACK_AD];
+}
+
+function duration(seconds: number) {
+  if (seconds < 60) return `${seconds} s`;
+  const m = Math.round(seconds / 60);
+  return `${m} min`;
 }
 
 function Hero({ ads }: { ads: FeedAd[] }) {
   return (
-    <section className="hero-bg">
-      <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 pb-20 pt-14 sm:pt-20 lg:grid-cols-[1.2fr_0.8fr]">
+    <section className="hero-bg overflow-hidden">
+      <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 pb-20 pt-10 sm:pt-16 lg:grid-cols-[1.1fr_0.9fr]">
         <div className="text-center lg:text-left">
           <p className="inline-flex items-center gap-2 rounded-full border border-line bg-bg px-3 py-1 text-sm text-muted shadow-sm">
             <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-            AI ads for small businesses
+            AI image and video ads for small businesses
           </p>
-          <h1 className="mt-5 text-4xl font-semibold leading-[1.1] tracking-tight sm:text-6xl">
+          <h1 className="mt-5 text-4xl font-semibold leading-[1.08] tracking-tight sm:text-6xl">
             Ads that sell, from a single{" "}
             <span className="text-accent">link</span>.
           </h1>
           <p className="mx-auto mt-5 max-w-lg text-lg leading-relaxed text-muted lg:mx-0">
-            Paste your product page. Gooidy writes the copy, designs the ads and
-            sizes them for TikTok, Instagram and Facebook in about two minutes.
+            Paste your product page. Gooidy writes the copy, designs image ads,
+            films short video ads with a voiceover and sizes everything for
+            TikTok, Instagram and Facebook.
           </p>
           <div className="mt-8 flex justify-center lg:justify-start">
             <UrlForm id="url-top" />
@@ -178,34 +221,37 @@ function Hero({ ads }: { ads: FeedAd[] }) {
           <p className="mt-3 text-sm text-muted">
             Free to start. No credit card needed.
           </p>
+          <ul className="mx-auto mt-10 hidden max-w-lg grid-cols-3 gap-3 text-left sm:grid lg:mx-0">
+            {HERO_FACTS.map((f) => (
+              <li
+                key={f.label}
+                className="rounded-2xl border border-line bg-bg/70 px-4 py-3 backdrop-blur"
+              >
+                <p className="text-sm font-medium">{f.value}</p>
+                <p className="mt-0.5 text-xs text-muted">{f.label}</p>
+              </li>
+            ))}
+          </ul>
         </div>
-        <div className="flex justify-center lg:justify-end">
-          <Phone ads={ads} />
+        <div className="relative flex justify-center">
+          <div className="phone-halo" aria-hidden />
+          <PhoneFeed
+            ads={ads}
+            notes
+            className="w-[260px] sm:w-[300px] lg:w-[318px]"
+          />
         </div>
       </div>
     </section>
   );
 }
 
-// A phone that steps through real ads, like a short-video feed.
-function Phone({ ads }: { ads: FeedAd[] }) {
-  // The feed animation steps through 4 slots, then loops back to the first.
-  const slots = Array.from({ length: 4 }, (_, i) => ads[i % ads.length]);
-  const feed = [...slots, slots[0]];
-  return (
-    <div className="h-[540px] w-[270px] rounded-[2.5rem] border border-line bg-[#16171d] p-2 shadow-2xl shadow-accent/10 sm:h-[600px] sm:w-[300px]">
-      <div className="relative h-full w-full overflow-hidden rounded-[2rem]">
-        <div className="feed-scroll h-[500%]">
-          {feed.map((ad, i) => (
-            <div key={i} className="h-[20%]">
-              <Reel ad={ad} />
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
+// What one run gives you, as the product does it today.
+const HERO_FACTS = [
+  { value: "5 angles", label: "per image run" },
+  { value: "9:16 and 1:1", label: "every placement" },
+  { value: `${Object.keys(LANGUAGES).length} languages`, label: "for video voiceover" },
+];
 
 function WorksWith() {
   return (
@@ -309,22 +355,23 @@ function HowItWorks() {
 
 function Examples({ ads }: { ads: FeedAd[] }) {
   return (
-    <section className="reveal mx-auto max-w-6xl px-4 py-20">
-      <SectionHeading
-        title="Made for the feed"
-        sub="Real, unedited ads Gooidy made from Soft Mila product links."
-      />
-      <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-4">
+    <section className="reveal overflow-hidden py-20">
+      <div className="mx-auto max-w-6xl px-4">
+        <SectionHeading
+          title="Made for the feed"
+          sub="Real, unedited ads Gooidy made from real product links, shown on the screen they were made for."
+        />
+      </div>
+      <div className="mx-auto mt-14 flex max-w-6xl snap-x snap-mandatory gap-6 overflow-x-auto px-4 pb-10 md:justify-center md:gap-8 md:overflow-visible">
         {ads.map((ad, i) => (
-          <div
+          <PhoneFeed
             key={i}
-            className="aspect-[9/16] overflow-hidden rounded-2xl border border-line"
-          >
-            <Reel ad={ad} />
-          </div>
+            ads={[ad]}
+            className={`w-[210px] shrink-0 snap-center lg:w-[230px] ${i % 2 ? "md:translate-y-10" : ""}`}
+          />
         ))}
       </div>
-      <p className="mt-8 text-center">
+      <p className="mt-6 text-center">
         <Link
           href="/use-cases"
           className="text-sm font-medium text-accent hover:underline"
@@ -332,6 +379,62 @@ function Examples({ ads }: { ads: FeedAd[] }) {
           See every ad, angle and size →
         </Link>
       </p>
+    </section>
+  );
+}
+
+const VIDEO_POINTS = [
+  {
+    title: `${VIDEO_SECONDS} seconds, two shots`,
+    body: "The same person and setting across both shots, with your product shown in its real color.",
+  },
+  {
+    title: "A voice that speaks your buyer's language",
+    body: `Voiceover in ${Object.values(LANGUAGES)
+      .map((l) => l.label)
+      .join(", ")
+      .replace(/, ([^,]*)$/, " or $1")}, with captions people can read on mute.`,
+  },
+  {
+    title: "Music and an end card",
+    body: "Quiet music underneath, then your headline and button on the last frames.",
+  },
+];
+
+function VideoAds({ ads }: { ads: FeedAd[] }) {
+  return (
+    <section className="reveal mx-auto max-w-6xl px-4 py-20">
+      <div className="grid items-center gap-14 lg:grid-cols-[0.9fr_1.1fr]">
+        <div className="relative flex justify-center">
+          <div className="phone-halo" aria-hidden />
+          <PhoneFeed ads={ads} className="w-[260px] sm:w-[300px]" />
+        </div>
+        <div className="text-center lg:text-left">
+          <p className="text-sm font-medium text-accent">Video ads</p>
+          <h2 className="mt-2 text-3xl font-medium tracking-tight sm:text-4xl">
+            Short videos that stop the scroll
+          </h2>
+          <p className="mx-auto mt-3 max-w-lg text-lg text-muted lg:mx-0">
+            The same link makes vertical video ads for Reels and TikTok. Tap
+            the speaker on the phone to hear one.
+          </p>
+          <ul className="mx-auto mt-8 max-w-lg space-y-5 text-left lg:mx-0">
+            {VIDEO_POINTS.map((p) => (
+              <li key={p.title} className="flex gap-4">
+                <span className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent/10 text-xs text-accent">
+                  ✓
+                </span>
+                <span>
+                  <span className="block font-medium">{p.title}</span>
+                  <span className="mt-1 block text-sm leading-relaxed text-muted">
+                    {p.body}
+                  </span>
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
     </section>
   );
 }
