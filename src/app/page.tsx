@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { REELS, Reel } from "./_landing/reel";
 import { ThemeToggle } from "./_landing/theme-toggle";
+import { AngleExplorer } from "./_landing/angle-explorer";
+import { Reveal } from "./_landing/reveal";
 
 export const metadata = {
   title: "Gooidy · Ads from a single link",
@@ -107,14 +109,18 @@ export default function Home() {
       <Nav />
       <main className="flex-1">
         <Hero />
+        <WorksWith />
         <HowItWorks />
+        <Angles />
         <Examples />
         <Features />
+        <Compare />
         <Pricing />
         <Faq />
         <FinalCta />
       </main>
       <Footer />
+      <Reveal />
     </div>
   );
 }
@@ -140,6 +146,9 @@ function Nav() {
           <a href="#how" className="hover:text-fg">
             How it works
           </a>
+          <a href="#angles" className="hover:text-fg">
+            Ad angles
+          </a>
           <a href="#pricing" className="hover:text-fg">
             Pricing
           </a>
@@ -151,13 +160,13 @@ function Nav() {
           <ThemeToggle />
           <Link
             href="/login"
-            className="rounded-full px-4 py-2 text-sm font-medium text-accent hover:bg-surface"
+            className="rounded-lg px-3 py-2 text-sm font-medium text-fg hover:bg-surface"
           >
             Sign in
           </Link>
           <Link
             href="/dashboard"
-            className="hidden rounded-full bg-accent px-5 py-2 text-sm font-medium text-white hover:shadow-md sm:block dark-accent-text"
+            className="dark-accent-text hidden rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:brightness-110 sm:block"
           >
             Get started
           </Link>
@@ -185,11 +194,11 @@ function UrlForm({ id }: { id: string }) {
         type="text"
         inputMode="url"
         placeholder="Paste your product or store link"
-        className="min-w-0 flex-1 rounded-full border border-line bg-bg px-5 py-3 text-fg outline-none transition-shadow placeholder:text-muted hover:shadow-md focus:border-accent focus:shadow-md"
+        className="min-w-0 flex-1 rounded-xl border border-line bg-bg px-4 py-3 text-fg shadow-sm outline-none transition placeholder:text-muted focus:border-accent focus:ring-4 focus:ring-accent/15"
       />
       <button
         type="submit"
-        className="dark-accent-text rounded-full bg-accent px-6 py-3 font-medium text-white transition-shadow hover:shadow-md"
+        className="dark-accent-text rounded-xl bg-accent px-6 py-3 font-medium text-white shadow-sm transition hover:brightness-110"
       >
         Create ads
       </button>
@@ -199,27 +208,31 @@ function UrlForm({ id }: { id: string }) {
 
 function Hero() {
   return (
-    <section className="mx-auto grid max-w-6xl items-center gap-12 px-4 pb-20 pt-14 sm:pt-20 lg:grid-cols-[1.2fr_0.8fr]">
-      <div className="text-center lg:text-left">
-        <p className="text-sm font-medium text-accent">
-          AI ads for small businesses
-        </p>
-        <h1 className="mt-4 text-4xl font-medium leading-tight tracking-tight sm:text-6xl">
-          Ads that sell, from a single link.
-        </h1>
-        <p className="mx-auto mt-5 max-w-lg text-lg leading-relaxed text-muted lg:mx-0">
-          Paste your product page. Gooidy writes the copy, designs the ads and
-          sizes them for TikTok, Instagram and Facebook in about two minutes.
-        </p>
-        <div className="mt-8 flex justify-center lg:justify-start">
-          <UrlForm id="url-top" />
+    <section className="hero-bg">
+      <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 pb-20 pt-14 sm:pt-20 lg:grid-cols-[1.2fr_0.8fr]">
+        <div className="text-center lg:text-left">
+          <p className="inline-flex items-center gap-2 rounded-full border border-line bg-bg px-3 py-1 text-sm text-muted shadow-sm">
+            <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+            AI ads for small businesses
+          </p>
+          <h1 className="mt-5 text-4xl font-semibold leading-[1.1] tracking-tight sm:text-6xl">
+            Ads that sell, from a single{" "}
+            <span className="text-accent">link</span>.
+          </h1>
+          <p className="mx-auto mt-5 max-w-lg text-lg leading-relaxed text-muted lg:mx-0">
+            Paste your product page. Gooidy writes the copy, designs the ads and
+            sizes them for TikTok, Instagram and Facebook in about two minutes.
+          </p>
+          <div className="mt-8 flex justify-center lg:justify-start">
+            <UrlForm id="url-top" />
+          </div>
+          <p className="mt-3 text-sm text-muted">
+            Free to start. No credit card needed.
+          </p>
         </div>
-        <p className="mt-3 text-sm text-muted">
-          Free to start. No credit card needed.
-        </p>
-      </div>
-      <div className="flex justify-center lg:justify-end">
-        <Phone />
+        <div className="flex justify-center lg:justify-end">
+          <Phone />
+        </div>
       </div>
     </section>
   );
@@ -229,7 +242,7 @@ function Hero() {
 function Phone() {
   const feed = [...REELS, REELS[0]];
   return (
-    <div className="h-[540px] w-[270px] rounded-[2.5rem] border border-line bg-[#202124] p-2 shadow-xl sm:h-[600px] sm:w-[300px]">
+    <div className="h-[540px] w-[270px] rounded-[2.5rem] border border-line bg-[#16171d] p-2 shadow-2xl shadow-accent/10 sm:h-[600px] sm:w-[300px]">
       <div className="relative h-full w-full overflow-hidden rounded-[2rem]">
         <div className="feed-scroll h-[500%]">
           {feed.map((reel, i) => (
@@ -254,13 +267,83 @@ function SectionHeading({ title, sub }: { title: string; sub?: string }) {
   );
 }
 
-function HowItWorks() {
+function WorksWith() {
+  return (
+    <section className="border-y border-line">
+      <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-4 py-8 sm:flex-row sm:justify-between">
+        <p className="text-sm text-muted">Works with any online store</p>
+        <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-base font-semibold text-muted/80">
+          <span>Shopify</span>
+          <span>WooCommerce</span>
+          <span>Wix</span>
+          <span>Squarespace</span>
+          <span>BigCommerce</span>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Angles() {
   return (
     <section
-      id="how"
-      className="scroll-mt-16 border-t border-line bg-surface py-20"
+      id="angles"
+      className="reveal mx-auto max-w-6xl scroll-mt-16 px-4 py-20"
     >
-      <div className="mx-auto max-w-6xl px-4">
+      <SectionHeading
+        title="One product, many ways to sell it"
+        sub="Every run gives you different ad angles. Tap one to see how the same cardigan is pitched."
+      />
+      <div className="mt-12">
+        <AngleExplorer photo="/reels/softmila-still.jpg" />
+      </div>
+    </section>
+  );
+}
+
+const COMPARE = [
+  ["Time to first ads", "1–2 weeks", "Hours", "About 2 minutes"],
+  ["Cost for 10 ads", "$500+", "Your evening", "Included in your plan"],
+  ["New angles to test", "Extra fee", "Hard", "Every run"],
+  ["Sizes for every feed", "Extra fee", "Manual resizing", "Automatic"],
+];
+
+function Compare() {
+  return (
+    <section className="reveal mx-auto max-w-4xl px-4 pb-20">
+      <SectionHeading title="How Gooidy compares" />
+      <div className="mt-10 overflow-x-auto rounded-2xl border border-line">
+        <table className="w-full min-w-[560px] text-left text-sm">
+          <thead>
+            <tr className="border-b border-line bg-surface">
+              <th className="px-5 py-4 font-medium text-muted"></th>
+              <th className="px-5 py-4 font-medium text-muted">Agency</th>
+              <th className="px-5 py-4 font-medium text-muted">
+                Do it yourself
+              </th>
+              <th className="px-5 py-4 font-semibold text-accent">Gooidy</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-line">
+            {COMPARE.map(([label, agency, diy, us]) => (
+              <tr key={label}>
+                <td className="px-5 py-4 font-medium">{label}</td>
+                <td className="px-5 py-4 text-muted">{agency}</td>
+                <td className="px-5 py-4 text-muted">{diy}</td>
+                <td className="px-5 py-4 font-medium">{us}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  );
+}
+
+function HowItWorks() {
+  return (
+    <section id="how" className="scroll-mt-16 bg-surface py-20">
+      <div className="reveal mx-auto max-w-6xl px-4">
         <SectionHeading
           title="How it works"
           sub="From link to ready-to-run ads in three steps."
@@ -286,7 +369,7 @@ function HowItWorks() {
 
 function Examples() {
   return (
-    <section className="mx-auto max-w-6xl px-4 py-20">
+    <section className="reveal mx-auto max-w-6xl px-4 py-20">
       <SectionHeading
         title="Made for the feed"
         sub="Sample ads in the vertical format people watch most."
@@ -307,7 +390,7 @@ function Examples() {
 
 function Features() {
   return (
-    <section className="mx-auto max-w-6xl px-4 pb-20">
+    <section className="reveal mx-auto max-w-6xl px-4 pb-20">
       <div className="grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
         {FEATURES.map((f) => (
           <div key={f.title}>
@@ -336,11 +419,8 @@ function Features() {
 
 function Pricing() {
   return (
-    <section
-      id="pricing"
-      className="scroll-mt-16 border-t border-line bg-surface py-20"
-    >
-      <div className="mx-auto max-w-6xl px-4">
+    <section id="pricing" className="scroll-mt-16 bg-surface py-20">
+      <div className="reveal mx-auto max-w-6xl px-4">
         <SectionHeading
           title="Simple pricing"
           sub="Start free. Upgrade when you need more ads."
@@ -378,10 +458,10 @@ function Pricing() {
               </ul>
               <Link
                 href="/dashboard"
-                className={`mt-8 rounded-full px-5 py-2.5 text-center text-sm font-medium transition-shadow hover:shadow-md ${
+                className={`mt-8 rounded-xl px-5 py-2.5 text-center text-sm font-medium transition hover:brightness-110 ${
                   plan.featured
                     ? "dark-accent-text bg-accent text-white"
-                    : "border border-line text-accent"
+                    : "border border-line text-fg hover:bg-surface"
                 }`}
               >
                 Get started
@@ -396,7 +476,10 @@ function Pricing() {
 
 function Faq() {
   return (
-    <section id="faq" className="mx-auto max-w-3xl scroll-mt-16 px-4 py-20">
+    <section
+      id="faq"
+      className="reveal mx-auto max-w-3xl scroll-mt-16 px-4 py-20"
+    >
       <SectionHeading title="Frequently asked questions" />
       <div className="mt-10 divide-y divide-line border-y border-line">
         {FAQ.map((item) => (
