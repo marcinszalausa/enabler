@@ -6,7 +6,7 @@ import type { CSSProperties, ReactNode } from "react";
 // a 71.9 × 150 mm body, thin even bezels, a 19.5:9 screen with Apple's corner
 // radius, the Dynamic Island, and the side buttons including Camera Control.
 // With `depth`, the body gets a phone's thickness for 3D scenes.
-const SLABS = 14;
+const SLABS = 12;
 export function IPhone({
   children,
   depth = false,

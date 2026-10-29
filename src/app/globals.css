@@ -243,8 +243,7 @@ html {
     0 10cqw 16cqw -6cqw rgb(0 0 0 / 0.45);
 }
 /* A phone with a body: stacked slices of titanium behind the front frame,
-   about 9% of its width deep, close to a real iPhone's 11%. Only shows when
-   the phone is turned in 3D. */
+   about 6% of its width deep. Only shows when the phone is turned in 3D. */
 .iphone-3d {
   position: relative;
   transform-style: preserve-3d;
@@ -253,7 +252,7 @@ html {
   position: absolute;
   inset: 0;
   border-radius: 16.6cqw;
-  transform: translateZ(calc(var(--i) * -0.65cqw));
+  transform: translateZ(calc(var(--i) * -0.5cqw));
   background: linear-gradient(
     90deg,
     #7d7e85,
@@ -512,10 +511,10 @@ html {
 }
 @keyframes stage-sway {
   from {
-    transform: rotateX(3deg) rotateY(-14deg);
+    transform: rotateX(3deg) rotateY(-10deg);
   }
   to {
-    transform: rotateX(3deg) rotateY(14deg);
+    transform: rotateX(3deg) rotateY(10deg);
   }
 }
 .landing .stage-side {
