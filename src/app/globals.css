@@ -54,6 +54,13 @@ html {
 :root[data-theme="light"] {
   background: #fbfaff;
 }
+.landing .theme-icon-moon,
+:root[data-theme="light"] .landing .theme-icon-sun {
+  display: none;
+}
+:root[data-theme="light"] .landing .theme-icon-moon {
+  display: block;
+}
 
 .landing .text-gradient {
   background-image: var(--l-gradient);

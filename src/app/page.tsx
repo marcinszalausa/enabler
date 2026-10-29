@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { REELS, Reel, type SampleReel } from "./_landing/reel";
 import { Ticker } from "./_landing/ticker";
+import { ThemeToggle } from "./_landing/theme-toggle";
 
 export const metadata = {
   title: "Gooidy · Ads people don't scroll past",
@@ -87,9 +88,10 @@ const FAQ = [
   },
 ];
 
-// Light from 7:00 to 19:00 on the visitor's own clock, dark otherwise.
-// Inline so it runs before the page paints; ?theme=light|dark forces one.
-const THEME_BY_TIME = `(function(){try{var f=new URLSearchParams(location.search).get("theme");var h=new Date().getHours();document.documentElement.dataset.theme=f==="light"||f==="dark"?f:h>=7&&h<19?"light":"dark"}catch(e){}})()`;
+// Light from 7:00 to 19:00 on the visitor's own clock, dark otherwise, unless
+// they picked one with the toggle (saved on their device). ?theme=light|dark
+// forces one. Inline so it runs before the page paints.
+const THEME_BY_TIME = `(function(){var d=document.documentElement,t;try{t=new URLSearchParams(location.search).get("theme");if(t!=="light"&&t!=="dark")t=localStorage.getItem("gooidy-theme")}catch(e){}if(t!=="light"&&t!=="dark"){var h=new Date().getHours();t=h>=7&&h<19?"light":"dark"}d.dataset.theme=t})()`;
 
 export default function Home() {
   return (
@@ -129,6 +131,7 @@ function Nav() {
           <a href="#faq" className="hover:text-fg">FAQ</a>
         </div>
         <div className="flex items-center gap-3">
+          <ThemeToggle />
           <Link href="/login" className="text-sm font-medium text-fg/70 hover:text-fg">
             Log in
           </Link>
