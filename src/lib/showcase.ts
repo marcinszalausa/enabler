@@ -76,7 +76,7 @@ export async function getShowcase(): Promise<ShowcaseRun[]> {
   const newestPerProduct = new Map<string, Row>();
   for (const g of data ?? []) {
     if (g.products && g.creatives.length > 0)
-      newestPerProduct.set(g.products.url, g);
+      newestPerProduct.set(productKey(g.products.url), g);
   }
 
   return [...newestPerProduct.values()].map((g) => {
@@ -102,4 +102,15 @@ export async function getShowcase(): Promise<ShowcaseRun[]> {
       })),
     };
   });
+}
+
+// Same product even if the link differs by www, query string or case.
+function productKey(url: string) {
+  try {
+    const u = new URL(url);
+    const path = u.pathname.replace(/\/+$/, "").toLowerCase();
+    return `${u.hostname.replace(/^www\./, "").toLowerCase()}${path}`;
+  } catch {
+    return url;
+  }
 }
