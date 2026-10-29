@@ -162,8 +162,10 @@ async function callFal<T>(request: () => Promise<T>, attempt = 1): Promise<T> {
         JSON.stringify(err.body),
       );
       if (err.status === 401 || err.status === 403) {
+        // fal says why (e.g. a locked account or a model needing access).
+        const detail = (err.body as { detail?: unknown } | undefined)?.detail;
         throw new UserError(
-          "The image service rejected our API key or has no balance. Check FAL_KEY and fal billing.",
+          `The AI media service (fal) refused the request${typeof detail === "string" ? `: ${detail}` : ""}. Check FAL_KEY and fal billing.`,
         );
       }
       if (err.status === 422) {
