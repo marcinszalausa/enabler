@@ -2,12 +2,12 @@ import type { Messages } from ".";
 
 export const fr: Messages = {
   meta: {
-    title: "Gooidy · Des pubs à partir d'un seul lien",
+    title: "Gooidy · Développez votre activité à partir d'un seul lien",
     description:
-      "Collez le lien d'un produit et Gooidy crée des publicités prêtes à diffuser sur TikTok, Instagram et Facebook en deux minutes environ. Commencez gratuitement.",
+      "Développez votre petite entreprise avec Gooidy. Collez le lien d'un produit et obtenez des pubs image et vidéo qui attirent de nouveaux clients, prêtes pour TikTok, Instagram et Facebook en quelques minutes. Commencez gratuitement.",
     useCasesTitle: "Exemples réels · Gooidy",
     useCasesDescription:
-      "De vraies publicités, sans retouche, créées par Gooidy à partir de vrais liens produits. Découvrez chaque angle et chaque format, puis essayez gratuitement avec votre boutique.",
+      "De vraies pubs, non retouchées, créées par Gooidy à partir de vrais liens produits. Voyez comment un lien devient une campagne, puis essayez gratuitement sur votre boutique.",
     signInTitle: "Connexion · Gooidy",
     dashboardTitle: "Tableau de bord · Gooidy",
     brandTitle: "Kit de marque · Gooidy",
@@ -30,18 +30,18 @@ export const fr: Messages = {
   urlForm: {
     label: "Le lien de votre produit ou boutique",
     placeholder: "Collez le lien de votre produit ou boutique",
-    submit: "Créer des pubs",
+    submit: "Commencer à grandir",
   },
   footer: {
     tagline:
-      "Des publicités image et vidéo à partir d'un seul lien produit, pensées pour les petites entreprises.",
+      "Nous aidons les petites entreprises à grandir grâce à des pubs image et vidéo créées à partir d'un seul lien.",
     product: "Produit",
     account: "Compte",
     legal: "Mentions légales",
     privacy: "Confidentialité",
     terms: "Conditions",
   },
-  stickyCta: "Créer des pubs gratuitement",
+  stickyCta: "Commencer gratuitement",
   angles: {
     pain: {
       name: "Problème",
@@ -65,43 +65,43 @@ export const fr: Messages = {
     },
   },
   home: {
-    badge: "Publicités image et vidéo pour les petites entreprises",
-    titleLine1: "Des pubs qui vendent,",
+    badge: "La croissance des petites entreprises, grâce à l'IA",
+    titleLine1: "Développez vos ventes,",
     titleBefore: "à partir d'un seul ",
     titleWord: "lien",
     titleAfter: ".",
     intro:
-      "Collez la page de votre produit. Gooidy rédige les textes, conçoit les visuels, tourne de courtes vidéos avec voix off et adapte tout pour TikTok, Instagram et Facebook.",
+      "Collez la page de votre produit. Gooidy comprend qui achète chez vous et pourquoi, puis crée les pubs image et vidéo qui amènent de nouveaux clients dans votre boutique.",
     facts: [
       "Gratuit pour commencer, sans carte",
-      "5 angles par génération",
-      "9:16 et 1:1",
+      "Pubs image et vidéo",
+      "5 façons de vendre par création",
       "Des pubs en {count} langues",
     ],
     worksWith: "Fonctionne avec toutes les boutiques en ligne",
-    anglesTitle: "Un produit, mille façons de le vendre",
+    anglesTitle: "Un produit, plein de raisons de l'acheter",
     anglesSub:
-      "Chaque génération essaie des angles différents. Voici les vraies pubs pour le fil que Gooidy a créées à partir d'un lien {store}.",
-    whereTitle: "Voyez-la là où elle sera diffusée",
+      "On achète pour des raisons différentes, alors chaque création en teste plusieurs. Voici les vraies pubs que Gooidy a créées à partir d'un lien {store}.",
+    whereTitle: "Soyez là où vos clients font défiler",
     whereSub:
       "La même génération, au bon format pour chaque appli que vos clients font défiler.",
-    liveTitle: "Un lien en entrée. Une campagne en sortie.",
+    liveTitle: "Collez un lien. Recevez une campagne qui vend.",
     liveSub:
       "Voici une vraie génération Gooidy, rejouée étape par étape : le lien, ce que Gooidy a compris de la page, les angles rédigés et les pubs créées.",
     howTitle: "Comment ça marche",
-    howSub: "Du lien aux pubs prêtes à diffuser en trois étapes.",
+    howSub: "Du lien de votre produit à des pubs qui touchent de nouveaux acheteurs, en trois étapes.",
     steps: [
       {
         title: "Collez un lien",
         body: "Ajoutez une page produit ou votre boutique. Gooidy comprend ce que vous vendez, à qui et pourquoi les gens achètent.",
       },
       {
-        title: "Recevez vos pubs",
-        body: "Cinq idées de pubs avec titres, textes et visuels, en format vertical et carré, avec votre logo et vos couleurs.",
+        title: "Recevez des pubs qui vendent",
+        body: "Cinq raisons d'acheter, chacune avec titres, textes et images aux formats vertical et carré, avec votre logo et vos couleurs.",
       },
       {
-        title: "Publiez",
-        body: "Téléchargez celles qui vous plaisent et diffusez-les sur TikTok, Instagram et Facebook. La publication directe arrive bientôt.",
+        title: "Touchez plus d'acheteurs",
+        body: "Diffusez-les sur TikTok, Instagram et Facebook pour gagner de nouveaux clients. La publication, la programmation et le boost depuis Gooidy arrivent bientôt.",
       },
     ],
     examplesTitle: "Faites pour le fil",
@@ -127,9 +127,9 @@ export const fr: Messages = {
       },
     ],
     videoFormat: "Vidéo de {seconds} s avec voix off",
-    featuresTitle: "Tout ce qu'il faut à une bonne pub",
+    featuresTitle: "Tout ce qu'il faut pour grandir",
     featuresSub:
-      "Gooidy s'occupe de ce qui demande d'habitude un graphiste, un rédacteur et un après-midi.",
+      "Gooidy fait le travail qui demande d'habitude un graphiste, un rédacteur et un après-midi, pour que vous puissiez vous consacrer à votre activité.",
     briefTitle: "Un brief de marque tiré de votre site",
     briefBody:
       "Gooidy lit votre page et comprend à qui elle s'adresse et pourquoi on achète.",
@@ -137,12 +137,12 @@ export const fr: Messages = {
     kitTitle: "Votre kit de marque",
     kitBody:
       "Définissez votre logo, la couleur du bouton et la police une fois. Chaque pub les respecte.",
-    languagesTitle: "Des pubs dans la langue de vos clients",
+    languagesTitle: "Vendez dans la langue de vos acheteurs",
     languagesBody:
-      "Chaque pub est rédigée dans la langue choisie, comme l'écrirait quelqu'un du pays, et les pubs vidéo la parlent avec des sous-titres assortis.",
-    pricingTitle: "Des tarifs simples",
+      "Chaque pub est écrite dans la langue choisie, comme l'écrirait quelqu'un du pays, pour vendre au-delà de votre marché. Les pubs vidéo la parlent aussi, avec des sous-titres assortis.",
+    pricingTitle: "Des tarifs simples qui grandissent avec vous",
     pricingSub:
-      "Commencez gratuitement. Passez à la suite quand il vous faut plus de pubs.",
+      "Commencez gratuitement. Passez à l'offre supérieure à mesure que votre activité grandit.",
     popular: "Populaire",
     perMonth: " / mois",
     plans: [
@@ -181,6 +181,10 @@ export const fr: Messages = {
         a: "D'un lien vers votre produit ou votre boutique. Gooidy fonctionne avec Shopify, WooCommerce, Wix, Squarespace et la plupart des boutiques en ligne.",
       },
       {
+        q: "Comment Gooidy aide-t-il mon activité à grandir ?",
+        a: "La pub est le moyen par lequel la plupart des petites boutiques gagnent de nouveaux clients en ligne, mais de bonnes pubs coûtent du temps et de l'argent. Gooidy transforme un seul lien en pubs fraîches et fidèles à votre marque, teste différentes raisons d'acheter pour que vous voyiez ce qui marche pour votre boutique, et parle aux acheteurs dans {count} langues. Prochaine étape : publier et booster en un clic.",
+      },
+      {
         q: "Qu'est-ce qu'un crédit ?",
         a: "Un crédit crée une image publicitaire. Chaque génération crée cinq pubs en deux formats, soit 10 crédits.",
       },
@@ -194,18 +198,18 @@ export const fr: Messages = {
       },
       {
         q: "Où puis-je utiliser les pubs ?",
-        a: "Partout où vous faites de la publicité : TikTok, Instagram, Facebook, YouTube Shorts et plus encore.",
+        a: "Partout où vous faites de la pub : TikTok, Instagram, Facebook, YouTube Shorts et plus. La publication, la programmation et le boost directement depuis Gooidy arrivent bientôt.",
       },
       {
         q: "Puis-je résilier à tout moment ?",
         a: "Oui. Les abonnements sont mensuels et vous gardez l'accès jusqu'à la fin de la période payée.",
       },
     ],
-    finalTitle: "Vos prochaines pubs sont à un lien d'ici",
+    finalTitle: "Vos prochains clients sont à un lien d'ici",
     finalSub: "100 crédits offerts. Sans carte bancaire.",
   },
   beforeAfter: {
-    title: "D'une photo produit à des pubs qui vendent",
+    title: "D'une photo produit à des pubs qui attirent des acheteurs",
     sub: "À gauche, la photo sur {store}. À droite, les pubs que Gooidy en a tirées, sans retouche.",
     before: "Avant : la page produit",
     after: "Après : {count} des pubs de cette génération",
@@ -253,7 +257,7 @@ export const fr: Messages = {
     statLinks: "Liens produits",
     statAds: "Pubs créées",
     statPer: "Par lien",
-    tryTitle: "À vous d'essayer avec votre boutique",
+    tryTitle: "À vous de faire grandir votre boutique",
     tryBody:
       "Collez le lien d'un produit. Vous obtenez 5 angles aux formats fil et story, avec le texte de la pub rédigé. Vos premières générations sont gratuites.",
     worksWith:
@@ -319,12 +323,12 @@ export const fr: Messages = {
     credits: "{count} crédits",
     plan: "· offre {plan}",
     creditsLeft: "{count} crédits restants",
-    addTitle: "Créer des pubs à partir d'un lien produit",
+    addTitle: "Ajoutez un produit à promouvoir",
     addBody:
       "Collez une page produit. Gooidy la lit, rédige un brief de marque et la prépare pour vos pubs.",
     noProducts: "Aucun produit pour l'instant",
     noProductsBody:
-      "Collez un lien produit ci-dessus. Dans deux minutes environ, vous aurez vos cinq premières pubs.",
+      "Collez le lien d'un produit ci-dessus. En deux minutes environ, vous aurez vos cinq premières pubs, prêtes à attirer de nouveaux clients.",
     urlLabel: "Lien du produit ou du site",
     reading: "Lecture de la page…",
     addProduct: "Ajouter le produit",

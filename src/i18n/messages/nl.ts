@@ -2,12 +2,12 @@ import type { Messages } from ".";
 
 export const nl: Messages = {
   meta: {
-    title: "Gooidy · Advertenties uit één link",
+    title: "Gooidy · Laat je bedrijf groeien vanuit één link",
     description:
-      "Plak een productlink en Gooidy maakt in ongeveer twee minuten kant-en-klare advertenties voor TikTok, Instagram en Facebook. Begin gratis.",
+      "Laat je kleine bedrijf groeien met Gooidy. Plak een productlink en krijg beeld- en videoadvertenties die nieuwe klanten opleveren, binnen enkele minuten klaar voor TikTok, Instagram en Facebook. Begin gratis.",
     useCasesTitle: "Echte voorbeelden · Gooidy",
     useCasesDescription:
-      "Echte, onbewerkte advertenties die Gooidy maakte uit echte productlinks. Bekijk elke invalshoek en elk formaat en probeer het daarna gratis met je eigen winkel.",
+      "Echte, onbewerkte advertenties die Gooidy maakte van echte productlinks. Zie hoe één link een campagne wordt en probeer het gratis met je eigen winkel.",
     signInTitle: "Inloggen · Gooidy",
     dashboardTitle: "Dashboard · Gooidy",
     brandTitle: "Merkkit · Gooidy",
@@ -30,18 +30,18 @@ export const nl: Messages = {
   urlForm: {
     label: "De link naar je product of winkel",
     placeholder: "Plak de link naar je product of winkel",
-    submit: "Maak advertenties",
+    submit: "Begin met groeien",
   },
   footer: {
     tagline:
-      "Beeld- en videoadvertenties uit één productlink, gemaakt voor kleine bedrijven.",
+      "We helpen kleine bedrijven groeien met beeld- en videoadvertenties uit één link.",
     product: "Product",
     account: "Account",
     legal: "Juridisch",
     privacy: "Privacy",
     terms: "Voorwaarden",
   },
-  stickyCta: "Gratis advertenties maken",
+  stickyCta: "Begin gratis met groeien",
   angles: {
     pain: {
       name: "Probleem",
@@ -65,43 +65,43 @@ export const nl: Messages = {
     },
   },
   home: {
-    badge: "Beeld- en videoadvertenties voor kleine bedrijven",
-    titleLine1: "Advertenties die verkopen,",
+    badge: "Groei voor kleine bedrijven, met AI",
+    titleLine1: "Laat je bedrijf groeien,",
     titleBefore: "uit één ",
     titleWord: "link",
     titleAfter: ".",
     intro:
-      "Plak je productpagina. Gooidy schrijft de teksten, ontwerpt de advertenties, maakt korte video's met voice-over en zet alles in het juiste formaat voor TikTok, Instagram en Facebook.",
+      "Plak je productpagina. Gooidy ontdekt wie bij je koopt en waarom, en maakt de beeld- en videoadvertenties die nieuwe klanten naar je winkel brengen.",
     facts: [
       "Gratis beginnen, zonder creditcard",
-      "5 invalshoeken per ronde",
-      "9:16 en 1:1",
+      "Beeld- en videoadvertenties",
+      "5 manieren om te verkopen per ronde",
       "Advertenties in {count} talen",
     ],
     worksWith: "Werkt met elke webwinkel",
-    anglesTitle: "Eén product, veel manieren om het te verkopen",
+    anglesTitle: "Eén product, veel redenen om te kopen",
     anglesSub:
-      "Elke ronde probeert andere invalshoeken. Dit zijn de echte feedadvertenties die Gooidy maakte uit één link van {store}.",
-    whereTitle: "Zie het waar het draait",
+      "Mensen kopen om verschillende redenen, dus elke ronde probeert er meerdere. Dit zijn de echte advertenties die Gooidy maakte van één {store}-link.",
+    whereTitle: "Wees zichtbaar waar je klanten scrollen",
     whereSub:
       "Dezelfde ronde, op maat voor elke app waarin je klanten scrollen.",
-    liveTitle: "Eén link erin. Een campagne eruit.",
+    liveTitle: "Plak één link. Krijg een campagne die verkoopt.",
     liveSub:
       "Dit is een echte Gooidy-ronde, stap voor stap afgespeeld: de link, wat Gooidy op de pagina las, de invalshoeken die het schreef en de advertenties die het maakte.",
     howTitle: "Zo werkt het",
-    howSub: "Van link naar kant-en-klare advertenties in drie stappen.",
+    howSub: "Van je productlink naar advertenties die nieuwe kopers bereiken, in drie stappen.",
     steps: [
       {
         title: "Plak een link",
         body: "Voeg een productpagina of je winkel toe. Gooidy begrijpt wat je verkoopt, voor wie en waarom mensen het kopen.",
       },
       {
-        title: "Ontvang je advertenties",
-        body: "Vijf advertentie-ideeën met koppen, teksten en beelden, staand en vierkant, met jouw logo en kleuren.",
+        title: "Krijg advertenties die verkopen",
+        body: "Vijf redenen waarom mensen kopen, elk met koppen, tekst en beelden in staand en vierkant formaat, met je logo en kleuren.",
       },
       {
-        title: "Publiceer",
-        body: "Download de advertenties die je mooi vindt en zet ze op TikTok, Instagram en Facebook. Direct publiceren komt binnenkort.",
+        title: "Bereik meer kopers",
+        body: "Zet ze op TikTok, Instagram en Facebook en win nieuwe klanten. Publiceren, inplannen en promoten vanuit Gooidy komen binnenkort.",
       },
     ],
     examplesTitle: "Gemaakt voor de feed",
@@ -127,9 +127,9 @@ export const nl: Messages = {
       },
     ],
     videoFormat: "Video van {seconds} s met voice-over",
-    featuresTitle: "Alles wat een goede advertentie nodig heeft",
+    featuresTitle: "Alles wat je nodig hebt om te groeien",
     featuresSub:
-      "Gooidy doet wat normaal een ontwerper, een copywriter en een middag kost.",
+      "Gooidy doet het werk waar je anders een ontwerper, een copywriter en een middag voor nodig hebt, zodat jij je tijd aan je bedrijf kunt besteden.",
     briefTitle: "Merkbriefing uit je website",
     briefBody:
       "Gooidy leest je pagina en bepaalt voor wie het is en waarom mensen kopen.",
@@ -137,11 +137,11 @@ export const nl: Messages = {
     kitTitle: "Je merkkit",
     kitBody:
       "Stel je logo, knopkleur en lettertype één keer in. Elke advertentie volgt ze.",
-    languagesTitle: "Advertenties in de taal van je klant",
+    languagesTitle: "Verkoop in de taal van je koper",
     languagesBody:
-      "Elke advertentie wordt geschreven in de taal die je kiest, zoals iemand van daar het zou schrijven, en videoadvertenties spreken die taal met bijpassende ondertitels.",
-    pricingTitle: "Eenvoudige prijzen",
-    pricingSub: "Begin gratis. Upgrade als je meer advertenties nodig hebt.",
+      "Elke advertentie wordt geschreven in de taal die je kiest, zoals een local het zou schrijven, zodat je buiten je eigen markt kunt verkopen. Videoadvertenties spreken die taal ook, met bijpassende ondertitels.",
+    pricingTitle: "Eenvoudige prijzen die met je meegroeien",
+    pricingSub: "Begin gratis. Upgrade wanneer je bedrijf groeit.",
     popular: "Populair",
     perMonth: " / maand",
     plans: [
@@ -180,6 +180,10 @@ export const nl: Messages = {
         a: "Een link naar je product of winkel. Gooidy werkt met Shopify, WooCommerce, Wix, Squarespace en de meeste webwinkels.",
       },
       {
+        q: "Hoe helpt Gooidy mijn bedrijf groeien?",
+        a: "Via advertenties winnen de meeste kleine winkels online nieuwe klanten, maar goede advertenties kosten tijd en geld. Gooidy maakt van één link frisse advertenties in je eigen merkstijl, probeert verschillende koopredenen zodat je kunt testen wat werkt voor jouw winkel, en spreekt kopers aan in {count} talen. Hierna: publiceren en promoten met één klik.",
+      },
+      {
         q: "Wat is een credit?",
         a: "Eén credit maakt één advertentiebeeld. Elke ronde maakt vijf advertenties in twee formaten en gebruikt dus 10 credits.",
       },
@@ -193,18 +197,18 @@ export const nl: Messages = {
       },
       {
         q: "Waar kan ik de advertenties gebruiken?",
-        a: "Overal waar je adverteert: TikTok, Instagram, Facebook, YouTube Shorts en meer.",
+        a: "Overal waar je adverteert: TikTok, Instagram, Facebook, YouTube Shorts en meer. Publiceren, inplannen en promoten direct vanuit Gooidy komen binnenkort.",
       },
       {
         q: "Kan ik altijd opzeggen?",
         a: "Ja. Abonnementen lopen per maand en je houdt toegang tot het einde van de betaalde periode.",
       },
     ],
-    finalTitle: "Je volgende advertenties zijn één link verwijderd",
+    finalTitle: "Je volgende klanten zijn één link verwijderd",
     finalSub: "100 gratis credits. Geen creditcard nodig.",
   },
   beforeAfter: {
-    title: "Van één productfoto naar advertenties die verkopen",
+    title: "Van één productfoto naar advertenties die kopers binnenhalen",
     sub: "Links de foto op {store}. Rechts advertenties die Gooidy ervan maakte, onbewerkt.",
     before: "Voor: de productpagina",
     after: "Na: {count} van de advertenties uit die ronde",
@@ -252,7 +256,7 @@ export const nl: Messages = {
     statLinks: "Productlinks",
     statAds: "Gemaakte advertenties",
     statPer: "Per link",
-    tryTitle: "Probeer nu je eigen winkel",
+    tryTitle: "Laat nu je eigen winkel groeien",
     tryBody:
       "Plak een productlink. Je krijgt 5 invalshoeken in feed- en storyformaat, met de advertentietekst al geschreven. Je eerste rondes zijn gratis.",
     worksWith: "Werkt met Shopify, WooCommerce en de meeste productpagina's.",
@@ -315,12 +319,12 @@ export const nl: Messages = {
     credits: "{count} credits",
     plan: "· {plan}-abonnement",
     creditsLeft: "Nog {count} credits",
-    addTitle: "Maak advertenties uit een productlink",
+    addTitle: "Voeg een product toe om te promoten",
     addBody:
       "Plak een productpagina. Gooidy leest hem, schrijft een merkbriefing en maakt alles klaar voor advertenties.",
     noProducts: "Nog geen producten",
     noProductsBody:
-      "Plak hierboven een productlink. Over ongeveer twee minuten heb je je eerste vijf advertenties.",
+      "Plak hierboven een productlink. In ongeveer twee minuten heb je je eerste vijf advertenties, klaar om nieuwe klanten binnen te halen.",
     urlLabel: "Link naar product of website",
     reading: "Pagina lezen…",
     addProduct: "Product toevoegen",

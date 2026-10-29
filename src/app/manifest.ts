@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "Gooidy",
     short_name: "Gooidy",
     description:
-      "Paste a product link and get ready-to-run ads for Facebook, Instagram and TikTok.",
+      "Grow your business from a single link: image and video ads that bring in new customers.",
     start_url: "/",
     display: "standalone",
     background_color: "#0b0d14",

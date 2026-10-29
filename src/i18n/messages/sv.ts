@@ -2,12 +2,12 @@ import type { Messages } from ".";
 
 export const sv: Messages = {
   meta: {
-    title: "Gooidy · Annonser från en enda länk",
+    title: "Gooidy · Få ditt företag att växa från en enda länk",
     description:
-      "Klistra in en produktlänk så skapar Gooidy färdiga annonser för TikTok, Instagram och Facebook på ungefär två minuter. Börja gratis.",
+      "Få ditt lilla företag att växa med Gooidy. Klistra in en produktlänk och få bild- och videoannonser som ger nya kunder, klara för TikTok, Instagram och Facebook på några minuter. Börja gratis.",
     useCasesTitle: "Riktiga exempel · Gooidy",
     useCasesDescription:
-      "Riktiga, oredigerade annonser som Gooidy skapat från riktiga produktlänkar. Se varje vinkel och format och testa sedan gratis med din egen butik.",
+      "Riktiga, oredigerade annonser som Gooidy gjorde från riktiga produktlänkar. Se hur en länk blir en kampanj och prova gratis på din egen butik.",
     signInTitle: "Logga in · Gooidy",
     dashboardTitle: "Översikt · Gooidy",
     brandTitle: "Varumärkeskit · Gooidy",
@@ -30,18 +30,18 @@ export const sv: Messages = {
   urlForm: {
     label: "Länken till din produkt eller butik",
     placeholder: "Klistra in länken till din produkt eller butik",
-    submit: "Skapa annonser",
+    submit: "Börja växa",
   },
   footer: {
     tagline:
-      "Bild- och videoannonser från en enda produktlänk, gjorda för små företag.",
+      "Vi hjälper små företag att växa med bild- och videoannonser gjorda från en enda länk.",
     product: "Produkt",
     account: "Konto",
     legal: "Juridiskt",
     privacy: "Integritet",
     terms: "Villkor",
   },
-  stickyCta: "Skapa annonser gratis",
+  stickyCta: "Börja växa gratis",
   angles: {
     pain: {
       name: "Problem",
@@ -65,43 +65,43 @@ export const sv: Messages = {
     },
   },
   home: {
-    badge: "Bild- och videoannonser för små företag",
-    titleLine1: "Annonser som säljer,",
+    badge: "Tillväxt för små företag, med AI",
+    titleLine1: "Låt företaget växa,",
     titleBefore: "från en enda ",
     titleWord: "länk",
     titleAfter: ".",
     intro:
-      "Klistra in din produktsida. Gooidy skriver texterna, designar annonserna, filmar korta videor med speakerröst och anpassar allt för TikTok, Instagram och Facebook.",
+      "Klistra in din produktsida. Gooidy tar reda på vem som köper av dig och varför, och gör sedan bild- och videoannonserna som tar nya kunder till din butik.",
     facts: [
       "Gratis att börja, inget kort",
-      "5 vinklar per körning",
-      "9:16 och 1:1",
+      "Bild- och videoannonser",
+      "5 sätt att sälja per körning",
       "Annonser på {count} språk",
     ],
     worksWith: "Fungerar med alla webbutiker",
-    anglesTitle: "En produkt, många sätt att sälja den",
+    anglesTitle: "En produkt, många skäl att köpa",
     anglesSub:
-      "Varje körning testar olika vinklar. Det här är de riktiga flödesannonserna som Gooidy skapade från en länk till {store}.",
-    whereTitle: "Se den där den visas",
+      "Folk köper av olika skäl, så varje körning provar flera. Det här är de riktiga annonserna Gooidy gjorde från en länk från {store}.",
+    whereTitle: "Synas där dina kunder scrollar",
     whereSub:
       "Samma körning, i rätt storlek för varje app dina kunder scrollar i.",
-    liveTitle: "En länk in. En kampanj ut.",
+    liveTitle: "Klistra in en länk. Få en kampanj som säljer.",
     liveSub:
       "Det här är en riktig Gooidy-körning, uppspelad steg för steg: länken, vad Gooidy läste på sidan, vinklarna det skrev och annonserna det skapade.",
     howTitle: "Så funkar det",
-    howSub: "Från länk till färdiga annonser i tre steg.",
+    howSub: "Från din produktlänk till annonser som når nya köpare, i tre steg.",
     steps: [
       {
         title: "Klistra in en länk",
         body: "Lägg till en produktsida eller din butik. Gooidy förstår vad du säljer, till vem och varför folk köper.",
       },
       {
-        title: "Få dina annonser",
-        body: "Fem annonsidéer med rubriker, texter och bilder, i stående och kvadratiskt format, med din logga och dina färger.",
+        title: "Få annonser som säljer",
+        body: "Fem skäl till att folk köper, vart och ett med rubriker, text och bilder i stående och kvadratiskt format, med din logga och dina färger.",
       },
       {
-        title: "Publicera",
-        body: "Ladda ner de du gillar och kör dem på TikTok, Instagram och Facebook. Direktpublicering kommer snart.",
+        title: "Nå fler köpare",
+        body: "Kör dem på TikTok, Instagram och Facebook och vinn nya kunder. Publicering, schemaläggning och boost direkt från Gooidy kommer snart.",
       },
     ],
     examplesTitle: "Gjorda för flödet",
@@ -127,9 +127,9 @@ export const sv: Messages = {
       },
     ],
     videoFormat: "{seconds} s video med speakerröst",
-    featuresTitle: "Allt en bra annons behöver",
+    featuresTitle: "Allt du behöver för att växa",
     featuresSub:
-      "Gooidy sköter det som annars kräver en designer, en copywriter och en eftermiddag.",
+      "Gooidy gör jobbet som annars kräver en designer, en copywriter och en eftermiddag, så att du kan lägga tiden på ditt företag.",
     briefTitle: "Varumärkesbrief från din sajt",
     briefBody:
       "Gooidy läser din sida och listar ut vem den är till för och varför folk köper.",
@@ -137,11 +137,11 @@ export const sv: Messages = {
     kitTitle: "Ditt varumärkeskit",
     kitBody:
       "Ställ in logga, knappfärg och typsnitt en gång. Varje annons följer dem.",
-    languagesTitle: "Annonser på din kunds språk",
+    languagesTitle: "Sälj på köparens språk",
     languagesBody:
-      "Varje annons skrivs på det språk du väljer, som någon därifrån skulle skriva den, och videoannonser talar språket med matchande textning.",
-    pricingTitle: "Enkla priser",
-    pricingSub: "Börja gratis. Uppgradera när du behöver fler annonser.",
+      "Varje annons skrivs på språket du väljer, så som en lokal person skulle skriva, så att du kan sälja utanför din hemmamarknad. Videoannonser talar det också, med matchande undertexter.",
+    pricingTitle: "Enkla priser som växer med dig",
+    pricingSub: "Börja gratis. Uppgradera när ditt företag växer.",
     popular: "Populär",
     perMonth: " / mån",
     plans: [
@@ -176,6 +176,10 @@ export const sv: Messages = {
         a: "En länk till din produkt eller butik. Gooidy fungerar med Shopify, WooCommerce, Wix, Squarespace och de flesta webbutiker.",
       },
       {
+        q: "Hur hjälper Gooidy mitt företag att växa?",
+        a: "Annonser är hur de flesta små butiker vinner nya kunder på nätet, men bra annonser kostar tid och pengar. Gooidy gör en enda länk till nya annonser i din varumärkesstil, provar olika köpskäl så att du kan testa vad som fungerar för din butik, och talar till köpare på {count} språk. Härnäst: publicera och boosta med ett klick.",
+      },
+      {
         q: "Vad är en kredit?",
         a: "En kredit skapar en annonsbild. Varje körning skapar fem annonser i två storlekar och använder alltså 10 krediter.",
       },
@@ -189,18 +193,18 @@ export const sv: Messages = {
       },
       {
         q: "Var kan jag använda annonserna?",
-        a: "Överallt där du annonserar: TikTok, Instagram, Facebook, YouTube Shorts med mera.",
+        a: "Överallt där du annonserar: TikTok, Instagram, Facebook, YouTube Shorts med mera. Publicering, schemaläggning och boost direkt från Gooidy kommer snart.",
       },
       {
         q: "Kan jag avsluta när som helst?",
         a: "Ja. Abonnemangen löper månadsvis och du behåller tillgången till slutet av perioden du betalat för.",
       },
     ],
-    finalTitle: "Dina nästa annonser är en länk bort",
+    finalTitle: "Dina nästa kunder är en länk bort",
     finalSub: "100 gratis krediter. Inget kreditkort behövs.",
   },
   beforeAfter: {
-    title: "Från ett produktfoto till annonser som säljer",
+    title: "Från ett produktfoto till annonser som drar in köpare",
     sub: "Till vänster fotot på {store}. Till höger annonser som Gooidy skapade av det, oredigerade.",
     before: "Före: produktsidan",
     after: "Efter: {count} av annonserna från den körningen",
@@ -248,7 +252,7 @@ export const sv: Messages = {
     statLinks: "Produktlänkar",
     statAds: "Skapade annonser",
     statPer: "Per länk",
-    tryTitle: "Testa nu med din egen butik",
+    tryTitle: "Nu är det din butiks tur att växa",
     tryBody:
       "Klistra in en produktlänk. Du får 5 vinklar i flödes- och storyformat, med annonstexten skriven. Dina första körningar är gratis.",
     worksWith: "Fungerar med Shopify, WooCommerce och de flesta produktsidor.",
@@ -314,12 +318,12 @@ export const sv: Messages = {
     credits: "{count} krediter",
     plan: "· {plan}-plan",
     creditsLeft: "{count} krediter kvar",
-    addTitle: "Skapa annonser från en produktlänk",
+    addTitle: "Lägg till en produkt att marknadsföra",
     addBody:
       "Klistra in en produktsida. Gooidy läser den, skriver en varumärkesbrief och gör den redo för annonser.",
     noProducts: "Inga produkter än",
     noProductsBody:
-      "Klistra in en produktlänk ovan. Om ungefär två minuter har du dina första fem annonser.",
+      "Klistra in en produktlänk ovan. Om ungefär två minuter har du dina första fem annonser, redo att dra in nya kunder.",
     urlLabel: "Länk till produkt eller webbplats",
     reading: "Läser sidan…",
     addProduct: "Lägg till produkt",

@@ -2,12 +2,12 @@ import type { Messages } from ".";
 
 export const ko: Messages = {
   meta: {
-    title: "Gooidy · 링크 하나로 만드는 광고",
+    title: "Gooidy · 링크 하나로 비즈니스를 키우세요",
     description:
-      "상품 링크를 붙여 넣으면 Gooidy가 약 2분 만에 TikTok, Instagram, Facebook용 광고를 바로 집행할 수 있게 만들어 드립니다. 무료로 시작하세요.",
+      "Gooidy로 작은 비즈니스를 키우세요. 상품 링크만 붙여 넣으면 새 고객을 데려오는 이미지·영상 광고가 몇 분 만에 TikTok, Instagram, Facebook용으로 준비됩니다. 무료로 시작하세요.",
     useCasesTitle: "실제 사례 · Gooidy",
     useCasesDescription:
-      "Gooidy가 실제 상품 링크로 만든, 편집하지 않은 실제 광고입니다. 모든 소구점과 사이즈를 살펴보고 내 스토어로 무료로 시작해 보세요.",
+      "Gooidy가 실제 상품 링크로 만든, 편집하지 않은 실제 광고입니다. 링크 하나가 캠페인이 되는 과정을 보고, 내 스토어에서 무료로 사용해 보세요.",
     signInTitle: "로그인 · Gooidy",
     dashboardTitle: "대시보드 · Gooidy",
     brandTitle: "브랜드 키트 · Gooidy",
@@ -30,18 +30,18 @@ export const ko: Messages = {
   urlForm: {
     label: "상품 또는 스토어 링크",
     placeholder: "상품 또는 스토어 링크를 붙여 넣으세요",
-    submit: "광고 만들기",
+    submit: "성장 시작하기",
   },
   footer: {
     tagline:
-      "상품 링크 하나로 이미지 광고와 영상 광고를. 소규모 비즈니스를 위해 만들었습니다.",
+      "링크 하나로 만든 이미지·영상 광고로 작은 비즈니스의 성장을 돕습니다.",
     product: "제품",
     account: "계정",
     legal: "법적 고지",
     privacy: "개인정보",
     terms: "약관",
   },
-  stickyCta: "무료로 광고 만들기",
+  stickyCta: "무료로 성장 시작하기",
   angles: {
     pain: {
       name: "고민",
@@ -65,42 +65,42 @@ export const ko: Messages = {
     },
   },
   home: {
-    badge: "소규모 비즈니스를 위한 이미지·영상 광고",
-    titleLine1: "팔리는 광고를,",
+    badge: "AI로 작은 비즈니스에 성장을",
+    titleLine1: "비즈니스를 키우세요,",
     titleBefore: "",
     titleWord: "링크 하나",
     titleAfter: "로.",
     intro:
-      "상품 페이지만 붙여 넣으세요. Gooidy가 카피를 쓰고, 광고를 디자인하고, 내레이션이 들어간 짧은 영상을 만들고, TikTok·Instagram·Facebook에 맞게 사이즈를 맞춥니다.",
+      "상품 페이지를 붙여 넣으세요. Gooidy가 누가 왜 구매하는지 파악한 뒤, 새 고객을 스토어로 데려오는 이미지·영상 광고를 만들어 드립니다.",
     facts: [
       "카드 없이 무료로 시작",
-      "한 번에 5가지 소구점",
-      "9:16과 1:1",
+      "이미지 광고와 영상 광고",
+      "한 번에 5가지 판매 아이디어",
       "{count}개 언어 광고",
     ],
     worksWith: "모든 온라인 스토어와 호환",
-    anglesTitle: "하나의 상품, 여러 가지 판매 방법",
+    anglesTitle: "하나의 상품, 수많은 구매 이유",
     anglesSub:
-      "매번 다른 소구점을 시도합니다. 아래는 Gooidy가 {store} 링크 하나로 만든 실제 피드 광고입니다.",
-    whereTitle: "실제 노출되는 모습",
+      "사람들은 저마다 다른 이유로 구매합니다. 그래서 매번 여러 가지를 시도합니다. 이것은 Gooidy가 {store} 링크 하나로 만든 실제 광고입니다.",
+    whereTitle: "고객이 스크롤하는 곳에 나타나세요",
     whereSub: "같은 광고를 고객이 보는 앱마다 알맞은 사이즈로 준비합니다.",
-    liveTitle: "링크 하나를 넣으면, 캠페인이 나옵니다.",
+    liveTitle: "링크 하나를 붙여 넣으면, 팔리는 캠페인이 나옵니다.",
     liveSub:
       "실제 Gooidy 생성 과정을 단계별로 재생했습니다. 링크, 페이지에서 읽어 낸 내용, 작성한 소구점, 완성된 광고까지.",
     howTitle: "이용 방법",
-    howSub: "링크에서 바로 집행 가능한 광고까지 3단계.",
+    howSub: "상품 링크에서 새 구매자에게 닿는 광고까지, 세 단계면 됩니다.",
     steps: [
       {
         title: "링크 붙여 넣기",
         body: "상품 페이지나 스토어를 추가하세요. Gooidy가 무엇을, 누구에게 팔고, 사람들이 왜 사는지 파악합니다.",
       },
       {
-        title: "광고 받기",
-        body: "헤드라인, 카피, 이미지를 갖춘 광고 아이디어 5개를 세로형과 정사각형으로. 로고와 브랜드 컬러도 반영합니다.",
+        title: "팔리는 광고 받기",
+        body: "사람들이 구매하는 다섯 가지 이유마다 헤드라인, 문구, 이미지를 세로형과 정사각형으로, 로고와 브랜드 색상까지 반영해 만듭니다.",
       },
       {
-        title: "게시하기",
-        body: "마음에 드는 광고를 내려받아 TikTok, Instagram, Facebook에 집행하세요. 바로 게시 기능도 곧 추가됩니다.",
+        title: "더 많은 구매자에게 닿기",
+        body: "TikTok, Instagram, Facebook에 게재해 새 고객을 확보하세요. Gooidy에서 바로 게시, 예약, 광고 부스트하는 기능이 곧 제공됩니다.",
       },
     ],
     examplesTitle: "피드를 위해 만든 광고",
@@ -126,9 +126,9 @@ export const ko: Messages = {
       },
     ],
     videoFormat: "내레이션이 들어간 {seconds}초 영상",
-    featuresTitle: "좋은 광고에 필요한 모든 것",
+    featuresTitle: "성장에 필요한 모든 것",
     featuresSub:
-      "보통 디자이너와 카피라이터가 반나절 걸려 하는 일을 Gooidy가 맡습니다.",
+      "디자이너, 카피라이터, 그리고 반나절이 필요한 일을 Gooidy가 대신하니, 당신은 비즈니스에만 집중하세요.",
     briefTitle: "사이트에서 뽑아낸 브랜드 브리프",
     briefBody:
       "Gooidy가 페이지를 읽고 누구를 위한 상품인지, 왜 사는지 정리합니다.",
@@ -136,11 +136,11 @@ export const ko: Messages = {
     kitTitle: "브랜드 키트",
     kitBody:
       "로고, 버튼 색상, 글꼴을 한 번만 설정하세요. 모든 광고에 적용됩니다.",
-    languagesTitle: "고객의 언어로 만드는 광고",
+    languagesTitle: "구매자의 언어로 판매하세요",
     languagesBody:
-      "선택한 언어로, 현지인이 쓴 것처럼 자연스럽게 광고를 씁니다. 영상 광고는 그 언어로 말하고 자막도 맞춥니다.",
-    pricingTitle: "간단한 요금제",
-    pricingSub: "무료로 시작하고, 광고가 더 필요할 때 업그레이드하세요.",
+      "모든 광고는 선택한 언어로 현지인이 쓴 것처럼 작성되어 국내 시장 너머로 판매를 넓힐 수 있습니다. 영상 광고도 그 언어로 말하고 자막도 맞춰 드립니다.",
+    pricingTitle: "함께 성장하는 간단한 요금제",
+    pricingSub: "무료로 시작하고, 비즈니스가 성장하면 업그레이드하세요.",
     popular: "인기",
     perMonth: " / 월",
     plans: [
@@ -167,6 +167,10 @@ export const ko: Messages = {
         a: "상품이나 스토어 링크만 있으면 됩니다. Gooidy는 Shopify, WooCommerce, Wix, Squarespace 등 대부분의 온라인 스토어와 호환됩니다.",
       },
       {
+        q: "Gooidy는 어떻게 비즈니스 성장을 돕나요?",
+        a: "대부분의 작은 상점은 광고로 온라인에서 새 고객을 얻지만, 좋은 광고에는 시간과 비용이 듭니다. Gooidy는 링크 하나를 브랜드에 맞는 새 광고로 바꾸고, 여러 구매 이유를 시도해 내 상점에 무엇이 통하는지 테스트할 수 있게 하며, {count}개 언어로 구매자에게 말을 겁니다. 다음은 원클릭 게시와 부스트입니다.",
+      },
+      {
         q: "크레딧이 무엇인가요?",
         a: "크레딧 1개로 광고 이미지 1장을 만듭니다. 한 번 생성할 때 광고 5개를 2가지 사이즈로 만들므로 10 크레딧을 사용합니다.",
       },
@@ -180,18 +184,18 @@ export const ko: Messages = {
       },
       {
         q: "광고는 어디에 쓸 수 있나요?",
-        a: "TikTok, Instagram, Facebook, YouTube Shorts 등 광고를 집행하는 모든 곳에 쓸 수 있습니다.",
+        a: "광고하는 모든 곳에서: TikTok, Instagram, Facebook, YouTube Shorts 등. Gooidy에서 바로 게시, 예약, 부스트하는 기능이 곧 제공됩니다.",
       },
       {
         q: "언제든 해지할 수 있나요?",
         a: "네. 요금제는 월 단위이며, 결제한 기간이 끝날 때까지 계속 이용할 수 있습니다.",
       },
     ],
-    finalTitle: "다음 광고는 링크 하나면 충분합니다",
+    finalTitle: "다음 고객은 링크 하나 거리에 있습니다",
     finalSub: "무료 크레딧 100개. 신용카드 필요 없음.",
   },
   beforeAfter: {
-    title: "상품 사진 한 장에서 팔리는 광고로",
+    title: "상품 사진 한 장에서 구매자를 데려오는 광고로",
     sub: "왼쪽은 {store}의 사진, 오른쪽은 Gooidy가 그 사진으로 만든 편집하지 않은 광고입니다.",
     before: "전: 상품 페이지",
     after: "후: 해당 생성에서 만든 광고 {count}개",
@@ -239,7 +243,7 @@ export const ko: Messages = {
     statLinks: "상품 링크",
     statAds: "만든 광고",
     statPer: "링크당",
-    tryTitle: "이제 내 스토어로 해 보세요",
+    tryTitle: "이제 내 스토어를 키울 차례입니다",
     tryBody:
       "상품 링크를 붙여 넣으세요. 피드와 스토리 사이즈로 5가지 소구점을 광고 문구와 함께 받습니다. 처음 몇 번은 무료입니다.",
     worksWith: "Shopify, WooCommerce 등 대부분의 상품 페이지와 호환됩니다.",
@@ -304,12 +308,12 @@ export const ko: Messages = {
     credits: "{count} 크레딧",
     plan: "· {plan} 요금제",
     creditsLeft: "{count} 크레딧 남음",
-    addTitle: "상품 링크로 광고 만들기",
+    addTitle: "홍보할 상품 추가",
     addBody:
       "상품 페이지를 붙여 넣으세요. Gooidy가 읽고 브랜드 브리프를 쓴 뒤 광고 준비를 마칩니다.",
     noProducts: "아직 상품이 없습니다",
     noProductsBody:
-      "위에 상품 링크를 붙여 넣으세요. 약 2분 뒤 첫 광고 5개가 준비됩니다.",
+      "위에 상품 링크를 붙여 넣으세요. 약 2분이면 새 고객을 데려올 첫 다섯 개의 광고가 준비됩니다.",
     urlLabel: "상품 또는 웹사이트 링크",
     reading: "페이지 읽는 중…",
     addProduct: "상품 추가",
