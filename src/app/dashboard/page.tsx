@@ -50,11 +50,19 @@ async function Dashboard() {
             {workspace?.credits ?? 0} credits
           </p>
         </div>
-        <form action="/auth/signout" method="post">
-          <button className="text-sm underline underline-offset-4">
-            Sign out
-          </button>
-        </form>
+        <div className="flex items-center gap-4">
+          <Link
+            href="/dashboard/brand"
+            className="text-sm underline underline-offset-4"
+          >
+            Brand kit
+          </Link>
+          <form action="/auth/signout" method="post">
+            <button className="text-sm underline underline-offset-4">
+              Sign out
+            </button>
+          </form>
+        </div>
       </header>
 
       <section className="mt-10">

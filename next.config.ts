@@ -1,8 +1,15 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Ad images read bundled font files at runtime.
+  outputFileTracingIncludes: {
+    "/api/creatives/*/image": ["./src/fonts/**/*"],
+  },
   cacheComponents: true,
+  // Brand kit logo uploads go through a server action (logos are capped at 2 MB).
+  experimental: {
+    serverActions: { bodySizeLimit: "3mb" },
+  },
   partialPrefetching: true,
   turbopack: {
     rules: {

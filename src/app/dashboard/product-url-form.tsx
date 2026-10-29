@@ -33,7 +33,8 @@ export function ProductUrlForm() {
       </div>
       {pending && (
         <p className="text-sm text-neutral-500">
-          Reading the page and writing a brand brief. This takes about 20 seconds.
+          Reading the page and writing a brand brief. This takes about 20
+          seconds.
         </p>
       )}
       {state.error && (

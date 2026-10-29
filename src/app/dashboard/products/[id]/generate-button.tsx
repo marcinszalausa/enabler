@@ -5,8 +5,17 @@ import { startGeneration, type FormState } from "../../actions";
 
 const initialState: FormState = { error: null };
 
-export function GenerateButton({ productId, cost }: { productId: string; cost: number }) {
-  const [state, action, pending] = useActionState(startGeneration, initialState);
+export function GenerateButton({
+  productId,
+  cost,
+}: {
+  productId: string;
+  cost: number;
+}) {
+  const [state, action, pending] = useActionState(
+    startGeneration,
+    initialState,
+  );
 
   return (
     <form action={action} className="flex flex-col items-start gap-2">
