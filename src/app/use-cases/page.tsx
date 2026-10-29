@@ -1,11 +1,5 @@
 import Link from "next/link";
-import {
-  THEME_BY_TIME,
-  Nav,
-  UrlForm,
-  SectionHeading,
-  Footer,
-} from "../_landing/chrome";
+import { Nav, UrlForm, SectionHeading, Footer } from "../_landing/chrome";
 import { Reveal } from "../_landing/reveal";
 import { getShowcase, type ShowcaseRun } from "@/lib/showcase";
 import { RunViewer } from "./run-viewer";
@@ -23,7 +17,6 @@ export default async function UseCases() {
 
   return (
     <div className="landing flex flex-1 flex-col bg-bg text-fg">
-      <script dangerouslySetInnerHTML={{ __html: THEME_BY_TIME }} />
       <Nav />
       <main className="flex-1">
         <section className="hero-bg">
@@ -34,7 +27,7 @@ export default async function UseCases() {
             </p>
             <h1 className="mt-5 text-4xl font-semibold leading-[1.1] tracking-tight sm:text-6xl">
               See exactly what you get from{" "}
-              <span className="text-accent">one link</span>.
+              <span className="text-gradient">one link</span>.
             </h1>
             <p className="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-muted">
               We pasted real product pages into Gooidy. Everything below is what

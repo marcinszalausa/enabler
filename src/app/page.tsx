@@ -4,13 +4,7 @@ import { PhoneFeed } from "./_landing/phone-feed";
 import { getShowcase, type ShowcaseRun } from "@/lib/showcase";
 import { LANGUAGES } from "@/lib/video-options";
 import { VIDEO_SECONDS } from "@/lib/video";
-import {
-  THEME_BY_TIME,
-  Nav,
-  UrlForm,
-  SectionHeading,
-  Footer,
-} from "./_landing/chrome";
+import { Nav, UrlForm, SectionHeading, Footer } from "./_landing/chrome";
 import { AngleExplorer } from "./_landing/angle-explorer";
 import { Reveal } from "./_landing/reveal";
 
@@ -107,15 +101,11 @@ const FAQ = [
   },
 ];
 
-// Light from 7:00 to 19:00 on the visitor's own clock, dark otherwise, unless
-// they picked one with the toggle (saved on their device). ?theme=light|dark
-// forces one. Inline so it runs before the page paints.
 export default async function Home() {
   const { images, videos } = await showcaseAds();
   const hero = heroFeed(images, videos);
   return (
     <div className="landing flex flex-1 flex-col bg-bg text-fg">
-      <script dangerouslySetInnerHTML={{ __html: THEME_BY_TIME }} />
       <Nav />
       <main className="flex-1">
         <Hero ads={hero} />
@@ -208,7 +198,7 @@ function Hero({ ads }: { ads: FeedAd[] }) {
           </p>
           <h1 className="mt-5 text-4xl font-semibold leading-[1.08] tracking-tight sm:text-6xl">
             Ads that sell, from a single{" "}
-            <span className="text-accent">link</span>.
+            <span className="text-gradient">link</span>.
           </h1>
           <p className="mx-auto mt-5 max-w-lg text-lg leading-relaxed text-muted lg:mx-0">
             Paste your product page. Gooidy writes the copy, designs image ads,
@@ -250,7 +240,10 @@ function Hero({ ads }: { ads: FeedAd[] }) {
 const HERO_FACTS = [
   { value: "5 angles", label: "per image run" },
   { value: "9:16 and 1:1", label: "every placement" },
-  { value: `${Object.keys(LANGUAGES).length} languages`, label: "for video voiceover" },
+  {
+    value: `${Object.keys(LANGUAGES).length} languages`,
+    label: "for video voiceover",
+  },
 ];
 
 function WorksWith() {
@@ -338,9 +331,9 @@ function HowItWorks() {
           {STEPS.map((step, i) => (
             <li
               key={step.title}
-              className="rounded-2xl border border-line bg-bg p-6"
+              className="rounded-2xl border border-line bg-raised p-6"
             >
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-accent/10 text-sm font-medium text-accent">
+              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-accent-soft text-sm font-medium text-accent">
                 {i + 1}
               </span>
               <h3 className="mt-4 text-lg font-medium">{step.title}</h3>
@@ -393,7 +386,10 @@ const VIDEO_POINTS = [
     body: `Voiceover in ${Object.values(LANGUAGES)
       .map((l) => l.label)
       .join(", ")
-      .replace(/, ([^,]*)$/, " or $1")}, with captions people can read on mute.`,
+      .replace(
+        /, ([^,]*)$/,
+        " or $1",
+      )}, with captions people can read on mute.`,
   },
   {
     title: "Music and an end card",
@@ -415,13 +411,13 @@ function VideoAds({ ads }: { ads: FeedAd[] }) {
             Short videos that stop the scroll
           </h2>
           <p className="mx-auto mt-3 max-w-lg text-lg text-muted lg:mx-0">
-            The same link makes vertical video ads for Reels and TikTok. Tap
-            the speaker on the phone to hear one.
+            The same link makes vertical video ads for Reels and TikTok. Tap the
+            speaker on the phone to hear one.
           </p>
           <ul className="mx-auto mt-8 max-w-lg space-y-5 text-left lg:mx-0">
             {VIDEO_POINTS.map((p) => (
               <li key={p.title} className="flex gap-4">
-                <span className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent/10 text-xs text-accent">
+                <span className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent-soft text-xs text-accent">
                   ✓
                 </span>
                 <span>
@@ -480,14 +476,16 @@ function Pricing() {
           {PLANS.map((plan) => (
             <div
               key={plan.name}
-              className={`flex flex-col rounded-2xl border bg-bg p-7 ${
-                plan.featured ? "border-accent border-2" : "border-line"
+              className={`flex flex-col rounded-2xl border bg-raised p-7 ${
+                plan.featured
+                  ? "border-accent border-2 shadow-[0_24px_60px_-28px_var(--t-accent)]"
+                  : "border-line"
               }`}
             >
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-medium">{plan.name}</h3>
                 {plan.featured && (
-                  <span className="rounded-full bg-accent/10 px-2.5 py-0.5 text-xs font-medium text-accent">
+                  <span className="rounded-full bg-accent-soft px-2.5 py-0.5 text-xs font-medium text-accent">
                     Popular
                   </span>
                 )}
@@ -509,9 +507,9 @@ function Pricing() {
               </ul>
               <Link
                 href="/dashboard"
-                className={`mt-8 rounded-xl px-5 py-2.5 text-center text-sm font-medium transition hover:brightness-110 ${
+                className={`mt-8 rounded-xl px-5 py-2.5 text-center text-sm font-medium transition ${
                   plan.featured
-                    ? "dark-accent-text bg-accent text-white"
+                    ? "btn-primary"
                     : "border border-line text-fg hover:bg-surface"
                 }`}
               >

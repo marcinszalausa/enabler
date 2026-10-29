@@ -35,7 +35,7 @@ export function LoginForm() {
 
   if (status === "sent") {
     return (
-      <p className="mt-6 rounded-md border border-neutral-200 p-4 text-sm dark:border-neutral-800">
+      <p className="mt-6 rounded-md border border-line p-4 text-sm">
         Check <strong>{email}</strong> for your sign-in link.
       </p>
     );
@@ -53,18 +53,18 @@ export function LoginForm() {
         autoComplete="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        className="rounded-md border border-neutral-300 bg-transparent px-3 py-2 dark:border-neutral-700"
+        className="rounded-md border border-line-strong bg-raised px-3 py-2 outline-none transition focus:border-accent focus:ring-4 focus:ring-accent/20"
         placeholder="you@company.com"
       />
       <button
         type="submit"
         disabled={status === "sending"}
-        className="rounded-md bg-neutral-900 px-3 py-2 font-medium text-white disabled:opacity-60 dark:bg-white dark:text-neutral-900"
+        className="btn-primary rounded-lg px-3 py-2 font-medium"
       >
         {status === "sending" ? "Sending…" : "Email me a link"}
       </button>
       {status === "error" && (
-        <p role="alert" className="text-sm text-red-600">
+        <p role="alert" className="text-sm text-danger">
           {message}
         </p>
       )}

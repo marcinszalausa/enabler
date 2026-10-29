@@ -56,7 +56,7 @@ export function AngleExplorer({ photo }: { photo: string }) {
             onClick={() => setActive(i)}
             className={`flex shrink-0 items-center justify-between gap-3 whitespace-nowrap rounded-xl border px-4 py-2.5 text-left text-sm transition-colors lg:px-5 lg:py-4 lg:text-base ${
               i === active
-                ? "border-accent bg-accent/[0.06] text-fg"
+                ? "border-accent bg-accent-soft text-fg"
                 : "border-line text-muted hover:border-fg/30 hover:text-fg"
             }`}
           >
@@ -72,7 +72,7 @@ export function AngleExplorer({ photo }: { photo: string }) {
       </div>
 
       {/* A feed post preview that updates with the chosen angle. */}
-      <div className="mx-auto w-full max-w-md overflow-hidden rounded-2xl border border-line bg-bg shadow-lg">
+      <div className="mx-auto w-full max-w-md overflow-hidden rounded-2xl border border-line bg-raised shadow-lg">
         <div className="flex items-center gap-3 px-4 py-3">
           <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#dfe8e2] text-xs font-semibold text-[#3f5148]">
             SM

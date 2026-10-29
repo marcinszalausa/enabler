@@ -22,24 +22,24 @@ export function ProductUrlForm({ defaultUrl }: { defaultUrl: string }) {
           required
           defaultValue={defaultUrl}
           placeholder="https://yourstore.com/products/..."
-          className="flex-1 rounded-md border border-neutral-300 bg-transparent px-3 py-2 dark:border-neutral-700"
+          className="flex-1 rounded-md border border-line-strong bg-raised px-3 py-2 outline-none transition focus:border-accent focus:ring-4 focus:ring-accent/20"
         />
         <button
           type="submit"
           disabled={pending}
-          className="rounded-md bg-neutral-900 px-4 py-2 font-medium text-white disabled:opacity-60 dark:bg-white dark:text-neutral-900"
+          className="btn-primary rounded-lg px-4 py-2 font-medium"
         >
           {pending ? "Reading page…" : "Add product"}
         </button>
       </div>
       {pending && (
-        <p className="text-sm text-neutral-500">
+        <p className="text-sm text-muted">
           Reading the page and writing a brand brief. This takes about 20
           seconds.
         </p>
       )}
       {state.error && (
-        <p role="alert" className="text-sm text-red-600">
+        <p role="alert" className="text-sm text-danger">
           {state.error}
         </p>
       )}

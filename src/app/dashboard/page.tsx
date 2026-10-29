@@ -14,7 +14,7 @@ export default function DashboardPage({
 }: PageProps<"/dashboard">) {
   return (
     <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-10">
-      <Suspense fallback={<p className="text-sm text-neutral-500">Loading…</p>}>
+      <Suspense fallback={<p className="text-sm text-muted">Loading…</p>}>
         <Dashboard searchParams={searchParams} />
       </Suspense>
     </main>
@@ -53,23 +53,10 @@ async function Dashboard({
           <h1 className="text-2xl font-semibold">
             {workspace?.name ?? "Your workspace"}
           </h1>
-          <p className="text-sm text-neutral-500">
+          <p className="text-sm text-muted">
             {user.email} · {workspace?.plan ?? "free"} plan ·{" "}
             {workspace?.credits ?? 0} credits
           </p>
-        </div>
-        <div className="flex items-center gap-4">
-          <Link
-            href="/dashboard/brand"
-            className="text-sm underline underline-offset-4"
-          >
-            Brand kit
-          </Link>
-          <form action="/auth/signout" method="post">
-            <button className="text-sm underline underline-offset-4">
-              Sign out
-            </button>
-          </form>
         </div>
       </header>
 
@@ -80,18 +67,18 @@ async function Dashboard({
       <section className="mt-10">
         <h2 className="text-lg font-medium">Products</h2>
         {products && products.length > 0 ? (
-          <ul className="mt-4 divide-y divide-neutral-200 dark:divide-neutral-800">
+          <ul className="mt-4 divide-y divide-line">
             {products.map((p) => (
               <li key={p.id} className="py-3">
                 <Link href={`/dashboard/products/${p.id}`} className="block">
                   <p className="font-medium">{p.name ?? p.url}</p>
-                  <p className="truncate text-sm text-neutral-500">{p.url}</p>
+                  <p className="truncate text-sm text-muted">{p.url}</p>
                 </Link>
               </li>
             ))}
           </ul>
         ) : (
-          <p className="mt-4 rounded-md border border-dashed border-neutral-300 p-6 text-sm text-neutral-500 dark:border-neutral-700">
+          <p className="mt-4 rounded-md border border-dashed border-line-strong p-6 text-sm text-muted">
             No products yet. Paste a product link above to get started.
           </p>
         )}

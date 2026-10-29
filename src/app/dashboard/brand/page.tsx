@@ -13,18 +13,16 @@ export default function BrandPage() {
     <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-10">
       <Link
         href="/dashboard"
-        className="text-sm text-neutral-500 underline underline-offset-4"
+        className="text-sm text-muted underline underline-offset-4"
       >
         ← Dashboard
       </Link>
       <h1 className="mt-6 text-2xl font-semibold">Brand kit</h1>
-      <p className="mt-1 text-sm text-neutral-500">
+      <p className="mt-1 text-sm text-muted">
         Your logo, button color and headline font appear on every ad, including
         ones you already made.
       </p>
-      <Suspense
-        fallback={<p className="mt-6 text-sm text-neutral-500">Loading…</p>}
-      >
+      <Suspense fallback={<p className="mt-6 text-sm text-muted">Loading…</p>}>
         <Brand />
       </Suspense>
     </main>
@@ -85,10 +83,10 @@ async function Brand() {
               `${kit.accent_color}${kit.font}${kit.logo_path ?? ""}`,
             )}`}
             alt="Your latest ad with this brand kit"
-            className="mt-2 aspect-square w-full rounded-md border border-neutral-200 object-cover dark:border-neutral-800"
+            className="mt-2 aspect-square w-full rounded-md border border-line object-cover"
           />
         ) : (
-          <p className="mt-2 rounded-md border border-dashed border-neutral-300 p-6 text-sm text-neutral-500 dark:border-neutral-700">
+          <p className="mt-2 rounded-md border border-dashed border-line-strong p-6 text-sm text-muted">
             Generate ads for a product to see a preview here.
           </p>
         )}

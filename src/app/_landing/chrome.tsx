@@ -1,11 +1,8 @@
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { ThemeToggle } from "./theme-toggle";
 
-// Pieces shared by the public pages: theme script, nav, link form, footer.
-
-// Picks light or dark before first paint: ?theme=, then the saved choice,
-// then the visitor's local time.
-export const THEME_BY_TIME = `(function(){var d=document.documentElement,t;try{t=new URLSearchParams(location.search).get("theme");if(t!=="light"&&t!=="dark")t=localStorage.getItem("gooidy-theme")}catch(e){}if(t!=="light"&&t!=="dark"){var h=new Date().getHours();t=h>=7&&h<19?"light":"dark"}d.dataset.theme=t})()`;
+// Pieces shared by the public pages: nav, link form, footer.
 
 export function Logo() {
   return (
@@ -13,7 +10,7 @@ export function Logo() {
       href="/"
       className="flex items-center gap-2 text-xl font-semibold tracking-tight"
     >
-      <span className="h-2.5 w-2.5 rounded-full bg-accent" />
+      <span className="h-2.5 w-2.5 rounded-full bg-gradient-to-br from-accent to-violet" />
       gooidy
     </Link>
   );
@@ -48,7 +45,7 @@ export function Nav() {
           </Link>
           <Link
             href="/dashboard"
-            className="dark-accent-text hidden rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:brightness-110 sm:block"
+            className="btn-primary hidden rounded-lg px-4 py-2 text-sm font-medium sm:block"
           >
             Get started
           </Link>
@@ -76,11 +73,11 @@ export function UrlForm({ id }: { id: string }) {
         type="text"
         inputMode="url"
         placeholder="Paste your product or store link"
-        className="min-w-0 flex-1 rounded-xl border border-line bg-bg px-4 py-3 text-fg shadow-sm outline-none transition placeholder:text-muted focus:border-accent focus:ring-4 focus:ring-accent/15"
+        className="min-w-0 flex-1 rounded-xl border border-line bg-bg px-4 py-3 text-fg shadow-sm outline-none transition placeholder:text-muted focus:border-accent focus:ring-4 focus:ring-accent/20"
       />
       <button
         type="submit"
-        className="dark-accent-text rounded-xl bg-accent px-6 py-3 font-medium text-white shadow-sm transition hover:brightness-110"
+        className="btn-primary rounded-xl px-6 py-3 font-medium"
       >
         Create ads
       </button>
@@ -124,5 +121,21 @@ export function Footer() {
         </div>
       </div>
     </footer>
+  );
+}
+
+// Top bar for the signed-in app and the sign-in page: same logo, colors and
+// theme switch as the public site, with the page's own links on the right.
+export function AppBar({ children }: { children?: ReactNode }) {
+  return (
+    <header className="sticky top-0 z-30 border-b border-line bg-bg/85 backdrop-blur">
+      <nav className="mx-auto flex h-14 w-full max-w-5xl items-center justify-between gap-4 px-4">
+        <Logo />
+        <div className="flex items-center gap-1 text-sm">
+          {children}
+          <ThemeToggle />
+        </div>
+      </nav>
+    </header>
   );
 }
