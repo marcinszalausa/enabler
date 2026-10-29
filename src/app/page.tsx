@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { REELS, Reel } from "./_landing/reel";
+import { FALLBACK_AD, Reel, type FeedAd } from "./_landing/reel";
+import { getShowcase } from "@/lib/showcase";
 import {
   THEME_BY_TIME,
   Nav,
@@ -106,17 +107,18 @@ const FAQ = [
 // Light from 7:00 to 19:00 on the visitor's own clock, dark otherwise, unless
 // they picked one with the toggle (saved on their device). ?theme=light|dark
 // forces one. Inline so it runs before the page paints.
-export default function Home() {
+export default async function Home() {
+  const ads = await feedAds();
   return (
     <div className="landing flex flex-1 flex-col bg-bg text-fg">
       <script dangerouslySetInnerHTML={{ __html: THEME_BY_TIME }} />
       <Nav />
       <main className="flex-1">
-        <Hero />
+        <Hero ads={ads} />
         <WorksWith />
         <HowItWorks />
         <Angles />
-        <Examples />
+        {ads.some((a) => a.image) && <Examples ads={ads} />}
         <Features />
         <Compare />
         <Pricing />
@@ -129,7 +131,31 @@ export default function Home() {
   );
 }
 
-function Hero() {
+// Up to four real 9:16 ads from the showcase: one per product first, then
+// more angles. Falls back to the Soft Mila clip before any run is picked.
+async function feedAds(): Promise<FeedAd[]> {
+  const runs = await getShowcase();
+  const stories = runs.map((r) =>
+    r.ads
+      .filter((a) => a.aspect === "9:16")
+      .map((a) => ({
+        handle: r.store.split(".")[0],
+        image: `/api/creatives/${a.id}/image`,
+        alt: a.headline,
+      })),
+  );
+  const ads: FeedAd[] = [];
+  for (
+    let round = 0;
+    ads.length < 4 && stories.some((s) => s[round]);
+    round++
+  ) {
+    for (const s of stories) if (s[round] && ads.length < 4) ads.push(s[round]);
+  }
+  return ads.length ? ads : [FALLBACK_AD];
+}
+
+function Hero({ ads }: { ads: FeedAd[] }) {
   return (
     <section className="hero-bg">
       <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 pb-20 pt-14 sm:pt-20 lg:grid-cols-[1.2fr_0.8fr]">
@@ -154,23 +180,25 @@ function Hero() {
           </p>
         </div>
         <div className="flex justify-center lg:justify-end">
-          <Phone />
+          <Phone ads={ads} />
         </div>
       </div>
     </section>
   );
 }
 
-// A phone that steps through the sample ads, like a short-video feed.
-function Phone() {
-  const feed = [...REELS, REELS[0]];
+// A phone that steps through real ads, like a short-video feed.
+function Phone({ ads }: { ads: FeedAd[] }) {
+  // The feed animation steps through 4 slots, then loops back to the first.
+  const slots = Array.from({ length: 4 }, (_, i) => ads[i % ads.length]);
+  const feed = [...slots, slots[0]];
   return (
     <div className="h-[540px] w-[270px] rounded-[2.5rem] border border-line bg-[#16171d] p-2 shadow-2xl shadow-accent/10 sm:h-[600px] sm:w-[300px]">
       <div className="relative h-full w-full overflow-hidden rounded-[2rem]">
         <div className="feed-scroll h-[500%]">
-          {feed.map((reel, i) => (
+          {feed.map((ad, i) => (
             <div key={i} className="h-[20%]">
-              <Reel reel={reel} />
+              <Reel ad={ad} />
             </div>
           ))}
         </div>
@@ -279,23 +307,31 @@ function HowItWorks() {
   );
 }
 
-function Examples() {
+function Examples({ ads }: { ads: FeedAd[] }) {
   return (
     <section className="reveal mx-auto max-w-6xl px-4 py-20">
       <SectionHeading
         title="Made for the feed"
-        sub="Sample ads in the vertical format people watch most."
+        sub="Real, unedited ads Gooidy made from Soft Mila product links."
       />
       <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-4">
-        {REELS.map((reel) => (
+        {ads.map((ad, i) => (
           <div
-            key={reel.handle}
+            key={i}
             className="aspect-[9/16] overflow-hidden rounded-2xl border border-line"
           >
-            <Reel reel={reel} rail={false} />
+            <Reel ad={ad} />
           </div>
         ))}
       </div>
+      <p className="mt-8 text-center">
+        <Link
+          href="/use-cases"
+          className="text-sm font-medium text-accent hover:underline"
+        >
+          See every ad, angle and size →
+        </Link>
+      </p>
     </section>
   );
 }
