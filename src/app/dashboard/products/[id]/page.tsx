@@ -10,7 +10,7 @@ import { GenerateButton } from "./generate-button";
 import { AutoRefresh } from "./auto-refresh";
 
 export const maxDuration = 300;
-export const metadata = { title: "Product · Enabler" };
+export const metadata = { title: "Product · Gooidy" };
 
 export default function ProductPage({
   params,

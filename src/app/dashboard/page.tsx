@@ -7,7 +7,7 @@ import { ProductUrlForm } from "./product-url-form";
 // Server actions on this page scrape and call the AI; allow time for that.
 export const maxDuration = 120;
 
-export const metadata = { title: "Dashboard · Enabler" };
+export const metadata = { title: "Dashboard · Gooidy" };
 
 export default function DashboardPage() {
   return (

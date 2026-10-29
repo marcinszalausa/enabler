@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Enabler",
+  title: "Gooidy",
   description: "AI ad creation for small and medium businesses",
 };
 

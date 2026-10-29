@@ -6,7 +6,7 @@ import { getBrandKit } from "@/lib/brand-kit";
 import { FONTS } from "@/lib/brand";
 import { BrandForm } from "./brand-form";
 
-export const metadata = { title: "Brand kit · Enabler" };
+export const metadata = { title: "Brand kit · Gooidy" };
 
 export default function BrandPage() {
   return (

@@ -50,7 +50,7 @@ async function fetchText(url: URL, accept: string): Promise<string | null> {
     headers: {
       accept,
       "user-agent":
-        "Mozilla/5.0 (compatible; EnablerBot/0.1; +https://enabler-beryl.vercel.app)",
+        "Mozilla/5.0 (compatible; GooidyBot/0.1; +https://gooidy.com)",
     },
     redirect: "follow",
     signal: AbortSignal.timeout(15_000),
