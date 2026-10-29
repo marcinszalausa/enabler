@@ -26,7 +26,7 @@ export function Nav() {
         <Logo />
         <div className="hidden items-center gap-8 text-sm text-muted md:flex">
           <Link href="/use-cases" className="hover:text-fg">
-            Use cases
+            Examples
           </Link>
           <Link href="/#how" className="hover:text-fg">
             How it works
@@ -113,7 +113,7 @@ export function Footer() {
         <p>© 2026 Gooidy</p>
         <div className="flex gap-6">
           <Link href="/use-cases" className="hover:text-fg">
-            Use cases
+            Examples
           </Link>
           <Link href="/#pricing" className="hover:text-fg">
             Pricing

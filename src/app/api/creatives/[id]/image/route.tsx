@@ -1,6 +1,8 @@
 import { ImageResponse } from "next/og";
 import type { NextRequest } from "next/server";
+import type { SupabaseClient } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { getBrandKit } from "@/lib/brand-kit";
 import { FONTS, loadFont, textColorOn } from "@/lib/brand";
 import { AD_SIZES, AdLayout, type AdAspect } from "@/lib/ad-layout";
@@ -13,14 +15,28 @@ export async function GET(
   ctx: RouteContext<"/api/creatives/[id]/image">,
 ) {
   const { id } = await ctx.params;
-  const supabase = await createClient();
+  let supabase: SupabaseClient = await createClient();
 
   // RLS: returns the row only for members of its workspace.
-  const { data: creative } = await supabase
+  let { data: creative } = await supabase
     .from("creatives")
     .select("workspace_id, storage_path, aspect, headline, cta")
     .eq("id", id)
     .maybeSingle();
+
+  // Anyone may see ads from runs the team put on the public site.
+  const showcased = !creative;
+  if (showcased) {
+    supabase = createAdminClient();
+    ({ data: creative } = await supabase
+      .from("creatives")
+      .select(
+        "workspace_id, storage_path, aspect, headline, cta, generations!inner(showcased_at)",
+      )
+      .eq("id", id)
+      .not("generations.showcased_at", "is", null)
+      .maybeSingle());
+  }
   if (!creative) return new Response("Not found", { status: 404 });
 
   const kit = await getBrandKit(supabase, creative.workspace_id);
@@ -60,7 +76,11 @@ export async function GET(
           style: "normal",
         },
       ],
-      headers: { "cache-control": "private, max-age=3600" },
+      headers: {
+        "cache-control": showcased
+          ? "public, max-age=3600, s-maxage=3600"
+          : "private, max-age=3600",
+      },
     },
   );
 
