@@ -9,6 +9,7 @@ import { scrapePage } from "@/lib/scrape";
 import { extractBrandBrief } from "@/lib/ai/claude";
 import { GENERATION_COST, runGeneration } from "@/lib/pipeline";
 import { userMessage } from "@/lib/errors";
+import { seedBrandKit } from "@/lib/brand-kit";
 
 export type FormState = { error: string | null };
 
@@ -26,7 +27,10 @@ async function currentWorkspaceId() {
   return { supabase, workspaceId: ws.id as string };
 }
 
-export async function createProduct(_prev: FormState, formData: FormData): Promise<FormState> {
+export async function createProduct(
+  _prev: FormState,
+  formData: FormData,
+): Promise<FormState> {
   const rawUrl = String(formData.get("url") ?? "").trim();
   if (!rawUrl) return { error: "Paste a product or website link." };
 
@@ -51,6 +55,7 @@ export async function createProduct(_prev: FormState, formData: FormData): Promi
       .single();
     if (error) throw error;
     productId = data.id;
+    after(() => seedBrandKit(workspaceId, page));
   } catch (err) {
     console.error("createProduct failed", err);
     return { error: userMessage(err) };
@@ -59,7 +64,10 @@ export async function createProduct(_prev: FormState, formData: FormData): Promi
   redirect(`/dashboard/products/${productId}`);
 }
 
-export async function startGeneration(_prev: FormState, formData: FormData): Promise<FormState> {
+export async function startGeneration(
+  _prev: FormState,
+  formData: FormData,
+): Promise<FormState> {
   const productId = String(formData.get("productId") ?? "");
   const { supabase, workspaceId } = await currentWorkspaceId();
 
@@ -94,11 +102,16 @@ export async function startGeneration(_prev: FormState, formData: FormData): Pro
     .select("id")
     .single();
   if (error || !generation) {
-    await admin.rpc("refund_credits", { ws: workspaceId, amount: GENERATION_COST });
+    await admin.rpc("refund_credits", {
+      ws: workspaceId,
+      amount: GENERATION_COST,
+    });
     return { error: "Couldn't start the generation." };
   }
 
-  after(() => runGeneration({ generationId: generation.id, workspaceId, productId }));
+  after(() =>
+    runGeneration({ generationId: generation.id, workspaceId, productId }),
+  );
 
   revalidatePath(`/dashboard/products/${productId}`);
   return { error: null };

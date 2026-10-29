@@ -8,6 +8,9 @@ export type ScrapedPage = {
   price: string | null;
   imageUrls: string[];
   text: string;
+  // Brand hints for the brand kit; best effort.
+  themeColor: string | null;
+  logoUrl: string | null;
 };
 
 const MAX_HTML_BYTES = 2_000_000;
@@ -18,7 +21,9 @@ const MAX_TEXT_CHARS = 12_000;
 export function parsePublicUrl(raw: string): URL {
   let url: URL;
   try {
-    url = new URL(raw.trim().match(/^https?:\/\//i) ? raw.trim() : `https://${raw.trim()}`);
+    url = new URL(
+      raw.trim().match(/^https?:\/\//i) ? raw.trim() : `https://${raw.trim()}`,
+    );
   } catch {
     throw new UserError("That doesn't look like a valid URL.");
   }
@@ -45,7 +50,7 @@ async function fetchText(url: URL, accept: string): Promise<string | null> {
     headers: {
       accept,
       "user-agent":
-        "Mozilla/5.0 (compatible; EnablerBot/0.1; +https://enabler-beryl.vercel.app)",
+        "Mozilla/5.0 (compatible; GooidyBot/0.1; +https://gooidy.com)",
     },
     redirect: "follow",
     signal: AbortSignal.timeout(15_000),
@@ -79,7 +84,9 @@ type JsonLdProduct = {
   name?: string;
   description?: string;
   image?: string | string[] | { url?: string }[];
-  offers?: { price?: string | number; priceCurrency?: string } | { price?: string | number; priceCurrency?: string }[];
+  offers?:
+    | { price?: string | number; priceCurrency?: string }
+    | { price?: string | number; priceCurrency?: string }[];
 };
 
 function findJsonLdProduct(html: string): JsonLdProduct | null {
@@ -89,7 +96,9 @@ function findJsonLdProduct(html: string): JsonLdProduct | null {
   for (const [, body] of blocks) {
     try {
       const data = JSON.parse(body);
-      const nodes: unknown[] = Array.isArray(data) ? data : data?.["@graph"] ?? [data];
+      const nodes: unknown[] = Array.isArray(data)
+        ? data
+        : (data?.["@graph"] ?? [data]);
       for (const node of nodes) {
         const n = node as { "@type"?: string | string[] };
         const types = Array.isArray(n["@type"]) ? n["@type"] : [n["@type"]];
@@ -116,10 +125,38 @@ function visibleText(html: string): string {
 function absolutize(src: string, base: URL): string | null {
   try {
     const u = new URL(src.startsWith("//") ? `https:${src}` : src, base);
-    return u.protocol === "https:" || u.protocol === "http:" ? u.toString() : null;
+    return u.protocol === "https:" || u.protocol === "http:"
+      ? u.toString()
+      : null;
   } catch {
     return null;
   }
+}
+
+function findLogo(html: string, base: URL): string | null {
+  // 1. JSON-LD Organization logo.
+  const blocks = html.matchAll(
+    /<script[^>]+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi,
+  );
+  for (const [, body] of blocks) {
+    const m = body.match(
+      /"logo"\s*:\s*(?:"([^"]+)"|\{[^}]*"url"\s*:\s*"([^"]+)")/,
+    );
+    const src = m?.[1] ?? m?.[2];
+    if (src) return absolutize(src, base);
+  }
+  // 2. An <img> whose class, id or alt mentions "logo" (typical store header).
+  for (const [tag] of html.matchAll(/<img\b[^>]*>/gi)) {
+    if (!/(class|id|alt)=["'][^"']*logo/i.test(tag)) continue;
+    const src = tag.match(/\ssrc=["']([^"']+)["']/i)?.[1];
+    if (src && !src.startsWith("data:"))
+      return absolutize(decodeEntities(src), base);
+  }
+  // 3. Apple touch icon: square, usually high resolution.
+  const icon = html.match(
+    /<link[^>]+rel=["']apple-touch-icon["'][^>]*href=["']([^"']+)["']/i,
+  )?.[1];
+  return icon ? absolutize(icon, base) : null;
 }
 
 // Shopify exposes clean product data at /products/<handle>.json.
@@ -153,20 +190,28 @@ async function tryShopify(url: URL): Promise<Partial<ScrapedPage> | null> {
 
 export async function scrapePage(rawUrl: string): Promise<ScrapedPage> {
   const url = parsePublicUrl(rawUrl);
-  const html = await fetchText(url, "text/html,application/xhtml+xml").catch(() => null);
+  const html = await fetchText(url, "text/html,application/xhtml+xml").catch(
+    () => null,
+  );
   if (!html) {
-    throw new UserError("We couldn't open that page. Check the link and try again.");
+    throw new UserError(
+      "We couldn't open that page. Check the link and try again.",
+    );
   }
 
   const product = findJsonLdProduct(html);
   const shopify = await tryShopify(url);
 
-  const offers = Array.isArray(product?.offers) ? product?.offers[0] : product?.offers;
+  const offers = Array.isArray(product?.offers)
+    ? product?.offers[0]
+    : product?.offers;
   const ldImages = !product?.image
     ? []
     : typeof product.image === "string"
       ? [product.image]
-      : product.image.flatMap((i) => (typeof i === "string" ? [i] : i.url ? [i.url] : []));
+      : product.image.flatMap((i) =>
+          typeof i === "string" ? [i] : i.url ? [i.url] : [],
+        );
 
   const images = [
     ...(shopify?.imageUrls ?? []),
@@ -186,7 +231,10 @@ export async function scrapePage(rawUrl: string): Promise<ScrapedPage> {
       html.match(/<title[^>]*>([^<]*)<\/title>/i)?.[1]?.trim() ??
       null,
     description:
-      shopify?.description ?? product?.description ?? meta(html, "og:description") ?? meta(html, "description"),
+      shopify?.description ??
+      product?.description ??
+      meta(html, "og:description") ??
+      meta(html, "description"),
     price:
       shopify?.price ??
       (offers?.price != null
@@ -194,5 +242,10 @@ export async function scrapePage(rawUrl: string): Promise<ScrapedPage> {
         : null),
     imageUrls: [...new Set(images)].slice(0, 8),
     text: visibleText(html),
+    themeColor: (() => {
+      const c = meta(html, "theme-color");
+      return c && /^#[0-9a-fA-F]{6}$/.test(c) ? c.toLowerCase() : null;
+    })(),
+    logoUrl: findLogo(html, url),
   };
 }

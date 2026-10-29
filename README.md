@@ -8,7 +8,7 @@ Stack: Next.js 16 (App Router, Cache Components) · Supabase (Postgres, Auth, St
 
 1. **Install:** `npm install`
 2. **Environment:** copy `.env.example` to `.env.local` and fill in the Supabase URL and keys (Supabase > Project Settings > API Keys).
-3. **Database:** in Supabase > SQL Editor, paste and run `supabase/migrations/0001_init.sql`. It creates the tables, Row Level Security policies, the signup trigger that gives each new user a workspace, and the private `creatives` storage bucket.
+3. **Database:** in Supabase > SQL Editor, paste and run `supabase/migrations/0001_init.sql`. It creates the tables, Row Level Security policies, the signup trigger that gives each new user a workspace, and the private `creatives` storage bucket. Then run the later files in order (`0002_generation.sql`, `0003_brand_kit.sql`, ...), each once.
 4. **Auth redirect URLs:** in Supabase > Authentication > URL Configuration, set Site URL to your production URL and add `http://localhost:3000/**` and `https://*.vercel.app/**` to Redirect URLs.
 5. **Run:** `npm run dev` and open http://localhost:3000.
 
