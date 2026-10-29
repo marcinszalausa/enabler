@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Analytics } from "@vercel/analytics/next";
 import { THEME_BY_TIME } from "@/lib/theme";
 
 const geistSans = Geist({
@@ -44,12 +43,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_BY_TIME }} />
       </head>
-      <body className="min-h-full flex flex-col">
-        {children}
-        {/* Cookie-free page views; shows nothing until Web Analytics is
-            turned on for the project in Vercel. */}
-        <Analytics />
-      </body>
+      <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );
 }
