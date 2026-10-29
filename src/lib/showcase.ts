@@ -53,7 +53,8 @@ type Row = {
   }[];
 };
 
-// Real, unedited runs the team chose to show, oldest pick first.
+// Real, unedited runs the team chose to show, oldest pick first. A product
+// shown more than once keeps only its newest run, so a redo replaces it.
 export async function getShowcase(): Promise<ShowcaseRun[]> {
   "use cache";
   cacheTag(SHOWCASE_TAG);
@@ -70,29 +71,35 @@ export async function getShowcase(): Promise<ShowcaseRun[]> {
     .order("showcased_at")
     .returns<Row[]>();
 
-  return (data ?? [])
-    .filter((g) => g.products && g.creatives.length > 0)
-    .map((g) => {
-      const product = g.products!;
-      const lastSaved = Math.max(
-        ...g.creatives.map((c) => Date.parse(c.created_at)),
-      );
-      const seconds = Math.round((lastSaved - Date.parse(g.created_at)) / 1000);
-      return {
-        id: g.id,
-        productName: product.brand_brief?.product_name ?? product.name ?? "",
-        productUrl: product.url,
-        store: new URL(product.url).hostname.replace(/^www\./, ""),
-        summary: product.brand_brief?.summary ?? "",
-        audience: product.brand_brief?.audience ?? "",
-        seconds: seconds > 0 && seconds < 3600 ? seconds : null,
-        ads: g.creatives.map((c) => ({
-          id: c.id,
-          aspect: c.aspect === "9:16" ? "9:16" : "1:1",
-          angle: c.angle ?? "",
-          headline: c.headline ?? "",
-          primaryText: c.primary_text ?? "",
-        })),
-      };
-    });
+  // Runs come oldest first, so a later run of the same product replaces the
+  // earlier one (keeping the product's place in the order).
+  const newestPerProduct = new Map<string, Row>();
+  for (const g of data ?? []) {
+    if (g.products && g.creatives.length > 0)
+      newestPerProduct.set(g.products.url, g);
+  }
+
+  return [...newestPerProduct.values()].map((g) => {
+    const product = g.products!;
+    const lastSaved = Math.max(
+      ...g.creatives.map((c) => Date.parse(c.created_at)),
+    );
+    const seconds = Math.round((lastSaved - Date.parse(g.created_at)) / 1000);
+    return {
+      id: g.id,
+      productName: product.brand_brief?.product_name ?? product.name ?? "",
+      productUrl: product.url,
+      store: new URL(product.url).hostname.replace(/^www\./, ""),
+      summary: product.brand_brief?.summary ?? "",
+      audience: product.brand_brief?.audience ?? "",
+      seconds: seconds > 0 && seconds < 3600 ? seconds : null,
+      ads: g.creatives.map((c) => ({
+        id: c.id,
+        aspect: c.aspect === "9:16" ? "9:16" : "1:1",
+        angle: c.angle ?? "",
+        headline: c.headline ?? "",
+        primaryText: c.primary_text ?? "",
+      })),
+    };
+  });
 }
