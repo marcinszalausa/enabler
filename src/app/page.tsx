@@ -11,6 +11,10 @@ import { AngleExplorer, type AngleAd } from "./_landing/angle-explorer";
 import { HeroStage } from "./_landing/hero-stage";
 import { RunDemo, type DemoRun } from "./_landing/run-demo";
 import { Reveal } from "./_landing/reveal";
+import { Placements, type PlacementAd } from "./_landing/placements";
+import { StickyCta } from "./_landing/sticky-cta";
+import { Spotlight } from "./_landing/spotlight";
+import { BeforeAfter } from "./_landing/before-after";
 
 export const metadata = {
   title: "Gooidy · Ads from a single link",
@@ -88,23 +92,27 @@ export default async function Home() {
   // Side phones show other ads than the one the middle phone opens on.
   const sides = images.length > 2 ? images.slice(-2) : [];
   const run = runs[0];
+  const pictured = runs.find((r) => r.productImage);
   return (
     <div className="landing flex flex-1 flex-col bg-bg text-fg">
       <Nav />
       <main className="flex-1">
         <Hero feed={feed} left={sides[0]} right={sides[1]} />
         <WorksWith />
+        {pictured && <FromPhoto run={pictured} />}
         {run ? <HowItWorksLive run={run} /> : <HowItWorks />}
         {videos.length > 0 && <VideoAds ads={videos} />}
         {run && <Angles run={run} />}
+        {run && <WhereItRuns run={run} />}
         {runs.length > 0 && <Examples runs={runs} />}
         <Features run={run} />
-        <Compare />
         <Pricing />
         <Faq />
         <FinalCta />
       </main>
       <Footer />
+      <StickyCta />
+      <Spotlight />
       <Reveal />
     </div>
   );
@@ -274,40 +282,46 @@ function Angles({ run }: { run: ShowcaseRun }) {
   );
 }
 
-const COMPARE = [
-  ["Time to first ads", "1–2 weeks", "Hours", "About 2 minutes"],
-  ["Cost for 10 ads", "$500+", "Your evening", "Included in your plan"],
-  ["New angles to test", "Extra fee", "Hard", "Every run"],
-  ["Sizes for every feed", "Extra fee", "Manual resizing", "Automatic"],
-];
-
-function Compare() {
+// The store's own product photo next to the ads Gooidy made from it.
+function FromPhoto({ run }: { run: ShowcaseRun }) {
+  const ads = run.ads
+    .filter((a) => a.aspect === "9:16")
+    .slice(0, 3)
+    .map((a) => ({ image: image(a.id), alt: a.headline }));
+  if (!run.productImage || ads.length === 0) return null;
   return (
-    <section className="reveal mx-auto max-w-4xl px-4 pb-20">
-      <SectionHeading title="How Gooidy compares" />
-      <div className="mt-10 overflow-x-auto rounded-2xl border border-line">
-        <table className="w-full min-w-[560px] text-left text-sm">
-          <thead>
-            <tr className="border-b border-line bg-surface">
-              <th className="px-5 py-4 font-medium text-muted"></th>
-              <th className="px-5 py-4 font-medium text-muted">Agency</th>
-              <th className="px-5 py-4 font-medium text-muted">
-                Do it yourself
-              </th>
-              <th className="px-5 py-4 font-semibold text-accent">Gooidy</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-line">
-            {COMPARE.map(([label, agency, diy, us]) => (
-              <tr key={label}>
-                <td className="px-5 py-4 font-medium">{label}</td>
-                <td className="px-5 py-4 text-muted">{agency}</td>
-                <td className="px-5 py-4 text-muted">{diy}</td>
-                <td className="px-5 py-4 font-medium">{us}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+    <BeforeAfter
+      photo={run.productImage}
+      name={run.productName}
+      url={run.productUrl}
+      madeIn={run.seconds ? duration(run.seconds) : undefined}
+      ads={ads}
+    />
+  );
+}
+
+// One real ad from the run, shown inside each app it runs in.
+function WhereItRuns({ run }: { run: ShowcaseRun }) {
+  const story = run.ads.find((a) => a.aspect === "9:16");
+  const square = run.ads.find((a) => a.aspect === "1:1");
+  if (!story || !square) return null;
+  const ad: PlacementAd = {
+    story: { image: image(story.id), alt: story.headline },
+    square: {
+      image: image(square.id),
+      alt: square.headline,
+      primaryText: square.primaryText,
+    },
+    store: run.store,
+  };
+  return (
+    <section className="reveal mx-auto max-w-6xl px-4 pb-24">
+      <SectionHeading
+        title="See it where it runs"
+        sub="The same run, sized and ready for every app your customers scroll."
+      />
+      <div className="mt-14">
+        <Placements ad={ad} />
       </div>
     </section>
   );
@@ -452,7 +466,8 @@ function VideoAds({ ads }: { ads: FeedAd[] }) {
           <div className="phone-halo" aria-hidden />
           <PhoneFeed
             ads={ads}
-            sizes="(min-width: 40rem) 280px, 245px"
+            sizes="(min-width: 40rem) 300px, 260px"
+            bare
             className="w-[260px] sm:w-[300px]"
           />
         </div>
@@ -463,7 +478,7 @@ function VideoAds({ ads }: { ads: FeedAd[] }) {
           </h2>
           <p className="mx-auto mt-3 max-w-lg text-lg text-muted lg:mx-0">
             The same link makes vertical video ads for Reels and TikTok. Tap the
-            speaker on the phone to hear one.
+            speaker to hear one.
           </p>
           <ul className="mx-auto mt-8 max-w-lg space-y-5 text-left lg:mx-0">
             {VIDEO_POINTS.map((p) => (
@@ -489,16 +504,14 @@ function VideoAds({ ads }: { ads: FeedAd[] }) {
 // What every run includes, each shown rather than told. Real run data where
 // there is a run to show.
 function Features({ run }: { run?: ShowcaseRun }) {
-  const story = run?.ads.find((a) => a.aspect === "9:16");
-  const square = run?.ads.find((a) => a.aspect === "1:1");
   return (
     <section className="reveal mx-auto max-w-6xl px-4 pb-24">
       <SectionHeading
         title="Everything a good ad needs"
         sub="Gooidy handles the parts that usually take a designer, a copywriter and an afternoon."
       />
-      <div className="mt-14 grid gap-5 md:grid-cols-6">
-        <div className="edge p-7 md:col-span-4">
+      <div className="stagger mt-14 grid gap-5 md:grid-cols-6">
+        <div className="edge spot lift p-7 md:col-span-4">
           <h3 className="text-lg font-medium">Brand brief from your site</h3>
           <p className="mt-1.5 text-sm text-muted">
             Gooidy reads your page and works out who it&apos;s for and why they
@@ -516,36 +529,7 @@ function Features({ run }: { run?: ShowcaseRun }) {
           )}
         </div>
 
-        <div className="edge p-7 md:col-span-2">
-          <h3 className="text-lg font-medium">Every placement</h3>
-          <p className="mt-1.5 text-sm text-muted">
-            9:16 for Reels, Stories, TikTok and Shorts. 1:1 for the feed.
-          </p>
-          <div className="mt-6 flex items-end justify-center gap-3">
-            {story && (
-              <Image
-                src={image(story.id)}
-                alt=""
-                width={1080}
-                height={1920}
-                sizes="96px"
-                className="aspect-[9/16] w-24 rounded-lg border border-line object-cover"
-              />
-            )}
-            {square && (
-              <Image
-                src={image(square.id)}
-                alt=""
-                width={1080}
-                height={1080}
-                sizes="96px"
-                className="aspect-square w-24 rounded-lg border border-line object-cover"
-              />
-            )}
-          </div>
-        </div>
-
-        <div className="edge p-7 md:col-span-2">
+        <div className="edge spot lift p-7 md:col-span-2">
           <h3 className="text-lg font-medium">Your brand kit</h3>
           <p className="mt-1.5 text-sm text-muted">
             Set your logo, button color and font once. Every ad follows it.
@@ -562,7 +546,7 @@ function Features({ run }: { run?: ShowcaseRun }) {
           </div>
         </div>
 
-        <div className="edge p-7 md:col-span-4">
+        <div className="edge spot lift p-7 md:col-span-6">
           <h3 className="text-lg font-medium">
             A voice in your buyer&apos;s language
           </h3>
@@ -597,11 +581,11 @@ function Pricing() {
           title="Simple pricing"
           sub="Start free. Upgrade when you need more ads."
         />
-        <div className="mt-12 grid gap-6 md:grid-cols-3">
+        <div className="stagger mt-12 grid gap-6 md:grid-cols-3">
           {PLANS.map((plan) => (
             <div
               key={plan.name}
-              className={`flex flex-col p-7 ${
+              className={`spot lift flex flex-col p-7 ${
                 plan.featured
                   ? "edge shadow-[0_30px_80px_-30px_var(--t-accent)] md:-my-3 md:py-10"
                   : "rounded-2xl border border-line bg-raised"

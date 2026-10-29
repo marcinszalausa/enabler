@@ -45,7 +45,7 @@ export function VideoAdForm({
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="rounded-lg border border-line-strong bg-raised px-4 py-2 font-medium transition hover:border-accent hover:text-accent"
+        className="rounded-xl border border-line-strong bg-raised px-4 py-2.5 font-medium transition hover:border-accent hover:text-accent"
       >
         {label} ({cost} credits)
       </button>

@@ -10,7 +10,7 @@ export function ProductUrlForm({ defaultUrl }: { defaultUrl: string }) {
 
   return (
     <form action={action} className="flex flex-col gap-2">
-      <label htmlFor="url" className="text-sm font-medium">
+      <label htmlFor="url" className="sr-only">
         Product or website link
       </label>
       <div className="flex flex-col gap-2 sm:flex-row">
@@ -22,12 +22,12 @@ export function ProductUrlForm({ defaultUrl }: { defaultUrl: string }) {
           required
           defaultValue={defaultUrl}
           placeholder="https://yourstore.com/products/..."
-          className="flex-1 rounded-md border border-line-strong bg-raised px-3 py-2 outline-none transition focus:border-accent focus:ring-4 focus:ring-accent/20"
+          className="min-w-0 flex-1 rounded-xl border border-line-strong bg-bg px-4 py-3 shadow-sm outline-none transition placeholder:text-muted focus:border-accent focus:ring-4 focus:ring-accent/20"
         />
         <button
           type="submit"
           disabled={pending}
-          className="btn-primary rounded-lg px-4 py-2 font-medium"
+          className="btn-primary rounded-xl px-6 py-3 font-medium"
         >
           {pending ? "Reading page…" : "Add product"}
         </button>

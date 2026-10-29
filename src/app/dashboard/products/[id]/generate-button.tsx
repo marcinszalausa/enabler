@@ -23,7 +23,7 @@ export function GenerateButton({
       <button
         type="submit"
         disabled={pending}
-        className="btn-primary rounded-lg px-4 py-2 font-medium"
+        className="btn-primary rounded-xl px-4 py-2.5 font-medium"
       >
         {pending ? "Starting…" : `Generate 5 image ads (${cost} credits)`}
       </button>

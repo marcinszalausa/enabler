@@ -30,6 +30,8 @@ export type ShowcaseRun = {
   store: string;
   summary: string;
   audience: string;
+  // The product photo from the store page that the ads were made from.
+  productImage: string | null;
   // Seconds from clicking Generate to the last ad saved.
   seconds: number | null;
   ads: ShowcaseAd[];
@@ -41,6 +43,7 @@ type Row = {
   products: {
     name: string | null;
     url: string;
+    image_urls: string[] | null;
     brand_brief: BrandBrief | null;
   } | null;
   creatives: {
@@ -68,7 +71,7 @@ export async function getShowcase(
   const { data } = await createAdminClient()
     .from("generations")
     .select(
-      "id, created_at, products(name, url, brand_brief), creatives(id, kind, aspect, angle, headline, primary_text, created_at)",
+      "id, created_at, products(name, url, image_urls, brand_brief), creatives(id, kind, aspect, angle, headline, primary_text, created_at)",
     )
     .not("showcased_at", "is", null)
     .eq("status", "succeeded")
@@ -99,6 +102,7 @@ export async function getShowcase(
       store: new URL(product.url).hostname.replace(/^www\./, ""),
       summary: product.brand_brief?.summary ?? "",
       audience: product.brand_brief?.audience ?? "",
+      productImage: product.image_urls?.[0] ?? null,
       seconds: seconds > 0 && seconds < 3600 ? seconds : null,
       ads: g.creatives.map((c) => ({
         id: c.id,
