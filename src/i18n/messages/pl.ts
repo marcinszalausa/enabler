@@ -2,12 +2,12 @@ import type { Messages } from ".";
 
 export const pl: Messages = {
   meta: {
-    title: "Gooidy · Reklamy z jednego linku",
+    title: "Gooidy · Rozwijaj swój biznes z jednego linku",
     description:
-      "Wklej link do produktu, a Gooidy w około dwie minuty przygotuje gotowe reklamy na TikToka, Instagrama i Facebooka. Zacznij za darmo.",
+      "Rozwijaj swoją małą firmę z Gooidy. Wklej link do produktu i otrzymaj reklamy graficzne i wideo, które przyciągają nowych klientów, gotowe na TikToka, Instagrama i Facebooka w kilka minut. Zacznij za darmo.",
     useCasesTitle: "Prawdziwe przykłady · Gooidy",
     useCasesDescription:
-      "Prawdziwe, nieedytowane reklamy, które Gooidy stworzyło z prawdziwych linków do produktów. Zobacz każdy pomysł i format, a potem wypróbuj za darmo na swoim sklepie.",
+      "Prawdziwe, nieedytowane reklamy, które Gooidy stworzyło z prawdziwych linków do produktów. Zobacz, jak jeden link staje się kampanią, a potem wypróbuj za darmo na swoim sklepie.",
     signInTitle: "Logowanie · Gooidy",
     dashboardTitle: "Panel · Gooidy",
     brandTitle: "Identyfikacja marki · Gooidy",
@@ -30,18 +30,18 @@ export const pl: Messages = {
   urlForm: {
     label: "Link do produktu lub sklepu",
     placeholder: "Wklej link do produktu lub sklepu",
-    submit: "Twórz reklamy",
+    submit: "Zacznij rosnąć",
   },
   footer: {
     tagline:
-      "Reklamy graficzne i wideo z jednego linku do produktu, stworzone dla małych firm.",
+      "Pomagamy małym firmom rosnąć dzięki reklamom graficznym i wideo tworzonym z jednego linku.",
     product: "Produkt",
     account: "Konto",
     legal: "Informacje prawne",
     privacy: "Prywatność",
     terms: "Regulamin",
   },
-  stickyCta: "Twórz reklamy za darmo",
+  stickyCta: "Zacznij rosnąć za darmo",
   angles: {
     pain: {
       name: "Problem",
@@ -65,43 +65,43 @@ export const pl: Messages = {
     },
   },
   home: {
-    badge: "Reklamy graficzne i wideo dla małych firm",
-    titleLine1: "Reklamy, które sprzedają,",
+    badge: "Wzrost dla małych firm, z pomocą AI",
+    titleLine1: "Rozwijaj swój biznes,",
     titleBefore: "z jednego ",
     titleWord: "linku",
     titleAfter: ".",
     intro:
-      "Wklej stronę produktu. Gooidy napisze teksty, zaprojektuje reklamy, nakręci krótkie filmy z lektorem i dopasuje wszystko do TikToka, Instagrama i Facebooka.",
+      "Wklej stronę swojego produktu. Gooidy sprawdza, kto u Ciebie kupuje i dlaczego, a potem tworzy reklamy graficzne i wideo, które przyprowadzają nowych klientów do Twojego sklepu.",
     facts: [
       "Za darmo na start, bez karty",
-      "5 pomysłów w każdej serii",
-      "9:16 i 1:1",
+      "Reklamy graficzne i wideo",
+      "5 sposobów na sprzedaż w każdej serii",
       "Reklamy w {count} językach",
     ],
     worksWith: "Działa z każdym sklepem internetowym",
-    anglesTitle: "Jeden produkt, wiele sposobów, by go sprzedać",
+    anglesTitle: "Jeden produkt, wiele powodów, by go kupić",
     anglesSub:
-      "Każda seria próbuje różnych podejść. To prawdziwe reklamy do feedu, które Gooidy stworzyło z jednego linku do {store}.",
-    whereTitle: "Zobacz, gdzie się wyświetla",
+      "Ludzie kupują z różnych powodów, więc każda seria sprawdza kilka z nich. To prawdziwe reklamy, które Gooidy stworzyło z jednego linku {store}.",
+    whereTitle: "Bądź tam, gdzie przewijają Twoi klienci",
     whereSub:
       "Ta sama seria, w formatach gotowych dla każdej aplikacji, którą przeglądają Twoi klienci.",
-    liveTitle: "Jeden link na wejściu. Kampania na wyjściu.",
+    liveTitle: "Wklej jeden link. Dostań kampanię, która sprzedaje.",
     liveSub:
       "To prawdziwa seria Gooidy odtworzona krok po kroku: link, to, co Gooidy wyczytało ze strony, napisane pomysły i gotowe reklamy.",
     howTitle: "Jak to działa",
-    howSub: "Od linku do gotowych reklam w trzech krokach.",
+    howSub: "Od linku do produktu do reklam, które docierają do nowych kupujących, w trzech krokach.",
     steps: [
       {
         title: "Wklej link",
         body: "Dodaj stronę produktu lub swój sklep. Gooidy sprawdzi, co sprzedajesz, dla kogo i dlaczego ludzie to kupują.",
       },
       {
-        title: "Odbierz reklamy",
-        body: "Pięć pomysłów na reklamy z nagłówkami, tekstami i grafikami, w formacie pionowym i kwadratowym, z Twoim logo i kolorami.",
+        title: "Dostań reklamy, które sprzedają",
+        body: "Pięć powodów, dla których ludzie kupują, każdy z nagłówkami, tekstem i grafikami w formacie pionowym i kwadratowym, z Twoim logo i kolorami.",
       },
       {
-        title: "Publikuj",
-        body: "Pobierz te, które Ci się podobają, i uruchom je na TikToku, Instagramie i Facebooku. Bezpośrednia publikacja już wkrótce.",
+        title: "Docieraj do większej liczby kupujących",
+        body: "Publikuj je na TikToku, Instagramie i Facebooku i zdobywaj nowych klientów. Publikowanie, planowanie i promowanie prosto z Gooidy już wkrótce.",
       },
     ],
     examplesTitle: "Stworzone do feedu",
@@ -127,9 +127,9 @@ export const pl: Messages = {
       },
     ],
     videoFormat: "Wideo {seconds} s z lektorem",
-    featuresTitle: "Wszystko, czego potrzebuje dobra reklama",
+    featuresTitle: "Wszystko, czego potrzebujesz, by rosnąć",
     featuresSub:
-      "Gooidy zajmuje się tym, co zwykle wymaga grafika, copywritera i całego popołudnia.",
+      "Gooidy wykonuje pracę, która zwykle wymaga grafika, copywritera i całego popołudnia, a Ty możesz zająć się prowadzeniem firmy.",
     briefTitle: "Opis marki z Twojej strony",
     briefBody:
       "Gooidy czyta Twoją stronę i ustala, dla kogo jest produkt i dlaczego ludzie go kupują.",
@@ -137,12 +137,12 @@ export const pl: Messages = {
     kitTitle: "Twoja identyfikacja marki",
     kitBody:
       "Ustaw logo, kolor przycisku i czcionkę raz. Każda reklama będzie ich używać.",
-    languagesTitle: "Reklamy w języku Twoich klientów",
+    languagesTitle: "Sprzedawaj w języku swoich klientów",
     languagesBody:
-      "Każda reklama jest pisana w wybranym przez Ciebie języku tak, jak napisałby ją ktoś stamtąd, a reklamy wideo mówią w nim, z pasującymi napisami.",
-    pricingTitle: "Prosty cennik",
+      "Każda reklama jest pisana w wybranym języku, tak jak napisałby ją ktoś stamtąd, więc możesz sprzedawać poza swoim rynkiem. Reklamy wideo też mówią w tym języku, z pasującymi napisami.",
+    pricingTitle: "Proste ceny, które rosną razem z Tobą",
     pricingSub:
-      "Zacznij za darmo. Przejdź na wyższy plan, gdy potrzebujesz więcej reklam.",
+      "Zacznij za darmo. Zmień plan, gdy Twój biznes rośnie.",
     popular: "Popularny",
     perMonth: " / mies.",
     plans: [
@@ -181,6 +181,10 @@ export const pl: Messages = {
         a: "Linku do produktu lub sklepu. Gooidy działa z Shopify, WooCommerce, Wix, Squarespace i większością sklepów internetowych.",
       },
       {
+        q: "Jak Gooidy pomaga rozwijać mój biznes?",
+        a: "Reklamy to sposób, w jaki większość małych sklepów zdobywa nowych klientów w internecie, ale dobre reklamy kosztują czas i pieniądze. Gooidy zamienia jeden link w świeże reklamy w stylu Twojej marki, sprawdza różne powody zakupu, abyś mógł przetestować, co działa w Twoim sklepie, i mówi do kupujących w {count} językach. Następne w kolejce: publikowanie i promowanie jednym kliknięciem.",
+      },
+      {
         q: "Czym jest kredyt?",
         a: "Jeden kredyt to jedna grafika reklamowa. Każda seria tworzy pięć reklam w dwóch formatach, więc zużywa 10 kredytów.",
       },
@@ -194,18 +198,18 @@ export const pl: Messages = {
       },
       {
         q: "Gdzie mogę używać tych reklam?",
-        a: "Wszędzie, gdzie się reklamujesz: na TikToku, Instagramie, Facebooku, YouTube Shorts i nie tylko.",
+        a: "Wszędzie, gdzie się reklamujesz: TikTok, Instagram, Facebook, YouTube Shorts i więcej. Publikowanie, planowanie i promowanie prosto z Gooidy już wkrótce.",
       },
       {
         q: "Czy mogę zrezygnować w każdej chwili?",
         a: "Tak. Plany są miesięczne, a dostęp zachowujesz do końca opłaconego okresu.",
       },
     ],
-    finalTitle: "Twoje kolejne reklamy są o jeden link stąd",
+    finalTitle: "Twoi następni klienci są o jeden link stąd",
     finalSub: "100 darmowych kredytów. Bez karty kredytowej.",
   },
   beforeAfter: {
-    title: "Od jednego zdjęcia produktu do reklam, które sprzedają",
+    title: "Od jednego zdjęcia produktu do reklam, które przyciągają kupujących",
     sub: "Po lewej zdjęcie z {store}. Po prawej reklamy, które Gooidy z niego stworzyło, bez edycji.",
     before: "Przed: strona produktu",
     after: "Po: {count} reklamy z tej serii",
@@ -253,7 +257,7 @@ export const pl: Messages = {
     statLinks: "Linki do produktów",
     statAds: "Stworzone reklamy",
     statPer: "Na link",
-    tryTitle: "Teraz wypróbuj swój sklep",
+    tryTitle: "Teraz rozwiń swój sklep",
     tryBody:
       "Wklej link do produktu. Dostaniesz 5 pomysłów w formatach do feedu i stories, z gotowym tekstem reklamy. Pierwsze serie są za darmo.",
     worksWith: "Działa z Shopify, WooCommerce i większością stron produktów.",
@@ -316,12 +320,12 @@ export const pl: Messages = {
     credits: "Kredyty: {count}",
     plan: "· plan {plan}",
     creditsLeft: "Pozostałe kredyty: {count}",
-    addTitle: "Twórz reklamy z linku do produktu",
+    addTitle: "Dodaj produkt do promowania",
     addBody:
       "Wklej stronę produktu. Gooidy ją przeczyta, napisze opis marki i przygotuje wszystko do reklam.",
     noProducts: "Nie masz jeszcze produktów",
     noProductsBody:
-      "Wklej link do produktu powyżej. Za około dwie minuty będziesz mieć pierwsze pięć reklam.",
+      "Wklej powyżej link do produktu. W około dwie minuty będziesz mieć pierwsze pięć reklam, gotowych przyciągać nowych klientów.",
     urlLabel: "Link do produktu lub strony",
     reading: "Czytam stronę…",
     addProduct: "Dodaj produkt",
@@ -351,6 +355,8 @@ export const pl: Messages = {
     native: "Natywny",
     energy: "Energia",
     person: "Osoba w kadrze",
+    length: "Długość",
+    lengthHelp: "7–15 s pasuje do Reels i Stories, 20–30 s do TikToka.",
     genders: { female: "Kobiecy", male: "Męski" },
     energies: { calm: "Spokojna", upbeat: "Pogodna", high: "Dużo energii" },
     people: {
@@ -366,7 +372,7 @@ export const pl: Messages = {
     makingVideos: "Tworzę Twoje reklamy wideo…",
     makingImages: "Generuję Twoje reklamy…",
     makingVideosBody:
-      "Piszę scenariusze ({count}), przygotowuję dwa ujęcia na reklamę, nagrywam lektora i muzykę, a potem filmuję i montuję. Zwykle trwa to 4–8 minut; ta strona odświeża się sama. Jeśli wyjdziesz, filmy będą gotowe, gdy wrócisz.",
+      "Piszę scenariusze ({count}), przygotowuję ujęcia do każdej reklamy, nagrywam lektora i muzykę, a potem filmuję i montuję. Zwykle trwa to 4–8 minut; ta strona odświeża się sama. Jeśli wyjdziesz, filmy będą gotowe, gdy wrócisz.",
     makingImagesBody:
       "Piszę teksty i tworzę 10 grafik. Zwykle trwa to 2–3 minuty; ta strona odświeża się sama.",
     failed: "Ta seria się nie udała, a kredyty zostały zwrócone.",

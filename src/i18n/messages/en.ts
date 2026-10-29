@@ -3,12 +3,12 @@
 
 export const en = {
   meta: {
-    title: "Gooidy · Ads from a single link",
+    title: "Gooidy · Grow your business from a single link",
     description:
-      "Paste a product link and Gooidy creates ready-to-run ads for TikTok, Instagram and Facebook in about two minutes. Start free.",
+      "Grow your small business with Gooidy. Paste a product link and get image and video ads that bring in new customers, ready for TikTok, Instagram and Facebook in minutes. Start free.",
     useCasesTitle: "Real examples · Gooidy",
     useCasesDescription:
-      "Real, unedited ads Gooidy made from real product links. See every angle and size, then try it on your own store for free.",
+      "Real, unedited ads Gooidy made from real product links. See how one link becomes a campaign, then try it free on your own store.",
     signInTitle: "Sign in · Gooidy",
     dashboardTitle: "Dashboard · Gooidy",
     brandTitle: "Brand kit · Gooidy",
@@ -31,18 +31,18 @@ export const en = {
   urlForm: {
     label: "Your product or store link",
     placeholder: "Paste your product or store link",
-    submit: "Create ads",
+    submit: "Start growing",
   },
   footer: {
     tagline:
-      "Image and video ads from a single product link, made for small businesses.",
+      "Helping small businesses grow with image and video ads made from a single link.",
     product: "Product",
     account: "Account",
     legal: "Legal",
     privacy: "Privacy",
     terms: "Terms",
   },
-  stickyCta: "Create ads free",
+  stickyCta: "Start growing free",
   angles: {
     pain: {
       name: "Pain point",
@@ -66,43 +66,43 @@ export const en = {
     },
   },
   home: {
-    badge: "Image and video ads for small businesses",
-    titleLine1: "Ads that sell,",
+    badge: "Growth for small businesses, powered by AI",
+    titleLine1: "Grow your business,",
     titleBefore: "from a single ",
     titleWord: "link",
     titleAfter: ".",
     intro:
-      "Paste your product page. Gooidy writes the copy, designs the ads, films short videos with a voiceover and sizes everything for TikTok, Instagram and Facebook.",
+      "Paste your product page. Gooidy learns who buys from you and why, then makes the image and video ads that bring new customers to your store.",
     facts: [
       "Free to start, no card",
-      "5 angles per run",
-      "9:16 and 1:1",
+      "Image and video ads",
+      "5 ways to sell per run",
       "Ads in {count} languages",
     ],
     worksWith: "Works with any online store",
-    anglesTitle: "One product, many ways to sell it",
+    anglesTitle: "One product, many reasons to buy",
     anglesSub:
-      "Every run tries different angles. These are the real feed ads Gooidy made from one {store} link.",
-    whereTitle: "See it where it runs",
+      "People buy for different reasons, so every run tries several. These are the real feed ads Gooidy made from one {store} link.",
+    whereTitle: "Show up where your customers scroll",
     whereSub:
-      "The same run, sized and ready for every app your customers scroll.",
-    liveTitle: "One link in. A campaign out.",
+      "The same run, sized and ready for every app they use.",
+    liveTitle: "Paste one link. Get a campaign that sells.",
     liveSub:
       "This is a real Gooidy run, played back step by step: the link, what Gooidy read from the page, the angles it wrote and the ads it made.",
     howTitle: "How it works",
-    howSub: "From link to ready-to-run ads in three steps.",
+    howSub: "From your product link to ads that reach new buyers, in three steps.",
     steps: [
       {
         title: "Paste a link",
         body: "Add a product page or your store. Gooidy reads what you sell, who it's for and why people buy it.",
       },
       {
-        title: "Get your ads",
-        body: "Five ad ideas with headlines, copy and images, in vertical and square sizes, using your logo and colors.",
+        title: "Get ads that sell",
+        body: "Five reasons people buy, each with headlines, copy and images in vertical and square sizes, using your logo and colors.",
       },
       {
-        title: "Publish",
-        body: "Download the ones you like and run them on TikTok, Instagram and Facebook. Direct publishing is coming soon.",
+        title: "Reach more buyers",
+        body: "Run them on TikTok, Instagram and Facebook to win new customers. Publishing, scheduling and boosting from Gooidy are coming soon.",
       },
     ],
     examplesTitle: "Made for the feed",
@@ -127,20 +127,20 @@ export const en = {
       },
     ],
     videoFormat: "{seconds} s video with a voiceover",
-    featuresTitle: "Everything a good ad needs",
+    featuresTitle: "Everything you need to grow",
     featuresSub:
-      "Gooidy handles the parts that usually take a designer, a copywriter and an afternoon.",
+      "Gooidy does the work that usually takes a designer, a copywriter and an afternoon, so you can spend your time running the business.",
     briefTitle: "Brand brief from your site",
     briefBody:
       "Gooidy reads your page and works out who it's for and why they buy.",
     briefCaption: "Written by Gooidy from {store}",
     kitTitle: "Your brand kit",
     kitBody: "Set your logo, button color and font once. Every ad follows it.",
-    languagesTitle: "Ads in your buyer's language",
+    languagesTitle: "Sell in your buyer's language",
     languagesBody:
-      "Every ad is written in the language you pick, the way a local would write it, and video ads speak it with captions to match.",
-    pricingTitle: "Simple pricing",
-    pricingSub: "Start free. Upgrade when you need more ads.",
+      "Every ad is written in the language you pick, the way a local would write it, so you can sell beyond your home market. Video ads speak it too, with captions to match.",
+    pricingTitle: "Simple pricing that grows with you",
+    pricingSub: "Start free. Upgrade as your business grows.",
     popular: "Popular",
     perMonth: " / month",
     plans: [
@@ -175,6 +175,10 @@ export const en = {
         a: "A link to your product or store. Gooidy works with Shopify, WooCommerce, Wix, Squarespace and most online shops.",
       },
       {
+        q: "How does Gooidy help my business grow?",
+        a: "Ads are how most small shops win new customers online, but good ads take time and money. Gooidy turns a single link into fresh, on-brand ads, tries different reasons people buy so you can test what works for your shop, and speaks to buyers in {count} languages. One-click publishing and boosting are coming next.",
+      },
+      {
         q: "What is a credit?",
         a: "One credit makes one ad image. Each run makes five ads in two sizes, so it uses 10 credits.",
       },
@@ -188,18 +192,18 @@ export const en = {
       },
       {
         q: "Where can I use the ads?",
-        a: "Anywhere you advertise: TikTok, Instagram, Facebook, YouTube Shorts and more.",
+        a: "Anywhere you advertise: TikTok, Instagram, Facebook, YouTube Shorts and more. Publishing, scheduling and boosting straight from Gooidy are coming soon.",
       },
       {
         q: "Can I cancel anytime?",
         a: "Yes. Plans are month to month, and you keep access until the end of the period you paid for.",
       },
     ],
-    finalTitle: "Your next ads are one link away",
+    finalTitle: "Your next customers are one link away",
     finalSub: "100 free credits. No credit card needed.",
   },
   beforeAfter: {
-    title: "From one product photo to ads that sell",
+    title: "From one product photo to ads that bring buyers in",
     sub: "On the left is the photo on {store}. On the right are ads Gooidy made from it, unedited.",
     before: "Before: the product page",
     after: "After: {count} of the ads from that run",
@@ -247,7 +251,7 @@ export const en = {
     statLinks: "Product links",
     statAds: "Ads made",
     statPer: "Per link",
-    tryTitle: "Now try your own store",
+    tryTitle: "Now grow your own store",
     tryBody:
       "Paste a product link. You get 5 angles in feed and story sizes, with the ad text written. Your first runs are free.",
     worksWith: "Works with Shopify, WooCommerce and most product pages.",
@@ -310,12 +314,12 @@ export const en = {
     credits: "{count} credits",
     plan: "· {plan} plan",
     creditsLeft: "{count} credits left",
-    addTitle: "Make ads from a product link",
+    addTitle: "Add a product to promote",
     addBody:
       "Paste a product page. Gooidy reads it, writes a brand brief and gets it ready for ads.",
     noProducts: "No products yet",
     noProductsBody:
-      "Paste a product link above. In about two minutes you'll have your first five ads.",
+      "Paste a product link above. In about two minutes you'll have your first five ads, ready to bring in new customers.",
     urlLabel: "Product or website link",
     reading: "Reading page…",
     addProduct: "Add product",
@@ -346,6 +350,8 @@ export const en = {
     native: "Native",
     energy: "Energy",
     person: "Person on screen",
+    length: "Length",
+    lengthHelp: "7–15 s suits Reels and Stories; 20–30 s suits TikTok.",
     genders: { female: "Female", male: "Male" },
     energies: { calm: "Calm", upbeat: "Upbeat", high: "High energy" },
     people: {
@@ -361,7 +367,7 @@ export const en = {
     makingVideos: "Making your video ads…",
     makingImages: "Generating your ads…",
     makingVideosBody:
-      "Writing {count} scripts, setting up two shots per ad, recording the voiceover and music, then filming and editing. This usually takes 4–8 minutes; this page updates on its own. If you leave, the videos are finished when you come back.",
+      "Writing {count} scripts, setting up the shots for each ad, recording the voiceover and music, then filming and editing. This usually takes 4–8 minutes; this page updates on its own. If you leave, the videos are finished when you come back.",
     makingImagesBody:
       "Writing copy and creating 10 images. This usually takes 2–3 minutes; this page updates on its own.",
     failed: "This run failed, and your credits were refunded.",

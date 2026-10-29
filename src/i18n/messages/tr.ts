@@ -2,12 +2,12 @@ import type { Messages } from ".";
 
 export const tr: Messages = {
   meta: {
-    title: "Gooidy · Tek bir linkten reklamlar",
+    title: "Gooidy · Tek bir linkten işinizi büyütün",
     description:
-      "Bir ürün linki yapıştırın, Gooidy yaklaşık iki dakikada TikTok, Instagram ve Facebook için yayına hazır reklamlar oluştursun. Ücretsiz başlayın.",
+      "Küçük işletmenizi Gooidy ile büyütün. Bir ürün linki yapıştırın, yeni müşteri getiren görsel ve video reklamlar dakikalar içinde TikTok, Instagram ve Facebook için hazır olsun. Ücretsiz başlayın.",
     useCasesTitle: "Gerçek örnekler · Gooidy",
     useCasesDescription:
-      "Gooidy'nin gerçek ürün linklerinden oluşturduğu gerçek, düzenlenmemiş reklamlar. Her yaklaşımı ve boyutu görün, ardından kendi mağazanızla ücretsiz deneyin.",
+      "Gooidy'nin gerçek ürün linklerinden hazırladığı gerçek, düzenlenmemiş reklamlar. Tek bir linkin nasıl kampanyaya dönüştüğünü görün, sonra kendi mağazanızda ücretsiz deneyin.",
     signInTitle: "Giriş yap · Gooidy",
     dashboardTitle: "Panel · Gooidy",
     brandTitle: "Marka kiti · Gooidy",
@@ -30,18 +30,18 @@ export const tr: Messages = {
   urlForm: {
     label: "Ürününüzün veya mağazanızın linki",
     placeholder: "Ürününüzün veya mağazanızın linkini yapıştırın",
-    submit: "Reklam oluştur",
+    submit: "Büyümeye başla",
   },
   footer: {
     tagline:
-      "Tek bir ürün linkinden görsel ve video reklamlar, küçük işletmeler için.",
+      "Küçük işletmelerin tek bir linkten hazırlanan görsel ve video reklamlarla büyümesine yardım ediyoruz.",
     product: "Ürün",
     account: "Hesap",
     legal: "Yasal",
     privacy: "Gizlilik",
     terms: "Şartlar",
   },
-  stickyCta: "Ücretsiz reklam oluştur",
+  stickyCta: "Ücretsiz büyümeye başla",
   angles: {
     pain: {
       name: "Sorun",
@@ -65,43 +65,43 @@ export const tr: Messages = {
     },
   },
   home: {
-    badge: "Küçük işletmeler için görsel ve video reklamlar",
-    titleLine1: "Satış yapan reklamlar,",
+    badge: "Küçük işletmeler için yapay zekâ destekli büyüme",
+    titleLine1: "İşinizi büyütün,",
     titleBefore: "tek bir ",
     titleWord: "linkten",
     titleAfter: ".",
     intro:
-      "Ürün sayfanızı yapıştırın. Gooidy metinleri yazar, reklamları tasarlar, seslendirmeli kısa videolar çeker ve her şeyi TikTok, Instagram ve Facebook'a göre boyutlandırır.",
+      "Ürün sayfanızı yapıştırın. Gooidy sizden kimin ve neden aldığını anlar, ardından mağazanıza yeni müşteriler getiren görsel ve video reklamları hazırlar.",
     facts: [
       "Ücretsiz başlayın, kart gerekmez",
-      "Her çalıştırmada 5 yaklaşım",
-      "9:16 ve 1:1",
+      "Görsel ve video reklamlar",
+      "Her seferde 5 satış fikri",
       "{count} dilde reklam",
     ],
     worksWith: "Her online mağazayla çalışır",
-    anglesTitle: "Tek ürün, satmanın birçok yolu",
+    anglesTitle: "Tek ürün, satın almak için birçok neden",
     anglesSub:
-      "Her çalıştırma farklı yaklaşımlar dener. Bunlar Gooidy'nin tek bir {store} linkinden oluşturduğu gerçek akış reklamları.",
-    whereTitle: "Yayınlandığı yerde görün",
+      "İnsanlar farklı nedenlerle satın alır, bu yüzden her seferde birkaçı denenir. Bunlar Gooidy'nin tek bir {store} linkinden hazırladığı gerçek reklamlar.",
+    whereTitle: "Müşterilerinizin gezindiği yerde olun",
     whereSub:
       "Aynı çalıştırma, müşterilerinizin gezindiği her uygulama için hazır boyutlarda.",
-    liveTitle: "Bir link girer. Bir kampanya çıkar.",
+    liveTitle: "Bir link yapıştırın. Satış yapan bir kampanya alın.",
     liveSub:
       "Bu, adım adım oynatılan gerçek bir Gooidy çalıştırması: link, Gooidy'nin sayfadan okudukları, yazdığı yaklaşımlar ve oluşturduğu reklamlar.",
     howTitle: "Nasıl çalışır",
-    howSub: "Linkten yayına hazır reklamlara üç adımda.",
+    howSub: "Ürün linkinizden yeni alıcılara ulaşan reklamlara, üç adımda.",
     steps: [
       {
         title: "Bir link yapıştırın",
         body: "Bir ürün sayfası ya da mağazanızı ekleyin. Gooidy ne sattığınızı, kime sattığınızı ve insanların neden aldığını anlar.",
       },
       {
-        title: "Reklamlarınızı alın",
-        body: "Başlıkları, metinleri ve görselleriyle beş reklam fikri; dikey ve kare boyutlarda, logonuz ve renklerinizle.",
+        title: "Satış yapan reklamlar alın",
+        body: "İnsanların satın alması için beş neden; her biri başlık, metin ve dikey ile kare görsellerle, logonuz ve renklerinizle.",
       },
       {
-        title: "Yayınlayın",
-        body: "Beğendiklerinizi indirip TikTok, Instagram ve Facebook'ta yayınlayın. Doğrudan yayınlama yakında geliyor.",
+        title: "Daha çok alıcıya ulaşın",
+        body: "Yeni müşteriler kazanmak için TikTok, Instagram ve Facebook'ta yayınlayın. Doğrudan Gooidy'den yayınlama, zamanlama ve öne çıkarma çok yakında.",
       },
     ],
     examplesTitle: "Akış için yapıldı",
@@ -127,9 +127,9 @@ export const tr: Messages = {
       },
     ],
     videoFormat: "Seslendirmeli {seconds} sn video",
-    featuresTitle: "İyi bir reklamın ihtiyacı olan her şey",
+    featuresTitle: "Büyümek için ihtiyacınız olan her şey",
     featuresSub:
-      "Gooidy, normalde bir tasarımcı, bir metin yazarı ve bir öğleden sonra gerektiren işleri üstlenir.",
+      "Gooidy normalde bir tasarımcı, bir metin yazarı ve bir öğleden sonra gerektiren işi yapar, siz de zamanınızı işinize ayırırsınız.",
     briefTitle: "Sitenizden marka özeti",
     briefBody:
       "Gooidy sayfanızı okur, kime hitap ettiğini ve insanların neden aldığını çıkarır.",
@@ -137,12 +137,12 @@ export const tr: Messages = {
     kitTitle: "Marka kitiniz",
     kitBody:
       "Logonuzu, buton renginizi ve yazı tipinizi bir kez ayarlayın. Her reklam bunlara uyar.",
-    languagesTitle: "Müşterinizin dilinde reklamlar",
+    languagesTitle: "Alıcınızın dilinde satın",
     languagesBody:
-      "Her reklam, seçtiğiniz dilde, oralı birinin yazacağı gibi yazılır; video reklamlar da bu dili konuşur ve uygun altyazılar taşır.",
-    pricingTitle: "Basit fiyatlar",
+      "Her reklam seçtiğiniz dilde, oralı birinin yazacağı gibi yazılır; böylece kendi pazarınızın ötesinde satış yapabilirsiniz. Video reklamlar da bu dili konuşur, uyumlu altyazılarla.",
+    pricingTitle: "Sizinle birlikte büyüyen basit fiyatlar",
     pricingSub:
-      "Ücretsiz başlayın. Daha fazla reklama ihtiyacınız olduğunda yükseltin.",
+      "Ücretsiz başlayın. İşiniz büyüdükçe planınızı yükseltin.",
     popular: "Popüler",
     perMonth: " / ay",
     plans: [
@@ -177,6 +177,10 @@ export const tr: Messages = {
         a: "Ürününüzün ya da mağazanızın linkine. Gooidy; Shopify, WooCommerce, Wix, Squarespace ve çoğu online mağazayla çalışır.",
       },
       {
+        q: "Gooidy işimin büyümesine nasıl yardımcı olur?",
+        a: "Küçük mağazaların çoğu internette yeni müşterileri reklamlarla kazanır, ama iyi reklamlar zaman ve para ister. Gooidy tek bir linki markanıza uygun yeni reklamlara dönüştürür, mağazanız için neyin işe yaradığını test edebilmeniz için farklı satın alma nedenlerini dener ve alıcılarla {count} dilde konuşur. Sırada: tek tıkla yayınlama ve öne çıkarma.",
+      },
+      {
         q: "Kredi nedir?",
         a: "Bir kredi bir reklam görseli oluşturur. Her çalıştırma iki boyutta beş reklam oluşturur, yani 10 kredi kullanır.",
       },
@@ -190,18 +194,18 @@ export const tr: Messages = {
       },
       {
         q: "Reklamları nerede kullanabilirim?",
-        a: "Reklam verdiğiniz her yerde: TikTok, Instagram, Facebook, YouTube Shorts ve daha fazlası.",
+        a: "Reklam verdiğiniz her yerde: TikTok, Instagram, Facebook, YouTube Shorts ve daha fazlası. Doğrudan Gooidy'den yayınlama, zamanlama ve öne çıkarma çok yakında.",
       },
       {
         q: "İstediğim zaman iptal edebilir miyim?",
         a: "Evet. Planlar aylıktır ve ödediğiniz dönemin sonuna kadar erişiminiz devam eder.",
       },
     ],
-    finalTitle: "Sonraki reklamlarınız bir link uzağınızda",
+    finalTitle: "Bir sonraki müşterileriniz bir link uzağınızda",
     finalSub: "100 ücretsiz kredi. Kredi kartı gerekmez.",
   },
   beforeAfter: {
-    title: "Tek bir ürün fotoğrafından satış yapan reklamlara",
+    title: "Tek bir ürün fotoğrafından alıcı getiren reklamlara",
     sub: "Solda {store} sitesindeki fotoğraf. Sağda Gooidy'nin ondan oluşturduğu, düzenlenmemiş reklamlar.",
     before: "Önce: ürün sayfası",
     after: "Sonra: o çalıştırmadan {count} reklam",
@@ -249,7 +253,7 @@ export const tr: Messages = {
     statLinks: "Ürün linki",
     statAds: "Oluşturulan reklam",
     statPer: "Link başına",
-    tryTitle: "Şimdi kendi mağazanızla deneyin",
+    tryTitle: "Şimdi sıra kendi mağazanızı büyütmekte",
     tryBody:
       "Bir ürün linki yapıştırın. Reklam metni yazılmış halde, akış ve hikaye boyutlarında 5 yaklaşım alırsınız. İlk çalıştırmalarınız ücretsiz.",
     worksWith: "Shopify, WooCommerce ve çoğu ürün sayfasıyla çalışır.",
@@ -315,12 +319,12 @@ export const tr: Messages = {
     credits: "{count} kredi",
     plan: "· {plan} planı",
     creditsLeft: "{count} kredi kaldı",
-    addTitle: "Bir ürün linkinden reklam oluşturun",
+    addTitle: "Tanıtılacak ürün ekleyin",
     addBody:
       "Bir ürün sayfası yapıştırın. Gooidy sayfayı okur, bir marka özeti yazar ve reklamlara hazırlar.",
     noProducts: "Henüz ürün yok",
     noProductsBody:
-      "Yukarıya bir ürün linki yapıştırın. Yaklaşık iki dakika içinde ilk beş reklamınız hazır olur.",
+      "Yukarıya bir ürün linki yapıştırın. Yaklaşık iki dakika içinde yeni müşteri getirmeye hazır ilk beş reklamınız olur.",
     urlLabel: "Ürün veya web sitesi linki",
     reading: "Sayfa okunuyor…",
     addProduct: "Ürün ekle",
@@ -351,6 +355,8 @@ export const tr: Messages = {
     native: "Ana dil",
     energy: "Enerji",
     person: "Ekrandaki kişi",
+    length: "Süre",
+    lengthHelp: "7–15 sn Reels ve Stories için, 20–30 sn TikTok için uygundur.",
     genders: { female: "Kadın", male: "Erkek" },
     energies: { calm: "Sakin", upbeat: "Neşeli", high: "Yüksek enerji" },
     people: {
@@ -366,7 +372,7 @@ export const tr: Messages = {
     makingVideos: "Video reklamlarınız hazırlanıyor…",
     makingImages: "Reklamlarınız oluşturuluyor…",
     makingVideosBody:
-      "{count} senaryo yazılıyor, her reklam için iki çekim hazırlanıyor, seslendirme ve müzik kaydediliyor, ardından çekim ve kurgu yapılıyor. Genellikle 4–8 dakika sürer; bu sayfa kendiliğinden güncellenir. Ayrılırsanız döndüğünüzde videolar hazır olur.",
+      "{count} senaryo yazılıyor, her reklamın çekimleri hazırlanıyor, seslendirme ve müzik kaydediliyor, ardından çekim ve kurgu yapılıyor. Genellikle 4–8 dakika sürer; bu sayfa kendiliğinden güncellenir. Ayrılırsanız döndüğünüzde videolar hazır olur.",
     makingImagesBody:
       "Metinler yazılıyor ve 10 görsel oluşturuluyor. Genellikle 2–3 dakika sürer; bu sayfa kendiliğinden güncellenir.",
     failed: "Bu çalıştırma başarısız oldu ve kredileriniz iade edildi.",

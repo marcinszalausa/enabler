@@ -2,12 +2,12 @@ import type { Messages } from ".";
 
 export const ro: Messages = {
   meta: {
-    title: "Gooidy · Reclame dintr-un singur link",
+    title: "Gooidy · Crește-ți afacerea dintr-un singur link",
     description:
-      "Lipește linkul unui produs, iar Gooidy creează în aproximativ două minute reclame gata de publicat pe TikTok, Instagram și Facebook. Începe gratuit.",
+      "Crește-ți mica afacere cu Gooidy. Lipește linkul unui produs și primești reclame cu imagini și video care aduc clienți noi, gata pentru TikTok, Instagram și Facebook în câteva minute. Începe gratuit.",
     useCasesTitle: "Exemple reale · Gooidy",
     useCasesDescription:
-      "Reclame reale, needitate, create de Gooidy din linkuri reale de produse. Vezi fiecare abordare și format, apoi încearcă gratuit cu magazinul tău.",
+      "Reclame reale, needitate, create de Gooidy din linkuri reale de produse. Vezi cum un link devine o campanie, apoi încearcă gratuit pe propriul magazin.",
     signInTitle: "Autentificare · Gooidy",
     dashboardTitle: "Panou · Gooidy",
     brandTitle: "Kit de brand · Gooidy",
@@ -30,18 +30,18 @@ export const ro: Messages = {
   urlForm: {
     label: "Linkul produsului sau magazinului tău",
     placeholder: "Lipește linkul produsului sau magazinului tău",
-    submit: "Creează reclame",
+    submit: "Începe să crești",
   },
   footer: {
     tagline:
-      "Reclame foto și video dintr-un singur link de produs, făcute pentru afaceri mici.",
+      "Ajutăm afacerile mici să crească prin reclame cu imagini și video create dintr-un singur link.",
     product: "Produs",
     account: "Cont",
     legal: "Juridic",
     privacy: "Confidențialitate",
     terms: "Termeni",
   },
-  stickyCta: "Creează reclame gratuit",
+  stickyCta: "Începe să crești gratuit",
   angles: {
     pain: {
       name: "Problemă",
@@ -65,43 +65,43 @@ export const ro: Messages = {
     },
   },
   home: {
-    badge: "Reclame foto și video pentru afaceri mici",
-    titleLine1: "Reclame care vând,",
+    badge: "Creștere pentru afacerile mici, cu AI",
+    titleLine1: "Crește-ți afacerea,",
     titleBefore: "dintr-un singur ",
     titleWord: "link",
     titleAfter: ".",
     intro:
-      "Lipește pagina produsului. Gooidy scrie textele, creează reclamele, filmează clipuri scurte cu voce și potrivește totul pentru TikTok, Instagram și Facebook.",
+      "Lipește pagina produsului tău. Gooidy află cine cumpără de la tine și de ce, apoi creează reclamele cu imagini și video care aduc clienți noi în magazinul tău.",
     facts: [
       "Gratuit la început, fără card",
-      "5 abordări per rulare",
-      "9:16 și 1:1",
+      "Reclame cu imagini și video",
+      "5 moduri de a vinde la fiecare rulare",
       "Reclame în {count} limbi",
     ],
     worksWith: "Funcționează cu orice magazin online",
-    anglesTitle: "Un produs, multe feluri de a-l vinde",
+    anglesTitle: "Un produs, multe motive de cumpărare",
     anglesSub:
-      "Fiecare rulare încearcă abordări diferite. Acestea sunt reclamele reale pentru feed create de Gooidy dintr-un singur link {store}.",
-    whereTitle: "Vezi-o acolo unde rulează",
+      "Oamenii cumpără din motive diferite, așa că fiecare rulare încearcă mai multe. Acestea sunt reclamele reale create de Gooidy dintr-un link {store}.",
+    whereTitle: "Fii acolo unde clienții tăi derulează",
     whereSub:
       "Aceeași rulare, în formatul potrivit pentru fiecare aplicație prin care derulează clienții tăi.",
-    liveTitle: "Intră un link. Iese o campanie.",
+    liveTitle: "Lipește un link. Primește o campanie care vinde.",
     liveSub:
       "Aceasta este o rulare Gooidy reală, redată pas cu pas: linkul, ce a citit Gooidy pe pagină, abordările scrise și reclamele create.",
     howTitle: "Cum funcționează",
-    howSub: "De la link la reclame gata de publicat în trei pași.",
+    howSub: "De la linkul produsului la reclame care ajung la cumpărători noi, în trei pași.",
     steps: [
       {
         title: "Lipește un link",
         body: "Adaugă pagina unui produs sau magazinul tău. Gooidy înțelege ce vinzi, cui și de ce oamenii cumpără.",
       },
       {
-        title: "Primește reclamele",
-        body: "Cinci idei de reclame cu titluri, texte și imagini, în format vertical și pătrat, cu logo-ul și culorile tale.",
+        title: "Primește reclame care vând",
+        body: "Cinci motive pentru care oamenii cumpără, fiecare cu titluri, texte și imagini în format vertical și pătrat, cu logo-ul și culorile tale.",
       },
       {
-        title: "Publică",
-        body: "Descarcă-le pe cele care îți plac și rulează-le pe TikTok, Instagram și Facebook. Publicarea directă vine în curând.",
+        title: "Ajungi la mai mulți cumpărători",
+        body: "Rulează-le pe TikTok, Instagram și Facebook ca să câștigi clienți noi. Publicarea, programarea și promovarea direct din Gooidy vin în curând.",
       },
     ],
     examplesTitle: "Făcute pentru feed",
@@ -127,9 +127,9 @@ export const ro: Messages = {
       },
     ],
     videoFormat: "Video de {seconds} s cu voce",
-    featuresTitle: "Tot ce are nevoie o reclamă bună",
+    featuresTitle: "Tot ce ai nevoie ca să crești",
     featuresSub:
-      "Gooidy se ocupă de ce cere de obicei un designer, un copywriter și o după-amiază întreagă.",
+      "Gooidy face munca pentru care de obicei ai nevoie de un designer, un copywriter și o după-amiază, ca tu să te ocupi de afacere.",
     briefTitle: "Brief de brand din site-ul tău",
     briefBody:
       "Gooidy citește pagina și află pentru cine e produsul și de ce îl cumpără oamenii.",
@@ -137,12 +137,12 @@ export const ro: Messages = {
     kitTitle: "Kitul tău de brand",
     kitBody:
       "Setează o singură dată logo-ul, culoarea butonului și fontul. Fiecare reclamă le respectă.",
-    languagesTitle: "Reclame în limba clientului tău",
+    languagesTitle: "Vinde în limba cumpărătorului",
     languagesBody:
-      "Fiecare reclamă e scrisă în limba aleasă, așa cum ar scrie-o cineva de acolo, iar reclamele video o vorbesc, cu subtitrări pe măsură.",
-    pricingTitle: "Prețuri simple",
+      "Fiecare reclamă este scrisă în limba aleasă, așa cum ar scrie-o un localnic, ca să poți vinde dincolo de piața ta. Reclamele video o vorbesc și ele, cu subtitrări pe măsură.",
+    pricingTitle: "Prețuri simple care cresc odată cu tine",
     pricingSub:
-      "Începe gratuit. Treci la un plan superior când ai nevoie de mai multe reclame.",
+      "Începe gratuit. Treci la un plan mai mare pe măsură ce afacerea crește.",
     popular: "Popular",
     perMonth: " / lună",
     plans: [
@@ -181,6 +181,10 @@ export const ro: Messages = {
         a: "De linkul produsului sau al magazinului. Gooidy funcționează cu Shopify, WooCommerce, Wix, Squarespace și majoritatea magazinelor online.",
       },
       {
+        q: "Cum mă ajută Gooidy să-mi cresc afacerea?",
+        a: "Prin reclame își câștigă majoritatea magazinelor mici clienți noi online, dar reclamele bune costă timp și bani. Gooidy transformă un singur link în reclame noi, în stilul brandului tău, încearcă diferite motive de cumpărare ca să poți testa ce funcționează pentru magazinul tău și vorbește cu cumpărătorii în {count} limbi. Urmează: publicare și promovare cu un clic.",
+      },
+      {
         q: "Ce este un credit?",
         a: "Un credit creează o imagine publicitară. Fiecare rulare creează cinci reclame în două formate, deci folosește 10 credite.",
       },
@@ -194,18 +198,18 @@ export const ro: Messages = {
       },
       {
         q: "Unde pot folosi reclamele?",
-        a: "Oriunde faci publicitate: TikTok, Instagram, Facebook, YouTube Shorts și nu numai.",
+        a: "Oriunde faci reclamă: TikTok, Instagram, Facebook, YouTube Shorts și altele. Publicarea, programarea și promovarea direct din Gooidy vin în curând.",
       },
       {
         q: "Pot anula oricând?",
         a: "Da. Planurile sunt lunare și păstrezi accesul până la sfârșitul perioadei plătite.",
       },
     ],
-    finalTitle: "Următoarele tale reclame sunt la un link distanță",
+    finalTitle: "Următorii tăi clienți sunt la un link distanță",
     finalSub: "100 de credite gratuite. Fără card de credit.",
   },
   beforeAfter: {
-    title: "De la o fotografie de produs la reclame care vând",
+    title: "De la o fotografie de produs la reclame care aduc cumpărători",
     sub: "În stânga, fotografia de pe {store}. În dreapta, reclamele create de Gooidy din ea, needitate.",
     before: "Înainte: pagina produsului",
     after: "După: {count} dintre reclamele acelei rulări",
@@ -253,7 +257,7 @@ export const ro: Messages = {
     statLinks: "Linkuri de produse",
     statAds: "Reclame create",
     statPer: "Per link",
-    tryTitle: "Acum încearcă cu magazinul tău",
+    tryTitle: "Acum crește-ți propriul magazin",
     tryBody:
       "Lipește linkul unui produs. Primești 5 abordări în format feed și story, cu textul reclamei scris. Primele rulări sunt gratuite.",
     worksWith:
@@ -320,12 +324,12 @@ export const ro: Messages = {
     credits: "{count} credite",
     plan: "· plan {plan}",
     creditsLeft: "{count} credite rămase",
-    addTitle: "Creează reclame din linkul unui produs",
+    addTitle: "Adaugă un produs de promovat",
     addBody:
       "Lipește pagina unui produs. Gooidy o citește, scrie un brief de brand și o pregătește pentru reclame.",
     noProducts: "Încă nu ai produse",
     noProductsBody:
-      "Lipește mai sus linkul unui produs. În aproximativ două minute vei avea primele cinci reclame.",
+      "Lipește mai sus linkul unui produs. În aproximativ două minute vei avea primele cinci reclame, gata să aducă clienți noi.",
     urlLabel: "Linkul produsului sau al site-ului",
     reading: "Citesc pagina…",
     addProduct: "Adaugă produsul",
@@ -356,6 +360,9 @@ export const ro: Messages = {
     native: "Nativ",
     energy: "Energie",
     person: "Persoana din cadru",
+    length: "Durată",
+    lengthHelp:
+      "7–15 s se potrivesc pentru Reels și Stories, 20–30 s pentru TikTok.",
     genders: { female: "Feminină", male: "Masculină" },
     energies: { calm: "Calmă", upbeat: "Veselă", high: "Multă energie" },
     people: {
@@ -371,7 +378,7 @@ export const ro: Messages = {
     makingVideos: "Îți creez reclamele video…",
     makingImages: "Îți generez reclamele…",
     makingVideosBody:
-      "Scriu {count} scenarii, pregătesc două cadre per reclamă, înregistrez vocea și muzica, apoi filmez și montez. De obicei durează 4–8 minute; pagina se actualizează singură. Dacă pleci, clipurile vor fi gata când revii.",
+      "Scriu {count} scenarii, pregătesc cadrele fiecărei reclame, înregistrez vocea și muzica, apoi filmez și montez. De obicei durează 4–8 minute; pagina se actualizează singură. Dacă pleci, clipurile vor fi gata când revii.",
     makingImagesBody:
       "Scriu textele și creez 10 imagini. De obicei durează 2–3 minute; pagina se actualizează singură.",
     failed: "Această rulare a eșuat, iar creditele ți-au fost returnate.",

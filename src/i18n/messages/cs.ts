@@ -2,12 +2,12 @@ import type { Messages } from ".";
 
 export const cs: Messages = {
   meta: {
-    title: "Gooidy · Reklamy z jediného odkazu",
+    title: "Gooidy · Rozvíjejte své podnikání z jediného odkazu",
     description:
-      "Vložte odkaz na produkt a Gooidy zhruba za dvě minuty vytvoří hotové reklamy pro TikTok, Instagram a Facebook. Začněte zdarma.",
+      "Rozvíjejte svou malou firmu s Gooidy. Vložte odkaz na produkt a získejte obrázkové a video reklamy, které přivádějí nové zákazníky, připravené pro TikTok, Instagram a Facebook během pár minut. Začněte zdarma.",
     useCasesTitle: "Skutečné ukázky · Gooidy",
     useCasesDescription:
-      "Skutečné, neupravené reklamy, které Gooidy vytvořilo ze skutečných odkazů na produkty. Prohlédněte si každý přístup a formát a pak to zdarma vyzkoušejte na svém e-shopu.",
+      "Skutečné, neupravené reklamy, které Gooidy vytvořilo ze skutečných odkazů na produkty. Podívejte se, jak se z jednoho odkazu stane kampaň, a vyzkoušejte to zdarma na vlastním obchodě.",
     signInTitle: "Přihlášení · Gooidy",
     dashboardTitle: "Přehled · Gooidy",
     brandTitle: "Firemní styl · Gooidy",
@@ -30,18 +30,18 @@ export const cs: Messages = {
   urlForm: {
     label: "Odkaz na váš produkt nebo e-shop",
     placeholder: "Vložte odkaz na produkt nebo e-shop",
-    submit: "Vytvořit reklamy",
+    submit: "Začít růst",
   },
   footer: {
     tagline:
-      "Obrázkové a video reklamy z jediného odkazu na produkt, pro malé firmy.",
+      "Pomáháme malým firmám růst díky obrázkovým a video reklamám z jediného odkazu.",
     product: "Produkt",
     account: "Účet",
     legal: "Právní informace",
     privacy: "Soukromí",
     terms: "Podmínky",
   },
-  stickyCta: "Vytvořit reklamy zdarma",
+  stickyCta: "Začít růst zdarma",
   angles: {
     pain: {
       name: "Problém",
@@ -65,43 +65,43 @@ export const cs: Messages = {
     },
   },
   home: {
-    badge: "Obrázkové a video reklamy pro malé firmy",
-    titleLine1: "Reklamy, které prodávají,",
+    badge: "Růst pro malé firmy, s pomocí AI",
+    titleLine1: "Nechte firmu růst,",
     titleBefore: "z jediného ",
     titleWord: "odkazu",
     titleAfter: ".",
     intro:
-      "Vložte stránku produktu. Gooidy napíše texty, navrhne reklamy, natočí krátká videa s dabingem a vše připraví pro TikTok, Instagram a Facebook.",
+      "Vložte stránku svého produktu. Gooidy zjistí, kdo u vás nakupuje a proč, a vytvoří obrázkové a video reklamy, které přivedou nové zákazníky do vašeho obchodu.",
     facts: [
       "Začátek zdarma, bez karty",
-      "5 přístupů v každém běhu",
-      "9:16 a 1:1",
+      "Obrázkové a video reklamy",
+      "5 způsobů prodeje v každé sérii",
       "Reklamy v {count} jazycích",
     ],
     worksWith: "Funguje s každým e-shopem",
-    anglesTitle: "Jeden produkt, mnoho způsobů, jak ho prodat",
+    anglesTitle: "Jeden produkt, mnoho důvodů ke koupi",
     anglesSub:
-      "Každý běh zkouší různé přístupy. Tohle jsou skutečné reklamy do feedu, které Gooidy vytvořilo z jednoho odkazu na {store}.",
-    whereTitle: "Podívejte se, kde poběží",
+      "Lidé nakupují z různých důvodů, proto každá série zkouší několik z nich. Toto jsou skutečné reklamy, které Gooidy vytvořilo z jednoho odkazu {store}.",
+    whereTitle: "Buďte tam, kde vaši zákazníci scrollují",
     whereSub:
       "Stejný běh, ve správném formátu pro každou aplikaci, kterou vaši zákazníci projíždějí.",
-    liveTitle: "Dovnitř jeden odkaz. Ven celá kampaň.",
+    liveTitle: "Vložte jeden odkaz. Získejte kampaň, která prodává.",
     liveSub:
       "Toto je skutečný běh Gooidy přehraný krok za krokem: odkaz, co Gooidy vyčetlo ze stránky, přístupy, které napsalo, a reklamy, které vytvořilo.",
     howTitle: "Jak to funguje",
-    howSub: "Od odkazu k hotovým reklamám ve třech krocích.",
+    howSub: "Od odkazu na produkt k reklamám, které osloví nové kupující, ve třech krocích.",
     steps: [
       {
         title: "Vložte odkaz",
         body: "Přidejte stránku produktu nebo svůj e-shop. Gooidy pochopí, co prodáváte, komu a proč to lidé kupují.",
       },
       {
-        title: "Získejte reklamy",
-        body: "Pět nápadů na reklamy s titulky, texty a obrázky, na výšku i čtvercové, s vaším logem a barvami.",
+        title: "Získejte reklamy, které prodávají",
+        body: "Pět důvodů, proč lidé nakupují, každý s titulky, texty a obrázky na výšku i čtvercové, s vaším logem a barvami.",
       },
       {
-        title: "Zveřejněte",
-        body: "Stáhněte si ty, které se vám líbí, a spusťte je na TikToku, Instagramu a Facebooku. Přímé zveřejňování brzy přibude.",
+        title: "Oslovte více kupujících",
+        body: "Spusťte je na TikToku, Instagramu a Facebooku a získejte nové zákazníky. Publikování, plánování a propagace přímo z Gooidy brzy přibudou.",
       },
     ],
     examplesTitle: "Vytvořeno pro feed",
@@ -127,9 +127,9 @@ export const cs: Messages = {
       },
     ],
     videoFormat: "Video {seconds} s s dabingem",
-    featuresTitle: "Vše, co dobrá reklama potřebuje",
+    featuresTitle: "Vše, co potřebujete k růstu",
     featuresSub:
-      "Gooidy zvládne to, co obvykle zabere grafika, copywritera a celé odpoledne.",
+      "Gooidy udělá práci, na kterou byste jinak potřebovali grafika, copywritera a celé odpoledne, takže se můžete věnovat svému podnikání.",
     briefTitle: "Brief značky z vašeho webu",
     briefBody:
       "Gooidy přečte vaši stránku a zjistí, pro koho je produkt a proč ho lidé kupují.",
@@ -137,12 +137,12 @@ export const cs: Messages = {
     kitTitle: "Váš firemní styl",
     kitBody:
       "Nastavte logo, barvu tlačítka a písmo jednou. Každá reklama se jimi bude řídit.",
-    languagesTitle: "Reklamy v jazyce vašich zákazníků",
+    languagesTitle: "Prodávejte v jazyce kupujícího",
     languagesBody:
-      "Každá reklama je napsaná ve zvoleném jazyce tak, jak by ji napsal někdo odtamtud, a video reklamy jím mluví s odpovídajícími titulky.",
-    pricingTitle: "Jednoduchý ceník",
+      "Každá reklama je napsaná ve zvoleném jazyce tak, jak by ji napsal místní, takže můžete prodávat i mimo svůj trh. Video reklamy jím také mluví, s odpovídajícími titulky.",
+    pricingTitle: "Jednoduché ceny, které rostou s vámi",
     pricingSub:
-      "Začněte zdarma. Přejděte na vyšší tarif, až budete potřebovat víc reklam.",
+      "Začněte zdarma. Přejděte na vyšší plán, jak vaše podnikání roste.",
     popular: "Oblíbený",
     perMonth: " / měsíc",
     plans: [
@@ -177,6 +177,10 @@ export const cs: Messages = {
         a: "Odkaz na svůj produkt nebo e-shop. Gooidy funguje se Shopify, WooCommerce, Wix, Squarespace a většinou e-shopů.",
       },
       {
+        q: "Jak Gooidy pomáhá mému podnikání růst?",
+        a: "Většina malých obchodů získává nové zákazníky online díky reklamám, ale dobré reklamy stojí čas a peníze. Gooidy promění jediný odkaz v nové reklamy ve stylu vaší značky, zkouší různé důvody ke koupi, abyste mohli otestovat, co funguje pro váš obchod, a mluví ke kupujícím v {count} jazycích. Na řadě je publikování a propagace jedním kliknutím.",
+      },
+      {
         q: "Co je kredit?",
         a: "Jeden kredit vytvoří jeden reklamní obrázek. Každý běh vytvoří pět reklam ve dvou formátech, takže spotřebuje 10 kreditů.",
       },
@@ -190,18 +194,18 @@ export const cs: Messages = {
       },
       {
         q: "Kde mohu reklamy použít?",
-        a: "Všude, kde inzerujete: TikTok, Instagram, Facebook, YouTube Shorts a další.",
+        a: "Všude, kde inzerujete: TikTok, Instagram, Facebook, YouTube Shorts a další. Publikování, plánování a propagace přímo z Gooidy brzy přibudou.",
       },
       {
         q: "Mohu kdykoli zrušit?",
         a: "Ano. Tarify jsou měsíční a přístup vám zůstane do konce zaplaceného období.",
       },
     ],
-    finalTitle: "Vaše další reklamy jsou jen jeden odkaz daleko",
+    finalTitle: "Vaši další zákazníci jsou jen jeden odkaz daleko",
     finalSub: "100 kreditů zdarma. Bez platební karty.",
   },
   beforeAfter: {
-    title: "Z jedné fotky produktu reklamy, které prodávají",
+    title: "Od jedné fotky produktu k reklamám, které přivádějí kupující",
     sub: "Vlevo fotka na {store}. Vpravo reklamy, které z ní Gooidy vytvořilo, bez úprav.",
     before: "Předtím: stránka produktu",
     after: "Potom: reklamy z tohoto běhu ({count})",
@@ -249,7 +253,7 @@ export const cs: Messages = {
     statLinks: "Odkazy na produkty",
     statAds: "Vytvořené reklamy",
     statPer: "Na odkaz",
-    tryTitle: "Teď to zkuste se svým e-shopem",
+    tryTitle: "Teď nechte růst svůj vlastní obchod",
     tryBody:
       "Vložte odkaz na produkt. Dostanete 5 přístupů ve formátu pro feed a stories, s hotovým textem reklamy. První běhy jsou zdarma.",
     worksWith:
@@ -316,12 +320,12 @@ export const cs: Messages = {
     credits: "Kredity: {count}",
     plan: "· tarif {plan}",
     creditsLeft: "Zbývající kredity: {count}",
-    addTitle: "Vytvořte reklamy z odkazu na produkt",
+    addTitle: "Přidejte produkt k propagaci",
     addBody:
       "Vložte stránku produktu. Gooidy ji přečte, napíše brief značky a připraví vše pro reklamy.",
     noProducts: "Zatím žádné produkty",
     noProductsBody:
-      "Vložte výše odkaz na produkt. Zhruba za dvě minuty budete mít prvních pět reklam.",
+      "Vložte výše odkaz na produkt. Asi za dvě minuty budete mít prvních pět reklam, připravených přivést nové zákazníky.",
     urlLabel: "Odkaz na produkt nebo web",
     reading: "Čtu stránku…",
     addProduct: "Přidat produkt",
@@ -351,6 +355,8 @@ export const cs: Messages = {
     native: "Rodilý",
     energy: "Energie",
     person: "Osoba v záběru",
+    length: "Délka",
+    lengthHelp: "7–15 s se hodí na Reels a Stories, 20–30 s na TikTok.",
     genders: { female: "Ženský", male: "Mužský" },
     energies: { calm: "Klidná", upbeat: "Veselá", high: "Hodně energie" },
     people: {
@@ -366,7 +372,7 @@ export const cs: Messages = {
     makingVideos: "Vytvářím vaše video reklamy…",
     makingImages: "Vytvářím vaše reklamy…",
     makingVideosBody:
-      "Píšu scénáře ({count}), připravuji dva záběry na reklamu, nahrávám dabing a hudbu a pak natáčím a stříhám. Obvykle to trvá 4–8 minut; stránka se obnovuje sama. Když odejdete, videa budou hotová, až se vrátíte.",
+      "Píšu scénáře ({count}), připravuji záběry pro každou reklamu, nahrávám dabing a hudbu a pak natáčím a stříhám. Obvykle to trvá 4–8 minut; stránka se obnovuje sama. Když odejdete, videa budou hotová, až se vrátíte.",
     makingImagesBody:
       "Píšu texty a vytvářím 10 obrázků. Obvykle to trvá 2–3 minuty; stránka se obnovuje sama.",
     failed: "Tento běh se nezdařil a kredity vám byly vráceny.",

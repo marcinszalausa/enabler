@@ -25,7 +25,8 @@ const execFileAsync = promisify(execFile);
 // Voiceover starts just after the first frame, so the shot hooks first.
 const VOICE_START = 0.3;
 const HOOK_END = 2.5;
-const END_CARD_SECONDS = 1.5;
+// Longer ads hold the end card longer.
+const endCardSeconds = (total: number) => (total >= 15 ? 2.5 : 1.5);
 // A voiceover longer than the ad is sped up, but no more than this.
 const MAX_TEMPO = 1.2;
 
@@ -49,7 +50,7 @@ export type VideoEdit = {
 export async function editVideoAd(edit: VideoEdit): Promise<Buffer> {
   if (!ffmpegPath) throw new Error("ffmpeg is not available here.");
   const total = edit.shotSeconds.reduce((a, b) => a + b, 0);
-  const endCardStart = total - END_CARD_SECONDS;
+  const endCardStart = total - endCardSeconds(total);
 
   // Scratch files live in the OS temp folder; tell the bundler not to trace
   // these paths into the deployment.
@@ -193,7 +194,8 @@ export async function editVideoAd(edit: VideoEdit): Promise<Buffer> {
       file("out.mp4"),
     );
     await execFileAsync(ffmpegPath, args, {
-      timeout: 120_000,
+      // A 30-second ad has many shots and captions to lay over each other.
+      timeout: 240_000,
       maxBuffer: 10 * 1024 * 1024,
     });
     return await readFile(/*turbopackIgnore: true*/ file("out.mp4"));

@@ -205,7 +205,7 @@ const ShotSchema = z.object({
   motion_prompt: z
     .string()
     .describe(
-      "What happens in the 3- to 4-second clip that starts from that frame: one simple, natural motion (a slow turn, fabric moving as the person walks, a hand smoothing the sleeve) plus one smooth camera move (slow push-in, gentle pan). Realistic physics; the product keeps its exact look. No text, no cuts, no new people.",
+      "What happens in the 3- to 5-second clip that starts from that frame: one simple, natural motion (a slow turn, fabric moving as the person walks, a hand smoothing the sleeve) plus one smooth camera move (slow push-in, gentle pan). Realistic physics; the product keeps its exact look. No text, no cuts, no new people.",
     ),
 });
 
@@ -218,14 +218,16 @@ export const VideoAdSchema = AdAngleSchema.omit({ image_prompt: true }).extend({
   voiceover: z
     .string()
     .describe(
-      "What a narrator says over the whole ad: about 5 seconds spoken (12 to 16 words in English). The first sentence is the hook; the last is the call to action. Natural spoken language, no lists, no symbols or abbreviations, no prices unless the brief states them.",
+      "What a narrator says over the whole ad, at the length the instructions give. The first sentence is the hook; the last is the call to action. Natural spoken language, no lists, no symbols or abbreviations, no prices unless the brief states them.",
     ),
   music_prompt: z
     .string()
     .describe(
       "Instrumental background music for the ad: genre, mood, tempo, instruments, e.g. 'warm lo-fi acoustic guitar, soft beat, 90 bpm'. No vocals.",
     ),
-  shots: z.array(ShotSchema).describe("Exactly 2 shots, in order"),
+  shots: z
+    .array(ShotSchema)
+    .describe("Exactly the number of shots asked for, in order"),
 });
 export type VideoAd = z.infer<typeof VideoAdSchema>;
 
@@ -234,11 +236,14 @@ const VideoAdsSchema = z.object({ ads: z.array(VideoAdSchema) });
 export async function writeVideoAds(
   brief: BrandBrief,
   count: number,
-  shotSeconds: number[],
+  shotSeconds: readonly number[],
   options: VideoOptions,
 ): Promise<VideoAd[]> {
   const shots = shotSeconds.length;
   const seconds = shotSeconds.reduce((a, b) => a + b, 0);
+  // Spoken over all but the opening beat and the end card's last moment.
+  const spoken = seconds - 2;
+  const words = `${Math.round(spoken * 2.4)} to ${Math.round(spoken * 3)}`;
   const person = PEOPLE[options.person].direction;
   const direction = [
     `Energy: ${ENERGIES[options.energy].direction}. Let it shape the words, the pace of the motion and the music.`,
@@ -263,7 +268,7 @@ export async function writeVideoAds(
         effort: "medium",
         format: betaZodOutputFormat(VideoAdsSchema),
       },
-      system: `You write short vertical video ads for Instagram Reels, Facebook Reels and TikTok for small and medium businesses. Each ad runs ${seconds} seconds: ${shots} shots (${shotSeconds.join(" and ")} seconds) with the same person in the same setting, a narrator's voiceover with captions, quiet background music, and an end card with the headline and call to action over the last moments. The first second must stop the scroll. Each ad uses a different angle. Headlines are punchy and at most 32 characters; primary text (the post caption) is at most 125 characters; no hashtags, no emoji, no false claims or invented reviews. Match the brand's tone. Motion must be simple enough for an AI video model to render realistically.`,
+      system: `You write short vertical video ads for Instagram Reels, Facebook Reels and TikTok for small and medium businesses. Each ad runs ${seconds} seconds: ${shots} shots (${shotSeconds.join(", ")} seconds) with the same person in the same setting, a narrator's voiceover with captions, quiet background music, and an end card with the headline and call to action over the last moments. The voiceover runs about ${spoken} seconds spoken (${words} words in English; the same spoken length in other languages).${shots > 3 ? " Give every shot its own framing or moment (wide, waist-up, close-up of a detail, the product in use) so the ad keeps moving, while the person, outfit and setting stay the same." : ""} The first second must stop the scroll. Each ad uses a different angle. Headlines are punchy and at most 32 characters; primary text (the post caption) is at most 125 characters; no hashtags, no emoji, no false claims or invented reviews. Match the brand's tone. Motion must be simple enough for an AI video model to render realistically.`,
       messages: [
         {
           role: "user",

@@ -5,10 +5,11 @@ import { createClient } from "@/lib/supabase/server";
 import type { BrandBrief } from "@/lib/ai/claude";
 import { GENERATION_COST } from "@/lib/pipeline";
 import {
-  VIDEO_GENERATION_COST,
-  VIDEO_SECONDS,
+  LENGTHS,
   VIDEOS_PER_GENERATION,
-} from "@/lib/video";
+  videoRunCost,
+  DEFAULT_VIDEO_OPTIONS,
+} from "@/lib/video-options";
 import { getBrandKit } from "@/lib/brand-kit";
 import { DEFAULT_LANGUAGE, isLanguageKey } from "@/lib/languages";
 import { GenerateControls } from "./generate-controls";
@@ -79,7 +80,7 @@ async function Product({
     supabase
       .from("generations")
       .select(
-        "id, type, status, error, created_at, showcased_at, creatives(id, kind, aspect, angle, headline, primary_text, cta)",
+        "id, type, status, error, created_at, showcased_at, cost_credits, creatives(id, kind, aspect, angle, headline, primary_text, cta)",
       )
       .eq("product_id", id)
       .order("created_at", { ascending: false })
@@ -146,7 +147,7 @@ async function Product({
           <GenerateControls
             productId={product.id}
             imageCost={GENERATION_COST}
-            videoCost={VIDEO_GENERATION_COST}
+            videoCost={videoRunCost(DEFAULT_VIDEO_OPTIONS.length)}
             videoLabel={fmt(t.app.generateVideos, {
               count: VIDEOS_PER_GENERATION,
             })}
@@ -195,7 +196,8 @@ async function Product({
           <EmptyState title={t.app.noAds}>
             {fmt(t.app.noAdsBody, {
               videos: VIDEOS_PER_GENERATION,
-              seconds: VIDEO_SECONDS,
+              // The shortest to the longest length on offer, e.g. "7–30".
+              seconds: `${Object.keys(LENGTHS)[0]}–${Object.keys(LENGTHS).at(-1)}`,
             })}
           </EmptyState>
         )}
