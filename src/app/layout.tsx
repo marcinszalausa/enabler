@@ -13,10 +13,23 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const description =
+  "Paste a product link and get ready-to-run ads for Facebook, Instagram and TikTok.";
+
+// Icons and the link preview image come from the files next to this layout
+// (icon.svg, apple-icon.png, opengraph-image.png, twitter-image.png).
 export const metadata: Metadata = {
+  metadataBase: new URL("https://gooidy.com"),
   title: "Gooidy",
-  description:
-    "Paste a product link and get ready-to-run ads for Facebook, Instagram and TikTok.",
+  description,
+  openGraph: {
+    title: "Gooidy",
+    description,
+    siteName: "Gooidy",
+    url: "/",
+    type: "website",
+  },
+  twitter: { card: "summary_large_image", title: "Gooidy", description },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
