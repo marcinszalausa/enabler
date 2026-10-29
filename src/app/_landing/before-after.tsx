@@ -80,7 +80,7 @@ export function BeforeAfter({
                   width={1080}
                   height={1920}
                   sizes="(min-width: 64rem) 200px, 30vw"
-                  className="aspect-[9/16] w-full rounded-xl border border-line object-cover shadow-[0_20px_50px_-30px_rgb(var(--t-shadow)/0.5)]"
+                  className="lift aspect-[9/16] w-full rounded-xl border border-line object-cover shadow-[0_20px_50px_-30px_rgb(var(--t-shadow)/0.5)]"
                 />
               </li>
             ))}

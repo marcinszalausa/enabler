@@ -24,7 +24,9 @@ export function Placements({ ad }: { ad: PlacementAd }) {
     <ul className="stagger grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 lg:grid-cols-4">
       {phones.map((p) => (
         <li key={p.label} className="flex flex-col items-center">
-          <div className={`${SCREEN} w-full max-w-[230px]`}>{p.screen}</div>
+          <div className={`${SCREEN} lift w-full max-w-[230px]`}>
+            {p.screen}
+          </div>
           <p className="mt-4 text-sm font-medium">{p.label}</p>
         </li>
       ))}

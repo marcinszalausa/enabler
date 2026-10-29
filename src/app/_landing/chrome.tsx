@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { ThemeToggle } from "./theme-toggle";
+import { NavShell } from "./nav-shell";
 
 // Pieces shared by the public pages: nav, link form, footer.
 
@@ -50,8 +51,8 @@ export function Logo() {
 
 export function Nav() {
   return (
-    <header className="sticky top-0 z-30 border-b border-line bg-bg/90 backdrop-blur">
-      <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4">
+    <NavShell>
+      <nav className="site-nav mx-auto flex items-center justify-between gap-4 px-4">
         <Logo />
         <div className="hidden items-center gap-8 text-sm text-muted md:flex">
           <Link href="/use-cases" className="hover:text-fg">
@@ -83,7 +84,7 @@ export function Nav() {
           </Link>
         </div>
       </nav>
-    </header>
+    </NavShell>
   );
 }
 
@@ -134,23 +135,62 @@ export function SectionHeading({
   );
 }
 
+const FOOTER_LINKS = [
+  {
+    title: "Product",
+    links: [
+      { href: "/#how", label: "How it works" },
+      { href: "/use-cases", label: "Examples" },
+      { href: "/#pricing", label: "Pricing" },
+      { href: "/#faq", label: "FAQ" },
+    ],
+  },
+  {
+    title: "Account",
+    links: [
+      { href: "/dashboard", label: "Get started" },
+      { href: "/login", label: "Sign in" },
+    ],
+  },
+  {
+    title: "Legal",
+    links: [
+      { href: "/privacy", label: "Privacy" },
+      { href: "/terms", label: "Terms" },
+    ],
+  },
+];
+
 export function Footer() {
   return (
     <footer className="border-t border-line">
-      <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 py-8 text-sm text-muted sm:flex-row">
-        <Logo />
-        <p>© 2026 Gooidy</p>
-        <div className="flex gap-6">
-          <Link href="/use-cases" className="hover:text-fg">
-            Examples
-          </Link>
-          <Link href="/#pricing" className="hover:text-fg">
-            Pricing
-          </Link>
-          <Link href="/login" className="hover:text-fg">
-            Sign in
-          </Link>
+      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr_1fr]">
+        <div>
+          <Logo />
+          <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted">
+            Image and video ads from a single product link, made for small
+            businesses.
+          </p>
         </div>
+        {FOOTER_LINKS.map((col) => (
+          <nav key={col.title} aria-label={col.title}>
+            <p className="text-sm font-medium">{col.title}</p>
+            <ul className="mt-4 space-y-3 text-sm text-muted">
+              {col.links.map((l) => (
+                <li key={l.href}>
+                  <Link href={l.href} className="transition hover:text-fg">
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        ))}
+      </div>
+      <div className="border-t border-line">
+        <p className="mx-auto max-w-6xl px-4 py-6 text-sm text-muted">
+          © 2026 Gooidy
+        </p>
       </div>
     </footer>
   );

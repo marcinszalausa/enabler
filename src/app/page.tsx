@@ -13,6 +13,7 @@ import { RunDemo, type DemoRun } from "./_landing/run-demo";
 import { Reveal } from "./_landing/reveal";
 import { Placements, type PlacementAd } from "./_landing/placements";
 import { StickyCta } from "./_landing/sticky-cta";
+import { Spotlight } from "./_landing/spotlight";
 import { BeforeAfter } from "./_landing/before-after";
 
 export const metadata = {
@@ -111,6 +112,7 @@ export default async function Home() {
       </main>
       <Footer />
       <StickyCta />
+      <Spotlight />
       <Reveal />
     </div>
   );
@@ -509,7 +511,7 @@ function Features({ run }: { run?: ShowcaseRun }) {
         sub="Gooidy handles the parts that usually take a designer, a copywriter and an afternoon."
       />
       <div className="stagger mt-14 grid gap-5 md:grid-cols-6">
-        <div className="edge p-7 md:col-span-4">
+        <div className="edge spot lift p-7 md:col-span-4">
           <h3 className="text-lg font-medium">Brand brief from your site</h3>
           <p className="mt-1.5 text-sm text-muted">
             Gooidy reads your page and works out who it&apos;s for and why they
@@ -527,7 +529,7 @@ function Features({ run }: { run?: ShowcaseRun }) {
           )}
         </div>
 
-        <div className="edge p-7 md:col-span-2">
+        <div className="edge spot lift p-7 md:col-span-2">
           <h3 className="text-lg font-medium">Your brand kit</h3>
           <p className="mt-1.5 text-sm text-muted">
             Set your logo, button color and font once. Every ad follows it.
@@ -544,7 +546,7 @@ function Features({ run }: { run?: ShowcaseRun }) {
           </div>
         </div>
 
-        <div className="edge p-7 md:col-span-6">
+        <div className="edge spot lift p-7 md:col-span-6">
           <h3 className="text-lg font-medium">
             A voice in your buyer&apos;s language
           </h3>
@@ -583,7 +585,7 @@ function Pricing() {
           {PLANS.map((plan) => (
             <div
               key={plan.name}
-              className={`flex flex-col p-7 ${
+              className={`spot lift flex flex-col p-7 ${
                 plan.featured
                   ? "edge shadow-[0_30px_80px_-30px_var(--t-accent)] md:-my-3 md:py-10"
                   : "rounded-2xl border border-line bg-raised"
