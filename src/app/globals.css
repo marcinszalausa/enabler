@@ -509,8 +509,8 @@ html {
   top: 50%;
   transform: translateX(calc(var(--dir) * (var(--half) + var(--gap))))
     translateY(-50%) rotateY(calc(var(--dir) * var(--turn)));
-  /* "backwards", not "both": an animation still holding opacity after it
-     ends makes Chrome flatten the phone, and its thick edge disappears. */
+  /* Slides out from behind the center phone. No fade: any opacity below 1
+     makes Chrome flatten the phone, so its thick edge would pop in late. */
   animation: stage-unfold 1.4s cubic-bezier(0.2, 0.8, 0.2, 1) 0.25s backwards;
 }
 .landing .stage-left {
@@ -525,7 +525,6 @@ html {
 }
 @keyframes stage-unfold {
   from {
-    opacity: 0;
     transform: translateX(calc(var(--dir) * (var(--half) - 40px)))
       translateY(-50%) translateZ(-140px) rotateY(calc(var(--dir) * -20deg));
   }
