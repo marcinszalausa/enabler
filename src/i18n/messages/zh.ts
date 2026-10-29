@@ -328,6 +328,8 @@ export const zh: Messages = {
     native: "母语",
     energy: "风格",
     person: "出镜人物",
+    length: "时长",
+    lengthHelp: "7–15 秒适合 Reels 和快拍，20–30 秒适合 TikTok。",
     genders: { female: "女声", male: "男声" },
     energies: { calm: "平静", upbeat: "轻快", high: "活力满满" },
     people: {
@@ -343,7 +345,7 @@ export const zh: Messages = {
     makingVideos: "正在制作你的视频广告…",
     makingImages: "正在生成你的广告…",
     makingVideosBody:
-      "正在撰写 {count} 个脚本，为每条广告准备两个镜头，录制配音和音乐，然后拍摄和剪辑。通常需要 4–8 分钟，本页面会自动更新。你可以先离开，回来时视频就做好了。",
+      "正在撰写 {count} 个脚本，为每条广告准备镜头，录制配音和音乐，然后拍摄和剪辑。通常需要 4–8 分钟，本页面会自动更新。你可以先离开，回来时视频就做好了。",
     makingImagesBody:
       "正在撰写文案并生成 10 张图片。通常需要 2–3 分钟，本页面会自动更新。",
     failed: "本次生成失败，积分已退还。",

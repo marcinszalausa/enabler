@@ -9,8 +9,11 @@ import {
   DEFAULT_VIDEO_OPTIONS,
   ENERGIES,
   GENDERS,
+  LENGTHS,
   MAX_MESSAGE_LENGTH,
   PEOPLE,
+  videoRunCost,
+  type LengthKey,
 } from "@/lib/video-options";
 
 const initialState: FormState = { error: null };
@@ -32,6 +35,7 @@ export function VideoAdForm({
   language: string;
 }) {
   const [open, setOpen] = useState(false);
+  const [length, setLength] = useState<LengthKey>(DEFAULT_VIDEO_OPTIONS.length);
   const { t } = useI18n();
   const [state, action, pending] = useActionState(
     async (prev: FormState, formData: FormData) => {
@@ -75,6 +79,32 @@ export function VideoAdForm({
       </label>
 
       <input type="hidden" name="language" value={language} />
+
+      <fieldset className="flex flex-col gap-1.5">
+        <legend className="mb-1.5 font-medium">{t.app.length}</legend>
+        <div className="grid grid-cols-5 overflow-hidden rounded-md border border-line-strong">
+          {(Object.keys(LENGTHS) as LengthKey[]).map((key) => (
+            <label
+              key={key}
+              className="flex cursor-pointer flex-col items-center gap-0.5 border-line-strong px-1 py-2 text-center not-last:border-r has-checked:bg-accent-soft has-checked:text-accent"
+            >
+              <input
+                type="radio"
+                name="length"
+                value={key}
+                checked={key === length}
+                onChange={() => setLength(key)}
+                className="peer sr-only"
+              />
+              <span className="font-medium">{key} s</span>
+              <span className="text-[11px] leading-tight text-muted peer-checked:text-accent/80">
+                {fmt(t.app.credits, { count: videoRunCost(key) })}
+              </span>
+            </label>
+          ))}
+        </div>
+        <span className="text-xs text-muted">{t.app.lengthHelp}</span>
+      </fieldset>
 
       <div className="grid grid-cols-2 gap-3">
         <label className="flex flex-col gap-1.5">
@@ -155,7 +185,9 @@ export function VideoAdForm({
           disabled={pending}
           className="btn-primary rounded-lg px-4 py-2 font-medium"
         >
-          {pending ? t.app.starting : fmt(t.app.withCost, { label, cost })}
+          {pending
+            ? t.app.starting
+            : fmt(t.app.withCost, { label, cost: videoRunCost(length) })}
         </button>
         <button
           type="button"

@@ -351,6 +351,8 @@ export const tr: Messages = {
     native: "Ana dil",
     energy: "Enerji",
     person: "Ekrandaki kişi",
+    length: "Süre",
+    lengthHelp: "7–15 sn Reels ve Stories için, 20–30 sn TikTok için uygundur.",
     genders: { female: "Kadın", male: "Erkek" },
     energies: { calm: "Sakin", upbeat: "Neşeli", high: "Yüksek enerji" },
     people: {
@@ -366,7 +368,7 @@ export const tr: Messages = {
     makingVideos: "Video reklamlarınız hazırlanıyor…",
     makingImages: "Reklamlarınız oluşturuluyor…",
     makingVideosBody:
-      "{count} senaryo yazılıyor, her reklam için iki çekim hazırlanıyor, seslendirme ve müzik kaydediliyor, ardından çekim ve kurgu yapılıyor. Genellikle 4–8 dakika sürer; bu sayfa kendiliğinden güncellenir. Ayrılırsanız döndüğünüzde videolar hazır olur.",
+      "{count} senaryo yazılıyor, her reklamın çekimleri hazırlanıyor, seslendirme ve müzik kaydediliyor, ardından çekim ve kurgu yapılıyor. Genellikle 4–8 dakika sürer; bu sayfa kendiliğinden güncellenir. Ayrılırsanız döndüğünüzde videolar hazır olur.",
     makingImagesBody:
       "Metinler yazılıyor ve 10 görsel oluşturuluyor. Genellikle 2–3 dakika sürer; bu sayfa kendiliğinden güncellenir.",
     failed: "Bu çalıştırma başarısız oldu ve kredileriniz iade edildi.",

@@ -12,14 +12,18 @@ import { getBrandKit } from "@/lib/brand-kit";
 import { FONTS, loadFont, textColorOn } from "@/lib/brand";
 import { editVideoAd } from "@/lib/video-edit";
 import { userMessage } from "@/lib/errors";
-import { voiceFor, type VideoOptions } from "@/lib/video-options";
+import {
+  DEFAULT_VIDEO_OPTIONS,
+  LENGTHS,
+  VIDEOS_PER_GENERATION,
+  shotSecondsFor,
+  voiceFor,
+  type VideoOptions,
+} from "@/lib/video-options";
 
-export const VIDEOS_PER_GENERATION = 2;
-export const CREDITS_PER_VIDEO = 20;
-export const VIDEO_GENERATION_COST = VIDEOS_PER_GENERATION * CREDITS_PER_VIDEO;
-// Length of each shot; together they make the ad.
-export const SHOT_SECONDS = [4, 3];
-export const VIDEO_SECONDS = SHOT_SECONDS.reduce((a, b) => a + b, 0);
+export { VIDEOS_PER_GENERATION };
+// The default length, used where a run's own length isn't known.
+export const VIDEO_SECONDS = Number(DEFAULT_VIDEO_OPTIONS.length);
 
 // Past these ages a job's worker is presumed dead and the job is failed
 // (or, while processing, picked up again by the next check).
@@ -70,10 +74,11 @@ export async function runVideoGeneration({
 
     const brief = product.brand_brief as BrandBrief;
     const referenceImageUrl = (product.image_urls as string[])[0] ?? null;
+    const shotSeconds = LENGTHS[options.length];
     const ads = await writeVideoAds(
       brief,
       VIDEOS_PER_GENERATION,
-      SHOT_SECONDS,
+      shotSeconds,
       options,
     );
 
@@ -117,10 +122,11 @@ export async function runVideoGeneration({
         const jobId = jobs[i].id;
         try {
           const [requestIds, sound] = await Promise.all([
-            filmShots(ad, referenceImageUrl, brief.product_name),
+            filmShots(ad, shotSeconds, referenceImageUrl, brief.product_name),
             recordSound(
               options,
               ad,
+              shotSeconds,
               `${workspaceId}/${generationId}/video-${jobId.slice(0, 8)}`,
             ),
           ]);
@@ -158,6 +164,7 @@ export async function runVideoGeneration({
 // Returns the video model's request ids, in shot order.
 async function filmShots(
   ad: VideoAd,
+  shotSeconds: readonly number[],
   referenceImageUrl: string | null,
   product: string,
 ): Promise<string[]> {
@@ -177,30 +184,31 @@ async function filmShots(
     );
   } catch (err) {
     if (!(err instanceof QualityError)) throw err;
-    // A later shot kept failing the check; film the first one for the
-    // whole ad rather than drop it.
-    console.warn("later shot rejected, using one shot", err.message);
-    return [
-      await submitAdVideo({
-        startImageUrl: first,
-        prompt: ad.shots[0].motion_prompt,
-        seconds: VIDEO_SECONDS,
-      }),
-    ];
+    // A later shot kept failing the check; start every shot from the first
+    // frame rather than drop the ad. The shot count stays, so the edit
+    // still knows the ad's length.
+    console.warn("later shot rejected, filming from the first", err.message);
+    rest = ad.shots.slice(1).map(() => first);
   }
   return Promise.all(
     [first, ...rest].map((frame, i) =>
       submitAdVideo({
         startImageUrl: frame,
         prompt: ad.shots[i].motion_prompt,
-        seconds: SHOT_SECONDS[i],
+        seconds: shotSeconds[i],
       }),
     ),
   );
 }
 
 // Voiceover and music, kept in storage until the shots are ready.
-async function recordSound(options: VideoOptions, ad: VideoAd, base: string) {
+async function recordSound(
+  options: VideoOptions,
+  ad: VideoAd,
+  shotSeconds: readonly number[],
+  base: string,
+) {
+  const seconds = shotSeconds.reduce((a, b) => a + b, 0);
   const voice = voiceFor(options);
   const [voiceUrl, musicUrl] = await Promise.all([
     generateVoiceover({
@@ -209,7 +217,7 @@ async function recordSound(options: VideoOptions, ad: VideoAd, base: string) {
       tag: voice.tag,
       languageCode: voice.languageCode,
     }),
-    generateMusic({ prompt: ad.music_prompt, seconds: VIDEO_SECONDS + 1 }),
+    generateMusic({ prompt: ad.music_prompt, seconds: seconds + 1 }),
   ]);
   const [voice_path, music_path] = await Promise.all(
     [
@@ -334,7 +342,8 @@ async function finishGeneration(
     .select("cost_credits");
   const cost = closed?.[0]?.cost_credits;
   if (cost === undefined) return;
-  const refund = cost - done * CREDITS_PER_VIDEO;
+  // Every video in a run has the same length, so the same price.
+  const refund = cost - done * (cost / VIDEOS_PER_GENERATION);
   if (refund > 0) {
     await db.rpc("refund_credits", { ws: workspaceId, amount: refund });
   }
@@ -360,8 +369,7 @@ async function saveVideo(
 
   const video = await editVideoAd({
     clips,
-    // One request means a later shot was dropped and the first runs long.
-    shotSeconds: clipUrls.length === 1 ? [VIDEO_SECONDS] : SHOT_SECONDS,
+    shotSeconds: [...shotSecondsFor(clipUrls.length)],
     voice,
     music,
     voiceover: job.voiceover ?? "",

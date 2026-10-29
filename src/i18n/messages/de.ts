@@ -348,6 +348,8 @@ export const de: Messages = {
     native: "Muttersprachlich",
     energy: "Energie",
     person: "Person im Bild",
+    length: "Länge",
+    lengthHelp: "7–15 s passen zu Reels und Stories, 20–30 s zu TikTok.",
     genders: { female: "Weiblich", male: "Männlich" },
     energies: { calm: "Ruhig", upbeat: "Fröhlich", high: "Energiegeladen" },
     people: {
@@ -363,7 +365,7 @@ export const de: Messages = {
     makingVideos: "Deine Videoanzeigen werden erstellt…",
     makingImages: "Deine Anzeigen werden erstellt…",
     makingVideosBody:
-      "{count} Skripte werden geschrieben, zwei Einstellungen pro Anzeige vorbereitet, Sprecher und Musik aufgenommen, dann gedreht und geschnitten. Das dauert meist 4–8 Minuten; diese Seite aktualisiert sich selbst. Wenn du gehst, sind die Videos fertig, wenn du zurückkommst.",
+      "{count} Skripte werden geschrieben, die Einstellungen für jede Anzeige vorbereitet, Sprecher und Musik aufgenommen, dann gedreht und geschnitten. Das dauert meist 4–8 Minuten; diese Seite aktualisiert sich selbst. Wenn du gehst, sind die Videos fertig, wenn du zurückkommst.",
     makingImagesBody:
       "Texte werden geschrieben und 10 Bilder erstellt. Das dauert meist 2–3 Minuten; diese Seite aktualisiert sich selbst.",
     failed:

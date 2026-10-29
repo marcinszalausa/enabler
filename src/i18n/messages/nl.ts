@@ -351,6 +351,8 @@ export const nl: Messages = {
     native: "Moedertaal",
     energy: "Energie",
     person: "Persoon in beeld",
+    length: "Lengte",
+    lengthHelp: "7–15 s past bij Reels en Stories, 20–30 s bij TikTok.",
     genders: { female: "Vrouw", male: "Man" },
     energies: { calm: "Rustig", upbeat: "Vrolijk", high: "Veel energie" },
     people: {
@@ -366,7 +368,7 @@ export const nl: Messages = {
     makingVideos: "Je videoadvertenties worden gemaakt…",
     makingImages: "Je advertenties worden gemaakt…",
     makingVideosBody:
-      "{count} scripts schrijven, twee shots per advertentie klaarzetten, voice-over en muziek opnemen, dan filmen en monteren. Dit duurt meestal 4–8 minuten; deze pagina ververst vanzelf. Ga je weg, dan staan de video's klaar als je terugkomt.",
+      "{count} scripts schrijven, de shots per advertentie klaarzetten, voice-over en muziek opnemen, dan filmen en monteren. Dit duurt meestal 4–8 minuten; deze pagina ververst vanzelf. Ga je weg, dan staan de video's klaar als je terugkomt.",
     makingImagesBody:
       "Teksten schrijven en 10 beelden maken. Dit duurt meestal 2–3 minuten; deze pagina ververst vanzelf.",
     failed: "Deze ronde is mislukt en je credits zijn teruggestort.",

@@ -352,6 +352,8 @@ export const pt: Messages = {
     native: "Nativo",
     energy: "Energia",
     person: "Pessoa no vídeo",
+    length: "Duração",
+    lengthHelp: "7–15 s combina com Reels e Stories; 20–30 s com TikTok.",
     genders: { female: "Feminina", male: "Masculina" },
     energies: { calm: "Calma", upbeat: "Animada", high: "Muita energia" },
     people: {
@@ -367,7 +369,7 @@ export const pt: Messages = {
     makingVideos: "Criando seus anúncios em vídeo…",
     makingImages: "Gerando seus anúncios…",
     makingVideosBody:
-      "Escrevendo {count} roteiros, preparando duas cenas por anúncio, gravando a locução e a música e depois filmando e editando. Costuma levar de 4 a 8 minutos; esta página se atualiza sozinha. Se você sair, os vídeos estarão prontos quando voltar.",
+      "Escrevendo {count} roteiros, preparando as cenas de cada anúncio, gravando a locução e a música e depois filmando e editando. Costuma levar de 4 a 8 minutos; esta página se atualiza sozinha. Se você sair, os vídeos estarão prontos quando voltar.",
     makingImagesBody:
       "Escrevendo os textos e criando 10 imagens. Costuma levar de 2 a 3 minutos; esta página se atualiza sozinha.",
     failed: "Esta rodada falhou e seus créditos foram devolvidos.",

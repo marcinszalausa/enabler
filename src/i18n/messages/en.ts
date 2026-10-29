@@ -346,6 +346,8 @@ export const en = {
     native: "Native",
     energy: "Energy",
     person: "Person on screen",
+    length: "Length",
+    lengthHelp: "7–15 s suits Reels and Stories; 20–30 s suits TikTok.",
     genders: { female: "Female", male: "Male" },
     energies: { calm: "Calm", upbeat: "Upbeat", high: "High energy" },
     people: {
@@ -361,7 +363,7 @@ export const en = {
     makingVideos: "Making your video ads…",
     makingImages: "Generating your ads…",
     makingVideosBody:
-      "Writing {count} scripts, setting up two shots per ad, recording the voiceover and music, then filming and editing. This usually takes 4–8 minutes; this page updates on its own. If you leave, the videos are finished when you come back.",
+      "Writing {count} scripts, setting up the shots for each ad, recording the voiceover and music, then filming and editing. This usually takes 4–8 minutes; this page updates on its own. If you leave, the videos are finished when you come back.",
     makingImagesBody:
       "Writing copy and creating 10 images. This usually takes 2–3 minutes; this page updates on its own.",
     failed: "This run failed, and your credits were refunded.",

@@ -355,6 +355,8 @@ export const fr: Messages = {
     native: "Natif",
     energy: "Énergie",
     person: "Personne à l'écran",
+    length: "Durée",
+    lengthHelp: "7–15 s pour les Reels et Stories, 20–30 s pour TikTok.",
     genders: { female: "Féminine", male: "Masculine" },
     energies: { calm: "Calme", upbeat: "Enjouée", high: "Très dynamique" },
     people: {
@@ -370,7 +372,7 @@ export const fr: Messages = {
     makingVideos: "Création de vos pubs vidéo…",
     makingImages: "Génération de vos pubs…",
     makingVideosBody:
-      "Rédaction de {count} scripts, préparation de deux plans par pub, enregistrement de la voix off et de la musique, puis tournage et montage. Comptez 4 à 8 minutes ; cette page se met à jour toute seule. Si vous partez, les vidéos seront prêtes à votre retour.",
+      "Rédaction de {count} scripts, préparation des plans de chaque pub, enregistrement de la voix off et de la musique, puis tournage et montage. Comptez 4 à 8 minutes ; cette page se met à jour toute seule. Si vous partez, les vidéos seront prêtes à votre retour.",
     makingImagesBody:
       "Rédaction des textes et création de 10 images. Comptez 2 à 3 minutes ; cette page se met à jour toute seule.",
     failed: "Cette génération a échoué et vos crédits ont été remboursés.",
