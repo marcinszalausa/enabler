@@ -7,7 +7,7 @@ const THEME_KEY = "gooidy-theme";
 export function ThemeToggle() {
   function toggle() {
     const root = document.documentElement;
-    const next = root.dataset.theme === "light" ? "dark" : "light";
+    const next = root.dataset.theme === "dark" ? "light" : "dark";
     root.dataset.theme = next;
     try {
       localStorage.setItem(THEME_KEY, next);
@@ -20,7 +20,7 @@ export function ThemeToggle() {
       onClick={toggle}
       aria-label="Switch between light and dark theme"
       title="Switch theme"
-      className="flex h-9 w-9 items-center justify-center rounded-full border border-fg/15 text-fg/80 transition hover:scale-110 hover:text-fg"
+      className="flex h-9 w-9 items-center justify-center rounded-full text-muted transition-colors hover:bg-surface hover:text-fg"
     >
       {/* Sun: shown in dark mode, switches to light. */}
       <svg
