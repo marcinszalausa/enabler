@@ -5,7 +5,8 @@ import type { CSSProperties, ReactNode } from "react";
 // phone's own width, so proportions hold from a thumbnail to the hero:
 // a 71.9 × 150 mm body, thin even bezels, a 19.5:9 screen with Apple's corner
 // radius, the Dynamic Island, and the side buttons including Camera Control.
-// With `depth`, the body gets a phone's real thickness for 3D scenes.
+// With `depth`, the body gets a phone's thickness for 3D scenes.
+const SLABS = 12;
 export function IPhone({
   children,
   depth = false,
@@ -18,11 +19,18 @@ export function IPhone({
   return (
     <div className={`@container ${depth ? "iphone-3d" : ""} ${className}`}>
       {depth &&
-        Array.from({ length: 10 }, (_, i) => (
+        Array.from({ length: SLABS }, (_, i) => (
           <span
             key={i}
             className="iphone-slab"
-            style={{ "--i": i + 1 } as CSSProperties}
+            style={
+              {
+                "--i": i + 1,
+                // The rail is rounded: brightest in the middle of its depth,
+                // falling off toward the front and back edges.
+                filter: `brightness(${(1.08 - 0.4 * Math.abs((i + 0.5) / SLABS - 0.5)).toFixed(3)})`,
+              } as CSSProperties
+            }
             aria-hidden
           />
         ))}
