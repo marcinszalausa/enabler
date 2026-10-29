@@ -8,6 +8,9 @@ import type { FeedAd } from "./reel";
 // glass: the feed in the middle, single ads turned away on each side. The
 // whole stage leans a few degrees toward the pointer, which makes the phones
 // feel like objects, not images.
+// Ad widths inside the side phones, which only show from 640 px up.
+const SIDE = "(min-width: 64rem) 250px, (min-width: 48rem) 225px, 200px";
+
 export function HeroStage({
   feed,
   left,
@@ -51,6 +54,7 @@ export function HeroStage({
           <div className="stage-side stage-left hidden sm:block">
             <PhoneFeed
               ads={[left]}
+              sizes={SIDE}
               className="w-[210px] md:w-[240px] lg:w-[265px]"
             />
           </div>
@@ -59,12 +63,15 @@ export function HeroStage({
           <div className="stage-side stage-right hidden sm:block">
             <PhoneFeed
               ads={[right]}
+              sizes={SIDE}
               className="w-[210px] md:w-[240px] lg:w-[265px]"
             />
           </div>
         )}
         <PhoneFeed
           ads={feed}
+          sizes="(min-width: 64rem) 290px, (min-width: 40rem) 270px, 235px"
+          preload
           className="relative z-10 w-[250px] sm:w-[290px] lg:w-[310px]"
         />
         <div className="stage-floor" aria-hidden />

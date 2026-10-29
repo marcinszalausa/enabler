@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { angleName } from "@/lib/angles";
 
@@ -183,11 +184,12 @@ export function RunDemo({ run }: { run: DemoRun }) {
                     className={`relative aspect-[9/16] overflow-hidden rounded-lg ${ready ? "" : "skeleton"}`}
                   >
                     {ready && (
-                      // eslint-disable-next-line @next/next/no-img-element -- rendered by our own ad route
-                      <img
+                      <Image
                         src={a.image}
                         alt={a.headline}
-                        className="pop-in absolute inset-0 h-full w-full object-cover"
+                        fill
+                        sizes="(min-width: 40rem) 110px, 18vw"
+                        className="pop-in object-cover"
                       />
                     )}
                   </div>

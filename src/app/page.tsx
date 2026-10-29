@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { FALLBACK_AD, type FeedAd } from "./_landing/reel";
 import { PhoneFeed } from "./_landing/phone-feed";
 import { getShowcase, type ShowcaseRun } from "@/lib/showcase";
@@ -388,14 +389,17 @@ function Examples({ runs }: { runs: ShowcaseRun[] }) {
             >
               {/* Twice, so the loop never shows a gap. */}
               {[...row, ...row].map((a, i) => (
-                // eslint-disable-next-line @next/next/no-img-element -- rendered by our own ad route
-                <img
+                <Image
                   key={i}
                   src={image(a.id)}
                   alt={i < row.length ? a.headline : ""}
                   width={1080}
                   height={a.aspect === "9:16" ? 1920 : 1080}
-                  loading="lazy"
+                  sizes={
+                    a.aspect === "9:16"
+                      ? "(min-width: 40rem) 214px, 169px"
+                      : "(min-width: 40rem) 260px, 220px"
+                  }
                   className={`shrink-0 rounded-2xl border border-line object-cover shadow-[0_20px_50px_-30px_rgb(var(--t-shadow)/0.5)] ${
                     a.aspect === "9:16"
                       ? "h-[300px] w-[169px] sm:h-[380px] sm:w-[214px]"
@@ -446,7 +450,11 @@ function VideoAds({ ads }: { ads: FeedAd[] }) {
       <div className="grid items-center gap-14 lg:grid-cols-[0.9fr_1.1fr]">
         <div className="relative flex justify-center">
           <div className="phone-halo" aria-hidden />
-          <PhoneFeed ads={ads} className="w-[260px] sm:w-[300px]" />
+          <PhoneFeed
+            ads={ads}
+            sizes="(min-width: 40rem) 280px, 245px"
+            className="w-[260px] sm:w-[300px]"
+          />
         </div>
         <div className="text-center lg:text-left">
           <p className="text-sm font-medium text-accent">Video ads</p>
@@ -515,20 +523,22 @@ function Features({ run }: { run?: ShowcaseRun }) {
           </p>
           <div className="mt-6 flex items-end justify-center gap-3">
             {story && (
-              // eslint-disable-next-line @next/next/no-img-element -- rendered by our own ad route
-              <img
+              <Image
                 src={image(story.id)}
                 alt=""
-                loading="lazy"
+                width={1080}
+                height={1920}
+                sizes="96px"
                 className="aspect-[9/16] w-24 rounded-lg border border-line object-cover"
               />
             )}
             {square && (
-              // eslint-disable-next-line @next/next/no-img-element -- rendered by our own ad route
-              <img
+              <Image
                 src={image(square.id)}
                 alt=""
-                loading="lazy"
+                width={1080}
+                height={1080}
+                sizes="96px"
                 className="aspect-square w-24 rounded-lg border border-line object-cover"
               />
             )}

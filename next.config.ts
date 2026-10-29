@@ -17,6 +17,15 @@ const nextConfig: NextConfig = {
   // Loaded from node_modules at runtime so it can find its binary.
   serverExternalPackages: ["ffmpeg-static"],
   cacheComponents: true,
+  // Ads are rendered as full-size PNGs (1080 px wide, 1.5–2.5 MB). Pages show
+  // them through the image optimizer, which serves WebP at the size shown.
+  images: {
+    localPatterns: [
+      { pathname: "/api/creatives/*/image", search: "" },
+      { pathname: "/reels/**", search: "" },
+    ],
+    minimumCacheTTL: 86400,
+  },
   // Brand kit logo uploads go through a server action (logos are capped at 2 MB).
   experimental: {
     serverActions: { bodySizeLimit: "3mb" },
