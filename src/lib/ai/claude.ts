@@ -70,6 +70,11 @@ async function callClaude<T>(request: () => Promise<T>): Promise<T> {
         `The AI service returned an error (${err.status ?? "network"}).`,
       );
     }
+    if (err instanceof Error && /authentication method/i.test(err.message)) {
+      throw new UserError(
+        "The AI service has no API key. Check ANTHROPIC_API_KEY.",
+      );
+    }
     throw err;
   }
 }
