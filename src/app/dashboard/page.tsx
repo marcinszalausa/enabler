@@ -1,6 +1,11 @@
 import { Suspense } from "react";
+import Link from "next/link";
 import { getCurrentUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
+import { ProductUrlForm } from "./product-url-form";
+
+// Server actions on this page scrape and call the AI; allow time for that.
+export const maxDuration = 120;
 
 export const metadata = { title: "Dashboard · Enabler" };
 
@@ -53,20 +58,25 @@ async function Dashboard() {
       </header>
 
       <section className="mt-10">
+        <ProductUrlForm />
+      </section>
+
+      <section className="mt-10">
         <h2 className="text-lg font-medium">Products</h2>
         {products && products.length > 0 ? (
           <ul className="mt-4 divide-y divide-neutral-200 dark:divide-neutral-800">
             {products.map((p) => (
               <li key={p.id} className="py-3">
-                <p className="font-medium">{p.name ?? p.url}</p>
-                <p className="text-sm text-neutral-500">{p.url}</p>
+                <Link href={`/dashboard/products/${p.id}`} className="block">
+                  <p className="font-medium">{p.name ?? p.url}</p>
+                  <p className="truncate text-sm text-neutral-500">{p.url}</p>
+                </Link>
               </li>
             ))}
           </ul>
         ) : (
           <p className="mt-4 rounded-md border border-dashed border-neutral-300 p-6 text-sm text-neutral-500 dark:border-neutral-700">
-            No products yet. Paste a product URL to generate ads (coming in
-            Milestone 1).
+            No products yet. Paste a product link above to get started.
           </p>
         )}
       </section>
