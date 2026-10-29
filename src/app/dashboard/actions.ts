@@ -8,6 +8,8 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { scrapePage } from "@/lib/scrape";
 import { extractBrandBrief } from "@/lib/ai/claude";
 import { GENERATION_COST, runGeneration } from "@/lib/pipeline";
+import { VIDEO_GENERATION_COST, runVideoGeneration } from "@/lib/video";
+import { parseVideoOptions } from "@/lib/video-options";
 import { userMessage } from "@/lib/errors";
 import { seedBrandKit } from "@/lib/brand-kit";
 
@@ -69,6 +71,8 @@ export async function startGeneration(
   formData: FormData,
 ): Promise<FormState> {
   const productId = String(formData.get("productId") ?? "");
+  const video = formData.get("kind") === "video";
+  const cost = video ? VIDEO_GENERATION_COST : GENERATION_COST;
   const { supabase, workspaceId } = await currentWorkspaceId();
 
   // RLS: only returns the product if the user is a member of its workspace.
@@ -84,10 +88,10 @@ export async function startGeneration(
   const admin = createAdminClient();
   const { data: spent } = await admin.rpc("spend_credits", {
     ws: workspaceId,
-    amount: GENERATION_COST,
+    amount: cost,
   });
   if (!spent) {
-    return { error: `Not enough credits. Each run uses ${GENERATION_COST}.` };
+    return { error: `Not enough credits. This run uses ${cost}.` };
   }
 
   const { data: generation, error } = await admin
@@ -95,22 +99,26 @@ export async function startGeneration(
     .insert({
       workspace_id: workspaceId,
       product_id: productId,
-      type: "image_ads",
-      model: "claude-opus-5-5 + fal flux",
-      cost_credits: GENERATION_COST,
+      type: video ? "video_ads" : "image_ads",
+      model: video
+        ? "claude-opus-5-5 + fal flux + kling 2.6"
+        : "claude-opus-5-5 + fal flux",
+      cost_credits: cost,
     })
     .select("id")
     .single();
   if (error || !generation) {
     await admin.rpc("refund_credits", {
       ws: workspaceId,
-      amount: GENERATION_COST,
+      amount: cost,
     });
     return { error: "Couldn't start the generation." };
   }
 
+  const job = { generationId: generation.id, workspaceId, productId };
+  const options = video ? parseVideoOptions(formData) : null;
   after(() =>
-    runGeneration({ generationId: generation.id, workspaceId, productId }),
+    options ? runVideoGeneration({ ...job, options }) : runGeneration(job),
   );
 
   revalidatePath(`/dashboard/products/${productId}`);

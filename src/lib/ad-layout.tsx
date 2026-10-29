@@ -8,7 +8,9 @@ export const AD_SIZES = {
 export type AdAspect = keyof typeof AD_SIZES;
 
 export type AdLayoutProps = {
-  photoUrl: string;
+  // Null renders only the text layer on a transparent background, to lay
+  // over a video.
+  photoUrl: string | null;
   aspect: AdAspect;
   headline: string;
   cta: string;
@@ -32,20 +34,22 @@ export function AdLayout(p: AdLayoutProps) {
         fontFamily: p.fontFamily,
       }}
     >
-      {/* eslint-disable-next-line @next/next/no-img-element -- Satori renders plain img */}
-      <img
-        src={p.photoUrl}
-        width={size.width}
-        height={size.height}
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          ...size,
-          objectFit: "cover",
-        }}
-        alt=""
-      />
+      {p.photoUrl && (
+        // eslint-disable-next-line @next/next/no-img-element -- Satori renders plain img
+        <img
+          src={p.photoUrl}
+          width={size.width}
+          height={size.height}
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            ...size,
+            objectFit: "cover",
+          }}
+          alt=""
+        />
+      )}
       <div
         style={{
           // Satori ignores `inset`; give the overlay explicit bounds.

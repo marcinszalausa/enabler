@@ -4,6 +4,15 @@ import Anthropic from "@anthropic-ai/sdk";
 import { betaZodOutputFormat } from "@anthropic-ai/sdk/helpers/beta/zod";
 import { z } from "zod";
 import type { ScrapedPage } from "@/lib/scrape";
+import {
+  ACCENTS,
+  ENERGIES,
+  GENDERS,
+  LANGUAGES,
+  PEOPLE,
+  isEnglish,
+  type VideoOptions,
+} from "@/lib/video-options";
 
 const MODEL = "claude-opus-5-5";
 // Server-side fallback: if a request is declined by a safety classifier,
@@ -153,6 +162,92 @@ export async function writeAdAngles(
   const ads = response.parsed_output?.ads;
   if (!ads?.length) throw new UserError("Couldn't write ad copy.");
   return ads.slice(0, count);
+}
+
+const ShotSchema = z.object({
+  image_prompt: z
+    .string()
+    .describe(
+      "The first frame of this shot. Shot 1 sets the scene: one person wearing or using the product, setting, lighting, framing. Later shots must say they keep the same person, outfit and setting from shot 1 and change only the framing (e.g. close-up of the fabric at the cuff, waist-up from a new angle). Show the product once, in its real color and design. Keep hands simple and natural, or out of frame. No text, words or logos.",
+    ),
+  motion_prompt: z
+    .string()
+    .describe(
+      "What happens in the 3- to 4-second clip that starts from that frame: one simple, natural motion (a slow turn, fabric moving as the person walks, a hand smoothing the sleeve) plus one smooth camera move (slow push-in, gentle pan). Realistic physics; the product keeps its exact look. No text, no cuts, no new people.",
+    ),
+});
+
+export const VideoAdSchema = AdAngleSchema.omit({ image_prompt: true }).extend({
+  headline: z
+    .string()
+    .describe(
+      "Max 32 characters; the hook shown over the first seconds and on the end card",
+    ),
+  voiceover: z
+    .string()
+    .describe(
+      "What a narrator says over the whole ad: 12 to 16 words, about 5 seconds spoken. The first sentence is the hook; the last is the call to action. Natural spoken English, no lists, no symbols or abbreviations, no prices unless the brief states them.",
+    ),
+  music_prompt: z
+    .string()
+    .describe(
+      "Instrumental background music for the ad: genre, mood, tempo, instruments, e.g. 'warm lo-fi acoustic guitar, soft beat, 90 bpm'. No vocals.",
+    ),
+  shots: z.array(ShotSchema).describe("Exactly 2 shots, in order"),
+});
+export type VideoAd = z.infer<typeof VideoAdSchema>;
+
+const VideoAdsSchema = z.object({ ads: z.array(VideoAdSchema) });
+
+export async function writeVideoAds(
+  brief: BrandBrief,
+  count: number,
+  shotSeconds: number[],
+  options: VideoOptions,
+): Promise<VideoAd[]> {
+  const shots = shotSeconds.length;
+  const seconds = shotSeconds.reduce((a, b) => a + b, 0);
+  const person = PEOPLE[options.person].direction;
+  const direction = [
+    `Energy: ${ENERGIES[options.energy].direction}. Let it shape the words, the pace of the motion and the music.`,
+    isEnglish(options)
+      ? `Narrator: ${GENDERS[options.gender].label.toLowerCase()}, speaking English with a${/^[AEIOU]/.test(ACCENTS[options.accent].label) ? "n" : ""} ${ACCENTS[options.accent].label} accent. Write the voiceover in English.`
+      : `Language: ${LANGUAGES[options.language].label}. Write the headline, primary text, call to action and voiceover in natural, native ${LANGUAGES[options.language].label} (not a literal translation). Keep the image and motion prompts in English. Narrator: ${GENDERS[options.gender].label.toLowerCase()}.`,
+    person
+      ? `On screen: ${person}, in every shot.`
+      : "On screen: one person who fits the audience, the same in every shot.",
+    options.message &&
+      `The owner wants the voiceover to say this; keep their wording where it fits the length, and build every ad around it:\n<owner_message>\n${options.message}\n</owner_message>`,
+  ]
+    .filter(Boolean)
+    .join("\n");
+  const response = await callClaude(() =>
+    client.beta.messages.parse({
+      model: MODEL,
+      max_tokens: 16000,
+      betas: [FALLBACK_BETA],
+      fallbacks: "default",
+      output_config: {
+        effort: "medium",
+        format: betaZodOutputFormat(VideoAdsSchema),
+      },
+      system: `You write short vertical video ads for Instagram Reels, Facebook Reels and TikTok for small and medium businesses. Each ad runs ${seconds} seconds: ${shots} shots (${shotSeconds.join(" and ")} seconds) with the same person in the same setting, a narrator's voiceover with captions, quiet background music, and an end card with the headline and call to action over the last moments. The first second must stop the scroll. Each ad uses a different angle. Headlines are punchy and at most 32 characters; primary text (the post caption) is at most 125 characters; no hashtags, no emoji, no false claims or invented reviews. Match the brand's tone. Motion must be simple enough for an AI video model to render realistically.`,
+      messages: [
+        {
+          role: "user",
+          content: `Write ${count} video ads, each with a different angle (choose the strongest of pain, benefit, social_proof, offer, curiosity) and exactly ${shots} shots, for this brand brief:\n\n${JSON.stringify(brief, null, 2)}\n\nCreative direction:\n${direction}`,
+        },
+      ],
+    }),
+  );
+  assertAnswered(response.stop_reason);
+  const ads = response.parsed_output?.ads.filter(
+    (ad) => ad.shots.length >= shots,
+  );
+  if (!ads?.length) throw new UserError("Couldn't write video scripts.");
+  return ads
+    .slice(0, count)
+    .map((ad) => ({ ...ad, shots: ad.shots.slice(0, shots) }));
 }
 
 const ImageReviewSchema = z.object({

@@ -25,7 +25,7 @@ export function GenerateButton({
         disabled={pending}
         className="rounded-md bg-neutral-900 px-4 py-2 font-medium text-white disabled:opacity-60 dark:bg-white dark:text-neutral-900"
       >
-        {pending ? "Starting…" : `Generate 5 ads (${cost} credits)`}
+        {pending ? "Starting…" : `Generate 5 image ads (${cost} credits)`}
       </button>
       {state.error && (
         <p role="alert" className="text-sm text-red-600">

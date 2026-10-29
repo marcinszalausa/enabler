@@ -127,15 +127,17 @@ export async function runGeneration({
   }
 }
 
-class QualityError extends Error {}
+// An image that kept failing the quality check; the message says why.
+export class QualityError extends Error {}
 
 // Generates an ad photo and has Claude check it for broken hands, faces or
 // a product that doesn't match; retries with the defects named. An image that
 // never passes fails, so its credit is refunded rather than shipping a flaw.
-async function generateCheckedImage(opts: {
+export async function generateCheckedImage(opts: {
   prompt: string;
   aspect: Aspect;
   referenceImageUrl: string | null;
+  sameScene?: boolean;
   product: string;
 }): Promise<string> {
   let avoid: string | undefined;
@@ -176,7 +178,7 @@ function failureNote(
 }
 
 // Like Promise.allSettled, but runs at most `limit` tasks at a time.
-async function settleWithLimit<T>(
+export async function settleWithLimit<T>(
   tasks: (() => Promise<T>)[],
   limit: number,
 ): Promise<PromiseSettledResult<T>[]> {

@@ -5,8 +5,14 @@ import { getCurrentUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import type { BrandBrief } from "@/lib/ai/claude";
 import { GENERATION_COST } from "@/lib/pipeline";
+import {
+  VIDEO_GENERATION_COST,
+  VIDEO_SECONDS,
+  VIDEOS_PER_GENERATION,
+} from "@/lib/video";
 import { getBrandKit } from "@/lib/brand-kit";
 import { GenerateButton } from "./generate-button";
+import { VideoAdForm } from "./video-ad-form";
 import { AutoRefresh } from "./auto-refresh";
 import { setShowcase } from "./showcase-actions";
 import { isShowcaseAdmin } from "@/lib/showcase";
@@ -36,6 +42,7 @@ export default function ProductPage({
 
 type Creative = {
   id: string;
+  kind: "image" | "video";
   aspect: string;
   angle: string | null;
   headline: string | null;
@@ -45,6 +52,7 @@ type Creative = {
 
 type Generation = {
   id: string;
+  type: string;
   status: "queued" | "running" | "succeeded" | "failed";
   error: string | null;
   created_at: string;
@@ -69,7 +77,7 @@ async function Product({ params }: { params: Promise<{ id: string }> }) {
     supabase
       .from("generations")
       .select(
-        "id, status, error, created_at, showcased_at, creatives(id, aspect, angle, headline, primary_text, cta)",
+        "id, type, status, error, created_at, showcased_at, creatives(id, kind, aspect, angle, headline, primary_text, cta)",
       )
       .eq("product_id", id)
       .order("created_at", { ascending: false })
@@ -87,13 +95,18 @@ async function Product({ params }: { params: Promise<{ id: string }> }) {
   );
 
   const brief = product.brand_brief as BrandBrief | null;
-  const active = (generations ?? []).some(
+  const running = (generations ?? []).filter(
     (g) => g.status === "queued" || g.status === "running",
   );
 
   return (
     <>
-      <AutoRefresh active={active} />
+      <AutoRefresh
+        active={running.length > 0}
+        videoRuns={running
+          .filter((g) => g.type === "video_ads")
+          .map((g) => g.id)}
+      />
       <header className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="min-w-0">
           <h1 className="text-2xl font-semibold">
@@ -109,7 +122,14 @@ async function Product({ params }: { params: Promise<{ id: string }> }) {
           </a>
         </div>
         <div className="flex flex-col items-start gap-1 sm:items-end">
-          <GenerateButton productId={product.id} cost={GENERATION_COST} />
+          <div className="flex flex-wrap items-start gap-2 sm:justify-end">
+            <GenerateButton productId={product.id} cost={GENERATION_COST} />
+            <VideoAdForm
+              productId={product.id}
+              cost={VIDEO_GENERATION_COST}
+              label={`Generate ${VIDEOS_PER_GENERATION} video ads`}
+            />
+          </div>
           <p className="text-xs text-neutral-500">
             {workspace?.credits ?? 0} credits left
           </p>
@@ -151,7 +171,9 @@ async function Product({ params }: { params: Promise<{ id: string }> }) {
         {(generations ?? []).length === 0 && (
           <p className="rounded-md border border-dashed border-neutral-300 p-6 text-sm text-neutral-500 dark:border-neutral-700">
             No ads yet. Generate your first set: 5 ad angles, each as a square
-            (feed) and a vertical (stories/reels) image.
+            (feed) and a vertical (stories/reels) image, or{" "}
+            {VIDEOS_PER_GENERATION} vertical {VIDEO_SECONDS}-second videos with
+            voiceover, captions and music for Reels and TikTok.
           </p>
         )}
         {(generations ?? []).map((g) => (
@@ -181,13 +203,18 @@ function GenerationBlock({
     timeStyle: "short",
   });
 
+  const video = g.type === "video_ads";
+
   if (g.status === "queued" || g.status === "running") {
     return (
       <div className="rounded-lg border border-neutral-200 p-6 text-sm dark:border-neutral-800">
-        <p className="font-medium">Generating your ads…</p>
+        <p className="font-medium">
+          {video ? "Making your video ads…" : "Generating your ads…"}
+        </p>
         <p className="mt-1 text-neutral-500">
-          Writing copy and creating 10 images. This usually takes 2–3 minutes;
-          this page updates on its own.
+          {video
+            ? `Writing ${VIDEOS_PER_GENERATION} scripts, setting up two shots per ad, recording the voiceover and music, then filming and editing. This usually takes 4–8 minutes; this page updates on its own. If you leave, the videos are finished when you come back.`
+            : "Writing copy and creating 10 images. This usually takes 2–3 minutes; this page updates on its own."}
         </p>
       </div>
     );
@@ -217,7 +244,7 @@ function GenerationBlock({
           {when}
           {g.error && <span className="ml-2 text-amber-600">{g.error}</span>}
         </h2>
-        {canShowcase && (
+        {canShowcase && !video && (
           <form action={setShowcase}>
             <input type="hidden" name="generationId" value={g.id} />
             <input
@@ -236,32 +263,59 @@ function GenerationBlock({
           </form>
         )}
       </div>
-      <ul className="mt-3 grid grid-cols-2 gap-4 md:grid-cols-4">
-        {creatives.map((c) => (
-          <li key={c.id} className="flex flex-col gap-2">
-            {/* eslint-disable-next-line @next/next/no-img-element -- rendered on demand by our own route */}
-            <img
-              src={`/api/creatives/${c.id}/image?v=${imageVersion}`}
-              alt={c.headline ?? "Ad creative"}
-              loading="lazy"
-              className={`w-full rounded-md border border-neutral-200 object-cover dark:border-neutral-800 ${
-                c.aspect === "1:1" ? "aspect-square" : "aspect-[9/16]"
-              }`}
-            />
-            <p className="text-xs text-neutral-500">
-              {c.angle?.replace("_", " ")} ·{" "}
-              {c.aspect === "1:1" ? "Feed" : "Story"}
-            </p>
-            <p className="text-sm">{c.primary_text}</p>
-            <a
-              href={`/api/creatives/${c.id}/image?download=1`}
-              className="text-sm font-medium underline underline-offset-4"
-            >
-              Download
-            </a>
-          </li>
-        ))}
-      </ul>
+      {video ? (
+        <ul className="mt-3 grid grid-cols-2 gap-4 md:grid-cols-3">
+          {creatives.map((c) => (
+            <li key={c.id} className="flex flex-col gap-2">
+              <video
+                src={`/api/creatives/${c.id}/video`}
+                controls
+                playsInline
+                loop
+                preload="metadata"
+                className="aspect-[9/16] w-full rounded-md border border-neutral-200 bg-neutral-100 object-cover dark:border-neutral-800 dark:bg-neutral-900"
+              />
+              <p className="text-xs text-neutral-500">
+                {c.angle?.replace("_", " ")} · Reel / TikTok · {VIDEO_SECONDS} s
+              </p>
+              <p className="text-sm">{c.primary_text}</p>
+              <a
+                href={`/api/creatives/${c.id}/video?download=1`}
+                className="text-sm font-medium underline underline-offset-4"
+              >
+                Download MP4
+              </a>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <ul className="mt-3 grid grid-cols-2 gap-4 md:grid-cols-4">
+          {creatives.map((c) => (
+            <li key={c.id} className="flex flex-col gap-2">
+              {/* eslint-disable-next-line @next/next/no-img-element -- rendered on demand by our own route */}
+              <img
+                src={`/api/creatives/${c.id}/image?v=${imageVersion}`}
+                alt={c.headline ?? "Ad creative"}
+                loading="lazy"
+                className={`w-full rounded-md border border-neutral-200 object-cover dark:border-neutral-800 ${
+                  c.aspect === "1:1" ? "aspect-square" : "aspect-[9/16]"
+                }`}
+              />
+              <p className="text-xs text-neutral-500">
+                {c.angle?.replace("_", " ")} ·{" "}
+                {c.aspect === "1:1" ? "Feed" : "Story"}
+              </p>
+              <p className="text-sm">{c.primary_text}</p>
+              <a
+                href={`/api/creatives/${c.id}/image?download=1`}
+                className="text-sm font-medium underline underline-offset-4"
+              >
+                Download
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
