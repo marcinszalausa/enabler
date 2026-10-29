@@ -184,7 +184,7 @@ export async function reviewAdImage(opts: {
     { type: "image", source: { type: "url", url: opts.imageUrl } },
     {
       type: "text",
-      text: `Product: ${opts.product}. Check the generated photo closely. Reject it for any of: hands or fingers that are malformed, merged, extra or missing; distorted faces, eyes or limbs; garbled text or logos; the product shown in a different color, pattern or design than the real one; a second, different version of the product. Small stylistic differences in pose or setting are fine.`,
+      text: `Product: ${opts.product}. Check the generated photo closely. Reject it for any of: hands or fingers that are malformed, merged, extra or missing; distorted faces, eyes or limbs; garbled text or logos; the product shown in a different color, pattern or design than the real one; a second, different version of the product. Differences in pose, setting, lighting or slight shade from the lighting are fine; only reject flaws a shopper would actually notice.`,
     },
   );
 
