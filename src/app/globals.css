@@ -242,9 +242,9 @@ html {
     0 2.5cqw 5cqw -1cqw rgb(0 0 0 / 0.5),
     0 10cqw 16cqw -6cqw rgb(0 0 0 / 0.45);
 }
-/* A phone with real thickness: stacked slices of titanium behind the front
-   frame, about as deep as an iPhone is (7.8 mm on a 71.9 mm body). Only
-   shows when the phone is turned in 3D. */
+/* A phone with a slim body: stacked slices of titanium behind the front
+   frame, about 4% of its width deep. Only shows when the phone is turned
+   in 3D. */
 .iphone-3d {
   position: relative;
   transform-style: preserve-3d;
@@ -253,7 +253,7 @@ html {
   position: absolute;
   inset: 0;
   border-radius: 16.6cqw;
-  transform: translateZ(calc(var(--i) * -0.75cqw));
+  transform: translateZ(calc(var(--i) * -0.4cqw));
   background: linear-gradient(
     90deg,
     #7d7e85,

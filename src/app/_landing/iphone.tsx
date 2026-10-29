@@ -18,7 +18,7 @@ export function IPhone({
   return (
     <div className={`@container ${depth ? "iphone-3d" : ""} ${className}`}>
       {depth &&
-        Array.from({ length: 14 }, (_, i) => (
+        Array.from({ length: 10 }, (_, i) => (
           <span
             key={i}
             className="iphone-slab"

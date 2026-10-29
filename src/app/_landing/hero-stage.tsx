@@ -33,7 +33,7 @@ export function HeroStage({
       frame = requestAnimationFrame(() => {
         const x = e.clientX / innerWidth - 0.5;
         const y = e.clientY / innerHeight - 0.5;
-        el.style.setProperty("--ry", `${(x * 14).toFixed(2)}deg`);
+        el.style.setProperty("--ry", `${(x * 10).toFixed(2)}deg`);
         el.style.setProperty("--rx", `${(-y * 6).toFixed(2)}deg`);
       });
     };
