@@ -146,6 +146,7 @@ export const nl: Messages = {
     perMonth: " / maand",
     payNote:
       "Prijzen in Amerikaanse dollars. Bij het afrekenen betaal je in je eigen valuta.",
+    approx: "ongeveer {price}",
     plans: [
       {
         name: "Free",

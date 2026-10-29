@@ -146,6 +146,7 @@ export const cs: Messages = {
     popular: "Oblíbený",
     perMonth: " / měsíc",
     payNote: "Ceny v amerických dolarech. Při placení zaplatíte ve své měně.",
+    approx: "přibližně {price}",
     plans: [
       {
         name: "Free",

@@ -21,6 +21,7 @@ import { alternates, isLocale, localePath, type Locale } from "@/i18n/config";
 import { getMessages, type Messages } from "@/i18n/messages";
 import { fmt } from "@/i18n/format";
 import { PLAN_PRICES, usd } from "@/lib/pricing";
+import { LocalPrice } from "@/app/_landing/local-price";
 
 export async function generateMetadata({
   params,
@@ -521,6 +522,12 @@ function Pricing({ t, locale }: { t: Messages; locale: Locale }) {
                 </span>
                 {i > 0 && <span className="text-muted">{t.home.perMonth}</span>}
               </p>
+              <LocalPrice
+                usd={PRICES[i]}
+                locale={locale}
+                template={t.home.approx}
+                className="text-sm text-muted"
+              />
               <p className="mt-1 text-sm text-muted">{plan.credits}</p>
               <ul className="mt-6 flex-1 space-y-2.5 text-sm">
                 {plan.perks.map((perk) => (

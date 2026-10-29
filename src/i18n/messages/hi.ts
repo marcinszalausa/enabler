@@ -146,6 +146,7 @@ export const hi: Messages = {
     perMonth: " / महीना",
     payNote:
       "कीमतें अमेरिकी डॉलर में हैं। चेकआउट पर अपनी मुद्रा में भुगतान करें।",
+    approx: "लगभग {price}",
     plans: [
       {
         name: "Free",

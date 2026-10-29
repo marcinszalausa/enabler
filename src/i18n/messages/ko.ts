@@ -145,6 +145,7 @@ export const ko: Messages = {
     perMonth: " / 월",
     payNote:
       "가격은 미국 달러 기준입니다. 결제할 때 현지 통화로 낼 수 있습니다.",
+    approx: "약 {price}",
     plans: [
       {
         name: "Free",

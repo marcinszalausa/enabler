@@ -146,6 +146,7 @@ export const ro: Messages = {
     popular: "Popular",
     perMonth: " / lună",
     payNote: "Prețuri în dolari americani. La plată plătești în moneda ta.",
+    approx: "aproximativ {price}",
     plans: [
       {
         name: "Free",

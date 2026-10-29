@@ -140,6 +140,7 @@ export const zh: Messages = {
     popular: "热门",
     perMonth: " / 月",
     payNote: "价格以美元计。结账时可用你所在国家的货币付款。",
+    approx: "约 {price}",
     plans: [
       {
         name: "Free",

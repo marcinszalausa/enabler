@@ -146,6 +146,7 @@ export const es: Messages = {
     perMonth: " / mes",
     payNote:
       "Precios en dólares estadounidenses. Paga en tu propia moneda al finalizar la compra.",
+    approx: "aprox. {price}",
     plans: [
       {
         name: "Free",

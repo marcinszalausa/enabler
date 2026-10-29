@@ -147,6 +147,7 @@ export const tr: Messages = {
     perMonth: " / ay",
     payNote:
       "Fiyatlar ABD doları cinsindendir. Ödeme sırasında kendi para biriminizle ödersiniz.",
+    approx: "yaklaşık {price}",
     plans: [
       {
         name: "Free",

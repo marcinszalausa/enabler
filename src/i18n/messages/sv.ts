@@ -146,6 +146,7 @@ export const sv: Messages = {
     perMonth: " / mån",
     payNote:
       "Priser i amerikanska dollar. Du betalar i din egen valuta i kassan.",
+    approx: "cirka {price}",
     plans: [
       {
         name: "Free",

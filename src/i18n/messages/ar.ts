@@ -142,6 +142,7 @@ export const ar: Messages = {
     popular: "الأكثر طلبًا",
     perMonth: " / شهريًا",
     payNote: "الأسعار بالدولار الأمريكي. ادفع بعملتك المحلية عند الدفع.",
+    approx: "حوالي {price}",
     plans: [
       {
         name: "Free",

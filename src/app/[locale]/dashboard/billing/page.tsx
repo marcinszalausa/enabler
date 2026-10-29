@@ -15,6 +15,7 @@ import {
 } from "@/lib/billing";
 import { planName, usd } from "@/lib/pricing";
 import { BackLink } from "../ui";
+import { LocalPrice } from "@/app/_landing/local-price";
 import { CheckoutButton, ManageButton } from "./billing-buttons";
 
 export async function generateMetadata({
@@ -131,6 +132,12 @@ async function Billing({
                     </span>
                     <span className="text-muted">{t.home.perMonth}</span>
                   </p>
+                  <LocalPrice
+                    usd={plan.usd}
+                    locale={locale}
+                    template={t.home.approx}
+                    className="text-sm text-muted"
+                  />
                   <p className="mt-1 flex-1 text-sm text-muted">
                     {fmt(b.monthly, {
                       count: n(plan.credits),
@@ -171,6 +178,12 @@ async function Billing({
                   <p className="mt-1 text-sm text-muted">
                     {fmt(b.packAds, { ads: n(adsFor(pack.credits)) })}
                   </p>
+                  <LocalPrice
+                    usd={pack.usd}
+                    locale={locale}
+                    template={t.home.approx}
+                    className="mt-0.5 block text-xs text-muted"
+                  />
                 </div>
                 <CheckoutButton
                   kind="pack"

@@ -144,6 +144,7 @@ export const ja: Messages = {
     popular: "人気",
     perMonth: " / 月",
     payNote: "価格は米ドル表示です。お支払い時はお住まいの国の通貨で払えます。",
+    approx: "約{price}",
     plans: [
       {
         name: "Free",

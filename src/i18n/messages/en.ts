@@ -144,6 +144,7 @@ export const en = {
     popular: "Popular",
     perMonth: " / month",
     payNote: "Prices in US dollars. Pay in your own currency at checkout.",
+    approx: "about {price}",
     plans: [
       {
         name: "Free",
