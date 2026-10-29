@@ -1,5 +1,9 @@
+"use client";
+
 import Image from "next/image";
 import { SectionHeading } from "./chrome";
+import { useI18n } from "@/i18n/client";
+import { fmt } from "@/i18n/format";
 
 // The store's own product photo next to ads Gooidy made from it.
 export function BeforeAfter({
@@ -18,11 +22,12 @@ export function BeforeAfter({
 }) {
   const { hostname, pathname } = new URL(url);
   const store = hostname.replace(/^www\./, "");
+  const { t } = useI18n();
   return (
     <section className="reveal mx-auto max-w-6xl px-4 py-24">
       <SectionHeading
-        title="From one product photo to ads that sell"
-        sub={`On the left is the photo on ${store}. On the right are ads Gooidy made from it, unedited.`}
+        title={t.beforeAfter.title}
+        sub={fmt(t.beforeAfter.sub, { store })}
       />
       <div className="mt-14 grid items-center gap-10 lg:grid-cols-[0.8fr_auto_1.4fr]">
         <figure className="mx-auto w-full max-w-sm overflow-hidden rounded-2xl border border-line bg-raised shadow-[0_30px_70px_-40px_rgb(var(--t-shadow)/0.5)]">
@@ -47,7 +52,7 @@ export function BeforeAfter({
           <figcaption className="px-4 py-3 text-sm">
             <span className="font-medium">{name}</span>
             <span className="block text-xs text-muted">
-              Before: the product page
+              {t.beforeAfter.before}
             </span>
           </figcaption>
         </figure>
@@ -56,7 +61,7 @@ export function BeforeAfter({
           <span className="flex h-12 w-12 items-center justify-center rounded-full bg-accent text-white shadow-[0_10px_30px_-10px_var(--t-accent)]">
             <svg
               viewBox="0 0 24 24"
-              className="h-5 w-5 rotate-90 lg:rotate-0"
+              className="h-5 w-5 rotate-90 lg:rotate-0 lg:rtl:rotate-180"
               fill="none"
               stroke="currentColor"
               strokeWidth={2}
@@ -86,7 +91,7 @@ export function BeforeAfter({
             ))}
           </ul>
           <p className="mt-4 text-center text-xs text-muted">
-            After: {ads.length} of the ads from that run
+            {fmt(t.beforeAfter.after, { count: ads.length })}
           </p>
         </div>
       </div>

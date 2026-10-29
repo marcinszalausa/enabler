@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { ANGLES, angleName } from "@/lib/angles";
+import { useAngles, useI18n } from "@/i18n/client";
 
 export type AngleAd = {
   id: string;
@@ -23,13 +23,15 @@ export function AngleExplorer({
 }) {
   const [active, setActive] = useState(0);
   const ad = ads[active];
+  const { t } = useI18n();
+  const angle = useAngles();
 
   return (
     <div className="grid items-center gap-10 lg:grid-cols-[0.9fr_1.1fr]">
       <div
         className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 lg:mx-0 lg:flex-col lg:overflow-visible lg:px-0 lg:pb-0"
         role="tablist"
-        aria-label="Ad angles"
+        aria-label={t.feed.angleTabs}
       >
         {ads.map((a, i) => (
           <button
@@ -45,11 +47,11 @@ export function AngleExplorer({
             }`}
           >
             <span className="font-medium lg:text-base">
-              {angleName(a.angle)}
+              {angle.name(a.angle)}
             </span>
-            {ANGLES[a.angle] && (
+            {angle.idea(a.angle) && (
               <span className="mt-0.5 hidden text-sm text-muted lg:block">
-                {ANGLES[a.angle].idea}
+                {angle.idea(a.angle)}
               </span>
             )}
           </button>
@@ -64,7 +66,7 @@ export function AngleExplorer({
           </span>
           <div className="leading-tight">
             <p className="text-sm font-medium">{store.split(".")[0]}</p>
-            <p className="text-xs text-muted">Sponsored</p>
+            <p className="text-xs text-muted">{t.feed.sponsored}</p>
           </div>
         </div>
         <div className="relative aspect-square overflow-hidden bg-surface">

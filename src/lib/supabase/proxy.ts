@@ -5,9 +5,14 @@ import { supabasePublishableKey, supabaseUrl } from "./env";
 const PROTECTED_PREFIXES = ["/dashboard"];
 
 // Refreshes the auth session on every request and keeps signed-out
-// visitors away from protected pages.
-export async function updateSession(request: NextRequest) {
-  let response = NextResponse.next({ request });
+// visitors away from protected pages. `rewrite` serves the page from another
+// path (the page in the visitor's language) without changing the address.
+export async function updateSession(request: NextRequest, rewrite?: URL) {
+  const pass = () =>
+    rewrite
+      ? NextResponse.rewrite(rewrite, { request })
+      : NextResponse.next({ request });
+  let response = pass();
 
   const supabase = createServerClient(supabaseUrl, supabasePublishableKey, {
     cookies: {
@@ -18,7 +23,7 @@ export async function updateSession(request: NextRequest) {
         cookiesToSet.forEach(({ name, value }) =>
           request.cookies.set(name, value),
         );
-        response = NextResponse.next({ request });
+        response = pass();
         cookiesToSet.forEach(({ name, value, options }) =>
           response.cookies.set(name, value, options),
         );

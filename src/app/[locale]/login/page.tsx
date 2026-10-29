@@ -1,0 +1,37 @@
+import { Suspense } from "react";
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { isLocale } from "@/i18n/config";
+import { getMessages } from "@/i18n/messages";
+import { LoginForm } from "./login-form";
+import { AppBar } from "@/app/_landing/chrome";
+
+export async function generateMetadata({
+  params,
+}: PageProps<"/[locale]/login">): Promise<Metadata> {
+  const { locale } = await params;
+  if (!isLocale(locale)) return {};
+  return { title: (await getMessages(locale)).meta.signInTitle };
+}
+
+export default async function LoginPage({
+  params,
+}: PageProps<"/[locale]/login">) {
+  const { locale } = await params;
+  if (!isLocale(locale)) notFound();
+  const t = await getMessages(locale);
+  return (
+    <div className="landing flex flex-1 flex-col bg-bg text-fg">
+      <AppBar />
+      <main className="hero-bg flex flex-1 items-center justify-center px-4 py-16">
+        <div className="w-full max-w-sm rounded-2xl border border-line bg-raised p-8 shadow-[0_24px_60px_-30px_rgb(var(--t-shadow)/0.35)]">
+          <h1 className="text-2xl font-semibold">{t.login.title}</h1>
+          <p className="mt-2 text-sm text-muted">{t.login.sub}</p>
+          <Suspense>
+            <LoginForm />
+          </Suspense>
+        </div>
+      </main>
+    </div>
+  );
+}

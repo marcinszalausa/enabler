@@ -2,10 +2,12 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useI18n } from "@/i18n/client";
 
 // On phones, a "Create ads" bar stays in reach once the hero's link form has
 // scrolled away, and steps aside again when the closing form is on screen.
 export function StickyCta() {
+  const { t } = useI18n();
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -35,7 +37,7 @@ export function StickyCta() {
         tabIndex={show ? 0 : -1}
         className="btn-primary block rounded-xl py-3 text-center font-medium"
       >
-        Create ads free
+        {t.stickyCta}
       </Link>
     </div>
   );

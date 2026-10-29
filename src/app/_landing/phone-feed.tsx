@@ -5,7 +5,8 @@ import Image from "next/image";
 import { HomeIndicator, IPhone, StatusBar } from "./iphone";
 import type { FeedAd } from "./reel";
 import { SCREEN } from "./screen";
-import { angleName } from "@/lib/angles";
+import { useAngles, useI18n } from "@/i18n/client";
+import { fmt } from "@/i18n/format";
 
 const IMAGE_MS = 3800;
 // Moves on even if a video stalls or never fires "ended".
@@ -40,6 +41,7 @@ export function PhoneFeed({
   const [animate, setAnimate] = useState(true);
   const [visible, setVisible] = useState(false);
   const [muted, setMuted] = useState(true);
+  const { t } = useI18n();
   const root = useRef<HTMLDivElement>(null);
   const videos = useRef<(HTMLVideoElement | null)[]>([]);
   const reduceMotion = useRef(false);
@@ -170,7 +172,7 @@ export function PhoneFeed({
             setMuted(!muted);
           }}
           className="absolute bottom-[3cqw] right-[3cqw] z-10 flex h-[8cqw] w-[8cqw] items-center justify-center rounded-full bg-black/45 text-white backdrop-blur transition hover:bg-black/60"
-          aria-label={muted ? "Turn sound on" : "Turn sound off"}
+          aria-label={muted ? t.feed.soundOn : t.feed.soundOff}
         >
           <svg
             viewBox="0 0 24 24"
@@ -197,43 +199,49 @@ export function PhoneFeed({
   return (
     <div ref={root} className={`relative ${className}`}>
       {notes && <Notes ad={current} key={index % ads.length} />}
-      {bare ? (
-        <div className={SCREEN}>{screen}</div>
-      ) : (
-        <IPhone depth={depth}>
-          <div className="flex h-full flex-col">
-            <div className="h-[12.4cqw] shrink-0">
-              <StatusBar />
-            </div>
-
-            {screen}
-
-            {/* App tab bar above the home indicator. */}
-            <div className="relative flex-1 bg-black">
-              <div className="flex items-start justify-around px-[4cqw] pt-[3.2cqw] text-white">
-                <Icon d="M4 10.5 12 4l8 6.5V20h-5.5v-5.5h-5V20H4v-9.5Z" small />
-                <Icon
-                  d="M10.8 18.2a7.2 7.2 0 1 0 0-14.4 7.2 7.2 0 0 0 0 14.4ZM20.5 20.5l-4.6-4.6"
-                  small
-                />
-                <Icon
-                  d="M7 3.5h10A3.5 3.5 0 0 1 20.5 7v10a3.5 3.5 0 0 1-3.5 3.5H7A3.5 3.5 0 0 1 3.5 17V7A3.5 3.5 0 0 1 7 3.5ZM12 8v8m-4-4h8"
-                  small
-                />
-                <Icon
-                  d="M7 3.5h10A3.5 3.5 0 0 1 20.5 7v10a3.5 3.5 0 0 1-3.5 3.5H7A3.5 3.5 0 0 1 3.5 17V7A3.5 3.5 0 0 1 7 3.5ZM10 9.2v5.6l4.8-2.8L10 9.2Z"
-                  small
-                />
-                <Icon
-                  d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-7.5 8.5a7.5 7.5 0 0 1 15 0"
-                  small
-                />
+      {/* A phone's own screen stays left to right in every language. */}
+      <div dir="ltr">
+        {bare ? (
+          <div className={SCREEN}>{screen}</div>
+        ) : (
+          <IPhone depth={depth}>
+            <div className="flex h-full flex-col">
+              <div className="h-[12.4cqw] shrink-0">
+                <StatusBar />
               </div>
-              <HomeIndicator />
+
+              {screen}
+
+              {/* App tab bar above the home indicator. */}
+              <div className="relative flex-1 bg-black">
+                <div className="flex items-start justify-around px-[4cqw] pt-[3.2cqw] text-white">
+                  <Icon
+                    d="M4 10.5 12 4l8 6.5V20h-5.5v-5.5h-5V20H4v-9.5Z"
+                    small
+                  />
+                  <Icon
+                    d="M10.8 18.2a7.2 7.2 0 1 0 0-14.4 7.2 7.2 0 0 0 0 14.4ZM20.5 20.5l-4.6-4.6"
+                    small
+                  />
+                  <Icon
+                    d="M7 3.5h10A3.5 3.5 0 0 1 20.5 7v10a3.5 3.5 0 0 1-3.5 3.5H7A3.5 3.5 0 0 1 3.5 17V7A3.5 3.5 0 0 1 7 3.5ZM12 8v8m-4-4h8"
+                    small
+                  />
+                  <Icon
+                    d="M7 3.5h10A3.5 3.5 0 0 1 20.5 7v10a3.5 3.5 0 0 1-3.5 3.5H7A3.5 3.5 0 0 1 3.5 17V7A3.5 3.5 0 0 1 7 3.5ZM10 9.2v5.6l4.8-2.8L10 9.2Z"
+                    small
+                  />
+                  <Icon
+                    d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-7.5 8.5a7.5 7.5 0 0 1 15 0"
+                    small
+                  />
+                </div>
+                <HomeIndicator />
+              </div>
             </div>
-          </div>
-        </IPhone>
-      )}
+          </IPhone>
+        )}
+      </div>
     </div>
   );
 }
@@ -258,11 +266,15 @@ function Icon({ d, small = false }: { d: string; small?: boolean }) {
 // Glass notes beside the hero phone, describing the ad on screen. Every
 // fact comes from the run itself.
 function Notes({ ad }: { ad: FeedAd }) {
+  const { t } = useI18n();
+  const angle = useAngles();
   const facts = [
-    ad.angle && { label: "Ad angle", value: angleName(ad.angle) },
-    { label: "Format", value: ad.format ?? "9:16 · Reels, Stories, TikTok" },
+    ad.angle && { label: t.feed.angle, value: angle.name(ad.angle) },
+    { label: t.feed.format, value: ad.format ?? t.feed.defaultFormat },
     ad.store && {
-      label: ad.madeIn ? `Made in ${ad.madeIn} from` : "Made from",
+      label: ad.madeIn
+        ? fmt(t.feed.madeInFrom, { time: ad.madeIn })
+        : t.feed.madeFrom,
       value: ad.store,
     },
   ].filter(Boolean) as { label: string; value: string }[];
