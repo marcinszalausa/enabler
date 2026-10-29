@@ -11,6 +11,10 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-display: var(--font-bricolage);
+  --color-bg: var(--l-bg);
+  --color-fg: var(--l-fg);
+  --color-surface: var(--l-surface);
+  --color-accent: var(--l-accent);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -32,8 +36,27 @@ html {
 
 /* Landing page ------------------------------------------------------------ */
 
+/* Dark by default; the landing page switches to light during the day. */
+.landing {
+  --l-bg: #07060b;
+  --l-fg: #ffffff;
+  --l-surface: #0f0d18;
+  --l-accent: #25f4ee;
+  --l-gradient: linear-gradient(90deg, #25f4ee, #a78bfa 45%, #fe2c55);
+}
+:root[data-theme="light"] .landing {
+  --l-bg: #fbfaff;
+  --l-fg: #0b0a12;
+  --l-surface: #ffffff;
+  --l-accent: #0a9c97;
+  --l-gradient: linear-gradient(90deg, #00b8b2, #7c3aed 45%, #fe2c55);
+}
+:root[data-theme="light"] {
+  background: #fbfaff;
+}
+
 .landing .text-gradient {
-  background-image: linear-gradient(90deg, #25f4ee, #a78bfa 45%, #fe2c55);
+  background-image: var(--l-gradient);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;

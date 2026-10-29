@@ -13,6 +13,8 @@ export type SampleReel = {
   from: string;
   to: string;
   blob: string;
+  // Optional vertical clip in public/reels/ (short, muted, looping).
+  video?: string;
 };
 
 export const REELS: SampleReel[] = [
@@ -105,12 +107,26 @@ export function Reel({
       style={{ backgroundImage: `linear-gradient(165deg, ${reel.from}, ${reel.to})` }}
       aria-hidden
     >
-      {/* The "product": soft shapes standing in for the item. */}
-      <div
-        className="reel-float absolute left-1/2 top-[52%] h-[38%] w-[58%] -translate-x-1/2 -translate-y-1/2 rounded-[42%]"
-        style={{ background: reel.blob }}
-      />
-      <div className="absolute left-[56%] top-[40%] h-[16%] w-[26%] rounded-full bg-white/45 blur-[1px]" />
+      {reel.video ? (
+        <video
+          src={reel.video}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+      ) : (
+        <>
+          {/* The "product": soft shapes standing in for the item. */}
+          <div
+            className="reel-float absolute left-1/2 top-[52%] h-[38%] w-[58%] -translate-x-1/2 -translate-y-1/2 rounded-[42%]"
+            style={{ background: reel.blob }}
+          />
+          <div className="absolute left-[56%] top-[40%] h-[16%] w-[26%] rounded-full bg-white/45 blur-[1px]" />
+        </>
+      )}
       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/70" />
 
       {/* TikTok-style hook caption */}
