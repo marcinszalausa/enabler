@@ -1,10 +1,11 @@
 import type { CSSProperties, ReactNode } from "react";
 
-// A current flagship iPhone, drawn in CSS so it stays sharp at any size and
+// The iPhone 18 Pro Max, drawn in CSS so it stays sharp at any size and
 // costs nothing to load. Everything is sized in container units (cqw) of the
 // phone's own width, so proportions hold from a thumbnail to the hero:
-// a 71.9 × 150 mm body, thin even bezels, a 19.5:9 screen with Apple's corner
-// radius, the Dynamic Island, and the side buttons including Camera Control.
+// a 78 × 163.4 mm aluminum body, thin even bezels, a 19.5:9 screen with
+// Apple's corner radius, the smaller Dynamic Island, and the side buttons
+// including Camera Control.
 // With `depth` (in % of its width), the body gets thickness for 3D scenes.
 export function IPhone({
   children,
@@ -42,7 +43,7 @@ export function IPhone({
             aria-hidden
           />
         ))}
-      <div className="iphone-frame relative aspect-[71.9/150] rounded-[16.6cqw] p-[1.25cqw]">
+      <div className="iphone-frame relative aspect-[78/163.4] rounded-[15.3cqw] p-[1.15cqw]">
         {/* Left: Action button, volume up, volume down. */}
         <span className="iphone-key left-[-0.75cqw] top-[18.5%] h-[5.5%]" />
         <span className="iphone-key left-[-0.75cqw] top-[27%] h-[9.5%]" />
@@ -51,12 +52,12 @@ export function IPhone({
         <span className="iphone-key right-[-0.75cqw] top-[30%] h-[14%]" />
         <span className="iphone-key iphone-key-flush right-[-0.45cqw] top-[61%] h-[8%]" />
 
-        <div className="iphone-bezel h-full w-full rounded-[15.4cqw] p-[2.9cqw]">
-          <div className="relative h-full w-full overflow-hidden rounded-[12.6cqw] bg-black [transform:translateZ(0)]">
+        <div className="iphone-bezel h-full w-full rounded-[14.2cqw] p-[2.7cqw]">
+          <div className="relative h-full w-full overflow-hidden rounded-[11.6cqw] bg-black [transform:translateZ(0)]">
             {children}
             {/* Dynamic Island, with the front camera's lens on its right. */}
-            <div className="pointer-events-none absolute left-1/2 top-[2.55cqw] z-20 flex h-[8.9cqw] w-[29cqw] -translate-x-1/2 items-center justify-end rounded-full bg-black pr-[2.6cqw]">
-              <span className="h-[3.2cqw] w-[3.2cqw] rounded-full bg-[radial-gradient(circle_at_35%_35%,#3a3f5c,#0b0c14_60%)]" />
+            <div className="pointer-events-none absolute left-1/2 top-[2.4cqw] z-20 flex h-[7.6cqw] w-[22cqw] -translate-x-1/2 items-center justify-end rounded-full bg-black pr-[2.2cqw]">
+              <span className="h-[2.9cqw] w-[2.9cqw] rounded-full bg-[radial-gradient(circle_at_35%_35%,#3a3f5c,#0b0c14_60%)]" />
             </div>
             {/* Faint glass reflection. */}
             <div className="iphone-glare pointer-events-none absolute inset-0 z-30" />
