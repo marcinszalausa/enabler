@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { angleName } from "@/lib/angles";
+import { useAngles, useI18n } from "@/i18n/client";
+import { fmt } from "@/i18n/format";
 
 export type DemoRun = {
   url: string;
@@ -24,6 +25,8 @@ export function RunDemo({ run }: { run: DemoRun }) {
   const root = useRef<HTMLDivElement>(null);
   const [t, setT] = useState(-1);
   const [play, setPlay] = useState(0);
+  const { t: m } = useI18n();
+  const angle = useAngles();
 
   useEffect(() => {
     const el = root.current;
@@ -63,9 +66,9 @@ export function RunDemo({ run }: { run: DemoRun }) {
   const typingUrl = t >= 0 && t < T.read;
 
   const steps = [
-    { label: "Reading your page", at: T.read },
-    { label: "Writing angles and headlines", at: T.angles },
-    { label: "Designing your ads", at: T.design },
+    { label: m.demo.reading, at: T.read },
+    { label: m.demo.writing, at: T.angles },
+    { label: m.demo.designing, at: T.design },
   ];
   const ads = run.ads.slice(0, 5);
 
@@ -113,7 +116,7 @@ export function RunDemo({ run }: { run: DemoRun }) {
             );
           })}
           <li className="mt-auto hidden pt-6 text-xs text-muted lg:block">
-            A real run, played back. Nothing here was edited.
+            {m.demo.note}
           </li>
         </ol>
 
@@ -128,7 +131,7 @@ export function RunDemo({ run }: { run: DemoRun }) {
                 t >= T.read - 300 && t < T.read + 200 ? "scale-95" : ""
               }`}
             >
-              Create ads
+              {m.demo.create}
             </span>
           </div>
 
@@ -137,7 +140,7 @@ export function RunDemo({ run }: { run: DemoRun }) {
             <div className="pop-in mt-6 grid gap-4 rounded-xl bg-surface p-4 text-sm sm:grid-cols-2">
               <div>
                 <p className="text-xs font-medium uppercase tracking-wide text-muted">
-                  What you sell
+                  {m.demo.sells}
                 </p>
                 <p className="mt-1 leading-relaxed">
                   {typed(run.summary, T.read + 200)}
@@ -145,7 +148,7 @@ export function RunDemo({ run }: { run: DemoRun }) {
               </div>
               <div>
                 <p className="text-xs font-medium uppercase tracking-wide text-muted">
-                  Who it&apos;s for
+                  {m.demo.forWhom}
                 </p>
                 <p className="mt-1 leading-relaxed">
                   {typed(run.audience, T.read + 600)}
@@ -164,7 +167,7 @@ export function RunDemo({ run }: { run: DemoRun }) {
                     className="pop-in flex items-center gap-3 rounded-xl border border-line px-3 py-2.5 text-sm"
                   >
                     <span className="shrink-0 rounded-full bg-accent-soft px-2 py-0.5 text-xs font-medium text-accent">
-                      {angleName(a.angle)}
+                      {angle.name(a.angle)}
                     </span>
                     <span className="truncate">{a.headline}</span>
                   </li>
@@ -201,8 +204,10 @@ export function RunDemo({ run }: { run: DemoRun }) {
           {t >= T.done && (
             <div className="pop-in mt-5 flex flex-wrap items-center justify-between gap-3 text-sm">
               <span className="rounded-full bg-ok-bg px-3 py-1 font-medium text-ok">
-                ✓ Done{run.madeIn ? ` in ${run.madeIn}` : ""} · {ads.length}{" "}
-                angles, 9:16 and 1:1
+                {fmt(run.madeIn ? m.demo.doneIn : m.demo.done, {
+                  time: run.madeIn ?? "",
+                  angles: ads.length,
+                })}
               </span>
               <button
                 type="button"
@@ -212,7 +217,7 @@ export function RunDemo({ run }: { run: DemoRun }) {
                 }}
                 className="text-muted underline-offset-4 hover:text-fg hover:underline"
               >
-                Replay
+                {m.demo.replay}
               </button>
             </div>
           )}

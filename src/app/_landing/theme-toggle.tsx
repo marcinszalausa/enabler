@@ -1,10 +1,13 @@
 "use client";
 
+import { useI18n } from "@/i18n/client";
+
 const THEME_KEY = "gooidy-theme";
 
 // Flips between light and dark and remembers the choice on this device.
 // Both icons are rendered; CSS shows the right one, so nothing flashes.
 export function ThemeToggle() {
+  const { t } = useI18n();
   function toggle() {
     const root = document.documentElement;
     const next = root.dataset.theme === "dark" ? "light" : "dark";
@@ -18,8 +21,8 @@ export function ThemeToggle() {
     <button
       type="button"
       onClick={toggle}
-      aria-label="Switch between light and dark theme"
-      title="Switch theme"
+      aria-label={t.nav.theme}
+      title={t.nav.themeShort}
       className="flex h-9 w-9 items-center justify-center rounded-full text-muted transition-colors hover:bg-surface hover:text-fg"
     >
       {/* Sun: shown in dark mode, switches to light. */}

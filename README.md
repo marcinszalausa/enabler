@@ -18,10 +18,12 @@ Import the repo in Vercel, add the variables from `.env.example` under Settings 
 
 ## Layout
 
-- `src/proxy.ts`: refreshes the Supabase session on each request and protects `/dashboard`
+- `src/proxy.ts`: picks the visitor's language (saved choice, then a non-English browser language, then their country via Vercel's `x-vercel-ip-country`), rewrites to `src/app/[locale]/...`, refreshes the Supabase session and protects `/dashboard`
+- `src/i18n/`: site languages (`config.ts`), translations (`messages/`, English in `en.ts` is the source shape) and helpers. English pages have no prefix, other languages live at `/de/...`, `/ja/...`; `/dashboard` and `/login` keep one address and follow the `gooidy-locale` cookie. Legal pages stay in English
 - `src/lib/supabase/`: browser, server and proxy Supabase clients
 - `src/lib/auth.ts`: `getCurrentUser()` for server components
-- `src/app/login`: magic-link sign-in
+- `src/app/[locale]/login`: magic-link sign-in
 - `src/app/auth/callback`, `src/app/auth/signout`: auth routes
-- `src/app/dashboard`: workspace dashboard
+- `src/app/[locale]/dashboard`: workspace dashboard
+- `src/lib/languages.ts`: the languages ads are written and spoken in. `src/lib/ad-text.ts` gives the ad renderer what each script needs: Japanese, Korean and Chinese glyphs fetched from Google Fonts, and Hindi and Arabic drawn with Skia (`@napi-rs/canvas`, bundled Noto fonts), since Satori can't shape them
 - `supabase/migrations/`: database schema

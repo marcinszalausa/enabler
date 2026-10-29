@@ -1,9 +1,21 @@
+"use client";
+
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { ThemeToggle } from "./theme-toggle";
 import { NavShell } from "./nav-shell";
+import { LanguageSwitcher } from "./language-switcher";
+import { useI18n } from "@/i18n/client";
+import { localePath } from "@/i18n/config";
 
-// Pieces shared by the public pages: nav, link form, footer.
+// Pieces shared by the public pages: nav, link form, footer. Client
+// components, so they read the page's language from the I18nProvider.
+
+// A link to a page in the current language.
+export function useHref() {
+  const { locale } = useI18n();
+  return (path: string) => localePath(locale, path);
+}
 
 // The Gooidy logo: "gooidy" with the g set in an indigo tile, the rest in the
 // text color. Drawn as paths (Geist SemiBold) so it looks the same everywhere.
@@ -14,10 +26,12 @@ const OOIDY_PATH =
   "M95.9 -26.7Q95.9 -35.1 99.15 -41.4Q102.4 -47.7 108.35 -51.15Q114.3 -54.6 122.2 -54.6Q130 -54.6 135.95 -51.15Q141.9 -47.7 145.15 -41.4Q148.4 -35.1 148.4 -26.7Q148.4 -18.3 145.15 -12Q141.9 -5.7 135.95 -2.25Q130 1.2 122.2 1.2Q114.3 1.2 108.35 -2.25Q102.4 -5.7 99.15 -12Q95.9 -18.3 95.9 -26.7ZM135.2 -26.7Q135.2 -35 131.75 -39.6Q128.3 -44.2 122.2 -44.2Q116 -44.2 112.6 -39.6Q109.2 -35 109.2 -26.7Q109.2 -18.4 112.6 -13.8Q116 -9.2 122.2 -9.2Q128.4 -9.2 131.8 -13.8Q135.2 -18.4 135.2 -26.7ZM154.1 -26.7Q154.1 -35.1 157.35 -41.4Q160.6 -47.7 166.55 -51.15Q172.5 -54.6 180.4 -54.6Q188.2 -54.6 194.15 -51.15Q200.1 -47.7 203.35 -41.4Q206.6 -35.1 206.6 -26.7Q206.6 -18.3 203.35 -12Q200.1 -5.7 194.15 -2.25Q188.2 1.2 180.4 1.2Q172.5 1.2 166.55 -2.25Q160.6 -5.7 157.35 -12Q154.1 -18.3 154.1 -26.7ZM193.4 -26.7Q193.4 -35 189.95 -39.6Q186.5 -44.2 180.4 -44.2Q174.2 -44.2 170.8 -39.6Q167.4 -35 167.4 -26.7Q167.4 -18.4 170.8 -13.8Q174.2 -9.2 180.4 -9.2Q186.6 -9.2 190 -13.8Q193.4 -18.4 193.4 -26.7ZM215.2 -53.4H228V0H215.2ZM215 -71.9H228.3V-60.5H215ZM236.7 -26.7Q236.7 -35.2 239.45 -41.5Q242.2 -47.8 247.2 -51.2Q252.2 -54.6 258.9 -54.6Q264.4 -54.6 268.65 -52.25Q272.9 -49.9 275.1 -45.8V-71H287.9V0H275.8L275.5 -7.9Q273.2 -3.6 268.8 -1.2Q264.4 1.2 258.9 1.2Q252.1 1.2 247.1 -2.2Q242.1 -5.6 239.4 -11.9Q236.7 -18.2 236.7 -26.7ZM275.1 -26.7Q275.1 -35.2 271.9 -39.7Q268.7 -44.2 262.7 -44.2Q256.8 -44.2 253.4 -39.5Q250 -34.8 250 -26.7Q250 -18.7 253.45 -13.95Q256.9 -9.2 262.7 -9.2Q268.6 -9.2 271.85 -13.75Q275.1 -18.3 275.1 -26.7ZM303.2 5.1H310Q312.6 5.1 313.85 4.3Q315.1 3.5 315.9 1.6L317.3 -2.1H313.6L294.6 -53.4H307.8L321.3 -14.1L334 -53.4H347.3L326.4 5.6Q324.7 10.6 321.4 12.8Q318.1 15 312.3 15H303.2Z";
 
 export function Logo() {
+  const { t } = useI18n();
+  const href = useHref();
   return (
     <Link
-      href="/"
-      aria-label="Gooidy home"
+      href={href("/")}
+      aria-label={t.nav.home}
       className="flex items-center text-fg"
     >
       <svg viewBox="0 -72.9 348.3 98.1" className="h-7 w-auto" role="img">
@@ -50,37 +64,40 @@ export function Logo() {
 }
 
 export function Nav() {
+  const { t } = useI18n();
+  const href = useHref();
   return (
     <NavShell>
       <nav className="site-nav mx-auto flex items-center justify-between gap-4 px-4">
         <Logo />
         <div className="hidden items-center gap-8 text-sm text-muted md:flex">
-          <Link href="/use-cases" className="hover:text-fg">
-            Examples
+          <Link href={href("/use-cases")} className="hover:text-fg">
+            {t.nav.examples}
           </Link>
-          <Link href="/#how" className="hover:text-fg">
-            How it works
+          <Link href={`${href("/")}#how`} className="hover:text-fg">
+            {t.nav.how}
           </Link>
-          <Link href="/#angles" className="hover:text-fg">
-            Ad angles
+          <Link href={`${href("/")}#angles`} className="hover:text-fg">
+            {t.nav.angles}
           </Link>
-          <Link href="/#pricing" className="hover:text-fg">
-            Pricing
+          <Link href={`${href("/")}#pricing`} className="hover:text-fg">
+            {t.nav.pricing}
           </Link>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1 sm:gap-2">
+          <LanguageSwitcher compact />
           <ThemeToggle />
           <Link
             href="/login"
-            className="rounded-lg px-3 py-2 text-sm font-medium text-fg hover:bg-surface"
+            className="rounded-lg px-3 py-2 text-sm font-medium whitespace-nowrap text-fg hover:bg-surface"
           >
-            Sign in
+            {t.nav.signIn}
           </Link>
           <Link
             href="/dashboard"
-            className="btn-primary hidden rounded-lg px-4 py-2 text-sm font-medium sm:block"
+            className="btn-primary hidden rounded-lg px-4 py-2 text-sm font-medium whitespace-nowrap sm:block"
           >
-            Get started
+            {t.nav.getStarted}
           </Link>
         </div>
       </nav>
@@ -89,6 +106,7 @@ export function Nav() {
 }
 
 export function UrlForm({ id }: { id: string }) {
+  const { t } = useI18n();
   // A plain GET form: signed-out visitors go through sign-in and land on the
   // dashboard with the link already filled in.
   return (
@@ -98,21 +116,21 @@ export function UrlForm({ id }: { id: string }) {
       className="flex w-full max-w-xl flex-col gap-2 sm:flex-row"
     >
       <label htmlFor={id} className="sr-only">
-        Your product or store link
+        {t.urlForm.label}
       </label>
       <input
         id={id}
         name="url"
         type="text"
         inputMode="url"
-        placeholder="Paste your product or store link"
+        placeholder={t.urlForm.placeholder}
         className="min-w-0 flex-1 rounded-xl border border-line bg-bg px-4 py-3 text-fg shadow-sm outline-none transition placeholder:text-muted focus:border-accent focus:ring-4 focus:ring-accent/20"
       />
       <button
         type="submit"
         className="btn-primary rounded-xl px-6 py-3 font-medium"
       >
-        Create ads
+        {t.urlForm.submit}
       </button>
     </form>
   );
@@ -135,44 +153,45 @@ export function SectionHeading({
   );
 }
 
-const FOOTER_LINKS = [
-  {
-    title: "Product",
-    links: [
-      { href: "/#how", label: "How it works" },
-      { href: "/use-cases", label: "Examples" },
-      { href: "/#pricing", label: "Pricing" },
-      { href: "/#faq", label: "FAQ" },
-    ],
-  },
-  {
-    title: "Account",
-    links: [
-      { href: "/dashboard", label: "Get started" },
-      { href: "/login", label: "Sign in" },
-    ],
-  },
-  {
-    title: "Legal",
-    links: [
-      { href: "/privacy", label: "Privacy" },
-      { href: "/terms", label: "Terms" },
-    ],
-  },
-];
-
 export function Footer() {
+  const { t } = useI18n();
+  const href = useHref();
+  const home = href("/");
+  const columns = [
+    {
+      title: t.footer.product,
+      links: [
+        { href: `${home}#how`, label: t.nav.how },
+        { href: href("/use-cases"), label: t.nav.examples },
+        { href: `${home}#pricing`, label: t.nav.pricing },
+        { href: `${home}#faq`, label: t.nav.faq },
+      ],
+    },
+    {
+      title: t.footer.account,
+      links: [
+        { href: "/dashboard", label: t.nav.getStarted },
+        { href: "/login", label: t.nav.signIn },
+      ],
+    },
+    {
+      title: t.footer.legal,
+      links: [
+        { href: href("/privacy"), label: t.footer.privacy },
+        { href: href("/terms"), label: t.footer.terms },
+      ],
+    },
+  ];
   return (
     <footer className="border-t border-line">
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr_1fr]">
         <div>
           <Logo />
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted">
-            Image and video ads from a single product link, made for small
-            businesses.
+            {t.footer.tagline}
           </p>
         </div>
-        {FOOTER_LINKS.map((col) => (
+        {columns.map((col) => (
           <nav key={col.title} aria-label={col.title}>
             <p className="text-sm font-medium">{col.title}</p>
             <ul className="mt-4 space-y-3 text-sm text-muted">
@@ -188,9 +207,10 @@ export function Footer() {
         ))}
       </div>
       <div className="border-t border-line">
-        <p className="mx-auto max-w-6xl px-4 py-6 text-sm text-muted">
-          © 2026 Gooidy
-        </p>
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-6 text-sm text-muted">
+          <p>© 2026 Gooidy</p>
+          <LanguageSwitcher />
+        </div>
       </div>
     </footer>
   );
@@ -205,6 +225,7 @@ export function AppBar({ children }: { children?: ReactNode }) {
         <Logo />
         <div className="flex items-center gap-1 text-sm">
           {children}
+          <LanguageSwitcher compact />
           <ThemeToggle />
         </div>
       </nav>

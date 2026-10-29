@@ -1,0 +1,170 @@
+import { setShowcase } from "./showcase-actions";
+import { VIDEO_SECONDS, VIDEOS_PER_GENERATION } from "@/lib/video";
+import { Chip, DownloadIcon, ProgressCard, smallButton } from "../../ui";
+import type { Messages } from "@/i18n/messages";
+import { fmt } from "@/i18n/format";
+
+type Creative = {
+  id: string;
+  kind: "image" | "video";
+  aspect: string;
+  angle: string | null;
+  headline: string | null;
+  primary_text: string | null;
+  cta: string | null;
+};
+
+export type Generation = {
+  id: string;
+  type: string;
+  status: "queued" | "running" | "succeeded" | "failed";
+  error: string | null;
+  created_at: string;
+  showcased_at: string | null;
+  creatives: Creative[];
+};
+
+export function GenerationBlock({
+  t,
+  locale,
+  generation: g,
+  imageVersion,
+  canShowcase,
+}: {
+  t: Messages;
+  locale: string;
+  generation: Generation;
+  imageVersion: string;
+  canShowcase: boolean;
+}) {
+  const when = new Date(g.created_at).toLocaleString(locale, {
+    dateStyle: "medium",
+    timeStyle: "short",
+  });
+
+  const video = g.type === "video_ads";
+
+  if (g.status === "queued" || g.status === "running") {
+    return (
+      <ProgressCard title={video ? t.app.makingVideos : t.app.makingImages}>
+        {video
+          ? fmt(t.app.makingVideosBody, { count: VIDEOS_PER_GENERATION })
+          : t.app.makingImagesBody}
+      </ProgressCard>
+    );
+  }
+
+  if (g.status === "failed") {
+    return (
+      <div className="rounded-2xl border border-danger/30 bg-danger-bg p-6 text-sm">
+        <p className="font-medium text-danger">{t.app.failed}</p>
+        {g.error && <p className="mt-1 text-muted">{g.error}</p>}
+      </div>
+    );
+  }
+
+  const creatives = [...g.creatives].sort(
+    (a, b) =>
+      (a.headline ?? "").localeCompare(b.headline ?? "") ||
+      a.aspect.localeCompare(b.aspect),
+  );
+
+  return (
+    <div>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <h2 className="flex flex-wrap items-baseline gap-x-2 text-sm">
+          <span className="font-medium">
+            {fmt(
+              video
+                ? creatives.length === 1
+                  ? t.app.videoAd
+                  : t.app.videoAds
+                : t.app.imageAds,
+              { count: creatives.length },
+            )}
+          </span>
+          <span className="text-muted">{when}</span>
+          {g.error && <span className="text-warn">{g.error}</span>}
+        </h2>
+        {canShowcase && (
+          <form action={setShowcase}>
+            <input type="hidden" name="generationId" value={g.id} />
+            <input
+              type="hidden"
+              name="show"
+              value={g.showcased_at ? "0" : "1"}
+            />
+            <button
+              type="submit"
+              className={`rounded-lg border px-3 py-1.5 text-sm font-medium transition ${
+                g.showcased_at
+                  ? "border-ok/40 bg-ok-bg text-ok"
+                  : "border-line-strong bg-raised hover:border-accent hover:text-accent"
+              }`}
+            >
+              {g.showcased_at ? t.app.shown : t.app.show}
+            </button>
+          </form>
+        )}
+      </div>
+      <ul
+        className={`mt-4 grid grid-cols-2 items-start gap-4 ${video ? "md:grid-cols-3" : "md:grid-cols-4"}`}
+      >
+        {creatives.map((c) => (
+          <li
+            key={c.id}
+            className="spot lift flex flex-col gap-3 rounded-2xl border border-line bg-raised p-2.5"
+          >
+            {video ? (
+              <video
+                src={`/api/creatives/${c.id}/video`}
+                controls
+                playsInline
+                loop
+                preload="metadata"
+                className="aspect-[9/16] w-full rounded-xl bg-surface object-cover"
+              />
+            ) : (
+              // eslint-disable-next-line @next/next/no-img-element -- rendered on demand by our own route
+              <img
+                src={`/api/creatives/${c.id}/image?v=${imageVersion}`}
+                alt={c.headline ?? "Ad creative"}
+                loading="lazy"
+                className={`w-full rounded-xl object-cover ${
+                  c.aspect === "1:1" ? "aspect-square" : "aspect-[9/16]"
+                }`}
+              />
+            )}
+            <div className="flex flex-1 flex-col gap-2 px-1 pb-1">
+              <div className="flex flex-wrap items-center gap-1.5">
+                {c.angle && (
+                  <Chip>
+                    {t.angles[c.angle as keyof Messages["angles"]]?.name ??
+                      c.angle.replace("_", " ")}
+                  </Chip>
+                )}
+                <span className="text-xs text-muted">
+                  {video
+                    ? fmt(t.app.reel, { seconds: VIDEO_SECONDS })
+                    : c.aspect === "1:1"
+                      ? t.app.feedSize
+                      : t.app.storySize}
+                </span>
+              </div>
+              <p className="line-clamp-3 text-sm leading-relaxed">
+                {c.primary_text}
+              </p>
+              <a
+                href={`/api/creatives/${c.id}/${video ? "video" : "image"}?download=1`}
+                className={`${smallButton} mt-auto self-start`}
+              >
+                <DownloadIcon />
+                {video ? t.app.downloadMp4 : t.app.download}
+              </a>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}

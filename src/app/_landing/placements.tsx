@@ -1,6 +1,9 @@
+"use client";
+
 import type { ReactNode } from "react";
 import Image from "next/image";
 import { SCREEN } from "./screen";
+import { useI18n } from "@/i18n/client";
 
 // One real ad as people will meet it: inside Reels, Stories, the Facebook
 // feed and TikTok, with each app's own buttons around it. Only the app
@@ -14,11 +17,12 @@ export type PlacementAd = {
 const SIZES = "(min-width: 64rem) 230px, (min-width: 40rem) 200px, 44vw";
 
 export function Placements({ ad }: { ad: PlacementAd }) {
+  const { t } = useI18n();
   const phones = [
-    { label: "Instagram Reels", screen: <Reels ad={ad} /> },
-    { label: "Instagram Stories", screen: <Story ad={ad} /> },
-    { label: "Facebook feed", screen: <Feed ad={ad} /> },
-    { label: "TikTok", screen: <TikTok ad={ad} /> },
+    { label: t.feed.reels, screen: <Reels ad={ad} /> },
+    { label: t.feed.stories, screen: <Story ad={ad} /> },
+    { label: t.feed.facebook, screen: <Feed ad={ad} /> },
+    { label: t.feed.tiktok, screen: <TikTok ad={ad} /> },
   ];
   return (
     <ul className="stagger grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 lg:grid-cols-4">
@@ -72,6 +76,7 @@ function Rail({ items }: { items: string[] }) {
 }
 
 function Reels({ ad }: { ad: PlacementAd }) {
+  const { t } = useI18n();
   return (
     <Vertical ad={ad}>
       <p className="absolute left-[4cqw] top-[4cqw] text-[5cqw] font-semibold drop-shadow">
@@ -83,9 +88,11 @@ function Reels({ ad }: { ad: PlacementAd }) {
           <Avatar store={ad.store} />
           <span className="font-semibold">{ad.store}</span>
         </div>
-        <p className="mt-[0.8cqw] text-[2.8cqw] text-white/85">Sponsored</p>
+        <p className="mt-[0.8cqw] text-[2.8cqw] text-white/85">
+          {t.feed.sponsored}
+        </p>
         <p className="mt-[2cqw] flex items-center justify-between rounded-[1.6cqw] bg-white/20 px-[3cqw] py-[1.8cqw] text-[3.2cqw] font-semibold backdrop-blur">
-          Shop now <span aria-hidden>›</span>
+          {t.feed.shopNow} <span aria-hidden>›</span>
         </p>
       </div>
     </Vertical>
@@ -93,6 +100,7 @@ function Reels({ ad }: { ad: PlacementAd }) {
 }
 
 function Story({ ad }: { ad: PlacementAd }) {
+  const { t } = useI18n();
   return (
     <Vertical ad={ad}>
       <div className="absolute inset-x-0 top-[3cqw] px-[3cqw]">
@@ -102,7 +110,7 @@ function Story({ ad }: { ad: PlacementAd }) {
         <div className="mt-[2.4cqw] flex items-center gap-[2cqw] text-[3.3cqw] drop-shadow">
           <Avatar store={ad.store} />
           <span className="font-semibold">{ad.store}</span>
-          <span className="text-white/80">Sponsored</span>
+          <span className="text-white/80">{t.feed.sponsored}</span>
         </div>
       </div>
       <div className="absolute inset-x-0 bottom-[6cqw] flex flex-col items-center drop-shadow">
@@ -110,7 +118,7 @@ function Story({ ad }: { ad: PlacementAd }) {
           ⌃
         </span>
         <span className="rounded-full bg-white px-[5cqw] py-[1.6cqw] text-[3.3cqw] font-semibold text-black">
-          Shop now
+          {t.feed.shopNow}
         </span>
       </div>
     </Vertical>
@@ -118,11 +126,12 @@ function Story({ ad }: { ad: PlacementAd }) {
 }
 
 function TikTok({ ad }: { ad: PlacementAd }) {
+  const { t } = useI18n();
   return (
     <Vertical ad={ad}>
       <p className="absolute inset-x-0 top-[4cqw] flex justify-center gap-[4cqw] text-[3.6cqw] font-semibold drop-shadow">
-        <span className="text-white/70">Following</span>
-        <span>For You</span>
+        <span className="text-white/70">{t.feed.following}</span>
+        <span>{t.feed.forYou}</span>
       </p>
       <div className="absolute bottom-[26%] right-[3cqw] flex flex-col items-center gap-[5.5cqw] drop-shadow">
         <Avatar store={ad.store} ring />
@@ -133,10 +142,10 @@ function TikTok({ ad }: { ad: PlacementAd }) {
       <div className="absolute inset-x-0 bottom-[6cqw] px-[4cqw] drop-shadow">
         <p className="text-[3.5cqw] font-semibold">@{ad.store}</p>
         <p className="mt-[1cqw] inline-block rounded-[1cqw] bg-white/25 px-[1.6cqw] py-[0.4cqw] text-[2.6cqw]">
-          Sponsored
+          {t.feed.sponsored}
         </p>
         <p className="mt-[2cqw] rounded-[1.6cqw] bg-[#fe2c55] py-[2cqw] text-center text-[3.3cqw] font-semibold">
-          Shop now
+          {t.feed.shopNow}
         </p>
       </div>
     </Vertical>
@@ -145,6 +154,7 @@ function TikTok({ ad }: { ad: PlacementAd }) {
 
 // The square ad as a sponsored post in the Facebook feed.
 function Feed({ ad }: { ad: PlacementAd }) {
+  const { t } = useI18n();
   return (
     <div className="flex h-full w-full flex-col bg-white text-[#050505]">
       {/* The app's top bar and the friend post above, left as quiet shapes. */}
@@ -160,7 +170,9 @@ function Feed({ ad }: { ad: PlacementAd }) {
           <Avatar store={ad.store} />
           <div className="min-w-0 leading-tight">
             <p className="truncate text-[3.3cqw] font-semibold">{ad.store}</p>
-            <p className="text-[2.7cqw] text-[#65676b]">Sponsored · 🌐</p>
+            <p className="text-[2.7cqw] text-[#65676b]">
+              {t.feed.sponsored} · 🌐
+            </p>
           </div>
         </div>
         <p className="line-clamp-2 px-[4cqw] pb-[2.4cqw] text-[3.1cqw] leading-snug">
@@ -184,13 +196,13 @@ function Feed({ ad }: { ad: PlacementAd }) {
             </p>
           </div>
           <span className="shrink-0 rounded-[1.4cqw] bg-[#e4e6eb] px-[2.6cqw] py-[1.4cqw] text-[3cqw] font-semibold">
-            Shop now
+            {t.feed.shopNow}
           </span>
         </div>
         <div className="flex justify-around px-[4cqw] py-[2.6cqw] text-[3cqw] text-[#65676b]">
-          <span>Like</span>
-          <span>Comment</span>
-          <span>Share</span>
+          <span>{t.feed.like}</span>
+          <span>{t.feed.comment}</span>
+          <span>{t.feed.share}</span>
         </div>
       </div>
       <div className="flex-1 overflow-hidden border-t-[1.5cqw] border-[#e4e6eb] px-[4cqw] pt-[2.6cqw]">

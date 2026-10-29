@@ -5,7 +5,13 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getBrandKit } from "@/lib/brand-kit";
 import { FONTS, loadFont, textColorOn } from "@/lib/brand";
-import { AD_SIZES, AdLayout, type AdAspect } from "@/lib/ad-layout";
+import {
+  AD_SIZES,
+  AdLayout,
+  adTextStyles,
+  type AdAspect,
+} from "@/lib/ad-layout";
+import { fontsFor, isRtl, prepareText } from "@/lib/ad-text";
 
 // Renders the finished ad: generated photo + headline + call to action + logo.
 // Text is drawn here rather than by the image model so it's always legible,
@@ -57,12 +63,25 @@ export async function GET(
     creative.aspect in AD_SIZES ? (creative.aspect as AdAspect) : "1:1";
   const size = AD_SIZES[aspect];
 
+  // Copy in any language: extra fonts for Japanese, Korean and Chinese, and
+  // Hindi or Arabic drawn as images Satori places (see ad-text).
+  const headlineText = creative.headline ?? "";
+  const ctaText = creative.cta ?? "Shop now";
+  const brand = { name: FONTS[kit.font].name, data: font };
+  const styles = adTextStyles(aspect, textColorOn(kit.accent_color));
+  const [extraFonts, headline, cta] = await Promise.all([
+    fontsFor([headlineText, ctaText]),
+    prepareText(headlineText, styles.headline, brand),
+    prepareText(ctaText, styles.cta, brand),
+  ]);
+
   const image = new ImageResponse(
     <AdLayout
       photoUrl={photo.data.signedUrl}
       aspect={aspect}
-      headline={creative.headline ?? ""}
-      cta={creative.cta ?? "Shop now"}
+      headline={headline}
+      cta={cta}
+      rtl={isRtl([headlineText, ctaText])}
       fontFamily={FONTS[kit.font].name}
       accentColor={kit.accent_color}
       accentTextColor={textColorOn(kit.accent_color)}
@@ -77,6 +96,7 @@ export async function GET(
           weight: 700,
           style: "normal",
         },
+        ...extraFonts,
       ],
       headers: {
         "cache-control": showcased

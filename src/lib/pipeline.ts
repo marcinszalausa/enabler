@@ -3,6 +3,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { reviewAdImage, writeAdAngles, type BrandBrief } from "@/lib/ai/claude";
 import { generateAdImage, type Aspect } from "@/lib/ai/fal";
 import { userMessage } from "@/lib/errors";
+import type { LanguageKey } from "@/lib/languages";
 
 export const ASPECTS: Aspect[] = ["1:1", "9:16"];
 export const ADS_PER_GENERATION = 5;
@@ -15,7 +16,12 @@ const IMAGE_CONCURRENCY = 3;
 // Tries per image before giving up on it (and refunding its credit).
 const IMAGE_ATTEMPTS = 3;
 
-type Job = { generationId: string; workspaceId: string; productId: string };
+type Job = {
+  generationId: string;
+  workspaceId: string;
+  productId: string;
+  language: LanguageKey;
+};
 
 // Runs one ad generation end to end: copy, images, storage, rows.
 // Credits were spent up front; a failed run refunds them.
@@ -23,6 +29,7 @@ export async function runGeneration({
   generationId,
   workspaceId,
   productId,
+  language,
 }: Job) {
   const db = createAdminClient();
   await db
@@ -40,7 +47,7 @@ export async function runGeneration({
 
     const brief = product.brand_brief as BrandBrief;
     const referenceImageUrl = (product.image_urls as string[])[0] ?? null;
-    const angles = await writeAdAngles(brief, ADS_PER_GENERATION);
+    const angles = await writeAdAngles(brief, ADS_PER_GENERATION, language);
 
     const tasks = angles.flatMap((ad, i) =>
       ASPECTS.map((aspect) => async () => {

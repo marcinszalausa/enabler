@@ -13,6 +13,7 @@ import {
   isEnglish,
   type VideoOptions,
 } from "@/lib/video-options";
+import { type LanguageKey } from "@/lib/languages";
 
 const MODEL = "claude-opus-5-5";
 // Server-side fallback: if a request is declined by a safety classifier,
@@ -32,6 +33,13 @@ export const BrandBriefSchema = z.object({
     .string()
     .describe("Look and feel for imagery: setting, colors, mood"),
   price: z.string().nullable(),
+  language: z
+    .enum([
+      ...(Object.keys(LANGUAGES) as [LanguageKey, ...LanguageKey[]]),
+      "other",
+    ])
+    .describe("The language the page is written in")
+    .optional(),
 });
 export type BrandBrief = z.infer<typeof BrandBriefSchema>;
 
@@ -134,9 +142,24 @@ export async function extractBrandBrief(
   return response.parsed_output;
 }
 
+// How to write copy in a language other than English.
+function languageDirection(language: LanguageKey, fields: string) {
+  const { label, script } = LANGUAGES[language];
+  const wide =
+    script === "japanese" || script === "chinese" || script === "korean";
+  return [
+    `Language: ${label}. Write the ${fields} in natural, native ${label}, as a local copywriter would (not a literal translation), with the punctuation and button wording ads in that language use. Keep the image and motion prompts in English.`,
+    wide &&
+      "Characters in this script are wide, so keep each headline under 16 characters and the call to action under 6.",
+  ]
+    .filter(Boolean)
+    .join(" ");
+}
+
 export async function writeAdAngles(
   brief: BrandBrief,
   count = 5,
+  language: LanguageKey = "english",
 ): Promise<AdAngle[]> {
   const response = await callClaude(() =>
     client.beta.messages.parse({
@@ -153,7 +176,16 @@ export async function writeAdAngles(
       messages: [
         {
           role: "user",
-          content: `Write ${count} ads, one per angle (pain, benefit, social_proof, offer, curiosity), for this brand brief:\n\n${JSON.stringify(brief, null, 2)}`,
+          content: [
+            `Write ${count} ads, one per angle (pain, benefit, social_proof, offer, curiosity), for this brand brief:\n\n${JSON.stringify(brief, null, 2)}`,
+            language !== "english" &&
+              languageDirection(
+                language,
+                "headline, primary text and call to action",
+              ),
+          ]
+            .filter(Boolean)
+            .join("\n\n"),
         },
       ],
     }),
@@ -186,7 +218,7 @@ export const VideoAdSchema = AdAngleSchema.omit({ image_prompt: true }).extend({
   voiceover: z
     .string()
     .describe(
-      "What a narrator says over the whole ad: 12 to 16 words, about 5 seconds spoken. The first sentence is the hook; the last is the call to action. Natural spoken English, no lists, no symbols or abbreviations, no prices unless the brief states them.",
+      "What a narrator says over the whole ad: about 5 seconds spoken (12 to 16 words in English). The first sentence is the hook; the last is the call to action. Natural spoken language, no lists, no symbols or abbreviations, no prices unless the brief states them.",
     ),
   music_prompt: z
     .string()
@@ -212,7 +244,7 @@ export async function writeVideoAds(
     `Energy: ${ENERGIES[options.energy].direction}. Let it shape the words, the pace of the motion and the music.`,
     isEnglish(options)
       ? `Narrator: ${GENDERS[options.gender].label.toLowerCase()}, speaking English with a${/^[AEIOU]/.test(ACCENTS[options.accent].label) ? "n" : ""} ${ACCENTS[options.accent].label} accent. Write the voiceover in English.`
-      : `Language: ${LANGUAGES[options.language].label}. Write the headline, primary text, call to action and voiceover in natural, native ${LANGUAGES[options.language].label} (not a literal translation). Keep the image and motion prompts in English. Narrator: ${GENDERS[options.gender].label.toLowerCase()}.`,
+      : `${languageDirection(options.language, "headline, primary text, call to action and voiceover")} Narrator: ${GENDERS[options.gender].label.toLowerCase()}.`,
     person
       ? `On screen: ${person}, in every shot.`
       : "On screen: one person who fits the audience, the same in every shot.",
