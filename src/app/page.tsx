@@ -1,59 +1,41 @@
 import Link from "next/link";
-import { AdMockup, SAMPLE_ADS } from "./_landing/ad-mockup";
+import { REELS, Reel, type SampleReel } from "./_landing/reel";
+import { Ticker } from "./_landing/ticker";
 
 export const metadata = {
-  title: "Gooidy · Paste a link, get ads that sell",
+  title: "Gooidy · Ads people don't scroll past",
   description:
-    "Gooidy turns your product page into scroll-stopping ads for Facebook, Instagram and TikTok in minutes. Start free.",
+    "Paste a product link and Gooidy makes scroll-stopping ads for TikTok, Reels and Shorts in about two minutes. Start free.",
 };
+
+const HOOKS = [
+  "POV:",
+  "Wait for it…",
+  "3 reasons why",
+  "Before → After",
+  "Unboxing",
+  "Nobody talks about this",
+  "Problem → Fix",
+  "I tried it so you don't have to",
+  "Stop scrolling if…",
+  "Made for you",
+];
 
 const STEPS = [
   {
-    title: "Paste your link",
-    body: "Drop in a product page or your website. Gooidy reads it like a marketer would: what you sell, who it's for and why they'll love it.",
+    n: "01",
+    title: "Drop your link",
+    body: "Any product page or store. Gooidy reads it like a marketer: what you sell, who it's for, why they'll want it.",
   },
   {
+    n: "02",
     title: "Get a batch of ads",
-    body: "Five fresh angles, each with a headline, copy and an image in square and story sizes, on brand with your logo, colors and font.",
+    body: "Five hooks, five angles, written and designed for you. Vertical for TikTok, Reels and Shorts, square for the feed.",
   },
   {
-    title: "Pick, tweak, launch",
-    body: "Keep the winners, download them, and run them on Facebook, Instagram and TikTok. One-click publishing to Meta is on the way.",
-  },
-];
-
-const FEATURES = [
-  {
-    title: "Knows your brand",
-    body: "Builds a brand brief from your site: tone, audience, selling points. No forms to fill in.",
-    icon: "✦",
-  },
-  {
-    title: "Angles that convert",
-    body: "Problem and solution, social proof, offer, lifestyle and more. Test what works instead of guessing.",
-    icon: "◎",
-  },
-  {
-    title: "Every size you need",
-    body: "Square for the feed, vertical for Stories and Reels. Made at the same time, from the same idea.",
-    icon: "▣",
-  },
-  {
-    title: "Your brand kit",
-    body: "Upload your logo, set your button color and font once. Every ad follows it, even old ones.",
-    icon: "◐",
-  },
-  {
-    title: "Video ads",
-    body: "Short product videos built from your photos.",
-    icon: "▶",
-    soon: true,
-  },
-  {
-    title: "Publish and learn",
-    body: "Launch to Meta from Gooidy, then let results shape your next batch.",
-    icon: "↗",
-    soon: true,
+    n: "03",
+    title: "Post and watch it grow",
+    body: "Keep the winners and post them. One-tap publishing to Meta and TikTok is on the way.",
   },
 ];
 
@@ -61,62 +43,59 @@ const PLANS = [
   {
     name: "Free",
     price: "$0",
-    note: "to try it out",
-    credits: "100 credits, once",
-    perks: ["About 50 ads in two sizes", "Brand kit", "Download every ad"],
-    cta: "Start free",
+    note: "forever",
+    credits: "100 credits to start",
+    perks: ["About 50 ads", "Brand kit", "Download everything"],
   },
   {
     name: "Starter",
     price: "$29",
-    note: "per month",
+    note: "/month",
     credits: "300 credits every month",
     perks: ["About 150 ads a month", "Everything in Free", "Cancel anytime"],
-    cta: "Start free",
     featured: true,
   },
   {
     name: "Growth",
     price: "$79",
-    note: "per month",
+    note: "/month",
     credits: "1,000 credits every month",
     perks: ["About 500 ads a month", "Everything in Starter", "Priority support"],
-    cta: "Start free",
   },
 ];
 
 const FAQ = [
   {
-    q: "What do I need to get started?",
-    a: "Just a link to your product or website. Gooidy works with Shopify, WooCommerce, Wix, Squarespace and most online stores.",
+    q: "What do I need to start?",
+    a: "Just a link to your product or store. Gooidy works with Shopify, WooCommerce, Wix, Squarespace and most online shops.",
   },
   {
-    q: "What is a credit?",
-    a: "One credit makes one ad image. Each run creates five ads in two sizes, so it uses 10 credits.",
+    q: "What's a credit?",
+    a: "One credit makes one ad image. Each run makes five ads in two sizes, so it uses 10 credits.",
   },
   {
-    q: "Do I need design or marketing experience?",
-    a: "No. Gooidy writes the copy and designs the ads for you. You choose the ones you like and can edit the text.",
+    q: "Do I need to be a designer or marketer?",
+    a: "Nope. Gooidy writes the hooks and copy and designs the ads. You pick your favorites.",
   },
   {
-    q: "Can I use the ads anywhere?",
-    a: "Yes. Download them and run them on Facebook, Instagram, TikTok or anywhere else you advertise.",
+    q: "Where can I post the ads?",
+    a: "Anywhere: TikTok, Instagram Reels and Stories, YouTube Shorts, Facebook. Download and go.",
   },
   {
     q: "Can I cancel anytime?",
-    a: "Yes. Paid plans are month to month, and you keep access until the end of the month you paid for.",
+    a: "Yes. Plans are month to month, and you keep access until the end of the month you paid for.",
   },
 ];
 
 export default function Home() {
   return (
-    <div className="landing flex flex-1 flex-col bg-[#fffaf5] text-[#17122b]">
+    <div className="landing flex flex-1 flex-col overflow-x-clip bg-[#07060b] text-white">
       <Nav />
       <main className="flex-1">
         <Hero />
-        <Platforms />
+        <ReelWall />
+        <HookStrip />
         <HowItWorks />
-        <Features />
         <Pricing />
         <Faq />
         <FinalCta />
@@ -128,8 +107,7 @@ export default function Home() {
 
 function Logo() {
   return (
-    <Link href="/" className="font-display flex items-center gap-1.5 text-2xl font-bold tracking-tight">
-      <span className="inline-block h-3 w-3 rounded-full bg-gradient-to-br from-violet-600 via-pink-500 to-orange-400" />
+    <Link href="/" className="font-display glitch text-2xl font-extrabold tracking-tight">
       gooidy
     </Link>
   );
@@ -137,24 +115,23 @@ function Logo() {
 
 function Nav() {
   return (
-    <header className="sticky top-0 z-20 border-b border-black/5 bg-[#fffaf5]/80 backdrop-blur">
+    <header className="sticky top-0 z-30 border-b border-white/5 bg-[#07060b]/70 backdrop-blur-xl">
       <nav className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
         <Logo />
-        <div className="hidden items-center gap-7 text-sm font-medium text-[#17122b]/70 md:flex">
-          <a href="#how" className="hover:text-[#17122b]">How it works</a>
-          <a href="#features" className="hover:text-[#17122b]">Features</a>
-          <a href="#pricing" className="hover:text-[#17122b]">Pricing</a>
-          <a href="#faq" className="hover:text-[#17122b]">FAQ</a>
+        <div className="hidden items-center gap-7 text-sm font-medium text-white/60 md:flex">
+          <a href="#how" className="hover:text-white">How it works</a>
+          <a href="#pricing" className="hover:text-white">Pricing</a>
+          <a href="#faq" className="hover:text-white">FAQ</a>
         </div>
         <div className="flex items-center gap-3">
-          <Link href="/login" className="text-sm font-medium text-[#17122b]/80 hover:text-[#17122b]">
-            Sign in
+          <Link href="/login" className="text-sm font-medium text-white/70 hover:text-white">
+            Log in
           </Link>
           <Link
             href="/dashboard"
-            className="rounded-full bg-[#17122b] px-4 py-2 text-sm font-semibold text-white transition hover:bg-violet-700"
+            className="rounded-full bg-white px-4 py-2 text-sm font-bold text-black transition hover:scale-105"
           >
-            Start free
+            Sign up free
           </Link>
         </div>
       </nav>
@@ -162,35 +139,31 @@ function Nav() {
   );
 }
 
-function UrlForm({ dark = false }: { dark?: boolean }) {
+function UrlForm({ id }: { id: string }) {
   // A plain GET form: signed-out visitors go through sign-in and land on the
   // dashboard with the link already filled in.
   return (
     <form
       action="/dashboard"
       method="get"
-      className={`flex w-full max-w-xl flex-col gap-2 rounded-2xl p-2 sm:flex-row sm:rounded-full ${
-        dark ? "bg-white/10 ring-1 ring-white/20" : "bg-white shadow-xl shadow-violet-900/10 ring-1 ring-black/5"
-      }`}
+      className="neon-ring flex w-full max-w-xl flex-col gap-2 rounded-2xl bg-white/[0.06] p-2 backdrop-blur sm:flex-row sm:rounded-full"
     >
-      <label htmlFor={dark ? "url-bottom" : "url-top"} className="sr-only">
-        Your product or website link
+      <label htmlFor={id} className="sr-only">
+        Your product or store link
       </label>
       <input
-        id={dark ? "url-bottom" : "url-top"}
+        id={id}
         name="url"
         type="text"
         inputMode="url"
-        placeholder="yourstore.com/products/..."
-        className={`min-w-0 flex-1 rounded-full bg-transparent px-4 py-3 outline-none ${
-          dark ? "text-white placeholder:text-white/60" : "placeholder:text-[#17122b]/40"
-        }`}
+        placeholder="Paste your product link…"
+        className="min-w-0 flex-1 rounded-full bg-transparent px-4 py-3 text-white outline-none placeholder:text-white/40"
       />
       <button
         type="submit"
-        className="rounded-full bg-gradient-to-r from-violet-600 via-pink-500 to-orange-400 px-6 py-3 font-semibold text-white shadow-lg shadow-pink-500/30 transition hover:brightness-110"
+        className="rounded-full bg-[#fe2c55] px-6 py-3 font-bold text-white shadow-[0_0_30px_rgba(254,44,85,0.55)] transition hover:scale-[1.03] hover:bg-[#ff426a]"
       >
-        Make my ads
+        Make it go viral →
       </button>
     </form>
   );
@@ -198,38 +171,133 @@ function UrlForm({ dark = false }: { dark?: boolean }) {
 
 function Hero() {
   return (
-    <section className="relative overflow-hidden">
-      <div className="pointer-events-none absolute -top-40 left-1/2 h-[560px] w-[900px] -translate-x-1/2 rounded-full bg-gradient-to-r from-violet-300/50 via-pink-300/40 to-orange-200/50 blur-3xl" />
-      <div className="relative mx-auto flex max-w-6xl flex-col items-center px-4 pb-10 pt-16 text-center sm:pt-24">
-        <span className="rounded-full bg-white/80 px-4 py-1.5 text-sm font-medium text-violet-700 ring-1 ring-violet-200">
-          ✦ The AI ad maker for small businesses
-        </span>
-        <h1 className="font-display mt-6 max-w-4xl text-[2.6rem] font-bold leading-[1.02] tracking-tight sm:text-5xl md:text-7xl">
-          Paste a link.
-          <br />
-          <span className="bg-gradient-to-r from-violet-600 via-pink-500 to-orange-400 bg-clip-text text-transparent">
-            Get ads that sell.
-          </span>
-        </h1>
-        <p className="mt-6 max-w-2xl text-lg text-[#17122b]/70 sm:text-xl">
-          Gooidy turns your product page into scroll-stopping ads for Facebook,
-          Instagram and TikTok. Copy, images and every size you need, in about
-          two minutes. No designer, no agency.
-        </p>
-        <div className="mt-9 flex w-full justify-center">
-          <UrlForm />
-        </div>
-        <p className="mt-3 text-sm text-[#17122b]/55">
-          Free to start · 100 credits on us · No card needed
-        </p>
+    <section className="relative">
+      <div className="pointer-events-none absolute -left-40 top-10 h-[480px] w-[480px] rounded-full bg-[#25f4ee]/20 blur-[120px]" />
+      <div className="pointer-events-none absolute -right-40 top-40 h-[520px] w-[520px] rounded-full bg-[#fe2c55]/25 blur-[120px]" />
 
-        <div className="mt-16 grid w-full max-w-5xl grid-cols-2 items-end gap-4 sm:grid-cols-4 sm:gap-6">
-          {SAMPLE_ADS.map((ad, i) => (
-            <AdMockup
-              key={ad.brand}
-              ad={ad}
-              className={i % 2 === 0 ? "sm:-rotate-2" : "sm:translate-y-6 sm:rotate-2"}
-            />
+      <div className="relative mx-auto grid max-w-6xl items-center gap-14 px-4 pb-16 pt-12 sm:pt-20 lg:grid-cols-[1.15fr_0.85fr]">
+        <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
+          <span className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white/80">
+            <span className="live-dot h-2 w-2 rounded-full bg-[#fe2c55]" />
+            AI ads for TikTok · Reels · Shorts
+          </span>
+          <h1 className="font-display mt-6 text-[3.1rem] font-extrabold leading-[0.95] tracking-tight sm:text-7xl lg:text-[5.4rem]">
+            Make ads
+            <br />
+            people{" "}
+            <span className="glitch-strong whitespace-nowrap">don&apos;t</span>
+            <br />
+            <span className="text-gradient">scroll past.</span>
+          </h1>
+          <p className="mt-6 max-w-lg text-lg text-white/65">
+            Paste a link. Gooidy writes the hooks, designs the ads and sizes
+            them for every feed, in about two minutes. No designer, no agency,
+            no cringe.
+          </p>
+          <div className="mt-8 flex w-full justify-center lg:justify-start">
+            <UrlForm id="url-top" />
+          </div>
+          <p className="mt-3 text-sm text-white/45">
+            Free to start · 100 credits on us · No card needed
+          </p>
+        </div>
+
+        <div className="flex justify-center lg:justify-end">
+          <Phone />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// A phone that auto-scrolls through sample ads, like a For You feed.
+function Phone() {
+  const feed = [...REELS, REELS[0]];
+  return (
+    <div className="relative">
+      <div className="absolute -inset-6 rounded-[3.5rem] bg-gradient-to-br from-[#25f4ee]/40 via-transparent to-[#fe2c55]/50 blur-2xl" />
+      <div className="relative h-[560px] w-[280px] rounded-[3rem] border border-white/15 bg-black p-2.5 shadow-2xl sm:h-[620px] sm:w-[310px]">
+        <div className="relative h-full w-full overflow-hidden rounded-[2.4rem]">
+          <div className="feed-scroll h-[500%]">
+            {feed.map((reel, i) => (
+              <div key={i} className="h-[20%]">
+                <Reel reel={reel} live />
+              </div>
+            ))}
+          </div>
+          {/* App chrome over the feed */}
+          <div className="pointer-events-none absolute inset-x-0 top-0 flex justify-center gap-4 pt-9 text-sm font-semibold text-white/70">
+            <span>Following</span>
+            <span className="border-b-2 border-white pb-0.5 text-white">For You</span>
+          </div>
+          <div className="pointer-events-none absolute left-1/2 top-2.5 h-5 w-24 -translate-x-1/2 rounded-full bg-black" />
+        </div>
+      </div>
+
+      {/* Floating stickers */}
+      <div className="sticker absolute -left-10 top-24 rounded-2xl bg-white px-3 py-2 text-black shadow-xl sm:-left-16">
+        <p className="text-[10px] font-semibold uppercase text-black/50">Views</p>
+        <p className="font-display text-xl font-extrabold">
+          <Ticker start={2_480_000} step={900} every={250} />
+        </p>
+      </div>
+      <div className="sticker-delay absolute -right-6 bottom-6 rounded-2xl bg-[#25f4ee] px-3 py-2 font-bold text-black shadow-xl sm:-right-12">
+        🔥 Ready in 2 min
+      </div>
+      <p className="mt-4 text-center text-[11px] text-white/35">Sample ads for illustration</p>
+    </div>
+  );
+}
+
+function ReelRow({ reels, reverse = false }: { reels: SampleReel[]; reverse?: boolean }) {
+  const items = [...reels, ...reels, ...reels, ...reels];
+  return (
+    <div className="flex overflow-hidden">
+      <div className={`flex shrink-0 gap-4 pr-4 ${reverse ? "marquee-reverse" : "marquee"}`}>
+        {items.map((reel, i) => (
+          <div
+            key={i}
+            className="h-[300px] w-[170px] shrink-0 overflow-hidden rounded-2xl ring-1 ring-white/10 sm:h-[340px] sm:w-[192px]"
+          >
+            <Reel reel={reel} compact />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ReelWall() {
+  return (
+    <section className="relative py-12">
+      <h2 className="font-display mx-auto max-w-3xl px-4 text-center text-4xl font-extrabold tracking-tight sm:text-6xl">
+        One link. <span className="text-gradient">Endless ads.</span>
+      </h2>
+      <p className="mx-auto mt-4 max-w-xl px-4 text-center text-lg text-white/60">
+        Fresh hooks, fresh angles, every run. Test more, guess less, and let
+        the feed pick your winner.
+      </p>
+      <div className="mt-12 flex -rotate-2 flex-col gap-4">
+        <ReelRow reels={REELS} />
+        <ReelRow reels={[...REELS].reverse()} reverse />
+      </div>
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-[#07060b] sm:w-40" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-[#07060b] sm:w-40" />
+    </section>
+  );
+}
+
+function HookStrip() {
+  const items = [...HOOKS, ...HOOKS];
+  return (
+    <section className="border-y border-white/10 bg-[#fe2c55] py-4 text-black">
+      <div className="flex overflow-hidden">
+        <div className="marquee-fast flex shrink-0 items-center gap-8 pr-8">
+          {items.map((hook, i) => (
+            <span key={i} className="font-display flex items-center gap-8 whitespace-nowrap text-2xl font-extrabold">
+              {hook}
+              <span className="text-white">✦</span>
+            </span>
           ))}
         </div>
       </div>
@@ -237,37 +305,11 @@ function Hero() {
   );
 }
 
-function Platforms() {
-  return (
-    <section className="mx-auto max-w-6xl px-4 pb-6 pt-16">
-      <p className="text-center text-sm font-medium uppercase tracking-widest text-[#17122b]/45">
-        Ready for
-      </p>
-      <div className="font-display mt-4 flex flex-wrap items-center justify-center gap-x-10 gap-y-3 text-xl font-semibold text-[#17122b]/60 sm:text-2xl">
-        <span>Facebook</span>
-        <span>Instagram</span>
-        <span>TikTok</span>
-        <span>Reels</span>
-        <span>Stories</span>
-      </div>
-    </section>
-  );
-}
-
-function SectionHeading({
-  kicker,
-  title,
-  sub,
-}: {
-  kicker: string;
-  title: string;
-  sub?: string;
-}) {
+function SectionHeading({ kicker, title }: { kicker: string; title: React.ReactNode }) {
   return (
     <div className="mx-auto max-w-2xl text-center">
-      <p className="text-sm font-semibold uppercase tracking-widest text-pink-600">{kicker}</p>
-      <h2 className="font-display mt-3 text-4xl font-bold tracking-tight sm:text-5xl">{title}</h2>
-      {sub && <p className="mt-4 text-lg text-[#17122b]/65">{sub}</p>}
+      <p className="text-sm font-bold uppercase tracking-[0.2em] text-[#25f4ee]">{kicker}</p>
+      <h2 className="font-display mt-3 text-4xl font-extrabold tracking-tight sm:text-6xl">{title}</h2>
     </div>
   );
 }
@@ -277,56 +319,38 @@ function HowItWorks() {
     <section id="how" className="mx-auto max-w-6xl scroll-mt-20 px-4 py-24">
       <SectionHeading
         kicker="How it works"
-        title="From link to launch in three steps"
-        sub="What used to take an agency a week now takes a coffee break."
+        title={
+          <>
+            Link in. <span className="text-gradient">Ads out.</span>
+          </>
+        }
       />
-      <ol className="mt-14 grid gap-6 md:grid-cols-3">
-        {STEPS.map((step, i) => (
-          <li key={step.title} className="rounded-3xl bg-white p-7 shadow-sm ring-1 ring-black/5">
-            <span className="font-display flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-600 via-pink-500 to-orange-400 text-lg font-bold text-white">
-              {i + 1}
-            </span>
-            <h3 className="font-display mt-5 text-xl font-bold">{step.title}</h3>
-            <p className="mt-2 text-[#17122b]/65">{step.body}</p>
+      <ol className="mt-14 grid gap-5 md:grid-cols-3">
+        {STEPS.map((step) => (
+          <li
+            key={step.n}
+            className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] p-7 transition hover:-translate-y-1 hover:border-white/25"
+          >
+            <span className="font-display text-gradient text-6xl font-extrabold">{step.n}</span>
+            <h3 className="font-display mt-4 text-2xl font-extrabold">{step.title}</h3>
+            <p className="mt-2 text-white/60">{step.body}</p>
           </li>
         ))}
       </ol>
-    </section>
-  );
-}
-
-function Features() {
-  return (
-    <section id="features" className="scroll-mt-20 bg-[#17122b] py-24 text-white">
-      <div className="mx-auto max-w-6xl px-4">
-        <div className="mx-auto max-w-2xl text-center">
-          <p className="text-sm font-semibold uppercase tracking-widest text-orange-300">Features</p>
-          <h2 className="font-display mt-3 text-4xl font-bold tracking-tight sm:text-5xl">
-            Your in-house ad team, minus the payroll
-          </h2>
-          <p className="mt-4 text-lg text-white/65">
-            Built for shop owners who&apos;d rather run their business than
-            fight with design tools.
-          </p>
-        </div>
-        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {FEATURES.map((f) => (
-            <div key={f.title} className="rounded-3xl bg-white/[0.06] p-7 ring-1 ring-white/10">
-              <div className="flex items-center justify-between">
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-lg text-orange-300">
-                  {f.icon}
-                </span>
-                {f.soon && (
-                  <span className="rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white/70">
-                    Coming soon
-                  </span>
-                )}
-              </div>
-              <h3 className="font-display mt-5 text-xl font-bold">{f.title}</h3>
-              <p className="mt-2 text-white/65">{f.body}</p>
+      <div className="mt-6 grid gap-5 sm:grid-cols-3">
+        {[
+          ["🎯", "Knows your brand", "Builds a brief from your site: tone, audience, selling points."],
+          ["📐", "Every format", "9:16 for TikTok, Reels and Shorts. 1:1 for the feed."],
+          ["🎨", "Your look", "Your logo, colors and font on every single ad."],
+        ].map(([icon, title, body]) => (
+          <div key={title} className="flex gap-4 rounded-2xl border border-white/10 p-5">
+            <span className="text-2xl">{icon}</span>
+            <div>
+              <p className="font-bold">{title}</p>
+              <p className="mt-1 text-sm text-white/55">{body}</p>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
     </section>
   );
@@ -337,49 +361,48 @@ function Pricing() {
     <section id="pricing" className="mx-auto max-w-6xl scroll-mt-20 px-4 py-24">
       <SectionHeading
         kicker="Pricing"
-        title="Simple plans that grow with you"
-        sub="Start free. Upgrade when your ads start paying for themselves."
+        title={
+          <>
+            Cheaper than <span className="text-gradient">one agency ad.</span>
+          </>
+        }
       />
-      <div className="mt-14 grid gap-6 md:grid-cols-3">
+      <div className="mt-14 grid gap-5 md:grid-cols-3">
         {PLANS.map((plan) => (
           <div
             key={plan.name}
             className={`relative flex flex-col rounded-3xl p-8 ${
               plan.featured
-                ? "bg-[#17122b] text-white shadow-2xl shadow-violet-900/30"
-                : "bg-white ring-1 ring-black/5"
+                ? "neon-ring bg-gradient-to-b from-white/[0.12] to-white/[0.03]"
+                : "border border-white/10 bg-white/[0.03]"
             }`}
           >
             {plan.featured && (
-              <span className="absolute -top-3 left-8 rounded-full bg-gradient-to-r from-violet-600 via-pink-500 to-orange-400 px-3 py-1 text-xs font-bold text-white">
-                Most popular
+              <span className="absolute -top-3 left-8 rounded-full bg-[#fe2c55] px-3 py-1 text-xs font-bold">
+                🔥 Most popular
               </span>
             )}
-            <h3 className="font-display text-xl font-bold">{plan.name}</h3>
-            <p className="mt-4 flex items-baseline gap-2">
-              <span className="font-display text-5xl font-bold">{plan.price}</span>
-              <span className={plan.featured ? "text-white/60" : "text-[#17122b]/55"}>{plan.note}</span>
+            <h3 className="font-display text-xl font-extrabold">{plan.name}</h3>
+            <p className="mt-4 flex items-baseline gap-1">
+              <span className="font-display text-6xl font-extrabold">{plan.price}</span>
+              <span className="text-white/50">{plan.note}</span>
             </p>
-            <p className={`mt-2 text-sm font-medium ${plan.featured ? "text-orange-300" : "text-violet-700"}`}>
-              {plan.credits}
-            </p>
-            <ul className="mt-6 flex-1 space-y-3">
+            <p className="mt-2 text-sm font-semibold text-[#25f4ee]">{plan.credits}</p>
+            <ul className="mt-6 flex-1 space-y-3 text-white/80">
               {plan.perks.map((perk) => (
                 <li key={perk} className="flex gap-2">
-                  <span className={plan.featured ? "text-orange-300" : "text-pink-600"}>✓</span>
+                  <span className="text-[#fe2c55]">✓</span>
                   {perk}
                 </li>
               ))}
             </ul>
             <Link
               href="/dashboard"
-              className={`mt-8 rounded-full px-5 py-3 text-center font-semibold transition ${
-                plan.featured
-                  ? "bg-white text-[#17122b] hover:bg-orange-100"
-                  : "bg-[#17122b] text-white hover:bg-violet-700"
+              className={`mt-8 rounded-full px-5 py-3 text-center font-bold transition hover:scale-[1.03] ${
+                plan.featured ? "bg-[#fe2c55] text-white" : "bg-white text-black"
               }`}
             >
-              {plan.cta}
+              Start free
             </Link>
           </div>
         ))}
@@ -391,15 +414,15 @@ function Pricing() {
 function Faq() {
   return (
     <section id="faq" className="mx-auto max-w-3xl scroll-mt-20 px-4 pb-24">
-      <SectionHeading kicker="FAQ" title="Questions, answered" />
-      <div className="mt-12 divide-y divide-black/10 rounded-3xl bg-white px-6 ring-1 ring-black/5">
+      <SectionHeading kicker="FAQ" title="Quick answers" />
+      <div className="mt-12 divide-y divide-white/10 rounded-3xl border border-white/10 bg-white/[0.03] px-6">
         {FAQ.map((item) => (
           <details key={item.q} className="group py-5">
-            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-semibold">
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-bold">
               {item.q}
-              <span className="text-xl text-pink-600 transition group-open:rotate-45">+</span>
+              <span className="text-2xl text-[#25f4ee] transition group-open:rotate-45">+</span>
             </summary>
-            <p className="mt-3 text-[#17122b]/65">{item.a}</p>
+            <p className="mt-3 text-white/60">{item.a}</p>
           </details>
         ))}
       </div>
@@ -410,17 +433,18 @@ function Faq() {
 function FinalCta() {
   return (
     <section className="px-4 pb-24">
-      <div className="relative mx-auto max-w-6xl overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-violet-700 via-pink-600 to-orange-500 px-6 py-16 text-center text-white sm:px-16">
-        <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-white/10 blur-2xl" />
-        <h2 className="font-display relative text-4xl font-bold tracking-tight sm:text-5xl">
-          Your next best ad is one link away
+      <div className="relative mx-auto max-w-6xl overflow-hidden rounded-[2.5rem] border border-white/10 bg-[#0f0d18] px-6 py-20 text-center sm:px-16">
+        <div className="pointer-events-none absolute -left-24 -top-24 h-72 w-72 rounded-full bg-[#25f4ee]/30 blur-[90px]" />
+        <div className="pointer-events-none absolute -bottom-24 -right-24 h-72 w-72 rounded-full bg-[#fe2c55]/40 blur-[90px]" />
+        <h2 className="font-display relative text-5xl font-extrabold leading-[0.95] tracking-tight sm:text-7xl">
+          Your next <span className="glitch-strong">viral</span> ad
+          <br />
+          is one link away.
         </h2>
-        <p className="relative mx-auto mt-4 max-w-xl text-lg text-white/80">
-          Try Gooidy free. See your first ads before your coffee gets cold.
-        </p>
-        <div className="relative mt-8 flex justify-center">
-          <UrlForm dark />
+        <div className="relative mt-10 flex justify-center">
+          <UrlForm id="url-bottom" />
         </div>
+        <p className="relative mt-3 text-sm text-white/45">Free · 100 credits · No card needed</p>
       </div>
     </section>
   );
@@ -428,13 +452,13 @@ function FinalCta() {
 
 function Footer() {
   return (
-    <footer className="border-t border-black/5">
-      <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 py-8 text-sm text-[#17122b]/55 sm:flex-row">
+    <footer className="border-t border-white/10">
+      <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 py-8 text-sm text-white/45 sm:flex-row">
         <Logo />
-        <p>© 2026 Gooidy. Ads made simple.</p>
+        <p>© 2026 Gooidy. Made for the feed.</p>
         <div className="flex gap-5">
-          <a href="#pricing" className="hover:text-[#17122b]">Pricing</a>
-          <Link href="/login" className="hover:text-[#17122b]">Sign in</Link>
+          <a href="#pricing" className="hover:text-white">Pricing</a>
+          <Link href="/login" className="hover:text-white">Log in</Link>
         </div>
       </div>
     </footer>

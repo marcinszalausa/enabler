@@ -29,3 +29,99 @@ body {
 html {
   scroll-behavior: smooth;
 }
+
+/* Landing page ------------------------------------------------------------ */
+
+.landing .text-gradient {
+  background-image: linear-gradient(90deg, #25f4ee, #a78bfa 45%, #fe2c55);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* The TikTok-style cyan/red split behind text. */
+.landing .glitch {
+  text-shadow: -1.5px -1px 0 #25f4ee, 1.5px 1px 0 #fe2c55;
+}
+.landing .glitch-strong {
+  text-shadow: -4px -2px 0 #25f4ee, 4px 2px 0 #fe2c55;
+  animation: glitch 3s infinite;
+}
+
+.landing .neon-ring {
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.14),
+    0 0 40px -8px rgba(37, 244, 238, 0.45),
+    0 0 60px -10px rgba(254, 44, 85, 0.45);
+}
+
+.landing .live-dot {
+  animation: pulse-dot 1.4s ease-in-out infinite;
+}
+
+/* Feed scrolls one ad at a time, pausing on each (5 slots, last = first). */
+.landing .feed-scroll {
+  animation: feed 14s cubic-bezier(0.7, 0, 0.3, 1) infinite;
+}
+
+.landing .marquee {
+  animation: marquee 40s linear infinite;
+}
+.landing .marquee-reverse {
+  animation: marquee 40s linear infinite reverse;
+}
+.landing .marquee-fast {
+  animation: marquee 25s linear infinite;
+}
+
+.landing .reel-float {
+  animation: float 4s ease-in-out infinite;
+}
+.landing .sticker {
+  animation: bob 3.5s ease-in-out infinite;
+}
+.landing .sticker-delay {
+  animation: bob 3.5s ease-in-out 1.2s infinite;
+}
+
+@keyframes feed {
+  0%, 20% { transform: translateY(0); }
+  25%, 45% { transform: translateY(-20%); }
+  50%, 70% { transform: translateY(-40%); }
+  75%, 95% { transform: translateY(-60%); }
+  100% { transform: translateY(-80%); }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(-50%, -50%) rotate(-3deg); }
+  50% { transform: translate(-50%, -54%) rotate(3deg); }
+}
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-10px) rotate(2deg); }
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(254, 44, 85, 0.7); }
+  50% { opacity: 0.6; box-shadow: 0 0 0 6px rgba(254, 44, 85, 0); }
+}
+
+@keyframes glitch {
+  0%, 88%, 100% { text-shadow: -4px -2px 0 #25f4ee, 4px 2px 0 #fe2c55; }
+  90% { text-shadow: 6px 0 0 #25f4ee, -6px 0 0 #fe2c55; }
+  93% { text-shadow: -2px 3px 0 #25f4ee, 2px -3px 0 #fe2c55; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing *,
+  .landing *::before,
+  .landing *::after {
+    animation: none !important;
+  }
+}
