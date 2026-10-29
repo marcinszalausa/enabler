@@ -4,9 +4,10 @@ import { useEffect, useRef } from "react";
 import { PhoneFeed } from "./phone-feed";
 import type { FeedAd } from "./reel";
 
-// Three real ads on three iPhones, set like faces of a hexagon: the feed in
-// the middle, single ads turned away on each side. The whole stage leans a few degrees
-// toward the pointer, which makes the phones feel like objects, not images.
+// Three real ads on three iPhones, set like faces of a hexagon standing on
+// glass: the feed in the middle, single ads turned away on each side. The
+// whole stage leans a few degrees toward the pointer, which makes the phones
+// feel like objects, not images.
 export function HeroStage({
   feed,
   left,
@@ -48,12 +49,18 @@ export function HeroStage({
       <div className="stage-inner relative flex justify-center">
         {left && (
           <div className="stage-side stage-left hidden sm:block">
-            <PhoneFeed ads={[left]} className="w-[220px] lg:w-[250px]" />
+            <PhoneFeed
+              ads={[left]}
+              className="w-[210px] md:w-[240px] lg:w-[265px]"
+            />
           </div>
         )}
         {right && (
           <div className="stage-side stage-right hidden sm:block">
-            <PhoneFeed ads={[right]} className="w-[220px] lg:w-[250px]" />
+            <PhoneFeed
+              ads={[right]}
+              className="w-[210px] md:w-[240px] lg:w-[265px]"
+            />
           </div>
         )}
         <PhoneFeed

@@ -441,12 +441,14 @@ html {
 
 /* Three phones as adjacent faces of a hexagon: the side phones hinge off the
    center phone's edges and turn away, and the stage tilts toward the pointer.
-   --half is half the center phone's width, so the hinges meet its edges. */
+   --half is half the center phone's width, so the hinges meet its edges. On
+   load the side phones unfold from behind the center one. */
 .landing .stage {
-  perspective: 1600px;
+  perspective: 1800px;
   --rx: 0deg;
   --ry: 0deg;
   --half: 145px;
+  --turn: 36deg;
 }
 @media (min-width: 64rem) {
   .landing .stage {
@@ -456,40 +458,77 @@ html {
 .landing .stage-inner {
   transform-style: preserve-3d;
   transform: rotateX(var(--rx)) rotateY(var(--ry));
-  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 .landing .stage-side {
   position: absolute;
-  top: 9%;
-  transition: transform 0.6s ease;
+  top: 50%;
+  transform: translateX(calc(var(--dir) * (var(--half) + 8px))) translateY(-50%)
+    translateZ(-24px) rotateY(calc(var(--dir) * var(--turn)));
+  animation: stage-unfold 1.4s cubic-bezier(0.2, 0.8, 0.2, 1) 0.25s both;
 }
 .landing .stage-left {
+  --dir: -1;
   right: 50%;
   transform-origin: right center;
-  transform: translateX(calc(-1 * var(--half) - 10px)) translateZ(-30px)
-    rotateY(-34deg);
 }
 .landing .stage-right {
+  --dir: 1;
   left: 50%;
   transform-origin: left center;
-  transform: translateX(calc(var(--half) + 10px)) translateZ(-30px)
-    rotateY(34deg);
 }
-/* A soft reflection of light on the floor under the phones. */
+@keyframes stage-unfold {
+  from {
+    opacity: 0;
+    transform: translateX(calc(var(--dir) * (var(--half) - 40px)))
+      translateY(-50%) translateZ(-140px) rotateY(calc(var(--dir) * -20deg));
+  }
+}
+/* Light falls off across each turned face, darkest at its far edge. The
+   radii match the phone's corners (16.6% of its width). */
+.landing .stage-side::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 16.6% / 7.96%;
+  pointer-events: none;
+  background: linear-gradient(
+    var(--shade),
+    rgb(8 10 20 / 0.42),
+    rgb(8 10 20 / 0.06) 70%,
+    transparent
+  );
+}
+.landing .stage-left::after {
+  --shade: 90deg;
+}
+.landing .stage-right::after {
+  --shade: 270deg;
+}
+/* The phones stand on glass: a faint mirror image fades out below each. */
+.landing .stage .iphone-frame {
+  -webkit-box-reflect: below 14px
+    linear-gradient(transparent 84%, rgb(0 0 0 / 0.1));
+}
+:root[data-theme="dark"] .landing .stage .iphone-frame {
+  -webkit-box-reflect: below 14px
+    linear-gradient(transparent 84%, rgb(0 0 0 / 0.16));
+}
+/* A soft pool of light on the floor under the phones. */
 .landing .stage-floor {
   position: absolute;
   left: 50%;
-  bottom: -4%;
-  width: 90%;
-  height: 90px;
-  transform: translateX(-50%);
+  bottom: -6%;
+  width: 100%;
+  height: 120px;
+  transform: translateX(-50%) translateZ(-60px);
   border-radius: 9999px;
   background: radial-gradient(
     closest-side,
-    color-mix(in srgb, var(--t-accent) 30%, transparent),
+    color-mix(in srgb, var(--t-accent) 32%, transparent),
     transparent
   );
-  filter: blur(18px);
+  filter: blur(22px);
   pointer-events: none;
 }
 
@@ -611,6 +650,7 @@ html {
   .landing .marquee-track,
   .landing .skeleton,
   .landing .pop-in,
+  .landing .stage-side,
   .landing .caret::after {
     animation: none;
   }
