@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import Link from "next/link";
+import { BackLink, EmptyState } from "../ui";
 import { getCurrentUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { getBrandKit } from "@/lib/brand-kit";
@@ -11,13 +11,8 @@ export const metadata = { title: "Brand kit · Gooidy" };
 export default function BrandPage() {
   return (
     <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-10">
-      <Link
-        href="/dashboard"
-        className="text-sm text-muted underline underline-offset-4"
-      >
-        ← Dashboard
-      </Link>
-      <h1 className="mt-6 text-2xl font-semibold">Brand kit</h1>
+      <BackLink href="/dashboard">Dashboard</BackLink>
+      <h1 className="mt-6 text-3xl font-semibold tracking-tight">Brand kit</h1>
       <p className="mt-1 text-sm text-muted">
         Your logo, button color and headline font appear on every ad, including
         ones you already made.
@@ -83,12 +78,14 @@ async function Brand() {
               `${kit.accent_color}${kit.font}${kit.logo_path ?? ""}`,
             )}`}
             alt="Your latest ad with this brand kit"
-            className="mt-2 aspect-square w-full rounded-md border border-line object-cover"
+            className="mt-2 aspect-square w-full rounded-2xl border border-line object-cover"
           />
         ) : (
-          <p className="mt-2 rounded-md border border-dashed border-line-strong p-6 text-sm text-muted">
-            Generate ads for a product to see a preview here.
-          </p>
+          <div className="mt-2">
+            <EmptyState title="No preview yet">
+              Generate ads for a product to see your brand kit on one here.
+            </EmptyState>
+          </div>
         )}
       </div>
     </div>

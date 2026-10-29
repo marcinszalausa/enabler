@@ -1,8 +1,9 @@
 import { Suspense } from "react";
-import Link from "next/link";
 import { getCurrentUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { ProductUrlForm } from "./product-url-form";
+import { ProductCard, type ProductSummary } from "./product-card";
+import { CreditsBadge, EmptyState } from "./ui";
 
 // Server actions on this page scrape and call the AI; allow time for that.
 export const maxDuration = 120;
@@ -41,46 +42,64 @@ async function Dashboard({
   const { data: products } = workspace
     ? await supabase
         .from("products")
-        .select("id, name, url, created_at")
+        .select("id, name, url, image_urls, created_at")
         .eq("workspace_id", workspace.id)
         .order("created_at", { ascending: false })
-    : { data: [] };
+        .returns<ProductSummary[]>()
+    : { data: [] as ProductSummary[] };
 
   return (
     <>
-      <header className="flex items-center justify-between gap-4">
+      <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-2xl font-semibold">
-            {workspace?.name ?? "Your workspace"}
-          </h1>
           <p className="text-sm text-muted">
-            {user.email} · {workspace?.plan ?? "free"} plan ·{" "}
-            {workspace?.credits ?? 0} credits
+            {workspace?.name ?? "Your workspace"} · {user.email}
           </p>
+          <h1 className="mt-1 text-3xl font-semibold tracking-tight">
+            Your products
+          </h1>
         </div>
+        <CreditsBadge
+          credits={workspace?.credits ?? 0}
+          plan={workspace?.plan ?? "free"}
+        />
       </header>
 
-      <section className="mt-10">
-        <ProductUrlForm defaultUrl={typeof url === "string" ? url : ""} />
+      <section className="edge mt-8 p-6 sm:p-8">
+        <h2 className="text-lg font-medium">Make ads from a product link</h2>
+        <p className="mt-1 text-sm text-muted">
+          Paste a product page. Gooidy reads it, writes a brand brief and gets
+          it ready for ads.
+        </p>
+        <div className="mt-5">
+          <ProductUrlForm defaultUrl={typeof url === "string" ? url : ""} />
+        </div>
       </section>
 
-      <section className="mt-10">
-        <h2 className="text-lg font-medium">Products</h2>
+      <section className="mt-12">
+        <h2 className="text-lg font-medium">
+          Products
+          {products && products.length > 0 && (
+            <span className="ml-2 text-sm font-normal text-muted">
+              {products.length}
+            </span>
+          )}
+        </h2>
         {products && products.length > 0 ? (
-          <ul className="mt-4 divide-y divide-line">
+          <ul className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {products.map((p) => (
-              <li key={p.id} className="py-3">
-                <Link href={`/dashboard/products/${p.id}`} className="block">
-                  <p className="font-medium">{p.name ?? p.url}</p>
-                  <p className="truncate text-sm text-muted">{p.url}</p>
-                </Link>
+              <li key={p.id}>
+                <ProductCard product={p} />
               </li>
             ))}
           </ul>
         ) : (
-          <p className="mt-4 rounded-md border border-dashed border-line-strong p-6 text-sm text-muted">
-            No products yet. Paste a product link above to get started.
-          </p>
+          <div className="mt-4">
+            <EmptyState title="No products yet">
+              Paste a product link above. In about two minutes you&apos;ll have
+              your first five ads.
+            </EmptyState>
+          </div>
         )}
       </section>
     </>

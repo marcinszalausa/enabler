@@ -653,6 +653,37 @@ html {
   text-underline-offset: 3px;
 }
 
+/* A bar that keeps moving while a run is working. */
+.progress-track {
+  position: relative;
+  height: 4px;
+  overflow: hidden;
+  border-radius: 9999px;
+  background: var(--t-line);
+}
+.progress-track span {
+  position: absolute;
+  inset-block: 0;
+  left: -35%;
+  width: 35%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--t-accent), var(--t-violet));
+  animation: progress-slide 1.6s ease-in-out infinite;
+}
+@keyframes progress-slide {
+  to {
+    left: 100%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .progress-track span {
+    left: 0;
+    width: 100%;
+    opacity: 0.5;
+    animation: none;
+  }
+}
+
 /* Glass card with a thin gradient edge. */
 .landing .edge {
   position: relative;

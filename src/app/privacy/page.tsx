@@ -58,8 +58,9 @@ export default function Privacy() {
       <h2>Cookies</h2>
       <p>
         We use only what the site needs to work: a cookie that keeps you signed
-        in, and a setting in your browser that remembers light or dark mode. No
-        advertising trackers.
+        in, and a setting in your browser that remembers light or dark mode. We
+        count page visits with Vercel Web Analytics, which uses no cookies and
+        doesn&apos;t identify you. No advertising trackers.
       </p>
 
       <h2>How long we keep it</h2>

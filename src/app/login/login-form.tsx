@@ -35,7 +35,7 @@ export function LoginForm() {
 
   if (status === "sent") {
     return (
-      <p className="mt-6 rounded-md border border-line p-4 text-sm">
+      <p className="mt-6 rounded-xl border border-line bg-surface p-4 text-sm">
         Check <strong>{email}</strong> for your sign-in link.
       </p>
     );
@@ -44,7 +44,7 @@ export function LoginForm() {
   return (
     <form onSubmit={onSubmit} className="mt-6 flex flex-col gap-3">
       <label htmlFor="email" className="text-sm font-medium">
-        Work email
+        Email
       </label>
       <input
         id="email"
@@ -53,13 +53,13 @@ export function LoginForm() {
         autoComplete="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        className="rounded-md border border-line-strong bg-raised px-3 py-2 outline-none transition focus:border-accent focus:ring-4 focus:ring-accent/20"
+        className="rounded-xl border border-line-strong bg-bg px-4 py-3 outline-none transition focus:border-accent focus:ring-4 focus:ring-accent/20"
         placeholder="you@company.com"
       />
       <button
         type="submit"
         disabled={status === "sending"}
-        className="btn-primary rounded-lg px-3 py-2 font-medium"
+        className="btn-primary rounded-xl px-4 py-3 font-medium"
       >
         {status === "sending" ? "Sending…" : "Email me a link"}
       </button>
