@@ -4,12 +4,14 @@ import { useEffect, useRef } from "react";
 import { PhoneFeed } from "./phone-feed";
 import type { FeedAd } from "./reel";
 
-// Three real ads on three iPhones, set like faces of a hexagon standing on
-// glass: the feed in the middle, single ads turned away on each side. The
-// whole stage leans a few degrees toward the pointer, which makes the phones
-// feel like objects, not images.
+// Three real ads on three iPhones, set like faces of a hexagon: the feed in
+// the middle, single ads turned away on each side. The phones have real
+// thickness, and the whole stage leans a few degrees toward the pointer,
+// which makes them feel like objects, not images.
+// A real iPhone is 8.25 mm thick and 71.9 mm wide: 11.5% of its width.
+const DEPTH = 11.5;
 // Ad widths inside the side phones, which only show from 640 px up.
-const SIDE = "(min-width: 64rem) 250px, (min-width: 48rem) 225px, 200px";
+const SIDE = "(min-width: 64rem) 270px, (min-width: 48rem) 225px, 200px";
 
 export function HeroStage({
   feed,
@@ -48,14 +50,15 @@ export function HeroStage({
   }, []);
 
   return (
-    <div ref={stage} className="stage relative mx-auto w-full max-w-3xl">
+    <div ref={stage} className="stage relative mx-auto w-full max-w-5xl">
       <div className="stage-inner relative flex justify-center">
         {left && (
           <div className="stage-side stage-left hidden sm:block">
             <PhoneFeed
               ads={[left]}
+              depth={DEPTH}
               sizes={SIDE}
-              className="w-[210px] md:w-[240px] lg:w-[265px]"
+              className="stage-phone w-[200px] md:w-[225px] lg:w-[270px]"
             />
           </div>
         )}
@@ -63,18 +66,19 @@ export function HeroStage({
           <div className="stage-side stage-right hidden sm:block">
             <PhoneFeed
               ads={[right]}
+              depth={DEPTH}
               sizes={SIDE}
-              className="w-[210px] md:w-[240px] lg:w-[265px]"
+              className="stage-phone w-[200px] md:w-[225px] lg:w-[270px]"
             />
           </div>
         )}
         <PhoneFeed
           ads={feed}
-          sizes="(min-width: 64rem) 290px, (min-width: 40rem) 270px, 235px"
+          depth={DEPTH}
+          sizes="(min-width: 64rem) 310px, (min-width: 48rem) 290px, (min-width: 40rem) 240px, 250px"
           preload
-          className="relative z-10 w-[250px] sm:w-[290px] lg:w-[310px]"
+          className="stage-phone relative w-[250px] sm:w-[240px] md:w-[290px] lg:w-[310px]"
         />
-        <div className="stage-floor" aria-hidden />
       </div>
     </div>
   );

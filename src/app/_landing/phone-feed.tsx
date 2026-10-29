@@ -18,12 +18,14 @@ const VIDEO_MAX_MS = 15000;
 export function PhoneFeed({
   ads,
   notes = false,
+  depth = 0,
   sizes,
   preload = false,
   className = "",
 }: {
   ads: FeedAd[];
   notes?: boolean;
+  depth?: number;
   // The ad area's width on screen, for picking the image size.
   sizes: string;
   // The hero phone's first ad is the first thing people see.
@@ -82,7 +84,7 @@ export function PhoneFeed({
   return (
     <div ref={root} className={`relative ${className}`}>
       {notes && <Notes ad={current} key={index % ads.length} />}
-      <IPhone>
+      <IPhone depth={depth}>
         <div className="flex h-full flex-col">
           <div className="h-[12.4cqw] shrink-0">
             <StatusBar />
