@@ -9,18 +9,26 @@ export const maxDuration = 120;
 
 export const metadata = { title: "Dashboard · Gooidy" };
 
-export default function DashboardPage() {
+export default function DashboardPage({
+  searchParams,
+}: PageProps<"/dashboard">) {
   return (
     <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-10">
       <Suspense fallback={<p className="text-sm text-neutral-500">Loading…</p>}>
-        <Dashboard />
+        <Dashboard searchParams={searchParams} />
       </Suspense>
     </main>
   );
 }
 
-async function Dashboard() {
+async function Dashboard({
+  searchParams,
+}: {
+  searchParams: PageProps<"/dashboard">["searchParams"];
+}) {
   const user = await getCurrentUser();
+  // A link pasted on the landing page arrives as ?url=...
+  const { url } = await searchParams;
   const supabase = await createClient();
 
   const { data: workspace } = await supabase
@@ -66,7 +74,7 @@ async function Dashboard() {
       </header>
 
       <section className="mt-10">
-        <ProductUrlForm />
+        <ProductUrlForm defaultUrl={typeof url === "string" ? url : ""} />
       </section>
 
       <section className="mt-10">

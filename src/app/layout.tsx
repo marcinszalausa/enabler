@@ -14,13 +14,16 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Gooidy",
-  description: "AI ad creation for small and medium businesses",
+  description:
+    "Paste a product link and get ready-to-run ads for Facebook, Instagram and TikTok.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
+      // The landing page sets data-theme before hydrating.
+      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>

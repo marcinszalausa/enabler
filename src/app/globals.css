@@ -10,6 +10,12 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --color-bg: var(--l-bg);
+  --color-fg: var(--l-fg);
+  --color-surface: var(--l-surface);
+  --color-accent: var(--l-accent);
+  --color-muted: var(--l-muted);
+  --color-line: var(--l-line);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -22,5 +28,122 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Landing page ------------------------------------------------------------ */
+
+/* Light by default; dark at night or when the visitor picks it. */
+.landing {
+  --l-bg: #ffffff;
+  --l-fg: #16171d;
+  --l-muted: #5d6070;
+  --l-line: #e4e4ea;
+  --l-surface: #f7f7f9;
+  --l-accent: #4f46e5;
+}
+:root[data-theme="dark"] .landing {
+  --l-bg: #0f1014;
+  --l-fg: #ececf1;
+  --l-muted: #9a9cab;
+  --l-line: #262833;
+  --l-surface: #16171d;
+  --l-accent: #a5a1ff;
+}
+:root[data-theme="dark"] {
+  background: #0f1014;
+}
+.landing .theme-icon-sun,
+:root[data-theme="dark"] .landing .theme-icon-moon {
+  display: none;
+}
+:root[data-theme="dark"] .landing .theme-icon-sun {
+  display: block;
+}
+/* Text on the accent color: white on indigo, dark on the paler dark-mode indigo. */
+:root[data-theme="dark"] .landing .dark-accent-text {
+  color: #0f1014;
+}
+
+/* The phone steps through the sample ads, pausing on each. */
+.landing .feed-scroll {
+  animation: feed 16s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+@keyframes feed {
+  0%,
+  36% {
+    transform: translateY(0);
+  }
+  40%,
+  52% {
+    transform: translateY(-20%);
+  }
+  56%,
+  68% {
+    transform: translateY(-40%);
+  }
+  72%,
+  84% {
+    transform: translateY(-60%);
+  }
+  88%,
+  100% {
+    transform: translateY(-80%);
+  }
+}
+
+/* Soft accent glow and dot grid behind the hero. */
+.landing .hero-bg {
+  background-image:
+    radial-gradient(
+      60% 50% at 70% 20%,
+      color-mix(in srgb, var(--l-accent) 12%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      circle at 1px 1px,
+      color-mix(in srgb, var(--l-fg) 9%, transparent) 1px,
+      transparent 0
+    );
+  background-size:
+    auto,
+    22px 22px;
+}
+
+/* Sections fade up as they scroll into view (only once the script runs). */
+:root[data-reveal="on"] .landing .reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease;
+}
+:root[data-reveal="on"] .landing .reveal.in {
+  opacity: 1;
+  transform: none;
+}
+
+.landing .angle-in {
+  animation: angle-in 0.35s ease;
+}
+@keyframes angle-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing .feed-scroll,
+  .landing .angle-in {
+    animation: none;
+  }
 }
