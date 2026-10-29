@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getCurrentUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { ProductUrlForm } from "./product-url-form";
+import { planName } from "@/lib/billing";
 
 // Server actions on this page scrape and call the AI; allow time for that.
 export const maxDuration = 120;
@@ -54,11 +55,17 @@ async function Dashboard({
             {workspace?.name ?? "Your workspace"}
           </h1>
           <p className="text-sm text-neutral-500">
-            {user.email} · {workspace?.plan ?? "free"} plan ·{" "}
+            {user.email} · {planName(workspace?.plan ?? "free")} plan ·{" "}
             {workspace?.credits ?? 0} credits
           </p>
         </div>
         <div className="flex items-center gap-4">
+          <Link
+            href="/dashboard/billing"
+            className="text-sm underline underline-offset-4"
+          >
+            Billing
+          </Link>
           <Link
             href="/dashboard/brand"
             className="text-sm underline underline-offset-4"
