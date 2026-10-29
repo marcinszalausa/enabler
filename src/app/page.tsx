@@ -464,7 +464,8 @@ function VideoAds({ ads }: { ads: FeedAd[] }) {
           <div className="phone-halo" aria-hidden />
           <PhoneFeed
             ads={ads}
-            sizes="(min-width: 40rem) 280px, 245px"
+            sizes="(min-width: 40rem) 300px, 260px"
+            bare
             className="w-[260px] sm:w-[300px]"
           />
         </div>
@@ -475,7 +476,7 @@ function VideoAds({ ads }: { ads: FeedAd[] }) {
           </h2>
           <p className="mx-auto mt-3 max-w-lg text-lg text-muted lg:mx-0">
             The same link makes vertical video ads for Reels and TikTok. Tap the
-            speaker on the phone to hear one.
+            speaker to hear one.
           </p>
           <ul className="mx-auto mt-8 max-w-lg space-y-5 text-left lg:mx-0">
             {VIDEO_POINTS.map((p) => (

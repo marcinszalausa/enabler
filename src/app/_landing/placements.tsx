@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import Image from "next/image";
-import { HomeIndicator, IPhone, StatusBar } from "./iphone";
+import { SCREEN } from "./screen";
 
 // One real ad as people will meet it: inside Reels, Stories, the Facebook
 // feed and TikTok, with each app's own buttons around it. Only the app
@@ -24,7 +24,7 @@ export function Placements({ ad }: { ad: PlacementAd }) {
     <ul className="stagger grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 lg:grid-cols-4">
       {phones.map((p) => (
         <li key={p.label} className="flex flex-col items-center">
-          <IPhone className="w-full max-w-[230px]">{p.screen}</IPhone>
+          <div className={`${SCREEN} w-full max-w-[230px]`}>{p.screen}</div>
           <p className="mt-4 text-sm font-medium">{p.label}</p>
         </li>
       ))}
@@ -32,7 +32,7 @@ export function Placements({ ad }: { ad: PlacementAd }) {
   );
 }
 
-// A full-screen vertical ad with the status bar on top.
+// The vertical ad filling the screen, with the app's buttons on top.
 function Vertical({ ad, children }: { ad: PlacementAd; children: ReactNode }) {
   return (
     <div className="relative h-full w-full bg-black text-white">
@@ -44,11 +44,7 @@ function Vertical({ ad, children }: { ad: PlacementAd; children: ReactNode }) {
         loading="lazy"
         className="object-cover"
       />
-      <div className="absolute inset-x-0 top-0 h-[12.4cqw]">
-        <StatusBar />
-      </div>
       {children}
-      <HomeIndicator />
     </div>
   );
 }
@@ -76,7 +72,7 @@ function Rail({ items }: { items: string[] }) {
 function Reels({ ad }: { ad: PlacementAd }) {
   return (
     <Vertical ad={ad}>
-      <p className="absolute left-[4cqw] top-[13cqw] text-[5cqw] font-semibold drop-shadow">
+      <p className="absolute left-[4cqw] top-[4cqw] text-[5cqw] font-semibold drop-shadow">
         Reels
       </p>
       <Rail items={[HEART, BUBBLE, PLANE]} />
@@ -97,7 +93,7 @@ function Reels({ ad }: { ad: PlacementAd }) {
 function Story({ ad }: { ad: PlacementAd }) {
   return (
     <Vertical ad={ad}>
-      <div className="absolute inset-x-0 top-[12.4cqw] px-[3cqw]">
+      <div className="absolute inset-x-0 top-[3cqw] px-[3cqw]">
         <span className="block h-[0.6cqw] overflow-hidden rounded-full bg-white/40">
           <span className="block h-full w-2/5 bg-white" />
         </span>
@@ -122,7 +118,7 @@ function Story({ ad }: { ad: PlacementAd }) {
 function TikTok({ ad }: { ad: PlacementAd }) {
   return (
     <Vertical ad={ad}>
-      <p className="absolute inset-x-0 top-[13cqw] flex justify-center gap-[4cqw] text-[3.6cqw] font-semibold drop-shadow">
+      <p className="absolute inset-x-0 top-[4cqw] flex justify-center gap-[4cqw] text-[3.6cqw] font-semibold drop-shadow">
         <span className="text-white/70">Following</span>
         <span>For You</span>
       </p>
@@ -149,11 +145,8 @@ function TikTok({ ad }: { ad: PlacementAd }) {
 function Feed({ ad }: { ad: PlacementAd }) {
   return (
     <div className="flex h-full w-full flex-col bg-white text-[#050505]">
-      <div className="h-[12.4cqw] shrink-0 bg-white text-black [&_*]:!text-black">
-        <StatusBar />
-      </div>
       {/* The app's top bar and the friend post above, left as quiet shapes. */}
-      <div className="flex items-center justify-between px-[4cqw] pb-[2.4cqw] pt-[1cqw]">
+      <div className="flex items-center justify-between px-[4cqw] py-[3cqw]">
         <span className="h-[3.2cqw] w-[18cqw] rounded-full bg-[#d8dadf]" />
         <span className="flex gap-[2cqw]">
           <span className="h-[6.5cqw] w-[6.5cqw] rounded-full bg-[#e4e6eb]" />
@@ -205,9 +198,6 @@ function Feed({ ad }: { ad: PlacementAd }) {
         </div>
         <span className="mt-[2.6cqw] block h-[2.4cqw] w-4/5 rounded-full bg-[#eef0f2]" />
         <span className="mt-[2.6cqw] block h-full rounded-[1.5cqw] bg-[#eef0f2]" />
-      </div>
-      <div className="relative h-[8cqw] shrink-0">
-        <HomeIndicator dark />
       </div>
     </div>
   );
