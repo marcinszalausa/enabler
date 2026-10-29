@@ -87,7 +87,9 @@ export async function startGeneration(
     amount: GENERATION_COST,
   });
   if (!spent) {
-    return { error: `Not enough credits. Each run uses ${GENERATION_COST}.` };
+    return {
+      error: `Not enough credits. Each run uses ${GENERATION_COST}. Upgrade on the Billing page for more.`,
+    };
   }
 
   const { data: generation, error } = await admin

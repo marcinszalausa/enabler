@@ -37,7 +37,9 @@ export async function syncSubscription(sub: Stripe.Subscription) {
 
   // An ended or unfinished subscription only downgrades the workspace if it
   // is the one on file, so an old one can't undo a newer one.
-  const { error } = live ? await update : await update.eq("stripe_subscription_id", sub.id);
+  const { error } = live
+    ? await update
+    : await update.eq("stripe_subscription_id", sub.id);
   if (error) throw error;
 }
 
