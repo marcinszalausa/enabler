@@ -1,14 +1,9 @@
 // Choices the owner makes for a video run. Shared by the form (browser)
 // and the pipeline (server), so it stays free of server imports.
 
-export const LANGUAGES = {
-  english: { label: "English", code: "en" },
-  polish: { label: "Polish", code: "pl" },
-  german: { label: "German", code: "de" },
-  french: { label: "French", code: "fr" },
-  spanish: { label: "Spanish", code: "es" },
-  italian: { label: "Italian", code: "it" },
-} as const;
+import { DEFAULT_LANGUAGE, LANGUAGES, type LanguageKey } from "@/lib/languages";
+
+export { LANGUAGES, type LanguageKey };
 
 export const GENDERS = {
   female: { label: "Female" },
@@ -114,7 +109,6 @@ export const PEOPLE = {
   },
 } as const;
 
-export type LanguageKey = keyof typeof LANGUAGES;
 export type GenderKey = keyof typeof GENDERS;
 export type AccentKey = keyof typeof ACCENTS;
 export type EnergyKey = keyof typeof ENERGIES;
@@ -134,7 +128,7 @@ export const MAX_MESSAGE_LENGTH = 300;
 
 export const DEFAULT_VIDEO_OPTIONS: VideoOptions = {
   message: "",
-  language: "english",
+  language: DEFAULT_LANGUAGE,
   gender: "female",
   accent: "american",
   energy: "upbeat",

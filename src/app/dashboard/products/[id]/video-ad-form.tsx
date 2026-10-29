@@ -7,7 +7,6 @@ import {
   DEFAULT_VIDEO_OPTIONS,
   ENERGIES,
   GENDERS,
-  LANGUAGES,
   MAX_MESSAGE_LENGTH,
   PEOPLE,
 } from "@/lib/video-options";
@@ -22,15 +21,15 @@ export function VideoAdForm({
   productId,
   cost,
   label,
+  language,
 }: {
   productId: string;
   cost: number;
   label: string;
+  // Chosen next to the buttons; shared with image runs.
+  language: string;
 }) {
   const [open, setOpen] = useState(false);
-  const [language, setLanguage] = useState<string>(
-    DEFAULT_VIDEO_OPTIONS.language,
-  );
   const [state, action, pending] = useActionState(
     async (prev: FormState, formData: FormData) => {
       const result = await startGeneration(prev, formData);
@@ -75,21 +74,7 @@ export function VideoAdForm({
         </span>
       </label>
 
-      <label className="flex flex-col gap-1.5">
-        <span className="font-medium">Language</span>
-        <select
-          name="language"
-          value={language}
-          onChange={(e) => setLanguage(e.target.value)}
-          className={field}
-        >
-          {Object.entries(LANGUAGES).map(([key, l]) => (
-            <option key={key} value={key}>
-              {l.label}
-            </option>
-          ))}
-        </select>
-      </label>
+      <input type="hidden" name="language" value={language} />
 
       <div className="grid grid-cols-2 gap-3">
         <label className="flex flex-col gap-1.5">

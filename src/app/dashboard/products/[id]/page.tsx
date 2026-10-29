@@ -10,8 +10,8 @@ import {
   VIDEOS_PER_GENERATION,
 } from "@/lib/video";
 import { getBrandKit } from "@/lib/brand-kit";
-import { GenerateButton } from "./generate-button";
-import { VideoAdForm } from "./video-ad-form";
+import { DEFAULT_LANGUAGE, isLanguageKey } from "@/lib/languages";
+import { GenerateControls } from "./generate-controls";
 import { AutoRefresh } from "./auto-refresh";
 import { BackLink, EmptyState } from "../../ui";
 import { GenerationBlock, type Generation } from "./generation-block";
@@ -106,14 +106,17 @@ async function Product({ params }: { params: Promise<{ id: string }> }) {
           </div>
         </div>
         <div className="flex flex-col items-start gap-2 rounded-2xl border border-line bg-raised p-4 lg:items-end">
-          <div className="flex flex-wrap items-start gap-2 lg:justify-end">
-            <GenerateButton productId={product.id} cost={GENERATION_COST} />
-            <VideoAdForm
-              productId={product.id}
-              cost={VIDEO_GENERATION_COST}
-              label={`Generate ${VIDEOS_PER_GENERATION} video ads`}
-            />
-          </div>
+          <GenerateControls
+            productId={product.id}
+            imageCost={GENERATION_COST}
+            videoCost={VIDEO_GENERATION_COST}
+            videoLabel={`Generate ${VIDEOS_PER_GENERATION} video ads`}
+            defaultLanguage={
+              isLanguageKey(brief?.language)
+                ? brief?.language
+                : DEFAULT_LANGUAGE
+            }
+          />
           <p className="text-xs text-muted">
             {workspace?.credits ?? 0} credits left
           </p>

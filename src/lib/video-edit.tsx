@@ -11,8 +11,14 @@ import { promisify } from "node:util";
 import type { ReactElement } from "react";
 import ffmpegPath from "ffmpeg-static";
 import { ImageResponse } from "next/og";
-import { AD_SIZES } from "@/lib/ad-layout";
-import { CaptionLayer, EndCardLayer, HookLayer } from "@/lib/video-layout";
+import { AD_SIZES, adTextStyles } from "@/lib/ad-layout";
+import { fontsFor, isRtl, prepareText } from "@/lib/ad-text";
+import {
+  CaptionLayer,
+  EndCardLayer,
+  HookLayer,
+  VIDEO_TEXT_STYLES,
+} from "@/lib/video-layout";
 
 const execFileAsync = promisify(execFile);
 
@@ -58,22 +64,41 @@ export async function editVideoAd(edit: VideoEdit): Promise<Buffer> {
     const tempo = Math.min(MAX_TEMPO, Math.max(1, spoken / room));
     const captions = timeCaptions(edit.voiceover, VOICE_START, spoken / tempo);
 
+    // Copy in scripts Satori can't shape arrives as images (see ad-text).
+    const brand = { name: edit.fontName, data: edit.font };
+    const card = adTextStyles("9:16", edit.accentTextColor);
+    const rtl = isRtl([edit.headline, edit.cta]);
+    const [fonts, hook, headline, cta, ...captionTexts] = await Promise.all([
+      fontsFor([edit.headline, edit.cta, edit.voiceover]),
+      prepareText(edit.headline, VIDEO_TEXT_STYLES.hook, brand),
+      prepareText(edit.headline, card.headline, brand),
+      prepareText(edit.cta, card.cta, brand),
+      ...captions.map((c) =>
+        prepareText(c.text, VIDEO_TEXT_STYLES.caption, brand),
+      ),
+    ]);
     const render = (layer: ReactElement) =>
-      renderLayer(layer, edit.fontName, edit.font);
+      renderLayer(layer, [
+        { name: edit.fontName, data: edit.font, weight: 700, style: "normal" },
+        ...fonts,
+      ]);
     const layers = await Promise.all([
-      render(<HookLayer headline={edit.headline} fontFamily={edit.fontName} />),
+      render(
+        <HookLayer headline={hook} fontFamily={edit.fontName} rtl={rtl} />,
+      ),
       render(
         <EndCardLayer
-          headline={edit.headline}
-          cta={edit.cta}
+          headline={headline}
+          cta={cta}
+          rtl={rtl}
           fontFamily={edit.fontName}
           accentColor={edit.accentColor}
           accentTextColor={edit.accentTextColor}
           logoUrl={edit.logoUrl}
         />,
       ),
-      ...captions.map((c) =>
-        render(<CaptionLayer text={c.text} fontFamily={edit.fontName} />),
+      ...captionTexts.map((text) =>
+        render(<CaptionLayer text={text} fontFamily={edit.fontName} />),
       ),
     ]);
 
@@ -179,6 +204,20 @@ export async function editVideoAd(edit: VideoEdit): Promise<Buffer> {
 
 type Caption = { text: string; start: number; end: number };
 
+// A word that ends a phrase, in Latin or CJK punctuation.
+const PAUSE = /[,.!?;:、。，！？；：]$/;
+
+// Attaches punctuation segments to the word before them.
+function mergePunctuation(segments: string[]) {
+  const words: string[] = [];
+  for (const s of segments) {
+    if (words.length && /^[\p{P}\p{S}]+$/u.test(s))
+      words[words.length - 1] += s;
+    else words.push(s);
+  }
+  return words;
+}
+
 // Splits the voiceover into short phrases and spreads them over the time it
 // is spoken, by length, with a beat for each pause. Close enough to read
 // along; no word-level timing needed.
@@ -187,42 +226,55 @@ export function timeCaptions(
   start: number,
   seconds: number,
 ): Caption[] {
+  // Japanese and Chinese are written without spaces: split them into words
+  // with the runtime's word segmenter, and fit fewer (wider) characters.
+  const spaced = !/[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff]/.test(text);
+  const words = spaced
+    ? text.split(/\s+/).filter(Boolean)
+    : mergePunctuation(
+        [
+          ...new Intl.Segmenter(undefined, { granularity: "word" }).segment(
+            text,
+          ),
+        ]
+          .map((s) => s.segment.trim())
+          .filter(Boolean),
+      );
+  const join = (w: string[]) => w.join(spaced ? " " : "");
+  const maxChars = spaced ? 20 : 10;
   const phrases: string[] = [];
   let current: string[] = [];
-  for (const word of text.split(/\s+/).filter(Boolean)) {
+  for (const word of words) {
     current.push(word);
-    const pause = /[,.!?;:]$/.test(word);
+    const pause = PAUSE.test(word);
     if (
-      current.length >= 4 ||
-      current.join(" ").length >= 20 ||
+      (spaced && current.length >= 4) ||
+      join(current).length >= maxChars ||
       (pause && current.length >= 2)
     ) {
-      phrases.push(current.join(" "));
+      phrases.push(join(current));
       current = [];
     }
   }
-  if (current.length) phrases.push(current.join(" "));
+  if (current.length) phrases.push(join(current));
 
-  const weight = (p: string) => p.length + (/[,.!?;:]$/.test(p) ? 4 : 0);
+  const weight = (p: string) => p.length + (PAUSE.test(p) ? 4 : 0);
   const totalWeight = phrases.reduce((a, p) => a + weight(p), 0);
   let t = start;
   return phrases.map((p) => {
     const end = t + (weight(p) / totalWeight) * seconds;
-    const caption = { text: p.replace(/[,;:]$/, ""), start: t, end };
+    const caption = { text: p.replace(/[,;:、，；：]$/, ""), start: t, end };
     t = end;
     return caption;
   });
 }
 
-async function renderLayer(
-  layer: ReactElement,
-  fontName: string,
-  font: Buffer,
-) {
-  const image = new ImageResponse(layer, {
-    ...AD_SIZES["9:16"],
-    fonts: [{ name: fontName, data: font, weight: 700, style: "normal" }],
-  });
+type Fonts = NonNullable<
+  ConstructorParameters<typeof ImageResponse>[1]
+>["fonts"];
+
+async function renderLayer(layer: ReactElement, fonts: Fonts) {
+  const image = new ImageResponse(layer, { ...AD_SIZES["9:16"], fonts });
   return Buffer.from(await image.arrayBuffer());
 }
 

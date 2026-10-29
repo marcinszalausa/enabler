@@ -7,13 +7,69 @@ export const AD_SIZES = {
 } as const;
 export type AdAspect = keyof typeof AD_SIZES;
 
+// Copy as Satori draws it, or as an image of it for scripts it can't shape
+// (see ad-text.ts). `pad` is the blank margin around the drawn text.
+export type AdText =
+  | string
+  | { src: string; width: number; height: number; pad: number };
+
+export type TextStyle = {
+  fontSize: number;
+  lineHeight: number;
+  maxWidth: number;
+  color: string;
+  align: "start" | "center";
+  shadow: boolean;
+};
+
+const PAD_X = 72;
+
+export function adTextStyles(aspect: AdAspect, accentTextColor: string) {
+  return {
+    headline: {
+      fontSize: aspect === "9:16" ? 92 : 80,
+      lineHeight: 1.1,
+      maxWidth: AD_SIZES[aspect].width - PAD_X * 2,
+      color: "white",
+      align: "start",
+      shadow: true,
+    },
+    cta: {
+      fontSize: 44,
+      lineHeight: 1.2,
+      maxWidth: 640,
+      color: accentTextColor,
+      align: "start",
+      shadow: false,
+    },
+  } satisfies Record<string, TextStyle>;
+}
+
+// Renders copy inside a flex box: text as is, or the image of it with its
+// padding pulled back so the text lines up like Satori's would.
+export function Copy({ text }: { text: AdText }) {
+  if (typeof text === "string") return text;
+  return (
+    // eslint-disable-next-line @next/next/no-img-element -- Satori renders plain img
+    <img
+      src={text.src}
+      width={text.width}
+      height={text.height}
+      style={{ margin: -text.pad }}
+      alt=""
+    />
+  );
+}
+
 export type AdLayoutProps = {
   // Null renders only the text layer on a transparent background, to lay
   // over a video.
   photoUrl: string | null;
   aspect: AdAspect;
-  headline: string;
-  cta: string;
+  headline: AdText;
+  cta: AdText;
+  // Right-to-left copy (Arabic): text and button sit on the right.
+  rtl?: boolean;
   fontFamily: string;
   accentColor: string;
   accentTextColor: string;
@@ -23,7 +79,7 @@ export type AdLayoutProps = {
 export function AdLayout(p: AdLayoutProps) {
   const size = AD_SIZES[p.aspect];
   const story = p.aspect === "9:16";
-  const padX = 72;
+  const padX = PAD_X;
 
   return (
     <div
@@ -69,6 +125,7 @@ export function AdLayout(p: AdLayoutProps) {
           style={{
             display: "flex",
             flexWrap: "wrap",
+            justifyContent: p.rtl ? "flex-end" : "flex-start",
             width: size.width - padX * 2,
             color: "white",
             fontSize: story ? 92 : 80,
@@ -78,11 +135,12 @@ export function AdLayout(p: AdLayoutProps) {
             textShadow: "0 2px 16px rgba(0,0,0,0.35)",
           }}
         >
-          {p.headline}
+          <Copy text={p.headline} />
         </div>
         <div
           style={{
             display: "flex",
+            flexDirection: p.rtl ? "row-reverse" : "row",
             alignItems: "center",
             justifyContent: "space-between",
           }}
@@ -98,7 +156,7 @@ export function AdLayout(p: AdLayoutProps) {
               borderRadius: 999,
             }}
           >
-            {p.cta}
+            <Copy text={p.cta} />
           </div>
           {p.logoUrl && (
             // A white chip keeps dark and light logos readable on any photo.

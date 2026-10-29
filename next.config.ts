@@ -14,8 +14,9 @@ const nextConfig: NextConfig = {
       "./node_modules/ffmpeg-static/ffmpeg",
     ],
   },
-  // Loaded from node_modules at runtime so it can find its binary.
-  serverExternalPackages: ["ffmpeg-static"],
+  // Loaded from node_modules at runtime so they can find their binaries
+  // (ffmpeg; Skia, which draws Hindi and Arabic ad copy).
+  serverExternalPackages: ["ffmpeg-static", "@napi-rs/canvas"],
   cacheComponents: true,
   // Ads are rendered as full-size PNGs (1080 px wide, 1.5–2.5 MB). Pages show
   // them through the image optimizer, which serves WebP at the size shown.

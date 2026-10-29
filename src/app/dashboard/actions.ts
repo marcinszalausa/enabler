@@ -10,6 +10,7 @@ import { extractBrandBrief } from "@/lib/ai/claude";
 import { GENERATION_COST, runGeneration } from "@/lib/pipeline";
 import { VIDEO_GENERATION_COST, runVideoGeneration } from "@/lib/video";
 import { parseVideoOptions } from "@/lib/video-options";
+import { DEFAULT_LANGUAGE, isLanguageKey } from "@/lib/languages";
 import { userMessage } from "@/lib/errors";
 import { seedBrandKit } from "@/lib/brand-kit";
 
@@ -73,6 +74,11 @@ export async function startGeneration(
   const productId = String(formData.get("productId") ?? "");
   const video = formData.get("kind") === "video";
   const cost = video ? VIDEO_GENERATION_COST : GENERATION_COST;
+  const options = video ? parseVideoOptions(formData) : null;
+  const requested = formData.get("language");
+  const language =
+    options?.language ??
+    (isLanguageKey(requested) ? requested : DEFAULT_LANGUAGE);
   const { supabase, workspaceId } = await currentWorkspaceId();
 
   // RLS: only returns the product if the user is a member of its workspace.
@@ -116,9 +122,10 @@ export async function startGeneration(
   }
 
   const job = { generationId: generation.id, workspaceId, productId };
-  const options = video ? parseVideoOptions(formData) : null;
   after(() =>
-    options ? runVideoGeneration({ ...job, options }) : runGeneration(job),
+    options
+      ? runVideoGeneration({ ...job, options })
+      : runGeneration({ ...job, language }),
   );
 
   revalidatePath(`/dashboard/products/${productId}`);

@@ -24,4 +24,5 @@ Import the repo in Vercel, add the variables from `.env.example` under Settings 
 - `src/app/login`: magic-link sign-in
 - `src/app/auth/callback`, `src/app/auth/signout`: auth routes
 - `src/app/dashboard`: workspace dashboard
+- `src/lib/languages.ts`: the languages ads are written and spoken in. `src/lib/ad-text.ts` gives the ad renderer what each script needs: Japanese, Korean and Chinese glyphs fetched from Google Fonts, and Hindi and Arabic drawn with Skia (`@napi-rs/canvas`, bundled Noto fonts), since Satori can't shape them
 - `supabase/migrations/`: database schema

@@ -1,13 +1,37 @@
 // Text layers for video ads as Satori trees, each a transparent 1080x1920
 // frame laid over the footage. Kept free of server imports like ad-layout.
 
-import { AD_SIZES, AdLayout, type AdLayoutProps } from "@/lib/ad-layout";
+import {
+  AD_SIZES,
+  AdLayout,
+  Copy,
+  adTextStyles,
+  type AdLayoutProps,
+  type AdText,
+  type TextStyle,
+} from "@/lib/ad-layout";
 
 const SIZE = AD_SIZES["9:16"];
 const PAD_X = 72;
 
+export const VIDEO_TEXT_STYLES = {
+  hook: adTextStyles("9:16", "white").headline,
+  caption: {
+    fontSize: 64,
+    lineHeight: 1.2,
+    maxWidth: SIZE.width - PAD_X * 2 - 60,
+    color: "white",
+    align: "center",
+    shadow: false,
+  },
+} satisfies Record<string, TextStyle>;
+
 // The headline over the opening seconds, where the hook has to land.
-export function HookLayer(p: { headline: string; fontFamily: string }) {
+export function HookLayer(p: {
+  headline: AdText;
+  fontFamily: string;
+  rtl?: boolean;
+}) {
   return (
     <div
       style={{
@@ -24,6 +48,7 @@ export function HookLayer(p: { headline: string; fontFamily: string }) {
         style={{
           display: "flex",
           flexWrap: "wrap",
+          justifyContent: p.rtl ? "flex-end" : "flex-start",
           width: SIZE.width - PAD_X * 2,
           color: "white",
           fontSize: 92,
@@ -33,7 +58,7 @@ export function HookLayer(p: { headline: string; fontFamily: string }) {
           textShadow: "0 2px 16px rgba(0,0,0,0.35)",
         }}
       >
-        {p.headline}
+        <Copy text={p.headline} />
       </div>
     </div>
   );
@@ -41,7 +66,7 @@ export function HookLayer(p: { headline: string; fontFamily: string }) {
 
 // One phrase of the voiceover, low in the frame but above the area the
 // Reels and TikTok buttons cover.
-export function CaptionLayer(p: { text: string; fontFamily: string }) {
+export function CaptionLayer(p: { text: AdText; fontFamily: string }) {
   return (
     <div
       style={{
@@ -69,7 +94,7 @@ export function CaptionLayer(p: { text: string; fontFamily: string }) {
           background: "rgba(0,0,0,0.55)",
         }}
       >
-        {p.text}
+        <Copy text={p.text} />
       </div>
     </div>
   );

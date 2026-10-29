@@ -241,7 +241,7 @@ const HERO_FACTS = [
   "Free to start, no card",
   "5 angles per run",
   "9:16 and 1:1",
-  `Voiceover in ${Object.keys(LANGUAGES).length} languages`,
+  `Ads in ${Object.keys(LANGUAGES).length} languages`,
 ];
 
 function WorksWith() {
@@ -444,13 +444,7 @@ const VIDEO_POINTS = [
   },
   {
     title: "A voice that speaks your buyer's language",
-    body: `Voiceover in ${Object.values(LANGUAGES)
-      .map((l) => l.label)
-      .join(", ")
-      .replace(
-        /, ([^,]*)$/,
-        " or $1",
-      )}, with captions people can read on mute.`,
+    body: `Voiceover in ${Object.keys(LANGUAGES).length} languages, from Spanish and Polish to Japanese and Arabic, with captions people can read on mute.`,
   },
   {
     title: "Music and an end card",
@@ -548,11 +542,11 @@ function Features({ run }: { run?: ShowcaseRun }) {
 
         <div className="edge spot lift p-7 md:col-span-6">
           <h3 className="text-lg font-medium">
-            A voice in your buyer&apos;s language
+            Ads in your buyer&apos;s language
           </h3>
           <p className="mt-1.5 text-sm text-muted">
-            Video ads come with a voiceover and captions in the language you
-            pick.
+            Every ad is written in the language you pick, the way a local would
+            write it, and video ads speak it with captions to match.
           </p>
           <ul className="mt-6 flex flex-wrap gap-2">
             {Object.values(LANGUAGES).map((l) => (
@@ -563,7 +557,7 @@ function Features({ run }: { run?: ShowcaseRun }) {
                 <span className="mr-1.5 font-mono text-xs uppercase text-accent">
                   {l.code}
                 </span>
-                {l.label}
+                <span lang={l.code}>{l.native}</span>
               </li>
             ))}
           </ul>

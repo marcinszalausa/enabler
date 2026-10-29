@@ -8,9 +8,11 @@ const initialState: FormState = { error: null };
 export function GenerateButton({
   productId,
   cost,
+  language,
 }: {
   productId: string;
   cost: number;
+  language: string;
 }) {
   const [state, action, pending] = useActionState(
     startGeneration,
@@ -20,6 +22,7 @@ export function GenerateButton({
   return (
     <form action={action} className="flex flex-col items-start gap-2">
       <input type="hidden" name="productId" value={productId} />
+      <input type="hidden" name="language" value={language} />
       <button
         type="submit"
         disabled={pending}
