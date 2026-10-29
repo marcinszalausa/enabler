@@ -127,7 +127,8 @@ export async function runGeneration({
   }
 }
 
-class QualityError extends Error {}
+// An image that kept failing the quality check; the message says why.
+export class QualityError extends Error {}
 
 // Generates an ad photo and has Claude check it for broken hands, faces or
 // a product that doesn't match; retries with the defects named. An image that
@@ -136,6 +137,7 @@ export async function generateCheckedImage(opts: {
   prompt: string;
   aspect: Aspect;
   referenceImageUrl: string | null;
+  sameScene?: boolean;
   product: string;
 }): Promise<string> {
   let avoid: string | undefined;

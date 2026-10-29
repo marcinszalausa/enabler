@@ -1,25 +1,26 @@
 import "server-only";
-import { execFile } from "node:child_process";
-import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
-import { tmpdir } from "node:os";
-import { join } from "node:path";
-import { promisify } from "node:util";
-import ffmpegPath from "ffmpeg-static";
-import { ImageResponse } from "next/og";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { writeVideoAds, type BrandBrief } from "@/lib/ai/claude";
-import { getAdVideo, submitAdVideo } from "@/lib/ai/fal";
-import { generateCheckedImage, settleWithLimit } from "@/lib/pipeline";
+import { writeVideoAds, type BrandBrief, type VideoAd } from "@/lib/ai/claude";
+import {
+  generateMusic,
+  generateVoiceover,
+  getAdVideo,
+  submitAdVideo,
+} from "@/lib/ai/fal";
+import { QualityError, generateCheckedImage } from "@/lib/pipeline";
 import { getBrandKit } from "@/lib/brand-kit";
 import { FONTS, loadFont, textColorOn } from "@/lib/brand";
-import { AD_SIZES, AdLayout } from "@/lib/ad-layout";
+import { editVideoAd } from "@/lib/video-edit";
 import { userMessage } from "@/lib/errors";
+import { voiceFor, type VideoOptions } from "@/lib/video-options";
 
-export const VIDEOS_PER_GENERATION = 3;
-export const CREDITS_PER_VIDEO = 15;
+export const VIDEOS_PER_GENERATION = 2;
+export const CREDITS_PER_VIDEO = 20;
 export const VIDEO_GENERATION_COST = VIDEOS_PER_GENERATION * CREDITS_PER_VIDEO;
+// Length of each shot; together they make the ad.
+export const SHOT_SECONDS = [4, 3];
+export const VIDEO_SECONDS = SHOT_SECONDS.reduce((a, b) => a + b, 0);
 
-const IMAGE_CONCURRENCY = 3;
 // Past these ages a job's worker is presumed dead and the job is failed
 // (or, while processing, picked up again by the next check).
 const DRAFTING_TIMEOUT_MS = 10 * 60_000;
@@ -31,7 +32,10 @@ type Job = { generationId: string; workspaceId: string; productId: string };
 type VideoJob = {
   id: string;
   status: "drafting" | "pending" | "processing" | "done" | "failed";
-  request_id: string | null;
+  request_ids: string[];
+  voiceover: string | null;
+  voice_path: string | null;
+  music_path: string | null;
   headline: string | null;
   primary_text: string | null;
   cta: string | null;
@@ -40,16 +44,16 @@ type VideoJob = {
   updated_at: string;
 };
 
-const execFileAsync = promisify(execFile);
-
-// First half of a video run: scripts, then a checked opening frame per ad,
-// each handed to the video model. The clips are collected later by
-// advanceVideoGeneration, since they take longer than this request may run.
+// First half of a video run: scripts, then for each ad its checked shots
+// (each handed to the video model), voiceover and music. The clips are
+// collected later by advanceVideoGeneration, since they take longer than
+// this request may run.
 export async function runVideoGeneration({
   generationId,
   workspaceId,
   productId,
-}: Job) {
+  options,
+}: Job & { options: VideoOptions }) {
   const db = createAdminClient();
   await db
     .from("generations")
@@ -66,7 +70,12 @@ export async function runVideoGeneration({
 
     const brief = product.brand_brief as BrandBrief;
     const referenceImageUrl = (product.image_urls as string[])[0] ?? null;
-    const ads = await writeVideoAds(brief, VIDEOS_PER_GENERATION);
+    const ads = await writeVideoAds(
+      brief,
+      VIDEOS_PER_GENERATION,
+      SHOT_SECONDS,
+      options,
+    );
 
     const { data: jobs, error: insertError } = await db
       .from("video_jobs")
@@ -78,6 +87,7 @@ export async function runVideoGeneration({
           headline: ad.headline,
           primary_text: ad.primary_text,
           cta: ad.cta,
+          voiceover: ad.voiceover,
         })),
       )
       .select("id");
@@ -86,36 +96,50 @@ export async function runVideoGeneration({
     await db
       .from("generations")
       .update({
-        prompt: ads
-          .map((a) => `${a.image_prompt}\nMotion: ${a.motion_prompt}`)
-          .join("\n\n"),
+        prompt: [
+          `Options: ${JSON.stringify(options)}`,
+          ...ads.map((a) =>
+            [
+              ...a.shots.map(
+                (s, i) =>
+                  `Shot ${i + 1}: ${s.image_prompt}\nMotion: ${s.motion_prompt}`,
+              ),
+              `Voiceover: ${a.voiceover}`,
+              `Music: ${a.music_prompt}`,
+            ].join("\n"),
+          ),
+        ].join("\n\n"),
       })
       .eq("id", generationId);
 
-    await settleWithLimit(
-      ads.map((ad, i) => async () => {
+    await Promise.all(
+      ads.map(async (ad, i) => {
         const jobId = jobs[i].id;
         try {
-          const frameUrl = await generateCheckedImage({
-            prompt: ad.image_prompt,
-            aspect: "9:16",
-            referenceImageUrl,
-            product: brief.product_name,
+          const [requestIds, sound] = await Promise.all([
+            filmShots(ad, referenceImageUrl, brief.product_name),
+            recordSound(
+              options,
+              ad,
+              `${workspaceId}/${generationId}/video-${jobId.slice(0, 8)}`,
+            ),
+          ]);
+          await updateJob(jobId, {
+            status: "pending",
+            request_ids: requestIds,
+            ...sound,
           });
-          const requestId = await submitAdVideo({
-            startImageUrl: frameUrl,
-            prompt: ad.motion_prompt,
-          });
-          await updateJob(jobId, { status: "pending", request_id: requestId });
         } catch (err) {
-          console.error("video frame failed", generationId, err);
+          console.error("video draft failed", generationId, err);
           await updateJob(jobId, {
             status: "failed",
-            error: userMessage(err, "Couldn't make the opening frame."),
+            error:
+              err instanceof QualityError
+                ? `The quality check rejected a shot three times: ${err.message}`
+                : userMessage(err, "Couldn't set up the shots."),
           });
         }
       }),
-      IMAGE_CONCURRENCY,
     );
   } catch (err) {
     console.error("video generation failed", generationId, err);
@@ -127,6 +151,65 @@ export async function runVideoGeneration({
     return;
   }
   await advanceVideoGeneration(generationId);
+}
+
+// Makes each shot's first frame (later shots from the first, so the person
+// and setting carry over), checks it, and sends it to the video model.
+// Returns the video model's request ids, in shot order.
+async function filmShots(
+  ad: VideoAd,
+  referenceImageUrl: string | null,
+  product: string,
+): Promise<string[]> {
+  const check = (prompt: string, reference: string | null, sameScene = false) =>
+    generateCheckedImage({
+      prompt,
+      aspect: "9:16",
+      referenceImageUrl: reference,
+      sameScene,
+      product,
+    });
+  const first = await check(ad.shots[0].image_prompt, referenceImageUrl);
+  const rest = await Promise.all(
+    ad.shots.slice(1).map((s) => check(s.image_prompt, first, true)),
+  );
+  return Promise.all(
+    [first, ...rest].map((frame, i) =>
+      submitAdVideo({
+        startImageUrl: frame,
+        prompt: ad.shots[i].motion_prompt,
+        seconds: SHOT_SECONDS[i],
+      }),
+    ),
+  );
+}
+
+// Voiceover and music, kept in storage until the shots are ready.
+async function recordSound(options: VideoOptions, ad: VideoAd, base: string) {
+  const voice = voiceFor(options);
+  const [voiceUrl, musicUrl] = await Promise.all([
+    generateVoiceover({
+      text: ad.voiceover,
+      voice: voice.name,
+      tag: voice.tag,
+      languageCode: voice.languageCode,
+    }),
+    generateMusic({ prompt: ad.music_prompt, seconds: VIDEO_SECONDS + 1 }),
+  ]);
+  const [voice_path, music_path] = await Promise.all(
+    [
+      [voiceUrl, `${base}-voice.mp3`, "audio/mpeg"],
+      [musicUrl, `${base}-music.wav`, "audio/wav"],
+    ].map(async ([url, path, contentType]) => {
+      const bytes = await download(url);
+      const { error } = await createAdminClient()
+        .storage.from("creatives")
+        .upload(path, bytes, { contentType, upsert: true });
+      if (error) throw error;
+      return path;
+    }),
+  );
+  return { voice_path, music_path };
 }
 
 // Collects finished clips: adds the headline, call to action and logo,
@@ -146,7 +229,7 @@ export async function advanceVideoGeneration(generationId: string) {
   const { data: jobs } = await db
     .from("video_jobs")
     .select(
-      "id, status, request_id, headline, primary_text, cta, angle, error, updated_at",
+      "id, status, request_ids, voiceover, voice_path, music_path, headline, primary_text, cta, angle, error, updated_at",
     )
     .eq("generation_id", generationId)
     .returns<VideoJob[]>();
@@ -177,15 +260,20 @@ export async function advanceVideoGeneration(generationId: string) {
           age(job.updated_at) > PROCESSING_TIMEOUT_MS;
         if (job.status !== "pending" && !reclaim) return;
 
-        const videoUrl = await getAdVideo(job.request_id!);
-        if (!videoUrl) {
+        const clipUrls = await Promise.all(job.request_ids.map(getAdVideo));
+        if (clipUrls.some((url) => !url)) {
           if (age(job.updated_at) > PENDING_TIMEOUT_MS) {
             await failJob(job, "The video model took too long.");
           }
           return;
         }
         if (!(await claimJob(job))) return;
-        await saveVideo(generation.workspace_id, generationId, job, videoUrl);
+        await saveVideo(
+          generation.workspace_id,
+          generationId,
+          job,
+          clipUrls as string[],
+        );
         job.status = "done";
       } catch (err) {
         console.error("video job failed", job.id, err);
@@ -241,37 +329,47 @@ async function saveVideo(
   workspaceId: string,
   generationId: string,
   job: VideoJob,
-  videoUrl: string,
+  clipUrls: string[],
 ) {
   const db = createAdminClient();
-  const res = await fetch(videoUrl, { signal: AbortSignal.timeout(60_000) });
-  if (!res.ok) throw new Error("Couldn't download generated video.");
-  const clip = Buffer.from(await res.arrayBuffer());
-
-  const overlay = await renderOverlay(workspaceId, job);
-  const video = await burnIn(clip, overlay);
-
-  const base = `${workspaceId}/${generationId}/video-${job.id.slice(0, 8)}`;
-  const [raw, final] = await Promise.all([
-    // The clip without text, kept so ads can be re-branded later.
-    db.storage.from("creatives").upload(`${base}-clip.mp4`, clip, {
-      contentType: "video/mp4",
-      upsert: true,
-    }),
-    db.storage.from("creatives").upload(`${base}.mp4`, video, {
-      contentType: "video/mp4",
-      upsert: true,
-    }),
+  const kit = await getBrandKit(db, workspaceId);
+  const [clips, voice, music, logo, font] = await Promise.all([
+    Promise.all(clipUrls.map(download)),
+    downloadStored(job.voice_path!),
+    downloadStored(job.music_path!),
+    kit.logo_path
+      ? db.storage.from("creatives").createSignedUrl(kit.logo_path, 300)
+      : Promise.resolve(null),
+    loadFont(kit.font),
   ]);
-  if (raw.error) console.error("raw clip upload failed", raw.error);
-  if (final.error) throw final.error;
+
+  const video = await editVideoAd({
+    clips,
+    shotSeconds: SHOT_SECONDS,
+    voice,
+    music,
+    voiceover: job.voiceover ?? "",
+    headline: job.headline ?? "",
+    cta: job.cta ?? "Shop now",
+    fontName: FONTS[kit.font].name,
+    font,
+    accentColor: kit.accent_color,
+    accentTextColor: textColorOn(kit.accent_color),
+    logoUrl: logo?.data?.signedUrl ?? null,
+  });
+
+  const path = `${workspaceId}/${generationId}/video-${job.id.slice(0, 8)}.mp4`;
+  const upload = await db.storage
+    .from("creatives")
+    .upload(path, video, { contentType: "video/mp4", upsert: true });
+  if (upload.error) throw upload.error;
 
   const insert = await db.from("creatives").insert({
     workspace_id: workspaceId,
     generation_id: generationId,
     kind: "video",
     aspect: "9:16",
-    storage_path: `${base}.mp4`,
+    storage_path: path,
     angle: job.angle,
     headline: job.headline,
     primary_text: job.primary_text,
@@ -281,101 +379,18 @@ async function saveVideo(
   await updateJob(job.id, { status: "done", error: null });
 }
 
-// The headline, call to action and logo as a transparent 1080x1920 PNG,
-// drawn with the same layout and brand kit as the image ads.
-async function renderOverlay(workspaceId: string, job: VideoJob) {
-  const db = createAdminClient();
-  const kit = await getBrandKit(db, workspaceId);
-  const [logo, font] = await Promise.all([
-    kit.logo_path
-      ? db.storage.from("creatives").createSignedUrl(kit.logo_path, 300)
-      : Promise.resolve(null),
-    loadFont(kit.font),
-  ]);
-  const image = new ImageResponse(
-    <AdLayout
-      photoUrl={null}
-      aspect="9:16"
-      headline={job.headline ?? ""}
-      cta={job.cta ?? "Shop now"}
-      fontFamily={FONTS[kit.font].name}
-      accentColor={kit.accent_color}
-      accentTextColor={textColorOn(kit.accent_color)}
-      logoUrl={logo?.data?.signedUrl ?? null}
-    />,
-    {
-      ...AD_SIZES["9:16"],
-      fonts: [
-        {
-          name: FONTS[kit.font].name,
-          data: font,
-          weight: 700,
-          style: "normal",
-        },
-      ],
-    },
-  );
-  return Buffer.from(await image.arrayBuffer());
+async function download(url: string): Promise<Buffer> {
+  const res = await fetch(url, { signal: AbortSignal.timeout(60_000) });
+  if (!res.ok) throw new Error(`Couldn't download ${new URL(url).pathname}.`);
+  return Buffer.from(await res.arrayBuffer());
 }
 
-// Lays the overlay over the clip (fading in just after the first frame, so
-// the opening shot hooks on its own) and encodes an MP4 that Meta and
-// TikTok accept: H.264, AAC, 1080x1920, fast start.
-async function burnIn(clip: Buffer, overlay: Buffer): Promise<Buffer> {
-  if (!ffmpegPath) throw new Error("ffmpeg is not available here.");
-  // Scratch files live in the OS temp folder; tell the bundler not to trace
-  // these paths into the deployment.
-  const dir = await mkdtemp(
-    join(/*turbopackIgnore: true*/ tmpdir(), "gooidy-video-"),
-  );
-  try {
-    const [input, layer, output] = ["in.mp4", "overlay.png", "out.mp4"].map(
-      (f) => join(/*turbopackIgnore: true*/ dir, f),
-    );
-    await Promise.all([
-      writeFile(/*turbopackIgnore: true*/ input, clip),
-      writeFile(/*turbopackIgnore: true*/ layer, overlay),
-    ]);
-    await execFileAsync(
-      ffmpegPath,
-      [
-        "-y",
-        "-i",
-        input,
-        "-loop",
-        "1",
-        "-i",
-        layer,
-        "-filter_complex",
-        [
-          "[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,setsar=1,fps=30[v]",
-          "[1:v]format=rgba,fade=t=in:st=0.4:d=0.5:alpha=1[o]",
-          "[v][o]overlay=0:0:shortest=1,format=yuv420p[out]",
-        ].join(";"),
-        "-map",
-        "[out]",
-        "-map",
-        "0:a?",
-        "-c:v",
-        "libx264",
-        "-preset",
-        "veryfast",
-        "-crf",
-        "20",
-        "-c:a",
-        "aac",
-        "-b:a",
-        "128k",
-        "-movflags",
-        "+faststart",
-        output,
-      ],
-      { timeout: 120_000, maxBuffer: 10 * 1024 * 1024 },
-    );
-    return await readFile(/*turbopackIgnore: true*/ output);
-  } finally {
-    await rm(/*turbopackIgnore: true*/ dir, { recursive: true, force: true });
-  }
+async function downloadStored(path: string): Promise<Buffer> {
+  const { data, error } = await createAdminClient()
+    .storage.from("creatives")
+    .download(path);
+  if (error || !data) throw error ?? new Error("Missing sound file.");
+  return Buffer.from(await data.arrayBuffer());
 }
 
 // Moves a job from pending (or a stale processing) to processing; false if

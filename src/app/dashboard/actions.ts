@@ -9,6 +9,7 @@ import { scrapePage } from "@/lib/scrape";
 import { extractBrandBrief } from "@/lib/ai/claude";
 import { GENERATION_COST, runGeneration } from "@/lib/pipeline";
 import { VIDEO_GENERATION_COST, runVideoGeneration } from "@/lib/video";
+import { parseVideoOptions } from "@/lib/video-options";
 import { userMessage } from "@/lib/errors";
 import { seedBrandKit } from "@/lib/brand-kit";
 
@@ -115,7 +116,10 @@ export async function startGeneration(
   }
 
   const job = { generationId: generation.id, workspaceId, productId };
-  after(() => (video ? runVideoGeneration(job) : runGeneration(job)));
+  const options = video ? parseVideoOptions(formData) : null;
+  after(() =>
+    options ? runVideoGeneration({ ...job, options }) : runGeneration(job),
+  );
 
   revalidatePath(`/dashboard/products/${productId}`);
   return { error: null };

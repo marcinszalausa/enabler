@@ -5,9 +5,14 @@ import { getCurrentUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import type { BrandBrief } from "@/lib/ai/claude";
 import { GENERATION_COST } from "@/lib/pipeline";
-import { VIDEO_GENERATION_COST, VIDEOS_PER_GENERATION } from "@/lib/video";
+import {
+  VIDEO_GENERATION_COST,
+  VIDEO_SECONDS,
+  VIDEOS_PER_GENERATION,
+} from "@/lib/video";
 import { getBrandKit } from "@/lib/brand-kit";
 import { GenerateButton } from "./generate-button";
+import { VideoAdForm } from "./video-ad-form";
 import { AutoRefresh } from "./auto-refresh";
 import { setShowcase } from "./showcase-actions";
 import { isShowcaseAdmin } from "@/lib/showcase";
@@ -117,16 +122,11 @@ async function Product({ params }: { params: Promise<{ id: string }> }) {
           </a>
         </div>
         <div className="flex flex-col items-start gap-1 sm:items-end">
-          <div className="flex flex-wrap gap-2 sm:justify-end">
-            <GenerateButton
-              productId={product.id}
-              cost={GENERATION_COST}
-              label="Generate 5 image ads"
-            />
-            <GenerateButton
+          <div className="flex flex-wrap items-start gap-2 sm:justify-end">
+            <GenerateButton productId={product.id} cost={GENERATION_COST} />
+            <VideoAdForm
               productId={product.id}
               cost={VIDEO_GENERATION_COST}
-              kind="video"
               label={`Generate ${VIDEOS_PER_GENERATION} video ads`}
             />
           </div>
@@ -172,8 +172,8 @@ async function Product({ params }: { params: Promise<{ id: string }> }) {
           <p className="rounded-md border border-dashed border-neutral-300 p-6 text-sm text-neutral-500 dark:border-neutral-700">
             No ads yet. Generate your first set: 5 ad angles, each as a square
             (feed) and a vertical (stories/reels) image, or{" "}
-            {VIDEOS_PER_GENERATION} short vertical videos with sound for Reels
-            and TikTok.
+            {VIDEOS_PER_GENERATION} vertical {VIDEO_SECONDS}-second videos with
+            voiceover, captions and music for Reels and TikTok.
           </p>
         )}
         {(generations ?? []).map((g) => (
@@ -213,7 +213,7 @@ function GenerationBlock({
         </p>
         <p className="mt-1 text-neutral-500">
           {video
-            ? `Writing ${VIDEOS_PER_GENERATION} scripts, setting up each opening shot and filming 5-second clips with sound. This usually takes 4–8 minutes; this page updates on its own. If you leave, the videos are finished when you come back.`
+            ? `Writing ${VIDEOS_PER_GENERATION} scripts, setting up two shots per ad, recording the voiceover and music, then filming and editing. This usually takes 4–8 minutes; this page updates on its own. If you leave, the videos are finished when you come back.`
             : "Writing copy and creating 10 images. This usually takes 2–3 minutes; this page updates on its own."}
         </p>
       </div>
@@ -276,7 +276,7 @@ function GenerationBlock({
                 className="aspect-[9/16] w-full rounded-md border border-neutral-200 bg-neutral-100 object-cover dark:border-neutral-800 dark:bg-neutral-900"
               />
               <p className="text-xs text-neutral-500">
-                {c.angle?.replace("_", " ")} · Reel / TikTok · 5 s
+                {c.angle?.replace("_", " ")} · Reel / TikTok · {VIDEO_SECONDS} s
               </p>
               <p className="text-sm">{c.primary_text}</p>
               <a
