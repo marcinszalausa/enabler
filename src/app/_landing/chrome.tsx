@@ -1,17 +1,50 @@
-import type { ReactNode } from "react";
+import type { ReactNode, SVGProps } from "react";
 import Link from "next/link";
 import { ThemeToggle } from "./theme-toggle";
 
 // Pieces shared by the public pages: nav, link form, footer.
 
+// The Gooidy logo: the indigo "g" tile followed by "ooidy" in the text color.
+// Drawn as paths (Geist SemiBold) so it looks the same everywhere. The same
+// files live in public/brand for use outside the site.
+const G_PATH =
+  "M16.53 43.25 24.23 42.7Q24.68 44.1 25.8 44.8Q26.93 45.5 29.18 45.5Q34.73 45.5 34.73 40.15V37.3Q33.73 39.2 31.65 40.3Q29.58 41.4 26.98 41.4Q23.68 41.4 21.13 39.8Q18.58 38.2 17.15 35.23Q15.73 32.25 15.73 28.35Q15.73 24.55 17.15 21.58Q18.58 18.6 21.1 16.93Q23.63 15.25 26.88 15.25Q29.73 15.25 31.78 16.53Q33.83 17.8 34.93 20V15.85H42.28V40Q42.28 45.25 38.73 48Q35.18 50.75 29.18 50.75Q23.68 50.75 20.58 48.75Q17.48 46.75 16.53 43.25ZM34.78 28.15Q34.78 24.75 33.23 22.75Q31.68 20.75 29.13 20.75Q26.48 20.75 24.95 22.8Q23.43 24.85 23.43 28.3Q23.43 31.75 24.98 33.8Q26.53 35.85 29.13 35.85Q31.73 35.85 33.25 33.8Q34.78 31.75 34.78 28.15Z";
+const SPARK_PATH =
+  "M49 9.3C49.87 14.63 49.87 14.63 55.2 15.5C49.87 16.37 49.87 16.37 49 21.7C48.13 16.37 48.13 16.37 42.8 15.5C48.13 14.63 48.13 14.63 49 9.3Z";
+const OOIDY_PATH =
+  "M94.1 -26.7Q94.1 -35.1 97.35 -41.4Q100.6 -47.7 106.55 -51.15Q112.5 -54.6 120.4 -54.6Q128.2 -54.6 134.15 -51.15Q140.1 -47.7 143.35 -41.4Q146.6 -35.1 146.6 -26.7Q146.6 -18.3 143.35 -12Q140.1 -5.7 134.15 -2.25Q128.2 1.2 120.4 1.2Q112.5 1.2 106.55 -2.25Q100.6 -5.7 97.35 -12Q94.1 -18.3 94.1 -26.7ZM133.4 -26.7Q133.4 -35 129.95 -39.6Q126.5 -44.2 120.4 -44.2Q114.2 -44.2 110.8 -39.6Q107.4 -35 107.4 -26.7Q107.4 -18.4 110.8 -13.8Q114.2 -9.2 120.4 -9.2Q126.6 -9.2 130 -13.8Q133.4 -18.4 133.4 -26.7ZM152.3 -26.7Q152.3 -35.1 155.55 -41.4Q158.8 -47.7 164.75 -51.15Q170.7 -54.6 178.6 -54.6Q186.4 -54.6 192.35 -51.15Q198.3 -47.7 201.55 -41.4Q204.8 -35.1 204.8 -26.7Q204.8 -18.3 201.55 -12Q198.3 -5.7 192.35 -2.25Q186.4 1.2 178.6 1.2Q170.7 1.2 164.75 -2.25Q158.8 -5.7 155.55 -12Q152.3 -18.3 152.3 -26.7ZM191.6 -26.7Q191.6 -35 188.15 -39.6Q184.7 -44.2 178.6 -44.2Q172.4 -44.2 169 -39.6Q165.6 -35 165.6 -26.7Q165.6 -18.4 169 -13.8Q172.4 -9.2 178.6 -9.2Q184.8 -9.2 188.2 -13.8Q191.6 -18.4 191.6 -26.7ZM213.4 -53.4H226.2V0H213.4ZM213.2 -71.9H226.5V-60.5H213.2ZM234.9 -26.7Q234.9 -35.2 237.65 -41.5Q240.4 -47.8 245.4 -51.2Q250.4 -54.6 257.1 -54.6Q262.6 -54.6 266.85 -52.25Q271.1 -49.9 273.3 -45.8V-71H286.1V0H274L273.7 -7.9Q271.4 -3.6 267 -1.2Q262.6 1.2 257.1 1.2Q250.3 1.2 245.3 -2.2Q240.3 -5.6 237.6 -11.9Q234.9 -18.2 234.9 -26.7ZM273.3 -26.7Q273.3 -35.2 270.1 -39.7Q266.9 -44.2 260.9 -44.2Q255 -44.2 251.6 -39.5Q248.2 -34.8 248.2 -26.7Q248.2 -18.7 251.65 -13.95Q255.1 -9.2 260.9 -9.2Q266.8 -9.2 270.05 -13.75Q273.3 -18.3 273.3 -26.7ZM301.4 5.1H308.2Q310.8 5.1 312.05 4.3Q313.3 3.5 314.1 1.6L315.5 -2.1H311.8L292.8 -53.4H306L319.5 -14.1L332.2 -53.4H345.5L324.6 5.6Q322.9 10.6 319.6 12.8Q316.3 15 310.5 15H301.4Z";
+
+export function LogoMark(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 64 64" aria-hidden="true" {...props}>
+      <defs>
+        <linearGradient
+          id="gooidy-g"
+          x1="0"
+          y1="0"
+          x2="64"
+          y2="64"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop offset="0" stopColor="#4f46e5" />
+          <stop offset="1" stopColor="#8b5cf6" />
+        </linearGradient>
+      </defs>
+      <rect width="64" height="64" rx="15" fill="url(#gooidy-g)" />
+      <path fill="#fff" d={G_PATH} />
+      <path fill="#fff" d={SPARK_PATH} />
+    </svg>
+  );
+}
+
 export function Logo() {
   return (
-    <Link
-      href="/"
-      className="flex items-center gap-2 text-xl font-semibold tracking-tight"
-    >
-      <span className="h-2.5 w-2.5 rounded-full bg-gradient-to-br from-accent to-violet" />
-      gooidy
+    <Link href="/" aria-label="Gooidy home" className="flex items-center text-fg">
+      <svg viewBox="0 -75 346.5 98" className="h-7 w-auto" role="img">
+        <title>Gooidy</title>
+        <LogoMark x="0" y="-74" width="82" height="82" />
+        <path fill="currentColor" d={OOIDY_PATH} />
+      </svg>
     </Link>
   );
 }
