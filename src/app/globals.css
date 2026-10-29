@@ -75,33 +75,6 @@ html {
   color: #0f1014;
 }
 
-/* The phone steps through the sample ads, pausing on each. */
-.landing .feed-scroll {
-  animation: feed 16s cubic-bezier(0.65, 0, 0.35, 1) infinite;
-}
-@keyframes feed {
-  0%,
-  36% {
-    transform: translateY(0);
-  }
-  40%,
-  52% {
-    transform: translateY(-20%);
-  }
-  56%,
-  68% {
-    transform: translateY(-40%);
-  }
-  72%,
-  84% {
-    transform: translateY(-60%);
-  }
-  88%,
-  100% {
-    transform: translateY(-80%);
-  }
-}
-
 /* Soft accent glow and dot grid behind the hero. */
 .landing .hero-bg {
   background-image:
@@ -148,8 +121,137 @@ html {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .landing .feed-scroll,
   .landing .angle-in {
     animation: none;
   }
+}
+
+/* iPhone frame ------------------------------------------------------------ */
+
+/* Brushed titanium edge: light catches the rounded rim at a few points. */
+.iphone-frame {
+  background: linear-gradient(
+    150deg,
+    #e6e6ea 0%,
+    #9c9da4 10%,
+    #f6f6f8 22%,
+    #8a8b92 40%,
+    #c7c8ce 58%,
+    #75767d 76%,
+    #dcdce1 90%,
+    #a3a4ab 100%
+  );
+  box-shadow:
+    inset 0 0 0 0.25cqw rgb(255 255 255 / 0.55),
+    inset 0 0 0.9cqw rgb(0 0 0 / 0.35),
+    0 0 0 0.2cqw rgb(0 0 0 / 0.12),
+    0 2.5cqw 5cqw -1cqw rgb(16 18 40 / 0.25),
+    0 10cqw 16cqw -6cqw rgb(40 36 120 / 0.3);
+}
+:root[data-theme="dark"] .landing .iphone-frame {
+  /* Darker titanium at night, so the phone doesn't glare on a dark page. */
+  background: linear-gradient(
+    150deg,
+    #6b6d76 0%,
+    #3a3b42 12%,
+    #8d8f98 24%,
+    #2f3036 42%,
+    #5f616a 60%,
+    #26272c 78%,
+    #74767f 92%,
+    #3d3e45 100%
+  );
+  box-shadow:
+    inset 0 0 0 0.25cqw rgb(255 255 255 / 0.18),
+    inset 0 0 0.9cqw rgb(0 0 0 / 0.5),
+    0 0 0 0.2cqw rgb(255 255 255 / 0.06),
+    0 2.5cqw 5cqw -1cqw rgb(0 0 0 / 0.5),
+    0 10cqw 16cqw -6cqw rgb(0 0 0 / 0.45);
+}
+.iphone-bezel {
+  background: #050506;
+  box-shadow: inset 0 0 0 0.35cqw #1b1c20;
+}
+.iphone-key {
+  position: absolute;
+  width: 0.95cqw;
+  border-radius: 0.5cqw;
+  background: inherit;
+  background-size: 100% 600%;
+  box-shadow: inset 0 0 0.25cqw rgb(0 0 0 / 0.35);
+}
+.iphone-key-flush {
+  width: 0.6cqw;
+  background: linear-gradient(180deg, #2b2c31, #55575f 50%, #2b2c31);
+}
+.iphone-glare {
+  border-radius: inherit;
+  background: linear-gradient(
+    115deg,
+    rgb(255 255 255 / 0.1) 0%,
+    rgb(255 255 255 / 0.03) 28%,
+    transparent 42%
+  );
+}
+
+/* Floating glass notes beside the hero phone. */
+.landing .glass {
+  background: color-mix(in srgb, var(--l-bg) 78%, transparent);
+  backdrop-filter: blur(14px) saturate(1.4);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  border: 1px solid color-mix(in srgb, var(--l-fg) 10%, transparent);
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 0.06),
+    0 12px 32px -12px rgb(30 27 75 / 0.28);
+}
+.landing .float-a {
+  animation: float 7s ease-in-out infinite;
+}
+.landing .float-b {
+  animation: float 8s ease-in-out -3s infinite;
+}
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .landing .float-a,
+  .landing .float-b {
+    animation: none;
+  }
+}
+
+/* Soft indigo glow and two thin rings behind a phone. */
+.landing .phone-halo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(560px, 100vw);
+  height: min(560px, 100vw);
+  transform: translate(-50%, -50%);
+  border-radius: 9999px;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      closest-side,
+      color-mix(in srgb, var(--l-accent) 22%, transparent),
+      transparent
+    ),
+    radial-gradient(
+      closest-side,
+      transparent 70%,
+      color-mix(in srgb, var(--l-accent) 18%, transparent) 70.2%,
+      transparent 70.6%
+    ),
+    radial-gradient(
+      closest-side,
+      transparent 94%,
+      color-mix(in srgb, var(--l-fg) 8%, transparent) 94.2%,
+      transparent 94.6%
+    );
 }

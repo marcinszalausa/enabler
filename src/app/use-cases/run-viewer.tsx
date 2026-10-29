@@ -2,31 +2,7 @@
 
 import { useState } from "react";
 import type { ShowcaseRun } from "@/lib/showcase";
-
-const ANGLES: Record<string, { name: string; idea: string }> = {
-  pain: {
-    name: "Pain point",
-    idea: "Opens with a problem the buyer already has.",
-  },
-  benefit: {
-    name: "Benefit",
-    idea: "Leads with how life gets better with the product.",
-  },
-  social_proof: {
-    name: "Social proof",
-    idea: "Gives a reason other people choose it, without made-up reviews.",
-  },
-  offer: {
-    name: "Offer",
-    idea: "Puts the price, deal or reason to buy now up front.",
-  },
-  curiosity: {
-    name: "Curiosity",
-    idea: "Gives people a reason to stop and look closer.",
-  },
-};
-
-const angleName = (a: string) => ANGLES[a]?.name ?? a.replace("_", " ");
+import { ANGLES, angleName } from "@/lib/angles";
 
 // One real run, shown the way it looks in Gooidy: the link, what Gooidy read
 // from the page, then each angle's feed and story ads side by side.

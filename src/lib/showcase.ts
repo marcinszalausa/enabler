@@ -45,6 +45,7 @@ type Row = {
   } | null;
   creatives: {
     id: string;
+    kind: string;
     aspect: string;
     angle: string | null;
     headline: string | null;
@@ -55,7 +56,10 @@ type Row = {
 
 // Real, unedited runs the team chose to show, oldest pick first. A product
 // shown more than once keeps only its newest run, so a redo replaces it.
-export async function getShowcase(): Promise<ShowcaseRun[]> {
+// Image runs by default; video runs only appear in the home page phones.
+export async function getShowcase(
+  type: "image_ads" | "video_ads" = "image_ads",
+): Promise<ShowcaseRun[]> {
   "use cache";
   cacheTag(SHOWCASE_TAG);
   cacheLife("hours");
@@ -64,19 +68,20 @@ export async function getShowcase(): Promise<ShowcaseRun[]> {
   const { data } = await createAdminClient()
     .from("generations")
     .select(
-      "id, created_at, products(name, url, brand_brief), creatives(id, aspect, angle, headline, primary_text, created_at)",
+      "id, created_at, products(name, url, brand_brief), creatives(id, kind, aspect, angle, headline, primary_text, created_at)",
     )
     .not("showcased_at", "is", null)
     .eq("status", "succeeded")
-    // The public page shows image runs; video runs aren't laid out there yet.
-    .eq("type", "image_ads")
+    .eq("type", type)
     .order("showcased_at")
     .returns<Row[]>();
 
   // Runs come oldest first, so a later run of the same product replaces the
   // earlier one (keeping the product's place in the order).
+  const kind = type === "video_ads" ? "video" : "image";
   const newestPerProduct = new Map<string, Row>();
   for (const g of data ?? []) {
+    g.creatives = g.creatives.filter((c) => c.kind === kind);
     if (g.products && g.creatives.length > 0)
       newestPerProduct.set(productKey(g.products.url), g);
   }
