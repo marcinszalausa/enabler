@@ -93,6 +93,38 @@ export function matchLocale(header: string | null): Locale | null {
   return null;
 }
 
+// The main language of countries where one of ours is clearly spoken by
+// most people. Countries split between languages (Belgium, Switzerland,
+// Canada) and India, where many prefer English, are left out.
+const COUNTRY_LOCALE: Record<string, Locale> = {
+  ...spread(
+    "es",
+    "ES MX AR CO CL PE VE EC GT CU BO DO HN PY SV NI CR PA UY PR",
+  ),
+  ...spread("pt", "BR PT AO MZ"),
+  ...spread("fr", "FR MC SN CI"),
+  ...spread("de", "DE AT LI"),
+  ...spread("it", "IT SM"),
+  ...spread("pl", "PL"),
+  ...spread("nl", "NL"),
+  ...spread("sv", "SE"),
+  ...spread("tr", "TR"),
+  ...spread("ro", "RO MD"),
+  ...spread("cs", "CZ"),
+  ...spread("ja", "JP"),
+  ...spread("ko", "KR"),
+  ...spread("zh", "CN"),
+  ...spread("ar", "SA AE EG QA KW BH OM JO IQ LB SY YE LY DZ MA TN SD"),
+};
+
+function spread(locale: Locale, countries: string) {
+  return Object.fromEntries(countries.split(" ").map((c) => [c, locale]));
+}
+
+export function countryLocale(country: string | null): Locale | null {
+  return (country && COUNTRY_LOCALE[country.toUpperCase()]) || null;
+}
+
 // Canonical and hreflang links for a public page, so search engines show
 // each visitor the page in their language.
 export function alternates(locale: Locale, path: string) {

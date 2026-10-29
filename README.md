@@ -18,7 +18,7 @@ Import the repo in Vercel, add the variables from `.env.example` under Settings 
 
 ## Layout
 
-- `src/proxy.ts`: picks the visitor's language (cookie, then browser language), rewrites to `src/app/[locale]/...`, refreshes the Supabase session and protects `/dashboard`
+- `src/proxy.ts`: picks the visitor's language (saved choice, then a non-English browser language, then their country via Vercel's `x-vercel-ip-country`), rewrites to `src/app/[locale]/...`, refreshes the Supabase session and protects `/dashboard`
 - `src/i18n/`: site languages (`config.ts`), translations (`messages/`, English in `en.ts` is the source shape) and helpers. English pages have no prefix, other languages live at `/de/...`, `/ja/...`; `/dashboard` and `/login` keep one address and follow the `gooidy-locale` cookie. Legal pages stay in English
 - `src/lib/supabase/`: browser, server and proxy Supabase clients
 - `src/lib/auth.ts`: `getCurrentUser()` for server components

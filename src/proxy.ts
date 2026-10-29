@@ -6,6 +6,7 @@ import {
   isAppPath,
   isLocale,
   localePath,
+  countryLocale,
   matchLocale,
   type Locale,
 } from "@/i18n/config";
@@ -29,9 +30,7 @@ export async function proxy(request: NextRequest) {
   }
 
   const saved = request.cookies.get(LOCALE_COOKIE)?.value;
-  const locale: Locale = isLocale(saved)
-    ? saved
-    : (matchLocale(request.headers.get("accept-language")) ?? DEFAULT_LOCALE);
+  const locale: Locale = isLocale(saved) ? saved : firstVisitLocale(request);
 
   if (!isAppPath(pathname) && locale !== DEFAULT_LOCALE) {
     return remember(
@@ -43,6 +42,19 @@ export async function proxy(request: NextRequest) {
   target.pathname = `/${locale}${pathname === "/" ? "" : pathname}`;
   const response = await updateSession(request, target);
   return saved === locale ? response : remember(response, locale);
+}
+
+// A browser set to one of our languages other than English is a clear
+// choice. Otherwise (English is many browsers' default) go by the country
+// Vercel locates the visitor in.
+function firstVisitLocale(request: NextRequest): Locale {
+  const browser = matchLocale(request.headers.get("accept-language"));
+  if (browser && browser !== DEFAULT_LOCALE) return browser;
+  return (
+    countryLocale(request.headers.get("x-vercel-ip-country")) ??
+    browser ??
+    DEFAULT_LOCALE
+  );
 }
 
 function redirect(request: NextRequest, to: string) {
