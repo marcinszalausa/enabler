@@ -27,13 +27,11 @@ export default function ProductPage({
     <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-10">
       <Link
         href="/dashboard"
-        className="text-sm text-neutral-500 underline underline-offset-4"
+        className="text-sm text-muted underline underline-offset-4"
       >
         ← All products
       </Link>
-      <Suspense
-        fallback={<p className="mt-6 text-sm text-neutral-500">Loading…</p>}
-      >
+      <Suspense fallback={<p className="mt-6 text-sm text-muted">Loading…</p>}>
         <Product params={params} />
       </Suspense>
     </main>
@@ -116,7 +114,7 @@ async function Product({ params }: { params: Promise<{ id: string }> }) {
             href={product.url}
             target="_blank"
             rel="noreferrer"
-            className="block truncate text-sm text-neutral-500 underline underline-offset-4"
+            className="block truncate text-sm text-muted underline underline-offset-4"
           >
             {product.url}
           </a>
@@ -130,19 +128,17 @@ async function Product({ params }: { params: Promise<{ id: string }> }) {
               label={`Generate ${VIDEOS_PER_GENERATION} video ads`}
             />
           </div>
-          <p className="text-xs text-neutral-500">
+          <p className="text-xs text-muted">
             {workspace?.credits ?? 0} credits left
           </p>
         </div>
       </header>
 
       {brief && (
-        <section className="mt-8 grid gap-4 rounded-lg border border-neutral-200 p-5 text-sm sm:grid-cols-2 dark:border-neutral-800">
+        <section className="mt-8 grid gap-4 rounded-xl border border-line bg-raised p-5 text-sm sm:grid-cols-2">
           <div>
             <h2 className="font-medium">Brand brief</h2>
-            <p className="mt-1 text-neutral-600 dark:text-neutral-400">
-              {brief.summary}
-            </p>
+            <p className="mt-1 text-muted">{brief.summary}</p>
             <p className="mt-3">
               <span className="font-medium">Audience:</span> {brief.audience}
             </p>
@@ -152,13 +148,13 @@ async function Product({ params }: { params: Promise<{ id: string }> }) {
           </div>
           <div>
             <p className="font-medium">Pain points</p>
-            <ul className="mt-1 list-disc pl-5 text-neutral-600 dark:text-neutral-400">
+            <ul className="mt-1 list-disc pl-5 text-muted">
               {brief.pain_points.map((p) => (
                 <li key={p}>{p}</li>
               ))}
             </ul>
             <p className="mt-3 font-medium">Benefits</p>
-            <ul className="mt-1 list-disc pl-5 text-neutral-600 dark:text-neutral-400">
+            <ul className="mt-1 list-disc pl-5 text-muted">
               {brief.benefits.map((b) => (
                 <li key={b}>{b}</li>
               ))}
@@ -169,7 +165,7 @@ async function Product({ params }: { params: Promise<{ id: string }> }) {
 
       <section className="mt-10 flex flex-col gap-10">
         {(generations ?? []).length === 0 && (
-          <p className="rounded-md border border-dashed border-neutral-300 p-6 text-sm text-neutral-500 dark:border-neutral-700">
+          <p className="rounded-md border border-dashed border-line-strong p-6 text-sm text-muted">
             No ads yet. Generate your first set: 5 ad angles, each as a square
             (feed) and a vertical (stories/reels) image, or{" "}
             {VIDEOS_PER_GENERATION} vertical {VIDEO_SECONDS}-second videos with
@@ -207,11 +203,11 @@ function GenerationBlock({
 
   if (g.status === "queued" || g.status === "running") {
     return (
-      <div className="rounded-lg border border-neutral-200 p-6 text-sm dark:border-neutral-800">
+      <div className="rounded-xl border border-line bg-raised p-6 text-sm">
         <p className="font-medium">
           {video ? "Making your video ads…" : "Generating your ads…"}
         </p>
-        <p className="mt-1 text-neutral-500">
+        <p className="mt-1 text-muted">
           {video
             ? `Writing ${VIDEOS_PER_GENERATION} scripts, setting up two shots per ad, recording the voiceover and music, then filming and editing. This usually takes 4–8 minutes; this page updates on its own. If you leave, the videos are finished when you come back.`
             : "Writing copy and creating 10 images. This usually takes 2–3 minutes; this page updates on its own."}
@@ -222,11 +218,11 @@ function GenerationBlock({
 
   if (g.status === "failed") {
     return (
-      <div className="rounded-lg border border-red-200 p-6 text-sm dark:border-red-900">
-        <p className="font-medium text-red-600">
+      <div className="rounded-lg border border-danger/30 bg-danger-bg p-6 text-sm">
+        <p className="font-medium text-danger">
           This run failed, and your credits were refunded.
         </p>
-        {g.error && <p className="mt-1 text-neutral-500">{g.error}</p>}
+        {g.error && <p className="mt-1 text-muted">{g.error}</p>}
       </div>
     );
   }
@@ -240,9 +236,9 @@ function GenerationBlock({
   return (
     <div>
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <h2 className="text-sm font-medium text-neutral-500">
+        <h2 className="text-sm font-medium text-muted">
           {when}
-          {g.error && <span className="ml-2 text-amber-600">{g.error}</span>}
+          {g.error && <span className="ml-2 text-warn">{g.error}</span>}
         </h2>
         {canShowcase && (
           <form action={setShowcase}>
@@ -254,7 +250,11 @@ function GenerationBlock({
             />
             <button
               type="submit"
-              className="rounded-md border border-neutral-300 px-3 py-1.5 text-sm font-medium dark:border-neutral-700"
+              className={`rounded-lg border px-3 py-1.5 text-sm font-medium transition ${
+                g.showcased_at
+                  ? "border-ok/40 bg-ok-bg text-ok"
+                  : "border-line-strong bg-raised hover:border-accent hover:text-accent"
+              }`}
             >
               {g.showcased_at
                 ? "✓ Shown on gooidy.com · Remove"
@@ -273,9 +273,9 @@ function GenerationBlock({
                 playsInline
                 loop
                 preload="metadata"
-                className="aspect-[9/16] w-full rounded-md border border-neutral-200 bg-neutral-100 object-cover dark:border-neutral-800 dark:bg-neutral-900"
+                className="aspect-[9/16] w-full rounded-md border border-line bg-surface object-cover"
               />
-              <p className="text-xs text-neutral-500">
+              <p className="text-xs text-muted">
                 {c.angle?.replace("_", " ")} · Reel / TikTok · {VIDEO_SECONDS} s
               </p>
               <p className="text-sm">{c.primary_text}</p>
@@ -297,11 +297,11 @@ function GenerationBlock({
                 src={`/api/creatives/${c.id}/image?v=${imageVersion}`}
                 alt={c.headline ?? "Ad creative"}
                 loading="lazy"
-                className={`w-full rounded-md border border-neutral-200 object-cover dark:border-neutral-800 ${
+                className={`w-full rounded-md border border-line object-cover ${
                   c.aspect === "1:1" ? "aspect-square" : "aspect-[9/16]"
                 }`}
               />
-              <p className="text-xs text-neutral-500">
+              <p className="text-xs text-muted">
                 {c.angle?.replace("_", " ")} ·{" "}
                 {c.aspect === "1:1" ? "Feed" : "Story"}
               </p>

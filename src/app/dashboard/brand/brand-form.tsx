@@ -33,7 +33,7 @@ export function BrandForm({
               alt="Current logo"
               className="h-16 max-w-48 rounded-md bg-white object-contain p-2"
             />
-            <label className="flex items-center gap-2 text-sm text-neutral-500">
+            <label className="flex items-center gap-2 text-sm text-muted">
               <input type="checkbox" name="remove_logo" /> Remove logo
             </label>
           </div>
@@ -43,9 +43,9 @@ export function BrandForm({
           name="logo"
           type="file"
           accept="image/png,image/jpeg"
-          className="text-sm file:mr-3 file:rounded-md file:border-0 file:bg-neutral-200 file:px-3 file:py-2 dark:file:bg-neutral-800"
+          className="text-sm file:mr-3 file:rounded-md file:border-0 file:bg-surface file:text-fg file:px-3 file:py-2"
         />
-        <p className="text-xs text-neutral-500">
+        <p className="text-xs text-muted">
           PNG or JPEG, under 2 MB. A transparent PNG looks best.
         </p>
       </div>
@@ -61,9 +61,9 @@ export function BrandForm({
             type="color"
             value={color}
             onChange={(e) => setColor(e.target.value)}
-            className="h-10 w-16 cursor-pointer rounded-md border border-neutral-300 bg-transparent dark:border-neutral-700"
+            className="h-10 w-16 cursor-pointer rounded-md border border-line-strong bg-transparent"
           />
-          <span className="font-mono text-sm text-neutral-500">{color}</span>
+          <span className="font-mono text-sm text-muted">{color}</span>
         </div>
       </div>
 
@@ -75,7 +75,7 @@ export function BrandForm({
           id="font"
           name="font"
           defaultValue={font}
-          className="rounded-md border border-neutral-300 bg-transparent px-3 py-2 dark:border-neutral-700"
+          className="rounded-md border border-line-strong bg-raised px-3 py-2 outline-none transition focus:border-accent focus:ring-4 focus:ring-accent/20"
         >
           {fonts.map((f) => (
             <option key={f.key} value={f.key}>
@@ -89,16 +89,16 @@ export function BrandForm({
         <button
           type="submit"
           disabled={pending}
-          className="rounded-md bg-neutral-900 px-4 py-2 font-medium text-white disabled:opacity-60 dark:bg-white dark:text-neutral-900"
+          className="btn-primary rounded-lg px-4 py-2 font-medium"
         >
           {pending ? "Saving…" : "Save brand kit"}
         </button>
         {state.saved && !pending && (
-          <p className="text-sm text-green-600">Saved. Your ads now use it.</p>
+          <p className="text-sm text-ok">Saved. Your ads now use it.</p>
         )}
       </div>
       {state.error && (
-        <p role="alert" className="text-sm text-red-600">
+        <p role="alert" className="text-sm text-danger">
           {state.error}
         </p>
       )}

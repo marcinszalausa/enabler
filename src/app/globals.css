@@ -1,35 +1,85 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* Tailwind's dark: follows the site's theme (time of day or the toggle),
+   not only the operating system setting. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-  --color-bg: var(--l-bg);
-  --color-fg: var(--l-fg);
-  --color-surface: var(--l-surface);
-  --color-accent: var(--l-accent);
-  --color-muted: var(--l-muted);
-  --color-line: var(--l-line);
-  --color-ok: var(--l-ok);
-  --color-ok-bg: var(--l-ok-bg);
+  --color-bg: var(--t-bg);
+  --color-fg: var(--t-fg);
+  --color-muted: var(--t-muted);
+  --color-line: var(--t-line);
+  --color-line-strong: var(--t-line-strong);
+  --color-surface: var(--t-surface);
+  --color-raised: var(--t-raised);
+  --color-accent: var(--t-accent);
+  --color-accent-strong: var(--t-accent-strong);
+  --color-accent-soft: var(--t-accent-soft);
+  --color-accent-fg: var(--t-accent-fg);
+  --color-violet: var(--t-violet);
+  --color-ok: var(--t-ok);
+  --color-ok-bg: var(--t-ok-bg);
+  --color-warn: var(--t-warn);
+  --color-warn-bg: var(--t-warn-bg);
+  --color-danger: var(--t-danger);
+  --color-danger-bg: var(--t-danger-bg);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Gooidy colors -------------------------------------------------------------
+   One indigo, used with intent: the strong shade for actions and links, soft
+   tints for highlights, and a violet only inside gradients. Neutrals carry a
+   hint of the same blue so the page feels calm rather than grey. Light from
+   7:00 to 19:00 on the visitor's clock, dark otherwise, unless they pick one. */
+:root {
+  --t-bg: #ffffff;
+  --t-fg: #0f1222;
+  --t-muted: #596078;
+  --t-line: #e4e6f0;
+  --t-line-strong: #cfd3e3;
+  --t-surface: #f6f7fb;
+  --t-raised: #ffffff;
+  --t-accent: #4f46e5;
+  --t-accent-strong: #4338ca;
+  --t-accent-soft: #eef0ff;
+  --t-accent-fg: #ffffff;
+  --t-violet: #8b5cf6;
+  --t-ok: #157a3c;
+  --t-ok-bg: #e8f6ee;
+  --t-warn: #a2560a;
+  --t-warn-bg: #fff4e2;
+  --t-danger: #c8261d;
+  --t-danger-bg: #fdeceb;
+  --t-shadow: 30 27 75;
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  --t-bg: #0b0d14;
+  --t-fg: #eceef7;
+  --t-muted: #969cb4;
+  --t-line: #232838;
+  --t-line-strong: #333a50;
+  --t-surface: #10131c;
+  --t-raised: #161a26;
+  --t-accent: #8f89ff;
+  --t-accent-strong: #aaa5ff;
+  --t-accent-soft: #1b1d3b;
+  --t-accent-fg: #0b0d14;
+  --t-violet: #b18cff;
+  --t-ok: #6fdc9b;
+  --t-ok-bg: #102a1c;
+  --t-warn: #f5b85c;
+  --t-warn-bg: #2b2112;
+  --t-danger: #ff8a80;
+  --t-danger-bg: #2f1517;
+  --t-shadow: 0 0 0;
+  color-scheme: dark;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--t-bg);
+  color: var(--t-fg);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
 }
 
@@ -37,60 +87,84 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Landing page ------------------------------------------------------------ */
+::selection {
+  background: color-mix(in srgb, var(--t-accent) 24%, transparent);
+}
 
-/* Light by default; dark at night or when the visitor picks it. */
-.landing {
-  --l-bg: #ffffff;
-  --l-fg: #16171d;
-  --l-muted: #5d6070;
-  --l-line: #e4e4ea;
-  --l-surface: #f7f7f9;
-  --l-accent: #4f46e5;
-  --l-ok: #1b7a3d;
-  --l-ok-bg: #e7f6ec;
-}
-:root[data-theme="dark"] .landing {
-  --l-bg: #0f1014;
-  --l-fg: #ececf1;
-  --l-muted: #9a9cab;
-  --l-line: #262833;
-  --l-surface: #16171d;
-  --l-accent: #a5a1ff;
-  --l-ok: #7fd69c;
-  --l-ok-bg: #15301f;
-}
-:root[data-theme="dark"] {
-  background: #0f1014;
-}
-.landing .theme-icon-sun,
-:root[data-theme="dark"] .landing .theme-icon-moon {
+.theme-icon-sun,
+:root[data-theme="dark"] .theme-icon-moon {
   display: none;
 }
-:root[data-theme="dark"] .landing .theme-icon-sun {
+:root[data-theme="dark"] .theme-icon-sun {
   display: block;
 }
-/* Text on the accent color: white on indigo, dark on the paler dark-mode indigo. */
-:root[data-theme="dark"] .landing .dark-accent-text {
-  color: #0f1014;
+
+/* The main action: the accent with a soft lift that matches it. */
+.btn-primary {
+  background: var(--t-accent);
+  color: var(--t-accent-fg);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.18),
+    0 1px 2px rgb(var(--t-shadow) / 0.12),
+    0 8px 20px -10px color-mix(in srgb, var(--t-accent) 80%, transparent);
+  transition:
+    background-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
+}
+.btn-primary:hover {
+  background: var(--t-accent-strong);
+}
+.btn-primary:active {
+  transform: translateY(1px);
+}
+.btn-primary:disabled {
+  opacity: 0.6;
 }
 
-/* Soft accent glow and dot grid behind the hero. */
+/* Brand gradient for a word or two, never whole paragraphs. */
+.text-gradient {
+  background: linear-gradient(100deg, var(--t-accent) 10%, var(--t-violet) 90%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Landing page ------------------------------------------------------------ */
+
+/* Indigo and violet glow over a dot grid that fades out toward the edges. */
 .landing .hero-bg {
+  position: relative;
+  isolation: isolate;
   background-image:
     radial-gradient(
-      60% 50% at 70% 20%,
-      color-mix(in srgb, var(--l-accent) 12%, transparent),
+      55% 55% at 72% 18%,
+      color-mix(in srgb, var(--t-accent) 14%, transparent),
       transparent 70%
     ),
     radial-gradient(
-      circle at 1px 1px,
-      color-mix(in srgb, var(--l-fg) 9%, transparent) 1px,
-      transparent 0
+      40% 45% at 92% 70%,
+      color-mix(in srgb, var(--t-violet) 10%, transparent),
+      transparent 70%
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--t-accent-soft) 45%, var(--t-bg)),
+      var(--t-bg)
     );
-  background-size:
-    auto,
-    22px 22px;
+}
+.landing .hero-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    color-mix(in srgb, var(--t-fg) 10%, transparent) 1px,
+    transparent 0
+  );
+  background-size: 22px 22px;
+  mask-image: radial-gradient(70% 70% at 50% 35%, #000 30%, transparent 100%);
 }
 
 /* Sections fade up as they scroll into view (only once the script runs). */
@@ -148,7 +222,7 @@ html {
     0 2.5cqw 5cqw -1cqw rgb(16 18 40 / 0.25),
     0 10cqw 16cqw -6cqw rgb(40 36 120 / 0.3);
 }
-:root[data-theme="dark"] .landing .iphone-frame {
+:root[data-theme="dark"] .iphone-frame {
   /* Darker titanium at night, so the phone doesn't glare on a dark page. */
   background: linear-gradient(
     150deg,
@@ -196,10 +270,10 @@ html {
 
 /* Floating glass notes beside the hero phone. */
 .landing .glass {
-  background: color-mix(in srgb, var(--l-bg) 78%, transparent);
+  background: color-mix(in srgb, var(--t-bg) 78%, transparent);
   backdrop-filter: blur(14px) saturate(1.4);
   -webkit-backdrop-filter: blur(14px) saturate(1.4);
-  border: 1px solid color-mix(in srgb, var(--l-fg) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--t-fg) 10%, transparent);
   box-shadow:
     0 1px 2px rgb(0 0 0 / 0.06),
     0 12px 32px -12px rgb(30 27 75 / 0.28);
@@ -239,19 +313,19 @@ html {
   background:
     radial-gradient(
       closest-side,
-      color-mix(in srgb, var(--l-accent) 22%, transparent),
+      color-mix(in srgb, var(--t-accent) 22%, transparent),
       transparent
     ),
     radial-gradient(
       closest-side,
       transparent 70%,
-      color-mix(in srgb, var(--l-accent) 18%, transparent) 70.2%,
+      color-mix(in srgb, var(--t-accent) 18%, transparent) 70.2%,
       transparent 70.6%
     ),
     radial-gradient(
       closest-side,
       transparent 94%,
-      color-mix(in srgb, var(--l-fg) 8%, transparent) 94.2%,
+      color-mix(in srgb, var(--t-fg) 8%, transparent) 94.2%,
       transparent 94.6%
     );
 }

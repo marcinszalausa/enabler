@@ -20,7 +20,7 @@ export function RunViewer({
   const copy = square ?? story;
 
   return (
-    <div className="mt-8 overflow-hidden rounded-2xl border border-line bg-bg shadow-[0_1px_2px_rgba(0,0,0,0.04),0_12px_40px_-12px_rgba(0,0,0,0.12)]">
+    <div className="mt-8 overflow-hidden rounded-2xl border border-line bg-raised shadow-[0_1px_2px_rgba(0,0,0,0.04),0_12px_40px_-12px_rgba(0,0,0,0.12)]">
       {/* The link, as pasted. */}
       <div className="flex flex-wrap items-center gap-3 border-b border-line px-4 py-3 sm:px-5">
         <div className="flex min-w-0 flex-1 basis-full items-center gap-2 rounded-lg sm:basis-auto border border-line bg-surface px-3 py-2 text-sm">

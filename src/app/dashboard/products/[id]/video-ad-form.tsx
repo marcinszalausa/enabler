@@ -15,7 +15,7 @@ import {
 const initialState: FormState = { error: null };
 
 const field =
-  "w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm dark:border-neutral-700 dark:bg-neutral-950";
+  "w-full rounded-md border border-line-strong bg-raised px-3 py-2 text-sm outline-none transition focus:border-accent focus:ring-4 focus:ring-accent/20";
 
 // The video button opens a short form for what the ad says and who says it.
 export function VideoAdForm({
@@ -45,7 +45,7 @@ export function VideoAdForm({
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="rounded-md border border-neutral-300 px-4 py-2 font-medium dark:border-neutral-700"
+        className="rounded-lg border border-line-strong bg-raised px-4 py-2 font-medium transition hover:border-accent hover:text-accent"
       >
         {label} ({cost} credits)
       </button>
@@ -55,7 +55,7 @@ export function VideoAdForm({
   return (
     <form
       action={action}
-      className="flex w-full flex-col gap-4 rounded-lg border border-neutral-200 p-4 text-left text-sm sm:w-96 dark:border-neutral-800"
+      className="flex w-full flex-col gap-4 rounded-xl border border-line bg-raised p-4 text-left text-sm sm:w-96"
     >
       <input type="hidden" name="productId" value={productId} />
       <input type="hidden" name="kind" value="video" />
@@ -69,7 +69,7 @@ export function VideoAdForm({
           placeholder="e.g. Free shipping this week. Softest cardigan you'll own."
           className={field}
         />
-        <span className="text-xs text-neutral-500">
+        <span className="text-xs text-muted">
           Your offer or key points. Leave empty and we write it from the product
           page.
         </span>
@@ -130,11 +130,11 @@ export function VideoAdForm({
 
       <fieldset className="flex flex-col gap-1.5">
         <legend className="mb-1.5 font-medium">Energy</legend>
-        <div className="grid grid-cols-3 overflow-hidden rounded-md border border-neutral-300 dark:border-neutral-700">
+        <div className="grid grid-cols-3 overflow-hidden rounded-md border border-line-strong">
           {Object.entries(ENERGIES).map(([key, e]) => (
             <label
               key={key}
-              className="cursor-pointer border-neutral-300 px-2 py-2 text-center not-last:border-r has-checked:bg-neutral-900 has-checked:text-white dark:border-neutral-700 dark:has-checked:bg-white dark:has-checked:text-neutral-900"
+              className="cursor-pointer border-line-strong px-2 py-2 text-center not-last:border-r has-checked:bg-accent-soft has-checked:font-medium has-checked:text-accent "
             >
               <input
                 type="radio"
@@ -168,20 +168,20 @@ export function VideoAdForm({
         <button
           type="submit"
           disabled={pending}
-          className="rounded-md bg-neutral-900 px-4 py-2 font-medium text-white disabled:opacity-60 dark:bg-white dark:text-neutral-900"
+          className="btn-primary rounded-lg px-4 py-2 font-medium"
         >
           {pending ? "Starting…" : `${label} (${cost} credits)`}
         </button>
         <button
           type="button"
           onClick={() => setOpen(false)}
-          className="text-neutral-500 underline underline-offset-4"
+          className="text-muted underline underline-offset-4"
         >
           Cancel
         </button>
       </div>
       {state.error && (
-        <p role="alert" className="text-red-600">
+        <p role="alert" className="text-danger">
           {state.error}
         </p>
       )}
