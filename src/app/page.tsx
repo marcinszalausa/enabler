@@ -105,7 +105,6 @@ export default async function Home() {
         {run && <WhereItRuns run={run} />}
         {runs.length > 0 && <Examples runs={runs} />}
         <Features run={run} />
-        <Compare />
         <Pricing />
         <Faq />
         <FinalCta />
@@ -321,45 +320,6 @@ function WhereItRuns({ run }: { run: ShowcaseRun }) {
       />
       <div className="mt-14">
         <Placements ad={ad} />
-      </div>
-    </section>
-  );
-}
-
-const COMPARE = [
-  ["Time to first ads", "1–2 weeks", "Hours", "About 2 minutes"],
-  ["Cost for 10 ads", "$500+", "Your evening", "Included in your plan"],
-  ["New angles to test", "Extra fee", "Hard", "Every run"],
-  ["Sizes for every feed", "Extra fee", "Manual resizing", "Automatic"],
-];
-
-function Compare() {
-  return (
-    <section className="reveal mx-auto max-w-4xl px-4 pb-20">
-      <SectionHeading title="How Gooidy compares" />
-      <div className="mt-10 overflow-x-auto rounded-2xl border border-line">
-        <table className="w-full min-w-[560px] text-left text-sm">
-          <thead>
-            <tr className="border-b border-line bg-surface">
-              <th className="px-5 py-4 font-medium text-muted"></th>
-              <th className="px-5 py-4 font-medium text-muted">Agency</th>
-              <th className="px-5 py-4 font-medium text-muted">
-                Do it yourself
-              </th>
-              <th className="px-5 py-4 font-semibold text-accent">Gooidy</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-line">
-            {COMPARE.map(([label, agency, diy, us]) => (
-              <tr key={label}>
-                <td className="px-5 py-4 font-medium">{label}</td>
-                <td className="px-5 py-4 text-muted">{agency}</td>
-                <td className="px-5 py-4 text-muted">{diy}</td>
-                <td className="px-5 py-4 font-medium">{us}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
       </div>
     </section>
   );
