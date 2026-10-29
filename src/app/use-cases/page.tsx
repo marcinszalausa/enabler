@@ -38,8 +38,8 @@ export default async function UseCases() {
             </h1>
             <p className="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-muted">
               We pasted real product pages into Gooidy. Everything below is what
-              came out: every angle, every size, with no designer, no retouching
-              and no picking the best ones.
+              came out: every ad from each run, with no designer and no
+              retouching.
             </p>
             {runs.length > 0 && (
               <dl className="mt-10 grid w-full max-w-lg grid-cols-3 divide-x divide-line rounded-2xl border border-line bg-bg">
