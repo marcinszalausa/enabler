@@ -1,0 +1,222 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import { angleName } from "@/lib/angles";
+
+export type DemoRun = {
+  url: string;
+  store: string;
+  summary: string;
+  audience: string;
+  madeIn?: string;
+  ads: { id: string; angle: string; headline: string; image: string }[];
+};
+
+// Stage timings in ms from the start of a play.
+const T = { read: 1600, angles: 4200, design: 6400, done: 9200 };
+
+// One real run played back as it happens in Gooidy: the link goes in, the
+// brief Gooidy wrote from the page appears, then the angles and headlines,
+// then the finished ads. Every word and image is from that run, unedited.
+// It plays once when scrolled into view and can be replayed.
+export function RunDemo({ run }: { run: DemoRun }) {
+  const root = useRef<HTMLDivElement>(null);
+  const [t, setT] = useState(-1);
+  const [play, setPlay] = useState(0);
+
+  useEffect(() => {
+    const el = root.current;
+    if (!el) return;
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setT(99999);
+      return;
+    }
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          setPlay((p) => p || 1);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.35 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!play) return;
+    const start = performance.now();
+    let frame = requestAnimationFrame(function tick(now) {
+      const elapsed = now - start;
+      setT(elapsed);
+      if (elapsed < T.done + 200) frame = requestAnimationFrame(tick);
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [play]);
+
+  // Types text out over `ms`, however long it is.
+  const typed = (text: string, from: number, ms = 1800) =>
+    text.slice(0, Math.max(0, Math.ceil(((t - from) / ms) * text.length)));
+  const url = typed(run.url.replace(/^https?:\/\//, ""), 0, T.read - 500);
+  const typingUrl = t >= 0 && t < T.read;
+
+  const steps = [
+    { label: "Reading your page", at: T.read },
+    { label: "Writing angles and headlines", at: T.angles },
+    { label: "Designing your ads", at: T.design },
+  ];
+  const ads = run.ads.slice(0, 5);
+
+  return (
+    <div
+      ref={root}
+      className="edge overflow-hidden shadow-[0_40px_100px_-40px_rgb(var(--t-shadow)/0.45)]"
+    >
+      {/* Window bar */}
+      <div className="flex items-center gap-3 border-b border-line bg-surface/70 px-4 py-3">
+        <span className="flex gap-1.5" aria-hidden>
+          <span className="h-3 w-3 rounded-full bg-[#ff5f57]" />
+          <span className="h-3 w-3 rounded-full bg-[#febc2e]" />
+          <span className="h-3 w-3 rounded-full bg-[#28c840]" />
+        </span>
+        <span className="mx-auto rounded-md bg-bg px-3 py-1 text-xs text-muted">
+          gooidy.com/dashboard
+        </span>
+        <span className="w-12" />
+      </div>
+
+      <div className="grid gap-0 lg:grid-cols-[260px_1fr]">
+        {/* Progress */}
+        <ol className="flex gap-4 overflow-x-auto border-b border-line p-5 text-sm lg:flex-col lg:border-b-0 lg:border-r">
+          {steps.map((s, i) => {
+            const next = steps[i + 1]?.at ?? T.done;
+            const state = t >= next ? "done" : t >= s.at ? "now" : "todo";
+            return (
+              <li key={s.label} className="flex shrink-0 items-center gap-3">
+                <span
+                  className={`flex h-6 w-6 items-center justify-center rounded-full text-xs transition-colors ${
+                    state === "done"
+                      ? "bg-accent text-accent-fg"
+                      : state === "now"
+                        ? "bg-accent-soft text-accent ring-2 ring-accent/40"
+                        : "bg-surface text-muted"
+                  }`}
+                >
+                  {state === "done" ? "✓" : i + 1}
+                </span>
+                <span className={state === "todo" ? "text-muted" : "text-fg"}>
+                  {s.label}
+                </span>
+              </li>
+            );
+          })}
+          <li className="mt-auto hidden pt-6 text-xs text-muted lg:block">
+            A real run, played back. Nothing here was edited.
+          </li>
+        </ol>
+
+        <div className="min-w-0 p-5 sm:p-7 lg:min-h-[540px]">
+          {/* The link going in */}
+          <div className="flex flex-col gap-2 sm:flex-row">
+            <div className="min-w-0 flex-1 truncate rounded-xl border border-line bg-bg px-4 py-3 text-sm">
+              <span className={typingUrl ? "caret" : ""}>{url}</span>
+            </div>
+            <span
+              className={`btn-primary rounded-xl px-5 py-3 text-center text-sm font-medium ${
+                t >= T.read - 300 && t < T.read + 200 ? "scale-95" : ""
+              }`}
+            >
+              Create ads
+            </span>
+          </div>
+
+          {/* What Gooidy read */}
+          {t >= T.read && (
+            <div className="pop-in mt-6 grid gap-4 rounded-xl bg-surface p-4 text-sm sm:grid-cols-2">
+              <div>
+                <p className="text-xs font-medium uppercase tracking-wide text-muted">
+                  What you sell
+                </p>
+                <p className="mt-1 leading-relaxed">
+                  {typed(run.summary, T.read + 200)}
+                </p>
+              </div>
+              <div>
+                <p className="text-xs font-medium uppercase tracking-wide text-muted">
+                  Who it&apos;s for
+                </p>
+                <p className="mt-1 leading-relaxed">
+                  {typed(run.audience, T.read + 600)}
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* Angles and headlines */}
+          {t >= T.angles && (
+            <ul className="mt-5 grid gap-2 sm:grid-cols-2">
+              {ads.map((a, i) =>
+                t >= T.angles + i * 260 ? (
+                  <li
+                    key={a.id}
+                    className="pop-in flex items-center gap-3 rounded-xl border border-line px-3 py-2.5 text-sm"
+                  >
+                    <span className="shrink-0 rounded-full bg-accent-soft px-2 py-0.5 text-xs font-medium text-accent">
+                      {angleName(a.angle)}
+                    </span>
+                    <span className="truncate">{a.headline}</span>
+                  </li>
+                ) : null,
+              )}
+            </ul>
+          )}
+
+          {/* The finished ads */}
+          {t >= T.design && (
+            <div className="mt-5 grid max-w-xl grid-cols-5 gap-2 sm:gap-3">
+              {ads.map((a, i) => {
+                const ready = t >= T.design + 500 + i * 380;
+                return (
+                  <div
+                    key={a.id}
+                    className={`relative aspect-[9/16] overflow-hidden rounded-lg ${ready ? "" : "skeleton"}`}
+                  >
+                    {ready && (
+                      // eslint-disable-next-line @next/next/no-img-element -- rendered by our own ad route
+                      <img
+                        src={a.image}
+                        alt={a.headline}
+                        className="pop-in absolute inset-0 h-full w-full object-cover"
+                      />
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
+          {t >= T.done && (
+            <div className="pop-in mt-5 flex flex-wrap items-center justify-between gap-3 text-sm">
+              <span className="rounded-full bg-ok-bg px-3 py-1 font-medium text-ok">
+                ✓ Done{run.madeIn ? ` in ${run.madeIn}` : ""} · {ads.length}{" "}
+                angles, 9:16 and 1:1
+              </span>
+              <button
+                type="button"
+                onClick={() => {
+                  setT(-1);
+                  setPlay((p) => p + 1);
+                }}
+                className="text-muted underline-offset-4 hover:text-fg hover:underline"
+              >
+                Replay
+              </button>
+            </div>
+          )}
+          {t < 0 && <div className="h-40" aria-hidden />}
+        </div>
+      </div>
+    </div>
+  );
+}

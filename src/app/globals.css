@@ -329,3 +329,277 @@ html {
       transparent 94.6%
     );
 }
+
+/* Wow layer --------------------------------------------------------------- */
+
+/* Slow aurora behind the hero: three soft blobs drifting on long loops. */
+.landing .aurora {
+  position: absolute;
+  inset: -20% -10% auto;
+  height: 120%;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+.landing .aurora span {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(70px);
+  opacity: 0.55;
+  will-change: transform;
+}
+.landing .aurora span:nth-child(1) {
+  left: 8%;
+  top: 6%;
+  width: 46vw;
+  height: 46vw;
+  max-width: 640px;
+  max-height: 640px;
+  background: color-mix(in srgb, var(--t-accent) 55%, transparent);
+  animation: drift-a 22s ease-in-out infinite alternate;
+}
+.landing .aurora span:nth-child(2) {
+  right: 4%;
+  top: 14%;
+  width: 40vw;
+  height: 40vw;
+  max-width: 560px;
+  max-height: 560px;
+  background: color-mix(in srgb, var(--t-violet) 50%, transparent);
+  animation: drift-b 26s ease-in-out infinite alternate;
+}
+.landing .aurora span:nth-child(3) {
+  left: 36%;
+  top: 40%;
+  width: 34vw;
+  height: 34vw;
+  max-width: 480px;
+  max-height: 480px;
+  background: color-mix(in srgb, #38bdf8 32%, transparent);
+  animation: drift-c 30s ease-in-out infinite alternate;
+}
+:root[data-theme="dark"] .landing .aurora span {
+  opacity: 0.38;
+}
+@keyframes drift-a {
+  to {
+    transform: translate(12vw, 8vh) scale(1.15);
+  }
+}
+@keyframes drift-b {
+  to {
+    transform: translate(-14vw, 10vh) scale(0.9);
+  }
+}
+@keyframes drift-c {
+  to {
+    transform: translate(-8vw, -12vh) scale(1.2);
+  }
+}
+
+/* Fine grid that fades out from the middle. */
+.landing .grid-fade {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(
+      to right,
+      color-mix(in srgb, var(--t-fg) 6%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--t-fg) 6%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 56px 56px;
+  mask-image: radial-gradient(60% 55% at 50% 30%, #000 20%, transparent 100%);
+}
+
+/* The gradient word shimmers slowly. */
+.landing .text-shimmer {
+  background: linear-gradient(
+    100deg,
+    var(--t-accent) 0%,
+    var(--t-violet) 35%,
+    #38bdf8 55%,
+    var(--t-accent) 80%
+  );
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 8s linear infinite;
+}
+@keyframes shimmer {
+  to {
+    background-position: -220% 0;
+  }
+}
+
+/* Three phones fanned in 3D; the stage tilts toward the pointer. */
+.landing .stage {
+  perspective: 1600px;
+  --rx: 0deg;
+  --ry: 0deg;
+}
+.landing .stage-inner {
+  transform-style: preserve-3d;
+  transform: rotateX(var(--rx)) rotateY(var(--ry));
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.landing .stage-side {
+  position: absolute;
+  top: 9%;
+  transition: transform 0.6s ease;
+}
+.landing .stage-left {
+  right: 50%;
+  transform: translateX(-42%) translateZ(-160px) rotateY(24deg);
+}
+.landing .stage-right {
+  left: 50%;
+  transform: translateX(42%) translateZ(-160px) rotateY(-24deg);
+}
+/* A soft reflection of light on the floor under the phones. */
+.landing .stage-floor {
+  position: absolute;
+  left: 50%;
+  bottom: -4%;
+  width: 90%;
+  height: 90px;
+  transform: translateX(-50%);
+  border-radius: 9999px;
+  background: radial-gradient(
+    closest-side,
+    color-mix(in srgb, var(--t-accent) 30%, transparent),
+    transparent
+  );
+  filter: blur(18px);
+  pointer-events: none;
+}
+
+/* Glass card with a thin gradient edge. */
+.landing .edge {
+  position: relative;
+  background: var(--t-raised);
+  border-radius: 1.25rem;
+}
+.landing .edge::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: linear-gradient(
+    140deg,
+    color-mix(in srgb, var(--t-accent) 55%, transparent),
+    var(--t-line) 35%,
+    var(--t-line) 65%,
+    color-mix(in srgb, var(--t-violet) 50%, transparent)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Endless rows of real ads. */
+.landing .marquee {
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 8%,
+    #000 92%,
+    transparent
+  );
+}
+.landing .marquee-track {
+  display: flex;
+  width: max-content;
+  gap: 1.25rem;
+  animation: marquee var(--marquee-s, 60s) linear infinite;
+}
+.landing .marquee-track.reverse {
+  animation-direction: reverse;
+}
+.landing .marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+@keyframes marquee {
+  to {
+    transform: translateX(calc(-50% - 0.625rem));
+  }
+}
+
+/* Placeholder shimmer while the demo "designs" an ad. */
+.landing .skeleton {
+  background: linear-gradient(
+    100deg,
+    var(--t-surface) 30%,
+    color-mix(in srgb, var(--t-accent) 12%, var(--t-surface)) 50%,
+    var(--t-surface) 70%
+  );
+  background-size: 200% 100%;
+  animation: skeleton 1.2s linear infinite;
+}
+@keyframes skeleton {
+  to {
+    background-position: -200% 0;
+  }
+}
+.landing .pop-in {
+  animation: pop-in 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+}
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.landing .caret::after {
+  content: "";
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  margin-left: 2px;
+  vertical-align: -0.15em;
+  background: var(--t-accent);
+  animation: caret 1s steps(1) infinite;
+}
+@keyframes caret {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Final call to action: an indigo panel with its own glow. */
+.landing .cta-panel {
+  background:
+    radial-gradient(
+      60% 80% at 15% 0%,
+      rgb(255 255 255 / 0.18),
+      transparent 60%
+    ),
+    radial-gradient(70% 90% at 100% 100%, #8b5cf6 0%, transparent 60%),
+    linear-gradient(135deg, #4338ca, #4f46e5 45%, #6d28d9);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing .aurora span,
+  .landing .text-shimmer,
+  .landing .marquee-track,
+  .landing .skeleton,
+  .landing .pop-in,
+  .landing .caret::after {
+    animation: none;
+  }
+}
