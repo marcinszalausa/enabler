@@ -466,11 +466,7 @@ html {
   --ry: 0deg;
   --half: 120px;
   --gap: 20px;
-  --turn: 26deg;
-  /* Seen from a little to the right and above, like a product photo, so
-     the phones' sides are always in view. */
-  --view-x: -5deg;
-  --view-y: -24deg;
+  --turn: 30deg;
 }
 @media (min-width: 48rem) {
   .landing .stage {
@@ -490,9 +486,7 @@ html {
   transform-style: preserve-3d;
 }
 .landing .stage-inner {
-  /* The turn pushes the group right; nudge it back to center. */
-  transform: translateX(-5%) rotateX(calc(var(--rx) + var(--view-x)))
-    rotateY(calc(var(--ry) + var(--view-y)));
+  transform: rotateX(var(--rx)) rotateY(var(--ry));
   transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 .landing .stage-side {
