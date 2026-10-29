@@ -84,7 +84,7 @@ html {
 
 /* Feed scrolls one ad at a time, pausing on each (5 slots, last = first). */
 .landing .feed-scroll {
-  animation: feed 14s cubic-bezier(0.7, 0, 0.3, 1) infinite;
+  animation: feed 18s cubic-bezier(0.7, 0, 0.3, 1) infinite;
 }
 
 .landing .marquee {
@@ -107,12 +107,13 @@ html {
   animation: bob 3.5s ease-in-out 1.2s infinite;
 }
 
+/* Lingers longest on the first ad (the real video clip). */
 @keyframes feed {
-  0%, 20% { transform: translateY(0); }
-  25%, 45% { transform: translateY(-20%); }
-  50%, 70% { transform: translateY(-40%); }
-  75%, 95% { transform: translateY(-60%); }
-  100% { transform: translateY(-80%); }
+  0%, 36% { transform: translateY(0); }
+  40%, 52% { transform: translateY(-20%); }
+  56%, 68% { transform: translateY(-40%); }
+  72%, 84% { transform: translateY(-60%); }
+  88%, 100% { transform: translateY(-80%); }
 }
 
 @keyframes marquee {

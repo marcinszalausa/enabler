@@ -13,22 +13,28 @@ export type SampleReel = {
   from: string;
   to: string;
   blob: string;
-  // Optional vertical clip in public/reels/ (short, muted, looping).
-  video?: string;
+  // Optional vertical clip in public/reels/ (short, muted, looping), with a
+  // still frame to show while it loads.
+  video?: { src: string; poster: string };
 };
 
 export const REELS: SampleReel[] = [
   {
-    handle: "willowknits",
-    hook: "POV: you found a sweater that doesn't itch 😮‍💨",
-    caption: "Softest thing you'll wear all winter #cozy #fyp",
+    handle: "softmila",
+    // The clip has its own captions burned in.
+    hook: "",
+    caption: "The Soft Mila Modal Wrap Cardigan ☁️ #cozy #fyp",
     cta: "Shop now",
     likes: 482_300,
     comments: 3_912,
     shares: 21_400,
-    from: "#ff7eb3",
-    to: "#6a11cb",
-    blob: "linear-gradient(135deg,#ffe29f,#ff9a3c)",
+    from: "#c9d6cf",
+    to: "#6b7f75",
+    blob: "linear-gradient(135deg,#dfe8e2,#9fb5aa)",
+    video: {
+      src: "/reels/softmila-cardigan.mp4",
+      poster: "/reels/softmila-cardigan.jpg",
+    },
   },
   {
     handle: "glowlab",
@@ -104,12 +110,15 @@ export function Reel({
   return (
     <div
       className="relative h-full w-full overflow-hidden"
-      style={{ backgroundImage: `linear-gradient(165deg, ${reel.from}, ${reel.to})` }}
+      style={{
+        backgroundImage: `linear-gradient(165deg, ${reel.from}, ${reel.to})`,
+      }}
       aria-hidden
     >
       {reel.video ? (
         <video
-          src={reel.video}
+          src={reel.video.src}
+          poster={reel.video.poster}
           autoPlay
           muted
           loop
@@ -130,15 +139,19 @@ export function Reel({
       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/70" />
 
       {/* TikTok-style hook caption */}
-      <div className={`absolute inset-x-0 flex justify-center px-4 ${compact ? "top-[14%]" : "top-[19%]"}`}>
-        <p
-          className={`font-display max-w-[85%] rounded-lg bg-white px-2.5 py-1 text-center font-extrabold leading-tight text-black ${
-            compact ? "text-xs" : "text-sm sm:text-base"
-          }`}
+      {reel.hook && (
+        <div
+          className={`absolute inset-x-0 flex justify-center px-4 ${compact ? "top-[14%]" : "top-[19%]"}`}
         >
-          {reel.hook}
-        </p>
-      </div>
+          <p
+            className={`font-display max-w-[85%] rounded-lg bg-white px-2.5 py-1 text-center font-extrabold leading-tight text-black ${
+              compact ? "text-xs" : "text-sm sm:text-base"
+            }`}
+          >
+            {reel.hook}
+          </p>
+        </div>
+      )}
 
       {/* Right action rail */}
       {!compact && (
@@ -161,7 +174,11 @@ export function Reel({
           <div className="flex flex-col items-center">
             <Icon d={BUBBLE} />
             <span className="text-[11px] font-semibold">
-              <Ticker start={reel.comments} step={3} every={live ? 1400 : 1e9} />
+              <Ticker
+                start={reel.comments}
+                step={3}
+                every={live ? 1400 : 1e9}
+              />
             </span>
           </div>
           <div className="flex flex-col items-center">
@@ -174,14 +191,20 @@ export function Reel({
       )}
 
       {/* Bottom caption + CTA */}
-      <div className={`absolute inset-x-0 bottom-0 text-white ${compact ? "p-2.5" : "p-3.5 pr-16"}`}>
+      <div
+        className={`absolute inset-x-0 bottom-0 text-white ${compact ? "p-2.5" : "p-3.5 pr-16"}`}
+      >
         <p className={`font-bold ${compact ? "text-[11px]" : "text-sm"}`}>
           @{reel.handle}{" "}
           <span className="rounded bg-white/20 px-1 py-px text-[10px] font-medium">
             Sponsored
           </span>
         </p>
-        {!compact && <p className="mt-1 line-clamp-2 text-xs text-white/85">{reel.caption}</p>}
+        {!compact && (
+          <p className="mt-1 line-clamp-2 text-xs text-white/85">
+            {reel.caption}
+          </p>
+        )}
         <div
           className={`mt-2 flex items-center justify-between rounded-md bg-[#fe2c55] font-bold ${
             compact ? "px-2 py-1 text-[10px]" : "px-3 py-2 text-xs"
