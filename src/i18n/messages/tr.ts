@@ -145,6 +145,8 @@ export const tr: Messages = {
       "Ücretsiz başlayın. Daha fazla reklama ihtiyacınız olduğunda yükseltin.",
     popular: "Popüler",
     perMonth: " / ay",
+    payNote:
+      "Fiyatlar ABD doları cinsindendir. Ödeme sırasında kendi para biriminizle ödersiniz.",
     plans: [
       {
         name: "Free",
@@ -161,11 +163,20 @@ export const tr: Messages = {
         ],
       },
       {
+        name: "Plus",
+        credits: "Her ay 600 kredi",
+        perks: [
+          "Ayda yaklaşık 300 reklam",
+          "Starter'daki her şey",
+          "İstediğiniz zaman iptal",
+        ],
+      },
+      {
         name: "Growth",
         credits: "Her ay 1.000 kredi",
         perks: [
           "Ayda yaklaşık 500 reklam",
-          "Starter'daki her şey",
+          "Plus'daki her şey",
           "Öncelikli destek",
         ],
       },
@@ -195,6 +206,10 @@ export const tr: Messages = {
       {
         q: "İstediğim zaman iptal edebilir miyim?",
         a: "Evet. Planlar aylıktır ve ödediğiniz dönemin sonuna kadar erişiminiz devam eder.",
+      },
+      {
+        q: "Kendi para birimimle ödeyebilir miyim?",
+        a: "Evet. Fiyatlar ABD doları olarak belirlenir; ödeme sayfası tutarı kendi para biriminizde ve ülkenizde yaygın ödeme yöntemleriyle gösterir.",
       },
     ],
     finalTitle: "Sonraki reklamlarınız bir link uzağınızda",
@@ -405,13 +420,56 @@ export const tr: Messages = {
     errors: {
       pasteLink: "Bir ürün veya web sitesi linki yapıştırın.",
       notFound: "Ürün bulunamadı.",
-      noCredits: "Yeterli kredi yok. Bu çalıştırma {cost} kredi kullanır.",
+      noCredits:
+        "Yeterli krediniz yok. Bu işlem {cost} kredi kullanır. Faturalandırma sayfasından daha fazlasını alın.",
       couldntStart: "Oluşturma başlatılamadı.",
       color: "Bir buton rengi seçin.",
       font: "Bir yazı tipi seçin.",
       logoType: "Logoyu PNG veya JPEG olarak yükleyin.",
       logoSize: "Logo 2 MB'den küçük olmalı.",
       couldntSave: "Marka kiti kaydedilemedi.",
+    },
+  },
+  billing: {
+    nav: "Faturalandırma",
+    title: "Plan ve faturalandırma",
+    currentPlan: "Mevcut plan",
+    renews: "{date} tarihinde yenilenir. Krediler her ay yenilenir.",
+    pastDue:
+      "Ödeme başarısız oldu. Planınızı korumak için kartınızı güncelleyin.",
+    freeNote:
+      "Başlangıç için {count} ücretsiz kredi. Daha fazlasına ihtiyacınız olduğunda aylık bir plan seçin veya kredi paketi alın.",
+    manage: "Aboneliği yönet",
+    opening: "Açılıyor…",
+    openingCheckout: "Ödeme sayfası açılıyor…",
+    plansTitle: "Aylık planlar",
+    plansSub: "Krediler her ay yenilenir. İstediğiniz zaman iptal edin.",
+    monthly: "Her ay {count} kredi, yaklaşık {ads} reklam",
+    choose: "{plan} planını seç",
+    packsTitle: "Kredi paketleri",
+    packsSub: "Tek seferlik ödeme, abonelik yok.",
+    pack: "{count} kredi",
+    packAds: "Yaklaşık {ads} reklam",
+    buy: "{price} karşılığında satın al",
+    payTitle: "Kendi para biriminizle ödeyin",
+    payBody:
+      "Fiyatlar ABD doları cinsindendir. Ödeme sırasında tutarı kendi para biriminizde ve ülkenizde yaygın ödeme yöntemlerini görürsünüz.",
+    payPlans: "Aylık planlar: kart, Apple Pay, Google Pay veya Link.",
+    payPacks:
+      "Kredi paketleri: ülkenize göre PayPal, Klarna, iDEAL, Pix, Alipay, WeChat Pay ve daha fazlası.",
+    paid: "Ödeme alındı, teşekkürler. Planınız ve kredileriniz birkaç saniye içinde güncellenir; görünmüyorsa sayfayı yenileyin.",
+    packPaid:
+      "Teşekkürler! Kredileriniz ödeme onaylanır onaylanmaz eklenir. Çoğu ödeme anında gerçekleşir; banka talimatları birkaç gün sürebilir.",
+    footnote:
+      "Bir kredi bir reklam görseli oluşturur. Ödemeler Stripe tarafından güvenle işlenir.",
+    errors: {
+      pickPlan: "Bir plan seçin.",
+      notSetUp: "Bu plan henüz ayarlanmadı.",
+      noWorkspace: "Çalışma alanı bulunamadı.",
+      ownerOnly:
+        "Faturalandırmayı yalnızca çalışma alanı sahibi değiştirebilir.",
+      checkout: "Ödeme sayfası açılamadı. Lütfen tekrar deneyin.",
+      portal: "Faturalandırma açılamadı. Lütfen tekrar deneyin.",
     },
   },
 };

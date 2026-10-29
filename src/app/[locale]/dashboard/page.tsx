@@ -9,6 +9,7 @@ import { createClient } from "@/lib/supabase/server";
 import { ProductUrlForm } from "./product-url-form";
 import { ProductCard, type ProductSummary } from "./product-card";
 import { CreditsBadge, EmptyState } from "./ui";
+import { planName } from "@/lib/pricing";
 
 // Server actions on this page scrape and call the AI; allow time for that.
 export const maxDuration = 120;
@@ -119,10 +120,4 @@ async function Dashboard({
       </section>
     </>
   );
-}
-
-// Plan names are the pricing table's, in the page's language.
-function planName(t: Messages, plan: string | null | undefined) {
-  const i = ["free", "starter", "growth"].indexOf(plan ?? "free");
-  return t.home.plans[i]?.name ?? plan ?? "";
 }

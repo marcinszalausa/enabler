@@ -145,6 +145,8 @@ export const fr: Messages = {
       "Commencez gratuitement. Passez à la suite quand il vous faut plus de pubs.",
     popular: "Populaire",
     perMonth: " / mois",
+    payNote:
+      "Prix en dollars américains. Payez dans votre propre devise au moment du paiement.",
     plans: [
       {
         name: "Free",
@@ -165,11 +167,20 @@ export const fr: Messages = {
         ],
       },
       {
+        name: "Plus",
+        credits: "600 crédits par mois",
+        perks: [
+          "Environ 300 pubs par mois",
+          "Tout le plan Starter",
+          "Résiliable à tout moment",
+        ],
+      },
+      {
         name: "Growth",
         credits: "1 000 crédits par mois",
         perks: [
           "Environ 500 pubs par mois",
-          "Tout le plan Starter",
+          "Tout le plan Plus",
           "Support prioritaire",
         ],
       },
@@ -199,6 +210,10 @@ export const fr: Messages = {
       {
         q: "Puis-je résilier à tout moment ?",
         a: "Oui. Les abonnements sont mensuels et vous gardez l'accès jusqu'à la fin de la période payée.",
+      },
+      {
+        q: "Puis-je payer dans ma devise ?",
+        a: "Oui. Les prix sont fixés en dollars américains, et la page de paiement affiche le montant dans votre devise, avec les moyens de paiement courants dans votre pays.",
       },
     ],
     finalTitle: "Vos prochaines pubs sont à un lien d'ici",
@@ -409,13 +424,57 @@ export const fr: Messages = {
     errors: {
       pasteLink: "Collez le lien d'un produit ou d'un site.",
       notFound: "Produit introuvable.",
-      noCredits: "Crédits insuffisants. Cette génération en utilise {cost}.",
+      noCredits:
+        "Crédits insuffisants. Cette génération en utilise {cost}. Obtenez-en plus sur la page Facturation.",
       couldntStart: "Impossible de lancer la génération.",
       color: "Choisissez une couleur de bouton.",
       font: "Choisissez une police.",
       logoType: "Importez le logo en PNG ou JPEG.",
       logoSize: "Le logo doit faire moins de 2 Mo.",
       couldntSave: "Impossible d'enregistrer le kit de marque.",
+    },
+  },
+  billing: {
+    nav: "Facturation",
+    title: "Offre et facturation",
+    currentPlan: "Offre actuelle",
+    renews: "Renouvellement le {date}. Les crédits sont rechargés chaque mois.",
+    pastDue:
+      "Le paiement a échoué. Mettez à jour votre carte pour garder votre offre.",
+    freeNote:
+      "{count} crédits gratuits pour commencer. Choisissez une offre mensuelle ou achetez un pack de crédits quand vous en voulez plus.",
+    manage: "Gérer l'abonnement",
+    opening: "Ouverture…",
+    openingCheckout: "Ouverture du paiement…",
+    plansTitle: "Offres mensuelles",
+    plansSub:
+      "Les crédits sont rechargés chaque mois. Résiliable à tout moment.",
+    monthly: "{count} crédits par mois, environ {ads} publicités",
+    choose: "Choisir {plan}",
+    packsTitle: "Packs de crédits",
+    packsSub: "Un seul paiement, sans abonnement.",
+    pack: "{count} crédits",
+    packAds: "Environ {ads} publicités",
+    buy: "Acheter pour {price}",
+    payTitle: "Payez dans votre devise",
+    payBody:
+      "Les prix sont en dollars américains. Au paiement, vous voyez le montant dans votre propre devise et les moyens de paiement courants dans votre pays.",
+    payPlans: "Offres mensuelles : carte, Apple Pay, Google Pay ou Link.",
+    payPacks:
+      "Packs de crédits : aussi PayPal, Bancontact, iDEAL, Klarna, TWINT, Pix, Alipay, WeChat Pay et plus, selon votre pays.",
+    paid: "Paiement reçu, merci. Votre offre et vos crédits se mettent à jour en quelques secondes ; actualisez s'ils n'apparaissent pas encore.",
+    packPaid:
+      "Merci ! Vos crédits sont ajoutés dès que le paiement est confirmé. La plupart des paiements sont immédiats ; les prélèvements bancaires peuvent prendre quelques jours.",
+    footnote:
+      "Un crédit crée une image publicitaire. Les paiements sont traités en toute sécurité par Stripe.",
+    errors: {
+      pickPlan: "Choisissez une offre.",
+      notSetUp: "Cette offre n'est pas encore configurée.",
+      noWorkspace: "Espace de travail introuvable.",
+      ownerOnly:
+        "Seul le propriétaire de l'espace de travail peut modifier la facturation.",
+      checkout: "Impossible d'ouvrir le paiement. Réessayez.",
+      portal: "Impossible d'ouvrir la facturation. Réessayez.",
     },
   },
 };

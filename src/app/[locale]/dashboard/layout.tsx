@@ -25,6 +25,9 @@ export default async function DashboardLayout({
         <Link href="/dashboard/brand" className={navLink}>
           {t.app.brandKit}
         </Link>
+        <Link href="/dashboard/billing" className={navLink}>
+          {t.billing.nav}
+        </Link>
         <form action="/auth/signout" method="post">
           <button className={navLink}>{t.app.signOut}</button>
         </form>

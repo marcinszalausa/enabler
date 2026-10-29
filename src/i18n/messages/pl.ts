@@ -145,6 +145,8 @@ export const pl: Messages = {
       "Zacznij za darmo. Przejdź na wyższy plan, gdy potrzebujesz więcej reklam.",
     popular: "Popularny",
     perMonth: " / mies.",
+    payNote:
+      "Ceny w dolarach amerykańskich. Przy płatności zapłacisz we własnej walucie.",
     plans: [
       {
         name: "Free",
@@ -165,11 +167,20 @@ export const pl: Messages = {
         ],
       },
       {
+        name: "Plus",
+        credits: "600 kredytów co miesiąc",
+        perks: [
+          "Około 300 reklam miesięcznie",
+          "Wszystko z planu Starter",
+          "Rezygnacja w dowolnym momencie",
+        ],
+      },
+      {
         name: "Growth",
         credits: "1000 kredytów co miesiąc",
         perks: [
           "Około 500 reklam miesięcznie",
-          "Wszystko z planu Starter",
+          "Wszystko z planu Plus",
           "Priorytetowe wsparcie",
         ],
       },
@@ -199,6 +210,10 @@ export const pl: Messages = {
       {
         q: "Czy mogę zrezygnować w każdej chwili?",
         a: "Tak. Plany są miesięczne, a dostęp zachowujesz do końca opłaconego okresu.",
+      },
+      {
+        q: "Czy mogę zapłacić we własnej walucie?",
+        a: "Tak. Ceny są ustalone w dolarach amerykańskich, a przy płatności widzisz kwotę w swojej walucie i metody płatności popularne w Twoim kraju.",
       },
     ],
     finalTitle: "Twoje kolejne reklamy są o jeden link stąd",
@@ -406,13 +421,56 @@ export const pl: Messages = {
     errors: {
       pasteLink: "Wklej link do produktu lub strony.",
       notFound: "Nie znaleziono produktu.",
-      noCredits: "Za mało kredytów. Ta seria zużywa {cost}.",
+      noCredits:
+        "Za mało kredytów. To generowanie zużywa {cost}. Więcej kupisz na stronie Płatności.",
       couldntStart: "Nie udało się uruchomić generowania.",
       color: "Wybierz kolor przycisku.",
       font: "Wybierz czcionkę.",
       logoType: "Prześlij logo jako PNG lub JPEG.",
       logoSize: "Logo musi mieć mniej niż 2 MB.",
       couldntSave: "Nie udało się zapisać identyfikacji marki.",
+    },
+  },
+  billing: {
+    nav: "Płatności",
+    title: "Plan i płatności",
+    currentPlan: "Obecny plan",
+    renews: "Odnawia się {date}. Kredyty uzupełniają się co miesiąc.",
+    pastDue: "Płatność nie powiodła się. Zaktualizuj kartę, aby zachować plan.",
+    freeNote:
+      "{count} darmowych kredytów na start. Wybierz plan miesięczny lub kup pakiet kredytów, gdy potrzebujesz więcej.",
+    manage: "Zarządzaj subskrypcją",
+    opening: "Otwieranie…",
+    openingCheckout: "Otwieranie płatności…",
+    plansTitle: "Plany miesięczne",
+    plansSub:
+      "Kredyty uzupełniają się co miesiąc. Rezygnacja w dowolnym momencie.",
+    monthly: "{count} kredytów co miesiąc, około {ads} reklam",
+    choose: "Wybierz {plan}",
+    packsTitle: "Pakiety kredytów",
+    packsSub: "Jednorazowa płatność, bez subskrypcji.",
+    pack: "{count} kredytów",
+    packAds: "Około {ads} reklam",
+    buy: "Kup za {price}",
+    payTitle: "Płać w swojej walucie",
+    payBody:
+      "Ceny są w dolarach amerykańskich. Przy płatności zobaczysz kwotę w swojej walucie i metody płatności popularne w Twoim kraju.",
+    payPlans: "Plany miesięczne: karta, Apple Pay, Google Pay lub Link.",
+    payPacks:
+      "Pakiety kredytów: także BLIK, Przelewy24, PayPal, Klarna, iDEAL, Pix, Alipay, WeChat Pay i inne, zależnie od kraju.",
+    paid: "Płatność otrzymana, dziękujemy. Plan i kredyty zaktualizują się w ciągu kilku sekund; odśwież stronę, jeśli jeszcze ich nie widać.",
+    packPaid:
+      "Dziękujemy! Kredyty zostaną dodane, gdy tylko płatność zostanie potwierdzona. Większość płatności jest natychmiastowa; polecenia zapłaty mogą potrwać kilka dni.",
+    footnote:
+      "Jeden kredyt to jedna grafika reklamowa. Płatności bezpiecznie obsługuje Stripe.",
+    errors: {
+      pickPlan: "Wybierz plan.",
+      notSetUp: "Ten plan nie jest jeszcze skonfigurowany.",
+      noWorkspace: "Nie znaleziono przestrzeni roboczej.",
+      ownerOnly:
+        "Tylko właściciel przestrzeni roboczej może zmieniać płatności.",
+      checkout: "Nie udało się otworzyć płatności. Spróbuj ponownie.",
+      portal: "Nie udało się otworzyć płatności. Spróbuj ponownie.",
     },
   },
 };

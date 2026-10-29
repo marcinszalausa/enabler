@@ -144,6 +144,8 @@ export const es: Messages = {
     pricingSub: "Empieza gratis. Mejora tu plan cuando necesites más anuncios.",
     popular: "Popular",
     perMonth: " / mes",
+    payNote:
+      "Precios en dólares estadounidenses. Paga en tu propia moneda al finalizar la compra.",
     plans: [
       {
         name: "Free",
@@ -164,11 +166,20 @@ export const es: Messages = {
         ],
       },
       {
+        name: "Plus",
+        credits: "600 créditos cada mes",
+        perks: [
+          "Unos 300 anuncios al mes",
+          "Todo lo de Starter",
+          "Cancela cuando quieras",
+        ],
+      },
+      {
         name: "Growth",
         credits: "1.000 créditos cada mes",
         perks: [
           "Unos 500 anuncios al mes",
-          "Todo lo de Starter",
+          "Todo lo de Plus",
           "Soporte prioritario",
         ],
       },
@@ -198,6 +209,10 @@ export const es: Messages = {
       {
         q: "¿Puedo cancelar cuando quiera?",
         a: "Sí. Los planes son mensuales y mantienes el acceso hasta el final del periodo que pagaste.",
+      },
+      {
+        q: "¿Puedo pagar en mi propia moneda?",
+        a: "Sí. Los precios están en dólares estadounidenses y el pago te muestra el importe en tu moneda, con los métodos de pago habituales en tu país.",
       },
     ],
     finalTitle: "Tus próximos anuncios están a un enlace",
@@ -408,13 +423,55 @@ export const es: Messages = {
     errors: {
       pasteLink: "Pega el enlace de un producto o web.",
       notFound: "No se encontró el producto.",
-      noCredits: "No tienes créditos suficientes. Esta tanda usa {cost}.",
+      noCredits:
+        "No tienes suficientes créditos. Esta tanda usa {cost}. Consigue más en la página de Facturación.",
       couldntStart: "No se pudo iniciar la generación.",
       color: "Elige un color para el botón.",
       font: "Elige una tipografía.",
       logoType: "Sube el logo en PNG o JPEG.",
       logoSize: "El logo debe pesar menos de 2 MB.",
       couldntSave: "No se pudo guardar el kit de marca.",
+    },
+  },
+  billing: {
+    nav: "Facturación",
+    title: "Plan y facturación",
+    currentPlan: "Plan actual",
+    renews: "Se renueva el {date}. Los créditos se recargan cada mes.",
+    pastDue: "El pago ha fallado. Actualiza tu tarjeta para mantener tu plan.",
+    freeNote:
+      "{count} créditos gratis para empezar. Elige un plan mensual o compra un paquete de créditos cuando necesites más.",
+    manage: "Gestionar suscripción",
+    opening: "Abriendo…",
+    openingCheckout: "Abriendo el pago…",
+    plansTitle: "Planes mensuales",
+    plansSub: "Los créditos se recargan cada mes. Cancela cuando quieras.",
+    monthly: "{count} créditos al mes, unos {ads} anuncios",
+    choose: "Elegir {plan}",
+    packsTitle: "Paquetes de créditos",
+    packsSub: "Pago único, sin suscripción.",
+    pack: "{count} créditos",
+    packAds: "Unos {ads} anuncios",
+    buy: "Comprar por {price}",
+    payTitle: "Paga en tu moneda",
+    payBody:
+      "Los precios están en dólares estadounidenses. Al pagar verás el importe en tu propia moneda y los métodos de pago habituales en tu país.",
+    payPlans: "Planes mensuales: tarjeta, Apple Pay, Google Pay o Link.",
+    payPacks:
+      "Paquetes de créditos: también PayPal, Bizum, iDEAL, Bancontact, Klarna, Pix, Alipay, WeChat Pay y más, según tu país.",
+    paid: "Pago recibido, gracias. Tu plan y tus créditos se actualizan en unos segundos; recarga la página si aún no aparecen.",
+    packPaid:
+      "¡Gracias! Tus créditos se añaden en cuanto se confirma el pago. La mayoría de los pagos son inmediatos; los adeudos bancarios pueden tardar unos días.",
+    footnote:
+      "Un crédito crea una imagen de anuncio. Stripe procesa los pagos de forma segura.",
+    errors: {
+      pickPlan: "Elige un plan.",
+      notSetUp: "Este plan aún no está configurado.",
+      noWorkspace: "No se encontró el espacio de trabajo.",
+      ownerOnly:
+        "Solo el propietario del espacio de trabajo puede cambiar la facturación.",
+      checkout: "No se pudo abrir el pago. Inténtalo de nuevo.",
+      portal: "No se pudo abrir la facturación. Inténtalo de nuevo.",
     },
   },
 };

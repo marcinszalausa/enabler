@@ -144,6 +144,8 @@ export const sv: Messages = {
     pricingSub: "Börja gratis. Uppgradera när du behöver fler annonser.",
     popular: "Populär",
     perMonth: " / mån",
+    payNote:
+      "Priser i amerikanska dollar. Du betalar i din egen valuta i kassan.",
     plans: [
       {
         name: "Free",
@@ -160,11 +162,20 @@ export const sv: Messages = {
         ],
       },
       {
+        name: "Plus",
+        credits: "600 krediter varje månad",
+        perks: [
+          "Cirka 300 annonser i månaden",
+          "Allt i Starter",
+          "Avsluta när du vill",
+        ],
+      },
+      {
         name: "Growth",
         credits: "1 000 krediter varje månad",
         perks: [
           "Cirka 500 annonser i månaden",
-          "Allt i Starter",
+          "Allt i Plus",
           "Prioriterad support",
         ],
       },
@@ -194,6 +205,10 @@ export const sv: Messages = {
       {
         q: "Kan jag avsluta när som helst?",
         a: "Ja. Abonnemangen löper månadsvis och du behåller tillgången till slutet av perioden du betalat för.",
+      },
+      {
+        q: "Kan jag betala i min egen valuta?",
+        a: "Ja. Priserna är satta i amerikanska dollar, och kassan visar beloppet i din valuta, med de betalsätt som är vanliga där du bor.",
       },
     ],
     finalTitle: "Dina nästa annonser är en länk bort",
@@ -405,13 +420,54 @@ export const sv: Messages = {
       pasteLink: "Klistra in en länk till en produkt eller webbplats.",
       notFound: "Produkten hittades inte.",
       noCredits:
-        "Inte tillräckligt med krediter. Den här körningen använder {cost}.",
+        "Inte tillräckligt med krediter. Den här körningen använder {cost}. Skaffa fler på sidan Betalning.",
       couldntStart: "Det gick inte att starta skapandet.",
       color: "Välj en knappfärg.",
       font: "Välj ett typsnitt.",
       logoType: "Ladda upp loggan som PNG eller JPEG.",
       logoSize: "Loggan måste vara mindre än 2 MB.",
       couldntSave: "Det gick inte att spara varumärkeskitet.",
+    },
+  },
+  billing: {
+    nav: "Betalning",
+    title: "Plan och betalning",
+    currentPlan: "Nuvarande plan",
+    renews: "Förnyas {date}. Krediterna fylls på varje månad.",
+    pastDue:
+      "Betalningen misslyckades. Uppdatera ditt kort för att behålla din plan.",
+    freeNote:
+      "{count} gratis krediter att börja med. Välj en månadsplan eller köp ett kreditpaket när du behöver fler.",
+    manage: "Hantera prenumeration",
+    opening: "Öppnar…",
+    openingCheckout: "Öppnar kassan…",
+    plansTitle: "Månadsplaner",
+    plansSub: "Krediterna fylls på varje månad. Avsluta när du vill.",
+    monthly: "{count} krediter varje månad, cirka {ads} annonser",
+    choose: "Välj {plan}",
+    packsTitle: "Kreditpaket",
+    packsSub: "Betala en gång, ingen prenumeration.",
+    pack: "{count} krediter",
+    packAds: "Cirka {ads} annonser",
+    buy: "Köp för {price}",
+    payTitle: "Betala i din valuta",
+    payBody:
+      "Priserna är i amerikanska dollar. I kassan ser du beloppet i din egen valuta och de betalsätt som är vanliga där du bor.",
+    payPlans: "Månadsplaner: kort, Apple Pay, Google Pay eller Link.",
+    payPacks:
+      "Kreditpaket: även Klarna, PayPal, iDEAL, Bancontact, Pix, Alipay, WeChat Pay och fler, beroende på land.",
+    paid: "Betalningen är mottagen, tack. Din plan och dina krediter uppdateras inom några sekunder; ladda om om de inte syns än.",
+    packPaid:
+      "Tack! Dina krediter läggs till så snart betalningen är bekräftad. De flesta betalningar går direkt; autogiro kan ta några dagar.",
+    footnote:
+      "En kredit skapar en annonsbild. Betalningar hanteras säkert av Stripe.",
+    errors: {
+      pickPlan: "Välj en plan.",
+      notSetUp: "Den här planen är inte konfigurerad än.",
+      noWorkspace: "Ingen arbetsyta hittades.",
+      ownerOnly: "Bara arbetsytans ägare kan ändra betalningen.",
+      checkout: "Kunde inte öppna kassan. Försök igen.",
+      portal: "Kunde inte öppna betalningen. Försök igen.",
     },
   },
 };

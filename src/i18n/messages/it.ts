@@ -145,6 +145,8 @@ export const it: Messages = {
       "Inizia gratis. Passa a un piano superiore quando ti servono più annunci.",
     popular: "Più scelto",
     perMonth: " / mese",
+    payNote:
+      "Prezzi in dollari statunitensi. Al pagamento paghi nella tua valuta.",
     plans: [
       {
         name: "Free",
@@ -165,11 +167,20 @@ export const it: Messages = {
         ],
       },
       {
+        name: "Plus",
+        credits: "600 crediti ogni mese",
+        perks: [
+          "Circa 300 annunci al mese",
+          "Tutto ciò che c'è in Starter",
+          "Disdici quando vuoi",
+        ],
+      },
+      {
         name: "Growth",
         credits: "1.000 crediti ogni mese",
         perks: [
           "Circa 500 annunci al mese",
-          "Tutto ciò che c'è in Starter",
+          "Tutto ciò che c'è in Plus",
           "Assistenza prioritaria",
         ],
       },
@@ -199,6 +210,10 @@ export const it: Messages = {
       {
         q: "Posso disdire quando voglio?",
         a: "Sì. I piani sono mensili e mantieni l'accesso fino alla fine del periodo già pagato.",
+      },
+      {
+        q: "Posso pagare nella mia valuta?",
+        a: "Sì. I prezzi sono in dollari statunitensi e la pagina di pagamento mostra l'importo nella tua valuta, con i metodi di pagamento più diffusi nel tuo paese.",
       },
     ],
     finalTitle: "I tuoi prossimi annunci sono a un link di distanza",
@@ -410,13 +425,56 @@ export const it: Messages = {
     errors: {
       pasteLink: "Incolla il link di un prodotto o di un sito.",
       notFound: "Prodotto non trovato.",
-      noCredits: "Crediti insufficienti. Questo giro ne usa {cost}.",
+      noCredits:
+        "Crediti insufficienti. Questa generazione ne usa {cost}. Ottienine altri nella pagina Fatturazione.",
       couldntStart: "Impossibile avviare la generazione.",
       color: "Scegli un colore per il pulsante.",
       font: "Scegli un font.",
       logoType: "Carica il logo in PNG o JPEG.",
       logoSize: "Il logo deve pesare meno di 2 MB.",
       couldntSave: "Impossibile salvare il kit del brand.",
+    },
+  },
+  billing: {
+    nav: "Fatturazione",
+    title: "Piano e fatturazione",
+    currentPlan: "Piano attuale",
+    renews: "Si rinnova il {date}. I crediti si ricaricano ogni mese.",
+    pastDue:
+      "Il pagamento non è riuscito. Aggiorna la carta per mantenere il tuo piano.",
+    freeNote:
+      "{count} crediti gratuiti per iniziare. Scegli un piano mensile o acquista un pacchetto di crediti quando te ne servono altri.",
+    manage: "Gestisci abbonamento",
+    opening: "Apertura…",
+    openingCheckout: "Apertura del pagamento…",
+    plansTitle: "Piani mensili",
+    plansSub: "I crediti si ricaricano ogni mese. Disdici quando vuoi.",
+    monthly: "{count} crediti al mese, circa {ads} annunci",
+    choose: "Scegli {plan}",
+    packsTitle: "Pacchetti di crediti",
+    packsSub: "Paghi una volta, nessun abbonamento.",
+    pack: "{count} crediti",
+    packAds: "Circa {ads} annunci",
+    buy: "Acquista per {price}",
+    payTitle: "Paga nella tua valuta",
+    payBody:
+      "I prezzi sono in dollari statunitensi. Al pagamento vedi l'importo nella tua valuta e i metodi di pagamento più diffusi nel tuo paese.",
+    payPlans: "Piani mensili: carta, Apple Pay, Google Pay o Link.",
+    payPacks:
+      "Pacchetti di crediti: anche PayPal, Satispay, Klarna, iDEAL, Bancontact, Pix, Alipay, WeChat Pay e altri, in base al tuo paese.",
+    paid: "Pagamento ricevuto, grazie. Piano e crediti si aggiornano in pochi secondi; ricarica la pagina se non compaiono ancora.",
+    packPaid:
+      "Grazie! I crediti vengono aggiunti appena il pagamento è confermato. La maggior parte dei pagamenti è immediata; gli addebiti bancari possono richiedere alcuni giorni.",
+    footnote:
+      "Un credito crea un'immagine pubblicitaria. I pagamenti sono gestiti in modo sicuro da Stripe.",
+    errors: {
+      pickPlan: "Scegli un piano.",
+      notSetUp: "Questo piano non è ancora configurato.",
+      noWorkspace: "Nessuno spazio di lavoro trovato.",
+      ownerOnly:
+        "Solo il proprietario dello spazio di lavoro può modificare la fatturazione.",
+      checkout: "Impossibile aprire il pagamento. Riprova.",
+      portal: "Impossibile aprire la fatturazione. Riprova.",
     },
   },
 };
