@@ -339,6 +339,8 @@ export const ko: Messages = {
     native: "원어민",
     energy: "분위기",
     person: "출연자",
+    length: "길이",
+    lengthHelp: "릴스·스토리에는 7~15초, 틱톡에는 20~30초가 잘 맞습니다.",
     genders: { female: "여성", male: "남성" },
     energies: { calm: "차분하게", upbeat: "밝게", high: "에너지 넘치게" },
     people: {
@@ -354,7 +356,7 @@ export const ko: Messages = {
     makingVideos: "영상 광고를 만드는 중…",
     makingImages: "광고를 만드는 중…",
     makingVideosBody:
-      "대본 {count}개를 쓰고, 광고마다 두 컷을 준비하고, 내레이션과 음악을 녹음한 뒤 촬영과 편집을 합니다. 보통 4~8분 걸리며 이 페이지는 자동으로 새로 고쳐집니다. 페이지를 떠나도 돌아오면 영상이 완성되어 있습니다.",
+      "대본 {count}개를 쓰고, 광고마다 컷을 준비하고, 내레이션과 음악을 녹음한 뒤 촬영과 편집을 합니다. 보통 4~8분 걸리며 이 페이지는 자동으로 새로 고쳐집니다. 페이지를 떠나도 돌아오면 영상이 완성되어 있습니다.",
     makingImagesBody:
       "카피를 쓰고 이미지 10장을 만들고 있습니다. 보통 2~3분 걸리며 이 페이지는 자동으로 새로 고쳐집니다.",
     failed: "이번 생성은 실패했으며 크레딧은 환불되었습니다.",

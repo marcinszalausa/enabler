@@ -351,6 +351,8 @@ export const pl: Messages = {
     native: "Natywny",
     energy: "Energia",
     person: "Osoba w kadrze",
+    length: "Długość",
+    lengthHelp: "7–15 s pasuje do Reels i Stories, 20–30 s do TikToka.",
     genders: { female: "Kobiecy", male: "Męski" },
     energies: { calm: "Spokojna", upbeat: "Pogodna", high: "Dużo energii" },
     people: {
@@ -366,7 +368,7 @@ export const pl: Messages = {
     makingVideos: "Tworzę Twoje reklamy wideo…",
     makingImages: "Generuję Twoje reklamy…",
     makingVideosBody:
-      "Piszę scenariusze ({count}), przygotowuję dwa ujęcia na reklamę, nagrywam lektora i muzykę, a potem filmuję i montuję. Zwykle trwa to 4–8 minut; ta strona odświeża się sama. Jeśli wyjdziesz, filmy będą gotowe, gdy wrócisz.",
+      "Piszę scenariusze ({count}), przygotowuję ujęcia do każdej reklamy, nagrywam lektora i muzykę, a potem filmuję i montuję. Zwykle trwa to 4–8 minut; ta strona odświeża się sama. Jeśli wyjdziesz, filmy będą gotowe, gdy wrócisz.",
     makingImagesBody:
       "Piszę teksty i tworzę 10 grafik. Zwykle trwa to 2–3 minuty; ta strona odświeża się sama.",
     failed: "Ta seria się nie udała, a kredyty zostały zwrócone.",

@@ -356,6 +356,8 @@ export const it: Messages = {
     native: "Madrelingua",
     energy: "Energia",
     person: "Persona in video",
+    length: "Durata",
+    lengthHelp: "7–15 s per Reels e Stories, 20–30 s per TikTok.",
     genders: { female: "Femminile", male: "Maschile" },
     energies: { calm: "Calma", upbeat: "Allegra", high: "Molto energica" },
     people: {
@@ -371,7 +373,7 @@ export const it: Messages = {
     makingVideos: "Sto creando i tuoi annunci video…",
     makingImages: "Sto generando i tuoi annunci…",
     makingVideosBody:
-      "Scrivo {count} copioni, preparo due inquadrature per annuncio, registro voce e musica, poi giro e monto. Di solito servono 4–8 minuti; questa pagina si aggiorna da sola. Se esci, i video saranno pronti al tuo ritorno.",
+      "Scrivo {count} copioni, preparo le inquadrature di ogni annuncio, registro voce e musica, poi giro e monto. Di solito servono 4–8 minuti; questa pagina si aggiorna da sola. Se esci, i video saranno pronti al tuo ritorno.",
     makingImagesBody:
       "Scrivo i testi e creo 10 immagini. Di solito servono 2–3 minuti; questa pagina si aggiorna da sola.",
     failed: "Questo giro non è riuscito e i crediti ti sono stati restituiti.",

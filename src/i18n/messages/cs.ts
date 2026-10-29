@@ -351,6 +351,8 @@ export const cs: Messages = {
     native: "Rodilý",
     energy: "Energie",
     person: "Osoba v záběru",
+    length: "Délka",
+    lengthHelp: "7–15 s se hodí na Reels a Stories, 20–30 s na TikTok.",
     genders: { female: "Ženský", male: "Mužský" },
     energies: { calm: "Klidná", upbeat: "Veselá", high: "Hodně energie" },
     people: {
@@ -366,7 +368,7 @@ export const cs: Messages = {
     makingVideos: "Vytvářím vaše video reklamy…",
     makingImages: "Vytvářím vaše reklamy…",
     makingVideosBody:
-      "Píšu scénáře ({count}), připravuji dva záběry na reklamu, nahrávám dabing a hudbu a pak natáčím a stříhám. Obvykle to trvá 4–8 minut; stránka se obnovuje sama. Když odejdete, videa budou hotová, až se vrátíte.",
+      "Píšu scénáře ({count}), připravuji záběry pro každou reklamu, nahrávám dabing a hudbu a pak natáčím a stříhám. Obvykle to trvá 4–8 minut; stránka se obnovuje sama. Když odejdete, videa budou hotová, až se vrátíte.",
     makingImagesBody:
       "Píšu texty a vytvářím 10 obrázků. Obvykle to trvá 2–3 minuty; stránka se obnovuje sama.",
     failed: "Tento běh se nezdařil a kredity vám byly vráceny.",

@@ -354,6 +354,8 @@ export const es: Messages = {
     native: "Nativo",
     energy: "Energía",
     person: "Persona en pantalla",
+    length: "Duración",
+    lengthHelp: "7–15 s funciona en Reels y Stories; 20–30 s en TikTok.",
     genders: { female: "Femenina", male: "Masculina" },
     energies: { calm: "Tranquila", upbeat: "Alegre", high: "Mucha energía" },
     people: {
@@ -369,7 +371,7 @@ export const es: Messages = {
     makingVideos: "Creando tus anuncios en vídeo…",
     makingImages: "Generando tus anuncios…",
     makingVideosBody:
-      "Escribiendo {count} guiones, preparando dos planos por anuncio, grabando la locución y la música, y después filmando y editando. Suele tardar 4–8 minutos; esta página se actualiza sola. Si te vas, los vídeos estarán listos cuando vuelvas.",
+      "Escribiendo {count} guiones, preparando los planos de cada anuncio, grabando la locución y la música, y después filmando y editando. Suele tardar 4–8 minutos; esta página se actualiza sola. Si te vas, los vídeos estarán listos cuando vuelvas.",
     makingImagesBody:
       "Escribiendo textos y creando 10 imágenes. Suele tardar 2–3 minutos; esta página se actualiza sola.",
     failed: "Esta tanda falló y te devolvimos los créditos.",

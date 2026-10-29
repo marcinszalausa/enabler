@@ -1,5 +1,6 @@
 import { setShowcase } from "./showcase-actions";
 import { VIDEO_SECONDS, VIDEOS_PER_GENERATION } from "@/lib/video";
+import { lengthForRunCost } from "@/lib/video-options";
 import { Chip, DownloadIcon, ProgressCard, smallButton } from "../../ui";
 import type { Messages } from "@/i18n/messages";
 import { fmt } from "@/i18n/format";
@@ -21,6 +22,7 @@ export type Generation = {
   error: string | null;
   created_at: string;
   showcased_at: string | null;
+  cost_credits: number;
   creatives: Creative[];
 };
 
@@ -43,6 +45,8 @@ export function GenerationBlock({
   });
 
   const video = g.type === "video_ads";
+  // A run's length isn't stored; every length has its own price.
+  const seconds = Number(lengthForRunCost(g.cost_credits) ?? VIDEO_SECONDS);
 
   if (g.status === "queued" || g.status === "running") {
     return (
@@ -145,7 +149,7 @@ export function GenerationBlock({
                 )}
                 <span className="text-xs text-muted">
                   {video
-                    ? fmt(t.app.reel, { seconds: VIDEO_SECONDS })
+                    ? fmt(t.app.reel, { seconds })
                     : c.aspect === "1:1"
                       ? t.app.feedSize
                       : t.app.storySize}

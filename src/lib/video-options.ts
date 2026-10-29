@@ -109,6 +109,50 @@ export const PEOPLE = {
   },
 } as const;
 
+// Ad lengths the owner can pick, in seconds, each cut into shots of 3 to 5
+// seconds: long enough for a motion to play out, short enough that the video
+// model doesn't drift. Every length has its own number of shots, so a job's
+// shot count tells its length.
+export const LENGTHS = {
+  "7": [4, 3],
+  "10": [4, 3, 3],
+  "15": [4, 4, 4, 3],
+  "20": [4, 4, 4, 4, 4],
+  "30": [5, 4, 4, 4, 4, 4, 5],
+} as const satisfies Record<string, readonly number[]>;
+
+export const VIDEOS_PER_GENERATION = 2;
+// Credits scale with length, rounded to 5: 7 s is 20, 30 s is 90.
+export const CREDITS_PER_SECOND = 3;
+
+export function creditsPerVideo(length: LengthKey) {
+  return Math.round((Number(length) * CREDITS_PER_SECOND) / 5) * 5;
+}
+
+export function videoRunCost(length: LengthKey) {
+  return VIDEOS_PER_GENERATION * creditsPerVideo(length);
+}
+
+// The length of a run from what it cost; null if no length matches.
+export function lengthForRunCost(cost: number): LengthKey | null {
+  return (
+    (Object.keys(LENGTHS) as LengthKey[]).find(
+      (l) => videoRunCost(l) === cost,
+    ) ?? null
+  );
+}
+
+// The shot lengths of an ad filmed in this many shots. One shot is an ad
+// from before lengths could be picked, filmed whole.
+export function shotSecondsFor(shots: number): readonly number[] {
+  return (
+    Object.values(LENGTHS).find((s) => s.length === shots) ?? [
+      Number(DEFAULT_VIDEO_OPTIONS.length),
+    ]
+  );
+}
+
+export type LengthKey = keyof typeof LENGTHS;
 export type GenderKey = keyof typeof GENDERS;
 export type AccentKey = keyof typeof ACCENTS;
 export type EnergyKey = keyof typeof ENERGIES;
@@ -122,6 +166,7 @@ export type VideoOptions = {
   accent: AccentKey;
   energy: EnergyKey;
   person: PersonKey;
+  length: LengthKey;
 };
 
 export const MAX_MESSAGE_LENGTH = 300;
@@ -133,6 +178,7 @@ export const DEFAULT_VIDEO_OPTIONS: VideoOptions = {
   accent: "american",
   energy: "upbeat",
   person: "auto",
+  length: "7",
 };
 
 export function parseVideoOptions(form: FormData): VideoOptions {
@@ -157,6 +203,7 @@ export function parseVideoOptions(form: FormData): VideoOptions {
     accent: pick(form.get("accent"), ACCENTS, DEFAULT_VIDEO_OPTIONS.accent),
     energy: pick(form.get("energy"), ENERGIES, DEFAULT_VIDEO_OPTIONS.energy),
     person: pick(form.get("person"), PEOPLE, DEFAULT_VIDEO_OPTIONS.person),
+    length: pick(form.get("length"), LENGTHS, DEFAULT_VIDEO_OPTIONS.length),
   };
 }
 

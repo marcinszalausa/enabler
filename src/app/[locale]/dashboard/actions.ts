@@ -8,8 +8,8 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { scrapePage } from "@/lib/scrape";
 import { extractBrandBrief } from "@/lib/ai/claude";
 import { GENERATION_COST, runGeneration } from "@/lib/pipeline";
-import { VIDEO_GENERATION_COST, runVideoGeneration } from "@/lib/video";
-import { parseVideoOptions } from "@/lib/video-options";
+import { runVideoGeneration } from "@/lib/video";
+import { parseVideoOptions, videoRunCost } from "@/lib/video-options";
 import { DEFAULT_LANGUAGE, isLanguageKey } from "@/lib/languages";
 import { userMessage } from "@/lib/errors";
 import { seedBrandKit } from "@/lib/brand-kit";
@@ -75,8 +75,8 @@ export async function startGeneration(
 ): Promise<FormState> {
   const productId = String(formData.get("productId") ?? "");
   const video = formData.get("kind") === "video";
-  const cost = video ? VIDEO_GENERATION_COST : GENERATION_COST;
   const options = video ? parseVideoOptions(formData) : null;
+  const cost = options ? videoRunCost(options.length) : GENERATION_COST;
   const requested = formData.get("language");
   const language =
     options?.language ??

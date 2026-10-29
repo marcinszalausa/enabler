@@ -350,6 +350,8 @@ export const sv: Messages = {
     native: "Modersmål",
     energy: "Energi",
     person: "Person i bild",
+    length: "Längd",
+    lengthHelp: "7–15 s passar Reels och Stories, 20–30 s passar TikTok.",
     genders: { female: "Kvinna", male: "Man" },
     energies: { calm: "Lugn", upbeat: "Glad", high: "Mycket energi" },
     people: {
@@ -365,7 +367,7 @@ export const sv: Messages = {
     makingVideos: "Skapar dina videoannonser…",
     makingImages: "Skapar dina annonser…",
     makingVideosBody:
-      "Skriver {count} manus, förbereder två klipp per annons, spelar in speakerröst och musik, och filmar och klipper sedan. Det tar oftast 4–8 minuter; sidan uppdateras av sig själv. Om du går härifrån är videorna klara när du kommer tillbaka.",
+      "Skriver {count} manus, förbereder klippen för varje annons, spelar in speakerröst och musik, och filmar och klipper sedan. Det tar oftast 4–8 minuter; sidan uppdateras av sig själv. Om du går härifrån är videorna klara när du kommer tillbaka.",
     makingImagesBody:
       "Skriver texter och skapar 10 bilder. Det tar oftast 2–3 minuter; sidan uppdateras av sig själv.",
     failed: "Körningen misslyckades och dina krediter har återbetalats.",

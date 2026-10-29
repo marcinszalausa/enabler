@@ -356,6 +356,9 @@ export const ro: Messages = {
     native: "Nativ",
     energy: "Energie",
     person: "Persoana din cadru",
+    length: "Durată",
+    lengthHelp:
+      "7–15 s se potrivesc pentru Reels și Stories, 20–30 s pentru TikTok.",
     genders: { female: "Feminină", male: "Masculină" },
     energies: { calm: "Calmă", upbeat: "Veselă", high: "Multă energie" },
     people: {
@@ -371,7 +374,7 @@ export const ro: Messages = {
     makingVideos: "Îți creez reclamele video…",
     makingImages: "Îți generez reclamele…",
     makingVideosBody:
-      "Scriu {count} scenarii, pregătesc două cadre per reclamă, înregistrez vocea și muzica, apoi filmez și montez. De obicei durează 4–8 minute; pagina se actualizează singură. Dacă pleci, clipurile vor fi gata când revii.",
+      "Scriu {count} scenarii, pregătesc cadrele fiecărei reclame, înregistrez vocea și muzica, apoi filmez și montez. De obicei durează 4–8 minute; pagina se actualizează singură. Dacă pleci, clipurile vor fi gata când revii.",
     makingImagesBody:
       "Scriu textele și creez 10 imagini. De obicei durează 2–3 minute; pagina se actualizează singură.",
     failed: "Această rulare a eșuat, iar creditele ți-au fost returnate.",
