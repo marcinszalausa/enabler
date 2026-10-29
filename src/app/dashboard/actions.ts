@@ -8,6 +8,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { scrapePage } from "@/lib/scrape";
 import { extractBrandBrief } from "@/lib/ai/claude";
 import { GENERATION_COST, runGeneration } from "@/lib/pipeline";
+import { userMessage } from "@/lib/errors";
 
 export type FormState = { error: string | null };
 
@@ -52,7 +53,7 @@ export async function createProduct(_prev: FormState, formData: FormData): Promi
     productId = data.id;
   } catch (err) {
     console.error("createProduct failed", err);
-    return { error: err instanceof Error ? err.message : "Something went wrong." };
+    return { error: userMessage(err) };
   }
 
   redirect(`/dashboard/products/${productId}`);

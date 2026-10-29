@@ -1,4 +1,5 @@
 import "server-only";
+import { UserError } from "@/lib/errors";
 
 export type ScrapedPage = {
   url: string;
@@ -19,10 +20,10 @@ export function parsePublicUrl(raw: string): URL {
   try {
     url = new URL(raw.trim().match(/^https?:\/\//i) ? raw.trim() : `https://${raw.trim()}`);
   } catch {
-    throw new Error("That doesn't look like a valid URL.");
+    throw new UserError("That doesn't look like a valid URL.");
   }
   if (url.protocol !== "http:" && url.protocol !== "https:") {
-    throw new Error("Only http and https links are supported.");
+    throw new UserError("Only http and https links are supported.");
   }
   const host = url.hostname.toLowerCase();
   if (
@@ -34,7 +35,7 @@ export function parsePublicUrl(raw: string): URL {
     host.includes(":") ||
     !host.includes(".")
   ) {
-    throw new Error("That address isn't a public website.");
+    throw new UserError("That address isn't a public website.");
   }
   return url;
 }
@@ -154,7 +155,7 @@ export async function scrapePage(rawUrl: string): Promise<ScrapedPage> {
   const url = parsePublicUrl(rawUrl);
   const html = await fetchText(url, "text/html,application/xhtml+xml").catch(() => null);
   if (!html) {
-    throw new Error("We couldn't open that page. Check the link and try again.");
+    throw new UserError("We couldn't open that page. Check the link and try again.");
   }
 
   const product = findJsonLdProduct(html);

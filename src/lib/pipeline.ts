@@ -2,6 +2,7 @@ import "server-only";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { writeAdAngles, type BrandBrief } from "@/lib/ai/claude";
 import { generateAdImage, type Aspect } from "@/lib/ai/fal";
+import { userMessage } from "@/lib/errors";
 
 export const ASPECTS: Aspect[] = ["1:1", "9:16"];
 export const ADS_PER_GENERATION = 5;
@@ -83,7 +84,7 @@ export async function runGeneration({ generationId, workspaceId, productId }: Jo
       })
       .eq("id", generationId);
   } catch (err) {
-    const message = err instanceof Error ? err.message : "Generation failed.";
+    const message = userMessage(err, "Generation failed. Please try again.");
     console.error("generation failed", generationId, err);
     await db.rpc("refund_credits", { ws: workspaceId, amount: GENERATION_COST });
     await db

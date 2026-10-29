@@ -1,4 +1,5 @@
 import "server-only";
+import { UserError } from "@/lib/errors";
 import Anthropic from "@anthropic-ai/sdk";
 import { betaZodOutputFormat } from "@anthropic-ai/sdk/helpers/beta/zod";
 import { z } from "zod";
@@ -40,10 +41,10 @@ const AdAnglesSchema = z.object({ ads: z.array(AdAngleSchema) });
 
 function assertAnswered(stopReason: string | null) {
   if (stopReason === "refusal") {
-    throw new Error("The AI declined to work on this page.");
+    throw new UserError("The AI declined to work on this page.");
   }
   if (stopReason === "max_tokens") {
-    throw new Error("The AI response was cut off. Please try again.");
+    throw new UserError("The AI response was cut off. Please try again.");
   }
 }
 
@@ -72,7 +73,7 @@ export async function extractBrandBrief(page: ScrapedPage): Promise<BrandBrief> 
     ],
   });
   assertAnswered(response.stop_reason);
-  if (!response.parsed_output) throw new Error("Couldn't read the brand brief.");
+  if (!response.parsed_output) throw new UserError("Couldn't read the brand brief.");
   return response.parsed_output;
 }
 
@@ -94,6 +95,6 @@ export async function writeAdAngles(brief: BrandBrief, count = 5): Promise<AdAng
   });
   assertAnswered(response.stop_reason);
   const ads = response.parsed_output?.ads;
-  if (!ads?.length) throw new Error("Couldn't write ad copy.");
+  if (!ads?.length) throw new UserError("Couldn't write ad copy.");
   return ads.slice(0, count);
 }
