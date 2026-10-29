@@ -243,7 +243,8 @@ html {
     0 10cqw 16cqw -6cqw rgb(0 0 0 / 0.45);
 }
 /* A phone with a body: stacked slices of titanium behind the front frame,
-   about 7.5% of its width deep. Only shows when the phone is turned in 3D. */
+   about 9% of its width deep, close to a real iPhone's 11%. Only shows when
+   the phone is turned in 3D. */
 .iphone-3d {
   position: relative;
   transform-style: preserve-3d;
@@ -252,7 +253,7 @@ html {
   position: absolute;
   inset: 0;
   border-radius: 16.6cqw;
-  transform: translateZ(calc(var(--i) * -0.625cqw));
+  transform: translateZ(calc(var(--i) * -0.65cqw));
   background: linear-gradient(
     90deg,
     #7d7e85,
@@ -501,6 +502,21 @@ html {
 .landing .stage-inner {
   transform: rotateX(var(--rx)) rotateY(var(--ry));
   transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+/* Touch screens have no pointer to follow, so the stage sways slowly on its
+   own and the phones' edges still come into view. */
+@media (hover: none) and (prefers-reduced-motion: no-preference) {
+  .landing .stage-inner {
+    animation: stage-sway 7s ease-in-out infinite alternate;
+  }
+}
+@keyframes stage-sway {
+  from {
+    transform: rotateX(3deg) rotateY(-14deg);
+  }
+  to {
+    transform: rotateX(3deg) rotateY(14deg);
+  }
 }
 .landing .stage-side {
   position: absolute;
