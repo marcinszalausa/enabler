@@ -8,6 +8,8 @@ import { GENERATION_COST } from "@/lib/pipeline";
 import { getBrandKit } from "@/lib/brand-kit";
 import { GenerateButton } from "./generate-button";
 import { AutoRefresh } from "./auto-refresh";
+import { setShowcase } from "./showcase-actions";
+import { isShowcaseAdmin } from "@/lib/showcase";
 
 export const maxDuration = 300;
 export const metadata = { title: "Product · Gooidy" };
@@ -46,12 +48,14 @@ type Generation = {
   status: "queued" | "running" | "succeeded" | "failed";
   error: string | null;
   created_at: string;
+  showcased_at: string | null;
   creatives: Creative[];
 };
 
 async function Product({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  await getCurrentUser();
+  const user = await getCurrentUser();
+  const canShowcase = isShowcaseAdmin(user.email);
   const supabase = await createClient();
 
   const { data: product } = await supabase
@@ -65,7 +69,7 @@ async function Product({ params }: { params: Promise<{ id: string }> }) {
     supabase
       .from("generations")
       .select(
-        "id, status, error, created_at, creatives(id, aspect, angle, headline, primary_text, cta)",
+        "id, status, error, created_at, showcased_at, creatives(id, aspect, angle, headline, primary_text, cta)",
       )
       .eq("product_id", id)
       .order("created_at", { ascending: false })
@@ -155,6 +159,7 @@ async function Product({ params }: { params: Promise<{ id: string }> }) {
             key={g.id}
             generation={g}
             imageVersion={imageVersion}
+            canShowcase={canShowcase}
           />
         ))}
       </section>
@@ -165,9 +170,11 @@ async function Product({ params }: { params: Promise<{ id: string }> }) {
 function GenerationBlock({
   generation: g,
   imageVersion,
+  canShowcase,
 }: {
   generation: Generation;
   imageVersion: string;
+  canShowcase: boolean;
 }) {
   const when = new Date(g.created_at).toLocaleString("en-US", {
     dateStyle: "medium",
@@ -205,10 +212,30 @@ function GenerationBlock({
 
   return (
     <div>
-      <h2 className="text-sm font-medium text-neutral-500">
-        {when}
-        {g.error && <span className="ml-2 text-amber-600">{g.error}</span>}
-      </h2>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <h2 className="text-sm font-medium text-neutral-500">
+          {when}
+          {g.error && <span className="ml-2 text-amber-600">{g.error}</span>}
+        </h2>
+        {canShowcase && (
+          <form action={setShowcase}>
+            <input type="hidden" name="generationId" value={g.id} />
+            <input
+              type="hidden"
+              name="show"
+              value={g.showcased_at ? "0" : "1"}
+            />
+            <button
+              type="submit"
+              className="rounded-md border border-neutral-300 px-3 py-1.5 text-sm font-medium dark:border-neutral-700"
+            >
+              {g.showcased_at
+                ? "✓ Shown on gooidy.com · Remove"
+                : "Show on gooidy.com"}
+            </button>
+          </form>
+        )}
+      </div>
       <ul className="mt-3 grid grid-cols-2 gap-4 md:grid-cols-4">
         {creatives.map((c) => (
           <li key={c.id} className="flex flex-col gap-2">

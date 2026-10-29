@@ -16,6 +16,8 @@
   --color-accent: var(--l-accent);
   --color-muted: var(--l-muted);
   --color-line: var(--l-line);
+  --color-ok: var(--l-ok);
+  --color-ok-bg: var(--l-ok-bg);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -45,6 +47,8 @@ html {
   --l-line: #e4e4ea;
   --l-surface: #f7f7f9;
   --l-accent: #4f46e5;
+  --l-ok: #1b7a3d;
+  --l-ok-bg: #e7f6ec;
 }
 :root[data-theme="dark"] .landing {
   --l-bg: #0f1014;
@@ -53,6 +57,8 @@ html {
   --l-line: #262833;
   --l-surface: #16171d;
   --l-accent: #a5a1ff;
+  --l-ok: #7fd69c;
+  --l-ok-bg: #15301f;
 }
 :root[data-theme="dark"] {
   background: #0f1014;
