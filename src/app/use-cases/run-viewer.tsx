@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import type { ShowcaseRun } from "@/lib/showcase";
 import { ANGLES, angleName } from "@/lib/angles";
@@ -108,14 +109,13 @@ export function RunViewer({
           <div className="grid items-start gap-4 grid-cols-[1fr_0.5625fr]">
             {square && (
               <figure>
-                {/* eslint-disable-next-line @next/next/no-img-element -- rendered by our own ad route */}
-                <img
+                <Image
                   key={square.id}
                   src={`/api/creatives/${square.id}/image`}
                   alt={square.headline}
                   width={1080}
                   height={1080}
-                  loading="lazy"
+                  sizes="(min-width: 64rem) 420px, 60vw"
                   className="angle-in aspect-square w-full rounded-xl border border-line bg-surface object-cover"
                 />
                 <figcaption className="mt-2 text-xs text-muted">
@@ -125,14 +125,13 @@ export function RunViewer({
             )}
             {story && (
               <figure>
-                {/* eslint-disable-next-line @next/next/no-img-element -- rendered by our own ad route */}
-                <img
+                <Image
                   key={story.id}
                   src={`/api/creatives/${story.id}/image`}
                   alt={story.headline}
                   width={1080}
                   height={1920}
-                  loading="lazy"
+                  sizes="(min-width: 64rem) 240px, 34vw"
                   className="angle-in aspect-[9/16] w-full rounded-xl border border-line bg-surface object-cover"
                 />
                 <figcaption className="mt-2 text-xs text-muted">
