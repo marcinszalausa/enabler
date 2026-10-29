@@ -1,10 +1,21 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Ad images read bundled font files at runtime.
+  // Ad images read bundled font files at runtime; video ads also run the
+  // bundled ffmpeg binary to put the headline on the clip.
   outputFileTracingIncludes: {
     "/api/creatives/*/image": ["./src/fonts/**/*"],
+    "/api/generations/*/advance": [
+      "./src/fonts/**/*",
+      "./node_modules/ffmpeg-static/ffmpeg",
+    ],
+    "/dashboard/products/*": [
+      "./src/fonts/**/*",
+      "./node_modules/ffmpeg-static/ffmpeg",
+    ],
   },
+  // Loaded from node_modules at runtime so it can find its binary.
+  serverExternalPackages: ["ffmpeg-static"],
   cacheComponents: true,
   // Brand kit logo uploads go through a server action (logos are capped at 2 MB).
   experimental: {

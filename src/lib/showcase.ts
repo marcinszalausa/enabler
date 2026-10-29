@@ -68,6 +68,8 @@ export async function getShowcase(): Promise<ShowcaseRun[]> {
     )
     .not("showcased_at", "is", null)
     .eq("status", "succeeded")
+    // The public page shows image runs; video runs aren't laid out there yet.
+    .eq("type", "image_ads")
     .order("showcased_at")
     .returns<Row[]>();
 

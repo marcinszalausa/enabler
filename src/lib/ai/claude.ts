@@ -155,6 +155,55 @@ export async function writeAdAngles(
   return ads.slice(0, count);
 }
 
+export const VideoAdSchema = AdAngleSchema.extend({
+  headline: z
+    .string()
+    .describe("Max 32 characters; it stays on screen for the whole clip"),
+  image_prompt: z
+    .string()
+    .describe(
+      "The opening frame of a vertical video, featuring the product. Describe setting, lighting, composition, with room for motion. Show the product once, in its real color and design. Keep hands simple and natural, or out of frame. No text, words or logos in the image.",
+    ),
+  motion_prompt: z
+    .string()
+    .describe(
+      "What happens in the 5-second clip that starts from that frame: one simple, natural motion of the person or product (e.g. a slow turn, fabric moving as the person walks, steam rising) plus one smooth camera move (slow push-in, gentle pan). Realistic physics; the product keeps its exact look. No text, no cuts, no new people.",
+    ),
+});
+export type VideoAd = z.infer<typeof VideoAdSchema>;
+
+const VideoAdsSchema = z.object({ ads: z.array(VideoAdSchema) });
+
+export async function writeVideoAds(
+  brief: BrandBrief,
+  count = 3,
+): Promise<VideoAd[]> {
+  const response = await callClaude(() =>
+    client.beta.messages.parse({
+      model: MODEL,
+      max_tokens: 16000,
+      betas: [FALLBACK_BETA],
+      fallbacks: "default",
+      output_config: {
+        effort: "medium",
+        format: betaZodOutputFormat(VideoAdsSchema),
+      },
+      system:
+        "You write short vertical video ads for Instagram Reels, Facebook Reels and TikTok for small and medium businesses. Each ad is one 5-second clip that stops the scroll in the first second, with a headline over it and a call to action. Each ad uses a different angle. Headlines are punchy and at most 32 characters; primary text (the caption) is at most 125 characters; no hashtags, no emoji, no false claims or invented reviews. Match the brand's tone. Motion must be simple enough for an AI video model to render realistically.",
+      messages: [
+        {
+          role: "user",
+          content: `Write ${count} video ads, each with a different angle (choose the strongest of pain, benefit, social_proof, offer, curiosity), for this brand brief:\n\n${JSON.stringify(brief, null, 2)}`,
+        },
+      ],
+    }),
+  );
+  assertAnswered(response.stop_reason);
+  const ads = response.parsed_output?.ads;
+  if (!ads?.length) throw new UserError("Couldn't write video scripts.");
+  return ads.slice(0, count);
+}
+
 const ImageReviewSchema = z.object({
   ok: z
     .boolean()

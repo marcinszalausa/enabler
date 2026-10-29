@@ -45,6 +45,44 @@ export async function generateAdImage(opts: {
   return url;
 }
 
+export const VIDEO_MODEL = "fal-ai/kling-video/v2.6/pro/image-to-video";
+
+// Video clips take minutes, longer than a request should wait, so they go
+// through fal's queue: submit now, collect the result on a later check.
+export async function submitAdVideo(opts: {
+  startImageUrl: string;
+  prompt: string;
+}): Promise<string> {
+  const { request_id } = await callFal(() =>
+    fal.queue.submit(VIDEO_MODEL, {
+      input: {
+        prompt: `${opts.prompt} Vertical social video ad, photorealistic, steady and smooth. The product keeps exactly the color, fabric and design of the first frame. Natural hands and faces. Audio: soft, upbeat background music and gentle ambient sound only; no voices, speech or singing.`,
+        start_image_url: opts.startImageUrl,
+        duration: "5",
+        negative_prompt:
+          "blur, distortion, warped hands, extra fingers, morphing product, color change, text, subtitles, watermark, low quality",
+        generate_audio: true,
+      },
+    }),
+  );
+  return request_id;
+}
+
+// The finished clip's URL, null while the model is still working.
+// Throws if the model failed on it.
+export async function getAdVideo(requestId: string): Promise<string | null> {
+  const status = await callFal(() =>
+    fal.queue.status(VIDEO_MODEL, { requestId }),
+  );
+  if (status.status !== "COMPLETED") return null;
+  const result = await callFal(() =>
+    fal.queue.result(VIDEO_MODEL, { requestId }),
+  );
+  const url = (result.data as { video?: { url?: string } }).video?.url;
+  if (!url) throw new Error("Video generation returned no video.");
+  return url;
+}
+
 // Turns fal failures into messages that point at the likely fix.
 // The full error still goes to the server log.
 async function callFal<T>(request: () => Promise<T>, attempt = 1): Promise<T> {

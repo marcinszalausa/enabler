@@ -22,6 +22,7 @@ export async function GET(
     .from("creatives")
     .select("workspace_id, storage_path, aspect, headline, cta")
     .eq("id", id)
+    .eq("kind", "image")
     .maybeSingle();
 
   // Anyone may see ads from runs the team put on the public site.
@@ -34,6 +35,7 @@ export async function GET(
         "workspace_id, storage_path, aspect, headline, cta, generations!inner(showcased_at)",
       )
       .eq("id", id)
+      .eq("kind", "image")
       .not("generations.showcased_at", "is", null)
       .maybeSingle());
   }
