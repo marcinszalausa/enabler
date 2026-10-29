@@ -33,7 +33,9 @@ export async function updateSession(request: NextRequest) {
   if (!isSignedIn && PROTECTED_PREFIXES.some((p) => path.startsWith(p))) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
-    url.searchParams.set("next", path);
+    // Keep the query too, so a link pasted on the landing page survives sign-in.
+    url.search = "";
+    url.searchParams.set("next", path + request.nextUrl.search);
     return NextResponse.redirect(url);
   }
 

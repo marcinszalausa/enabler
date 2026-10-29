@@ -5,7 +5,7 @@ import { createProduct, type FormState } from "./actions";
 
 const initialState: FormState = { error: null };
 
-export function ProductUrlForm() {
+export function ProductUrlForm({ defaultUrl }: { defaultUrl: string }) {
   const [state, action, pending] = useActionState(createProduct, initialState);
 
   return (
@@ -20,6 +20,7 @@ export function ProductUrlForm() {
           type="text"
           inputMode="url"
           required
+          defaultValue={defaultUrl}
           placeholder="https://yourstore.com/products/..."
           className="flex-1 rounded-md border border-neutral-300 bg-transparent px-3 py-2 dark:border-neutral-700"
         />
