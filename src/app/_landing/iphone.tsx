@@ -48,23 +48,53 @@ export function StatusBar({ time = "9:41" }: { time?: string }) {
       </span>
       <span className="flex w-[20cqw] items-center justify-center gap-[1.3cqw]">
         {/* Signal */}
-        <svg viewBox="0 0 18 12" className="h-[3cqw]" fill="currentColor" aria-hidden>
+        <svg
+          viewBox="0 0 18 12"
+          className="h-[3cqw]"
+          fill="currentColor"
+          aria-hidden
+        >
           <rect x="0" y="8" width="3" height="4" rx="1" />
           <rect x="5" y="5.5" width="3" height="6.5" rx="1" />
           <rect x="10" y="3" width="3" height="9" rx="1" />
           <rect x="15" y="0" width="3" height="12" rx="1" />
         </svg>
         {/* Wi-Fi */}
-        <svg viewBox="0 0 16 12" className="h-[3cqw]" fill="currentColor" aria-hidden>
+        <svg
+          viewBox="0 0 16 12"
+          className="h-[3cqw]"
+          fill="currentColor"
+          aria-hidden
+        >
           <path d="M8 2.2c2.4 0 4.6.9 6.3 2.5l1.2-1.3A10.8 10.8 0 0 0 8 .4C5.2.4 2.5 1.5.5 3.4l1.2 1.3A9 9 0 0 1 8 2.2Z" />
           <path d="M8 5.8c1.4 0 2.7.5 3.7 1.4l1.2-1.3A7.2 7.2 0 0 0 8 4c-1.8 0-3.6.7-4.9 1.9l1.2 1.3c1-.9 2.3-1.4 3.7-1.4Z" />
           <path d="M8 9.3c.5 0 .9.2 1.2.4L8 11.6 6.8 9.7c.3-.3.7-.4 1.2-.4Z" />
         </svg>
         {/* Battery */}
         <svg viewBox="0 0 27 13" className="h-[3.1cqw]" aria-hidden>
-          <rect x="0.5" y="0.5" width="23" height="12" rx="3.6" fill="none" stroke="currentColor" strokeOpacity=".4" />
-          <rect x="2.2" y="2.2" width="17" height="8.6" rx="2.2" fill="currentColor" />
-          <path d="M25 4.4v4.2c.8-.3 1.4-1.1 1.4-2.1s-.6-1.8-1.4-2.1Z" fill="currentColor" fillOpacity=".45" />
+          <rect
+            x="0.5"
+            y="0.5"
+            width="23"
+            height="12"
+            rx="3.6"
+            fill="none"
+            stroke="currentColor"
+            strokeOpacity=".4"
+          />
+          <rect
+            x="2.2"
+            y="2.2"
+            width="17"
+            height="8.6"
+            rx="2.2"
+            fill="currentColor"
+          />
+          <path
+            d="M25 4.4v4.2c.8-.3 1.4-1.1 1.4-2.1s-.6-1.8-1.4-2.1Z"
+            fill="currentColor"
+            fillOpacity=".45"
+          />
         </svg>
       </span>
     </div>

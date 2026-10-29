@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import Link from "next/link";
 import { FALLBACK_AD, type FeedAd } from "./_landing/reel";
 import { PhoneFeed } from "./_landing/phone-feed";
@@ -5,7 +6,9 @@ import { getShowcase, type ShowcaseRun } from "@/lib/showcase";
 import { LANGUAGES } from "@/lib/video-options";
 import { VIDEO_SECONDS } from "@/lib/video";
 import { Nav, UrlForm, SectionHeading, Footer } from "./_landing/chrome";
-import { AngleExplorer } from "./_landing/angle-explorer";
+import { AngleExplorer, type AngleAd } from "./_landing/angle-explorer";
+import { HeroStage } from "./_landing/hero-stage";
+import { RunDemo, type DemoRun } from "./_landing/run-demo";
 import { Reveal } from "./_landing/reveal";
 
 export const metadata = {
@@ -26,29 +29,6 @@ const STEPS = [
   {
     title: "Publish",
     body: "Download the ones you like and run them on TikTok, Instagram and Facebook. Direct publishing is coming soon.",
-  },
-];
-
-const FEATURES = [
-  {
-    title: "Brand brief from your site",
-    body: "Tone, audience and selling points, pulled from your page automatically.",
-    icon: "M4 6h16M4 12h10M4 18h7",
-  },
-  {
-    title: "Several angles per run",
-    body: "Problem and solution, social proof, offer and more, so you can test what works.",
-    icon: "M12 3v18M3 12h18",
-  },
-  {
-    title: "Every placement",
-    body: "9:16 for Reels, Stories, TikTok and Shorts. 1:1 for the feed.",
-    icon: "M7 3h10v18H7z",
-  },
-  {
-    title: "Your brand kit",
-    body: "Set your logo, button color and font once. Every ad follows it.",
-    icon: "M12 3a9 9 0 1 0 0 18c1 0 1.5-.8 1.5-1.5 0-1-1-1.2-1-2.2 0-.8.7-1.3 1.5-1.3H16a5 5 0 0 0 5-5c0-4.4-4-8-9-8z",
   },
 ];
 
@@ -102,19 +82,22 @@ const FAQ = [
 ];
 
 export default async function Home() {
-  const { images, videos } = await showcaseAds();
-  const hero = heroFeed(images, videos);
+  const { runs, images, videos } = await showcaseAds();
+  const feed = heroFeed(images, videos);
+  // Side phones show other ads than the one the middle phone opens on.
+  const sides = images.length > 2 ? images.slice(-2) : [];
+  const run = runs[0];
   return (
     <div className="landing flex flex-1 flex-col bg-bg text-fg">
       <Nav />
       <main className="flex-1">
-        <Hero ads={hero} />
+        <Hero feed={feed} left={sides[0]} right={sides[1]} />
         <WorksWith />
-        <HowItWorks />
+        {run ? <HowItWorksLive run={run} /> : <HowItWorks />}
         {videos.length > 0 && <VideoAds ads={videos} />}
-        <Angles />
-        {images.length > 0 && <Examples ads={images.slice(0, 4)} />}
-        <Features />
+        {run && <Angles run={run} />}
+        {runs.length > 0 && <Examples runs={runs} />}
+        <Features run={run} />
         <Compare />
         <Pricing />
         <Faq />
@@ -133,9 +116,10 @@ async function showcaseAds() {
     getShowcase("video_ads"),
   ]);
   return {
+    runs: imageRuns,
     images: roundRobin(imageRuns, (r, a) => ({
       ...about(r, a),
-      image: `/api/creatives/${a.id}/image`,
+      image: image(a.id),
     })),
     videos: roundRobin(videoRuns, (r, a) => ({
       ...about(r, a),
@@ -181,56 +165,63 @@ function heroFeed(images: FeedAd[], videos: FeedAd[]): FeedAd[] {
   return feed.length ? feed : [FALLBACK_AD];
 }
 
+const image = (id: string) => `/api/creatives/${id}/image`;
+
 function duration(seconds: number) {
   if (seconds < 60) return `${seconds} s`;
   const m = Math.round(seconds / 60);
   return `${m} min`;
 }
 
-function Hero({ ads }: { ads: FeedAd[] }) {
+function Hero({
+  feed,
+  left,
+  right,
+}: {
+  feed: FeedAd[];
+  left?: FeedAd;
+  right?: FeedAd;
+}) {
   return (
-    <section className="hero-bg overflow-hidden">
-      <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 pb-20 pt-10 sm:pt-16 lg:grid-cols-[1.1fr_0.9fr]">
-        <div className="text-center lg:text-left">
-          <p className="inline-flex items-center gap-2 rounded-full border border-line bg-bg px-3 py-1 text-sm text-muted shadow-sm">
-            <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-            AI image and video ads for small businesses
-          </p>
-          <h1 className="mt-5 text-4xl font-semibold leading-[1.08] tracking-tight sm:text-6xl">
-            Ads that sell, from a single{" "}
-            <span className="text-gradient">link</span>.
-          </h1>
-          <p className="mx-auto mt-5 max-w-lg text-lg leading-relaxed text-muted lg:mx-0">
-            Paste your product page. Gooidy writes the copy, designs image ads,
-            films short video ads with a voiceover and sizes everything for
-            TikTok, Instagram and Facebook.
-          </p>
-          <div className="mt-8 flex justify-center lg:justify-start">
-            <UrlForm id="url-top" />
-          </div>
-          <p className="mt-3 text-sm text-muted">
-            Free to start. No credit card needed.
-          </p>
-          <ul className="mx-auto mt-10 hidden max-w-lg grid-cols-3 gap-3 text-left sm:grid lg:mx-0">
-            {HERO_FACTS.map((f) => (
-              <li
-                key={f.label}
-                className="rounded-2xl border border-line bg-bg/70 px-4 py-3 backdrop-blur"
-              >
-                <p className="text-sm font-medium">{f.value}</p>
-                <p className="mt-0.5 text-xs text-muted">{f.label}</p>
-              </li>
-            ))}
-          </ul>
+    <section className="relative isolate overflow-hidden">
+      <div className="aurora" aria-hidden>
+        <span />
+        <span />
+        <span />
+      </div>
+      <div className="grid-fade" aria-hidden />
+      <div className="mx-auto flex max-w-6xl flex-col items-center px-4 pt-14 text-center sm:pt-20">
+        <p className="glass inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm text-muted">
+          <span className="relative flex h-2 w-2">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60 motion-reduce:animate-none" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
+          </span>
+          Image and video ads for small businesses
+        </p>
+        <h1 className="mt-6 max-w-4xl text-[2.6rem] font-semibold leading-[1.02] tracking-[-0.035em] sm:text-7xl lg:text-[5.25rem]">
+          Ads that sell,
+          <br />
+          from a single <span className="text-shimmer">link</span>.
+        </h1>
+        <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-muted sm:text-xl">
+          Paste your product page. Gooidy writes the copy, designs the ads,
+          films short videos with a voiceover and sizes everything for TikTok,
+          Instagram and Facebook.
+        </p>
+        <div className="mt-9 flex w-full justify-center">
+          <UrlForm id="url-top" />
         </div>
-        <div className="relative flex justify-center">
-          <div className="phone-halo" aria-hidden />
-          <PhoneFeed
-            ads={ads}
-            notes
-            className="w-[260px] sm:w-[300px] lg:w-[318px]"
-          />
-        </div>
+        <ul className="mt-5 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-muted">
+          {HERO_FACTS.map((f) => (
+            <li key={f} className="flex items-center gap-2">
+              <span className="text-accent">✓</span>
+              {f}
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="relative mx-auto mt-16 max-w-6xl px-4 pb-36">
+        <HeroStage feed={feed} left={left} right={right} />
       </div>
     </section>
   );
@@ -238,12 +229,10 @@ function Hero({ ads }: { ads: FeedAd[] }) {
 
 // What one run gives you, as the product does it today.
 const HERO_FACTS = [
-  { value: "5 angles", label: "per image run" },
-  { value: "9:16 and 1:1", label: "every placement" },
-  {
-    value: `${Object.keys(LANGUAGES).length} languages`,
-    label: "for video voiceover",
-  },
+  "Free to start, no card",
+  "5 angles per run",
+  "9:16 and 1:1",
+  `Voiceover in ${Object.keys(LANGUAGES).length} languages`,
 ];
 
 function WorksWith() {
@@ -263,18 +252,22 @@ function WorksWith() {
   );
 }
 
-function Angles() {
+function Angles({ run }: { run: ShowcaseRun }) {
+  const ads: AngleAd[] = run.ads
+    .filter((a) => a.aspect === "1:1")
+    .map((a) => ({ ...a, image: image(a.id) }));
+  if (ads.length === 0) return null;
   return (
     <section
       id="angles"
-      className="reveal mx-auto max-w-6xl scroll-mt-16 px-4 py-20"
+      className="reveal mx-auto max-w-6xl scroll-mt-16 px-4 py-24"
     >
       <SectionHeading
         title="One product, many ways to sell it"
-        sub="Every run gives you different ad angles. Tap one to see how the same cardigan is pitched."
+        sub={`Every run tries different angles. These are the real feed ads Gooidy made from one ${run.store} link.`}
       />
-      <div className="mt-12">
-        <AngleExplorer photo="/reels/softmila-still.jpg" />
+      <div className="mt-14">
+        <AngleExplorer store={run.store} ads={ads} />
       </div>
     </section>
   );
@@ -319,6 +312,32 @@ function Compare() {
   );
 }
 
+function HowItWorksLive({ run }: { run: ShowcaseRun }) {
+  const demo: DemoRun = {
+    url: run.productUrl,
+    store: run.store,
+    summary: run.summary,
+    audience: run.audience,
+    madeIn: run.seconds ? duration(run.seconds) : undefined,
+    ads: run.ads
+      .filter((a) => a.aspect === "9:16")
+      .map((a) => ({ ...a, image: image(a.id) })),
+  };
+  return (
+    <section id="how" className="relative scroll-mt-16 py-24">
+      <div className="reveal mx-auto max-w-6xl px-4">
+        <SectionHeading
+          title="One link in. A campaign out."
+          sub="This is a real Gooidy run, played back step by step: the link, what Gooidy read from the page, the angles it wrote and the ads it made."
+        />
+        <div className="mt-14">
+          <RunDemo run={demo} />
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function HowItWorks() {
   return (
     <section id="how" className="scroll-mt-16 bg-surface py-20">
@@ -346,30 +365,54 @@ function HowItWorks() {
   );
 }
 
-function Examples({ ads }: { ads: FeedAd[] }) {
+function Examples({ runs }: { runs: ShowcaseRun[] }) {
+  const all = runs.flatMap((r) => r.ads);
+  const rows = [
+    all.filter((a) => a.aspect === "9:16"),
+    all.filter((a) => a.aspect === "1:1"),
+  ].filter((row) => row.length > 0);
   return (
-    <section className="reveal overflow-hidden py-20">
+    <section className="reveal overflow-hidden py-24">
       <div className="mx-auto max-w-6xl px-4">
         <SectionHeading
           title="Made for the feed"
-          sub="Real, unedited ads Gooidy made from real product links, shown on the screen they were made for."
+          sub={`${all.length} real ads from ${runs.length} product ${runs.length === 1 ? "link" : "links"}, exactly as Gooidy made them. Hover to pause.`}
         />
       </div>
-      <div className="mx-auto mt-14 flex max-w-6xl snap-x snap-mandatory gap-6 overflow-x-auto px-4 pb-10 md:justify-center md:gap-8 md:overflow-visible">
-        {ads.map((ad, i) => (
-          <PhoneFeed
-            key={i}
-            ads={[ad]}
-            className={`w-[210px] shrink-0 snap-center lg:w-[230px] ${i % 2 ? "md:translate-y-10" : ""}`}
-          />
+      <div className="mt-14 flex flex-col gap-5">
+        {rows.map((row, r) => (
+          <div key={r} className="marquee">
+            <div
+              className={`marquee-track ${r % 2 ? "reverse" : ""}`}
+              style={{ "--marquee-s": `${row.length * 6}s` } as CSSProperties}
+            >
+              {/* Twice, so the loop never shows a gap. */}
+              {[...row, ...row].map((a, i) => (
+                // eslint-disable-next-line @next/next/no-img-element -- rendered by our own ad route
+                <img
+                  key={i}
+                  src={image(a.id)}
+                  alt={i < row.length ? a.headline : ""}
+                  width={1080}
+                  height={a.aspect === "9:16" ? 1920 : 1080}
+                  loading="lazy"
+                  className={`shrink-0 rounded-2xl border border-line object-cover shadow-[0_20px_50px_-30px_rgb(var(--t-shadow)/0.5)] ${
+                    a.aspect === "9:16"
+                      ? "h-[300px] w-[169px] sm:h-[380px] sm:w-[214px]"
+                      : "h-[220px] w-[220px] sm:h-[260px] sm:w-[260px]"
+                  }`}
+                />
+              ))}
+            </div>
+          </div>
         ))}
       </div>
-      <p className="mt-6 text-center">
+      <p className="mt-10 text-center">
         <Link
           href="/use-cases"
           className="text-sm font-medium text-accent hover:underline"
         >
-          See every ad, angle and size →
+          See every run, angle and size →
         </Link>
       </p>
     </section>
@@ -435,30 +478,102 @@ function VideoAds({ ads }: { ads: FeedAd[] }) {
   );
 }
 
-function Features() {
+// What every run includes, each shown rather than told. Real run data where
+// there is a run to show.
+function Features({ run }: { run?: ShowcaseRun }) {
+  const story = run?.ads.find((a) => a.aspect === "9:16");
+  const square = run?.ads.find((a) => a.aspect === "1:1");
   return (
-    <section className="reveal mx-auto max-w-6xl px-4 pb-20">
-      <div className="grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
-        {FEATURES.map((f) => (
-          <div key={f.title}>
-            <svg
-              viewBox="0 0 24 24"
-              className="h-6 w-6 text-accent"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden
-            >
-              <path d={f.icon} />
-            </svg>
-            <h3 className="mt-4 font-medium">{f.title}</h3>
-            <p className="mt-1.5 text-sm leading-relaxed text-muted">
-              {f.body}
-            </p>
+    <section className="reveal mx-auto max-w-6xl px-4 pb-24">
+      <SectionHeading
+        title="Everything a good ad needs"
+        sub="Gooidy handles the parts that usually take a designer, a copywriter and an afternoon."
+      />
+      <div className="mt-14 grid gap-5 md:grid-cols-6">
+        <div className="edge p-7 md:col-span-4">
+          <h3 className="text-lg font-medium">Brand brief from your site</h3>
+          <p className="mt-1.5 text-sm text-muted">
+            Gooidy reads your page and works out who it&apos;s for and why they
+            buy.
+          </p>
+          {run?.audience && (
+            <figure className="mt-6 rounded-xl bg-surface p-5">
+              <blockquote className="text-[15px] leading-relaxed">
+                “{run.audience}”
+              </blockquote>
+              <figcaption className="mt-3 text-xs text-muted">
+                Written by Gooidy from {run.store}
+              </figcaption>
+            </figure>
+          )}
+        </div>
+
+        <div className="edge p-7 md:col-span-2">
+          <h3 className="text-lg font-medium">Every placement</h3>
+          <p className="mt-1.5 text-sm text-muted">
+            9:16 for Reels, Stories, TikTok and Shorts. 1:1 for the feed.
+          </p>
+          <div className="mt-6 flex items-end justify-center gap-3">
+            {story && (
+              // eslint-disable-next-line @next/next/no-img-element -- rendered by our own ad route
+              <img
+                src={image(story.id)}
+                alt=""
+                loading="lazy"
+                className="aspect-[9/16] w-24 rounded-lg border border-line object-cover"
+              />
+            )}
+            {square && (
+              // eslint-disable-next-line @next/next/no-img-element -- rendered by our own ad route
+              <img
+                src={image(square.id)}
+                alt=""
+                loading="lazy"
+                className="aspect-square w-24 rounded-lg border border-line object-cover"
+              />
+            )}
           </div>
-        ))}
+        </div>
+
+        <div className="edge p-7 md:col-span-2">
+          <h3 className="text-lg font-medium">Your brand kit</h3>
+          <p className="mt-1.5 text-sm text-muted">
+            Set your logo, button color and font once. Every ad follows it.
+          </p>
+          <div className="mt-6 flex items-center gap-3" aria-hidden>
+            {["#16171d", "#4f46e5", "#e9e4da", "#8fa89a"].map((c) => (
+              <span
+                key={c}
+                className="h-9 w-9 rounded-full border border-line shadow-sm"
+                style={{ background: c }}
+              />
+            ))}
+            <span className="ml-1 font-serif text-2xl">Aa</span>
+          </div>
+        </div>
+
+        <div className="edge p-7 md:col-span-4">
+          <h3 className="text-lg font-medium">
+            A voice in your buyer&apos;s language
+          </h3>
+          <p className="mt-1.5 text-sm text-muted">
+            Video ads come with a voiceover and captions in the language you
+            pick.
+          </p>
+          <ul className="mt-6 flex flex-wrap gap-2">
+            {Object.values(LANGUAGES).map((l) => (
+              <li
+                key={l.code}
+                className="rounded-full border border-line bg-surface px-3 py-1.5 text-sm"
+              >
+                <span className="mr-1.5 font-mono text-xs uppercase text-accent">
+                  {l.code}
+                </span>
+                {l.label}
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </section>
   );
@@ -476,10 +591,10 @@ function Pricing() {
           {PLANS.map((plan) => (
             <div
               key={plan.name}
-              className={`flex flex-col rounded-2xl border bg-raised p-7 ${
+              className={`flex flex-col p-7 ${
                 plan.featured
-                  ? "border-accent border-2 shadow-[0_24px_60px_-28px_var(--t-accent)]"
-                  : "border-line"
+                  ? "edge shadow-[0_30px_80px_-30px_var(--t-accent)] md:-my-3 md:py-10"
+                  : "rounded-2xl border border-line bg-raised"
               }`}
             >
               <div className="flex items-center justify-between">
@@ -491,7 +606,9 @@ function Pricing() {
                 )}
               </div>
               <p className="mt-4">
-                <span className="text-4xl font-medium">{plan.price}</span>
+                <span className="text-5xl font-semibold tracking-tight">
+                  {plan.price}
+                </span>
                 {plan.price !== "$0" && (
                   <span className="text-muted"> / month</span>
                 )}
@@ -556,17 +673,38 @@ function Faq() {
 
 function FinalCta() {
   return (
-    <section className="border-t border-line bg-surface px-4 py-20">
-      <div className="mx-auto flex max-w-2xl flex-col items-center text-center">
-        <h2 className="text-3xl font-medium tracking-tight sm:text-4xl">
-          Create your first ads today
+    <section className="px-4 pb-24">
+      <div className="cta-panel relative mx-auto flex max-w-6xl flex-col items-center overflow-hidden rounded-[2rem] px-6 py-20 text-center text-white shadow-[0_40px_120px_-40px_#4f46e5]">
+        <div className="grid-fade opacity-40" aria-hidden />
+        <h2 className="max-w-2xl text-4xl font-semibold tracking-tight sm:text-5xl">
+          Your next ads are one link away
         </h2>
-        <p className="mt-3 text-lg text-muted">
+        <p className="mt-4 text-lg text-white/80">
           100 free credits. No credit card needed.
         </p>
-        <div className="mt-8 flex w-full justify-center">
-          <UrlForm id="url-bottom" />
-        </div>
+        <form
+          action="/dashboard"
+          method="get"
+          className="mt-9 flex w-full max-w-xl flex-col gap-2 rounded-2xl bg-white/10 p-2 ring-1 ring-white/25 backdrop-blur sm:flex-row"
+        >
+          <label htmlFor="url-bottom" className="sr-only">
+            Your product or store link
+          </label>
+          <input
+            id="url-bottom"
+            name="url"
+            type="text"
+            inputMode="url"
+            placeholder="Paste your product or store link"
+            className="min-w-0 flex-1 rounded-xl bg-white px-4 py-3 text-[#0f1222] outline-none placeholder:text-[#596078]"
+          />
+          <button
+            type="submit"
+            className="rounded-xl bg-[#0f1222] px-6 py-3 font-medium text-white transition hover:bg-black"
+          >
+            Create ads
+          </button>
+        </form>
       </div>
     </section>
   );
