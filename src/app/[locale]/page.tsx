@@ -20,6 +20,8 @@ import { BeforeAfter } from "@/app/_landing/before-after";
 import { alternates, isLocale, localePath, type Locale } from "@/i18n/config";
 import { getMessages, type Messages } from "@/i18n/messages";
 import { fmt } from "@/i18n/format";
+import { PLAN_PRICES, usd } from "@/lib/pricing";
+import { LocalPrice } from "@/app/_landing/local-price";
 
 export async function generateMetadata({
   params,
@@ -34,9 +36,9 @@ export async function generateMetadata({
   };
 }
 
-// Prices stay in dollars in every language; the names and perks are in the
-// messages.
-const PRICES = ["$0", "$29", "$79"];
+// Prices stay in dollars in every language (buyers pay in their own currency
+// at checkout); the names and perks are in the messages.
+const PRICES = Object.values(PLAN_PRICES);
 const FEATURED = 1;
 
 // Placeholders shared by several strings.
@@ -65,7 +67,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
         {run && <WhereItRuns t={t} run={run} />}
         {runs.length > 0 && <Examples t={t} locale={locale} runs={runs} />}
         <Features t={t} run={run} />
-        <Pricing t={t} />
+        <Pricing t={t} locale={locale} />
         <Faq t={t} />
         <FinalCta t={t} />
       </main>
@@ -491,18 +493,18 @@ function Features({ t, run }: { t: Messages; run?: ShowcaseRun }) {
   );
 }
 
-function Pricing({ t }: { t: Messages }) {
+function Pricing({ t, locale }: { t: Messages; locale: Locale }) {
   return (
     <section id="pricing" className="scroll-mt-16 bg-surface py-20">
       <div className="reveal mx-auto max-w-6xl px-4">
         <SectionHeading title={t.home.pricingTitle} sub={t.home.pricingSub} />
-        <div className="stagger mt-12 grid gap-6 md:grid-cols-3">
+        <div className="stagger mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {t.home.plans.map((plan, i) => (
             <div
               key={plan.name}
               className={`spot lift flex flex-col p-7 ${
                 i === FEATURED
-                  ? "edge shadow-[0_30px_80px_-30px_var(--t-accent)] md:-my-3 md:py-10"
+                  ? "edge shadow-[0_30px_80px_-30px_var(--t-accent)] lg:-my-3 lg:py-10"
                   : "rounded-2xl border border-line bg-raised"
               }`}
             >
@@ -516,10 +518,16 @@ function Pricing({ t }: { t: Messages }) {
               </div>
               <p className="mt-4">
                 <span className="text-5xl font-semibold tracking-tight">
-                  {PRICES[i]}
+                  {usd(PRICES[i], locale)}
                 </span>
                 {i > 0 && <span className="text-muted">{t.home.perMonth}</span>}
               </p>
+              <LocalPrice
+                usd={PRICES[i]}
+                locale={locale}
+                template={t.home.approx}
+                className="text-sm text-muted"
+              />
               <p className="mt-1 text-sm text-muted">{plan.credits}</p>
               <ul className="mt-6 flex-1 space-y-2.5 text-sm">
                 {plan.perks.map((perk) => (
@@ -542,6 +550,7 @@ function Pricing({ t }: { t: Messages }) {
             </div>
           ))}
         </div>
+        <p className="mt-8 text-center text-sm text-muted">{t.home.payNote}</p>
       </div>
     </section>
   );

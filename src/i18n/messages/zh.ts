@@ -139,6 +139,8 @@ export const zh: Messages = {
     pricingSub: "免费开始，需要更多广告时再升级。",
     popular: "热门",
     perMonth: " / 月",
+    payNote: "价格以美元计。结账时可用你所在国家的货币付款。",
+    approx: "约 {price}",
     plans: [
       {
         name: "Free",
@@ -151,9 +153,14 @@ export const zh: Messages = {
         perks: ["每月约 150 条广告", "包含 Free 的全部功能", "随时取消"],
       },
       {
+        name: "Plus",
+        credits: "每月 600 积分",
+        perks: ["每月约 300 条广告", "包含 Starter 的全部功能", "随时取消"],
+      },
+      {
         name: "Growth",
         credits: "每月 1,000 积分",
-        perks: ["每月约 500 条广告", "包含 Starter 的全部功能", "优先支持"],
+        perks: ["每月约 500 条广告", "包含 Plus 的全部功能", "优先支持"],
       },
     ],
     faqTitle: "常见问题",
@@ -181,6 +188,10 @@ export const zh: Messages = {
       {
         q: "可以随时取消吗？",
         a: "可以。套餐按月计费，你可以一直使用到已付费周期结束。",
+      },
+      {
+        q: "我可以用本国货币付款吗？",
+        a: "可以。价格以美元设定，结账页面会显示你所在国家货币的金额，以及当地常用的付款方式。",
       },
     ],
     finalTitle: "下一批广告，只差一个链接",
@@ -381,13 +392,51 @@ export const zh: Messages = {
     errors: {
       pasteLink: "请粘贴商品或网站链接。",
       notFound: "未找到该商品。",
-      noCredits: "积分不足。本次生成需要 {cost} 积分。",
+      noCredits: "积分不足。本次生成需要 {cost} 积分。可在“付款”页面获取更多。",
       couldntStart: "无法开始生成。",
       color: "请选择按钮颜色。",
       font: "请选择字体。",
       logoType: "请上传 PNG 或 JPEG 格式的 logo。",
       logoSize: "logo 必须小于 2 MB。",
       couldntSave: "无法保存品牌套件。",
+    },
+  },
+  billing: {
+    nav: "付款",
+    title: "套餐与付款",
+    currentPlan: "当前套餐",
+    renews: "将于 {date} 续订。积分每月补满。",
+    pastDue: "付款失败。请更新你的银行卡以保留套餐。",
+    freeNote:
+      "开始时赠送 {count} 免费积分。需要更多时，可选择月度套餐或购买积分包。",
+    manage: "管理订阅",
+    opening: "正在打开…",
+    openingCheckout: "正在打开结账页面…",
+    plansTitle: "月度套餐",
+    plansSub: "积分每月补满。随时可以取消。",
+    monthly: "每月 {count} 积分，约 {ads} 条广告",
+    choose: "选择 {plan}",
+    packsTitle: "积分包",
+    packsSub: "一次性付款，无需订阅。",
+    pack: "{count} 积分",
+    packAds: "约 {ads} 条广告",
+    buy: "{price} 购买",
+    payTitle: "用本国货币付款",
+    payBody:
+      "价格以美元计。结账时你会看到本国货币的金额，以及当地常用的付款方式。",
+    payPlans: "月度套餐：银行卡、Apple Pay、Google Pay 或 Link。",
+    payPacks: "积分包：还可使用支付宝、微信支付、PayPal 等，视所在国家而定。",
+    paid: "已收到付款，谢谢。套餐和积分会在几秒内更新；如果还没显示，请刷新页面。",
+    packPaid:
+      "谢谢！付款确认后积分会立即到账。大多数付款即时完成；银行扣款可能需要几天。",
+    footnote: "1 积分生成 1 张广告图片。付款由 Stripe 安全处理。",
+    errors: {
+      pickPlan: "请选择一个套餐。",
+      notSetUp: "该套餐尚未设置。",
+      noWorkspace: "未找到工作区。",
+      ownerOnly: "只有工作区所有者可以更改付款设置。",
+      checkout: "无法打开结账页面，请重试。",
+      portal: "无法打开付款页面，请重试。",
     },
   },
 };

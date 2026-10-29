@@ -144,6 +144,9 @@ export const de: Messages = {
     pricingSub: "Kostenlos starten. Upgraden, wenn du mehr Anzeigen brauchst.",
     popular: "Beliebt",
     perMonth: " / Monat",
+    payNote:
+      "Preise in US-Dollar. Beim Bezahlen zahlst du in deiner eigenen Währung.",
+    approx: "etwa {price}",
     plans: [
       {
         name: "Free",
@@ -160,11 +163,20 @@ export const de: Messages = {
         ],
       },
       {
+        name: "Plus",
+        credits: "600 Credits pro Monat",
+        perks: [
+          "Etwa 300 Anzeigen pro Monat",
+          "Alles aus Starter",
+          "Jederzeit kündbar",
+        ],
+      },
+      {
         name: "Growth",
         credits: "1.000 Credits pro Monat",
         perks: [
           "Etwa 500 Anzeigen pro Monat",
-          "Alles aus Starter",
+          "Alles aus Plus",
           "Bevorzugter Support",
         ],
       },
@@ -194,6 +206,10 @@ export const de: Messages = {
       {
         q: "Kann ich jederzeit kündigen?",
         a: "Ja. Die Pläne laufen monatlich, und du behältst den Zugang bis zum Ende des bezahlten Zeitraums.",
+      },
+      {
+        q: "Kann ich in meiner Währung bezahlen?",
+        a: "Ja. Die Preise sind in US-Dollar festgelegt, und beim Bezahlen siehst du den Betrag in deiner Währung, mit den Zahlungsarten, die in deinem Land üblich sind.",
       },
     ],
     finalTitle: "Deine nächsten Anzeigen sind nur einen Link entfernt",
@@ -404,13 +420,58 @@ export const de: Messages = {
     errors: {
       pasteLink: "Füge einen Link zu Produkt oder Website ein.",
       notFound: "Produkt nicht gefunden.",
-      noCredits: "Nicht genug Credits. Dieser Durchlauf braucht {cost}.",
+      noCredits:
+        "Nicht genug Credits. Dieser Durchlauf braucht {cost}. Mehr bekommst du auf der Seite Abrechnung.",
       couldntStart: "Die Erstellung konnte nicht gestartet werden.",
       color: "Wähle eine Button-Farbe.",
       font: "Wähle eine Schrift.",
       logoType: "Lade das Logo als PNG oder JPEG hoch.",
       logoSize: "Das Logo muss kleiner als 2 MB sein.",
       couldntSave: "Das Brand-Kit konnte nicht gespeichert werden.",
+    },
+  },
+  billing: {
+    nav: "Abrechnung",
+    title: "Tarif und Abrechnung",
+    currentPlan: "Aktueller Tarif",
+    renews: "Verlängert sich am {date}. Credits werden jeden Monat aufgefüllt.",
+    pastDue:
+      "Die Zahlung ist fehlgeschlagen. Aktualisiere deine Karte, um deinen Tarif zu behalten.",
+    freeNote:
+      "{count} kostenlose Credits zum Start. Wähle einen Monatstarif oder kaufe ein Credit-Paket, wenn du mehr brauchst.",
+    manage: "Abo verwalten",
+    opening: "Wird geöffnet…",
+    openingCheckout: "Bezahlseite wird geöffnet…",
+    plansTitle: "Monatstarife",
+    plansSub: "Credits werden jeden Monat aufgefüllt. Jederzeit kündbar.",
+    monthly: "{count} Credits pro Monat, etwa {ads} Anzeigen",
+    choose: "{plan} wählen",
+    packsTitle: "Credit-Pakete",
+    packsSub: "Einmal zahlen, kein Abo.",
+    pack: "{count} Credits",
+    packAds: "Etwa {ads} Anzeigen",
+    buy: "Für {price} kaufen",
+    payTitle: "Zahle in deiner Währung",
+    payBody:
+      "Die Preise sind in US-Dollar. Beim Bezahlen siehst du den Betrag in deiner eigenen Währung und die Zahlungsarten, die in deinem Land üblich sind.",
+    payPlans: "Monatstarife: Karte, Apple Pay, Google Pay oder Link.",
+    payPacks:
+      "Credit-Pakete: außerdem PayPal, Klarna, SEPA-Lastschrift, EPS, iDEAL, TWINT, Pix, Alipay, WeChat Pay und mehr, je nach Land.",
+    paid: "Zahlung erhalten, danke. Dein Tarif und deine Credits werden in wenigen Sekunden aktualisiert; lade neu, falls sie noch nicht erscheinen.",
+    packPaid:
+      "Danke! Deine Credits werden gutgeschrieben, sobald die Zahlung bestätigt ist. Die meisten Zahlungen sind sofort da; Lastschriften können ein paar Tage dauern.",
+    footnote:
+      "Ein Credit erstellt ein Anzeigenbild. Zahlungen werden sicher über Stripe abgewickelt.",
+    errors: {
+      pickPlan: "Wähle einen Tarif.",
+      notSetUp: "Dieser Tarif ist noch nicht eingerichtet.",
+      noWorkspace: "Kein Arbeitsbereich gefunden.",
+      ownerOnly:
+        "Nur der Inhaber des Arbeitsbereichs kann die Abrechnung ändern.",
+      checkout:
+        "Die Bezahlseite konnte nicht geöffnet werden. Bitte versuche es erneut.",
+      portal:
+        "Die Abrechnung konnte nicht geöffnet werden. Bitte versuche es erneut.",
     },
   },
 };

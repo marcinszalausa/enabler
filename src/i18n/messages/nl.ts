@@ -144,6 +144,9 @@ export const nl: Messages = {
     pricingSub: "Begin gratis. Upgrade als je meer advertenties nodig hebt.",
     popular: "Populair",
     perMonth: " / maand",
+    payNote:
+      "Prijzen in Amerikaanse dollars. Bij het afrekenen betaal je in je eigen valuta.",
+    approx: "ongeveer {price}",
     plans: [
       {
         name: "Free",
@@ -164,11 +167,20 @@ export const nl: Messages = {
         ],
       },
       {
+        name: "Plus",
+        credits: "600 credits per maand",
+        perks: [
+          "Ongeveer 300 advertenties per maand",
+          "Alles uit Starter",
+          "Altijd opzegbaar",
+        ],
+      },
+      {
         name: "Growth",
         credits: "1.000 credits per maand",
         perks: [
           "Ongeveer 500 advertenties per maand",
-          "Alles uit Starter",
+          "Alles uit Plus",
           "Voorrang bij support",
         ],
       },
@@ -198,6 +210,10 @@ export const nl: Messages = {
       {
         q: "Kan ik altijd opzeggen?",
         a: "Ja. Abonnementen lopen per maand en je houdt toegang tot het einde van de betaalde periode.",
+      },
+      {
+        q: "Kan ik in mijn eigen valuta betalen?",
+        a: "Ja. De prijzen staan in Amerikaanse dollars, en bij het afrekenen zie je het bedrag in je eigen valuta, met de betaalmethoden die in jouw land gebruikelijk zijn.",
       },
     ],
     finalTitle: "Je volgende advertenties zijn één link verwijderd",
@@ -406,13 +422,56 @@ export const nl: Messages = {
     errors: {
       pasteLink: "Plak een link naar een product of website.",
       notFound: "Product niet gevonden.",
-      noCredits: "Niet genoeg credits. Deze ronde gebruikt er {cost}.",
+      noCredits:
+        "Niet genoeg credits. Deze run gebruikt er {cost}. Koop er meer op de pagina Facturering.",
       couldntStart: "Het maken kon niet worden gestart.",
       color: "Kies een knopkleur.",
       font: "Kies een lettertype.",
       logoType: "Upload het logo als PNG of JPEG.",
       logoSize: "Het logo moet kleiner zijn dan 2 MB.",
       couldntSave: "Het merkkit kon niet worden opgeslagen.",
+    },
+  },
+  billing: {
+    nav: "Facturering",
+    title: "Abonnement en facturering",
+    currentPlan: "Huidig abonnement",
+    renews: "Wordt verlengd op {date}. Credits worden elke maand aangevuld.",
+    pastDue:
+      "De betaling is mislukt. Werk je kaart bij om je abonnement te houden.",
+    freeNote:
+      "{count} gratis credits om te beginnen. Kies een maandabonnement of koop een creditpakket als je meer nodig hebt.",
+    manage: "Abonnement beheren",
+    opening: "Openen…",
+    openingCheckout: "Afrekenen openen…",
+    plansTitle: "Maandabonnementen",
+    plansSub: "Credits worden elke maand aangevuld. Altijd opzegbaar.",
+    monthly: "{count} credits per maand, ongeveer {ads} advertenties",
+    choose: "Kies {plan}",
+    packsTitle: "Creditpakketten",
+    packsSub: "Eenmalig betalen, geen abonnement.",
+    pack: "{count} credits",
+    packAds: "Ongeveer {ads} advertenties",
+    buy: "Kopen voor {price}",
+    payTitle: "Betaal in je eigen valuta",
+    payBody:
+      "De prijzen zijn in Amerikaanse dollars. Bij het afrekenen zie je het bedrag in je eigen valuta en de betaalmethoden die in jouw land gebruikelijk zijn.",
+    payPlans: "Maandabonnementen: kaart, Apple Pay, Google Pay of Link.",
+    payPacks:
+      "Creditpakketten: ook iDEAL, Bancontact, PayPal, Klarna, SEPA-incasso, Pix, Alipay, WeChat Pay en meer, afhankelijk van je land.",
+    paid: "Betaling ontvangen, bedankt. Je abonnement en credits worden binnen een paar seconden bijgewerkt; vernieuw de pagina als ze er nog niet staan.",
+    packPaid:
+      "Bedankt! Je credits worden toegevoegd zodra de betaling is bevestigd. De meeste betalingen zijn direct; incasso's kunnen een paar dagen duren.",
+    footnote:
+      "Eén credit maakt één advertentieafbeelding. Betalingen worden veilig verwerkt door Stripe.",
+    errors: {
+      pickPlan: "Kies een abonnement.",
+      notSetUp: "Dit abonnement is nog niet ingesteld.",
+      noWorkspace: "Geen werkruimte gevonden.",
+      ownerOnly:
+        "Alleen de eigenaar van de werkruimte kan de facturering wijzigen.",
+      checkout: "Afrekenen kon niet worden geopend. Probeer het opnieuw.",
+      portal: "Facturering kon niet worden geopend. Probeer het opnieuw.",
     },
   },
 };

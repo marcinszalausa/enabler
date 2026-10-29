@@ -143,6 +143,8 @@ export const en = {
     pricingSub: "Start free. Upgrade when you need more ads.",
     popular: "Popular",
     perMonth: " / month",
+    payNote: "Prices in US dollars. Pay in your own currency at checkout.",
+    approx: "about {price}",
     plans: [
       {
         name: "Free",
@@ -159,11 +161,20 @@ export const en = {
         ],
       },
       {
+        name: "Plus",
+        credits: "600 credits every month",
+        perks: [
+          "About 300 ads a month",
+          "Everything in Starter",
+          "Cancel anytime",
+        ],
+      },
+      {
         name: "Growth",
         credits: "1,000 credits every month",
         perks: [
           "About 500 ads a month",
-          "Everything in Starter",
+          "Everything in Plus",
           "Priority support",
         ],
       },
@@ -193,6 +204,10 @@ export const en = {
       {
         q: "Can I cancel anytime?",
         a: "Yes. Plans are month to month, and you keep access until the end of the period you paid for.",
+      },
+      {
+        q: "Can I pay in my own currency?",
+        a: "Yes. Prices are set in US dollars, and checkout shows the amount in your currency with the ways to pay that are common where you live.",
       },
     ],
     finalTitle: "Your next ads are one link away",
@@ -400,13 +415,54 @@ export const en = {
     errors: {
       pasteLink: "Paste a product or website link.",
       notFound: "Product not found.",
-      noCredits: "Not enough credits. This run uses {cost}.",
+      noCredits:
+        "Not enough credits. This run uses {cost}. Get more on the Billing page.",
       couldntStart: "Couldn't start the generation.",
       color: "Pick a button color.",
       font: "Pick a font.",
       logoType: "Upload the logo as a PNG or JPEG.",
       logoSize: "The logo must be under 2 MB.",
       couldntSave: "Couldn't save the brand kit.",
+    },
+  },
+  billing: {
+    nav: "Billing",
+    title: "Plan and billing",
+    currentPlan: "Current plan",
+    renews: "Renews on {date}. Credits top up each month.",
+    pastDue: "Payment failed. Update your card to keep your plan.",
+    freeNote:
+      "{count} free credits to start. Pick a monthly plan or buy a credit pack when you need more.",
+    manage: "Manage subscription",
+    opening: "Opening…",
+    openingCheckout: "Opening checkout…",
+    plansTitle: "Monthly plans",
+    plansSub: "Credits top up every month. Cancel anytime.",
+    monthly: "{count} credits every month, about {ads} ads",
+    choose: "Choose {plan}",
+    packsTitle: "Credit packs",
+    packsSub: "Pay once, no subscription.",
+    pack: "{count} credits",
+    packAds: "About {ads} ads",
+    buy: "Buy for {price}",
+    payTitle: "Pay in your currency",
+    payBody:
+      "Prices are in US dollars. At checkout you see the amount in your own currency and the ways to pay that are common where you live.",
+    payPlans: "Monthly plans: card, Apple Pay, Google Pay or Link.",
+    payPacks:
+      "Credit packs: also PayPal, BLIK, Przelewy24, iDEAL, Bancontact, Klarna, Pix, Alipay, WeChat Pay and more, depending on your country.",
+    paid: "Payment received, thank you. Your plan and credits update within a few seconds; refresh if they don't show yet.",
+    packPaid:
+      "Thank you! Your credits are added as soon as the payment is confirmed. Most payments are instant; bank debits can take a few days.",
+    footnote:
+      "One credit makes one ad image. Payments are handled securely by Stripe.",
+    errors: {
+      pickPlan: "Pick a plan.",
+      notSetUp: "This plan isn't set up yet.",
+      noWorkspace: "No workspace found.",
+      ownerOnly: "Only the workspace owner can change billing.",
+      checkout: "Couldn't open checkout. Please try again.",
+      portal: "Couldn't open billing. Please try again.",
     },
   },
 };

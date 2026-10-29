@@ -143,6 +143,9 @@ export const ko: Messages = {
     pricingSub: "무료로 시작하고, 광고가 더 필요할 때 업그레이드하세요.",
     popular: "인기",
     perMonth: " / 월",
+    payNote:
+      "가격은 미국 달러 기준입니다. 결제할 때 현지 통화로 낼 수 있습니다.",
+    approx: "약 {price}",
     plans: [
       {
         name: "Free",
@@ -155,9 +158,14 @@ export const ko: Messages = {
         perks: ["월 광고 약 150개", "Free의 모든 기능", "언제든 해지 가능"],
       },
       {
+        name: "Plus",
+        credits: "매달 600 크레딧",
+        perks: ["월 광고 약 300개", "Starter의 모든 기능", "언제든 해지 가능"],
+      },
+      {
         name: "Growth",
         credits: "매달 1,000 크레딧",
-        perks: ["월 광고 약 500개", "Starter의 모든 기능", "우선 지원"],
+        perks: ["월 광고 약 500개", "Plus의 모든 기능", "우선 지원"],
       },
     ],
     faqTitle: "자주 묻는 질문",
@@ -185,6 +193,10 @@ export const ko: Messages = {
       {
         q: "언제든 해지할 수 있나요?",
         a: "네. 요금제는 월 단위이며, 결제한 기간이 끝날 때까지 계속 이용할 수 있습니다.",
+      },
+      {
+        q: "현지 통화로 결제할 수 있나요?",
+        a: "네. 가격은 미국 달러로 정해져 있으며, 결제 화면에서 현지 통화 금액과 거주 국가에서 흔히 쓰는 결제 수단이 표시됩니다.",
       },
     ],
     finalTitle: "다음 광고는 링크 하나면 충분합니다",
@@ -395,13 +407,54 @@ export const ko: Messages = {
       pasteLink: "상품 또는 웹사이트 링크를 붙여 넣으세요.",
       notFound: "상품을 찾을 수 없습니다.",
       noCredits:
-        "크레딧이 부족합니다. 이번 생성에는 {cost} 크레딧이 필요합니다.",
+        "크레딧이 부족합니다. 이번 생성에는 {cost}크레딧이 필요합니다. 결제 페이지에서 더 받으세요.",
       couldntStart: "생성을 시작하지 못했습니다.",
       color: "버튼 색상을 선택하세요.",
       font: "글꼴을 선택하세요.",
       logoType: "로고는 PNG 또는 JPEG로 업로드하세요.",
       logoSize: "로고는 2MB 미만이어야 합니다.",
       couldntSave: "브랜드 키트를 저장하지 못했습니다.",
+    },
+  },
+  billing: {
+    nav: "결제",
+    title: "요금제 및 결제",
+    currentPlan: "현재 요금제",
+    renews: "{date}에 갱신됩니다. 크레딧은 매달 충전됩니다.",
+    pastDue:
+      "결제에 실패했습니다. 요금제를 유지하려면 카드 정보를 업데이트하세요.",
+    freeNote:
+      "시작할 때 무료 크레딧 {count}개를 드립니다. 더 필요하면 월간 요금제를 선택하거나 크레딧 팩을 구매하세요.",
+    manage: "구독 관리",
+    opening: "여는 중…",
+    openingCheckout: "결제 화면을 여는 중…",
+    plansTitle: "월간 요금제",
+    plansSub: "크레딧은 매달 충전됩니다. 언제든지 해지할 수 있습니다.",
+    monthly: "매달 {count}크레딧, 광고 약 {ads}개",
+    choose: "{plan} 선택",
+    packsTitle: "크레딧 팩",
+    packsSub: "한 번만 결제, 구독 없음.",
+    pack: "{count}크레딧",
+    packAds: "광고 약 {ads}개",
+    buy: "{price}에 구매",
+    payTitle: "현지 통화로 결제",
+    payBody:
+      "가격은 미국 달러 기준입니다. 결제 화면에서 현지 통화 금액과 거주 국가에서 흔히 쓰는 결제 수단을 볼 수 있습니다.",
+    payPlans: "월간 요금제: 카드, Apple Pay, Google Pay 또는 Link.",
+    payPacks:
+      "크레딧 팩: 국가에 따라 카카오페이, 네이버페이, PAYCO, 삼성페이, PayPal 등도 사용할 수 있습니다.",
+    paid: "결제가 완료되었습니다. 감사합니다. 요금제와 크레딧은 몇 초 안에 업데이트됩니다. 보이지 않으면 새로고침하세요.",
+    packPaid:
+      "감사합니다! 결제가 확인되는 즉시 크레딧이 추가됩니다. 대부분의 결제는 즉시 처리되며, 계좌 자동이체는 며칠 걸릴 수 있습니다.",
+    footnote:
+      "1크레딧으로 광고 이미지 1개를 만듭니다. 결제는 Stripe가 안전하게 처리합니다.",
+    errors: {
+      pickPlan: "요금제를 선택하세요.",
+      notSetUp: "이 요금제는 아직 설정되지 않았습니다.",
+      noWorkspace: "워크스페이스를 찾을 수 없습니다.",
+      ownerOnly: "워크스페이스 소유자만 결제를 변경할 수 있습니다.",
+      checkout: "결제 화면을 열 수 없습니다. 다시 시도하세요.",
+      portal: "결제 정보를 열 수 없습니다. 다시 시도하세요.",
     },
   },
 };

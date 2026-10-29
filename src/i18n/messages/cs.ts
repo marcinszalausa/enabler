@@ -145,6 +145,8 @@ export const cs: Messages = {
       "Začněte zdarma. Přejděte na vyšší tarif, až budete potřebovat víc reklam.",
     popular: "Oblíbený",
     perMonth: " / měsíc",
+    payNote: "Ceny v amerických dolarech. Při placení zaplatíte ve své měně.",
+    approx: "přibližně {price}",
     plans: [
       {
         name: "Free",
@@ -161,11 +163,20 @@ export const cs: Messages = {
         ],
       },
       {
+        name: "Plus",
+        credits: "600 kreditů každý měsíc",
+        perks: [
+          "Asi 300 reklam měsíčně",
+          "Vše z tarifu Starter",
+          "Zrušení kdykoli",
+        ],
+      },
+      {
         name: "Growth",
         credits: "1 000 kreditů každý měsíc",
         perks: [
           "Asi 500 reklam měsíčně",
-          "Vše z tarifu Starter",
+          "Vše z tarifu Plus",
           "Přednostní podpora",
         ],
       },
@@ -195,6 +206,10 @@ export const cs: Messages = {
       {
         q: "Mohu kdykoli zrušit?",
         a: "Ano. Tarify jsou měsíční a přístup vám zůstane do konce zaplaceného období.",
+      },
+      {
+        q: "Mohu platit ve své měně?",
+        a: "Ano. Ceny jsou stanovené v amerických dolarech a pokladna vám ukáže částku ve vaší měně se způsoby platby, které jsou u vás běžné.",
       },
     ],
     finalTitle: "Vaše další reklamy jsou jen jeden odkaz daleko",
@@ -405,13 +420,55 @@ export const cs: Messages = {
     errors: {
       pasteLink: "Vložte odkaz na produkt nebo web.",
       notFound: "Produkt nebyl nalezen.",
-      noCredits: "Nemáte dost kreditů. Tento běh potřebuje {cost}.",
+      noCredits:
+        "Nemáte dost kreditů. Toto generování spotřebuje {cost}. Další získáte na stránce Platby.",
       couldntStart: "Vytváření se nepodařilo spustit.",
       color: "Vyberte barvu tlačítka.",
       font: "Vyberte písmo.",
       logoType: "Nahrajte logo jako PNG nebo JPEG.",
       logoSize: "Logo musí mít méně než 2 MB.",
       couldntSave: "Firemní styl se nepodařilo uložit.",
+    },
+  },
+  billing: {
+    nav: "Platby",
+    title: "Tarif a platby",
+    currentPlan: "Současný tarif",
+    renews: "Obnoví se {date}. Kredity se každý měsíc doplní.",
+    pastDue:
+      "Platba se nezdařila. Aktualizujte kartu, abyste si tarif ponechali.",
+    freeNote:
+      "{count} kreditů zdarma na začátek. Až budete potřebovat víc, vyberte měsíční tarif nebo kupte balíček kreditů.",
+    manage: "Spravovat předplatné",
+    opening: "Otevírání…",
+    openingCheckout: "Otevírání pokladny…",
+    plansTitle: "Měsíční tarify",
+    plansSub: "Kredity se každý měsíc doplní. Zrušit můžete kdykoli.",
+    monthly: "{count} kreditů každý měsíc, asi {ads} reklam",
+    choose: "Vybrat {plan}",
+    packsTitle: "Balíčky kreditů",
+    packsSub: "Zaplatíte jednou, bez předplatného.",
+    pack: "{count} kreditů",
+    packAds: "Asi {ads} reklam",
+    buy: "Koupit za {price}",
+    payTitle: "Plaťte ve své měně",
+    payBody:
+      "Ceny jsou v amerických dolarech. V pokladně uvidíte částku ve své měně a způsoby platby, které jsou u vás běžné.",
+    payPlans: "Měsíční tarify: karta, Apple Pay, Google Pay nebo Link.",
+    payPacks:
+      "Balíčky kreditů: také PayPal, Klarna, iDEAL, Bancontact, Pix, Alipay, WeChat Pay a další podle vaší země.",
+    paid: "Platba přijata, děkujeme. Tarif a kredity se aktualizují během několika sekund; pokud se ještě nezobrazují, obnovte stránku.",
+    packPaid:
+      "Děkujeme! Kredity přidáme, jakmile bude platba potvrzena. Většina plateb je okamžitá; inkaso může trvat několik dní.",
+    footnote:
+      "Jeden kredit vytvoří jeden reklamní obrázek. Platby bezpečně zpracovává Stripe.",
+    errors: {
+      pickPlan: "Vyberte tarif.",
+      notSetUp: "Tento tarif ještě není nastavený.",
+      noWorkspace: "Pracovní prostor nebyl nalezen.",
+      ownerOnly: "Platby může měnit jen vlastník pracovního prostoru.",
+      checkout: "Pokladnu se nepodařilo otevřít. Zkuste to znovu.",
+      portal: "Platby se nepodařilo otevřít. Zkuste to znovu.",
     },
   },
 };

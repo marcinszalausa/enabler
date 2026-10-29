@@ -145,6 +145,9 @@ export const pt: Messages = {
     pricingSub: "Comece grátis. Faça upgrade quando precisar de mais anúncios.",
     popular: "Popular",
     perMonth: " / mês",
+    payNote:
+      "Preços em dólares americanos. Pague na sua própria moeda no checkout.",
+    approx: "cerca de {price}",
     plans: [
       {
         name: "Free",
@@ -165,11 +168,20 @@ export const pt: Messages = {
         ],
       },
       {
+        name: "Plus",
+        credits: "600 créditos por mês",
+        perks: [
+          "Cerca de 300 anúncios por mês",
+          "Tudo do Starter",
+          "Cancele quando quiser",
+        ],
+      },
+      {
         name: "Growth",
         credits: "1.000 créditos por mês",
         perks: [
           "Cerca de 500 anúncios por mês",
-          "Tudo do Starter",
+          "Tudo do Plus",
           "Suporte prioritário",
         ],
       },
@@ -199,6 +211,10 @@ export const pt: Messages = {
       {
         q: "Posso cancelar quando quiser?",
         a: "Sim. Os planos são mensais, e você mantém o acesso até o fim do período pago.",
+      },
+      {
+        q: "Posso pagar na minha moeda?",
+        a: "Sim. Os preços são definidos em dólares americanos, e o checkout mostra o valor na sua moeda, com as formas de pagamento comuns no seu país.",
       },
     ],
     finalTitle: "Seus próximos anúncios estão a um link de distância",
@@ -407,13 +423,54 @@ export const pt: Messages = {
     errors: {
       pasteLink: "Cole o link de um produto ou site.",
       notFound: "Produto não encontrado.",
-      noCredits: "Créditos insuficientes. Esta rodada usa {cost}.",
+      noCredits:
+        "Créditos insuficientes. Esta geração usa {cost}. Consiga mais na página de Cobrança.",
       couldntStart: "Não foi possível iniciar a geração.",
       color: "Escolha uma cor para o botão.",
       font: "Escolha uma fonte.",
       logoType: "Envie o logo em PNG ou JPEG.",
       logoSize: "O logo precisa ter menos de 2 MB.",
       couldntSave: "Não foi possível salvar o kit da marca.",
+    },
+  },
+  billing: {
+    nav: "Cobrança",
+    title: "Plano e cobrança",
+    currentPlan: "Plano atual",
+    renews: "Renova em {date}. Os créditos são recarregados todo mês.",
+    pastDue: "O pagamento falhou. Atualize seu cartão para manter seu plano.",
+    freeNote:
+      "{count} créditos grátis para começar. Escolha um plano mensal ou compre um pacote de créditos quando precisar de mais.",
+    manage: "Gerenciar assinatura",
+    opening: "Abrindo…",
+    openingCheckout: "Abrindo o checkout…",
+    plansTitle: "Planos mensais",
+    plansSub: "Os créditos são recarregados todo mês. Cancele quando quiser.",
+    monthly: "{count} créditos por mês, cerca de {ads} anúncios",
+    choose: "Escolher {plan}",
+    packsTitle: "Pacotes de créditos",
+    packsSub: "Pagamento único, sem assinatura.",
+    pack: "{count} créditos",
+    packAds: "Cerca de {ads} anúncios",
+    buy: "Comprar por {price}",
+    payTitle: "Pague na sua moeda",
+    payBody:
+      "Os preços estão em dólares americanos. No checkout você vê o valor na sua própria moeda e as formas de pagamento comuns no seu país.",
+    payPlans: "Planos mensais: cartão, Apple Pay, Google Pay ou Link.",
+    payPacks:
+      "Pacotes de créditos: também Pix, PayPal, MB WAY, iDEAL, Klarna, Alipay, WeChat Pay e mais, conforme o seu país.",
+    paid: "Pagamento recebido, obrigado. Seu plano e seus créditos são atualizados em alguns segundos; recarregue se ainda não aparecerem.",
+    packPaid:
+      "Obrigado! Seus créditos são adicionados assim que o pagamento é confirmado. A maioria dos pagamentos é imediata; débitos bancários podem levar alguns dias.",
+    footnote:
+      "Um crédito cria uma imagem de anúncio. Os pagamentos são processados com segurança pela Stripe.",
+    errors: {
+      pickPlan: "Escolha um plano.",
+      notSetUp: "Este plano ainda não foi configurado.",
+      noWorkspace: "Espaço de trabalho não encontrado.",
+      ownerOnly: "Só o dono do espaço de trabalho pode alterar a cobrança.",
+      checkout: "Não foi possível abrir o checkout. Tente novamente.",
+      portal: "Não foi possível abrir a cobrança. Tente novamente.",
     },
   },
 };

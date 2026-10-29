@@ -145,6 +145,8 @@ export const ro: Messages = {
       "Începe gratuit. Treci la un plan superior când ai nevoie de mai multe reclame.",
     popular: "Popular",
     perMonth: " / lună",
+    payNote: "Prețuri în dolari americani. La plată plătești în moneda ta.",
+    approx: "aproximativ {price}",
     plans: [
       {
         name: "Free",
@@ -165,11 +167,20 @@ export const ro: Messages = {
         ],
       },
       {
+        name: "Plus",
+        credits: "600 de credite în fiecare lună",
+        perks: [
+          "Aproximativ 300 de reclame pe lună",
+          "Tot ce include Starter",
+          "Anulezi oricând",
+        ],
+      },
+      {
         name: "Growth",
         credits: "1.000 de credite în fiecare lună",
         perks: [
           "Aproximativ 500 de reclame pe lună",
-          "Tot ce include Starter",
+          "Tot ce include Plus",
           "Suport prioritar",
         ],
       },
@@ -199,6 +210,10 @@ export const ro: Messages = {
       {
         q: "Pot anula oricând?",
         a: "Da. Planurile sunt lunare și păstrezi accesul până la sfârșitul perioadei plătite.",
+      },
+      {
+        q: "Pot plăti în moneda mea?",
+        a: "Da. Prețurile sunt stabilite în dolari americani, iar pagina de plată îți arată suma în moneda ta, cu metodele de plată obișnuite în țara ta.",
       },
     ],
     finalTitle: "Următoarele tale reclame sunt la un link distanță",
@@ -410,13 +425,55 @@ export const ro: Messages = {
     errors: {
       pasteLink: "Lipește linkul unui produs sau site.",
       notFound: "Produsul nu a fost găsit.",
-      noCredits: "Nu ai suficiente credite. Această rulare folosește {cost}.",
+      noCredits:
+        "Nu ai destule credite. Această generare folosește {cost}. Obține mai multe pe pagina Facturare.",
       couldntStart: "Generarea nu a putut porni.",
       color: "Alege o culoare pentru buton.",
       font: "Alege un font.",
       logoType: "Încarcă logo-ul ca PNG sau JPEG.",
       logoSize: "Logo-ul trebuie să aibă sub 2 MB.",
       couldntSave: "Kitul de brand nu a putut fi salvat.",
+    },
+  },
+  billing: {
+    nav: "Facturare",
+    title: "Plan și facturare",
+    currentPlan: "Planul actual",
+    renews: "Se reînnoiește pe {date}. Creditele se reîncarcă în fiecare lună.",
+    pastDue: "Plata a eșuat. Actualizează cardul ca să îți păstrezi planul.",
+    freeNote:
+      "{count} credite gratuite pentru început. Alege un plan lunar sau cumpără un pachet de credite când ai nevoie de mai multe.",
+    manage: "Gestionează abonamentul",
+    opening: "Se deschide…",
+    openingCheckout: "Se deschide plata…",
+    plansTitle: "Planuri lunare",
+    plansSub: "Creditele se reîncarcă în fiecare lună. Anulezi oricând.",
+    monthly: "{count} credite pe lună, aproximativ {ads} reclame",
+    choose: "Alege {plan}",
+    packsTitle: "Pachete de credite",
+    packsSub: "Plătești o singură dată, fără abonament.",
+    pack: "{count} credite",
+    packAds: "Aproximativ {ads} reclame",
+    buy: "Cumpără cu {price}",
+    payTitle: "Plătește în moneda ta",
+    payBody:
+      "Prețurile sunt în dolari americani. La plată vezi suma în moneda ta și metodele de plată obișnuite în țara ta.",
+    payPlans: "Planuri lunare: card, Apple Pay, Google Pay sau Link.",
+    payPacks:
+      "Pachete de credite: și PayPal, Klarna, iDEAL, Bancontact, Pix, Alipay, WeChat Pay și altele, în funcție de țară.",
+    paid: "Plata a fost primită, mulțumim. Planul și creditele se actualizează în câteva secunde; reîncarcă pagina dacă nu apar încă.",
+    packPaid:
+      "Mulțumim! Creditele se adaugă imediat ce plata este confirmată. Majoritatea plăților sunt instantanee; debitările bancare pot dura câteva zile.",
+    footnote:
+      "Un credit creează o imagine publicitară. Plățile sunt procesate în siguranță de Stripe.",
+    errors: {
+      pickPlan: "Alege un plan.",
+      notSetUp: "Acest plan nu este configurat încă.",
+      noWorkspace: "Nu a fost găsit niciun spațiu de lucru.",
+      ownerOnly:
+        "Doar proprietarul spațiului de lucru poate modifica facturarea.",
+      checkout: "Nu s-a putut deschide plata. Încearcă din nou.",
+      portal: "Nu s-a putut deschide facturarea. Încearcă din nou.",
     },
   },
 };
