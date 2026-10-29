@@ -63,7 +63,7 @@ export function RunViewer({
             {run.productUrl.replace(/^https?:\/\//, "")}
           </span>
         </div>
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-[#e7f6ec] px-2.5 py-1 text-xs font-medium text-[#1b7a3d] dark:bg-[#15301f] dark:text-[#7fd69c]">
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-ok-bg px-2.5 py-1 text-xs font-medium text-ok">
           <svg
             viewBox="0 0 24 24"
             className="h-3.5 w-3.5"

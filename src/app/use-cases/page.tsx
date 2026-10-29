@@ -102,7 +102,7 @@ function Run({ run, index }: { run: ShowcaseRun; index: number }) {
         <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="text-sm text-muted">Example {index + 1}</p>
-            <h2 className="mt-1 text-3xl font-medium tracking-tight">
+            <h2 className="mt-1 text-balance text-2xl font-medium tracking-tight sm:text-3xl">
               {run.productName}
             </h2>
           </div>
