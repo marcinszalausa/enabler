@@ -8,8 +8,9 @@ import type { FeedAd } from "./reel";
 // the middle, single ads turned away on each side. The phones have real
 // thickness, and the whole stage leans a few degrees toward the pointer,
 // which makes them feel like objects, not images.
-// A real iPhone is 8.25 mm thick and 71.9 mm wide: 11.5% of its width.
-const DEPTH = 11.5;
+// Body thickness in % of width. The real phone is 11.2% (8.75 mm on 78 mm),
+// which reads a little heavy on screen.
+const DEPTH = 9;
 // Ad widths inside the side phones, which only show from 640 px up.
 const SIDE = "(min-width: 64rem) 270px, (min-width: 48rem) 225px, 200px";
 

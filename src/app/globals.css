@@ -202,19 +202,33 @@ html {
 
 /* iPhone frame ------------------------------------------------------------ */
 
-/* Brushed titanium edge: light catches the rounded rim at a few points. */
-.iphone-frame {
-  background: linear-gradient(
+:root {
+  /* Silver aluminum, shared by the front frame and the side edge: a soft
+     matte sheen rather than polished highlights. */
+  --iphone-metal: linear-gradient(
     150deg,
-    #e6e6ea 0%,
-    #9c9da4 10%,
-    #f6f6f8 22%,
-    #8a8b92 40%,
-    #c7c8ce 58%,
-    #75767d 76%,
-    #dcdce1 90%,
-    #a3a4ab 100%
+    #e9eaee 0%,
+    #c9cbd1 18%,
+    #eef0f3 36%,
+    #b9bcc3 60%,
+    #dfe1e5 82%,
+    #c4c6cc 100%
   );
+}
+:root[data-theme="dark"] {
+  /* The Black finish at night, so the phone doesn't glare on a dark page. */
+  --iphone-metal: linear-gradient(
+    150deg,
+    #4a4c53 0%,
+    #2c2d32 20%,
+    #50525a 40%,
+    #26272b 65%,
+    #3e4047 85%,
+    #2e2f34 100%
+  );
+}
+.iphone-frame {
+  background: var(--iphone-metal);
   box-shadow:
     inset 0 0 0 0.25cqw rgb(255 255 255 / 0.55),
     inset 0 0 0.9cqw rgb(0 0 0 / 0.35),
@@ -223,18 +237,6 @@ html {
     0 10cqw 16cqw -6cqw rgb(40 36 120 / 0.3);
 }
 :root[data-theme="dark"] .iphone-frame {
-  /* Darker titanium at night, so the phone doesn't glare on a dark page. */
-  background: linear-gradient(
-    150deg,
-    #6b6d76 0%,
-    #3a3b42 12%,
-    #8d8f98 24%,
-    #2f3036 42%,
-    #5f616a 60%,
-    #26272c 78%,
-    #74767f 92%,
-    #3d3e45 100%
-  );
   box-shadow:
     inset 0 0 0 0.25cqw rgb(255 255 255 / 0.18),
     inset 0 0 0.9cqw rgb(0 0 0 / 0.5),
@@ -242,9 +244,9 @@ html {
     0 2.5cqw 5cqw -1cqw rgb(0 0 0 / 0.5),
     0 10cqw 16cqw -6cqw rgb(0 0 0 / 0.45);
 }
-/* A phone with a body: stacked slices of titanium behind the front frame,
+/* A phone with a body: stacked slices of aluminum behind the front frame,
    --step apart (see IPhone). Each slice is lit a little differently so the
-   rail reads as rounded titanium. */
+   rail reads as rounded metal. */
 .iphone-3d {
   position: relative;
   transform-style: preserve-3d;
@@ -252,12 +254,9 @@ html {
 .iphone-slab {
   position: absolute;
   inset: 0;
-  border-radius: 16.6cqw;
+  border-radius: 15.3cqw;
   transform: translateZ(calc(var(--i) * -1 * var(--step)));
-  background: #8e9098;
-}
-:root[data-theme="dark"] .iphone-slab {
-  background: #5b5d66;
+  background: var(--iphone-metal);
 }
 .iphone-bezel {
   background: #050506;
