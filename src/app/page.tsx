@@ -220,7 +220,7 @@ function Hero({
           ))}
         </ul>
       </div>
-      <div className="relative mx-auto mt-16 max-w-6xl px-4 pb-36">
+      <div className="relative mx-auto mt-16 max-w-6xl px-4 pb-24">
         <HeroStage feed={feed} left={left} right={right} />
       </div>
     </section>

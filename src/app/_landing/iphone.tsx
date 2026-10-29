@@ -1,19 +1,31 @@
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 
 // A current flagship iPhone, drawn in CSS so it stays sharp at any size and
 // costs nothing to load. Everything is sized in container units (cqw) of the
 // phone's own width, so proportions hold from a thumbnail to the hero:
 // a 71.9 × 150 mm body, thin even bezels, a 19.5:9 screen with Apple's corner
 // radius, the Dynamic Island, and the side buttons including Camera Control.
+// With `depth`, the body gets a phone's real thickness for 3D scenes.
 export function IPhone({
   children,
+  depth = false,
   className = "",
 }: {
   children: ReactNode;
+  depth?: boolean;
   className?: string;
 }) {
   return (
-    <div className={`@container ${className}`}>
+    <div className={`@container ${depth ? "iphone-3d" : ""} ${className}`}>
+      {depth &&
+        Array.from({ length: 14 }, (_, i) => (
+          <span
+            key={i}
+            className="iphone-slab"
+            style={{ "--i": i + 1 } as CSSProperties}
+            aria-hidden
+          />
+        ))}
       <div className="iphone-frame relative aspect-[71.9/150] rounded-[16.6cqw] p-[1.25cqw]">
         {/* Left: Action button, volume up, volume down. */}
         <span className="iphone-key left-[-0.75cqw] top-[18.5%] h-[5.5%]" />

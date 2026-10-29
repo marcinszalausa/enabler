@@ -17,10 +17,12 @@ const VIDEO_MAX_MS = 15000;
 export function PhoneFeed({
   ads,
   notes = false,
+  depth = false,
   className = "",
 }: {
   ads: FeedAd[];
   notes?: boolean;
+  depth?: boolean;
   className?: string;
 }) {
   const [index, setIndex] = useState(0);
@@ -75,7 +77,7 @@ export function PhoneFeed({
   return (
     <div ref={root} className={`relative ${className}`}>
       {notes && <Notes ad={current} key={index % ads.length} />}
-      <IPhone>
+      <IPhone depth={depth}>
         <div className="flex h-full flex-col">
           <div className="h-[12.4cqw] shrink-0">
             <StatusBar />

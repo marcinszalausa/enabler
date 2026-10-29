@@ -242,6 +242,37 @@ html {
     0 2.5cqw 5cqw -1cqw rgb(0 0 0 / 0.5),
     0 10cqw 16cqw -6cqw rgb(0 0 0 / 0.45);
 }
+/* A phone with real thickness: stacked slices of titanium behind the front
+   frame, about as deep as an iPhone is (7.8 mm on a 71.9 mm body). Only
+   shows when the phone is turned in 3D. */
+.iphone-3d {
+  position: relative;
+  transform-style: preserve-3d;
+}
+.iphone-slab {
+  position: absolute;
+  inset: 0;
+  border-radius: 16.6cqw;
+  transform: translateZ(calc(var(--i) * -0.75cqw));
+  background: linear-gradient(
+    90deg,
+    #7d7e85,
+    #d4d5da 18%,
+    #9a9ba2 50%,
+    #d4d5da 82%,
+    #7d7e85
+  );
+}
+:root[data-theme="dark"] .iphone-slab {
+  background: linear-gradient(
+    90deg,
+    #2c2d33,
+    #6a6c75 18%,
+    #3d3e45 50%,
+    #6a6c75 82%,
+    #2c2d33
+  );
+}
 .iphone-bezel {
   background: #050506;
   box-shadow: inset 0 0 0 0.35cqw #1b1c20;
@@ -439,32 +470,44 @@ html {
   }
 }
 
-/* Three phones as adjacent faces of a hexagon: the side phones hinge off the
-   center phone's edges and turn away, and the stage tilts toward the pointer.
-   --half is half the center phone's width, so the hinges meet its edges. On
-   load the side phones unfold from behind the center one. */
+/* Three phones as adjacent faces of a hexagon: the side phones hinge a
+   little apart from the center phone's edges and turn away, and the stage
+   tilts toward the pointer. --half is half the center phone's width. On load
+   the side phones unfold from behind the center one. */
 .landing .stage {
   perspective: 1800px;
   --rx: 0deg;
   --ry: 0deg;
-  --half: 145px;
-  --turn: 36deg;
+  --half: 120px;
+  --gap: 20px;
+  --turn: 26deg;
+}
+@media (min-width: 48rem) {
+  .landing .stage {
+    --half: 145px;
+    --gap: 32px;
+  }
 }
 @media (min-width: 64rem) {
   .landing .stage {
     --half: 155px;
+    --gap: 44px;
   }
 }
-.landing .stage-inner {
+.landing .stage-inner,
+.landing .stage-side,
+.landing .stage-phone {
   transform-style: preserve-3d;
+}
+.landing .stage-inner {
   transform: rotateX(var(--rx)) rotateY(var(--ry));
   transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 .landing .stage-side {
   position: absolute;
   top: 50%;
-  transform: translateX(calc(var(--dir) * (var(--half) + 8px))) translateY(-50%)
-    translateZ(-24px) rotateY(calc(var(--dir) * var(--turn)));
+  transform: translateX(calc(var(--dir) * (var(--half) + var(--gap))))
+    translateY(-50%) rotateY(calc(var(--dir) * var(--turn)));
   animation: stage-unfold 1.4s cubic-bezier(0.2, 0.8, 0.2, 1) 0.25s both;
 }
 .landing .stage-left {
@@ -484,52 +527,16 @@ html {
       translateY(-50%) translateZ(-140px) rotateY(calc(var(--dir) * -20deg));
   }
 }
-/* Light falls off across each turned face, darkest at its far edge. The
-   radii match the phone's corners (16.6% of its width). */
-.landing .stage-side::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 16.6% / 7.96%;
-  pointer-events: none;
-  background: linear-gradient(
-    var(--shade),
-    rgb(8 10 20 / 0.42),
-    rgb(8 10 20 / 0.06) 70%,
-    transparent
-  );
-}
-.landing .stage-left::after {
-  --shade: 90deg;
-}
-.landing .stage-right::after {
-  --shade: 270deg;
-}
-/* The phones stand on glass: a faint mirror image fades out below each. */
+/* On the stage the phones stand free, with no drop shadow. */
 .landing .stage .iphone-frame {
-  -webkit-box-reflect: below 14px
-    linear-gradient(transparent 84%, rgb(0 0 0 / 0.1));
+  box-shadow:
+    inset 0 0 0 0.25cqw rgb(255 255 255 / 0.55),
+    inset 0 0 0.9cqw rgb(0 0 0 / 0.35);
 }
 :root[data-theme="dark"] .landing .stage .iphone-frame {
-  -webkit-box-reflect: below 14px
-    linear-gradient(transparent 84%, rgb(0 0 0 / 0.16));
-}
-/* A soft pool of light on the floor under the phones. */
-.landing .stage-floor {
-  position: absolute;
-  left: 50%;
-  bottom: -6%;
-  width: 100%;
-  height: 120px;
-  transform: translateX(-50%) translateZ(-60px);
-  border-radius: 9999px;
-  background: radial-gradient(
-    closest-side,
-    color-mix(in srgb, var(--t-accent) 32%, transparent),
-    transparent
-  );
-  filter: blur(22px);
-  pointer-events: none;
+  box-shadow:
+    inset 0 0 0 0.25cqw rgb(255 255 255 / 0.18),
+    inset 0 0 0.9cqw rgb(0 0 0 / 0.5);
 }
 
 /* Glass card with a thin gradient edge. */
