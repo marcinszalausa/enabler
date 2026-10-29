@@ -80,7 +80,7 @@ export async function GET(
       ],
       headers: {
         "cache-control": showcased
-          ? "public, max-age=3600, s-maxage=3600"
+          ? "public, max-age=3600, s-maxage=86400, stale-while-revalidate=604800"
           : "private, max-age=3600",
       },
     },

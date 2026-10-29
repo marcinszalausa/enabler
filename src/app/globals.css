@@ -358,12 +358,26 @@ html {
   pointer-events: none;
   overflow: hidden;
 }
+/* Each blob is drawn as a blurred circle would look (a 70px Gaussian blur),
+   with a gradient instead of a CSS blur filter: a blur this large is redrawn
+   on every animation frame, which phones struggle with. The padding is the
+   room the blur spreads into. */
 .landing .aurora span {
   position: absolute;
+  box-sizing: content-box;
+  padding: 140px;
+  translate: -140px -140px;
   border-radius: 9999px;
-  filter: blur(70px);
   opacity: 0.55;
   will-change: transform;
+  background: radial-gradient(
+    circle closest-side,
+    var(--blob) calc(100% - 280px),
+    color-mix(in srgb, var(--blob) 84%, transparent) calc(100% - 210px),
+    color-mix(in srgb, var(--blob) 50%, transparent) calc(100% - 140px),
+    color-mix(in srgb, var(--blob) 16%, transparent) calc(100% - 70px),
+    transparent
+  );
 }
 .landing .aurora span:nth-child(1) {
   left: 8%;
@@ -372,7 +386,7 @@ html {
   height: 46vw;
   max-width: 640px;
   max-height: 640px;
-  background: color-mix(in srgb, var(--t-accent) 55%, transparent);
+  --blob: color-mix(in srgb, var(--t-accent) 55%, transparent);
   animation: drift-a 22s ease-in-out infinite alternate;
 }
 .landing .aurora span:nth-child(2) {
@@ -382,7 +396,7 @@ html {
   height: 40vw;
   max-width: 560px;
   max-height: 560px;
-  background: color-mix(in srgb, var(--t-violet) 50%, transparent);
+  --blob: color-mix(in srgb, var(--t-violet) 50%, transparent);
   animation: drift-b 26s ease-in-out infinite alternate;
 }
 .landing .aurora span:nth-child(3) {
@@ -392,7 +406,7 @@ html {
   height: 34vw;
   max-width: 480px;
   max-height: 480px;
-  background: color-mix(in srgb, #38bdf8 32%, transparent);
+  --blob: color-mix(in srgb, #38bdf8 32%, transparent);
   animation: drift-c 30s ease-in-out infinite alternate;
 }
 :root[data-theme="dark"] .landing .aurora span {

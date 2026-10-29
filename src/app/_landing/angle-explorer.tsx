@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { ANGLES, angleName } from "@/lib/angles";
 
@@ -69,15 +70,13 @@ export function AngleExplorer({
         <div className="relative aspect-square overflow-hidden bg-surface">
           {/* All angles load up front, so switching is instant. */}
           {ads.map((a, i) => (
-            // eslint-disable-next-line @next/next/no-img-element -- rendered by our own ad route
-            <img
+            <Image
               key={a.id}
               src={a.image}
               alt={i === active ? a.headline : ""}
-              width={1080}
-              height={1080}
-              loading="lazy"
-              className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${i === active ? "opacity-100" : "opacity-0"}`}
+              fill
+              sizes="(min-width: 28rem) 448px, 100vw"
+              className={`object-cover transition-opacity duration-500 ${i === active ? "opacity-100" : "opacity-0"}`}
             />
           ))}
         </div>

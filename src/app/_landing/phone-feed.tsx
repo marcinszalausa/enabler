@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { HomeIndicator, IPhone, StatusBar } from "./iphone";
 import type { FeedAd } from "./reel";
 import { angleName } from "@/lib/angles";
@@ -18,11 +19,17 @@ export function PhoneFeed({
   ads,
   notes = false,
   depth = false,
+  sizes,
+  preload = false,
   className = "",
 }: {
   ads: FeedAd[];
   notes?: boolean;
   depth?: boolean;
+  // The ad area's width on screen, for picking the image size.
+  sizes: string;
+  // The hero phone's first ad is the first thing people see.
+  preload?: boolean;
   className?: string;
 }) {
   const [index, setIndex] = useState(0);
@@ -106,19 +113,30 @@ export function PhoneFeed({
                       muted={muted}
                       loop={!looping}
                       playsInline
-                      preload={k <= 1 ? "auto" : "metadata"}
+                      // Full-size clips are heavy: only the one on screen
+                      // loads, and the next one gets ready to start.
+                      preload={
+                        !visible
+                          ? "none"
+                          : k === index
+                            ? "auto"
+                            : k === index + 1
+                              ? "metadata"
+                              : "none"
+                      }
                       onEnded={k === index ? next : undefined}
                       className="absolute inset-0 h-full w-full object-cover"
                       aria-label={ad.alt}
                     />
                   ) : (
-                    // eslint-disable-next-line @next/next/no-img-element -- rendered by our own ad route
-                    <img
-                      src={ad.image}
+                    <Image
+                      src={ad.image!}
                       alt={ad.alt ?? ""}
-                      width={1080}
-                      height={1920}
-                      className="absolute inset-0 h-full w-full object-cover"
+                      fill
+                      sizes={sizes}
+                      preload={preload && k === 0}
+                      loading={k <= index + 1 ? "eager" : "lazy"}
+                      className="object-cover"
                     />
                   )}
                 </div>
