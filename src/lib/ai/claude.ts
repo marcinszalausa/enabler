@@ -34,7 +34,7 @@ export const AdAngleSchema = z.object({
   image_prompt: z
     .string()
     .describe(
-      "Scene for the ad image, featuring the product. Describe setting, lighting, composition. No text, words or logos in the image.",
+      "Scene for the ad image, featuring the product. Describe setting, lighting, composition. Show the product once, in its real color and design; no second person or before/after split wearing or holding a different version. No text, words or logos in the image.",
     ),
 });
 export type AdAngle = z.infer<typeof AdAngleSchema>;
