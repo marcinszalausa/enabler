@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { getCurrentUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -28,6 +28,7 @@ export async function setShowcase(formData: FormData) {
     .update({ showcased_at: show ? new Date().toISOString() : null })
     .eq("id", generation.id);
 
-  revalidateTag(SHOWCASE_TAG, "max");
+  // Expire now, so the next visit to /use-cases shows the change.
+  updateTag(SHOWCASE_TAG);
   revalidatePath(`/dashboard/products/${generation.product_id}`);
 }
