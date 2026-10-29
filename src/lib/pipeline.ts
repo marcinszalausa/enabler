@@ -3,6 +3,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { reviewAdImage, writeAdAngles, type BrandBrief } from "@/lib/ai/claude";
 import { generateAdImage, type Aspect } from "@/lib/ai/fal";
 import { userMessage } from "@/lib/errors";
+import { autopilotRun } from "@/lib/social/publish";
 import type { LanguageKey } from "@/lib/languages";
 
 export const ASPECTS: Aspect[] = ["1:1", "9:16"];
@@ -120,6 +121,7 @@ export async function runGeneration({
         error: failed > 0 ? failureNote(results, failed) : null,
       })
       .eq("id", generationId);
+    await autopilotRun(workspaceId, generationId);
   } catch (err) {
     const message = userMessage(err, "Generation failed. Please try again.");
     console.error("generation failed", generationId, err);

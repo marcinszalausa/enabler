@@ -12,6 +12,7 @@ import { getBrandKit } from "@/lib/brand-kit";
 import { FONTS, loadFont, textColorOn } from "@/lib/brand";
 import { editVideoAd } from "@/lib/video-edit";
 import { userMessage } from "@/lib/errors";
+import { autopilotRun } from "@/lib/social/publish";
 import { voiceFor, type VideoOptions } from "@/lib/video-options";
 
 export const VIDEOS_PER_GENERATION = 2;
@@ -338,6 +339,7 @@ async function finishGeneration(
   if (refund > 0) {
     await db.rpc("refund_credits", { ws: workspaceId, amount: refund });
   }
+  if (done > 0) await autopilotRun(workspaceId, generationId);
 }
 
 async function saveVideo(
