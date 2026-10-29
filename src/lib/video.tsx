@@ -170,9 +170,24 @@ async function filmShots(
       product,
     });
   const first = await check(ad.shots[0].image_prompt, referenceImageUrl);
-  const rest = await Promise.all(
-    ad.shots.slice(1).map((s) => check(s.image_prompt, first, true)),
-  );
+  let rest: string[];
+  try {
+    rest = await Promise.all(
+      ad.shots.slice(1).map((s) => check(s.image_prompt, first, true)),
+    );
+  } catch (err) {
+    if (!(err instanceof QualityError)) throw err;
+    // A later shot kept failing the check; film the first one for the
+    // whole ad rather than drop it.
+    console.warn("later shot rejected, using one shot", err.message);
+    return [
+      await submitAdVideo({
+        startImageUrl: first,
+        prompt: ad.shots[0].motion_prompt,
+        seconds: VIDEO_SECONDS,
+      }),
+    ];
+  }
   return Promise.all(
     [first, ...rest].map((frame, i) =>
       submitAdVideo({
@@ -345,7 +360,8 @@ async function saveVideo(
 
   const video = await editVideoAd({
     clips,
-    shotSeconds: SHOT_SECONDS,
+    // One request means a later shot was dropped and the first runs long.
+    shotSeconds: clipUrls.length === 1 ? [VIDEO_SECONDS] : SHOT_SECONDS,
     voice,
     music,
     voiceover: job.voiceover ?? "",

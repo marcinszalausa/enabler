@@ -131,11 +131,13 @@ export async function editVideoAd(edit: VideoEdit): Promise<Buffer> {
       `[${layerIn(1)}:v]format=rgba,fade=t=in:st=${endCardStart}:d=0.3:alpha=1[end]`,
       `[${last}][end]overlay=0:0:enable='gte(t,${endCardStart})',fps=30,format=yuv420p[vout]`,
     );
-    const delay = Math.round(VOICE_START * 1000);
+    // Delay before the tempo change: atempo followed by adelay ends the
+    // stream early. The delay is scaled so it lands at VOICE_START.
+    const delay = Math.round(VOICE_START * 1000 * tempo);
     f.push(
-      `[${voiceIn}:a]atempo=${tempo.toFixed(3)},adelay=${delay}:all=1[vo]`,
+      `[${voiceIn}:a]adelay=${delay}:all=1,atempo=${tempo.toFixed(3)}[vo]`,
       `[${musicIn}:a]volume=0.14,afade=t=in:d=0.3,afade=t=out:st=${total - 1}:d=1[mu]`,
-      `[vo][mu]amix=inputs=2:duration=longest:normalize=0,atrim=duration=${total}[aout]`,
+      `[vo][mu]amix=inputs=2:duration=longest:normalize=0,atrim=duration=${total},loudnorm=I=-14:TP=-1.5:LRA=11[aout]`,
     );
 
     args.push(
