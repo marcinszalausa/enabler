@@ -439,11 +439,19 @@ html {
   }
 }
 
-/* Three phones fanned in 3D; the stage tilts toward the pointer. */
+/* Three phones as adjacent faces of a hexagon: the side phones hinge off the
+   center phone's edges and turn away, and the stage tilts toward the pointer.
+   --half is half the center phone's width, so the hinges meet its edges. */
 .landing .stage {
   perspective: 1600px;
   --rx: 0deg;
   --ry: 0deg;
+  --half: 145px;
+}
+@media (min-width: 64rem) {
+  .landing .stage {
+    --half: 155px;
+  }
 }
 .landing .stage-inner {
   transform-style: preserve-3d;
@@ -457,11 +465,15 @@ html {
 }
 .landing .stage-left {
   right: 50%;
-  transform: translateX(-42%) translateZ(-160px) rotateY(24deg);
+  transform-origin: right center;
+  transform: translateX(calc(-1 * var(--half) - 10px)) translateZ(-30px)
+    rotateY(-34deg);
 }
 .landing .stage-right {
   left: 50%;
-  transform: translateX(42%) translateZ(-160px) rotateY(-24deg);
+  transform-origin: left center;
+  transform: translateX(calc(var(--half) + 10px)) translateZ(-30px)
+    rotateY(34deg);
 }
 /* A soft reflection of light on the floor under the phones. */
 .landing .stage-floor {

@@ -4,8 +4,8 @@ import { useEffect, useRef } from "react";
 import { PhoneFeed } from "./phone-feed";
 import type { FeedAd } from "./reel";
 
-// Three real ads on three iPhones, fanned in 3D: the feed in the middle,
-// single ads angled away on each side. The whole stage leans a few degrees
+// Three real ads on three iPhones, set like faces of a hexagon: the feed in
+// the middle, single ads turned away on each side. The whole stage leans a few degrees
 // toward the pointer, which makes the phones feel like objects, not images.
 export function HeroStage({
   feed,
