@@ -541,8 +541,6 @@ function VideoAds({ ads }: { ads: FeedAd[] }) {
 // What every run includes, each shown rather than told. Real run data where
 // there is a run to show.
 function Features({ run }: { run?: ShowcaseRun }) {
-  const story = run?.ads.find((a) => a.aspect === "9:16");
-  const square = run?.ads.find((a) => a.aspect === "1:1");
   return (
     <section className="reveal mx-auto max-w-6xl px-4 pb-24">
       <SectionHeading
@@ -569,35 +567,6 @@ function Features({ run }: { run?: ShowcaseRun }) {
         </div>
 
         <div className="edge p-7 md:col-span-2">
-          <h3 className="text-lg font-medium">Every placement</h3>
-          <p className="mt-1.5 text-sm text-muted">
-            9:16 for Reels, Stories, TikTok and Shorts. 1:1 for the feed.
-          </p>
-          <div className="mt-6 flex items-end justify-center gap-3">
-            {story && (
-              <Image
-                src={image(story.id)}
-                alt=""
-                width={1080}
-                height={1920}
-                sizes="96px"
-                className="aspect-[9/16] w-24 rounded-lg border border-line object-cover"
-              />
-            )}
-            {square && (
-              <Image
-                src={image(square.id)}
-                alt=""
-                width={1080}
-                height={1080}
-                sizes="96px"
-                className="aspect-square w-24 rounded-lg border border-line object-cover"
-              />
-            )}
-          </div>
-        </div>
-
-        <div className="edge p-7 md:col-span-2">
           <h3 className="text-lg font-medium">Your brand kit</h3>
           <p className="mt-1.5 text-sm text-muted">
             Set your logo, button color and font once. Every ad follows it.
@@ -614,7 +583,7 @@ function Features({ run }: { run?: ShowcaseRun }) {
           </div>
         </div>
 
-        <div className="edge p-7 md:col-span-4">
+        <div className="edge p-7 md:col-span-6">
           <h3 className="text-lg font-medium">
             A voice in your buyer&apos;s language
           </h3>
