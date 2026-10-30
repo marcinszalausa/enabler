@@ -3,9 +3,9 @@
 
 export const en = {
   meta: {
-    title: "Gooidy · Grow your business from a single link",
+    title: "Gooidy · Product ads with less work",
     description:
-      "Grow your small business with Gooidy. Paste a product link and get image and video ads that bring in new customers, ready for TikTok, Instagram and Facebook in minutes. Start free.",
+      "Turn a product link into images and videos for your next campaign—without arranging a shoot or designing every ad from scratch.",
     useCasesTitle: "Real examples · Gooidy",
     useCasesDescription:
       "Real, unedited ads Gooidy made from real product links. See how one link becomes a campaign, then try it free on your own store.",
@@ -16,6 +16,8 @@ export const en = {
     termsTitle: "Terms of service · Gooidy",
   },
   nav: {
+    menu: "Menu",
+    skip: "Skip to content",
     home: "Gooidy home",
     examples: "Examples",
     how: "How it works",
@@ -31,9 +33,10 @@ export const en = {
   urlForm: {
     label: "Your product or store link",
     placeholder: "Paste your product or store link",
-    submit: "Start growing",
+    submit: "Create my ads",
   },
   footer: {
+    contact: "Contact",
     tagline:
       "Helping small businesses grow with image and video ads made from a single link.",
     product: "Product",
@@ -66,13 +69,17 @@ export const en = {
     },
   },
   home: {
-    badge: "Growth for small businesses, powered by AI",
-    titleLine1: "Grow your business,",
-    titleBefore: "from a single ",
-    titleWord: "link",
+    creditTitle: "How credits work",
+    creditIntro: "Image and video ads share the same credit balance. You see the full run cost before generating.",
+    refundNote: "Credits for outputs that fail are returned automatically. Finished ads remain available.",
+    adSpend: "Ad spend on social platforms is separate from Gooidy credits.",
+    badge: "Product ads without the production work",
+    titleLine1: "Your product. Great ads.",
+    titleBefore: "",
+    titleWord: "Less work",
     titleAfter: ".",
     intro:
-      "Paste your product page. Gooidy learns who buys from you and why, then makes the image and video ads that bring new customers to your store.",
+      "Turn a product link into images and videos for your next campaign—without arranging a shoot or designing every ad from scratch.",
     facts: [
       "Free to start, no card",
       "Image and video ads",
@@ -85,7 +92,7 @@ export const en = {
       "People buy for different reasons, so every run tries several. These are the real feed ads Gooidy made from one {store} link.",
     whereTitle: "Show up where your customers scroll",
     whereSub: "The same run, sized and ready for every app they use.",
-    liveTitle: "Paste one link. Get a campaign that sells.",
+    liveTitle: "See a product link become ready-to-use ads",
     liveSub:
       "This is a real Gooidy run, played back step by step: the link, what Gooidy read from the page, the angles it wrote and the ads it made.",
     howTitle: "How it works",
@@ -129,7 +136,7 @@ export const en = {
     videoFormat: "{seconds} s video with a voiceover",
     featuresTitle: "Everything you need to grow",
     featuresSub:
-      "Gooidy does the work that usually takes a designer, a copywriter and an afternoon, so you can spend your time running the business.",
+      "Create multiple ad options, reuse your branding and download the ones you want to publish.",
     briefTitle: "Brand brief from your site",
     briefBody:
       "Gooidy reads your page and works out who it's for and why they buy.",
@@ -199,11 +206,13 @@ export const en = {
         a: "Yes. Plans are month to month, and you keep access until the end of the period you paid for.",
       },
     ],
-    finalTitle: "Your next customers are one link away",
+    finalTitle: "Your next campaign starts with a link",
     finalSub: "100 free credits. No credit card needed.",
   },
   beforeAfter: {
-    title: "From one product photo to ads that bring buyers in",
+    compareHint: "Switch between the original product photo and the ads made from it.",
+    imageVariant: "Ad {n}",
+    title: "From product photo to finished ads",
     sub: "On the left is the photo on {store}. On the right are ads Gooidy made from it, unedited.",
     before: "Before: the product page",
     after: "After: {count} of the ads from that run",

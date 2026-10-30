@@ -7,6 +7,7 @@ import { NavShell } from "./nav-shell";
 import { LanguageSwitcher } from "./language-switcher";
 import { useI18n } from "@/i18n/client";
 import { localePath } from "@/i18n/config";
+import { CONTACT_EMAIL } from "@/lib/contact";
 
 // Pieces shared by the public pages: nav, link form, footer. Client
 // components, so they read the page's language from the I18nProvider.
@@ -68,9 +69,10 @@ export function Nav() {
   const href = useHref();
   return (
     <NavShell>
-      <nav className="site-nav mx-auto flex items-center justify-between gap-4 px-4">
+      <a href="#main-content" className="skip-link">{t.nav.skip}</a>
+      <nav className="site-nav relative mx-auto flex items-center justify-between gap-2 px-2 sm:gap-4 sm:px-4">
         <Logo />
-        <div className="hidden items-center gap-8 text-sm text-muted md:flex">
+        <div className="hidden items-center gap-6 text-sm text-muted lg:flex">
           <Link href={href("/use-cases")} className="hover:text-fg">
             {t.nav.examples}
           </Link>
@@ -89,16 +91,43 @@ export function Nav() {
           <ThemeToggle />
           <Link
             href="/login" prefetch={false}
-            className="rounded-lg px-3 py-2 text-sm font-medium whitespace-nowrap text-fg hover:bg-surface"
+            className="hidden min-h-11 items-center rounded-lg px-3 py-2 text-sm font-medium whitespace-nowrap text-fg hover:bg-surface lg:flex"
           >
             {t.nav.signIn}
           </Link>
           <Link
             href="/dashboard" prefetch={false}
-            className="btn-primary hidden rounded-lg px-4 py-2 text-sm font-medium whitespace-nowrap sm:block"
+            className="btn-primary hidden min-h-11 items-center rounded-lg px-4 py-2 text-sm font-medium whitespace-nowrap lg:flex"
           >
             {t.nav.getStarted}
           </Link>
+          <details className="mobile-nav lg:hidden"
+            onKeyDown={(event) => {
+              if (event.key === "Escape") {
+                event.currentTarget.open = false;
+                event.currentTarget.querySelector("summary")?.focus();
+              }
+            }}>
+            <summary className="flex min-h-11 cursor-pointer list-none items-center gap-1 rounded-lg px-2 text-sm font-medium">
+              <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={1.8} aria-hidden><path d="M4 6h16M4 12h16M4 18h16" /></svg>
+              <span className="sr-only sm:not-sr-only">{t.nav.menu}</span>
+            </summary>
+            <div className="absolute inset-x-0 top-[calc(100%+0.5rem)] rounded-2xl border border-line bg-bg p-3 shadow-xl"
+              onClick={(event) => {
+                if ((event.target as HTMLElement).closest("a")) event.currentTarget.closest("details")?.removeAttribute("open");
+              }}>
+              {[
+                [href("/use-cases"), t.nav.examples],
+                [href("/") + "#how", t.nav.how],
+                [href("/") + "#angles", t.nav.angles],
+                [href("/") + "#pricing", t.nav.pricing],
+                [href("/") + "#faq", t.nav.faq],
+                ["/login", t.nav.signIn],
+              ].map(([to, label]) => <Link key={to} href={to} prefetch={false}
+                className="flex min-h-11 items-center rounded-xl px-4 text-sm font-medium hover:bg-surface">{label}</Link>)}
+              <Link href="/dashboard" prefetch={false} className="btn-primary mt-2 flex min-h-11 items-center justify-center rounded-xl px-4 text-sm font-medium">{t.nav.getStarted}</Link>
+            </div>
+          </details>
         </div>
       </nav>
     </NavShell>
@@ -183,13 +212,14 @@ export function Footer() {
     },
   ];
   return (
-    <footer className="border-t border-line">
+    <footer className="border-t border-line pb-24 sm:pb-0">
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr_1fr]">
         <div>
           <Logo />
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted">
             {t.footer.tagline}
           </p>
+          <a href={`mailto:${CONTACT_EMAIL}`} className="mt-4 inline-flex min-h-11 flex-col justify-center text-sm text-accent hover:underline"><span className="font-medium">{t.footer.contact}</span><span>{CONTACT_EMAIL}</span></a>
         </div>
         {columns.map((col) => (
           <nav key={col.title} aria-label={col.title}>

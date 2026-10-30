@@ -2,9 +2,9 @@ import type { Messages } from ".";
 
 export const fr: Messages = {
   meta: {
-    title: "Gooidy · Développez votre activité à partir d'un seul lien",
+    title: "Gooidy · Des publicités produit avec moins de travail",
     description:
-      "Développez votre petite entreprise avec Gooidy. Collez le lien d'un produit et obtenez des pubs image et vidéo qui attirent de nouveaux clients, prêtes pour TikTok, Instagram et Facebook en quelques minutes. Commencez gratuitement.",
+      "Transformez un lien produit en images et vidéos pour votre prochaine campagne, sans organiser de séance photo ni concevoir chaque publicité de zéro.",
     useCasesTitle: "Exemples réels · Gooidy",
     useCasesDescription:
       "De vraies pubs, non retouchées, créées par Gooidy à partir de vrais liens produits. Voyez comment un lien devient une campagne, puis essayez gratuitement sur votre boutique.",
@@ -15,6 +15,8 @@ export const fr: Messages = {
     termsTitle: "Conditions d'utilisation · Gooidy",
   },
   nav: {
+    menu: "Menu",
+    skip: "Aller au contenu",
     home: "Accueil Gooidy",
     examples: "Exemples",
     how: "Comment ça marche",
@@ -30,9 +32,10 @@ export const fr: Messages = {
   urlForm: {
     label: "Le lien de votre produit ou boutique",
     placeholder: "Collez le lien de votre produit ou boutique",
-    submit: "Commencer à grandir",
+    submit: "Créer mes publicités",
   },
   footer: {
+    contact: "Contact",
     tagline:
       "Nous aidons les petites entreprises à grandir grâce à des pubs image et vidéo créées à partir d'un seul lien.",
     product: "Produit",
@@ -65,13 +68,17 @@ export const fr: Messages = {
     },
   },
   home: {
-    badge: "La croissance des petites entreprises, grâce à l'IA",
-    titleLine1: "Développez vos ventes,",
-    titleBefore: "à partir d'un seul ",
-    titleWord: "lien",
+    creditTitle: "Comprendre les crédits",
+    creditIntro: "Les images et vidéos utilisent le même solde de crédits. Le coût total est affiché avant la génération.",
+    refundNote: "Les crédits des résultats échoués sont rendus automatiquement. Les publicités terminées restent disponibles.",
+    adSpend: "Le budget publicitaire sur les réseaux sociaux est distinct des crédits Gooidy.",
+    badge: "Des publicités produit sans le travail de production",
+    titleLine1: "Votre produit. De belles publicités.",
+    titleBefore: "",
+    titleWord: "Moins de travail",
     titleAfter: ".",
     intro:
-      "Collez la page de votre produit. Gooidy comprend qui achète chez vous et pourquoi, puis crée les pubs image et vidéo qui amènent de nouveaux clients dans votre boutique.",
+      "Transformez un lien produit en images et vidéos pour votre prochaine campagne, sans organiser de séance photo ni concevoir chaque publicité de zéro.",
     facts: [
       "Gratuit pour commencer, sans carte",
       "Pubs image et vidéo",
@@ -85,7 +92,7 @@ export const fr: Messages = {
     whereTitle: "Soyez là où vos clients font défiler",
     whereSub:
       "La même génération, au bon format pour chaque appli que vos clients font défiler.",
-    liveTitle: "Collez un lien. Recevez une campagne qui vend.",
+    liveTitle: "D’un lien produit à des publicités prêtes à utiliser",
     liveSub:
       "Voici une vraie génération Gooidy, rejouée étape par étape : le lien, ce que Gooidy a compris de la page, les angles rédigés et les pubs créées.",
     howTitle: "Comment ça marche",
@@ -130,7 +137,7 @@ export const fr: Messages = {
     videoFormat: "Vidéo de {seconds} s avec voix off",
     featuresTitle: "Tout ce qu'il faut pour grandir",
     featuresSub:
-      "Gooidy fait le travail qui demande d'habitude un graphiste, un rédacteur et un après-midi, pour que vous puissiez vous consacrer à votre activité.",
+      "Créez plusieurs variantes, réutilisez votre identité visuelle et téléchargez les publicités que vous souhaitez publier.",
     briefTitle: "Un brief de marque tiré de votre site",
     briefBody:
       "Gooidy lit votre page et comprend à qui elle s'adresse et pourquoi on achète.",
@@ -206,11 +213,13 @@ export const fr: Messages = {
         a: "Oui. Les abonnements sont mensuels et vous gardez l'accès jusqu'à la fin de la période payée.",
       },
     ],
-    finalTitle: "Vos prochains clients sont à un lien d'ici",
+    finalTitle: "Votre prochaine campagne commence par un lien",
     finalSub: "100 crédits offerts. Sans carte bancaire.",
   },
   beforeAfter: {
-    title: "D'une photo produit à des pubs qui attirent des acheteurs",
+    compareHint: "Passez de la photo originale du produit aux publicités créées à partir de celle-ci.",
+    imageVariant: "Publicité {n}",
+    title: "De la photo produit à la publicité terminée",
     sub: "À gauche, la photo sur {store}. À droite, les pubs que Gooidy en a tirées, sans retouche.",
     before: "Avant : la page produit",
     after: "Après : {count} des pubs de cette génération",

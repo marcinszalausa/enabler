@@ -2,9 +2,9 @@ import type { Messages } from ".";
 
 export const pl: Messages = {
   meta: {
-    title: "Gooidy · Rozwijaj swój biznes z jednego linku",
+    title: "Gooidy · Reklamy produktów przy mniejszym nakładzie pracy",
     description:
-      "Rozwijaj swoją małą firmę z Gooidy. Wklej link do produktu i otrzymaj reklamy graficzne i wideo, które przyciągają nowych klientów, gotowe na TikToka, Instagrama i Facebooka w kilka minut. Zacznij za darmo.",
+      "Zamień link do produktu w grafiki i filmy do kolejnej kampanii — bez organizowania sesji i projektowania każdej reklamy od zera.",
     useCasesTitle: "Prawdziwe przykłady · Gooidy",
     useCasesDescription:
       "Prawdziwe, nieedytowane reklamy, które Gooidy stworzyło z prawdziwych linków do produktów. Zobacz, jak jeden link staje się kampanią, a potem wypróbuj za darmo na swoim sklepie.",
@@ -15,6 +15,8 @@ export const pl: Messages = {
     termsTitle: "Regulamin · Gooidy",
   },
   nav: {
+    menu: "Menu",
+    skip: "Przejdź do treści",
     home: "Strona główna Gooidy",
     examples: "Przykłady",
     how: "Jak to działa",
@@ -30,9 +32,10 @@ export const pl: Messages = {
   urlForm: {
     label: "Link do produktu lub sklepu",
     placeholder: "Wklej link do produktu lub sklepu",
-    submit: "Zacznij rosnąć",
+    submit: "Utwórz moje reklamy",
   },
   footer: {
+    contact: "Kontakt",
     tagline:
       "Pomagamy małym firmom rosnąć dzięki reklamom graficznym i wideo tworzonym z jednego linku.",
     product: "Produkt",
@@ -65,13 +68,17 @@ export const pl: Messages = {
     },
   },
   home: {
-    badge: "Wzrost dla małych firm, z pomocą AI",
-    titleLine1: "Rozwijaj swój biznes,",
-    titleBefore: "z jednego ",
-    titleWord: "linku",
+    creditTitle: "Jak działają kredyty",
+    creditIntro: "Reklamy graficzne i wideo korzystają ze wspólnego salda kredytów. Pełny koszt widzisz przed generowaniem.",
+    refundNote: "Kredyty za nieudane wyniki są zwracane automatycznie. Gotowe reklamy pozostają dostępne.",
+    adSpend: "Budżet reklamowy w mediach społecznościowych jest niezależny od kredytów Gooidy.",
+    badge: "Reklamy produktów bez pracy nad produkcją",
+    titleLine1: "Twój produkt. Świetne reklamy.",
+    titleBefore: "",
+    titleWord: "Mniej pracy",
     titleAfter: ".",
     intro:
-      "Wklej stronę swojego produktu. Gooidy sprawdza, kto u Ciebie kupuje i dlaczego, a potem tworzy reklamy graficzne i wideo, które przyprowadzają nowych klientów do Twojego sklepu.",
+      "Zamień link do produktu w grafiki i filmy do kolejnej kampanii — bez organizowania sesji i projektowania każdej reklamy od zera.",
     facts: [
       "Za darmo na start, bez karty",
       "Reklamy graficzne i wideo",
@@ -85,7 +92,7 @@ export const pl: Messages = {
     whereTitle: "Bądź tam, gdzie przewijają Twoi klienci",
     whereSub:
       "Ta sama seria, w formatach gotowych dla każdej aplikacji, którą przeglądają Twoi klienci.",
-    liveTitle: "Wklej jeden link. Dostań kampanię, która sprzedaje.",
+    liveTitle: "Zobacz, jak link do produktu staje się gotową reklamą",
     liveSub:
       "To prawdziwa seria Gooidy odtworzona krok po kroku: link, to, co Gooidy wyczytało ze strony, napisane pomysły i gotowe reklamy.",
     howTitle: "Jak to działa",
@@ -130,7 +137,7 @@ export const pl: Messages = {
     videoFormat: "Wideo {seconds} s z lektorem",
     featuresTitle: "Wszystko, czego potrzebujesz, by rosnąć",
     featuresSub:
-      "Gooidy wykonuje pracę, która zwykle wymaga grafika, copywritera i całego popołudnia, a Ty możesz zająć się prowadzeniem firmy.",
+      "Twórz różne warianty reklam, korzystaj ze swojej identyfikacji marki i pobieraj te, które chcesz opublikować.",
     briefTitle: "Opis marki z Twojej strony",
     briefBody:
       "Gooidy czyta Twoją stronę i ustala, dla kogo jest produkt i dlaczego ludzie go kupują.",
@@ -205,12 +212,14 @@ export const pl: Messages = {
         a: "Tak. Plany są miesięczne, a dostęp zachowujesz do końca opłaconego okresu.",
       },
     ],
-    finalTitle: "Twoi następni klienci są o jeden link stąd",
+    finalTitle: "Twoja kolejna kampania zaczyna się od linku",
     finalSub: "100 darmowych kredytów. Bez karty kredytowej.",
   },
   beforeAfter: {
+    compareHint: "Przełączaj między oryginalnym zdjęciem produktu a reklamami utworzonymi na jego podstawie.",
+    imageVariant: "Reklama {n}",
     title:
-      "Od jednego zdjęcia produktu do reklam, które przyciągają kupujących",
+      "Od zdjęcia produktu do gotowej reklamy",
     sub: "Po lewej zdjęcie z {store}. Po prawej reklamy, które Gooidy z niego stworzyło, bez edycji.",
     before: "Przed: strona produktu",
     after: "Po: {count} reklamy z tej serii",

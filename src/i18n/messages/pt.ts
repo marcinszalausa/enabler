@@ -3,9 +3,9 @@ import type { Messages } from ".";
 // Brazilian Portuguese, the larger market.
 export const pt: Messages = {
   meta: {
-    title: "Gooidy · Faça seu negócio crescer com um único link",
+    title: "Gooidy · Anúncios de produtos com menos trabalho",
     description:
-      "Faça seu pequeno negócio crescer com o Gooidy. Cole o link de um produto e receba anúncios de imagem e vídeo que trazem novos clientes, prontos para TikTok, Instagram e Facebook em minutos. Comece grátis.",
+      "Transforme um link de produto em imagens e vídeos para sua próxima campanha, sem organizar uma sessão de fotos nem criar cada anúncio do zero.",
     useCasesTitle: "Exemplos reais · Gooidy",
     useCasesDescription:
       "Anúncios reais e sem edição que o Gooidy criou a partir de links de produtos reais. Veja como um link vira uma campanha e experimente grátis na sua loja.",
@@ -16,6 +16,8 @@ export const pt: Messages = {
     termsTitle: "Termos de serviço · Gooidy",
   },
   nav: {
+    menu: "Menu",
+    skip: "Ir para o conteúdo",
     home: "Início do Gooidy",
     examples: "Exemplos",
     how: "Como funciona",
@@ -31,9 +33,10 @@ export const pt: Messages = {
   urlForm: {
     label: "O link do seu produto ou loja",
     placeholder: "Cole o link do seu produto ou loja",
-    submit: "Comece a crescer",
+    submit: "Criar meus anúncios",
   },
   footer: {
+    contact: "Contato",
     tagline:
       "Ajudamos pequenas empresas a crescer com anúncios de imagem e vídeo feitos a partir de um único link.",
     product: "Produto",
@@ -66,13 +69,17 @@ export const pt: Messages = {
     },
   },
   home: {
-    badge: "Crescimento para pequenas empresas, com IA",
-    titleLine1: "Cresça seu negócio,",
-    titleBefore: "a partir de um único ",
-    titleWord: "link",
+    creditTitle: "Como funcionam os créditos",
+    creditIntro: "Anúncios de imagem e vídeo usam o mesmo saldo de créditos. Você vê o custo total antes de gerar.",
+    refundNote: "Os créditos de resultados com falha são devolvidos automaticamente. Os anúncios concluídos continuam disponíveis.",
+    adSpend: "O investimento em anúncios nas redes sociais é separado dos créditos do Gooidy.",
+    badge: "Anúncios de produtos sem o trabalho de produção",
+    titleLine1: "Seu produto. Ótimos anúncios.",
+    titleBefore: "",
+    titleWord: "Menos trabalho",
     titleAfter: ".",
     intro:
-      "Cole a página do seu produto. O Gooidy descobre quem compra de você e por quê, e cria os anúncios de imagem e vídeo que levam novos clientes à sua loja.",
+      "Transforme um link de produto em imagens e vídeos para sua próxima campanha, sem organizar uma sessão de fotos nem criar cada anúncio do zero.",
     facts: [
       "Comece grátis, sem cartão",
       "Anúncios de imagem e vídeo",
@@ -86,7 +93,7 @@ export const pt: Messages = {
     whereTitle: "Apareça onde seus clientes rolam a tela",
     whereSub:
       "A mesma rodada, no tamanho certo para cada app em que seus clientes rolam a tela.",
-    liveTitle: "Cole um link. Receba uma campanha que vende.",
+    liveTitle: "Veja um link de produto virar anúncios prontos para usar",
     liveSub:
       "Esta é uma rodada real do Gooidy, reproduzida passo a passo: o link, o que o Gooidy leu na página, as abordagens que escreveu e os anúncios que criou.",
     howTitle: "Como funciona",
@@ -131,7 +138,7 @@ export const pt: Messages = {
     videoFormat: "Vídeo de {seconds} s com locução",
     featuresTitle: "Tudo o que você precisa para crescer",
     featuresSub:
-      "O Gooidy faz o trabalho que normalmente exige um designer, um redator e uma tarde inteira, para você dedicar seu tempo ao negócio.",
+      "Crie várias opções de anúncios, reutilize sua identidade visual e baixe os que quiser publicar.",
     briefTitle: "Briefing da marca a partir do seu site",
     briefBody:
       "O Gooidy lê sua página e entende para quem é o produto e por que as pessoas compram.",
@@ -206,11 +213,13 @@ export const pt: Messages = {
         a: "Sim. Os planos são mensais, e você mantém o acesso até o fim do período pago.",
       },
     ],
-    finalTitle: "Seus próximos clientes estão a um link de distância",
+    finalTitle: "Sua próxima campanha começa com um link",
     finalSub: "100 créditos grátis. Sem cartão de crédito.",
   },
   beforeAfter: {
-    title: "De uma foto de produto a anúncios que trazem compradores",
+    compareHint: "Alterne entre a foto original do produto e os anúncios criados a partir dela.",
+    imageVariant: "Anúncio {n}",
+    title: "Da foto do produto ao anúncio pronto",
     sub: "À esquerda, a foto na {store}. À direita, anúncios que o Gooidy criou a partir dela, sem edição.",
     before: "Antes: a página do produto",
     after: "Depois: {count} dos anúncios dessa rodada",

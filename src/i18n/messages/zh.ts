@@ -3,9 +3,9 @@ import type { Messages } from ".";
 // Simplified Chinese.
 export const zh: Messages = {
   meta: {
-    title: "Gooidy · 一个链接，让生意增长",
+    title: "Gooidy · 更省心地制作产品广告",
     description:
-      "用 Gooidy 让你的小生意增长。粘贴一个商品链接，几分钟内就能获得为 TikTok、Instagram 和 Facebook 准备好的图片和视频广告，帮你带来新客户。免费开始。",
+      "将产品链接变成下一次营销活动所需的图片和视频，无需安排拍摄，也不必从零设计每一则广告。",
     useCasesTitle: "真实案例 · Gooidy",
     useCasesDescription:
       "Gooidy 用真实商品链接做出的真实广告，未经任何修改。看看一个链接如何变成一场推广活动，然后在你自己的店铺免费试用。",
@@ -16,6 +16,8 @@ export const zh: Messages = {
     termsTitle: "服务条款 · Gooidy",
   },
   nav: {
+    menu: "菜单",
+    skip: "跳转到正文",
     home: "Gooidy 首页",
     examples: "案例",
     how: "使用方法",
@@ -31,9 +33,10 @@ export const zh: Messages = {
   urlForm: {
     label: "你的商品或店铺链接",
     placeholder: "粘贴你的商品或店铺链接",
-    submit: "开始增长",
+    submit: "创建我的广告",
   },
   footer: {
+    contact: "联系我们",
     tagline: "用一个链接生成的图片和视频广告，帮助小企业成长。",
     product: "产品",
     account: "账户",
@@ -65,13 +68,17 @@ export const zh: Messages = {
     },
   },
   home: {
-    badge: "AI 驱动，助小企业增长",
-    titleLine1: "让你的生意增长，",
-    titleBefore: "只需",
-    titleWord: "一个链接",
+    creditTitle: "积分使用说明",
+    creditIntro: "图片和视频广告共用同一积分余额。生成前会显示完整费用。",
+    refundNote: "生成失败部分的积分会自动退回。已完成的广告仍可使用。",
+    adSpend: "社交平台上的广告投放费用与 Gooidy 积分分开计算。",
+    badge: "省去繁琐制作的产品广告",
+    titleLine1: "你的产品，精彩的广告。",
+    titleBefore: "",
+    titleWord: "更省心",
     titleAfter: "。",
     intro:
-      "粘贴你的商品页面。Gooidy 会弄清楚谁在买、为什么买，然后制作能把新客户带到你店里的图片和视频广告。",
+      "将产品链接变成下一次营销活动所需的图片和视频，无需安排拍摄，也不必从零设计每一则广告。",
     facts: [
       "免费开始，无需信用卡",
       "图片广告和视频广告",
@@ -84,7 +91,7 @@ export const zh: Messages = {
       "人们出于不同的理由购买，所以每次都会尝试多种角度。这些是 Gooidy 用一个 {store} 链接做出的真实广告。",
     whereTitle: "出现在客户刷屏的地方",
     whereSub: "同一批广告，适配你的顾客常刷的每个应用。",
-    liveTitle: "粘贴一个链接，得到一场会卖货的推广。",
+    liveTitle: "看看产品链接如何变成可用的广告",
     liveSub:
       "这是一次真实的 Gooidy 生成过程，逐步回放：链接、Gooidy 从页面读到的内容、写出的卖点，以及生成的广告。",
     howTitle: "使用方法",
@@ -127,7 +134,7 @@ export const zh: Messages = {
     videoFormat: "{seconds} 秒带配音视频",
     featuresTitle: "增长所需的一切",
     featuresSub:
-      "原本需要设计师、文案和一个下午的工作，交给 Gooidy，你可以专心经营生意。",
+      "创建多个广告方案，复用品牌风格，下载你想发布的广告。",
     briefTitle: "从你的网站提炼品牌简介",
     briefBody: "Gooidy 阅读你的页面，弄清产品面向谁、大家为什么买。",
     briefCaption: "由 Gooidy 根据 {store} 撰写",
@@ -188,11 +195,13 @@ export const zh: Messages = {
         a: "可以。套餐按月计费，你可以一直使用到已付费周期结束。",
       },
     ],
-    finalTitle: "你的下一批客户，只差一个链接",
+    finalTitle: "下一次营销活动，从一个链接开始",
     finalSub: "100 免费积分，无需信用卡。",
   },
   beforeAfter: {
-    title: "从一张商品照片，到带来买家的广告",
+    compareHint: "切换查看原始产品照片和由它生成的广告。",
+    imageVariant: "广告 {n}",
+    title: "从产品照片到完成的广告",
     sub: "左边是 {store} 上的照片，右边是 Gooidy 用它生成的广告，未经修改。",
     before: "之前：商品页面",
     after: "之后：这次生成的 {count} 条广告",
