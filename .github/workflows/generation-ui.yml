@@ -1,0 +1,31 @@
+name: Generation interface checks
+on:
+  push:
+    branches: [fix/generation-status-ui]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  generation-ui:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Current Supabase guidance and migration scaffold
+        run: |
+          curl -fsS https://supabase.com/changelog.md | head -c 12000
+          npx --yes supabase@2.122.0 migration --help
+          npx --yes supabase@2.122.0 migration new generation_receipts
+      - run: npm ci
+      - name: Installed rendering guidance
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          for p in Path('node_modules/next/dist/docs').rglob('*server-and-client-components*'):
+            print(f'GUIDE {p}\n{p.read_text()[:22000]}')
+          PY
+      - run: npx next typegen && npx tsc --noEmit
