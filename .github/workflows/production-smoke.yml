@@ -8,10 +8,18 @@ permissions:
 jobs:
   public-smoke:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
       - run: node --experimental-strip-types scripts/smoke-public.mjs
+      - name: Install isolated browser test dependency
+        run: npm install --prefix /tmp/gooidy-smoke-browser --no-package-lock playwright@1.56.1
+      - name: Install Chromium
+        run: /tmp/gooidy-smoke-browser/node_modules/.bin/playwright install --with-deps chromium
+      - name: Verify client-rendered login
+        run: node scripts/smoke-login.mjs
+        env:
+          PLAYWRIGHT_MODULE_PATH: /tmp/gooidy-smoke-browser/node_modules/playwright

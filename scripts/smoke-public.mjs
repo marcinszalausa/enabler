@@ -20,9 +20,9 @@ await check("English landing page", async () => {
   const response = await page("/");
   assert.match(await response.text(), /gooidy/i);
 });
-await check("Login form loads", async () => {
+await check("Login page shell loads", async () => {
   const response = await page("/login");
-  assert.match(await response.text(), /type="email"/);
+  assert.match(await response.text(), /Sign in · Gooidy/);
 });
 await check("Signed-out dashboard preserves return URL", async () => {
   const response = await page("/dashboard?smoke=1", 307);
