@@ -304,14 +304,19 @@ export const ro: Messages = {
   },
   login: {
     title: "Autentifică-te în Gooidy",
-    sub: "Îți trimitem pe e-mail un link magic. Fără parolă.",
+    sub: "Îți trimitem pe e-mail un link și un cod de autentificare. Fără parolă.",
     email: "E-mail",
     placeholder: "tu@firma.ro",
     send: "Trimite-mi un link",
     sending: "Se trimite…",
-    sent: "Verifică {email}: acolo te așteaptă linkul de autentificare.",
+    sent: "Am trimis un link și un cod la {email}. Deschide linkul sau scrie codul aici.",
+    code: "Codul din e-mail",
+    verify: "Autentifică-te",
+    verifying: "Se autentifică…",
+    codeError: "Codul nu a funcționat. Verifică-l sau cere unul nou.",
+    otherEmail: "Folosește alt e-mail",
     linkError:
-      "Acest link de autentificare a expirat sau a fost deja folosit. Cere unul nou.",
+      "Linkul de autentificare nu a funcționat, poate a expirat. Cere unul nou sau folosește codul din e-mail.",
   },
   app: {
     products: "Produse",

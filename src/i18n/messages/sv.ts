@@ -298,14 +298,19 @@ export const sv: Messages = {
   },
   login: {
     title: "Logga in på Gooidy",
-    sub: "Vi mejlar dig en magisk länk. Inget lösenord behövs.",
+    sub: "Vi mejlar dig en inloggningslänk och en kod. Inget lösenord behövs.",
     email: "E-post",
     placeholder: "du@foretag.se",
     send: "Mejla mig en länk",
     sending: "Skickar…",
-    sent: "Kolla {email}, där väntar din inloggningslänk.",
+    sent: "Vi har skickat en länk och en kod till {email}. Öppna länken eller skriv koden här.",
+    code: "Kod från mejlet",
+    verify: "Logga in",
+    verifying: "Loggar in…",
+    codeError: "Koden fungerade inte. Kontrollera den eller skicka en ny.",
+    otherEmail: "Använd en annan e-post",
     linkError:
-      "Inloggningslänken har gått ut eller har redan använts. Skicka en ny.",
+      "Inloggningslänken fungerade inte, den kan ha gått ut. Skicka en ny eller använd koden i mejlet.",
   },
   app: {
     products: "Produkter",

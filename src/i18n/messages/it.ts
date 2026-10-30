@@ -304,14 +304,20 @@ export const it: Messages = {
   },
   login: {
     title: "Accedi a Gooidy",
-    sub: "Ti invieremo un link magico via email. Nessuna password.",
+    sub: "Ti invieremo via email un link e un codice per accedere. Nessuna password.",
     email: "Email",
     placeholder: "tu@azienda.it",
     send: "Inviami un link",
     sending: "Invio in corso…",
-    sent: "Controlla {email}: lì trovi il link per accedere.",
+    sent: "Abbiamo inviato un link e un codice a {email}. Apri il link o inserisci qui il codice.",
+    code: "Codice dall'email",
+    verify: "Accedi",
+    verifying: "Accesso in corso…",
+    codeError:
+      "Questo codice non ha funzionato. Controllalo o richiedine uno nuovo.",
+    otherEmail: "Usa un'altra email",
     linkError:
-      "Questo link di accesso è scaduto o è già stato usato. Richiedine uno nuovo.",
+      "Questo link di accesso non ha funzionato, forse è scaduto. Richiedine uno nuovo o usa il codice dell'email.",
   },
   app: {
     products: "Prodotti",

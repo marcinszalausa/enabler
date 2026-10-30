@@ -287,14 +287,19 @@ export const ko: Messages = {
   },
   login: {
     title: "Gooidy에 로그인",
-    sub: "이메일로 로그인 링크를 보내 드립니다. 비밀번호는 필요 없습니다.",
+    sub: "이메일로 로그인 링크와 코드를 보내 드립니다. 비밀번호는 필요 없습니다.",
     email: "이메일",
     placeholder: "you@company.com",
     send: "링크 받기",
     sending: "보내는 중…",
-    sent: "{email}에서 로그인 링크를 확인하세요.",
+    sent: "{email}(으)로 링크와 코드를 보냈습니다. 링크를 열거나 여기에 코드를 입력하세요.",
+    code: "이메일로 받은 코드",
+    verify: "로그인",
+    verifying: "로그인 중…",
+    codeError: "코드가 맞지 않습니다. 확인하거나 새 코드를 요청하세요.",
+    otherEmail: "다른 이메일 사용",
     linkError:
-      "로그인 링크가 만료되었거나 이미 사용되었습니다. 새 링크를 요청하세요.",
+      "로그인 링크가 작동하지 않았습니다. 만료되었을 수 있습니다. 새 링크를 요청하거나 이메일의 코드를 사용하세요.",
   },
   app: {
     products: "상품",
