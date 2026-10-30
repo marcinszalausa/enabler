@@ -103,7 +103,7 @@ export const pt: Messages = {
       },
       {
         title: "Alcance mais compradores",
-        body: "Publique no TikTok, Instagram e Facebook para conquistar novos clientes. Em breve você poderá publicar, agendar e impulsionar direto do Gooidy.",
+        body: "Publique no TikTok, Instagram e Facebook para conquistar novos clientes. Publique ou agende direto do Gooidy; o impulsionamento chega em breve.",
       },
     ],
     examplesTitle: "Feitos para o feed",
@@ -183,7 +183,7 @@ export const pt: Messages = {
       },
       {
         q: "Como o Gooidy ajuda meu negócio a crescer?",
-        a: "Anúncios são a forma como a maioria das lojas pequenas conquista novos clientes online, mas bons anúncios custam tempo e dinheiro. O Gooidy transforma um único link em anúncios novos e fiéis à sua marca, testa diferentes motivos de compra para você ver o que funciona na sua loja e fala com compradores em {count} idiomas. Em seguida: publicar e impulsionar com um clique.",
+        a: "Anúncios são a forma como a maioria das lojas pequenas conquista novos clientes online, mas bons anúncios custam tempo e dinheiro. O Gooidy transforma um único link em anúncios novos e fiéis à sua marca, testa diferentes motivos de compra para você ver o que funciona na sua loja e fala com compradores em {count} idiomas. Publique ou agende com um clique; o impulsionamento chega em breve.",
       },
       {
         q: "O que é um crédito?",
@@ -199,7 +199,7 @@ export const pt: Messages = {
       },
       {
         q: "Onde posso usar os anúncios?",
-        a: "Em qualquer lugar onde você anuncia: TikTok, Instagram, Facebook, YouTube Shorts e mais. Em breve você poderá publicar, agendar e impulsionar direto do Gooidy.",
+        a: "Em qualquer lugar onde você anuncia: TikTok, Instagram, Facebook, YouTube Shorts e mais. O Gooidy pode publicar ou agendar por você em 10 redes; o impulsionamento chega em breve.",
       },
       {
         q: "Posso cancelar quando quiser?",

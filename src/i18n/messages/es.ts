@@ -102,7 +102,7 @@ export const es: Messages = {
       },
       {
         title: "Llega a más compradores",
-        body: "Publícalos en TikTok, Instagram y Facebook para conseguir nuevos clientes. Pronto podrás publicar, programar y promocionar directamente desde Gooidy.",
+        body: "Publícalos en TikTok, Instagram y Facebook para conseguir nuevos clientes. Publícalos o prográmalos directamente desde Gooidy; la promoción llegará pronto.",
       },
     ],
     examplesTitle: "Hechos para el feed",
@@ -182,7 +182,7 @@ export const es: Messages = {
       },
       {
         q: "¿Cómo ayuda Gooidy a que crezca mi negocio?",
-        a: "Los anuncios son la forma en que la mayoría de las tiendas pequeñas consiguen nuevos clientes en internet, pero los buenos anuncios cuestan tiempo y dinero. Gooidy convierte un solo enlace en anuncios nuevos y fieles a tu marca, prueba distintas razones de compra para que veas qué funciona en tu tienda y habla a los compradores en {count} idiomas. Lo siguiente: publicar y promocionar con un clic.",
+        a: "Los anuncios son la forma en que la mayoría de las tiendas pequeñas consiguen nuevos clientes en internet, pero los buenos anuncios cuestan tiempo y dinero. Gooidy convierte un solo enlace en anuncios nuevos y fieles a tu marca, prueba distintas razones de compra para que veas qué funciona en tu tienda y habla a los compradores en {count} idiomas. Publícalos o prográmalos con un clic; la promoción llegará pronto.",
       },
       {
         q: "¿Qué es un crédito?",
@@ -198,7 +198,7 @@ export const es: Messages = {
       },
       {
         q: "¿Dónde puedo usar los anuncios?",
-        a: "En cualquier lugar donde anuncies: TikTok, Instagram, Facebook, YouTube Shorts y más. Pronto podrás publicar, programar y promocionar directamente desde Gooidy.",
+        a: "En cualquier lugar donde anuncies: TikTok, Instagram, Facebook, YouTube Shorts y más. Gooidy puede publicarlos o programarlos por ti en 10 redes; la promoción llegará pronto.",
       },
       {
         q: "¿Puedo cancelar cuando quiera?",

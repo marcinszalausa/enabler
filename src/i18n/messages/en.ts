@@ -102,7 +102,7 @@ export const en = {
       },
       {
         title: "Reach more buyers",
-        body: "Run them on TikTok, Instagram and Facebook to win new customers. Publishing, scheduling and boosting from Gooidy are coming soon.",
+        body: "Run them on TikTok, Instagram and Facebook to win new customers. Post or schedule them straight from Gooidy, and boosting is coming soon.",
       },
     ],
     examplesTitle: "Made for the feed",
@@ -176,7 +176,7 @@ export const en = {
       },
       {
         q: "How does Gooidy help my business grow?",
-        a: "Ads are how most small shops win new customers online, but good ads take time and money. Gooidy turns a single link into fresh, on-brand ads, tries different reasons people buy so you can test what works for your shop, and speaks to buyers in {count} languages. One-click publishing and boosting are coming next.",
+        a: "Ads are how most small shops win new customers online, but good ads take time and money. Gooidy turns a single link into fresh, on-brand ads, tries different reasons people buy so you can test what works for your shop, and speaks to buyers in {count} languages. Post or schedule them in one click; boosting is coming next.",
       },
       {
         q: "What is a credit?",
@@ -192,7 +192,7 @@ export const en = {
       },
       {
         q: "Where can I use the ads?",
-        a: "Anywhere you advertise: TikTok, Instagram, Facebook, YouTube Shorts and more. Publishing, scheduling and boosting straight from Gooidy are coming soon.",
+        a: "Anywhere you advertise: TikTok, Instagram, Facebook, YouTube Shorts and more. Gooidy can post or schedule them for you on 10 networks, and boosting is coming soon.",
       },
       {
         q: "Can I cancel anytime?",

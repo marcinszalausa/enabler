@@ -102,7 +102,7 @@ export const ro: Messages = {
       },
       {
         title: "Ajungi la mai mulți cumpărători",
-        body: "Rulează-le pe TikTok, Instagram și Facebook ca să câștigi clienți noi. Publicarea, programarea și promovarea direct din Gooidy vin în curând.",
+        body: "Rulează-le pe TikTok, Instagram și Facebook ca să câștigi clienți noi. Publică-le sau programează-le direct din Gooidy; promovarea vine în curând.",
       },
     ],
     examplesTitle: "Făcute pentru feed",
@@ -183,7 +183,7 @@ export const ro: Messages = {
       },
       {
         q: "Cum mă ajută Gooidy să-mi cresc afacerea?",
-        a: "Prin reclame își câștigă majoritatea magazinelor mici clienți noi online, dar reclamele bune costă timp și bani. Gooidy transformă un singur link în reclame noi, în stilul brandului tău, încearcă diferite motive de cumpărare ca să poți testa ce funcționează pentru magazinul tău și vorbește cu cumpărătorii în {count} limbi. Urmează: publicare și promovare cu un clic.",
+        a: "Prin reclame își câștigă majoritatea magazinelor mici clienți noi online, dar reclamele bune costă timp și bani. Gooidy transformă un singur link în reclame noi, în stilul brandului tău, încearcă diferite motive de cumpărare ca să poți testa ce funcționează pentru magazinul tău și vorbește cu cumpărătorii în {count} limbi. Publică-le sau programează-le cu un clic; promovarea vine în curând.",
       },
       {
         q: "Ce este un credit?",
@@ -199,7 +199,7 @@ export const ro: Messages = {
       },
       {
         q: "Unde pot folosi reclamele?",
-        a: "Oriunde faci reclamă: TikTok, Instagram, Facebook, YouTube Shorts și altele. Publicarea, programarea și promovarea direct din Gooidy vin în curând.",
+        a: "Oriunde faci reclamă: TikTok, Instagram, Facebook, YouTube Shorts și altele. Gooidy le poate publica sau programa pentru tine pe 10 rețele; promovarea vine în curând.",
       },
       {
         q: "Pot anula oricând?",

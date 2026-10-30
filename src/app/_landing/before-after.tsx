@@ -5,6 +5,21 @@ import { SectionHeading } from "./chrome";
 import { useI18n } from "@/i18n/client";
 import { fmt } from "@/i18n/format";
 
+// Shopify serves any width of a product photo; the card is at most 384 px
+// wide, so 800 px stays sharp on retina screens. Other stores' photos load
+// as they are.
+function webSize(photo: string) {
+  try {
+    const u = new URL(photo);
+    if (u.hostname !== "cdn.shopify.com" && !u.pathname.includes("/cdn/shop/"))
+      return photo;
+    u.searchParams.set("width", "800");
+    return u.toString();
+  } catch {
+    return photo;
+  }
+}
+
 // The store's own product photo next to ads Gooidy made from it.
 export function BeforeAfter({
   photo,
@@ -44,7 +59,7 @@ export function BeforeAfter({
           </div>
           {/* eslint-disable-next-line @next/next/no-img-element -- the store's own photo, on any host */}
           <img
-            src={photo}
+            src={webSize(photo)}
             alt={name}
             loading="lazy"
             className="aspect-[4/5] w-full bg-surface object-cover"

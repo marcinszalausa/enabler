@@ -100,7 +100,7 @@ export const zh: Messages = {
       },
       {
         title: "触达更多买家",
-        body: "在 TikTok、Instagram 和 Facebook 上投放，赢得新客户。直接从 Gooidy 发布、定时发布和加热推广的功能即将推出。",
+        body: "在 TikTok、Instagram 和 Facebook 上投放，赢得新客户。可直接从 Gooidy 发布或定时发布，加热推广即将推出。",
       },
     ],
     examplesTitle: "为信息流而生",
@@ -165,7 +165,7 @@ export const zh: Messages = {
       },
       {
         q: "Gooidy 如何帮助我的生意增长？",
-        a: "大多数小店都是靠广告在网上获得新客户，但好广告需要时间和金钱。Gooidy 把一个链接变成符合你品牌的新广告，尝试不同的购买理由，让你测试什么最适合你的店铺，并用 {count} 种语言与买家沟通。接下来：一键发布和加热推广。",
+        a: "大多数小店都是靠广告在网上获得新客户，但好广告需要时间和金钱。Gooidy 把一个链接变成符合你品牌的新广告，尝试不同的购买理由，让你测试什么最适合你的店铺，并用 {count} 种语言与买家沟通。一键即可发布或定时发布，加热推广即将推出。",
       },
       {
         q: "什么是积分？",
@@ -181,7 +181,7 @@ export const zh: Messages = {
       },
       {
         q: "广告可以用在哪里？",
-        a: "任何你投放广告的地方：TikTok、Instagram、Facebook、YouTube Shorts 等。直接从 Gooidy 发布、定时发布和加热推广的功能即将推出。",
+        a: "任何你投放广告的地方：TikTok、Instagram、Facebook、YouTube Shorts 等。Gooidy 可以替你在 10 个平台上发布或定时发布，加热推广即将推出。",
       },
       {
         q: "可以随时取消吗？",

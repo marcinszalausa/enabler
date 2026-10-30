@@ -102,7 +102,7 @@ export const pl: Messages = {
       },
       {
         title: "Docieraj do większej liczby kupujących",
-        body: "Publikuj je na TikToku, Instagramie i Facebooku i zdobywaj nowych klientów. Publikowanie, planowanie i promowanie prosto z Gooidy już wkrótce.",
+        body: "Publikuj je na TikToku, Instagramie i Facebooku i zdobywaj nowych klientów. Publikuj lub planuj je prosto z Gooidy, a promowanie już wkrótce.",
       },
     ],
     examplesTitle: "Stworzone do feedu",
@@ -182,7 +182,7 @@ export const pl: Messages = {
       },
       {
         q: "Jak Gooidy pomaga rozwijać mój biznes?",
-        a: "Reklamy to sposób, w jaki większość małych sklepów zdobywa nowych klientów w internecie, ale dobre reklamy kosztują czas i pieniądze. Gooidy zamienia jeden link w świeże reklamy w stylu Twojej marki, sprawdza różne powody zakupu, abyś mógł przetestować, co działa w Twoim sklepie, i mówi do kupujących w {count} językach. Następne w kolejce: publikowanie i promowanie jednym kliknięciem.",
+        a: "Reklamy to sposób, w jaki większość małych sklepów zdobywa nowych klientów w internecie, ale dobre reklamy kosztują czas i pieniądze. Gooidy zamienia jeden link w świeże reklamy w stylu Twojej marki, sprawdza różne powody zakupu, abyś mógł przetestować, co działa w Twoim sklepie, i mówi do kupujących w {count} językach. Publikuj lub planuj je jednym kliknięciem, a promowanie już wkrótce.",
       },
       {
         q: "Czym jest kredyt?",
@@ -198,7 +198,7 @@ export const pl: Messages = {
       },
       {
         q: "Gdzie mogę używać tych reklam?",
-        a: "Wszędzie, gdzie się reklamujesz: TikTok, Instagram, Facebook, YouTube Shorts i więcej. Publikowanie, planowanie i promowanie prosto z Gooidy już wkrótce.",
+        a: "Wszędzie, gdzie się reklamujesz: TikTok, Instagram, Facebook, YouTube Shorts i więcej. Gooidy opublikuje lub zaplanuje je za Ciebie w 10 serwisach, a promowanie już wkrótce.",
       },
       {
         q: "Czy mogę zrezygnować w każdej chwili?",

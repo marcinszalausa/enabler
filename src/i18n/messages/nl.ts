@@ -102,7 +102,7 @@ export const nl: Messages = {
       },
       {
         title: "Bereik meer kopers",
-        body: "Zet ze op TikTok, Instagram en Facebook en win nieuwe klanten. Publiceren, inplannen en promoten vanuit Gooidy komen binnenkort.",
+        body: "Zet ze op TikTok, Instagram en Facebook en win nieuwe klanten. Publiceer of plan ze direct vanuit Gooidy; promoten komt binnenkort.",
       },
     ],
     examplesTitle: "Gemaakt voor de feed",
@@ -182,7 +182,7 @@ export const nl: Messages = {
       },
       {
         q: "Hoe helpt Gooidy mijn bedrijf groeien?",
-        a: "Via advertenties winnen de meeste kleine winkels online nieuwe klanten, maar goede advertenties kosten tijd en geld. Gooidy maakt van één link frisse advertenties in je eigen merkstijl, probeert verschillende koopredenen zodat je kunt testen wat werkt voor jouw winkel, en spreekt kopers aan in {count} talen. Hierna: publiceren en promoten met één klik.",
+        a: "Via advertenties winnen de meeste kleine winkels online nieuwe klanten, maar goede advertenties kosten tijd en geld. Gooidy maakt van één link frisse advertenties in je eigen merkstijl, probeert verschillende koopredenen zodat je kunt testen wat werkt voor jouw winkel, en spreekt kopers aan in {count} talen. Publiceer of plan ze met één klik; promoten komt binnenkort.",
       },
       {
         q: "Wat is een credit?",
@@ -198,7 +198,7 @@ export const nl: Messages = {
       },
       {
         q: "Waar kan ik de advertenties gebruiken?",
-        a: "Overal waar je adverteert: TikTok, Instagram, Facebook, YouTube Shorts en meer. Publiceren, inplannen en promoten direct vanuit Gooidy komen binnenkort.",
+        a: "Overal waar je adverteert: TikTok, Instagram, Facebook, YouTube Shorts en meer. Gooidy publiceert of plant ze voor je op 10 netwerken; promoten komt binnenkort.",
       },
       {
         q: "Kan ik altijd opzeggen?",

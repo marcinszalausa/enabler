@@ -102,7 +102,7 @@ export const fr: Messages = {
       },
       {
         title: "Touchez plus d'acheteurs",
-        body: "Diffusez-les sur TikTok, Instagram et Facebook pour gagner de nouveaux clients. La publication, la programmation et le boost depuis Gooidy arrivent bientôt.",
+        body: "Diffusez-les sur TikTok, Instagram et Facebook pour gagner de nouveaux clients. Publiez-les ou programmez-les depuis Gooidy ; le boost arrive bientôt.",
       },
     ],
     examplesTitle: "Faites pour le fil",
@@ -183,7 +183,7 @@ export const fr: Messages = {
       },
       {
         q: "Comment Gooidy aide-t-il mon activité à grandir ?",
-        a: "La pub est le moyen par lequel la plupart des petites boutiques gagnent de nouveaux clients en ligne, mais de bonnes pubs coûtent du temps et de l'argent. Gooidy transforme un seul lien en pubs fraîches et fidèles à votre marque, teste différentes raisons d'acheter pour que vous voyiez ce qui marche pour votre boutique, et parle aux acheteurs dans {count} langues. Prochaine étape : publier et booster en un clic.",
+        a: "La pub est le moyen par lequel la plupart des petites boutiques gagnent de nouveaux clients en ligne, mais de bonnes pubs coûtent du temps et de l'argent. Gooidy transforme un seul lien en pubs fraîches et fidèles à votre marque, teste différentes raisons d'acheter pour que vous voyiez ce qui marche pour votre boutique, et parle aux acheteurs dans {count} langues. Publiez-les ou programmez-les en un clic ; le boost arrive bientôt.",
       },
       {
         q: "Qu'est-ce qu'un crédit ?",
@@ -199,7 +199,7 @@ export const fr: Messages = {
       },
       {
         q: "Où puis-je utiliser les pubs ?",
-        a: "Partout où vous faites de la pub : TikTok, Instagram, Facebook, YouTube Shorts et plus. La publication, la programmation et le boost directement depuis Gooidy arrivent bientôt.",
+        a: "Partout où vous faites de la pub : TikTok, Instagram, Facebook, YouTube Shorts et plus. Gooidy peut les publier ou les programmer pour vous sur 10 réseaux ; le boost arrive bientôt.",
       },
       {
         q: "Puis-je résilier à tout moment ?",

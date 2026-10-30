@@ -102,7 +102,7 @@ export const de: Messages = {
       },
       {
         title: "Mehr Käufer erreichen",
-        body: "Schalte sie auf TikTok, Instagram und Facebook und gewinne neue Kunden. Veröffentlichen, Planen und Bewerben direkt aus Gooidy kommen bald.",
+        body: "Schalte sie auf TikTok, Instagram und Facebook und gewinne neue Kunden. Veröffentliche oder plane sie direkt aus Gooidy; Bewerben kommt bald.",
       },
     ],
     examplesTitle: "Gemacht für den Feed",
@@ -178,7 +178,7 @@ export const de: Messages = {
       },
       {
         q: "Wie hilft Gooidy meinem Geschäft beim Wachsen?",
-        a: "Über Anzeigen gewinnen die meisten kleinen Shops online neue Kunden, aber gute Anzeigen kosten Zeit und Geld. Gooidy macht aus einem einzigen Link frische Anzeigen in deinem Markenstil, probiert verschiedene Kaufgründe aus, damit du testen kannst, was für deinen Shop funktioniert, und spricht Käufer in {count} Sprachen an. Als Nächstes kommen Veröffentlichen und Bewerben mit einem Klick.",
+        a: "Über Anzeigen gewinnen die meisten kleinen Shops online neue Kunden, aber gute Anzeigen kosten Zeit und Geld. Gooidy macht aus einem einzigen Link frische Anzeigen in deinem Markenstil, probiert verschiedene Kaufgründe aus, damit du testen kannst, was für deinen Shop funktioniert, und spricht Käufer in {count} Sprachen an. Veröffentliche oder plane sie mit einem Klick; Bewerben kommt als Nächstes.",
       },
       {
         q: "Was ist ein Credit?",
@@ -194,7 +194,7 @@ export const de: Messages = {
       },
       {
         q: "Wo kann ich die Anzeigen nutzen?",
-        a: "Überall, wo du wirbst: TikTok, Instagram, Facebook, YouTube Shorts und mehr. Veröffentlichen, Planen und Bewerben direkt aus Gooidy kommen bald.",
+        a: "Überall, wo du wirbst: TikTok, Instagram, Facebook, YouTube Shorts und mehr. Gooidy veröffentlicht oder plant sie für dich in 10 Netzwerken; Bewerben kommt bald.",
       },
       {
         q: "Kann ich jederzeit kündigen?",

@@ -17,7 +17,8 @@ import { Placements, type PlacementAd } from "@/app/_landing/placements";
 import { StickyCta } from "@/app/_landing/sticky-cta";
 import { Spotlight } from "@/app/_landing/spotlight";
 import { BeforeAfter } from "@/app/_landing/before-after";
-import { alternates, isLocale, localePath, type Locale } from "@/i18n/config";
+import { isLocale, localePath, type Locale } from "@/i18n/config";
+import { homeJsonLd, pageMetadata } from "@/lib/seo";
 import { getMessages, type Messages } from "@/i18n/messages";
 import { fmt } from "@/i18n/format";
 
@@ -27,11 +28,7 @@ export async function generateMetadata({
   const { locale } = await params;
   if (!isLocale(locale)) return {};
   const t = await getMessages(locale);
-  return {
-    title: t.meta.title,
-    description: t.meta.description,
-    alternates: alternates(locale, "/"),
-  };
+  return pageMetadata(locale, "/", t.meta.title, t.meta.description);
 }
 
 // Prices stay in dollars in every language; the names and perks are in the
@@ -73,6 +70,21 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
       <StickyCta />
       <Spotlight />
       <Reveal />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            homeJsonLd(
+              locale,
+              t.meta.description,
+              t.home.plans.map((p, i) => ({
+                name: p.name,
+                price: Number(PRICES[i].slice(1)),
+              })),
+            ),
+          ).replace(/</g, "\\u003c"),
+        }}
+      />
     </div>
   );
 }
@@ -202,7 +214,7 @@ function WorksWith({ t }: { t: Messages }) {
     <section className="border-y border-line">
       <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-4 py-8 sm:flex-row sm:justify-between">
         <p className="text-sm text-muted">{t.home.worksWith}</p>
-        <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-base font-semibold text-muted/80">
+        <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-base font-semibold text-muted">
           <span>Shopify</span>
           <span>WooCommerce</span>
           <span>Wix</span>
