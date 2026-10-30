@@ -11,7 +11,7 @@ const fixture=[
 'const first={productKey:"fixture-a",image:"/reels/softmila-cardigan.jpg",alt:"First example"};',
 'const second={productKey:"fixture-b",image:"/reels/softmila-still.jpg",alt:"Second example"};',
 'const third={productKey:"fixture-c",image:"/reels/softmila-cardigan.jpg",alt:"Third example"};',
-'export default function PhoneDepthPreview(){return <main className="mx-auto w-full max-w-6xl px-4">',
+'export default function PhoneDepthPreview(){return <main className="landing mx-auto w-full max-w-6xl px-4">',
 '<div data-phone-scene className="py-20"><HeroStage feed={[first]} left={second} right={third}/></div>',
 '</main>}',
 ].join("\n");
