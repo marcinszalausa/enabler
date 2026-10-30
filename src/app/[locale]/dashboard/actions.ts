@@ -15,6 +15,7 @@ import { userMessage } from "@/lib/errors";
 import { seedBrandKit } from "@/lib/brand-kit";
 import { requestMessages } from "@/i18n/server";
 import { fmt } from "@/i18n/format";
+import { canEditWorkspace, WORKSPACE_WRITE_DENIED } from "@/lib/workspace-access";
 
 export type FormState = { error: string | null };
 
@@ -29,7 +30,7 @@ async function currentWorkspaceId() {
     .limit(1)
     .single();
   if (!ws) throw new Error("No workspace found.");
-  return { supabase, workspaceId: ws.id as string };
+  return { supabase, workspaceId: ws.id as string, canEdit: await canEditWorkspace(supabase, ws.id) };
 }
 
 export async function createProduct(
@@ -39,7 +40,8 @@ export async function createProduct(
   const rawUrl = String(formData.get("url") ?? "").trim();
   if (!rawUrl) return { error: (await requestMessages()).app.errors.pasteLink };
 
-  const { supabase, workspaceId } = await currentWorkspaceId();
+  const { supabase, workspaceId, canEdit } = await currentWorkspaceId();
+  if (!canEdit) return { error: WORKSPACE_WRITE_DENIED };
 
   let productId: string;
   try {
@@ -81,7 +83,8 @@ export async function startGeneration(
   const language =
     options?.language ??
     (isLanguageKey(requested) ? requested : DEFAULT_LANGUAGE);
-  const { supabase, workspaceId } = await currentWorkspaceId();
+  const { supabase, workspaceId, canEdit } = await currentWorkspaceId();
+  if (!canEdit) return { error: WORKSPACE_WRITE_DENIED };
 
   // RLS: only returns the product if the user is a member of its workspace.
   const { data: product } = await supabase

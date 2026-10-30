@@ -22,6 +22,7 @@ import {
 } from "@/lib/social/publish";
 import { requestMessages } from "@/i18n/server";
 import { fmt } from "@/i18n/format";
+import { canEditWorkspace, WORKSPACE_WRITE_DENIED } from "@/lib/workspace-access";
 
 async function currentWorkspace() {
   const supabase = await createClient();
@@ -35,6 +36,7 @@ async function currentWorkspace() {
     .limit(1)
     .single();
   if (!ws) throw new Error("No workspace found.");
+  if (!(await canEditWorkspace(supabase, ws.id))) return null;
   return ws as { id: string; name: string };
 }
 
@@ -44,6 +46,7 @@ export async function connectAccount(formData: FormData) {
   const platform = formData.get("platform");
   if (!isPlatformKey(platform) || !zernioConfigured()) return;
   const ws = await currentWorkspace();
+  if (!ws) return;
   const origin = (await headers()).get("origin") ?? "https://gooidy.com";
   const { total, limit } = await accountsInPlan(ws.id);
   if (total >= limit) redirect("/dashboard/publishing?error=limit");
@@ -69,6 +72,7 @@ export async function connectAccount(formData: FormData) {
 export async function disconnectAccount(formData: FormData) {
   const accountId = String(formData.get("accountId") ?? "");
   const ws = await currentWorkspace();
+  if (!ws) return;
   const db = createAdminClient();
   const { data: account } = await db
     .from("social_accounts")
@@ -82,7 +86,7 @@ export async function disconnectAccount(formData: FormData) {
   } catch (err) {
     console.error("disconnect failed", account.id, err);
   }
-  await db.from("social_accounts").delete().eq("id", account.id);
+  await db.from("social_accounts").delete().eq("id", account.id).eq("workspace_id", ws.id);
   revalidatePath("/dashboard/publishing");
 }
 
@@ -94,6 +98,7 @@ export async function saveSchedule(
 ): Promise<ScheduleState> {
   const { publish: t } = await requestMessages();
   const ws = await currentWorkspace();
+  if (!ws) return { error: WORKSPACE_WRITE_DENIED, saved: false };
   const timeZone = formData.get("timeZone");
   if (!isTimeZone(timeZone)) return { error: t.errors.timeZone, saved: false };
 
@@ -141,6 +146,7 @@ export async function publishAds(
 ): Promise<PublishState> {
   const { publish: t } = await requestMessages();
   const ws = await currentWorkspace();
+  if (!ws) return { error: WORKSPACE_WRITE_DENIED, done: null };
   const creativeIds = formData.getAll("creativeIds").map(String);
   const accountIds = formData.getAll("accountIds").map(String);
   if (creativeIds.length === 0) return { error: t.errors.pickAds, done: null };
@@ -217,6 +223,7 @@ export async function publishAds(
 export async function cancelPost(formData: FormData) {
   const postId = String(formData.get("postId") ?? "");
   const ws = await currentWorkspace();
+  if (!ws) return;
   const db = createAdminClient();
   const { data: post } = await db
     .from("posts")
@@ -234,6 +241,6 @@ export async function cancelPost(formData: FormData) {
   await db
     .from("posts")
     .update({ status: "cancelled", updated_at: new Date().toISOString() })
-    .eq("id", post.id);
+    .eq("id", post.id).eq("workspace_id", ws.id);
   revalidatePath("/dashboard", "layout");
 }

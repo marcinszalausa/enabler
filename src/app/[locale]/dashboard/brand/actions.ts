@@ -7,6 +7,7 @@ import { storeLogo } from "@/lib/brand-kit";
 import { LOGO_TYPES, MAX_LOGO_BYTES, isFontKey, isHexColor } from "@/lib/brand";
 import { userMessage } from "@/lib/errors";
 import { requestMessages } from "@/i18n/server";
+import { canEditWorkspace, WORKSPACE_WRITE_DENIED } from "@/lib/workspace-access";
 
 export type BrandFormState = { error: string | null; saved: boolean };
 
@@ -26,6 +27,8 @@ export async function saveBrandKit(
     .limit(1)
     .single();
   if (!ws) return { error: "No workspace found.", saved: false };
+
+  if (!(await canEditWorkspace(supabase, ws.id))) return { error: WORKSPACE_WRITE_DENIED, saved: false };
 
   const accent = String(formData.get("accent_color") ?? "").toLowerCase();
   const font = formData.get("font");

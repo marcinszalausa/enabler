@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { advanceVideoGeneration } from "@/lib/video";
+import { canEditWorkspace } from "@/lib/workspace-access";
 
 // Adding text to a finished clip and saving it takes a few seconds per video.
 export const maxDuration = 300;
@@ -15,10 +16,13 @@ export async function POST(
   // RLS: returns the run only for members of its workspace.
   const { data: generation } = await supabase
     .from("generations")
-    .select("id")
+    .select("id, workspace_id")
     .eq("id", id)
     .maybeSingle();
   if (!generation) return new Response("Not found", { status: 404 });
+  if (!(await canEditWorkspace(supabase, generation.workspace_id))) {
+    return new Response("Editor access required", { status: 403 });
+  }
 
   await advanceVideoGeneration(id);
   return new Response(null, { status: 204 });

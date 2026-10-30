@@ -3,6 +3,8 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { accountsInPlan, syncAccounts } from "@/lib/social/publish";
 import { deleteAccount } from "@/lib/social/zernio";
+import { canEditWorkspace } from "@/lib/workspace-access";
+import { enforceConnectedAccountLimit } from "@/lib/social/connection-limit";
 
 // Zernio sends the customer back here after they approve (or cancel) a
 // network: ?connected=<platform>&profileId=...&accountId=...
@@ -29,7 +31,7 @@ export async function GET(request: NextRequest) {
     : { data: null };
 
   const platform = params.get("connected");
-  if (!ws || !platform || params.get("error")) {
+  if (!ws || !(await canEditWorkspace(supabase, ws.id)) || !platform || params.get("error")) {
     back.searchParams.set("error", "connect");
     // Zernio's own words on what went wrong, e.g. no Facebook Page ticked.
     const detail = params.get("error_message") ?? params.get("error");
@@ -37,25 +39,22 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(back);
   }
   try {
+    // Do not perform limit enforcement if synchronization failed.
     await syncAccounts(ws.id);
-  } catch (err) {
-    console.error("account sync failed", err);
-  }
-
-  // Over the plan's limit (e.g. two tabs connecting at once): undo this one.
-  const accountId = params.get("accountId");
-  const { ids } = await accountsInPlan(ws.id);
-  if (accountId && !ids.includes(accountId)) {
-    try {
-      await deleteAccount(accountId);
-    } catch (err) {
-      console.error("over-limit disconnect failed", accountId, err);
+    const accountId = params.get("accountId");
+    if (accountId) {
+      const result = await enforceConnectedAccountLimit(createAdminClient(), ws.id, accountId, {
+        accountsInPlan,
+        disconnect: deleteAccount,
+      });
+      if (result !== "allowed") {
+        back.searchParams.set("error", result === "removed" ? "limit" : "connect");
+        return NextResponse.redirect(back);
+      }
     }
-    await createAdminClient()
-      .from("social_accounts")
-      .delete()
-      .eq("id", accountId);
-    back.searchParams.set("error", "limit");
+  } catch (err) {
+    console.error("account callback failed", err);
+    back.searchParams.set("error", "connect");
     return NextResponse.redirect(back);
   }
   back.searchParams.set("connected", platform);

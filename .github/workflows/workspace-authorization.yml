@@ -6,12 +6,43 @@ on:
 permissions:
   contents: read
 jobs:
-  prepare:
+  authorization-application:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: npx --yes supabase@2.81.3 migration new workspace_authorization
+          cache: npm
+      - run: npm ci
+      - run: node --experimental-strip-types --test tests/*.test.ts
+      - run: npx next typegen && npx tsc --noEmit
+      - name: Lint authorization changes
+        run: npx eslint src/lib/workspace-access.ts src/lib/social/connection-limit.ts src/lib/social/publish.ts 'src/app/[locale]/dashboard/actions.ts' 'src/app/[locale]/dashboard/brand/actions.ts' 'src/app/[locale]/dashboard/publishing/actions.ts' 'src/app/[locale]/dashboard/products/[id]/showcase-actions.ts' 'src/app/api/generations/[id]/advance/route.ts' src/app/api/social/callback/route.ts
+  authorization-database:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        postgres: ['16','17']
+    services:
+      postgres:
+        image: postgres:${{ matrix.postgres }}
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: authorization_tests
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y postgresql-client
+      - name: Apply migrations and test workspace roles and isolation
+        env:
+          CREDIT_TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/authorization_tests
+        run: bash scripts/test-credits.sh && psql "$CREDIT_TEST_DATABASE_URL" -X -v ON_ERROR_STOP=1 -f supabase/tests/workspace-authorization.sql
