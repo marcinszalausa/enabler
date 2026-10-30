@@ -1,0 +1,17 @@
+name: Workspace authorization checks
+on:
+  push:
+    branches: [fix/workspace-authorization]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npx --yes supabase@2.81.3 migration new workspace_authorization
