@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
@@ -147,6 +148,8 @@ async function Product({
         </div>
         <div className="flex flex-col items-start gap-2 rounded-2xl border border-line bg-raised p-4 lg:items-end">
           <GenerateControls
+            imageRequestId={randomUUID()}
+            videoRequestId={randomUUID()}
             productId={product.id}
             imageCost={GENERATION_COST}
             videoCost={videoRunCost(DEFAULT_VIDEO_OPTIONS.length)}

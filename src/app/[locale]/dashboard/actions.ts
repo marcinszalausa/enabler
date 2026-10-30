@@ -93,39 +93,31 @@ export async function startGeneration(
     return { error: (await requestMessages()).app.errors.notFound };
   }
 
-  const admin = createAdminClient();
-  const { data: spent } = await admin.rpc("spend_credits", {
-    ws: workspaceId,
-    amount: cost,
-  });
-  if (!spent) {
-    return {
-      error: fmt((await requestMessages()).app.errors.noCredits, { cost }),
-    };
-  }
-
-  const { data: generation, error } = await admin
-    .from("generations")
-    .insert({
-      workspace_id: workspaceId,
-      product_id: productId,
-      type: video ? "video_ads" : "image_ads",
-      model: video
-        ? "claude-opus-5-5 + fal flux + kling 2.6"
-        : "claude-opus-5-5 + fal flux",
-      cost_credits: cost,
-    })
-    .select("id")
-    .single();
-  if (error || !generation) {
-    await admin.rpc("refund_credits", {
-      ws: workspaceId,
-      amount: cost,
-    });
+  const requestId = String(formData.get("requestId") ?? "");
+  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(requestId)) {
     return { error: (await requestMessages()).app.errors.couldntStart };
   }
+  const admin = createAdminClient();
+  const { data: generationId, error } = await admin.rpc("reserve_generation", {
+    ws: workspaceId,
+    request_id: requestId,
+    product: productId,
+    generation_type: video ? "video_ads" : "image_ads",
+    generation_model: video
+      ? "claude-opus-5-5 + fal flux + kling 2.6"
+      : "claude-opus-5-5 + fal flux",
+    amount: cost,
+    options: options ?? { language },
+  });
+  if (error) {
+    console.error("reserve generation failed", error);
+    return { error: (await requestMessages()).app.errors.couldntStart };
+  }
+  if (!generationId) {
+    return { error: fmt((await requestMessages()).app.errors.noCredits, { cost }) };
+  }
 
-  const job = { generationId: generation.id, workspaceId, productId };
+  const job = { generationId: String(generationId), workspaceId, productId };
   after(() =>
     options
       ? runVideoGeneration({ ...job, options })

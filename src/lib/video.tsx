@@ -1,5 +1,6 @@
 import "server-only";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { claimGeneration, finalizeGeneration } from "@/lib/generation-credits";
 import { writeVideoAds, type BrandBrief, type VideoAd } from "@/lib/ai/claude";
 import {
   generateMusic,
@@ -60,10 +61,7 @@ export async function runVideoGeneration({
   options,
 }: Job & { options: VideoOptions }) {
   const db = createAdminClient();
-  await db
-    .from("generations")
-    .update({ status: "running" })
-    .eq("id", generationId);
+  if (!(await claimGeneration(db, generationId))) return;
 
   try {
     const { data: product, error } = await db
@@ -335,20 +333,16 @@ async function finishGeneration(
   done = 0,
 ) {
   const db = createAdminClient();
-  const { data: closed } = await db
-    .from("generations")
-    .update({ status: done > 0 ? "succeeded" : "failed", error })
-    .eq("id", generationId)
-    .eq("status", "running")
-    .select("cost_credits");
-  const cost = closed?.[0]?.cost_credits;
-  if (cost === undefined) return;
-  // Every video in a run has the same length, so the same price.
+  const { data: generation, error: readError } = await db
+    .from("generations").select("cost_credits")
+    .eq("id", generationId).eq("workspace_id", workspaceId).single();
+  if (readError || !generation) throw readError ?? new Error("Generation not found.");
+  const cost = generation.cost_credits as number;
   const refund = cost - done * (cost / VIDEOS_PER_GENERATION);
-  if (refund > 0) {
-    await db.rpc("refund_credits", { ws: workspaceId, amount: refund });
-  }
-  if (done > 0) await autopilotRun(workspaceId, generationId);
+  const closed = await finalizeGeneration(
+    db, generationId, done > 0 ? "succeeded" : "failed", refund, error,
+  );
+  if (closed && done > 0) await autopilotRun(workspaceId, generationId);
 }
 
 async function saveVideo(

@@ -1,5 +1,6 @@
 import "server-only";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { claimGeneration, finalizeGeneration } from "@/lib/generation-credits";
 import { reviewAdImage, writeAdAngles, type BrandBrief } from "@/lib/ai/claude";
 import { generateAdImage, type Aspect } from "@/lib/ai/fal";
 import { userMessage } from "@/lib/errors";
@@ -33,10 +34,10 @@ export async function runGeneration({
   language,
 }: Job) {
   const db = createAdminClient();
-  await db
-    .from("generations")
-    .update({ status: "running" })
-    .eq("id", generationId);
+  if (!(await claimGeneration(db, generationId))) return;
+  let delivered = 0;
+  let prompt: string | null = null;
+  let failure: string | null = null;
 
   try {
     const { data: product, error } = await db
@@ -104,36 +105,22 @@ export async function runGeneration({
     const insert = await db.from("creatives").insert(creatives);
     if (insert.error) throw insert.error;
 
-    // Refund the images that failed.
-    const failed = results.length - creatives.length;
-    if (failed > 0) {
-      await db.rpc("refund_credits", {
-        ws: workspaceId,
-        amount: failed * CREDITS_PER_IMAGE,
-      });
-    }
-
-    await db
-      .from("generations")
-      .update({
-        status: "succeeded",
-        prompt: angles.map((a) => a.image_prompt).join("\n"),
-        error: failed > 0 ? failureNote(results, failed) : null,
-      })
-      .eq("id", generationId);
-    await autopilotRun(workspaceId, generationId);
+    delivered = creatives.length;
+    const failed = ADS_PER_GENERATION * ASPECTS.length - delivered;
+    prompt = angles.map((a) => a.image_prompt).join("\n");
+    failure = failed > 0 ? failureNote(results, failed) : null;
   } catch (err) {
-    const message = userMessage(err, "Generation failed. Please try again.");
+    failure = userMessage(err, "Generation failed. Please try again.");
     console.error("generation failed", generationId, err);
-    await db.rpc("refund_credits", {
-      ws: workspaceId,
-      amount: GENERATION_COST,
-    });
-    await db
-      .from("generations")
-      .update({ status: "failed", error: message })
-      .eq("id", generationId);
   }
+
+  // Keep settlement outside the generation catch. A lost RPC response must not
+  // turn a successful partial delivery into a second, full refund.
+  const closed = await finalizeGeneration(
+    db, generationId, delivered > 0 ? "succeeded" : "failed",
+    GENERATION_COST - delivered * CREDITS_PER_IMAGE, failure, prompt,
+  );
+  if (closed && delivered > 0) await autopilotRun(workspaceId, generationId);
 }
 
 // An image that kept failing the quality check; the message says why.
