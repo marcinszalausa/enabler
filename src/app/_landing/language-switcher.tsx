@@ -31,7 +31,7 @@ export function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
 
   return (
     <label
-      className={`relative flex h-11 cursor-pointer items-center gap-1.5 rounded-full text-sm text-muted transition-colors hover:bg-surface hover:text-fg ${compact ? "px-2" : "px-3"}`}
+      className={`site-language relative flex h-9 cursor-pointer items-center gap-1.5 rounded-full text-sm text-muted transition-colors hover:bg-surface hover:text-fg ${compact ? "px-2" : "px-3"}`}
       title={t.nav.language}
     >
       <svg

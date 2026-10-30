@@ -984,3 +984,7 @@ html {
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
 }
+
+/* Larger public controls without changing the signed-in app header. */
+.landing .theme-toggle { min-width: 44px; min-height: 44px; }
+.landing .site-language { min-height: 44px; }

@@ -23,7 +23,7 @@ export function ThemeToggle() {
       onClick={toggle}
       aria-label={t.nav.theme}
       title={t.nav.themeShort}
-      className="flex h-11 w-11 items-center justify-center rounded-full text-muted transition-colors hover:bg-surface hover:text-fg"
+      className="theme-toggle flex h-9 w-9 items-center justify-center rounded-full text-muted transition-colors hover:bg-surface hover:text-fg"
     >
       {/* Sun: shown in dark mode, switches to light. */}
       <svg
