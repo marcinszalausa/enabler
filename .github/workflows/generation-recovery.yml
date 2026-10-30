@@ -1,0 +1,36 @@
+name: Generation recovery checks
+on:
+  push:
+    branches: [fix/generation-recovery]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  recovery:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Read installed worker guidance
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          for name in ['after.md', 'route-handlers.md']:
+            for p in Path('node_modules/next/dist/docs').rglob(name):
+              print(f'GUIDE {p}\n{p.read_text()}')
+          PY
+      - name: Generate migration names through CLI
+        run: |
+          npx --yes supabase@2.81.3 --help
+          npx --yes supabase@2.81.3 migration --help
+          npx --yes supabase@2.81.3 migration new --help
+          npx --yes supabase@2.81.3 migration new generation_recovery
+          npx --yes supabase@2.81.3 migration new schedule_generation_recovery
+          git ls-files --others --exclude-standard supabase/migrations
+      - name: Check current Supabase changelog
+        run: curl --fail --max-time 30 https://supabase.com/changelog.md | head -c 18000
