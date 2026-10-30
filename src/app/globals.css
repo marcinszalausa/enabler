@@ -854,3 +854,12 @@ html {
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+/* Touch devices keep the same lighting without continuous decorative work. */
+@media (hover: none) and (pointer: coarse) {
+  .landing .aurora span,
+  .landing .text-shimmer {
+    animation: none;
+    will-change: auto;
+  }
+}

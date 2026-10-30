@@ -34,7 +34,11 @@ export function HeroStage({
     )
       return;
     let frame = 0;
+    let visible = false;
+    const observer = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; });
+    observer.observe(el);
     const onMove = (e: PointerEvent) => {
+      if (!visible || document.hidden) return;
       cancelAnimationFrame(frame);
       frame = requestAnimationFrame(() => {
         const x = e.clientX / innerWidth - 0.5;
@@ -46,6 +50,7 @@ export function HeroStage({
     addEventListener("pointermove", onMove);
     return () => {
       removeEventListener("pointermove", onMove);
+      observer.disconnect();
       cancelAnimationFrame(frame);
     };
   }, []);

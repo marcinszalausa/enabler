@@ -33,7 +33,7 @@ export function StickyCta() {
       aria-hidden={!show}
     >
       <Link
-        href="/dashboard"
+        href="/dashboard" prefetch={false}
         tabIndex={show ? 0 : -1}
         className="btn-primary block rounded-xl py-3 text-center font-medium"
       >

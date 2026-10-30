@@ -9,12 +9,12 @@ import { fmt } from "@/i18n/format";
 // Shopify serves any width of a product photo; the card is at most 384 px
 // wide, so 800 px stays sharp on retina screens. Other stores' photos load
 // as they are.
-function webSize(photo: string) {
+function webSize(photo: string, width = 800) {
   try {
     const u = new URL(photo);
     if (u.hostname !== "cdn.shopify.com" && !u.pathname.includes("/cdn/shop/"))
       return photo;
-    u.searchParams.set("width", "800");
+    u.searchParams.set("width", String(width));
     return u.toString();
   } catch {
     return photo;
@@ -55,7 +55,9 @@ export function BeforeAfter({ photo, name, url, madeIn, ads }: {
               <Image key={ad.image} src={ad.image} alt={ad.alt} fill sizes="384px" className="object-contain" />
             ) : (
               // eslint-disable-next-line @next/next/no-img-element -- source product photo may be on any store host
-              <img src={webSize(photo)} alt={name} loading="lazy" className="h-full w-full object-contain" />
+              <img src={webSize(photo, 480)}
+                srcSet={webSize(photo, 320) === webSize(photo, 480) ? undefined : [320, 480, 640, 800, 1120].map(width => `${webSize(photo, width)} ${width}w`).join(", ")}
+                sizes="(min-width: 416px) 384px, calc(100vw - 32px)" alt={name} loading="lazy" className="h-full w-full object-contain" />
             )}
           </div>
           <figcaption className="px-4 py-3 text-sm">{ad?.alt ?? name}</figcaption>

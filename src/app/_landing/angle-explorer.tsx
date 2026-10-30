@@ -70,17 +70,8 @@ export function AngleExplorer({
           </div>
         </div>
         <div className="relative aspect-square overflow-hidden bg-surface">
-          {/* All angles load up front, so switching is instant. */}
-          {ads.map((a, i) => (
-            <Image
-              key={a.id}
-              src={a.image}
-              alt={i === active ? a.headline : ""}
-              fill
-              sizes="(min-width: 28rem) 448px, 100vw"
-              className={`object-cover transition-opacity duration-500 ${i === active ? "opacity-100" : "opacity-0"}`}
-            />
-          ))}
+          <Image key={ad.id} src={ad.image} alt={ad.headline} fill
+            sizes="(min-width: 28rem) 448px, 100vw" className="object-cover" />
         </div>
         <p
           key={ad.primaryText}

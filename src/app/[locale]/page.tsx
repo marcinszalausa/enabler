@@ -93,6 +93,10 @@ async function showcaseAds(t: Messages) {
     getShowcase(),
     getShowcase("video_ads"),
   ]);
+  const posters = new Map(imageRuns.flatMap(run => {
+    const still = run.ads.find(ad => ad.aspect === "9:16");
+    return still ? [[productKey(run.productUrl), image(still.id)] as const] : [];
+  }));
   return {
     runs: imageRuns,
     images: roundRobin(imageRuns, (r, a) => ({
@@ -101,7 +105,7 @@ async function showcaseAds(t: Messages) {
     })),
     videos: roundRobin(videoRuns, (r, a) => ({
       ...about(r, a),
-      video: { src: `/api/creatives/${a.id}/video` },
+      video: { src: `/api/creatives/${a.id}/video`, poster: posters.get(productKey(r.productUrl)) },
       format: fmt(t.home.videoFormat, COUNTS),
       sound: true,
     })),
@@ -133,13 +137,13 @@ function roundRobin(
   return ads;
 }
 
-// The hero phone opens on a video ad when there is one, then alternates.
+// Paint the hero with an optimized still immediately, then rotate into video.
 // Falls back to the Soft Mila clip before any run is picked.
 function heroFeed(images: FeedAd[], videos: FeedAd[]): FeedAd[] {
   const feed: FeedAd[] = [];
   for (let i = 0; videos[i] || images[i]; i++) {
-    if (videos[i]) feed.push(videos[i]);
     if (images[i]) feed.push(images[i]);
+    if (videos[i]) feed.push(videos[i]);
   }
   return feed.length ? feed : [FALLBACK_AD];
 }
@@ -507,7 +511,7 @@ function Pricing({ t }: { t: Messages }) {
                 ))}
               </ul>
               <Link
-                href="/dashboard"
+                href="/dashboard" prefetch={false}
                 className={`mt-8 rounded-xl px-5 py-2.5 text-center text-sm font-medium transition ${
                   i === FEATURED
                     ? "btn-primary"
