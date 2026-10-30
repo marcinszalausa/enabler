@@ -218,17 +218,32 @@ export function Footer() {
 
 // Top bar for the signed-in app and the sign-in page: same logo, colors and
 // theme switch as the public site, with the page's own links on the right.
-export function AppBar({ children }: { children?: ReactNode }) {
+export function AppBar({
+  tabs,
+  children,
+}: {
+  tabs?: ReactNode;
+  children?: ReactNode;
+}) {
   return (
     <header className="sticky top-0 z-30 border-b border-line bg-bg/85 backdrop-blur">
       <nav className="mx-auto flex h-14 w-full max-w-5xl items-center justify-between gap-4 px-4">
         <Logo />
         <div className="flex items-center gap-1 text-sm">
+          {tabs && <div className="hidden items-center gap-1 sm:flex">{tabs}</div>}
           {children}
           <LanguageSwitcher compact />
           <ThemeToggle />
         </div>
       </nav>
+      {tabs && (
+        // Phones: the sections get a row of their own.
+        <div className="no-scrollbar overflow-x-auto border-t border-line sm:hidden">
+          <div className="mx-auto flex w-max min-w-full items-center gap-1 px-3 py-1.5 text-sm">
+            {tabs}
+          </div>
+        </div>
+      )}
     </header>
   );
 }

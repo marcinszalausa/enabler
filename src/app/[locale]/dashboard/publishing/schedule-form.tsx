@@ -67,7 +67,7 @@ export function ScheduleForm({
             <select
               value={slot.day}
               onChange={(e) => update(i, { day: Number(e.target.value) })}
-              className={field}
+              className={`${field} min-w-0 flex-1 sm:flex-none`}
               aria-label={t.publish.day}
             >
               {t.publish.days.map((name, day) => (
@@ -81,13 +81,13 @@ export function ScheduleForm({
               value={slot.time}
               required
               onChange={(e) => update(i, { time: e.target.value.slice(0, 5) })}
-              className={field}
+              className={`${field} min-w-0`}
               aria-label={t.publish.time}
             />
             <button
               type="button"
               onClick={() => setSlots(slots.filter((_, j) => j !== i))}
-              className="px-2 text-muted hover:text-danger"
+              className="shrink-0 px-2 text-muted hover:text-danger"
             >
               {t.publish.remove}
             </button>
