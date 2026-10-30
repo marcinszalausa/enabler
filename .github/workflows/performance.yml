@@ -20,6 +20,17 @@ jobs:
         with:
           node-version: 22
           cache: npm
+      - name: Prepare explicit preview dependency
+        run: |
+          cp package-lock.json /tmp/perf-original-lock.json
+          npm install --package-lock-only --ignore-scripts --save-exact sharp@0.35.5
+          node - <<'JS'
+          const before=require('/tmp/perf-original-lock.json');
+          const after=require(process.cwd()+'/package-lock.json');
+          const changed=Object.fromEntries(Object.entries(after.packages).filter(([k,v])=>JSON.stringify(v)!==JSON.stringify(before.packages[k])));
+          console.log('LOCKFILE_PATCH',JSON.stringify({changed,removed:Object.keys(before.packages).filter(k=>!after.packages[k])}));
+          console.log('PACKAGE_JSON_RESULT',JSON.stringify(require(process.cwd()+'/package.json')));
+          JS
       - run: npm ci
       - name: Installed image, font, loading, and prefetch guidance
         run: |

@@ -170,7 +170,7 @@ export function GenerationBlock({
             ) : (
               // eslint-disable-next-line @next/next/no-img-element -- rendered on demand by our own route
               <img
-                src={`/api/creatives/${c.id}/image?v=${imageVersion}`}
+                src={`/api/creatives/${c.id}/image?preview=1&v=${imageVersion}`}
                 alt={c.headline ?? "Ad creative"}
                 loading="lazy"
                 className={`w-full rounded-xl object-cover ${

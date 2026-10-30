@@ -2,6 +2,7 @@ import type { NextRequest } from "next/server";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { wantsImagePreview, makeImagePreview } from "@/lib/image-preview";
 import { renderAdImage } from "@/lib/ad-image";
 
 // The finished ad as a PNG (see renderAdImage).
@@ -42,6 +43,8 @@ export async function GET(
       : "private, max-age=3600",
   });
   if (!image) return new Response("Not found", { status: 404 });
+
+  if (wantsImagePreview(request.nextUrl.searchParams)) return makeImagePreview(image);
 
   if (request.nextUrl.searchParams.get("download")) {
     image.headers.set(
