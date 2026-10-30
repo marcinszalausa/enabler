@@ -6,7 +6,7 @@ on:
 permissions:
   contents: read
 jobs:
-  prepare:
+  public-fetch:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -16,11 +16,15 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - name: Read installed server runtime guide
+      - name: Installed server runtime guidance
         run: |
           python3 - <<'PY'
           from pathlib import Path
-          for p in Path('node_modules/next/dist/docs').rglob('*'):
-              if p.is_file() and p.name in ['nodejs.md','nodejs-runtime.md','edge-and-nodejs-runtimes.md']:
-                  print(f'GUIDE {p}\n{p.read_text()}')
+          for p in Path('node_modules/next/dist/docs').rglob('edge.md'):
+              print(f'GUIDE {p}\n{p.read_text()}')
           PY
+      - name: All security and regression tests, including real local socket/TLS checks
+        run: node --experimental-strip-types --test tests/*.test.ts
+      - run: npx next typegen && npx tsc --noEmit
+      - name: Lint public-fetch changes
+        run: npx eslint src/lib/public-fetch.ts src/lib/scrape.ts src/lib/brand-kit.ts src/lib/pipeline.ts src/lib/video.tsx src/lib/ai/fal.ts src/lib/ai/claude.ts src/lib/ad-text.ts src/lib/social/zernio.ts
