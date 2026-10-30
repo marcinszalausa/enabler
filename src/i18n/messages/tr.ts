@@ -101,7 +101,7 @@ export const tr: Messages = {
       },
       {
         title: "Daha çok alıcıya ulaşın",
-        body: "Yeni müşteriler kazanmak için TikTok, Instagram ve Facebook'ta yayınlayın. Doğrudan Gooidy'den yayınlama, zamanlama ve öne çıkarma çok yakında.",
+        body: "Yeni müşteriler kazanmak için TikTok, Instagram ve Facebook'ta yayınlayın. Doğrudan Gooidy'den yayınlayın veya zamanlayın; öne çıkarma çok yakında.",
       },
     ],
     examplesTitle: "Akış için yapıldı",
@@ -177,7 +177,7 @@ export const tr: Messages = {
       },
       {
         q: "Gooidy işimin büyümesine nasıl yardımcı olur?",
-        a: "Küçük mağazaların çoğu internette yeni müşterileri reklamlarla kazanır, ama iyi reklamlar zaman ve para ister. Gooidy tek bir linki markanıza uygun yeni reklamlara dönüştürür, mağazanız için neyin işe yaradığını test edebilmeniz için farklı satın alma nedenlerini dener ve alıcılarla {count} dilde konuşur. Sırada: tek tıkla yayınlama ve öne çıkarma.",
+        a: "Küçük mağazaların çoğu internette yeni müşterileri reklamlarla kazanır, ama iyi reklamlar zaman ve para ister. Gooidy tek bir linki markanıza uygun yeni reklamlara dönüştürür, mağazanız için neyin işe yaradığını test edebilmeniz için farklı satın alma nedenlerini dener ve alıcılarla {count} dilde konuşur. Tek tıkla yayınlayın veya zamanlayın; öne çıkarma çok yakında.",
       },
       {
         q: "Kredi nedir?",
@@ -193,7 +193,7 @@ export const tr: Messages = {
       },
       {
         q: "Reklamları nerede kullanabilirim?",
-        a: "Reklam verdiğiniz her yerde: TikTok, Instagram, Facebook, YouTube Shorts ve daha fazlası. Doğrudan Gooidy'den yayınlama, zamanlama ve öne çıkarma çok yakında.",
+        a: "Reklam verdiğiniz her yerde: TikTok, Instagram, Facebook, YouTube Shorts ve daha fazlası. Gooidy bunları sizin için 10 ağda yayınlayabilir veya zamanlayabilir; öne çıkarma çok yakında.",
       },
       {
         q: "İstediğim zaman iptal edebilir miyim?",

@@ -102,7 +102,7 @@ export const it: Messages = {
       },
       {
         title: "Raggiungi più acquirenti",
-        body: "Pubblicali su TikTok, Instagram e Facebook per conquistare nuovi clienti. Presto potrai pubblicare, programmare e sponsorizzare direttamente da Gooidy.",
+        body: "Pubblicali su TikTok, Instagram e Facebook per conquistare nuovi clienti. Pubblicali o programmali direttamente da Gooidy; la sponsorizzazione arriva presto.",
       },
     ],
     examplesTitle: "Fatti per il feed",
@@ -183,7 +183,7 @@ export const it: Messages = {
       },
       {
         q: "Come aiuta Gooidy la mia attività a crescere?",
-        a: "Gli annunci sono il modo in cui la maggior parte dei piccoli negozi trova nuovi clienti online, ma annunci validi costano tempo e denaro. Gooidy trasforma un solo link in annunci nuovi e coerenti con il tuo marchio, prova diversi motivi di acquisto per farti testare cosa funziona per il tuo negozio e parla agli acquirenti in {count} lingue. In arrivo: pubblicare e sponsorizzare con un clic.",
+        a: "Gli annunci sono il modo in cui la maggior parte dei piccoli negozi trova nuovi clienti online, ma annunci validi costano tempo e denaro. Gooidy trasforma un solo link in annunci nuovi e coerenti con il tuo marchio, prova diversi motivi di acquisto per farti testare cosa funziona per il tuo negozio e parla agli acquirenti in {count} lingue. Pubblicali o programmali con un clic; la sponsorizzazione arriva presto.",
       },
       {
         q: "Cos'è un credito?",
@@ -199,7 +199,7 @@ export const it: Messages = {
       },
       {
         q: "Dove posso usare gli annunci?",
-        a: "Ovunque fai pubblicità: TikTok, Instagram, Facebook, YouTube Shorts e altro. Presto potrai pubblicare, programmare e sponsorizzare direttamente da Gooidy.",
+        a: "Ovunque fai pubblicità: TikTok, Instagram, Facebook, YouTube Shorts e altro. Gooidy può pubblicarli o programmarli per te su 10 social; la sponsorizzazione arriva presto.",
       },
       {
         q: "Posso disdire quando voglio?",

@@ -40,6 +40,10 @@ export function PhoneFeed({
   const [index, setIndex] = useState(0);
   const [animate, setAnimate] = useState(true);
   const [visible, setVisible] = useState(false);
+  // Videos wait until the page has loaded, so on phones the clip doesn't
+  // compete with the text and fonts of the first screen.
+  const [loaded, setLoaded] = useState(false);
+  const playing = visible && loaded;
   const [muted, setMuted] = useState(true);
   const { t } = useI18n();
   const root = useRef<HTMLDivElement>(null);
@@ -69,23 +73,29 @@ export function PhoneFeed({
       threshold: 0.25,
     });
     io.observe(el);
-    return () => io.disconnect();
+    const onLoad = () => setLoaded(true);
+    if (document.readyState === "complete") queueMicrotask(onLoad);
+    else addEventListener("load", onLoad, { once: true });
+    return () => {
+      io.disconnect();
+      removeEventListener("load", onLoad);
+    };
   }, []);
 
   // Plays the ad in view and pauses the rest, then schedules the next one.
   useEffect(() => {
     videos.current.forEach((v, k) => {
       if (!v) return;
-      if (k === index && visible) {
+      if (k === index && playing) {
         v.currentTime = 0;
         v.play().catch(() => {});
       } else v.pause();
     });
-    if (!visible || !looping) return;
+    if (!playing || !looping) return;
     const t = setTimeout(next, items[index].video ? VIDEO_MAX_MS : IMAGE_MS);
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps -- next only reads refs and setters
-  }, [index, visible, looping]);
+  }, [index, playing, looping]);
 
   const screen = (
     <div className="relative aspect-[9/16] w-full shrink-0 overflow-hidden bg-[#16171d]">
@@ -114,7 +124,7 @@ export function PhoneFeed({
                 // Full-size clips are heavy: only the one on screen
                 // loads, and the next one gets ready to start.
                 preload={
-                  !visible
+                  !playing
                     ? "none"
                     : k === index
                       ? "auto"

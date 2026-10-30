@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { alternates, isLocale } from "@/i18n/config";
+import { isLocale } from "@/i18n/config";
+import { pageMetadata } from "@/lib/seo";
 import { getMessages, type Messages } from "@/i18n/messages";
 import { fmt } from "@/i18n/format";
 import { Nav, UrlForm, SectionHeading, Footer } from "@/app/_landing/chrome";
@@ -15,11 +16,12 @@ export async function generateMetadata({
   const { locale } = await params;
   if (!isLocale(locale)) return {};
   const t = await getMessages(locale);
-  return {
-    title: t.meta.useCasesTitle,
-    description: t.meta.useCasesDescription,
-    alternates: alternates(locale, "/use-cases"),
-  };
+  return pageMetadata(
+    locale,
+    "/use-cases",
+    t.meta.useCasesTitle,
+    t.meta.useCasesDescription,
+  );
 }
 
 export default async function UseCases({

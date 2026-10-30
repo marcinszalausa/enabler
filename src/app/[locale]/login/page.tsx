@@ -11,7 +11,11 @@ export async function generateMetadata({
 }: PageProps<"/[locale]/login">): Promise<Metadata> {
   const { locale } = await params;
   if (!isLocale(locale)) return {};
-  return { title: (await getMessages(locale)).meta.signInTitle };
+  return {
+    title: (await getMessages(locale)).meta.signInTitle,
+    // Sign-in is for customers, not for search results.
+    robots: { index: false },
+  };
 }
 
 export default async function LoginPage({

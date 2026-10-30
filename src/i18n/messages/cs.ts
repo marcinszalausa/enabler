@@ -102,7 +102,7 @@ export const cs: Messages = {
       },
       {
         title: "Oslovte více kupujících",
-        body: "Spusťte je na TikToku, Instagramu a Facebooku a získejte nové zákazníky. Publikování, plánování a propagace přímo z Gooidy brzy přibudou.",
+        body: "Spusťte je na TikToku, Instagramu a Facebooku a získejte nové zákazníky. Publikujte je nebo naplánujte přímo z Gooidy; propagace brzy přibude.",
       },
     ],
     examplesTitle: "Vytvořeno pro feed",
@@ -179,7 +179,7 @@ export const cs: Messages = {
       },
       {
         q: "Jak Gooidy pomáhá mému podnikání růst?",
-        a: "Většina malých obchodů získává nové zákazníky online díky reklamám, ale dobré reklamy stojí čas a peníze. Gooidy promění jediný odkaz v nové reklamy ve stylu vaší značky, zkouší různé důvody ke koupi, abyste mohli otestovat, co funguje pro váš obchod, a mluví ke kupujícím v {count} jazycích. Na řadě je publikování a propagace jedním kliknutím.",
+        a: "Většina malých obchodů získává nové zákazníky online díky reklamám, ale dobré reklamy stojí čas a peníze. Gooidy promění jediný odkaz v nové reklamy ve stylu vaší značky, zkouší různé důvody ke koupi, abyste mohli otestovat, co funguje pro váš obchod, a mluví ke kupujícím v {count} jazycích. Publikujte je nebo naplánujte jedním kliknutím; propagace brzy přibude.",
       },
       {
         q: "Co je kredit?",
@@ -195,7 +195,7 @@ export const cs: Messages = {
       },
       {
         q: "Kde mohu reklamy použít?",
-        a: "Všude, kde inzerujete: TikTok, Instagram, Facebook, YouTube Shorts a další. Publikování, plánování a propagace přímo z Gooidy brzy přibudou.",
+        a: "Všude, kde inzerujete: TikTok, Instagram, Facebook, YouTube Shorts a další. Gooidy je za vás může publikovat nebo naplánovat na 10 sítích; propagace brzy přibude.",
       },
       {
         q: "Mohu kdykoli zrušit?",

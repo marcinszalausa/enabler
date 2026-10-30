@@ -24,13 +24,19 @@ export async function proxy(request: NextRequest) {
     const rest = pathname.slice(first.length + 1) || "/";
     // English and the app don't carry the language in their address.
     if (first === DEFAULT_LOCALE || isAppPath(rest)) {
-      return remember(redirect(request, rest + search), first);
+      return remember(redirect(request, rest + search, 308), first);
     }
     return remember(await updateSession(request), first);
   }
 
   const saved = request.cookies.get(LOCALE_COOKIE)?.value;
-  const locale: Locale = isLocale(saved) ? saved : firstVisitLocale(request);
+  // Search engines get the language in the address (English here), never a
+  // redirect by country, so they can index every language's page.
+  const locale: Locale = isBot(request)
+    ? DEFAULT_LOCALE
+    : isLocale(saved)
+      ? saved
+      : firstVisitLocale(request);
 
   if (!isAppPath(pathname) && locale !== DEFAULT_LOCALE) {
     return remember(
@@ -57,8 +63,16 @@ function firstVisitLocale(request: NextRequest): Locale {
   );
 }
 
-function redirect(request: NextRequest, to: string) {
-  return NextResponse.redirect(new URL(to, request.url));
+// Search engine and link preview crawlers.
+const BOT =
+  /bot|crawl|spider|slurp|facebookexternalhit|embedly|preview|lighthouse|whatsapp|telegram/i;
+
+function isBot(request: NextRequest) {
+  return BOT.test(request.headers.get("user-agent") ?? "");
+}
+
+function redirect(request: NextRequest, to: string, status = 307) {
+  return NextResponse.redirect(new URL(to, request.url), status);
 }
 
 function remember(response: NextResponse, locale: Locale) {

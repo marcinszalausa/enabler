@@ -102,7 +102,7 @@ export const sv: Messages = {
       },
       {
         title: "Nå fler köpare",
-        body: "Kör dem på TikTok, Instagram och Facebook och vinn nya kunder. Publicering, schemaläggning och boost direkt från Gooidy kommer snart.",
+        body: "Kör dem på TikTok, Instagram och Facebook och vinn nya kunder. Publicera eller schemalägg dem direkt från Gooidy; boost kommer snart.",
       },
     ],
     examplesTitle: "Gjorda för flödet",
@@ -178,7 +178,7 @@ export const sv: Messages = {
       },
       {
         q: "Hur hjälper Gooidy mitt företag att växa?",
-        a: "Annonser är hur de flesta små butiker vinner nya kunder på nätet, men bra annonser kostar tid och pengar. Gooidy gör en enda länk till nya annonser i din varumärkesstil, provar olika köpskäl så att du kan testa vad som fungerar för din butik, och talar till köpare på {count} språk. Härnäst: publicera och boosta med ett klick.",
+        a: "Annonser är hur de flesta små butiker vinner nya kunder på nätet, men bra annonser kostar tid och pengar. Gooidy gör en enda länk till nya annonser i din varumärkesstil, provar olika köpskäl så att du kan testa vad som fungerar för din butik, och talar till köpare på {count} språk. Publicera eller schemalägg dem med ett klick; boost kommer snart.",
       },
       {
         q: "Vad är en kredit?",
@@ -194,7 +194,7 @@ export const sv: Messages = {
       },
       {
         q: "Var kan jag använda annonserna?",
-        a: "Överallt där du annonserar: TikTok, Instagram, Facebook, YouTube Shorts med mera. Publicering, schemaläggning och boost direkt från Gooidy kommer snart.",
+        a: "Överallt där du annonserar: TikTok, Instagram, Facebook, YouTube Shorts med mera. Gooidy kan publicera eller schemalägga dem åt dig på 10 nätverk; boost kommer snart.",
       },
       {
         q: "Kan jag avsluta när som helst?",
