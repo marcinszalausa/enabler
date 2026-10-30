@@ -41,7 +41,10 @@ try {
       await page.keyboard.press("Escape"); assert.equal(await menu.getAttribute("open"), null);
       assert.equal(await summary.evaluate(el => el === document.activeElement), true);
       await summary.click();
-      await menu.locator('a[href$="#how"]').click();
+      const how = menu.locator('a[href$="#how"]');
+      // Keep navigation inside this ephemeral fixture while exercising link dismissal.
+      await how.evaluate(el => el.setAttribute("href", "#how"));
+      await how.click();
       assert.equal(await menu.getAttribute("open"), null);
       for (const el of [summary,page.locator('button[title]').first(),page.locator('select').first()]) {
         assert.ok((await el.boundingBox()).height >= 44, "Comfortable mobile target");
