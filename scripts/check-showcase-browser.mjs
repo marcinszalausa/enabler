@@ -18,7 +18,7 @@ const fixture = [
 'const items=["A","B","C","D","A","D"].map((productKey,i)=>({productKey,image:photo,alt:productKey+i}));',
 'const ads=[0,1,2].map(i=>({id:"ad"+i,angle:"comfort",headline:"Ad "+i,primaryText:"Example",aspect:(i===1?"1:1":"9:16") as "1:1"|"9:16",image:photo}));',
 'const run={id:"run",productName:"Example product",productUrl:"https://example.com/products/a",store:"example.com",summary:"Example",audience:"Example",productImage:photo,seconds:30,ads};',
-'export default function ShowcasePreview(){return <main>',
+'export default function ShowcasePreview(){return <main className="landing">',
 '{[1,2,3,4].map(n=>{const allowed=items.filter(x=>"ABCD".slice(0,n).includes(x.productKey));const plan=heroProducts(allowed);return <section key={n} data-scenario={n}><HeroStage {...plan}/></section>})}',
 '<Placements ads={items.slice(0,4).map(x=>({productKey:x.productKey,store:"example",story:{image:photo,alt:x.alt},square:{image:photo,alt:x.alt,primaryText:"Example"}}))}/>',
 '<div data-check="before"><BeforeAfter photo={photo} name="Example" url={run.productUrl} ads={ads.map(a=>({image:"/reels/showcase-fixture-"+a.id+".jpg",alt:a.headline}))}/></div>',
