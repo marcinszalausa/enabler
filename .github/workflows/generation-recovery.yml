@@ -24,13 +24,31 @@ jobs:
             for p in Path('node_modules/next/dist/docs').rglob(name):
               print(f'GUIDE {p}\n{p.read_text()}')
           PY
-      - name: Generate migration names through CLI
-        run: |
-          npx --yes supabase@2.81.3 --help
-          npx --yes supabase@2.81.3 migration --help
-          npx --yes supabase@2.81.3 migration new --help
-          npx --yes supabase@2.81.3 migration new generation_recovery
-          npx --yes supabase@2.81.3 migration new schedule_generation_recovery
-          git ls-files --others --exclude-standard supabase/migrations
-      - name: Check current Supabase changelog
-        run: curl --fail --max-time 30 https://supabase.com/changelog.md | head -c 18000
+      - name: All security and video ownership tests
+        run: node --experimental-strip-types --test tests/*.test.ts
+      - run: npx next typegen && npx tsc --noEmit
+      - run: npx eslint src/lib/pipeline.ts src/lib/video.tsx src/lib/video-job-state.ts
+  recovery-database:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        postgres: ['16', '17']
+    services:
+      postgres:
+        image: postgres:${{ matrix.postgres }}
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: recovery_tests
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres" --health-interval 5s
+          --health-timeout 5s --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y postgresql-client
+      - name: Apply migrations and test recovery and concurrent settlement
+        env:
+          CREDIT_TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/recovery_tests
+        run: bash scripts/test-credits.sh && bash scripts/test-generation-ledger.sh && bash scripts/test-generation-recovery.sh

@@ -1,4 +1,5 @@
 import "server-only";
+import { transitionVideoJob } from "@/lib/video-job-state";
 import { fetchPublicUrl } from "@/lib/public-fetch";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { claimGeneration, finalizeGeneration } from "@/lib/generation-credits";
@@ -297,7 +298,6 @@ export async function advanceVideoGeneration(generationId: string) {
           job,
           clipUrls as string[],
         );
-        job.status = "done";
       } catch (err) {
         console.error("video job failed", job.id, err);
         await failJob(job, userMessage(err, "The video couldn't be made."));
@@ -338,6 +338,14 @@ async function finishGeneration(
     .from("generations").select("cost_credits")
     .eq("id", generationId).eq("workspace_id", workspaceId).single();
   if (readError || !generation) throw readError ?? new Error("Generation not found.");
+  const { count, error: countError } = await db.from("creatives")
+    .select("id", { count: "exact", head: true })
+    .eq("generation_id", generationId).eq("workspace_id", workspaceId).eq("kind", "video");
+  if (countError || count === null) throw countError ?? new Error("Missing video output count.");
+  // A creative insert may commit even when its response is lost.
+  done = count;
+  if (done === VIDEOS_PER_GENERATION) error = null;
+  else if (done > 0) error = "Some videos could not be completed. Undelivered videos were refunded.";
   const cost = generation.cost_credits as number;
   const refund = cost - done * (cost / VIDEOS_PER_GENERATION);
   const closed = await finalizeGeneration(
@@ -385,7 +393,9 @@ async function saveVideo(
     .upload(path, video, { contentType: "video/mp4", upsert: true });
   if (upload.error) throw upload.error;
 
-  const insert = await db.from("creatives").insert({
+  const insert = await db.from("creatives").upsert({
+    // One creative per job, even if a processing worker is reclaimed.
+    id: job.id,
     workspace_id: workspaceId,
     generation_id: generationId,
     kind: "video",
@@ -395,9 +405,9 @@ async function saveVideo(
     headline: job.headline,
     primary_text: job.primary_text,
     cta: job.cta,
-  });
+  }, { onConflict: "id", ignoreDuplicates: true });
   if (insert.error) throw insert.error;
-  await updateJob(job.id, { status: "done", error: null });
+  await transitionVideoJob(db, job, { status: "done", error: null });
 }
 
 async function download(url: string): Promise<Buffer> {
@@ -417,27 +427,19 @@ async function downloadStored(path: string): Promise<Buffer> {
 // Moves a job from pending (or a stale processing) to processing; false if
 // another check got there first.
 async function claimJob(job: VideoJob): Promise<boolean> {
-  const { data } = await createAdminClient()
-    .from("video_jobs")
-    .update({ status: "processing", updated_at: new Date().toISOString() })
-    .eq("id", job.id)
-    .eq("status", job.status)
-    .eq("updated_at", job.updated_at)
-    .select("id");
-  return (data?.length ?? 0) > 0;
+  return transitionVideoJob(createAdminClient(), job, { status: "processing" });
 }
 
 async function failJob(job: VideoJob, error: string) {
-  await updateJob(job.id, { status: "failed", error });
-  job.status = "failed";
-  job.error = error;
+  await transitionVideoJob(createAdminClient(), job, { status: "failed", error });
 }
 
 async function updateJob(id: string, fields: Partial<VideoJob>) {
-  await createAdminClient()
+  const { error } = await createAdminClient()
     .from("video_jobs")
     .update({ ...fields, updated_at: new Date().toISOString() })
     .eq("id", id);
+  if (error) throw error;
 }
 
 function age(timestamp: string) {
