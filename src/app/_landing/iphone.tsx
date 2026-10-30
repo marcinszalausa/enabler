@@ -44,7 +44,7 @@ export function IPhone({
           <span className="iphone-bottom" aria-hidden><span className="iphone-port" /></span>
         </>
       )}
-      <div className="iphone-frame relative aspect-[78/163.4] rounded-[15.3cqw] p-[1.15cqw]">
+      <div className="iphone-frame relative aspect-[78/163.4] rounded-[15.3cqw] p-[0.7cqw]">
         {/* Left: Action button, volume up, volume down. */}
         <span className="iphone-key iphone-key-left left-[-0.75cqw] top-[18.5%] h-[5.5%]" />
         <span className="iphone-key iphone-key-left left-[-0.75cqw] top-[27%] h-[9.5%]" />
@@ -53,12 +53,12 @@ export function IPhone({
         <span className="iphone-key iphone-key-right right-[-0.75cqw] top-[30%] h-[14%]" />
         <span className="iphone-key iphone-key-right iphone-key-flush right-[-0.45cqw] top-[61%] h-[8%]" />
 
-        <div className="iphone-bezel h-full w-full rounded-[14.2cqw] p-[2.7cqw]">
-          <div className="relative h-full w-full overflow-hidden rounded-[11.6cqw] bg-black [transform:translateZ(0)]">
+        <div className="iphone-bezel h-full w-full rounded-[14.6cqw] p-[1.4cqw]">
+          <div className="relative h-full w-full overflow-hidden rounded-[13.2cqw] bg-black [transform:translateZ(0)]">
             {children}
             {/* Dynamic Island, with the front camera's lens on its right. */}
-            <div className="pointer-events-none absolute left-1/2 top-[2.4cqw] z-20 flex h-[7.6cqw] w-[22cqw] -translate-x-1/2 items-center justify-end rounded-full bg-black pr-[2.2cqw]">
-              <span className="h-[2.9cqw] w-[2.9cqw] rounded-full bg-[radial-gradient(circle_at_35%_35%,#3a3f5c,#0b0c14_60%)]" />
+            <div className="pointer-events-none absolute left-1/2 top-[2.4cqw] z-20 flex h-[5.8cqw] w-[18cqw] -translate-x-1/2 items-center justify-end rounded-full bg-black pr-[1.7cqw]">
+              <span className="h-[2.2cqw] w-[2.2cqw] rounded-full bg-[radial-gradient(circle_at_35%_35%,#3a3f5c,#0b0c14_60%)]" />
             </div>
             {/* Faint glass reflection. */}
             <div className="iphone-glare pointer-events-none absolute inset-0 z-30" />
