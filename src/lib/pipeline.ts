@@ -72,7 +72,7 @@ export async function runGeneration({
           });
         if (upload.error) throw upload.error;
 
-        return {
+        const creative = {
           workspace_id: workspaceId,
           generation_id: generationId,
           kind: "image" as const,
@@ -83,6 +83,11 @@ export async function runGeneration({
           primary_text: ad.primary_text,
           cta: ad.cta,
         };
+        // Checkpoint each delivered ad before starting the next task. A killed
+        // worker can then be settled from durable rows by the database sweep.
+        const { error: saveError } = await db.from("creatives").insert(creative);
+        if (saveError) throw saveError;
+        return creative;
       }),
     );
 
@@ -101,9 +106,6 @@ export async function runGeneration({
       throw firstError?.reason ?? new Error("No images were generated.");
     }
 
-    const insert = await db.from("creatives").insert(creatives);
-    if (insert.error) throw insert.error;
-
     delivered = creatives.length;
     const failed = ADS_PER_GENERATION * ASPECTS.length - delivered;
     prompt = angles.map((a) => a.image_prompt).join("\n");
@@ -112,6 +114,15 @@ export async function runGeneration({
     failure = userMessage(err, "Generation failed. Please try again.");
     console.error("generation failed", generationId, err);
   }
+
+  // An insert can commit even if its response is lost. Count durable outputs,
+  // rather than treating a rejected request as proof that nothing was saved.
+  const { count, error: countError } = await db.from("creatives")
+    .select("id", { count: "exact", head: true })
+    .eq("generation_id", generationId).eq("workspace_id", workspaceId).eq("kind", "image");
+  if (countError || count === null) throw countError ?? new Error("Missing output count.");
+  delivered = count;
+  if (delivered === ADS_PER_GENERATION * ASPECTS.length) failure = null;
 
   // Keep settlement outside the generation catch. A lost RPC response must not
   // turn a successful partial delivery into a second, full refund.
