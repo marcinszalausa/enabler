@@ -1,0 +1,31 @@
+name: Zernio webhook checks
+on:
+  push:
+    branches: [fix/zernio-webhook-hardening]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  application:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Read installed route handler guide and provider contract
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          from urllib.request import urlopen
+          for p in Path('node_modules/next/dist/docs').rglob('*route-handlers*'):
+              if p.is_file(): print(f'GUIDE {p}\n{p.read_text()}')
+          for url in ['https://docs.zernio.com/webhooks', 'https://docs.zernio.com/webhooks/posts', 'https://docs.zernio.com/webhooks/accounts']:
+              print('PROVIDER DOC', url)
+              print(urlopen(url, timeout=20).read().decode()[:55000])
+          PY
+      - name: Generate migration filename
+        run: npx --yes supabase@2.81.3 migration new zernio_webhook_receipts
