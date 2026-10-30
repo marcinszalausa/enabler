@@ -13,6 +13,7 @@ import {
   type ZernioPost,
 } from "./zernio";
 import { CAPTION_LIMITS, takesKind } from "./platforms";
+import { accountLimit } from "./limits";
 import { nextSlots, parseSlots, toLocal, fromLocal } from "./schedule";
 
 type Db = ReturnType<typeof createAdminClient>;
@@ -77,6 +78,27 @@ export async function syncAccounts(workspaceId: string) {
   await stale;
 }
 
+// The workspace's accounts the plan covers: the earliest connected, up to
+// its limit (after a downgrade the newest ones stop being used).
+export async function accountsInPlan(workspaceId: string) {
+  const db = createAdminClient();
+  const [{ data: ws }, { data: accounts }] = await Promise.all([
+    db.from("workspaces").select("plan").eq("id", workspaceId).single(),
+    db
+      .from("social_accounts")
+      .select("id")
+      .eq("workspace_id", workspaceId)
+      .order("created_at")
+      .order("id"),
+  ]);
+  const limit = accountLimit(ws?.plan);
+  return {
+    limit,
+    total: accounts?.length ?? 0,
+    ids: (accounts ?? []).slice(0, limit).map((a) => a.id as string),
+  };
+}
+
 export type When =
   | { type: "now" }
   | { type: "queue" }
@@ -127,7 +149,9 @@ export async function publishCreatives({
       .in("id", creativeIds)
       .returns<CreativeRow[]>(),
   ]);
-  if (!accounts?.length) throw new UserError("Pick at least one account.");
+  const { ids: covered } = await accountsInPlan(workspaceId);
+  const allowed = (accounts ?? []).filter((a) => covered.includes(a.id));
+  if (!allowed.length) throw new UserError("Pick at least one account.");
   if (!creatives?.length) throw new UserError("Pick at least one ad.");
 
   // Keep the order the customer saw them in.
@@ -139,9 +163,7 @@ export async function publishCreatives({
   let posted = 0;
   let skipped = 0;
   for (const [i, creative] of creatives.entries()) {
-    const targets = accounts.filter((a) =>
-      takesKind(a.platform, creative.kind),
-    );
+    const targets = allowed.filter((a) => takesKind(a.platform, creative.kind));
     if (targets.length === 0) {
       skipped++;
       continue;

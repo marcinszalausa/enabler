@@ -89,7 +89,8 @@ export const ro: Messages = {
     liveSub:
       "Aceasta este o rulare Gooidy reală, redată pas cu pas: linkul, ce a citit Gooidy pe pagină, abordările scrise și reclamele create.",
     howTitle: "Cum funcționează",
-    howSub: "De la linkul produsului la reclame care ajung la cumpărători noi, în trei pași.",
+    howSub:
+      "De la linkul produsului la reclame care ajung la cumpărători noi, în trei pași.",
     steps: [
       {
         title: "Lipește un link",
@@ -441,6 +442,12 @@ export const ro: Messages = {
     disconnect: "Deconectează",
     connected: "{platform} este conectat.",
     connectFailed: "Contul nu s-a putut conecta. Încearcă din nou.",
+    accountsUsed: "{used} din {limit} conturi incluse în plan",
+    limitReached: "Ai conectat toate conturile incluse în planul tău.",
+    upgrade: "Treci la un plan superior",
+    upgradeMore: "Treci la un plan superior pentru mai multe",
+    notInPlan:
+      "Nu este inclus în planul tău, așa că Gooidy nu publică aici. Treci la un plan superior sau deconectează alt cont.",
     videosOnly: "Doar video",
     imagesOnly: "Doar imagini",
     schedule: "Program de publicare",

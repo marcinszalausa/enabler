@@ -126,7 +126,8 @@ export const zh: Messages = {
     ],
     videoFormat: "{seconds} 秒带配音视频",
     featuresTitle: "增长所需的一切",
-    featuresSub: "原本需要设计师、文案和一个下午的工作，交给 Gooidy，你可以专心经营生意。",
+    featuresSub:
+      "原本需要设计师、文案和一个下午的工作，交给 Gooidy，你可以专心经营生意。",
     briefTitle: "从你的网站提炼品牌简介",
     briefBody: "Gooidy 阅读你的页面，弄清产品面向谁、大家为什么买。",
     briefCaption: "由 Gooidy 根据 {store} 撰写",
@@ -304,7 +305,8 @@ export const zh: Messages = {
     addBody:
       "粘贴商品页面。Gooidy 会读取页面、撰写品牌简介，并为广告做好准备。",
     noProducts: "还没有商品",
-    noProductsBody: "在上方粘贴商品链接。大约两分钟后，你就会得到前五条广告，随时可以带来新客户。",
+    noProductsBody:
+      "在上方粘贴商品链接。大约两分钟后，你就会得到前五条广告，随时可以带来新客户。",
     urlLabel: "商品或网站链接",
     reading: "正在读取页面…",
     addProduct: "添加商品",
@@ -409,6 +411,12 @@ export const zh: Messages = {
     disconnect: "断开连接",
     connected: "{platform} 已连接。",
     connectFailed: "账号未能连接，请重试。",
+    accountsUsed: "已使用套餐中 {limit} 个账号里的 {used} 个",
+    limitReached: "已连接的账号数已达到套餐上限。",
+    upgrade: "升级套餐",
+    upgradeMore: "升级以连接更多",
+    notInPlan:
+      "不在你的套餐范围内，Gooidy 不会在此发布。请升级套餐或断开其他账号。",
     videosOnly: "仅支持视频",
     imagesOnly: "仅支持图片",
     schedule: "发布时间表",

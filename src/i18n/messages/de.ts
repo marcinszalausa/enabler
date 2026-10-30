@@ -89,7 +89,8 @@ export const de: Messages = {
     liveSub:
       "Das ist ein echter Gooidy-Durchlauf, Schritt für Schritt abgespielt: der Link, was Gooidy auf der Seite gelesen hat, die geschriebenen Ansätze und die fertigen Anzeigen.",
     howTitle: "So funktioniert's",
-    howSub: "Vom Produktlink zu Anzeigen, die neue Käufer erreichen, in drei Schritten.",
+    howSub:
+      "Vom Produktlink zu Anzeigen, die neue Käufer erreichen, in drei Schritten.",
     steps: [
       {
         title: "Link einfügen",
@@ -434,6 +435,12 @@ export const de: Messages = {
     disconnect: "Trennen",
     connected: "{platform} ist verbunden.",
     connectFailed: "Das Konto wurde nicht verbunden. Bitte versuche es erneut.",
+    accountsUsed: "{used} von {limit} Konten in deinem Plan",
+    limitReached: "Du hast so viele Konten verbunden, wie dein Plan enthält.",
+    upgrade: "Plan upgraden",
+    upgradeMore: "Upgrade für mehr",
+    notInPlan:
+      "Nicht in deinem Plan enthalten, daher postet Gooidy hier nicht. Upgrade oder trenne ein anderes Konto.",
     videosOnly: "Nur Videos",
     imagesOnly: "Nur Bilder",
     schedule: "Posting-Zeitplan",

@@ -89,7 +89,8 @@ export const cs: Messages = {
     liveSub:
       "Toto je skutečný běh Gooidy přehraný krok za krokem: odkaz, co Gooidy vyčetlo ze stránky, přístupy, které napsalo, a reklamy, které vytvořilo.",
     howTitle: "Jak to funguje",
-    howSub: "Od odkazu na produkt k reklamám, které osloví nové kupující, ve třech krocích.",
+    howSub:
+      "Od odkazu na produkt k reklamám, které osloví nové kupující, ve třech krocích.",
     steps: [
       {
         title: "Vložte odkaz",
@@ -434,6 +435,12 @@ export const cs: Messages = {
     disconnect: "Odpojit",
     connected: "{platform} je propojen.",
     connectFailed: "Účet se nepodařilo propojit. Zkuste to znovu.",
+    accountsUsed: "{used} z {limit} účtů ve vašem tarifu",
+    limitReached: "Propojili jste tolik účtů, kolik váš tarif zahrnuje.",
+    upgrade: "Přejít na vyšší tarif",
+    upgradeMore: "Vyšší tarif pro více účtů",
+    notInPlan:
+      "Není součástí vašeho tarifu, takže sem Gooidy nepublikuje. Přejděte na vyšší tarif nebo odpojte jiný účet.",
     videosOnly: "Jen videa",
     imagesOnly: "Jen obrázky",
     schedule: "Plán publikování",

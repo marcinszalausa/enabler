@@ -1,7 +1,8 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { syncAccounts } from "@/lib/social/publish";
+import { accountsInPlan, syncAccounts } from "@/lib/social/publish";
+import { deleteAccount } from "@/lib/social/zernio";
 
 // Zernio sends the customer back here after they approve (or cancel) a
 // network: ?connected=<platform>&profileId=...&accountId=...
@@ -36,6 +37,23 @@ export async function GET(request: NextRequest) {
     await syncAccounts(ws.id);
   } catch (err) {
     console.error("account sync failed", err);
+  }
+
+  // Over the plan's limit (e.g. two tabs connecting at once): undo this one.
+  const accountId = params.get("accountId");
+  const { ids } = await accountsInPlan(ws.id);
+  if (accountId && !ids.includes(accountId)) {
+    try {
+      await deleteAccount(accountId);
+    } catch (err) {
+      console.error("over-limit disconnect failed", accountId, err);
+    }
+    await createAdminClient()
+      .from("social_accounts")
+      .delete()
+      .eq("id", accountId);
+    back.searchParams.set("error", "limit");
+    return NextResponse.redirect(back);
   }
   back.searchParams.set("connected", platform);
   return NextResponse.redirect(back);

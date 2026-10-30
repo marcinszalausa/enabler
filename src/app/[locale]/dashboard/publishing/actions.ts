@@ -15,6 +15,7 @@ import {
   zernioConfigured,
 } from "@/lib/social/zernio";
 import {
+  accountsInPlan,
   ensureProfile,
   publishCreatives,
   type When,
@@ -44,6 +45,8 @@ export async function connectAccount(formData: FormData) {
   if (!isPlatformKey(platform) || !zernioConfigured()) return;
   const ws = await currentWorkspace();
   const origin = (await headers()).get("origin") ?? "https://gooidy.com";
+  const { total, limit } = await accountsInPlan(ws.id);
+  if (total >= limit) redirect("/dashboard/publishing?error=limit");
 
   let authUrl: string;
   try {

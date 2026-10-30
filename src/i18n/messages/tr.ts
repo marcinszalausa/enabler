@@ -141,8 +141,7 @@ export const tr: Messages = {
     languagesBody:
       "Her reklam seçtiğiniz dilde, oralı birinin yazacağı gibi yazılır; böylece kendi pazarınızın ötesinde satış yapabilirsiniz. Video reklamlar da bu dili konuşur, uyumlu altyazılarla.",
     pricingTitle: "Sizinle birlikte büyüyen basit fiyatlar",
-    pricingSub:
-      "Ücretsiz başlayın. İşiniz büyüdükçe planınızı yükseltin.",
+    pricingSub: "Ücretsiz başlayın. İşiniz büyüdükçe planınızı yükseltin.",
     popular: "Popüler",
     perMonth: " / ay",
     plans: [
@@ -434,6 +433,12 @@ export const tr: Messages = {
     disconnect: "Bağlantıyı kes",
     connected: "{platform} bağlandı.",
     connectFailed: "Hesap bağlanamadı. Lütfen tekrar dene.",
+    accountsUsed: "Planındaki {limit} hesaptan {used} tanesi kullanılıyor",
+    limitReached: "Planının izin verdiği kadar hesap bağladın.",
+    upgrade: "Planını yükselt",
+    upgradeMore: "Daha fazlası için yükselt",
+    notInPlan:
+      "Planına dahil değil, bu yüzden Gooidy burada paylaşmaz. Planını yükselt ya da başka bir hesabın bağlantısını kes.",
     videosOnly: "Yalnızca video",
     imagesOnly: "Yalnızca görsel",
     schedule: "Paylaşım takvimi",

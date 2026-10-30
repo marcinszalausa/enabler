@@ -421,6 +421,12 @@ export const ja: Messages = {
     disconnect: "連携を解除",
     connected: "{platform}を連携しました。",
     connectFailed: "アカウントを連携できませんでした。もう一度お試しください。",
+    accountsUsed: "プランの{limit}アカウント中{used}件を使用中",
+    limitReached: "プランに含まれる上限までアカウントを連携しています。",
+    upgrade: "プランをアップグレード",
+    upgradeMore: "アップグレードで追加",
+    notInPlan:
+      "プランの対象外のため、Gooidyはここに投稿しません。アップグレードするか、別のアカウントの連携を解除してください。",
     videosOnly: "動画のみ",
     imagesOnly: "画像のみ",
     schedule: "投稿スケジュール",

@@ -84,13 +84,13 @@ export const en = {
     anglesSub:
       "People buy for different reasons, so every run tries several. These are the real feed ads Gooidy made from one {store} link.",
     whereTitle: "Show up where your customers scroll",
-    whereSub:
-      "The same run, sized and ready for every app they use.",
+    whereSub: "The same run, sized and ready for every app they use.",
     liveTitle: "Paste one link. Get a campaign that sells.",
     liveSub:
       "This is a real Gooidy run, played back step by step: the link, what Gooidy read from the page, the angles it wrote and the ads it made.",
     howTitle: "How it works",
-    howSub: "From your product link to ads that reach new buyers, in three steps.",
+    howSub:
+      "From your product link to ads that reach new buyers, in three steps.",
     steps: [
       {
         title: "Paste a link",
@@ -430,6 +430,12 @@ export const en = {
     disconnect: "Disconnect",
     connected: "{platform} is connected.",
     connectFailed: "That account didn't connect. Please try again.",
+    accountsUsed: "{used} of {limit} accounts on your plan",
+    limitReached: "You've connected as many accounts as your plan includes.",
+    upgrade: "Upgrade your plan",
+    upgradeMore: "Upgrade for more",
+    notInPlan:
+      "Not included in your plan, so Gooidy doesn't post here. Upgrade or disconnect another account.",
     videosOnly: "Takes videos only",
     imagesOnly: "Takes images only",
     schedule: "Posting schedule",

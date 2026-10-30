@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { Messages } from "@/i18n/messages";
 import { fmt } from "@/i18n/format";
 import { smallButton } from "../ui";
@@ -38,6 +39,8 @@ export function PublishingView({
   posts,
   connected,
   failed,
+  overLimit,
+  limit,
 }: {
   t: Messages;
   locale: string;
@@ -46,7 +49,11 @@ export function PublishingView({
   posts: PostRow[];
   connected: string | null;
   failed: boolean;
+  overLimit: boolean;
+  // Accounts the plan covers; the earliest connected count first.
+  limit: number;
 }) {
+  const full = accounts.length >= limit;
   const timeZone = schedule?.time_zone ?? null;
   const upcoming = (posts ?? [])
     .filter((p) => p.status === "scheduled")
@@ -80,18 +87,51 @@ export function PublishingView({
           {t.publish.connectFailed}
         </p>
       )}
+      {overLimit && (
+        <p
+          role="alert"
+          className="rounded-xl bg-danger-bg px-4 py-3 text-sm text-danger"
+        >
+          {t.publish.limitReached}{" "}
+          <Link href="/dashboard/billing" className="font-medium underline">
+            {t.publish.upgrade}
+          </Link>
+        </p>
+      )}
 
       <section className={card}>
         <div>
           <h2 className="text-lg font-semibold">{t.publish.accounts}</h2>
           <p className="mt-0.5 text-sm text-muted">{t.publish.accountsHelp}</p>
+          <p className="mt-2 text-sm">
+            <span className={full ? "font-medium text-accent" : "text-muted"}>
+              {fmt(t.publish.accountsUsed, {
+                used: Math.min(accounts.length, limit),
+                limit,
+              })}
+            </span>
+            {full && (
+              <>
+                {" · "}
+                <Link
+                  href="/dashboard/billing"
+                  className="font-medium text-accent underline underline-offset-4"
+                >
+                  {t.publish.upgradeMore}
+                </Link>
+              </>
+            )}
+          </p>
         </div>
         {accounts?.length ? (
           <ul className="grid gap-2 sm:grid-cols-2">
-            {accounts.map((a) => (
+            {accounts.map((a, i) => (
               <li
                 key={a.id}
-                className="flex items-center gap-3 rounded-xl border border-line bg-surface/50 px-3 py-2"
+                className={`flex items-center gap-3 rounded-xl border border-line bg-surface/50 px-3 py-2 ${
+                  i >= limit ? "opacity-50" : ""
+                }`}
+                title={i >= limit ? t.publish.notInPlan : undefined}
               >
                 {a.avatar_url ? (
                   // eslint-disable-next-line @next/next/no-img-element -- the network's own profile picture
@@ -133,7 +173,8 @@ export function PublishingView({
               <form key={p.key} action={connectAccount}>
                 <input type="hidden" name="platform" value={p.key} />
                 <button
-                  className={smallButton}
+                  disabled={full}
+                  className={`${smallButton} disabled:pointer-events-none disabled:opacity-40`}
                   title={
                     p.video && !p.image
                       ? t.publish.videosOnly

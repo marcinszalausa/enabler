@@ -89,7 +89,8 @@ export const sv: Messages = {
     liveSub:
       "Det här är en riktig Gooidy-körning, uppspelad steg för steg: länken, vad Gooidy läste på sidan, vinklarna det skrev och annonserna det skapade.",
     howTitle: "Så funkar det",
-    howSub: "Från din produktlänk till annonser som når nya köpare, i tre steg.",
+    howSub:
+      "Från din produktlänk till annonser som når nya köpare, i tre steg.",
     steps: [
       {
         title: "Klistra in en länk",
@@ -435,6 +436,12 @@ export const sv: Messages = {
     disconnect: "Koppla från",
     connected: "{platform} är kopplat.",
     connectFailed: "Kontot kunde inte kopplas. Försök igen.",
+    accountsUsed: "{used} av {limit} konton i din plan",
+    limitReached: "Du har kopplat så många konton som din plan omfattar.",
+    upgrade: "Uppgradera din plan",
+    upgradeMore: "Uppgradera för fler",
+    notInPlan:
+      "Ingår inte i din plan, så Gooidy publicerar inte här. Uppgradera eller koppla från ett annat konto.",
     videosOnly: "Endast video",
     imagesOnly: "Endast bilder",
     schedule: "Publiceringsschema",

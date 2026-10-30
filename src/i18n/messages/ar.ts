@@ -418,6 +418,12 @@ export const ar: Messages = {
     disconnect: "إلغاء الربط",
     connected: "تم ربط {platform}.",
     connectFailed: "تعذّر ربط الحساب. حاول مرة أخرى.",
+    accountsUsed: "{used} من {limit} حسابات ضمن خطتك",
+    limitReached: "لقد ربطت كل الحسابات التي تشملها خطتك.",
+    upgrade: "رقِّ خطتك",
+    upgradeMore: "رقِّ للمزيد",
+    notInPlan:
+      "غير مشمول في خطتك، لذا لا ينشر Gooidy هنا. رقِّ خطتك أو ألغِ ربط حساب آخر.",
     videosOnly: "فيديو فقط",
     imagesOnly: "صور فقط",
     schedule: "جدول النشر",

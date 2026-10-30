@@ -89,7 +89,8 @@ export const nl: Messages = {
     liveSub:
       "Dit is een echte Gooidy-ronde, stap voor stap afgespeeld: de link, wat Gooidy op de pagina las, de invalshoeken die het schreef en de advertenties die het maakte.",
     howTitle: "Zo werkt het",
-    howSub: "Van je productlink naar advertenties die nieuwe kopers bereiken, in drie stappen.",
+    howSub:
+      "Van je productlink naar advertenties die nieuwe kopers bereiken, in drie stappen.",
     steps: [
       {
         title: "Plak een link",
@@ -436,6 +437,13 @@ export const nl: Messages = {
     disconnect: "Ontkoppelen",
     connected: "{platform} is gekoppeld.",
     connectFailed: "Het account is niet gekoppeld. Probeer het opnieuw.",
+    accountsUsed: "{used} van {limit} accounts in je abonnement",
+    limitReached:
+      "Je hebt zoveel accounts gekoppeld als je abonnement toestaat.",
+    upgrade: "Upgrade je abonnement",
+    upgradeMore: "Upgrade voor meer",
+    notInPlan:
+      "Niet inbegrepen in je abonnement, dus Gooidy plaatst hier niet. Upgrade of ontkoppel een ander account.",
     videosOnly: "Alleen video's",
     imagesOnly: "Alleen afbeeldingen",
     schedule: "Publicatieschema",

@@ -21,6 +21,7 @@ import {
   type Generation,
 } from "./generation-block";
 import { zernioConfigured } from "@/lib/social/zernio";
+import { accountLimit } from "@/lib/social/limits";
 import { platformName } from "@/lib/social/platforms";
 import {
   formatLocal,
@@ -87,7 +88,7 @@ async function Product({
       .returns<Generation[]>(),
     supabase
       .from("workspaces")
-      .select("credits")
+      .select("credits, plan")
       .eq("id", product.workspace_id)
       .single(),
     getBrandKit(supabase, product.workspace_id),
@@ -102,6 +103,7 @@ async function Product({
         supabase,
         locale,
         (generations ?? []).flatMap((g) => g.creatives.map((c) => c.id)),
+        workspace?.plan,
       )
     : null;
 
@@ -243,6 +245,7 @@ async function publishingFor(
   supabase: Awaited<ReturnType<typeof createClient>>,
   locale: string,
   creativeIds: string[],
+  plan: string | undefined,
 ) {
   const [
     { data: accounts },
@@ -253,7 +256,8 @@ async function publishingFor(
     supabase
       .from("social_accounts")
       .select("id, platform, username, display_name")
-      .order("created_at"),
+      .order("created_at")
+      .order("id"),
     supabase
       .from("publishing_schedules")
       .select("time_zone, slots")
@@ -301,7 +305,8 @@ async function publishingFor(
   }
 
   return {
-    accounts: (accounts ?? []).map((a) => ({
+    // Only the accounts the plan covers (the earliest connected).
+    accounts: (accounts ?? []).slice(0, accountLimit(plan)).map((a) => ({
       id: a.id as string,
       platform: a.platform as string,
       name: (a.display_name ??

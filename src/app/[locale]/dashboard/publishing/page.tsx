@@ -7,6 +7,7 @@ import { BackLink, EmptyState } from "../ui";
 import { getCurrentUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { zernioConfigured } from "@/lib/social/zernio";
+import { accountLimit } from "@/lib/social/limits";
 import { refreshDuePosts } from "@/lib/social/publish";
 import {
   PublishingView,
@@ -66,7 +67,7 @@ async function Publishing({
   const supabase = await createClient();
   const { data: ws } = await supabase
     .from("workspaces")
-    .select("id")
+    .select("id, plan")
     .order("created_at")
     .limit(1)
     .single();
@@ -104,7 +105,9 @@ async function Publishing({
       schedule={schedule as ScheduleRow | null}
       posts={(posts ?? []) as unknown as PostRow[]}
       connected={typeof query.connected === "string" ? query.connected : null}
-      failed={Boolean(query.error)}
+      failed={query.error === "connect"}
+      overLimit={query.error === "limit"}
+      limit={accountLimit(ws.plan)}
     />
   );
 }

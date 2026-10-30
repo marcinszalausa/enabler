@@ -89,7 +89,8 @@ export const it: Messages = {
     liveSub:
       "Questo è un vero giro di Gooidy, riprodotto passo dopo passo: il link, cosa ha letto Gooidy nella pagina, gli approcci che ha scritto e gli annunci che ha creato.",
     howTitle: "Come funziona",
-    howSub: "Dal link del tuo prodotto ad annunci che raggiungono nuovi acquirenti, in tre passaggi.",
+    howSub:
+      "Dal link del tuo prodotto ad annunci che raggiungono nuovi acquirenti, in tre passaggi.",
     steps: [
       {
         title: "Incolla un link",
@@ -440,6 +441,12 @@ export const it: Messages = {
     disconnect: "Scollega",
     connected: "{platform} è collegato.",
     connectFailed: "Non è stato possibile collegare l'account. Riprova.",
+    accountsUsed: "{used} di {limit} account del tuo piano",
+    limitReached: "Hai collegato tutti gli account inclusi nel tuo piano.",
+    upgrade: "Passa a un piano superiore",
+    upgradeMore: "Passa a un piano superiore per averne di più",
+    notInPlan:
+      "Non incluso nel tuo piano, quindi Gooidy non pubblica qui. Passa a un piano superiore o scollega un altro account.",
     videosOnly: "Solo video",
     imagesOnly: "Solo immagini",
     schedule: "Calendario di pubblicazione",

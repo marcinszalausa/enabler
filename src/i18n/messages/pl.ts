@@ -89,7 +89,8 @@ export const pl: Messages = {
     liveSub:
       "To prawdziwa seria Gooidy odtworzona krok po kroku: link, to, co Gooidy wyczytało ze strony, napisane pomysły i gotowe reklamy.",
     howTitle: "Jak to działa",
-    howSub: "Od linku do produktu do reklam, które docierają do nowych kupujących, w trzech krokach.",
+    howSub:
+      "Od linku do produktu do reklam, które docierają do nowych kupujących, w trzech krokach.",
     steps: [
       {
         title: "Wklej link",
@@ -141,8 +142,7 @@ export const pl: Messages = {
     languagesBody:
       "Każda reklama jest pisana w wybranym języku, tak jak napisałby ją ktoś stamtąd, więc możesz sprzedawać poza swoim rynkiem. Reklamy wideo też mówią w tym języku, z pasującymi napisami.",
     pricingTitle: "Proste ceny, które rosną razem z Tobą",
-    pricingSub:
-      "Zacznij za darmo. Zmień plan, gdy Twój biznes rośnie.",
+    pricingSub: "Zacznij za darmo. Zmień plan, gdy Twój biznes rośnie.",
     popular: "Popularny",
     perMonth: " / mies.",
     plans: [
@@ -209,7 +209,8 @@ export const pl: Messages = {
     finalSub: "100 darmowych kredytów. Bez karty kredytowej.",
   },
   beforeAfter: {
-    title: "Od jednego zdjęcia produktu do reklam, które przyciągają kupujących",
+    title:
+      "Od jednego zdjęcia produktu do reklam, które przyciągają kupujących",
     sub: "Po lewej zdjęcie z {store}. Po prawej reklamy, które Gooidy z niego stworzyło, bez edycji.",
     before: "Przed: strona produktu",
     after: "Po: {count} reklamy z tej serii",
@@ -436,6 +437,12 @@ export const pl: Messages = {
     disconnect: "Odłącz",
     connected: "Połączono {platform}.",
     connectFailed: "Nie udało się połączyć konta. Spróbuj ponownie.",
+    accountsUsed: "{used} z {limit} kont w Twoim planie",
+    limitReached: "Połączono już tyle kont, ile obejmuje Twój plan.",
+    upgrade: "Zmień plan na wyższy",
+    upgradeMore: "Więcej kont w wyższym planie",
+    notInPlan:
+      "Nie mieści się w Twoim planie, więc Gooidy tu nie publikuje. Zmień plan albo odłącz inne konto.",
     videosOnly: "Tylko wideo",
     imagesOnly: "Tylko obrazy",
     schedule: "Harmonogram publikacji",

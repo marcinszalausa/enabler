@@ -425,6 +425,12 @@ export const ko: Messages = {
     disconnect: "연결 해제",
     connected: "{platform} 계정이 연결되었습니다.",
     connectFailed: "계정을 연결하지 못했습니다. 다시 시도해 주세요.",
+    accountsUsed: "플랜의 계정 {limit}개 중 {used}개 사용 중",
+    limitReached: "플랜에 포함된 만큼 계정을 모두 연결했습니다.",
+    upgrade: "플랜 업그레이드",
+    upgradeMore: "업그레이드하고 더 연결하기",
+    notInPlan:
+      "플랜에 포함되지 않아 Gooidy가 이곳에 게시하지 않습니다. 업그레이드하거나 다른 계정의 연결을 해제하세요.",
     videosOnly: "동영상만",
     imagesOnly: "이미지만",
     schedule: "게시 일정",
