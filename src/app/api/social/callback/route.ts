@@ -1,4 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { cookies } from "next/headers";
+import { authorizeSocialCallback, socialConnectCookie, type SocialConnectContext } from "@/lib/social/oauth-state";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { accountsInPlan, syncAccounts } from "@/lib/social/publish";
@@ -16,10 +18,35 @@ export async function GET(request: NextRequest) {
   const { data: auth } = await supabase.auth.getUser();
   if (!auth.user) return NextResponse.redirect(new URL("/login", back));
 
+  const cookie = socialConnectCookie(process.env.NODE_ENV === "production");
+  const cookieStore = await cookies();
+  let connection: SocialConnectContext | null;
+  try {
+    connection = await authorizeSocialCallback(params, cookieStore.get(cookie.name)?.value, auth.user.id,
+      async (nonceHash, userId) => {
+        const { data, error } = await createAdminClient().rpc("consume_social_connect_state", {
+          p_nonce_hash: nonceHash, p_user_id: userId,
+        }).abortSignal(AbortSignal.timeout(3500)).maybeSingle();
+        if (error) throw error;
+        return data as SocialConnectContext | null;
+      });
+  } catch {
+    console.error("social callback state verification failed");
+    back.searchParams.set("error", "connect");
+    return NextResponse.redirect(back);
+  }
+  if (!connection) {
+    back.searchParams.set("error", "connect");
+    back.searchParams.set("detail", "This connection attempt is invalid or expired. Please start again.");
+    return NextResponse.redirect(back);
+  }
+  cookieStore.set(cookie.name, "", { ...cookie.options, maxAge: 0 });
+
   const { data: profile } = await createAdminClient()
     .from("social_profiles")
     .select("workspace_id")
-    .eq("zernio_profile_id", params.get("profileId") ?? "")
+    .eq("zernio_profile_id", connection.profile_id)
+    .eq("workspace_id", connection.workspace_id)
     .maybeSingle();
   // RLS: the caller must be a member of that workspace.
   const { data: ws } = profile

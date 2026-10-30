@@ -6,7 +6,7 @@ on:
 permissions:
   contents: read
 jobs:
-  prepare:
+  oauth-application:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -16,15 +16,32 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - name: Read installed cookie API and provider redirect contract
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          from urllib.request import urlopen
-          for p in Path('node_modules/next/dist/docs').rglob('cookies.*'):
-              if p.is_file(): print(f'GUIDE {p}\n{p.read_text()}')
-          for url in ['https://docs.zernio.com/llms-mdx/guides/connecting-accounts']:
-              print('PROVIDER DOC', url)
-              print(urlopen(url, timeout=20).read().decode()[:80000])
-          PY
-      - run: npx --yes supabase@2.81.3 migration new social_connect_state
+      - run: node --experimental-strip-types --test tests/*.test.ts
+      - run: npx next typegen && npx tsc --noEmit
+      - run: npx eslint src/lib/social/oauth-state.ts 'src/app/[locale]/dashboard/publishing/actions.ts' src/app/api/social/callback/route.ts
+  oauth-database:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        postgres: ['16','17']
+    services:
+      postgres:
+        image: postgres:${{ matrix.postgres }}
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: oauth_tests
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y postgresql-client
+      - name: Apply migrations and verify one-time connection state
+        env:
+          CREDIT_TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/oauth_tests
+        run: bash scripts/test-credits.sh && bash scripts/test-social-connect-state.sh

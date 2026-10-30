@@ -1,6 +1,7 @@
 "use server";
 
-import { headers } from "next/headers";
+import { cookies, headers } from "next/headers";
+import { newSocialConnectNonce, hashSocialConnectNonce, callbackUrlForOrigin, socialConnectCookie } from "@/lib/social/oauth-state";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
@@ -37,7 +38,7 @@ async function currentWorkspace() {
     .single();
   if (!ws) throw new Error("No workspace found.");
   if (!(await canEditWorkspace(supabase, ws.id))) return null;
-  return ws as { id: string; name: string };
+  return { id: ws.id as string, name: ws.name as string, userId: auth.user.id };
 }
 
 // Sends the browser to the network's login, via Zernio, and back to
@@ -53,18 +54,25 @@ export async function connectAccount(formData: FormData) {
 
   let authUrl: string;
   try {
+    const nonce = newSocialConnectNonce();
+    const production = process.env.NODE_ENV === "production";
+    const callback = callbackUrlForOrigin(origin, nonce, production, [
+      process.env.VERCEL_URL, process.env.VERCEL_BRANCH_URL,
+      process.env.VERCEL_PROJECT_PRODUCTION_URL,
+    ]);
     const profileId = await ensureProfile(ws.id, ws.name);
-    authUrl = await connectUrl(
-      platform,
-      profileId,
-      `${origin}/api/social/callback`,
-    );
-  } catch (err) {
-    console.error("connect failed", platform, err);
-    const detail = err instanceof Error ? err.message.slice(0, 200) : "";
-    redirect(
-      `/dashboard/publishing?error=connect&detail=${encodeURIComponent(detail)}`,
-    );
+    const { error } = await createAdminClient().rpc("register_social_connect_state", {
+      p_nonce_hash: hashSocialConnectNonce(nonce), p_user_id: ws.userId,
+      p_workspace_id: ws.id, p_profile_id: profileId, p_platform: platform,
+    }).abortSignal(AbortSignal.timeout(3500));
+    if (error) throw error;
+    authUrl = await connectUrl(platform, profileId, callback);
+    const cookie = socialConnectCookie(production);
+    (await cookies()).set(cookie.name, nonce, cookie.options);
+  } catch {
+    // Provider errors can contain callback URLs. Do not log state or auth URLs.
+    console.error("social connection could not be started", { platform });
+    redirect("/dashboard/publishing?error=connect");
   }
   redirect(authUrl);
 }
