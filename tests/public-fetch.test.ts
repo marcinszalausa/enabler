@@ -43,7 +43,7 @@ test("URL parsing rejects schemes, credentials, internal names and unusual IP re
     "http://localhost.example.local","http://shop.internal.","http://router.home.arpa",
     "http://127.0.0.1.","http://0x7f000001.","https://example.com/a"+String.fromCharCode(92)+"b","http://127.1","http://2130706433","http://0x7f000001","http://0177.0.0.1","http://169.254.169.254",
     "http://[::1]","http://[::ffff:127.0.0.1]","https://example.com/\nprivate"]){
-    assert.throws(()=>parsePublicHttpUrl(url),undefined,url);
+    assert.throws(()=>parsePublicHttpUrl(url),PublicFetchError,url);
   }
   assert.equal(parsePublicHttpUrl("example.com/path?q=value#fragment").toString(),"https://example.com/path?q=value");
   assert.equal(parsePublicHttpUrl("https://example.com.:443/path").hostname,"example.com");

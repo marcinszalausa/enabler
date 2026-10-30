@@ -1,4 +1,5 @@
 // Server code only (reads fonts, runs a native module).
+import { fetchPublicUrl } from "@/lib/public-fetch";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { createCanvas, GlobalFonts } from "@napi-rs/canvas";
