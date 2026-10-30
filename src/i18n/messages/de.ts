@@ -2,9 +2,9 @@ import type { Messages } from ".";
 
 export const de: Messages = {
   meta: {
-    title: "Gooidy · Lass dein Geschäft wachsen, mit einem einzigen Link",
+    title: "Gooidy · Produktanzeigen mit weniger Aufwand",
     description:
-      "Lass dein kleines Unternehmen mit Gooidy wachsen. Füge einen Produktlink ein und erhalte Bild- und Videoanzeigen, die neue Kunden bringen, in wenigen Minuten bereit für TikTok, Instagram und Facebook. Kostenlos starten.",
+      "Verwandle einen Produktlink in Bilder und Videos für deine nächste Kampagne – ohne ein Shooting zu organisieren oder jede Anzeige von Grund auf zu gestalten.",
     useCasesTitle: "Echte Beispiele · Gooidy",
     useCasesDescription:
       "Echte, unbearbeitete Anzeigen, die Gooidy aus echten Produktlinks erstellt hat. Sieh, wie aus einem Link eine Kampagne wird, und probier es kostenlos mit deinem eigenen Shop.",
@@ -32,7 +32,7 @@ export const de: Messages = {
   urlForm: {
     label: "Link zu deinem Produkt oder Shop",
     placeholder: "Link zu deinem Produkt oder Shop einfügen",
-    submit: "Jetzt wachsen",
+    submit: "Meine Anzeigen erstellen",
   },
   footer: {
     contact: "Kontakt",
@@ -72,13 +72,13 @@ export const de: Messages = {
     creditIntro: "Bild- und Videoanzeigen nutzen dasselbe Credit-Guthaben. Die Gesamtkosten siehst du vor der Erstellung.",
     refundNote: "Credits für fehlgeschlagene Ergebnisse werden automatisch zurückgegeben. Fertige Anzeigen bleiben verfügbar.",
     adSpend: "Werbeausgaben auf sozialen Plattformen sind von Gooidy-Credits getrennt.",
-    badge: "Wachstum für kleine Unternehmen, mit KI",
-    titleLine1: "Dein Geschäft wächst,",
-    titleBefore: "aus einem einzigen ",
-    titleWord: "Link",
+    badge: "Produktanzeigen ohne den Produktionsaufwand",
+    titleLine1: "Dein Produkt. Starke Anzeigen.",
+    titleBefore: "",
+    titleWord: "Weniger Aufwand",
     titleAfter: ".",
     intro:
-      "Füge deine Produktseite ein. Gooidy findet heraus, wer bei dir kauft und warum, und erstellt die Bild- und Videoanzeigen, die neue Kunden in deinen Shop bringen.",
+      "Verwandle einen Produktlink in Bilder und Videos für deine nächste Kampagne – ohne ein Shooting zu organisieren oder jede Anzeige von Grund auf zu gestalten.",
     facts: [
       "Kostenlos starten, ohne Karte",
       "Bild- und Videoanzeigen",
@@ -92,7 +92,7 @@ export const de: Messages = {
     whereTitle: "Sei dort, wo deine Kunden scrollen",
     whereSub:
       "Derselbe Durchlauf, passend für jede App, in der deine Kunden scrollen.",
-    liveTitle: "Ein Link rein. Eine Kampagne, die verkauft, raus.",
+    liveTitle: "So wird ein Produktlink zu fertigen Anzeigen",
     liveSub:
       "Das ist ein echter Gooidy-Durchlauf, Schritt für Schritt abgespielt: der Link, was Gooidy auf der Seite gelesen hat, die geschriebenen Ansätze und die fertigen Anzeigen.",
     howTitle: "So funktioniert's",
@@ -137,7 +137,7 @@ export const de: Messages = {
     videoFormat: "{seconds}-Sekunden-Video mit Sprecher",
     featuresTitle: "Alles, was du zum Wachsen brauchst",
     featuresSub:
-      "Gooidy übernimmt die Arbeit, für die man sonst einen Designer, einen Texter und einen Nachmittag braucht, damit du dich um dein Geschäft kümmern kannst.",
+      "Erstelle mehrere Anzeigenvarianten, nutze dein Branding erneut und lade die Anzeigen herunter, die du veröffentlichen möchtest.",
     briefTitle: "Marken-Briefing aus deiner Website",
     briefBody:
       "Gooidy liest deine Seite und erkennt, für wen das Produkt ist und warum gekauft wird.",
@@ -208,13 +208,13 @@ export const de: Messages = {
         a: "Ja. Die Pläne laufen monatlich, und du behältst den Zugang bis zum Ende des bezahlten Zeitraums.",
       },
     ],
-    finalTitle: "Deine nächsten Kunden sind nur einen Link entfernt",
+    finalTitle: "Deine nächste Kampagne beginnt mit einem Link",
     finalSub: "100 kostenlose Credits. Keine Kreditkarte nötig.",
   },
   beforeAfter: {
     compareHint: "Wechsle zwischen dem Originalfoto des Produkts und den daraus erstellten Anzeigen.",
     imageVariant: "Anzeige {n}",
-    title: "Von einem Produktfoto zu Anzeigen, die Käufer bringen",
+    title: "Vom Produktfoto zur fertigen Anzeige",
     sub: "Links das Foto auf {store}. Rechts die Anzeigen, die Gooidy daraus erstellt hat, unbearbeitet.",
     before: "Vorher: die Produktseite",
     after: "Nachher: {count} der Anzeigen aus diesem Durchlauf",

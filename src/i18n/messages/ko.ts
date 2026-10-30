@@ -2,9 +2,9 @@ import type { Messages } from ".";
 
 export const ko: Messages = {
   meta: {
-    title: "Gooidy · 링크 하나로 비즈니스를 키우세요",
+    title: "Gooidy · 더 적은 수고로 만드는 제품 광고",
     description:
-      "Gooidy로 작은 비즈니스를 키우세요. 상품 링크만 붙여 넣으면 새 고객을 데려오는 이미지·영상 광고가 몇 분 만에 TikTok, Instagram, Facebook용으로 준비됩니다. 무료로 시작하세요.",
+      "제품 링크를 다음 캠페인에 쓸 이미지와 동영상으로 바꾸세요. 촬영을 준비하거나 광고를 처음부터 디자인할 필요가 없습니다.",
     useCasesTitle: "실제 사례 · Gooidy",
     useCasesDescription:
       "Gooidy가 실제 상품 링크로 만든, 편집하지 않은 실제 광고입니다. 링크 하나가 캠페인이 되는 과정을 보고, 내 스토어에서 무료로 사용해 보세요.",
@@ -32,7 +32,7 @@ export const ko: Messages = {
   urlForm: {
     label: "상품 또는 스토어 링크",
     placeholder: "상품 또는 스토어 링크를 붙여 넣으세요",
-    submit: "성장 시작하기",
+    submit: "내 광고 만들기",
   },
   footer: {
     contact: "문의",
@@ -72,13 +72,13 @@ export const ko: Messages = {
     creditIntro: "이미지 광고와 동영상 광고는 같은 크레딧 잔액을 사용합니다. 생성 전에 전체 비용을 확인할 수 있습니다.",
     refundNote: "실패한 결과물의 크레딧은 자동으로 반환됩니다. 완성된 광고는 계속 이용할 수 있습니다.",
     adSpend: "소셜 플랫폼의 광고 집행 비용은 Gooidy 크레딧과 별도입니다.",
-    badge: "AI로 작은 비즈니스에 성장을",
-    titleLine1: "비즈니스를 키우세요,",
+    badge: "제작 수고를 줄이는 제품 광고",
+    titleLine1: "내 제품을 멋진 광고로.",
     titleBefore: "",
-    titleWord: "링크 하나",
-    titleAfter: "로.",
+    titleWord: "더 적은 수고로",
+    titleAfter: ".",
     intro:
-      "상품 페이지를 붙여 넣으세요. Gooidy가 누가 왜 구매하는지 파악한 뒤, 새 고객을 스토어로 데려오는 이미지·영상 광고를 만들어 드립니다.",
+      "제품 링크를 다음 캠페인에 쓸 이미지와 동영상으로 바꾸세요. 촬영을 준비하거나 광고를 처음부터 디자인할 필요가 없습니다.",
     facts: [
       "카드 없이 무료로 시작",
       "이미지 광고와 영상 광고",
@@ -91,7 +91,7 @@ export const ko: Messages = {
       "사람들은 저마다 다른 이유로 구매합니다. 그래서 매번 여러 가지를 시도합니다. 이것은 Gooidy가 {store} 링크 하나로 만든 실제 광고입니다.",
     whereTitle: "고객이 스크롤하는 곳에 나타나세요",
     whereSub: "같은 광고를 고객이 보는 앱마다 알맞은 사이즈로 준비합니다.",
-    liveTitle: "링크 하나를 붙여 넣으면, 팔리는 캠페인이 나옵니다.",
+    liveTitle: "제품 링크가 바로 쓸 수 있는 광고가 되는 과정",
     liveSub:
       "실제 Gooidy 생성 과정을 단계별로 재생했습니다. 링크, 페이지에서 읽어 낸 내용, 작성한 소구점, 완성된 광고까지.",
     howTitle: "이용 방법",
@@ -135,7 +135,7 @@ export const ko: Messages = {
     videoFormat: "내레이션이 들어간 {seconds}초 영상",
     featuresTitle: "성장에 필요한 모든 것",
     featuresSub:
-      "디자이너, 카피라이터, 그리고 반나절이 필요한 일을 Gooidy가 대신하니, 당신은 비즈니스에만 집중하세요.",
+      "여러 광고안을 만들고 브랜드 스타일을 재사용하세요. 게시할 광고를 골라 다운로드할 수 있습니다.",
     briefTitle: "사이트에서 뽑아낸 브랜드 브리프",
     briefBody:
       "Gooidy가 페이지를 읽고 누구를 위한 상품인지, 왜 사는지 정리합니다.",
@@ -198,13 +198,13 @@ export const ko: Messages = {
         a: "네. 요금제는 월 단위이며, 결제한 기간이 끝날 때까지 계속 이용할 수 있습니다.",
       },
     ],
-    finalTitle: "다음 고객은 링크 하나 거리에 있습니다",
+    finalTitle: "다음 캠페인은 링크 하나로 시작됩니다",
     finalSub: "무료 크레딧 100개. 신용카드 필요 없음.",
   },
   beforeAfter: {
     compareHint: "원본 제품 사진과 이를 바탕으로 만든 광고를 전환해 보세요.",
     imageVariant: "광고 {n}",
-    title: "상품 사진 한 장에서 구매자를 데려오는 광고로",
+    title: "제품 사진에서 완성된 광고까지",
     sub: "왼쪽은 {store}의 사진, 오른쪽은 Gooidy가 그 사진으로 만든 편집하지 않은 광고입니다.",
     before: "전: 상품 페이지",
     after: "후: 해당 생성에서 만든 광고 {count}개",

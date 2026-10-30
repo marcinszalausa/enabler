@@ -2,9 +2,9 @@ import type { Messages } from ".";
 
 export const tr: Messages = {
   meta: {
-    title: "Gooidy · Tek bir linkten işinizi büyütün",
+    title: "Gooidy · Daha az işle ürün reklamları",
     description:
-      "Küçük işletmenizi Gooidy ile büyütün. Bir ürün linki yapıştırın, yeni müşteri getiren görsel ve video reklamlar dakikalar içinde TikTok, Instagram ve Facebook için hazır olsun. Ücretsiz başlayın.",
+      "Çekim düzenlemeden veya her reklamı sıfırdan tasarlamadan, bir ürün bağlantısını sonraki kampanyanız için görsellere ve videolara dönüştürün.",
     useCasesTitle: "Gerçek örnekler · Gooidy",
     useCasesDescription:
       "Gooidy'nin gerçek ürün linklerinden hazırladığı gerçek, düzenlenmemiş reklamlar. Tek bir linkin nasıl kampanyaya dönüştüğünü görün, sonra kendi mağazanızda ücretsiz deneyin.",
@@ -32,7 +32,7 @@ export const tr: Messages = {
   urlForm: {
     label: "Ürününüzün veya mağazanızın linki",
     placeholder: "Ürününüzün veya mağazanızın linkini yapıştırın",
-    submit: "Büyümeye başla",
+    submit: "Reklamlarımı oluştur",
   },
   footer: {
     contact: "İletişim",
@@ -72,13 +72,13 @@ export const tr: Messages = {
     creditIntro: "Görsel ve video reklamlar aynı kredi bakiyesini kullanır. Toplam maliyeti oluşturmadan önce görürsünüz.",
     refundNote: "Başarısız çıktılara ait krediler otomatik olarak iade edilir. Tamamlanan reklamlar kullanılabilir durumda kalır.",
     adSpend: "Sosyal platformlardaki reklam harcamaları Gooidy kredilerinden ayrıdır.",
-    badge: "Küçük işletmeler için yapay zekâ destekli büyüme",
-    titleLine1: "İşinizi büyütün,",
-    titleBefore: "tek bir ",
-    titleWord: "linkten",
+    badge: "Üretim zahmeti olmadan ürün reklamları",
+    titleLine1: "Ürününüz. Harika reklamlar.",
+    titleBefore: "",
+    titleWord: "Daha az iş",
     titleAfter: ".",
     intro:
-      "Ürün sayfanızı yapıştırın. Gooidy sizden kimin ve neden aldığını anlar, ardından mağazanıza yeni müşteriler getiren görsel ve video reklamları hazırlar.",
+      "Çekim düzenlemeden veya her reklamı sıfırdan tasarlamadan, bir ürün bağlantısını sonraki kampanyanız için görsellere ve videolara dönüştürün.",
     facts: [
       "Ücretsiz başlayın, kart gerekmez",
       "Görsel ve video reklamlar",
@@ -92,7 +92,7 @@ export const tr: Messages = {
     whereTitle: "Müşterilerinizin gezindiği yerde olun",
     whereSub:
       "Aynı çalıştırma, müşterilerinizin gezindiği her uygulama için hazır boyutlarda.",
-    liveTitle: "Bir link yapıştırın. Satış yapan bir kampanya alın.",
+    liveTitle: "Ürün bağlantısından kullanıma hazır reklamlara",
     liveSub:
       "Bu, adım adım oynatılan gerçek bir Gooidy çalıştırması: link, Gooidy'nin sayfadan okudukları, yazdığı yaklaşımlar ve oluşturduğu reklamlar.",
     howTitle: "Nasıl çalışır",
@@ -136,7 +136,7 @@ export const tr: Messages = {
     videoFormat: "Seslendirmeli {seconds} sn video",
     featuresTitle: "Büyümek için ihtiyacınız olan her şey",
     featuresSub:
-      "Gooidy normalde bir tasarımcı, bir metin yazarı ve bir öğleden sonra gerektiren işi yapar, siz de zamanınızı işinize ayırırsınız.",
+      "Farklı reklam seçenekleri oluşturun, marka kimliğinizi yeniden kullanın ve yayınlamak istediklerinizi indirin.",
     briefTitle: "Sitenizden marka özeti",
     briefBody:
       "Gooidy sayfanızı okur, kime hitap ettiğini ve insanların neden aldığını çıkarır.",
@@ -207,13 +207,13 @@ export const tr: Messages = {
         a: "Evet. Planlar aylıktır ve ödediğiniz dönemin sonuna kadar erişiminiz devam eder.",
       },
     ],
-    finalTitle: "Bir sonraki müşterileriniz bir link uzağınızda",
+    finalTitle: "Sonraki kampanyanız bir bağlantıyla başlar",
     finalSub: "100 ücretsiz kredi. Kredi kartı gerekmez.",
   },
   beforeAfter: {
     compareHint: "Orijinal ürün fotoğrafı ile ondan oluşturulan reklamlar arasında geçiş yapın.",
     imageVariant: "Reklam {n}",
-    title: "Tek bir ürün fotoğrafından alıcı getiren reklamlara",
+    title: "Ürün fotoğrafından hazır reklama",
     sub: "Solda {store} sitesindeki fotoğraf. Sağda Gooidy'nin ondan oluşturduğu, düzenlenmemiş reklamlar.",
     before: "Önce: ürün sayfası",
     after: "Sonra: o çalıştırmadan {count} reklam",

@@ -2,9 +2,9 @@ import type { Messages } from ".";
 
 export const ro: Messages = {
   meta: {
-    title: "Gooidy · Crește-ți afacerea dintr-un singur link",
+    title: "Gooidy · Reclame de produs cu mai puțină muncă",
     description:
-      "Crește-ți mica afacere cu Gooidy. Lipește linkul unui produs și primești reclame cu imagini și video care aduc clienți noi, gata pentru TikTok, Instagram și Facebook în câteva minute. Începe gratuit.",
+      "Transformă un link de produs în imagini și videoclipuri pentru următoarea campanie, fără să organizezi o ședință foto sau să creezi fiecare reclamă de la zero.",
     useCasesTitle: "Exemple reale · Gooidy",
     useCasesDescription:
       "Reclame reale, needitate, create de Gooidy din linkuri reale de produse. Vezi cum un link devine o campanie, apoi încearcă gratuit pe propriul magazin.",
@@ -32,7 +32,7 @@ export const ro: Messages = {
   urlForm: {
     label: "Linkul produsului sau magazinului tău",
     placeholder: "Lipește linkul produsului sau magazinului tău",
-    submit: "Începe să crești",
+    submit: "Creează reclamele mele",
   },
   footer: {
     contact: "Contact",
@@ -72,13 +72,13 @@ export const ro: Messages = {
     creditIntro: "Reclamele imagine și video folosesc același sold de credite. Vezi costul total înainte de generare.",
     refundNote: "Creditele pentru rezultatele eșuate sunt returnate automat. Reclamele finalizate rămân disponibile.",
     adSpend: "Bugetul publicitar pe platformele sociale este separat de creditele Gooidy.",
-    badge: "Creștere pentru afacerile mici, cu AI",
-    titleLine1: "Crește-ți afacerea,",
-    titleBefore: "dintr-un singur ",
-    titleWord: "link",
+    badge: "Reclame de produs fără munca de producție",
+    titleLine1: "Produsul tău. Reclame reușite.",
+    titleBefore: "",
+    titleWord: "Mai puțină muncă",
     titleAfter: ".",
     intro:
-      "Lipește pagina produsului tău. Gooidy află cine cumpără de la tine și de ce, apoi creează reclamele cu imagini și video care aduc clienți noi în magazinul tău.",
+      "Transformă un link de produs în imagini și videoclipuri pentru următoarea campanie, fără să organizezi o ședință foto sau să creezi fiecare reclamă de la zero.",
     facts: [
       "Gratuit la început, fără card",
       "Reclame cu imagini și video",
@@ -92,7 +92,7 @@ export const ro: Messages = {
     whereTitle: "Fii acolo unde clienții tăi derulează",
     whereSub:
       "Aceeași rulare, în formatul potrivit pentru fiecare aplicație prin care derulează clienții tăi.",
-    liveTitle: "Lipește un link. Primește o campanie care vinde.",
+    liveTitle: "Vezi cum un link de produs devine reclame gata de folosit",
     liveSub:
       "Aceasta este o rulare Gooidy reală, redată pas cu pas: linkul, ce a citit Gooidy pe pagină, abordările scrise și reclamele create.",
     howTitle: "Cum funcționează",
@@ -137,7 +137,7 @@ export const ro: Messages = {
     videoFormat: "Video de {seconds} s cu voce",
     featuresTitle: "Tot ce ai nevoie ca să crești",
     featuresSub:
-      "Gooidy face munca pentru care de obicei ai nevoie de un designer, un copywriter și o după-amiază, ca tu să te ocupi de afacere.",
+      "Creează mai multe variante, reutilizează identitatea mărcii și descarcă reclamele pe care vrei să le publici.",
     briefTitle: "Brief de brand din site-ul tău",
     briefBody:
       "Gooidy citește pagina și află pentru cine e produsul și de ce îl cumpără oamenii.",
@@ -213,13 +213,13 @@ export const ro: Messages = {
         a: "Da. Planurile sunt lunare și păstrezi accesul până la sfârșitul perioadei plătite.",
       },
     ],
-    finalTitle: "Următorii tăi clienți sunt la un link distanță",
+    finalTitle: "Următoarea ta campanie începe cu un link",
     finalSub: "100 de credite gratuite. Fără card de credit.",
   },
   beforeAfter: {
     compareHint: "Comută între fotografia originală a produsului și reclamele create din ea.",
     imageVariant: "Reclamă {n}",
-    title: "De la o fotografie de produs la reclame care aduc cumpărători",
+    title: "De la fotografia produsului la reclama finală",
     sub: "În stânga, fotografia de pe {store}. În dreapta, reclamele create de Gooidy din ea, needitate.",
     before: "Înainte: pagina produsului",
     after: "După: {count} dintre reclamele acelei rulări",

@@ -2,9 +2,9 @@ import type { Messages } from ".";
 
 export const sv: Messages = {
   meta: {
-    title: "Gooidy · Få ditt företag att växa från en enda länk",
+    title: "Gooidy · Produktannonser med mindre arbete",
     description:
-      "Få ditt lilla företag att växa med Gooidy. Klistra in en produktlänk och få bild- och videoannonser som ger nya kunder, klara för TikTok, Instagram och Facebook på några minuter. Börja gratis.",
+      "Gör en produktlänk till bilder och videor för din nästa kampanj, utan att ordna en fotografering eller utforma varje annons från grunden.",
     useCasesTitle: "Riktiga exempel · Gooidy",
     useCasesDescription:
       "Riktiga, oredigerade annonser som Gooidy gjorde från riktiga produktlänkar. Se hur en länk blir en kampanj och prova gratis på din egen butik.",
@@ -32,7 +32,7 @@ export const sv: Messages = {
   urlForm: {
     label: "Länken till din produkt eller butik",
     placeholder: "Klistra in länken till din produkt eller butik",
-    submit: "Börja växa",
+    submit: "Skapa mina annonser",
   },
   footer: {
     contact: "Kontakt",
@@ -72,13 +72,13 @@ export const sv: Messages = {
     creditIntro: "Bild- och videoannonser använder samma kreditsaldo. Du ser hela kostnaden innan du skapar.",
     refundNote: "Krediter för misslyckade resultat återbetalas automatiskt. Färdiga annonser finns kvar.",
     adSpend: "Annonsutgifter på sociala plattformar är separata från Gooidy-krediter.",
-    badge: "Tillväxt för små företag, med AI",
-    titleLine1: "Låt företaget växa,",
-    titleBefore: "från en enda ",
-    titleWord: "länk",
+    badge: "Produktannonser utan produktionsarbetet",
+    titleLine1: "Din produkt. Bra annonser.",
+    titleBefore: "",
+    titleWord: "Mindre arbete",
     titleAfter: ".",
     intro:
-      "Klistra in din produktsida. Gooidy tar reda på vem som köper av dig och varför, och gör sedan bild- och videoannonserna som tar nya kunder till din butik.",
+      "Gör en produktlänk till bilder och videor för din nästa kampanj, utan att ordna en fotografering eller utforma varje annons från grunden.",
     facts: [
       "Gratis att börja, inget kort",
       "Bild- och videoannonser",
@@ -92,7 +92,7 @@ export const sv: Messages = {
     whereTitle: "Synas där dina kunder scrollar",
     whereSub:
       "Samma körning, i rätt storlek för varje app dina kunder scrollar i.",
-    liveTitle: "Klistra in en länk. Få en kampanj som säljer.",
+    liveTitle: "Se en produktlänk bli färdiga annonser",
     liveSub:
       "Det här är en riktig Gooidy-körning, uppspelad steg för steg: länken, vad Gooidy läste på sidan, vinklarna det skrev och annonserna det skapade.",
     howTitle: "Så funkar det",
@@ -137,7 +137,7 @@ export const sv: Messages = {
     videoFormat: "{seconds} s video med speakerröst",
     featuresTitle: "Allt du behöver för att växa",
     featuresSub:
-      "Gooidy gör jobbet som annars kräver en designer, en copywriter och en eftermiddag, så att du kan lägga tiden på ditt företag.",
+      "Skapa flera annonsalternativ, återanvänd din varumärkesprofil och ladda ner dem du vill publicera.",
     briefTitle: "Varumärkesbrief från din sajt",
     briefBody:
       "Gooidy läser din sida och listar ut vem den är till för och varför folk köper.",
@@ -208,13 +208,13 @@ export const sv: Messages = {
         a: "Ja. Abonnemangen löper månadsvis och du behåller tillgången till slutet av perioden du betalat för.",
       },
     ],
-    finalTitle: "Dina nästa kunder är en länk bort",
+    finalTitle: "Din nästa kampanj börjar med en länk",
     finalSub: "100 gratis krediter. Inget kreditkort behövs.",
   },
   beforeAfter: {
     compareHint: "Växla mellan produktens originalfoto och annonserna som skapats från det.",
     imageVariant: "Annons {n}",
-    title: "Från ett produktfoto till annonser som drar in köpare",
+    title: "Från produktfoto till färdig annons",
     sub: "Till vänster fotot på {store}. Till höger annonser som Gooidy skapade av det, oredigerade.",
     before: "Före: produktsidan",
     after: "Efter: {count} av annonserna från den körningen",

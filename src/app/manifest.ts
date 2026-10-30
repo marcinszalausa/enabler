@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "Gooidy",
     short_name: "Gooidy",
     description:
-      "Grow your business from a single link: image and video ads that bring in new customers.",
+      "Turn a product link into campaign images and videos, without arranging a shoot or designing every ad from scratch.",
     start_url: "/",
     display: "standalone",
     background_color: "#0b0d14",

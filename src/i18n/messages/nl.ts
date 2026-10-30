@@ -2,9 +2,9 @@ import type { Messages } from ".";
 
 export const nl: Messages = {
   meta: {
-    title: "Gooidy · Laat je bedrijf groeien vanuit één link",
+    title: "Gooidy · Productadvertenties met minder werk",
     description:
-      "Laat je kleine bedrijf groeien met Gooidy. Plak een productlink en krijg beeld- en videoadvertenties die nieuwe klanten opleveren, binnen enkele minuten klaar voor TikTok, Instagram en Facebook. Begin gratis.",
+      "Maak van een productlink afbeeldingen en video's voor je volgende campagne, zonder een shoot te regelen of elke advertentie vanaf nul te ontwerpen.",
     useCasesTitle: "Echte voorbeelden · Gooidy",
     useCasesDescription:
       "Echte, onbewerkte advertenties die Gooidy maakte van echte productlinks. Zie hoe één link een campagne wordt en probeer het gratis met je eigen winkel.",
@@ -32,7 +32,7 @@ export const nl: Messages = {
   urlForm: {
     label: "De link naar je product of winkel",
     placeholder: "Plak de link naar je product of winkel",
-    submit: "Begin met groeien",
+    submit: "Mijn advertenties maken",
   },
   footer: {
     contact: "Contact",
@@ -72,13 +72,13 @@ export const nl: Messages = {
     creditIntro: "Beeld- en videoadvertenties gebruiken hetzelfde creditsaldo. Je ziet de totale kosten vóór het genereren.",
     refundNote: "Credits voor mislukte resultaten worden automatisch teruggegeven. Voltooide advertenties blijven beschikbaar.",
     adSpend: "Advertentie-uitgaven op sociale platforms staan los van Gooidy-credits.",
-    badge: "Groei voor kleine bedrijven, met AI",
-    titleLine1: "Laat je bedrijf groeien,",
-    titleBefore: "uit één ",
-    titleWord: "link",
+    badge: "Productadvertenties zonder het productiewerk",
+    titleLine1: "Jouw product. Sterke advertenties.",
+    titleBefore: "",
+    titleWord: "Minder werk",
     titleAfter: ".",
     intro:
-      "Plak je productpagina. Gooidy ontdekt wie bij je koopt en waarom, en maakt de beeld- en videoadvertenties die nieuwe klanten naar je winkel brengen.",
+      "Maak van een productlink afbeeldingen en video's voor je volgende campagne, zonder een shoot te regelen of elke advertentie vanaf nul te ontwerpen.",
     facts: [
       "Gratis beginnen, zonder creditcard",
       "Beeld- en videoadvertenties",
@@ -92,7 +92,7 @@ export const nl: Messages = {
     whereTitle: "Wees zichtbaar waar je klanten scrollen",
     whereSub:
       "Dezelfde ronde, op maat voor elke app waarin je klanten scrollen.",
-    liveTitle: "Plak één link. Krijg een campagne die verkoopt.",
+    liveTitle: "Van productlink naar kant-en-klare advertenties",
     liveSub:
       "Dit is een echte Gooidy-ronde, stap voor stap afgespeeld: de link, wat Gooidy op de pagina las, de invalshoeken die het schreef en de advertenties die het maakte.",
     howTitle: "Zo werkt het",
@@ -137,7 +137,7 @@ export const nl: Messages = {
     videoFormat: "Video van {seconds} s met voice-over",
     featuresTitle: "Alles wat je nodig hebt om te groeien",
     featuresSub:
-      "Gooidy doet het werk waar je anders een ontwerper, een copywriter en een middag voor nodig hebt, zodat jij je tijd aan je bedrijf kunt besteden.",
+      "Maak meerdere varianten, hergebruik je huisstijl en download de advertenties die je wilt publiceren.",
     briefTitle: "Merkbriefing uit je website",
     briefBody:
       "Gooidy leest je pagina en bepaalt voor wie het is en waarom mensen kopen.",
@@ -212,13 +212,13 @@ export const nl: Messages = {
         a: "Ja. Abonnementen lopen per maand en je houdt toegang tot het einde van de betaalde periode.",
       },
     ],
-    finalTitle: "Je volgende klanten zijn één link verwijderd",
+    finalTitle: "Je volgende campagne begint met een link",
     finalSub: "100 gratis credits. Geen creditcard nodig.",
   },
   beforeAfter: {
     compareHint: "Wissel tussen de originele productfoto en de advertenties die ervan zijn gemaakt.",
     imageVariant: "Advertentie {n}",
-    title: "Van één productfoto naar advertenties die kopers binnenhalen",
+    title: "Van productfoto naar voltooide advertentie",
     sub: "Links de foto op {store}. Rechts advertenties die Gooidy ervan maakte, onbewerkt.",
     before: "Voor: de productpagina",
     after: "Na: {count} van de advertenties uit die ronde",

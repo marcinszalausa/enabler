@@ -2,9 +2,9 @@ import type { Messages } from ".";
 
 export const ja: Messages = {
   meta: {
-    title: "Gooidy · リンクひとつでビジネスを伸ばす",
+    title: "Gooidy · 商品広告をもっと手軽に",
     description:
-      "Gooidy で小さなビジネスを伸ばしましょう。商品リンクを貼るだけで、新しいお客様を呼び込む画像・動画広告が、TikTok・Instagram・Facebook 向けに数分で完成します。無料で始められます。",
+      "商品リンクから次のキャンペーン用の画像や動画を作成。撮影を手配したり、広告を一からデザインしたりする手間を省けます。",
     useCasesTitle: "実例 · Gooidy",
     useCasesDescription:
       "実際の商品リンクから Gooidy が作った、無編集のリアルな広告です。リンクひとつがキャンペーンになる様子を見て、あなたのストアで無料でお試しください。",
@@ -32,7 +32,7 @@ export const ja: Messages = {
   urlForm: {
     label: "商品またはストアのリンク",
     placeholder: "商品またはストアのリンクを貼り付け",
-    submit: "成長を始める",
+    submit: "広告を作成",
   },
   footer: {
     contact: "お問い合わせ",
@@ -72,13 +72,13 @@ export const ja: Messages = {
     creditIntro: "画像広告と動画広告は同じクレジット残高を使用します。生成前に合計コストを確認できます。",
     refundNote: "生成に失敗した分のクレジットは自動で返還されます。完成した広告は引き続き利用できます。",
     adSpend: "SNSでの広告配信費用はGooidyのクレジットとは別です。",
-    badge: "AI で、小さなビジネスに成長を",
-    titleLine1: "ビジネスを伸ばそう、",
+    badge: "制作の手間を減らす商品広告",
+    titleLine1: "あなたの商品を、魅力的な広告に。",
     titleBefore: "",
-    titleWord: "リンクひとつ",
-    titleAfter: "で。",
+    titleWord: "もっと手軽に",
+    titleAfter: "。",
     intro:
-      "商品ページを貼り付けるだけ。Gooidy が誰がなぜ買うのかを読み取り、新しいお客様をストアに呼び込む画像・動画広告を作ります。",
+      "商品リンクから次のキャンペーン用の画像や動画を作成。撮影を手配したり、広告を一からデザインしたりする手間を省けます。",
     facts: [
       "無料で開始、カード不要",
       "画像広告と動画広告",
@@ -91,7 +91,7 @@ export const ja: Messages = {
       "人が買う理由はさまざま。だから毎回いくつもの切り口を試します。これは {store} のリンクひとつから Gooidy が作った実際の広告です。",
     whereTitle: "お客様がスクロールする場所に",
     whereSub: "同じ広告を、お客様が見ているアプリごとのサイズで用意します。",
-    liveTitle: "リンクを貼るだけで、売れるキャンペーンが届く。",
+    liveTitle: "商品リンクがすぐに使える広告になるまで",
     liveSub:
       "実際の Gooidy の生成を順番に再生しています。リンク、ページから読み取った内容、書いた切り口、そして完成した広告です。",
     howTitle: "使い方",
@@ -135,7 +135,7 @@ export const ja: Messages = {
     videoFormat: "{seconds}秒・ナレーション付き動画",
     featuresTitle: "成長に必要なものがすべて",
     featuresSub:
-      "デザイナー、コピーライター、そして半日かかる作業を Gooidy が引き受けるので、あなたはビジネスに集中できます。",
+      "複数の広告案を作成し、ブランドのスタイルを再利用。公開したい広告を選んでダウンロードできます。",
     briefTitle: "サイトからブランド概要を作成",
     briefBody:
       "Gooidy がページを読み、誰のための商品で、なぜ買われるのかを整理します。",
@@ -198,13 +198,13 @@ export const ja: Messages = {
         a: "はい。プランは月単位で、お支払い済みの期間が終わるまでご利用いただけます。",
       },
     ],
-    finalTitle: "次のお客様は、リンクひとつ先に",
+    finalTitle: "次のキャンペーンはリンクから",
     finalSub: "100クレジット無料。クレジットカード不要。",
   },
   beforeAfter: {
     compareHint: "元の商品写真と、それをもとに作成した広告を切り替えてご覧ください。",
     imageVariant: "広告 {n}",
-    title: "商品写真1枚から、買い手を呼び込む広告へ",
+    title: "商品写真から完成した広告へ",
     sub: "左は {store} の写真。右は Gooidy がそこから作った無編集の広告です。",
     before: "ビフォー：商品ページ",
     after: "アフター：その生成で作られた広告 {count}本",

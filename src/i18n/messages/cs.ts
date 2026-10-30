@@ -2,9 +2,9 @@ import type { Messages } from ".";
 
 export const cs: Messages = {
   meta: {
-    title: "Gooidy · Rozvíjejte své podnikání z jediného odkazu",
+    title: "Gooidy · Reklamy produktů s menším úsilím",
     description:
-      "Rozvíjejte svou malou firmu s Gooidy. Vložte odkaz na produkt a získejte obrázkové a video reklamy, které přivádějí nové zákazníky, připravené pro TikTok, Instagram a Facebook během pár minut. Začněte zdarma.",
+      "Proměňte odkaz na produkt v obrázky a videa pro příští kampaň, bez organizování focení nebo navrhování každé reklamy od začátku.",
     useCasesTitle: "Skutečné ukázky · Gooidy",
     useCasesDescription:
       "Skutečné, neupravené reklamy, které Gooidy vytvořilo ze skutečných odkazů na produkty. Podívejte se, jak se z jednoho odkazu stane kampaň, a vyzkoušejte to zdarma na vlastním obchodě.",
@@ -32,7 +32,7 @@ export const cs: Messages = {
   urlForm: {
     label: "Odkaz na váš produkt nebo e-shop",
     placeholder: "Vložte odkaz na produkt nebo e-shop",
-    submit: "Začít růst",
+    submit: "Vytvořit moje reklamy",
   },
   footer: {
     contact: "Kontakt",
@@ -72,13 +72,13 @@ export const cs: Messages = {
     creditIntro: "Obrázkové a video reklamy používají stejný zůstatek kreditů. Celkovou cenu vidíte před generováním.",
     refundNote: "Kredity za neúspěšné výstupy se vracejí automaticky. Dokončené reklamy zůstávají dostupné.",
     adSpend: "Výdaje na reklamu na sociálních sítích jsou oddělené od kreditů Gooidy.",
-    badge: "Růst pro malé firmy, s pomocí AI",
-    titleLine1: "Nechte firmu růst,",
-    titleBefore: "z jediného ",
-    titleWord: "odkazu",
+    badge: "Reklamy produktů bez práce s produkcí",
+    titleLine1: "Váš produkt. Skvělé reklamy.",
+    titleBefore: "",
+    titleWord: "Méně práce",
     titleAfter: ".",
     intro:
-      "Vložte stránku svého produktu. Gooidy zjistí, kdo u vás nakupuje a proč, a vytvoří obrázkové a video reklamy, které přivedou nové zákazníky do vašeho obchodu.",
+      "Proměňte odkaz na produkt v obrázky a videa pro příští kampaň, bez organizování focení nebo navrhování každé reklamy od začátku.",
     facts: [
       "Začátek zdarma, bez karty",
       "Obrázkové a video reklamy",
@@ -92,7 +92,7 @@ export const cs: Messages = {
     whereTitle: "Buďte tam, kde vaši zákazníci scrollují",
     whereSub:
       "Stejný běh, ve správném formátu pro každou aplikaci, kterou vaši zákazníci projíždějí.",
-    liveTitle: "Vložte jeden odkaz. Získejte kampaň, která prodává.",
+    liveTitle: "Podívejte se, jak z odkazu vzniknou hotové reklamy",
     liveSub:
       "Toto je skutečný běh Gooidy přehraný krok za krokem: odkaz, co Gooidy vyčetlo ze stránky, přístupy, které napsalo, a reklamy, které vytvořilo.",
     howTitle: "Jak to funguje",
@@ -137,7 +137,7 @@ export const cs: Messages = {
     videoFormat: "Video {seconds} s s dabingem",
     featuresTitle: "Vše, co potřebujete k růstu",
     featuresSub:
-      "Gooidy udělá práci, na kterou byste jinak potřebovali grafika, copywritera a celé odpoledne, takže se můžete věnovat svému podnikání.",
+      "Vytvořte více variant, znovu použijte vizuální styl značky a stáhněte reklamy, které chcete publikovat.",
     briefTitle: "Brief značky z vašeho webu",
     briefBody:
       "Gooidy přečte vaši stránku a zjistí, pro koho je produkt a proč ho lidé kupují.",
@@ -209,13 +209,13 @@ export const cs: Messages = {
         a: "Ano. Tarify jsou měsíční a přístup vám zůstane do konce zaplaceného období.",
       },
     ],
-    finalTitle: "Vaši další zákazníci jsou jen jeden odkaz daleko",
+    finalTitle: "Vaše příští kampaň začíná odkazem",
     finalSub: "100 kreditů zdarma. Bez platební karty.",
   },
   beforeAfter: {
     compareHint: "Přepínejte mezi původní fotografií produktu a reklamami vytvořenými z ní.",
     imageVariant: "Reklama {n}",
-    title: "Od jedné fotky produktu k reklamám, které přivádějí kupující",
+    title: "Od fotografie produktu k hotové reklamě",
     sub: "Vlevo fotka na {store}. Vpravo reklamy, které z ní Gooidy vytvořilo, bez úprav.",
     before: "Předtím: stránka produktu",
     after: "Potom: reklamy z tohoto běhu ({count})",
