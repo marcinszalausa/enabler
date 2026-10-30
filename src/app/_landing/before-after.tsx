@@ -56,7 +56,7 @@ export function BeforeAfter({ photo, name, url, madeIn, ads }: {
             ) : (
               // eslint-disable-next-line @next/next/no-img-element -- source product photo may be on any store host
               <img src={webSize(photo, 480)}
-                srcSet={webSize(photo, 320) === photo ? undefined : [320, 480, 640, 800, 1120].map(width => `${webSize(photo, width)} ${width}w`).join(", ")}
+                srcSet={webSize(photo, 320) === webSize(photo, 480) ? undefined : [320, 480, 640, 800, 1120].map(width => `${webSize(photo, width)} ${width}w`).join(", ")}
                 sizes="(min-width: 416px) 384px, calc(100vw - 32px)" alt={name} loading="lazy" className="h-full w-full object-contain" />
             )}
           </div>

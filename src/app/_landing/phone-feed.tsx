@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { flushSync } from "react-dom";
 import { useMediaActivity } from "./use-media-activity";
 import { HomeIndicator, IPhone, StatusBar } from "./iphone";
 import type { FeedAd } from "./reel";
@@ -52,6 +53,18 @@ export function PhoneFeed({
   const looping = ads.length > 1;
   const items = looping ? [...ads, ads[0]] : ads;
   const current = ads[index % ads.length];
+
+  const startPlayback = (nextMuted: boolean) => {
+    // Keep explicit play inside the user gesture, including Safari's stricter
+    // unmuted-playback policy. Automatic playback stays deferred and muted.
+    flushSync(() => { setManualPlay(true); setMuted(nextMuted); });
+    const element = root.current?.querySelector("video");
+    if (element && current.video) {
+      if (element.getAttribute("src") !== current.video.src) element.src = current.video.src;
+      element.play().catch(() => {});
+    }
+  };
+
 
   const next = () => {
     const following = (index + 1) % ads.length;
@@ -127,7 +140,7 @@ export function PhoneFeed({
         <Icon d="M21 4 10.5 14.5M21 4l-6.5 17-4-6.5L4 10.5 21 4Z" />
       </div>
       {current.video && activity.restricted && !manualPlay && (
-        <button type="button" onClick={() => { setManualPlay(true); setMuted(false); }}
+        <button type="button" onClick={() => startPlayback(false)}
           aria-label={t.feed.soundOn}
           className="absolute left-1/2 top-1/2 z-10 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-black/60 text-white">
           <svg viewBox="0 0 24 24" className="h-7 w-7" fill="currentColor" aria-hidden><path d="m8 5 11 7-11 7Z" /></svg>
@@ -136,10 +149,7 @@ export function PhoneFeed({
       {current.sound && (!activity.restricted || manualPlay) && (
         <button
           type="button"
-          onClick={() => {
-            setManualPlay(true);
-            setMuted(!muted);
-          }}
+          onClick={() => startPlayback(!muted)}
           className="absolute bottom-[3cqw] right-[3cqw] z-10 flex h-[8cqw] w-[8cqw] items-center justify-center rounded-full bg-black/45 text-white backdrop-blur transition hover:bg-black/60"
           aria-label={muted ? t.feed.soundOn : t.feed.soundOff}
         >
@@ -283,7 +293,7 @@ function FeedVideo({ src, muted, loop, label, onEnded }: {
   useEffect(() => {
     const element = video.current;
     if (!element) return;
-    element.src = src;
+    if (element.getAttribute("src") !== src) element.src = src;
     element.play().catch(() => {});
     return () => { element.pause(); element.removeAttribute("src"); element.load(); };
   }, [src]);

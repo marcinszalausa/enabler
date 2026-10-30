@@ -43,7 +43,7 @@ try{
   for(const name of names)await writeFile("public/reels/perf-"+name+".jpg",jpeg);
   // Bundled test Chromium has no proprietary H.264 decoder. Use an offline
   // WebM sample to exercise playback lifecycle without changing production MP4s.
-  execFileSync(require("ffmpeg-static"),["-i","public/reels/softmila-cardigan.mp4","-t","2","-an","-c:v","libvpx-vp9","-threads","2","-b:v","200k","-y","public/reels/perf-clip.webm"],{stdio:"ignore",timeout:60000});
+  execFileSync(require("ffmpeg-static"),["-i","public/reels/softmila-cardigan.mp4","-t","2","-an","-vf","scale=240:-2","-r","15","-deadline","realtime","-cpu-used","8","-c:v","libvpx-vp9","-threads","2","-b:v","200k","-y","public/reels/perf-clip.webm"],{stdio:"ignore",timeout:60000});
   browser=await chromium.launch({headless:true});
   const results={};
   for(const phase of ["before","after"]){
