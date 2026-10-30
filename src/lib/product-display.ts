@@ -23,8 +23,13 @@ export function heroProducts<T extends ProductDisplay>(items: readonly T[]): {
   feed: T[]; left?: T; right?: T;
 } {
   const products = distinctProducts(items);
-  const left = products[1];
-  const right = products[2];
+  // Prefer lightweight image previews on the sides when the same product
+  // also has video ads. The rotating center can still open with a video.
+  const preview = (product: T | undefined) => product &&
+    (items.find(item => item.productKey === product.productKey &&
+      "image" in item && typeof item.image === "string") ?? product);
+  const left = preview(products[1]);
+  const right = preview(products[2]);
   const reserved = new Set([left?.productKey, right?.productKey]);
   return {
     feed: items.filter(item => item.productKey && !reserved.has(item.productKey)).slice(0, 6),

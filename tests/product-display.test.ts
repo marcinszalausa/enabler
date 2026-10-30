@@ -41,3 +41,15 @@ test("showcase rows and placements select one creative per product",()=>{
   for(let i=1;i<loop.length;i++)assert.notEqual(loop[i-1].productKey,loop[i].productKey);
   assert.deepEqual(distinctProducts([ad("A"),ad("A","other")]).map(x=>x.productKey),["A"]);
 });
+
+test("fixed side previews prefer images without changing their product identity",()=>{
+  const plan=heroProducts([
+    {productKey:"A",video:true},
+    {productKey:"B",video:true},
+    {productKey:"C",video:true},
+    {productKey:"B",image:"b.jpg"},
+    {productKey:"C",image:"c.jpg"},
+  ]);
+  assert.equal(plan.left?.image,"b.jpg");assert.equal(plan.right?.image,"c.jpg");
+  assert.ok(plan.feed.every(ad=>ad.productKey==="A"));
+});
