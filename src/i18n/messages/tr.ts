@@ -15,6 +15,8 @@ export const tr: Messages = {
     termsTitle: "Hizmet şartları · Gooidy",
   },
   nav: {
+    menu: "Menü",
+    skip: "İçeriğe geç",
     home: "Gooidy ana sayfa",
     examples: "Örnekler",
     how: "Nasıl çalışır",
@@ -33,6 +35,7 @@ export const tr: Messages = {
     submit: "Büyümeye başla",
   },
   footer: {
+    contact: "İletişim",
     tagline:
       "Küçük işletmelerin tek bir linkten hazırlanan görsel ve video reklamlarla büyümesine yardım ediyoruz.",
     product: "Ürün",
@@ -65,6 +68,10 @@ export const tr: Messages = {
     },
   },
   home: {
+    creditTitle: "Krediler nasıl çalışır?",
+    creditIntro: "Görsel ve video reklamlar aynı kredi bakiyesini kullanır. Toplam maliyeti oluşturmadan önce görürsünüz.",
+    refundNote: "Başarısız çıktılara ait krediler otomatik olarak iade edilir. Tamamlanan reklamlar kullanılabilir durumda kalır.",
+    adSpend: "Sosyal platformlardaki reklam harcamaları Gooidy kredilerinden ayrıdır.",
     badge: "Küçük işletmeler için yapay zekâ destekli büyüme",
     titleLine1: "İşinizi büyütün,",
     titleBefore: "tek bir ",
@@ -204,6 +211,8 @@ export const tr: Messages = {
     finalSub: "100 ücretsiz kredi. Kredi kartı gerekmez.",
   },
   beforeAfter: {
+    compareHint: "Orijinal ürün fotoğrafı ile ondan oluşturulan reklamlar arasında geçiş yapın.",
+    imageVariant: "Reklam {n}",
     title: "Tek bir ürün fotoğrafından alıcı getiren reklamlara",
     sub: "Solda {store} sitesindeki fotoğraf. Sağda Gooidy'nin ondan oluşturduğu, düzenlenmemiş reklamlar.",
     before: "Önce: ürün sayfası",

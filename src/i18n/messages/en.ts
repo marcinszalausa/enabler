@@ -16,6 +16,8 @@ export const en = {
     termsTitle: "Terms of service · Gooidy",
   },
   nav: {
+    menu: "Menu",
+    skip: "Skip to content",
     home: "Gooidy home",
     examples: "Examples",
     how: "How it works",
@@ -34,6 +36,7 @@ export const en = {
     submit: "Start growing",
   },
   footer: {
+    contact: "Contact",
     tagline:
       "Helping small businesses grow with image and video ads made from a single link.",
     product: "Product",
@@ -66,6 +69,10 @@ export const en = {
     },
   },
   home: {
+    creditTitle: "How credits work",
+    creditIntro: "Image and video ads share the same credit balance. You see the full run cost before generating.",
+    refundNote: "Credits for outputs that fail are returned automatically. Finished ads remain available.",
+    adSpend: "Ad spend on social platforms is separate from Gooidy credits.",
     badge: "Growth for small businesses, powered by AI",
     titleLine1: "Grow your business,",
     titleBefore: "from a single ",
@@ -203,6 +210,8 @@ export const en = {
     finalSub: "100 free credits. No credit card needed.",
   },
   beforeAfter: {
+    compareHint: "Switch between the original product photo and the ads made from it.",
+    imageVariant: "Ad {n}",
     title: "From one product photo to ads that bring buyers in",
     sub: "On the left is the photo on {store}. On the right are ads Gooidy made from it, unedited.",
     before: "Before: the product page",

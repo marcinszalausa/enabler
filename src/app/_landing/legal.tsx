@@ -5,7 +5,7 @@ import { getMessages } from "@/i18n/messages";
 import { fmt } from "@/i18n/format";
 
 // Where people reach us about their data or these terms.
-export const CONTACT_EMAIL = "hello@gooidy.com";
+export { CONTACT_EMAIL } from "@/lib/contact";
 
 // A plain reading page for the privacy policy and terms. The text itself is
 // English in every language, and says so.
@@ -24,7 +24,7 @@ export async function LegalPage({
   return (
     <div className="landing flex flex-1 flex-col bg-bg text-fg">
       <Nav />
-      <main className="flex-1">
+      <main id="main-content" tabIndex={-1} className="flex-1">
         <article
           lang="en"
           className="legal mx-auto max-w-2xl px-4 pb-24 pt-14 sm:pt-20"

@@ -15,6 +15,8 @@ export const cs: Messages = {
     termsTitle: "Podmínky služby · Gooidy",
   },
   nav: {
+    menu: "Menu",
+    skip: "Přejít na obsah",
     home: "Úvodní stránka Gooidy",
     examples: "Ukázky",
     how: "Jak to funguje",
@@ -33,6 +35,7 @@ export const cs: Messages = {
     submit: "Začít růst",
   },
   footer: {
+    contact: "Kontakt",
     tagline:
       "Pomáháme malým firmám růst díky obrázkovým a video reklamám z jediného odkazu.",
     product: "Produkt",
@@ -65,6 +68,10 @@ export const cs: Messages = {
     },
   },
   home: {
+    creditTitle: "Jak fungují kredity",
+    creditIntro: "Obrázkové a video reklamy používají stejný zůstatek kreditů. Celkovou cenu vidíte před generováním.",
+    refundNote: "Kredity za neúspěšné výstupy se vracejí automaticky. Dokončené reklamy zůstávají dostupné.",
+    adSpend: "Výdaje na reklamu na sociálních sítích jsou oddělené od kreditů Gooidy.",
     badge: "Růst pro malé firmy, s pomocí AI",
     titleLine1: "Nechte firmu růst,",
     titleBefore: "z jediného ",
@@ -206,6 +213,8 @@ export const cs: Messages = {
     finalSub: "100 kreditů zdarma. Bez platební karty.",
   },
   beforeAfter: {
+    compareHint: "Přepínejte mezi původní fotografií produktu a reklamami vytvořenými z ní.",
+    imageVariant: "Reklama {n}",
     title: "Od jedné fotky produktu k reklamám, které přivádějí kupující",
     sub: "Vlevo fotka na {store}. Vpravo reklamy, které z ní Gooidy vytvořilo, bez úprav.",
     before: "Předtím: stránka produktu",

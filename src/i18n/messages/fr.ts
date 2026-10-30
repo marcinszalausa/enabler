@@ -15,6 +15,8 @@ export const fr: Messages = {
     termsTitle: "Conditions d'utilisation · Gooidy",
   },
   nav: {
+    menu: "Menu",
+    skip: "Aller au contenu",
     home: "Accueil Gooidy",
     examples: "Exemples",
     how: "Comment ça marche",
@@ -33,6 +35,7 @@ export const fr: Messages = {
     submit: "Commencer à grandir",
   },
   footer: {
+    contact: "Contact",
     tagline:
       "Nous aidons les petites entreprises à grandir grâce à des pubs image et vidéo créées à partir d'un seul lien.",
     product: "Produit",
@@ -65,6 +68,10 @@ export const fr: Messages = {
     },
   },
   home: {
+    creditTitle: "Comprendre les crédits",
+    creditIntro: "Les images et vidéos utilisent le même solde de crédits. Le coût total est affiché avant la génération.",
+    refundNote: "Les crédits des résultats échoués sont rendus automatiquement. Les publicités terminées restent disponibles.",
+    adSpend: "Le budget publicitaire sur les réseaux sociaux est distinct des crédits Gooidy.",
     badge: "La croissance des petites entreprises, grâce à l'IA",
     titleLine1: "Développez vos ventes,",
     titleBefore: "à partir d'un seul ",
@@ -210,6 +217,8 @@ export const fr: Messages = {
     finalSub: "100 crédits offerts. Sans carte bancaire.",
   },
   beforeAfter: {
+    compareHint: "Passez de la photo originale du produit aux publicités créées à partir de celle-ci.",
+    imageVariant: "Publicité {n}",
     title: "D'une photo produit à des pubs qui attirent des acheteurs",
     sub: "À gauche, la photo sur {store}. À droite, les pubs que Gooidy en a tirées, sans retouche.",
     before: "Avant : la page produit",

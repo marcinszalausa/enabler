@@ -33,23 +33,23 @@ export function BeforeAfter({ photo, name, url, madeIn, ads }: {
   const ad = ads[active];
   return (
     <section className="reveal mx-auto max-w-6xl px-4 py-24">
-      <SectionHeading title={t.beforeAfter.title} sub={store} />
+      <SectionHeading title={t.beforeAfter.title} sub={t.beforeAfter.compareHint} />
       <div className="mt-10 flex flex-col items-center gap-6">
-        <div className="flex max-w-2xl flex-wrap justify-center gap-2">
+        <div className="flex max-w-2xl flex-wrap justify-center gap-2" aria-label={t.beforeAfter.compareHint}>
           <button type="button" aria-pressed={active === -1} onClick={() => setActive(-1)}
-            className={`rounded-lg border px-4 py-2 text-sm ${active === -1 ? "border-accent bg-accent-soft" : "border-line"}`}>
+            className={`min-h-11 rounded-xl border px-4 py-2 text-sm font-medium ${active === -1 ? "border-accent bg-accent-soft" : "border-line"}`}>
             {t.beforeAfter.before}
           </button>
           {ads.map((item,i) => (
-            <button key={item.image} type="button" aria-label={item.alt} aria-pressed={active === i}
+            <button key={item.image} type="button" aria-label={fmt(t.beforeAfter.imageVariant, { n: i + 1 }) + ": " + item.alt} aria-pressed={active === i}
               onClick={() => setActive(i)}
-              className={`rounded-lg border px-4 py-2 text-sm ${active === i ? "border-accent bg-accent-soft" : "border-line"}`}>
-              {i + 1}
+              className={`min-h-11 rounded-xl border px-4 py-2 text-sm font-medium ${active === i ? "border-accent bg-accent-soft" : "border-line"}`}>
+              {fmt(t.beforeAfter.imageVariant, { n: i + 1 })}
             </button>
           ))}
         </div>
         <figure data-single-product-display="before-after" className="w-full max-w-sm overflow-hidden rounded-2xl border border-line bg-raised shadow-xl">
-          <div className="truncate border-b border-line bg-surface px-4 py-3 text-xs text-muted">{store}{pathname}</div>
+          <div className="flex items-center justify-between gap-3 border-b border-line bg-surface px-4 py-3 text-xs text-muted"><span className="min-w-0 truncate">{store}{pathname}</span><span className="shrink-0 rounded-full bg-accent-soft px-2 py-1 font-medium text-accent">{ad ? fmt(t.beforeAfter.imageVariant, { n: active + 1 }) : t.beforeAfter.before}</span></div>
           <div className="relative aspect-[9/16] bg-surface">
             {ad ? (
               <Image key={ad.image} src={ad.image} alt={ad.alt} fill sizes="384px" className="object-contain" />
@@ -60,10 +60,11 @@ export function BeforeAfter({ photo, name, url, madeIn, ads }: {
                 sizes="(min-width: 416px) 384px, calc(100vw - 32px)" alt={name} loading="lazy" className="h-full w-full object-contain" />
             )}
           </div>
-          <figcaption className="px-4 py-3 text-sm">{ad?.alt ?? name}</figcaption>
+          <figcaption aria-live="polite" aria-atomic="true" className="px-4 py-3 text-sm">{ad?.alt ?? name}</figcaption>
         </figure>
         <p className="text-center text-xs text-muted">
           {fmt(t.beforeAfter.after, { count: ads.length })}{madeIn ? ` · ${madeIn}` : ""}
+          <a href={url} target="_blank" rel="noopener noreferrer" className="mt-2 flex min-h-11 items-center justify-center text-sm font-medium text-accent hover:underline">{fmt(t.useCases.realPage, { store })}</a>
         </p>
       </div>
     </section>

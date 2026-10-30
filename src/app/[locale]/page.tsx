@@ -16,6 +16,8 @@ import { Reveal } from "@/app/_landing/reveal";
 import { Placements, type PlacementAd } from "@/app/_landing/placements";
 import { StickyCta } from "@/app/_landing/sticky-cta";
 import { Spotlight } from "@/app/_landing/spotlight";
+import { CreditGuide } from "@/app/_landing/credit-guide";
+import { ASPECTS, ADS_PER_GENERATION, GENERATION_COST, CREDITS_PER_IMAGE } from "@/lib/pipeline";
 import { BeforeAfter } from "@/app/_landing/before-after";
 import { isLocale, localePath, type Locale } from "@/i18n/config";
 import { homeJsonLd, pageMetadata } from "@/lib/seo";
@@ -50,7 +52,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
   return (
     <div className="landing flex flex-1 flex-col bg-bg text-fg">
       <Nav />
-      <main className="flex-1">
+      <main id="main-content" tabIndex={-1} className="flex-1">
         <Hero t={t} feed={hero.feed} left={hero.left} right={hero.right} />
         <WorksWith t={t} />
         {pictured && <FromPhoto run={pictured} />}
@@ -345,7 +347,7 @@ function Examples({ t, locale, runs }: { t: Messages; locale: Locale; runs: Show
   return (
     <section className="reveal overflow-hidden py-24">
       <div className="mx-auto max-w-6xl px-4">
-        <SectionHeading title={t.home.examplesTitle} sub={t.home.examplesSub} />
+        <SectionHeading title={t.home.examplesTitle} sub={t.useCases.badge} />
       </div>
       <div className="mt-14 overflow-x-auto pb-5" data-product-group="examples">
         <div className="flex w-max min-w-full justify-center gap-5 px-4">
@@ -473,6 +475,7 @@ function Features({ t, run }: { t: Messages; run?: ShowcaseRun }) {
 }
 
 function Pricing({ t }: { t: Messages }) {
+  const planCredits = [100, 300, 1000];
   return (
     <section id="pricing" className="scroll-mt-16 bg-surface py-20">
       <div className="reveal mx-auto max-w-6xl px-4">
@@ -503,10 +506,10 @@ function Pricing({ t }: { t: Messages }) {
               </p>
               <p className="mt-1 text-sm text-muted">{plan.credits}</p>
               <ul className="mt-6 flex-1 space-y-2.5 text-sm">
-                {plan.perks.map((perk) => (
+                {plan.perks.map((perk, index) => (
                   <li key={perk} className="flex gap-2">
                     <span className="text-accent">✓</span>
-                    {perk}
+                    {index === 0 ? fmt(t.app.imageAds, { count: planCredits[i] / CREDITS_PER_IMAGE }) : perk}
                   </li>
                 ))}
               </ul>
@@ -523,6 +526,7 @@ function Pricing({ t }: { t: Messages }) {
             </div>
           ))}
         </div>
+        <CreditGuide imageCost={GENERATION_COST} imagesPerRun={ADS_PER_GENERATION * ASPECTS.length} />
       </div>
     </section>
   );

@@ -15,6 +15,8 @@ export const ro: Messages = {
     termsTitle: "Termeni și condiții · Gooidy",
   },
   nav: {
+    menu: "Meniu",
+    skip: "Sari la conținut",
     home: "Pagina principală Gooidy",
     examples: "Exemple",
     how: "Cum funcționează",
@@ -33,6 +35,7 @@ export const ro: Messages = {
     submit: "Începe să crești",
   },
   footer: {
+    contact: "Contact",
     tagline:
       "Ajutăm afacerile mici să crească prin reclame cu imagini și video create dintr-un singur link.",
     product: "Produs",
@@ -65,6 +68,10 @@ export const ro: Messages = {
     },
   },
   home: {
+    creditTitle: "Cum funcționează creditele",
+    creditIntro: "Reclamele imagine și video folosesc același sold de credite. Vezi costul total înainte de generare.",
+    refundNote: "Creditele pentru rezultatele eșuate sunt returnate automat. Reclamele finalizate rămân disponibile.",
+    adSpend: "Bugetul publicitar pe platformele sociale este separat de creditele Gooidy.",
     badge: "Creștere pentru afacerile mici, cu AI",
     titleLine1: "Crește-ți afacerea,",
     titleBefore: "dintr-un singur ",
@@ -210,6 +217,8 @@ export const ro: Messages = {
     finalSub: "100 de credite gratuite. Fără card de credit.",
   },
   beforeAfter: {
+    compareHint: "Comută între fotografia originală a produsului și reclamele create din ea.",
+    imageVariant: "Reclamă {n}",
     title: "De la o fotografie de produs la reclame care aduc cumpărători",
     sub: "În stânga, fotografia de pe {store}. În dreapta, reclamele create de Gooidy din ea, needitate.",
     before: "Înainte: pagina produsului",

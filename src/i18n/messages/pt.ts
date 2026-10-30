@@ -16,6 +16,8 @@ export const pt: Messages = {
     termsTitle: "Termos de serviço · Gooidy",
   },
   nav: {
+    menu: "Menu",
+    skip: "Ir para o conteúdo",
     home: "Início do Gooidy",
     examples: "Exemplos",
     how: "Como funciona",
@@ -34,6 +36,7 @@ export const pt: Messages = {
     submit: "Comece a crescer",
   },
   footer: {
+    contact: "Contato",
     tagline:
       "Ajudamos pequenas empresas a crescer com anúncios de imagem e vídeo feitos a partir de um único link.",
     product: "Produto",
@@ -66,6 +69,10 @@ export const pt: Messages = {
     },
   },
   home: {
+    creditTitle: "Como funcionam os créditos",
+    creditIntro: "Anúncios de imagem e vídeo usam o mesmo saldo de créditos. Você vê o custo total antes de gerar.",
+    refundNote: "Os créditos de resultados com falha são devolvidos automaticamente. Os anúncios concluídos continuam disponíveis.",
+    adSpend: "O investimento em anúncios nas redes sociais é separado dos créditos do Gooidy.",
     badge: "Crescimento para pequenas empresas, com IA",
     titleLine1: "Cresça seu negócio,",
     titleBefore: "a partir de um único ",
@@ -210,6 +217,8 @@ export const pt: Messages = {
     finalSub: "100 créditos grátis. Sem cartão de crédito.",
   },
   beforeAfter: {
+    compareHint: "Alterne entre a foto original do produto e os anúncios criados a partir dela.",
+    imageVariant: "Anúncio {n}",
     title: "De uma foto de produto a anúncios que trazem compradores",
     sub: "À esquerda, a foto na {store}. À direita, anúncios que o Gooidy criou a partir dela, sem edição.",
     before: "Antes: a página do produto",

@@ -15,6 +15,8 @@ export const nl: Messages = {
     termsTitle: "Gebruiksvoorwaarden · Gooidy",
   },
   nav: {
+    menu: "Menu",
+    skip: "Naar de inhoud",
     home: "Gooidy home",
     examples: "Voorbeelden",
     how: "Zo werkt het",
@@ -33,6 +35,7 @@ export const nl: Messages = {
     submit: "Begin met groeien",
   },
   footer: {
+    contact: "Contact",
     tagline:
       "We helpen kleine bedrijven groeien met beeld- en videoadvertenties uit één link.",
     product: "Product",
@@ -65,6 +68,10 @@ export const nl: Messages = {
     },
   },
   home: {
+    creditTitle: "Zo werken credits",
+    creditIntro: "Beeld- en videoadvertenties gebruiken hetzelfde creditsaldo. Je ziet de totale kosten vóór het genereren.",
+    refundNote: "Credits voor mislukte resultaten worden automatisch teruggegeven. Voltooide advertenties blijven beschikbaar.",
+    adSpend: "Advertentie-uitgaven op sociale platforms staan los van Gooidy-credits.",
     badge: "Groei voor kleine bedrijven, met AI",
     titleLine1: "Laat je bedrijf groeien,",
     titleBefore: "uit één ",
@@ -209,6 +216,8 @@ export const nl: Messages = {
     finalSub: "100 gratis credits. Geen creditcard nodig.",
   },
   beforeAfter: {
+    compareHint: "Wissel tussen de originele productfoto en de advertenties die ervan zijn gemaakt.",
+    imageVariant: "Advertentie {n}",
     title: "Van één productfoto naar advertenties die kopers binnenhalen",
     sub: "Links de foto op {store}. Rechts advertenties die Gooidy ervan maakte, onbewerkt.",
     before: "Voor: de productpagina",

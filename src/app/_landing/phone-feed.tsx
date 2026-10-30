@@ -150,7 +150,7 @@ export function PhoneFeed({
         <button
           type="button"
           onClick={() => startPlayback(!muted)}
-          className="absolute bottom-[3cqw] right-[3cqw] z-10 flex h-[8cqw] w-[8cqw] items-center justify-center rounded-full bg-black/45 text-white backdrop-blur transition hover:bg-black/60"
+          className="absolute bottom-[3cqw] right-[3cqw] z-10 flex h-[8cqw] min-h-11 w-[8cqw] min-w-11 items-center justify-center rounded-full bg-black/45 text-white backdrop-blur transition hover:bg-black/60"
           aria-label={muted ? t.feed.soundOn : t.feed.soundOff}
         >
           <svg

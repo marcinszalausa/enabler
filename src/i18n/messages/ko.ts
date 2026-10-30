@@ -15,6 +15,8 @@ export const ko: Messages = {
     termsTitle: "이용약관 · Gooidy",
   },
   nav: {
+    menu: "메뉴",
+    skip: "본문으로 이동",
     home: "Gooidy 홈",
     examples: "사례",
     how: "이용 방법",
@@ -33,6 +35,7 @@ export const ko: Messages = {
     submit: "성장 시작하기",
   },
   footer: {
+    contact: "문의",
     tagline:
       "링크 하나로 만든 이미지·영상 광고로 작은 비즈니스의 성장을 돕습니다.",
     product: "제품",
@@ -65,6 +68,10 @@ export const ko: Messages = {
     },
   },
   home: {
+    creditTitle: "크레딧 이용 안내",
+    creditIntro: "이미지 광고와 동영상 광고는 같은 크레딧 잔액을 사용합니다. 생성 전에 전체 비용을 확인할 수 있습니다.",
+    refundNote: "실패한 결과물의 크레딧은 자동으로 반환됩니다. 완성된 광고는 계속 이용할 수 있습니다.",
+    adSpend: "소셜 플랫폼의 광고 집행 비용은 Gooidy 크레딧과 별도입니다.",
     badge: "AI로 작은 비즈니스에 성장을",
     titleLine1: "비즈니스를 키우세요,",
     titleBefore: "",
@@ -195,6 +202,8 @@ export const ko: Messages = {
     finalSub: "무료 크레딧 100개. 신용카드 필요 없음.",
   },
   beforeAfter: {
+    compareHint: "원본 제품 사진과 이를 바탕으로 만든 광고를 전환해 보세요.",
+    imageVariant: "광고 {n}",
     title: "상품 사진 한 장에서 구매자를 데려오는 광고로",
     sub: "왼쪽은 {store}의 사진, 오른쪽은 Gooidy가 그 사진으로 만든 편집하지 않은 광고입니다.",
     before: "전: 상품 페이지",

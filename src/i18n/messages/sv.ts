@@ -15,6 +15,8 @@ export const sv: Messages = {
     termsTitle: "Användarvillkor · Gooidy",
   },
   nav: {
+    menu: "Meny",
+    skip: "Hoppa till innehållet",
     home: "Gooidys startsida",
     examples: "Exempel",
     how: "Så funkar det",
@@ -33,6 +35,7 @@ export const sv: Messages = {
     submit: "Börja växa",
   },
   footer: {
+    contact: "Kontakt",
     tagline:
       "Vi hjälper små företag att växa med bild- och videoannonser gjorda från en enda länk.",
     product: "Produkt",
@@ -65,6 +68,10 @@ export const sv: Messages = {
     },
   },
   home: {
+    creditTitle: "Så fungerar krediter",
+    creditIntro: "Bild- och videoannonser använder samma kreditsaldo. Du ser hela kostnaden innan du skapar.",
+    refundNote: "Krediter för misslyckade resultat återbetalas automatiskt. Färdiga annonser finns kvar.",
+    adSpend: "Annonsutgifter på sociala plattformar är separata från Gooidy-krediter.",
     badge: "Tillväxt för små företag, med AI",
     titleLine1: "Låt företaget växa,",
     titleBefore: "från en enda ",
@@ -205,6 +212,8 @@ export const sv: Messages = {
     finalSub: "100 gratis krediter. Inget kreditkort behövs.",
   },
   beforeAfter: {
+    compareHint: "Växla mellan produktens originalfoto och annonserna som skapats från det.",
+    imageVariant: "Annons {n}",
     title: "Från ett produktfoto till annonser som drar in köpare",
     sub: "Till vänster fotot på {store}. Till höger annonser som Gooidy skapade av det, oredigerade.",
     before: "Före: produktsidan",

@@ -961,3 +961,26 @@ html {
 .iphone-bottom,
 .iphone-3d .iphone-key { backface-visibility: hidden; }
 .iphone-3d .iphone-key-flush { transform: translateZ(calc(var(--body-depth) * -0.71)) rotateY(90deg); }
+
+/* Public controls share a visible keyboard treatment and comfortable targets. */
+.landing :where(a, button, summary, select, input):focus-visible {
+  outline: 2px solid var(--t-accent);
+  outline-offset: 4px;
+}
+.skip-link {
+  position: fixed;
+  inset-inline-start: 1rem;
+  top: 0.5rem;
+  z-index: 60;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  background: var(--t-bg);
+  color: var(--t-fg);
+  border: 1px solid var(--t-line-strong);
+  transform: translateY(-160%);
+}
+.skip-link:focus { transform: translateY(0); }
+.mobile-nav summary::-webkit-details-marker { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}

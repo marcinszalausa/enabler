@@ -16,6 +16,8 @@ export const zh: Messages = {
     termsTitle: "服务条款 · Gooidy",
   },
   nav: {
+    menu: "菜单",
+    skip: "跳转到正文",
     home: "Gooidy 首页",
     examples: "案例",
     how: "使用方法",
@@ -34,6 +36,7 @@ export const zh: Messages = {
     submit: "开始增长",
   },
   footer: {
+    contact: "联系我们",
     tagline: "用一个链接生成的图片和视频广告，帮助小企业成长。",
     product: "产品",
     account: "账户",
@@ -65,6 +68,10 @@ export const zh: Messages = {
     },
   },
   home: {
+    creditTitle: "积分使用说明",
+    creditIntro: "图片和视频广告共用同一积分余额。生成前会显示完整费用。",
+    refundNote: "生成失败部分的积分会自动退回。已完成的广告仍可使用。",
+    adSpend: "社交平台上的广告投放费用与 Gooidy 积分分开计算。",
     badge: "AI 驱动，助小企业增长",
     titleLine1: "让你的生意增长，",
     titleBefore: "只需",
@@ -192,6 +199,8 @@ export const zh: Messages = {
     finalSub: "100 免费积分，无需信用卡。",
   },
   beforeAfter: {
+    compareHint: "切换查看原始产品照片和由它生成的广告。",
+    imageVariant: "广告 {n}",
     title: "从一张商品照片，到带来买家的广告",
     sub: "左边是 {store} 上的照片，右边是 Gooidy 用它生成的广告，未经修改。",
     before: "之前：商品页面",

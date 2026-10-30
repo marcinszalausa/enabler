@@ -15,6 +15,8 @@ export const pl: Messages = {
     termsTitle: "Regulamin · Gooidy",
   },
   nav: {
+    menu: "Menu",
+    skip: "Przejdź do treści",
     home: "Strona główna Gooidy",
     examples: "Przykłady",
     how: "Jak to działa",
@@ -33,6 +35,7 @@ export const pl: Messages = {
     submit: "Zacznij rosnąć",
   },
   footer: {
+    contact: "Kontakt",
     tagline:
       "Pomagamy małym firmom rosnąć dzięki reklamom graficznym i wideo tworzonym z jednego linku.",
     product: "Produkt",
@@ -65,6 +68,10 @@ export const pl: Messages = {
     },
   },
   home: {
+    creditTitle: "Jak działają kredyty",
+    creditIntro: "Reklamy graficzne i wideo korzystają ze wspólnego salda kredytów. Pełny koszt widzisz przed generowaniem.",
+    refundNote: "Kredyty za nieudane wyniki są zwracane automatycznie. Gotowe reklamy pozostają dostępne.",
+    adSpend: "Budżet reklamowy w mediach społecznościowych jest niezależny od kredytów Gooidy.",
     badge: "Wzrost dla małych firm, z pomocą AI",
     titleLine1: "Rozwijaj swój biznes,",
     titleBefore: "z jednego ",
@@ -209,6 +216,8 @@ export const pl: Messages = {
     finalSub: "100 darmowych kredytów. Bez karty kredytowej.",
   },
   beforeAfter: {
+    compareHint: "Przełączaj między oryginalnym zdjęciem produktu a reklamami utworzonymi na jego podstawie.",
+    imageVariant: "Reklama {n}",
     title:
       "Od jednego zdjęcia produktu do reklam, które przyciągają kupujących",
     sub: "Po lewej zdjęcie z {store}. Po prawej reklamy, które Gooidy z niego stworzyło, bez edycji.",

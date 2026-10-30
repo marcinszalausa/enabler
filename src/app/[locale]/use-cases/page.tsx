@@ -37,7 +37,7 @@ export default async function UseCases({
   return (
     <div className="landing flex flex-1 flex-col bg-bg text-fg">
       <Nav />
-      <main className="flex-1">
+      <main id="main-content" tabIndex={-1} className="flex-1">
         <section className="hero-bg">
           <div className="mx-auto flex max-w-3xl flex-col items-center px-4 pb-14 pt-14 text-center sm:pt-20">
             <p className="inline-flex items-center gap-2 rounded-full border border-line bg-bg px-3 py-1 text-sm text-muted shadow-sm">

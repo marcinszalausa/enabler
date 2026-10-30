@@ -15,6 +15,8 @@ export const ja: Messages = {
     termsTitle: "利用規約 · Gooidy",
   },
   nav: {
+    menu: "メニュー",
+    skip: "コンテンツへ移動",
     home: "Gooidy ホーム",
     examples: "実例",
     how: "使い方",
@@ -33,6 +35,7 @@ export const ja: Messages = {
     submit: "成長を始める",
   },
   footer: {
+    contact: "お問い合わせ",
     tagline:
       "リンクひとつから作る画像・動画広告で、小さなビジネスの成長を支えます。",
     product: "プロダクト",
@@ -65,6 +68,10 @@ export const ja: Messages = {
     },
   },
   home: {
+    creditTitle: "クレジットの仕組み",
+    creditIntro: "画像広告と動画広告は同じクレジット残高を使用します。生成前に合計コストを確認できます。",
+    refundNote: "生成に失敗した分のクレジットは自動で返還されます。完成した広告は引き続き利用できます。",
+    adSpend: "SNSでの広告配信費用はGooidyのクレジットとは別です。",
     badge: "AI で、小さなビジネスに成長を",
     titleLine1: "ビジネスを伸ばそう、",
     titleBefore: "",
@@ -195,6 +202,8 @@ export const ja: Messages = {
     finalSub: "100クレジット無料。クレジットカード不要。",
   },
   beforeAfter: {
+    compareHint: "元の商品写真と、それをもとに作成した広告を切り替えてご覧ください。",
+    imageVariant: "広告 {n}",
     title: "商品写真1枚から、買い手を呼び込む広告へ",
     sub: "左は {store} の写真。右は Gooidy がそこから作った無編集の広告です。",
     before: "ビフォー：商品ページ",
