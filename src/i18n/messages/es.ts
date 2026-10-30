@@ -89,7 +89,8 @@ export const es: Messages = {
     liveSub:
       "Esta es una tanda real de Gooidy, reproducida paso a paso: el enlace, lo que Gooidy leyó en la página, los enfoques que escribió y los anuncios que creó.",
     howTitle: "Cómo funciona",
-    howSub: "De tu enlace de producto a anuncios que llegan a nuevos compradores, en tres pasos.",
+    howSub:
+      "De tu enlace de producto a anuncios que llegan a nuevos compradores, en tres pasos.",
     steps: [
       {
         title: "Pega un enlace",
@@ -421,6 +422,98 @@ export const es: Messages = {
       logoType: "Sube el logo en PNG o JPEG.",
       logoSize: "El logo debe pesar menos de 2 MB.",
       couldntSave: "No se pudo guardar el kit de marca.",
+    },
+  },
+  publish: {
+    title: "Publicación",
+    metaTitle: "Publicación · Gooidy",
+    intro:
+      "Conecta tus cuentas sociales una vez. Después publica cualquier anuncio con un clic, prográmalo o deja que el Piloto automático publique cada anuncio nuevo por ti.",
+    notReady:
+      "La publicación en redes sociales se está activando. Vuelve pronto.",
+    accounts: "Cuentas conectadas",
+    accountsHelp:
+      "Gooidy publica en tu nombre, solo lo que tú eliges. Desconéctala cuando quieras.",
+    noAccounts: "Aún no hay cuentas conectadas.",
+    connectMore: "Conectar una cuenta",
+    disconnect: "Desconectar",
+    connected: "{platform} está conectado.",
+    connectFailed: "No se pudo conectar la cuenta. Inténtalo de nuevo.",
+    accountsUsed: "{used} de {limit} cuentas de tu plan",
+    limitReached: "Ya conectaste todas las cuentas que incluye tu plan.",
+    upgrade: "Mejora tu plan",
+    upgradeMore: "Mejora para tener más",
+    notInPlan:
+      "No está incluida en tu plan, así que Gooidy no publica aquí. Mejora el plan o desconecta otra cuenta.",
+    videosOnly: "Solo vídeos",
+    imagesOnly: "Solo imágenes",
+    schedule: "Calendario de publicación",
+    scheduleHelp:
+      "«Añadir a la cola» coloca cada anuncio en el siguiente hueco libre de abajo, un anuncio por hueco.",
+    timeZone: "Zona horaria",
+    day: "Día",
+    time: "Hora",
+    days: [
+      "Domingo",
+      "Lunes",
+      "Martes",
+      "Miércoles",
+      "Jueves",
+      "Viernes",
+      "Sábado",
+    ],
+    addTime: "Añadir hora",
+    remove: "Quitar",
+    noSlots: "Aún no hay horas. Añade al menos una.",
+    autopilot: "Piloto automático",
+    autopilotHelp:
+      "Cuando haya anuncios nuevos, las imágenes para el feed y los vídeos entran en la cola de estas cuentas. Sin clics.",
+    to: "Publicar en",
+    saveSchedule: "Guardar calendario",
+    saved: "Guardado.",
+    posts: "Publicaciones",
+    upcoming: "Próximas",
+    recent: "Recientes",
+    noPosts:
+      "Aún no hay nada publicado. Abre un producto y pulsa Publicar en cualquier anuncio.",
+    status: {
+      scheduled: "Programada",
+      publishing: "Publicando…",
+      published: "Publicada",
+      partial: "Publicada en parte",
+      failed: "Error",
+      cancelled: "Cancelada",
+    },
+    cancel: "Cancelar publicación",
+    publish: "Publicar",
+    publishRun: "Publicar anuncios",
+    ads: "Anuncios",
+    selectAll: "Seleccionar todo",
+    when: "Cuándo",
+    now: "Ahora",
+    queue: "Añadir a la cola",
+    nextSlot: "siguiente: {time}",
+    pickTime: "Elegir hora",
+    caption: "Texto",
+    publishCount: "Publicar {count}",
+    publishing: "Publicando…",
+    doneNow: "Enviado. Tus publicaciones aparecerán en un par de minutos.",
+    doneQueued: "Programado. Las encontrarás en Publicación.",
+    skipped:
+      "{count} omitido(s): ninguna de las cuentas elegidas admite ese formato.",
+    tiktokConsent:
+      "Al publicar en TikTok, aceptas la Music Usage Confirmation de TikTok.",
+    noAccountsYet:
+      "Conecta tus cuentas sociales una vez y publica cualquier anuncio con un clic.",
+    goConnect: "Conectar cuentas",
+    setSchedule: "Configura tus horas de publicación",
+    errors: {
+      pickAds: "Elige al menos un anuncio.",
+      pickAccounts: "Elige al menos una cuenta.",
+      pickTime: "Elige una hora futura.",
+      noSchedule: "Primero añade al menos una hora de publicación.",
+      timeZone: "Elige una zona horaria.",
+      couldnt: "No se pudo publicar. Inténtalo de nuevo.",
     },
   },
 };

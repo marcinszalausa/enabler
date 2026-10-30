@@ -89,7 +89,8 @@ export const ro: Messages = {
     liveSub:
       "Aceasta este o rulare Gooidy reală, redată pas cu pas: linkul, ce a citit Gooidy pe pagină, abordările scrise și reclamele create.",
     howTitle: "Cum funcționează",
-    howSub: "De la linkul produsului la reclame care ajung la cumpărători noi, în trei pași.",
+    howSub:
+      "De la linkul produsului la reclame care ajung la cumpărători noi, în trei pași.",
     steps: [
       {
         title: "Lipește un link",
@@ -424,6 +425,90 @@ export const ro: Messages = {
       logoType: "Încarcă logo-ul ca PNG sau JPEG.",
       logoSize: "Logo-ul trebuie să aibă sub 2 MB.",
       couldntSave: "Kitul de brand nu a putut fi salvat.",
+    },
+  },
+  publish: {
+    title: "Publicare",
+    metaTitle: "Publicare · Gooidy",
+    intro:
+      "Conectează-ți conturile sociale o singură dată. Apoi publică orice reclamă cu un clic, programeaz-o sau lasă Pilotul automat să publice fiecare reclamă nouă pentru tine.",
+    notReady:
+      "Publicarea pe rețelele sociale este în curs de activare. Revino în curând.",
+    accounts: "Conturi conectate",
+    accountsHelp:
+      "Gooidy publică în numele tău doar ce alegi. Poți deconecta oricând.",
+    noAccounts: "Niciun cont conectat încă.",
+    connectMore: "Conectează un cont",
+    disconnect: "Deconectează",
+    connected: "{platform} este conectat.",
+    connectFailed: "Contul nu s-a putut conecta. Încearcă din nou.",
+    accountsUsed: "{used} din {limit} conturi incluse în plan",
+    limitReached: "Ai conectat toate conturile incluse în planul tău.",
+    upgrade: "Treci la un plan superior",
+    upgradeMore: "Treci la un plan superior pentru mai multe",
+    notInPlan:
+      "Nu este inclus în planul tău, așa că Gooidy nu publică aici. Treci la un plan superior sau deconectează alt cont.",
+    videosOnly: "Doar video",
+    imagesOnly: "Doar imagini",
+    schedule: "Program de publicare",
+    scheduleHelp:
+      "„Adaugă în coadă” pune fiecare reclamă la următoarea oră liberă de mai jos, câte o reclamă pe oră.",
+    timeZone: "Fus orar",
+    day: "Zi",
+    time: "Oră",
+    days: ["Duminică", "Luni", "Marți", "Miercuri", "Joi", "Vineri", "Sâmbătă"],
+    addTime: "Adaugă o oră",
+    remove: "Elimină",
+    noSlots: "Nicio oră încă. Adaugă cel puțin una.",
+    autopilot: "Pilot automat",
+    autopilotHelp:
+      "Când reclamele noi sunt gata, imaginile pentru feed și videoclipurile intră în coada acestor conturi. Fără niciun clic.",
+    to: "Publică pe",
+    saveSchedule: "Salvează programul",
+    saved: "Salvat.",
+    posts: "Postări",
+    upcoming: "Urmează",
+    recent: "Recente",
+    noPosts:
+      "Nimic publicat încă. Deschide un produs și apasă Publică la orice reclamă.",
+    status: {
+      scheduled: "Programată",
+      publishing: "Se publică…",
+      published: "Publicată",
+      partial: "Publicată parțial",
+      failed: "Eșuată",
+      cancelled: "Anulată",
+    },
+    cancel: "Anulează postarea",
+    publish: "Publică",
+    publishRun: "Publică reclame",
+    ads: "Reclame",
+    selectAll: "Selectează tot",
+    when: "Când",
+    now: "Acum",
+    queue: "Adaugă în coadă",
+    nextSlot: "următoarea: {time}",
+    pickTime: "Alege ora",
+    caption: "Text",
+    publishCount: "Publică {count}",
+    publishing: "Se publică…",
+    doneNow: "Trimis. Postările apar în unul-două minute.",
+    doneQueued: "Programat. Le găsești la Publicare.",
+    skipped:
+      "{count} omise: niciunul dintre conturile alese nu acceptă acel format.",
+    tiktokConsent:
+      "Publicând pe TikTok, accepți Music Usage Confirmation a TikTok.",
+    noAccountsYet:
+      "Conectează-ți conturile sociale o dată, apoi publică orice reclamă cu un clic.",
+    goConnect: "Conectează conturi",
+    setSchedule: "Setează orele de publicare",
+    errors: {
+      pickAds: "Alege cel puțin o reclamă.",
+      pickAccounts: "Alege cel puțin un cont.",
+      pickTime: "Alege o oră din viitor.",
+      noSchedule: "Adaugă mai întâi cel puțin o oră de publicare.",
+      timeZone: "Alege un fus orar.",
+      couldnt: "Publicarea a eșuat. Încearcă din nou.",
     },
   },
 };

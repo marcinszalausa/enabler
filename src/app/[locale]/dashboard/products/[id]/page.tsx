@@ -15,7 +15,20 @@ import { DEFAULT_LANGUAGE, isLanguageKey } from "@/lib/languages";
 import { GenerateControls } from "./generate-controls";
 import { AutoRefresh } from "./auto-refresh";
 import { BackLink, EmptyState } from "../../ui";
-import { GenerationBlock, type Generation } from "./generation-block";
+import {
+  GenerationBlock,
+  type AdPost,
+  type Generation,
+} from "./generation-block";
+import { zernioConfigured } from "@/lib/social/zernio";
+import { accountLimit } from "@/lib/social/limits";
+import { platformName } from "@/lib/social/platforms";
+import {
+  formatLocal,
+  nextSlots,
+  parseSlots,
+  toLocal,
+} from "@/lib/social/schedule";
 import { isShowcaseAdmin } from "@/lib/showcase";
 import { isLocale } from "@/i18n/config";
 import { getMessages } from "@/i18n/messages";
@@ -75,7 +88,7 @@ async function Product({
       .returns<Generation[]>(),
     supabase
       .from("workspaces")
-      .select("credits")
+      .select("credits, plan")
       .eq("id", product.workspace_id)
       .single(),
     getBrandKit(supabase, product.workspace_id),
@@ -84,6 +97,15 @@ async function Product({
   const imageVersion = encodeURIComponent(
     `${kit.accent_color}${kit.font}${kit.logo_path ?? ""}`,
   );
+
+  const publishing = zernioConfigured()
+    ? await publishingFor(
+        supabase,
+        locale,
+        (generations ?? []).flatMap((g) => g.creatives.map((c) => c.id)),
+        workspace?.plan,
+      )
+    : null;
 
   const brief = product.brand_brief as BrandBrief | null;
   const photo = (product.image_urls as string[] | null)?.[0];
@@ -189,6 +211,10 @@ async function Product({
             generation={g}
             imageVersion={imageVersion}
             canShowcase={canShowcase}
+            productUrl={product.url}
+            accounts={publishing?.accounts ?? null}
+            nextSlot={publishing?.nextSlot ?? null}
+            posts={publishing?.posts ?? {}}
           />
         ))}
       </section>
@@ -212,4 +238,82 @@ function BriefList({ title, items }: { title: string; items: string[] }) {
       </ul>
     </div>
   );
+}
+
+// Connected accounts, the next free queue time and each ad's latest post.
+async function publishingFor(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  locale: string,
+  creativeIds: string[],
+  plan: string | undefined,
+) {
+  const [
+    { data: accounts },
+    { data: schedule },
+    { data: posts },
+    { data: upcoming },
+  ] = await Promise.all([
+    supabase
+      .from("social_accounts")
+      .select("id, platform, username, display_name")
+      .order("created_at")
+      .order("id"),
+    supabase
+      .from("publishing_schedules")
+      .select("time_zone, slots")
+      .maybeSingle(),
+    creativeIds.length
+      ? supabase
+          .from("posts")
+          .select("creative_id, status, scheduled_for, results, account_ids")
+          .in("creative_id", creativeIds)
+          .neq("status", "cancelled")
+          .order("created_at", { ascending: false })
+      : Promise.resolve({ data: [] }),
+    supabase
+      .from("posts")
+      .select("scheduled_for")
+      .eq("status", "scheduled")
+      .gt("scheduled_for", new Date().toISOString()),
+  ]);
+
+  const timeZone = (schedule?.time_zone as string | undefined) ?? "UTC";
+  const taken = new Set(
+    (upcoming ?? []).map((p) => toLocal(new Date(p.scheduled_for), timeZone)),
+  );
+  const [next] = nextSlots(parseSlots(schedule?.slots), timeZone, taken, 1);
+
+  const platformOf = new Map(
+    (accounts ?? []).map((a) => [a.id as string, a.platform as string]),
+  );
+  const byCreative: Record<string, AdPost> = {};
+  for (const p of posts ?? []) {
+    if (!p.creative_id || byCreative[p.creative_id]) continue;
+    const results = (p.results ?? []) as { platform: string }[];
+    byCreative[p.creative_id] = {
+      status: p.status,
+      platforms: results.length
+        ? results.map((r) => r.platform)
+        : (p.account_ids as string[])
+            .map((id) => platformOf.get(id))
+            .filter((x): x is string => Boolean(x)),
+      when:
+        p.status === "scheduled" && p.scheduled_for
+          ? formatLocal(toLocal(new Date(p.scheduled_for), timeZone), locale)
+          : null,
+    };
+  }
+
+  return {
+    // Only the accounts the plan covers (the earliest connected).
+    accounts: (accounts ?? []).slice(0, accountLimit(plan)).map((a) => ({
+      id: a.id as string,
+      platform: a.platform as string,
+      name: (a.display_name ??
+        a.username ??
+        platformName(a.platform)) as string,
+    })),
+    nextSlot: next ? formatLocal(next, locale) : null,
+    posts: byCreative,
+  };
 }

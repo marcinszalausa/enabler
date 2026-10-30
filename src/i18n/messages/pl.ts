@@ -89,7 +89,8 @@ export const pl: Messages = {
     liveSub:
       "To prawdziwa seria Gooidy odtworzona krok po kroku: link, to, co Gooidy wyczytało ze strony, napisane pomysły i gotowe reklamy.",
     howTitle: "Jak to działa",
-    howSub: "Od linku do produktu do reklam, które docierają do nowych kupujących, w trzech krokach.",
+    howSub:
+      "Od linku do produktu do reklam, które docierają do nowych kupujących, w trzech krokach.",
     steps: [
       {
         title: "Wklej link",
@@ -141,8 +142,7 @@ export const pl: Messages = {
     languagesBody:
       "Każda reklama jest pisana w wybranym języku, tak jak napisałby ją ktoś stamtąd, więc możesz sprzedawać poza swoim rynkiem. Reklamy wideo też mówią w tym języku, z pasującymi napisami.",
     pricingTitle: "Proste ceny, które rosną razem z Tobą",
-    pricingSub:
-      "Zacznij za darmo. Zmień plan, gdy Twój biznes rośnie.",
+    pricingSub: "Zacznij za darmo. Zmień plan, gdy Twój biznes rośnie.",
     popular: "Popularny",
     perMonth: " / mies.",
     plans: [
@@ -209,7 +209,8 @@ export const pl: Messages = {
     finalSub: "100 darmowych kredytów. Bez karty kredytowej.",
   },
   beforeAfter: {
-    title: "Od jednego zdjęcia produktu do reklam, które przyciągają kupujących",
+    title:
+      "Od jednego zdjęcia produktu do reklam, które przyciągają kupujących",
     sub: "Po lewej zdjęcie z {store}. Po prawej reklamy, które Gooidy z niego stworzyło, bez edycji.",
     before: "Przed: strona produktu",
     after: "Po: {count} reklamy z tej serii",
@@ -419,6 +420,98 @@ export const pl: Messages = {
       logoType: "Prześlij logo jako PNG lub JPEG.",
       logoSize: "Logo musi mieć mniej niż 2 MB.",
       couldntSave: "Nie udało się zapisać identyfikacji marki.",
+    },
+  },
+  publish: {
+    title: "Publikacja",
+    metaTitle: "Publikacja · Gooidy",
+    intro:
+      "Połącz konta społecznościowe raz. Potem publikuj każdą reklamę jednym kliknięciem, zaplanuj ją albo pozwól, by Autopilot publikował nowe reklamy za Ciebie.",
+    notReady:
+      "Publikowanie w mediach społecznościowych jest właśnie włączane. Zajrzyj wkrótce.",
+    accounts: "Połączone konta",
+    accountsHelp:
+      "Gooidy publikuje w Twoim imieniu tylko to, co wybierzesz. Możesz odłączyć konto w każdej chwili.",
+    noAccounts: "Nie połączono jeszcze żadnego konta.",
+    connectMore: "Połącz konto",
+    disconnect: "Odłącz",
+    connected: "Połączono {platform}.",
+    connectFailed: "Nie udało się połączyć konta. Spróbuj ponownie.",
+    accountsUsed: "{used} z {limit} kont w Twoim planie",
+    limitReached: "Połączono już tyle kont, ile obejmuje Twój plan.",
+    upgrade: "Zmień plan na wyższy",
+    upgradeMore: "Więcej kont w wyższym planie",
+    notInPlan:
+      "Nie mieści się w Twoim planie, więc Gooidy tu nie publikuje. Zmień plan albo odłącz inne konto.",
+    videosOnly: "Tylko wideo",
+    imagesOnly: "Tylko obrazy",
+    schedule: "Harmonogram publikacji",
+    scheduleHelp:
+      "„Dodaj do kolejki” umieszcza każdą reklamę w najbliższym wolnym terminie poniżej, jedną reklamę na termin.",
+    timeZone: "Strefa czasowa",
+    day: "Dzień",
+    time: "Godzina",
+    days: [
+      "Niedziela",
+      "Poniedziałek",
+      "Wtorek",
+      "Środa",
+      "Czwartek",
+      "Piątek",
+      "Sobota",
+    ],
+    addTime: "Dodaj termin",
+    remove: "Usuń",
+    noSlots: "Brak terminów. Dodaj co najmniej jeden.",
+    autopilot: "Autopilot",
+    autopilotHelp:
+      "Gdy nowe reklamy będą gotowe, obrazy do feedu i filmy trafią do kolejki tych kont. Bez klikania.",
+    to: "Publikuj na",
+    saveSchedule: "Zapisz harmonogram",
+    saved: "Zapisano.",
+    posts: "Posty",
+    upcoming: "Zaplanowane",
+    recent: "Ostatnie",
+    noPosts:
+      "Nic jeszcze nie opublikowano. Otwórz produkt i kliknij Opublikuj przy dowolnej reklamie.",
+    status: {
+      scheduled: "Zaplanowano",
+      publishing: "Publikowanie…",
+      published: "Opublikowano",
+      partial: "Opublikowano częściowo",
+      failed: "Błąd",
+      cancelled: "Anulowano",
+    },
+    cancel: "Anuluj post",
+    publish: "Opublikuj",
+    publishRun: "Opublikuj reklamy",
+    ads: "Reklamy",
+    selectAll: "Zaznacz wszystko",
+    when: "Kiedy",
+    now: "Teraz",
+    queue: "Dodaj do kolejki",
+    nextSlot: "najbliższy: {time}",
+    pickTime: "Wybierz termin",
+    caption: "Opis",
+    publishCount: "Opublikuj {count}",
+    publishing: "Publikowanie…",
+    doneNow: "Wysłano. Posty pojawią się w ciągu minuty lub dwóch.",
+    doneQueued: "Zaplanowano. Znajdziesz je w zakładce Publikacja.",
+    skipped:
+      "Pominięto {count}: żadne z wybranych kont nie przyjmuje tego formatu.",
+    tiktokConsent:
+      "Publikując na TikToku, akceptujesz potwierdzenie użycia muzyki TikToka (Music Usage Confirmation).",
+    noAccountsYet:
+      "Połącz konta społecznościowe raz, a potem publikuj każdą reklamę jednym kliknięciem.",
+    goConnect: "Połącz konta",
+    setSchedule: "Ustaw terminy publikacji",
+    errors: {
+      pickAds: "Wybierz co najmniej jedną reklamę.",
+      pickAccounts: "Wybierz co najmniej jedno konto.",
+      pickTime: "Wybierz termin w przyszłości.",
+      noSchedule: "Najpierw dodaj co najmniej jeden termin publikacji.",
+      timeZone: "Wybierz strefę czasową.",
+      couldnt: "Nie udało się opublikować. Spróbuj ponownie.",
     },
   },
 };

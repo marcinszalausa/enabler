@@ -89,7 +89,8 @@ export const fr: Messages = {
     liveSub:
       "Voici une vraie génération Gooidy, rejouée étape par étape : le lien, ce que Gooidy a compris de la page, les angles rédigés et les pubs créées.",
     howTitle: "Comment ça marche",
-    howSub: "Du lien de votre produit à des pubs qui touchent de nouveaux acheteurs, en trois étapes.",
+    howSub:
+      "Du lien de votre produit à des pubs qui touchent de nouveaux acheteurs, en trois étapes.",
     steps: [
       {
         title: "Collez un lien",
@@ -422,6 +423,100 @@ export const fr: Messages = {
       logoType: "Importez le logo en PNG ou JPEG.",
       logoSize: "Le logo doit faire moins de 2 Mo.",
       couldntSave: "Impossible d'enregistrer le kit de marque.",
+    },
+  },
+  publish: {
+    title: "Publication",
+    metaTitle: "Publication · Gooidy",
+    intro:
+      "Connectez vos comptes sociaux une seule fois. Publiez ensuite n'importe quelle pub en un clic, programmez-la, ou laissez l'Autopilote publier chaque nouvelle pub pour vous.",
+    notReady:
+      "La publication sur les réseaux sociaux est en cours d'activation. Revenez bientôt.",
+    accounts: "Comptes connectés",
+    accountsHelp:
+      "Gooidy publie en votre nom, uniquement ce que vous choisissez. Déconnectez-vous à tout moment.",
+    noAccounts: "Aucun compte connecté pour l'instant.",
+    connectMore: "Connecter un compte",
+    disconnect: "Déconnecter",
+    connected: "{platform} est connecté.",
+    connectFailed: "Ce compte n'a pas pu être connecté. Veuillez réessayer.",
+    accountsUsed: "{used} compte(s) sur {limit} inclus dans votre offre",
+    limitReached:
+      "Vous avez connecté tous les comptes inclus dans votre offre.",
+    upgrade: "Passer à l'offre supérieure",
+    upgradeMore: "Passer à plus",
+    notInPlan:
+      "Non inclus dans votre offre : Gooidy ne publie pas ici. Changez d'offre ou déconnectez un autre compte.",
+    videosOnly: "Vidéos uniquement",
+    imagesOnly: "Images uniquement",
+    schedule: "Planning de publication",
+    scheduleHelp:
+      "« Ajouter à la file » place chaque pub au prochain créneau libre ci-dessous, une pub par créneau.",
+    timeZone: "Fuseau horaire",
+    day: "Jour",
+    time: "Heure",
+    days: [
+      "Dimanche",
+      "Lundi",
+      "Mardi",
+      "Mercredi",
+      "Jeudi",
+      "Vendredi",
+      "Samedi",
+    ],
+    addTime: "Ajouter un créneau",
+    remove: "Supprimer",
+    noSlots: "Aucun créneau. Ajoutez-en au moins un.",
+    autopilot: "Autopilote",
+    autopilotHelp:
+      "Quand de nouvelles pubs sont prêtes, les images pour le fil et les vidéos sont ajoutées à la file de ces comptes. Sans aucun clic.",
+    to: "Publier sur",
+    saveSchedule: "Enregistrer le planning",
+    saved: "Enregistré.",
+    posts: "Publications",
+    upcoming: "À venir",
+    recent: "Récentes",
+    noPosts:
+      "Rien n'est encore publié. Ouvrez un produit et cliquez sur Publier sur une pub.",
+    status: {
+      scheduled: "Programmée",
+      publishing: "Publication…",
+      published: "Publiée",
+      partial: "Publiée en partie",
+      failed: "Échec",
+      cancelled: "Annulée",
+    },
+    cancel: "Annuler la publication",
+    publish: "Publier",
+    publishRun: "Publier des pubs",
+    ads: "Pubs",
+    selectAll: "Tout sélectionner",
+    when: "Quand",
+    now: "Maintenant",
+    queue: "Ajouter à la file",
+    nextSlot: "prochain : {time}",
+    pickTime: "Choisir une date",
+    caption: "Légende",
+    publishCount: "Publier {count}",
+    publishing: "Publication…",
+    doneNow:
+      "Envoyé. Vos publications seront en ligne d'ici une à deux minutes.",
+    doneQueued: "Programmé. Retrouvez-les dans Publication.",
+    skipped:
+      "{count} ignorée(s) : aucun des comptes choisis n'accepte ce format.",
+    tiktokConsent:
+      "En publiant sur TikTok, vous acceptez la Music Usage Confirmation de TikTok.",
+    noAccountsYet:
+      "Connectez vos comptes sociaux une fois, puis publiez chaque pub en un clic.",
+    goConnect: "Connecter des comptes",
+    setSchedule: "Définir vos créneaux",
+    errors: {
+      pickAds: "Choisissez au moins une pub.",
+      pickAccounts: "Choisissez au moins un compte.",
+      pickTime: "Choisissez une date future.",
+      noSchedule: "Ajoutez d'abord au moins un créneau de publication.",
+      timeZone: "Choisissez un fuseau horaire.",
+      couldnt: "Publication impossible. Veuillez réessayer.",
     },
   },
 };

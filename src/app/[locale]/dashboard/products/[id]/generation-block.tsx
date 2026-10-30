@@ -2,8 +2,22 @@ import { setShowcase } from "./showcase-actions";
 import { VIDEO_SECONDS, VIDEOS_PER_GENERATION } from "@/lib/video";
 import { lengthForRunCost } from "@/lib/video-options";
 import { Chip, DownloadIcon, ProgressCard, smallButton } from "../../ui";
+import {
+  PublishDialog,
+  PublishOneButton,
+  type PublishAccount,
+} from "./publish-dialog";
+import { platformName } from "@/lib/social/platforms";
 import type { Messages } from "@/i18n/messages";
 import { fmt } from "@/i18n/format";
+
+// The latest post of an ad, for the line under it.
+export type AdPost = {
+  status: keyof Messages["publish"]["status"];
+  platforms: string[];
+  // Already worded in the page's language and the schedule's time zone.
+  when: string | null;
+};
 
 type Creative = {
   id: string;
@@ -32,12 +46,20 @@ export function GenerationBlock({
   generation: g,
   imageVersion,
   canShowcase,
+  productUrl,
+  accounts,
+  nextSlot,
+  posts,
 }: {
   t: Messages;
   locale: string;
   generation: Generation;
   imageVersion: string;
   canShowcase: boolean;
+  productUrl: string;
+  accounts: PublishAccount[] | null;
+  nextSlot: string | null;
+  posts: Record<string, AdPost>;
 }) {
   const when = new Date(g.created_at).toLocaleString(locale, {
     dateStyle: "medium",
@@ -90,26 +112,43 @@ export function GenerationBlock({
           <span className="text-muted">{when}</span>
           {g.error && <span className="text-warn">{g.error}</span>}
         </h2>
-        {canShowcase && (
-          <form action={setShowcase}>
-            <input type="hidden" name="generationId" value={g.id} />
-            <input
-              type="hidden"
-              name="show"
-              value={g.showcased_at ? "0" : "1"}
+        <div className="flex flex-wrap items-center gap-2">
+          {accounts && creatives.length > 0 && (
+            <PublishDialog
+              generationId={g.id}
+              creatives={creatives.map((c) => ({
+                id: c.id,
+                kind: c.kind,
+                aspect: c.aspect,
+                caption: [c.primary_text, productUrl]
+                  .filter(Boolean)
+                  .join("\n\n"),
+              }))}
+              accounts={accounts}
+              nextSlot={nextSlot}
             />
-            <button
-              type="submit"
-              className={`rounded-lg border px-3 py-1.5 text-sm font-medium transition ${
-                g.showcased_at
-                  ? "border-ok/40 bg-ok-bg text-ok"
-                  : "border-line-strong bg-raised hover:border-accent hover:text-accent"
-              }`}
-            >
-              {g.showcased_at ? t.app.shown : t.app.show}
-            </button>
-          </form>
-        )}
+          )}
+          {canShowcase && (
+            <form action={setShowcase}>
+              <input type="hidden" name="generationId" value={g.id} />
+              <input
+                type="hidden"
+                name="show"
+                value={g.showcased_at ? "0" : "1"}
+              />
+              <button
+                type="submit"
+                className={`rounded-lg border px-3 py-1.5 text-sm font-medium transition ${
+                  g.showcased_at
+                    ? "border-ok/40 bg-ok-bg text-ok"
+                    : "border-line-strong bg-raised hover:border-accent hover:text-accent"
+                }`}
+              >
+                {g.showcased_at ? t.app.shown : t.app.show}
+              </button>
+            </form>
+          )}
+        </div>
       </div>
       <ul
         className={`mt-4 grid grid-cols-2 items-start gap-4 ${video ? "md:grid-cols-3" : "md:grid-cols-4"}`}
@@ -158,17 +197,40 @@ export function GenerationBlock({
               <p className="line-clamp-3 text-sm leading-relaxed">
                 {c.primary_text}
               </p>
-              <a
-                href={`/api/creatives/${c.id}/${video ? "video" : "image"}?download=1`}
-                className={`${smallButton} mt-auto self-start`}
-              >
-                <DownloadIcon />
-                {video ? t.app.downloadMp4 : t.app.download}
-              </a>
+              {posts[c.id] && <PostLine t={t} post={posts[c.id]} />}
+              <div className="mt-auto flex flex-wrap gap-2">
+                <a
+                  href={`/api/creatives/${c.id}/${video ? "video" : "image"}?download=1`}
+                  className={smallButton}
+                >
+                  <DownloadIcon />
+                  {video ? t.app.downloadMp4 : t.app.download}
+                </a>
+                {accounts && (
+                  <PublishOneButton generationId={g.id} creativeId={c.id} />
+                )}
+              </div>
             </div>
           </li>
         ))}
       </ul>
     </div>
+  );
+}
+
+function PostLine({ t, post }: { t: Messages; post: AdPost }) {
+  const tone =
+    post.status === "published"
+      ? "text-ok"
+      : post.status === "failed" || post.status === "partial"
+        ? "text-danger"
+        : "text-accent";
+  return (
+    <p className={`text-xs ${tone}`}>
+      <span className="font-medium">{t.publish.status[post.status]}</span>
+      {post.when && ` · ${post.when}`}
+      {post.platforms.length > 0 &&
+        ` · ${post.platforms.map(platformName).join(", ")}`}
+    </p>
   );
 }

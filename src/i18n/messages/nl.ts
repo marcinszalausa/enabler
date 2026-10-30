@@ -89,7 +89,8 @@ export const nl: Messages = {
     liveSub:
       "Dit is een echte Gooidy-ronde, stap voor stap afgespeeld: de link, wat Gooidy op de pagina las, de invalshoeken die het schreef en de advertenties die het maakte.",
     howTitle: "Zo werkt het",
-    howSub: "Van je productlink naar advertenties die nieuwe kopers bereiken, in drie stappen.",
+    howSub:
+      "Van je productlink naar advertenties die nieuwe kopers bereiken, in drie stappen.",
     steps: [
       {
         title: "Plak een link",
@@ -419,6 +420,99 @@ export const nl: Messages = {
       logoType: "Upload het logo als PNG of JPEG.",
       logoSize: "Het logo moet kleiner zijn dan 2 MB.",
       couldntSave: "Het merkkit kon niet worden opgeslagen.",
+    },
+  },
+  publish: {
+    title: "Publiceren",
+    metaTitle: "Publiceren · Gooidy",
+    intro:
+      "Koppel je social-media-accounts één keer. Plaats daarna elke advertentie met één klik, plan hem in of laat de Autopiloot elke nieuwe advertentie voor je plaatsen.",
+    notReady:
+      "Publiceren op sociale netwerken wordt ingeschakeld. Kom snel terug.",
+    accounts: "Gekoppelde accounts",
+    accountsHelp:
+      "Gooidy plaatst namens jou, alleen wat je kiest. Je kunt altijd ontkoppelen.",
+    noAccounts: "Nog geen accounts gekoppeld.",
+    connectMore: "Account koppelen",
+    disconnect: "Ontkoppelen",
+    connected: "{platform} is gekoppeld.",
+    connectFailed: "Het account is niet gekoppeld. Probeer het opnieuw.",
+    accountsUsed: "{used} van {limit} accounts in je abonnement",
+    limitReached:
+      "Je hebt zoveel accounts gekoppeld als je abonnement toestaat.",
+    upgrade: "Upgrade je abonnement",
+    upgradeMore: "Upgrade voor meer",
+    notInPlan:
+      "Niet inbegrepen in je abonnement, dus Gooidy plaatst hier niet. Upgrade of ontkoppel een ander account.",
+    videosOnly: "Alleen video's",
+    imagesOnly: "Alleen afbeeldingen",
+    schedule: "Publicatieschema",
+    scheduleHelp:
+      "‘In wachtrij’ zet elke advertentie op het volgende vrije tijdstip hieronder, één advertentie per tijdstip.",
+    timeZone: "Tijdzone",
+    day: "Dag",
+    time: "Tijd",
+    days: [
+      "Zondag",
+      "Maandag",
+      "Dinsdag",
+      "Woensdag",
+      "Donderdag",
+      "Vrijdag",
+      "Zaterdag",
+    ],
+    addTime: "Tijd toevoegen",
+    remove: "Verwijderen",
+    noSlots: "Nog geen tijden. Voeg er minstens één toe.",
+    autopilot: "Autopiloot",
+    autopilotHelp:
+      "Zodra nieuwe advertenties klaar zijn, gaan de feedafbeeldingen en video's in de wachtrij voor deze accounts. Zonder klikken.",
+    to: "Plaatsen op",
+    saveSchedule: "Schema opslaan",
+    saved: "Opgeslagen.",
+    posts: "Berichten",
+    upcoming: "Gepland",
+    recent: "Recent",
+    noPosts:
+      "Nog niets geplaatst. Open een product en klik bij een advertentie op Publiceren.",
+    status: {
+      scheduled: "Gepland",
+      publishing: "Plaatsen…",
+      published: "Geplaatst",
+      partial: "Deels geplaatst",
+      failed: "Mislukt",
+      cancelled: "Geannuleerd",
+    },
+    cancel: "Bericht annuleren",
+    publish: "Publiceren",
+    publishRun: "Advertenties publiceren",
+    ads: "Advertenties",
+    selectAll: "Alles selecteren",
+    when: "Wanneer",
+    now: "Nu",
+    queue: "In wachtrij",
+    nextSlot: "volgende: {time}",
+    pickTime: "Kies een tijd",
+    caption: "Tekst",
+    publishCount: "{count} publiceren",
+    publishing: "Publiceren…",
+    doneNow: "Verzonden. Je berichten staan binnen een paar minuten online.",
+    doneQueued: "Ingepland. Je vindt ze onder Publiceren.",
+    skipped:
+      "{count} overgeslagen: geen van de gekozen accounts ondersteunt dat formaat.",
+    tiktokConsent:
+      "Door op TikTok te plaatsen ga je akkoord met TikToks Music Usage Confirmation.",
+    noAccountsYet:
+      "Koppel je social-media-accounts één keer en publiceer daarna elke advertentie met één klik.",
+    goConnect: "Accounts koppelen",
+    setSchedule: "Stel je publicatietijden in",
+    errors: {
+      pickAds: "Kies minstens één advertentie.",
+      pickAccounts: "Kies minstens één account.",
+      pickTime: "Kies een tijd in de toekomst.",
+      noSchedule: "Voeg eerst minstens één publicatietijd toe.",
+      timeZone: "Kies een tijdzone.",
+      couldnt: "Publiceren is mislukt. Probeer het opnieuw.",
     },
   },
 };
