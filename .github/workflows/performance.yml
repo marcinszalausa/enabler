@@ -1,0 +1,43 @@
+name: Website performance checks
+on:
+  push:
+    branches: [perf/public-media]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  performance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Installed performance guidance
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          for name in ['image.md','lazy-loading.md','font.md']:
+            for p in Path('node_modules/next/dist/docs').rglob(name):
+              print(f'GUIDE {p}\n{p.read_text()[:24000]}')
+          PY
+      - run: npm install --prefix /tmp/gooidy-performance --no-package-lock playwright@1.56.1 lighthouse@12.8.2
+      - run: /tmp/gooidy-performance/node_modules/.bin/playwright install --with-deps chromium
+      - name: Mobile production baseline
+        run: |
+          export CHROME_PATH="$(node -p "require('/tmp/gooidy-performance/node_modules/playwright').chromium.executablePath()")"
+          /tmp/gooidy-performance/node_modules/.bin/lighthouse https://gooidy.com --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" --only-categories=performance --output=json --output-path=/tmp/production-baseline.json --quiet
+          node - <<'JS'
+          const report=require('/tmp/production-baseline.json');
+          const audits=report.audits;
+          for(const id of ['first-contentful-paint','largest-contentful-paint','speed-index','total-blocking-time','cumulative-layout-shift','total-byte-weight','server-response-time']) console.log(id, audits[id]?.displayValue, audits[id]?.numericValue);
+          console.log('RESOURCE_SUMMARY',JSON.stringify(audits['resource-summary']?.details?.items));
+          console.log('OPPORTUNITIES',JSON.stringify(Object.entries(audits).filter(([k,v])=>v.score!==null&&v.score<0.9).map(([k,v])=>({id:k,title:v.title,displayValue:v.displayValue}))));
+          JS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: production-performance-baseline
+          path: /tmp/production-baseline.json
