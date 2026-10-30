@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { useMediaActivity } from "./use-media-activity";
 import { HomeIndicator, IPhone, StatusBar } from "./iphone";
 import type { FeedAd } from "./reel";
 import { SCREEN } from "./screen";
@@ -39,16 +40,12 @@ export function PhoneFeed({
 }) {
   const [index, setIndex] = useState(0);
   const [animate, setAnimate] = useState(true);
-  const [visible, setVisible] = useState(false);
-  // Videos wait until the page has loaded, so on phones the clip doesn't
-  // compete with the text and fonts of the first screen.
-  const [loaded, setLoaded] = useState(false);
-  const playing = visible && loaded;
   const [muted, setMuted] = useState(true);
+  const [manualPlay, setManualPlay] = useState(false);
   const { t } = useI18n();
   const root = useRef<HTMLDivElement>(null);
-  const videos = useRef<(HTMLVideoElement | null)[]>([]);
-  const reduceMotion = useRef(false);
+  const activity = useMediaActivity(root);
+  const playing = activity.inView && (manualPlay || (activity.idle && !activity.restricted));
 
   // The first ad repeats at the end so the last one slides on to it; then
   // the track jumps back to the start without animating.
@@ -60,44 +57,17 @@ export function PhoneFeed({
     const following = (index + 1) % ads.length;
     // Variants of one product swap in-place; sliding them would briefly show
     // the same product twice at the boundary between outgoing/incoming cards.
-    const slide = !reduceMotion.current &&
+    const slide = !activity.reducedMotion &&
       ads[following].productKey !== ads[index % ads.length].productKey;
     setAnimate(slide);
     setIndex(slide ? Math.min(index + 1, ads.length) : following);
   };
 
   useEffect(() => {
-    reduceMotion.current = matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-    const el = root.current;
-    if (!el) return;
-    const io = new IntersectionObserver(([e]) => setVisible(e.isIntersecting), {
-      threshold: 0.25,
-    });
-    io.observe(el);
-    const onLoad = () => setLoaded(true);
-    if (document.readyState === "complete") queueMicrotask(onLoad);
-    else addEventListener("load", onLoad, { once: true });
-    return () => {
-      io.disconnect();
-      removeEventListener("load", onLoad);
-    };
-  }, []);
-
-  // Plays the ad in view and pauses the rest, then schedules the next one.
-  useEffect(() => {
-    videos.current.forEach((v, k) => {
-      if (!v) return;
-      if (k === index && playing) {
-        v.currentTime = 0;
-        v.play().catch(() => {});
-      } else v.pause();
-    });
     if (!playing || !looping) return;
-    const t = setTimeout(next, items[index].video ? VIDEO_MAX_MS : IMAGE_MS);
-    return () => clearTimeout(t);
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- next uses the index/ads for this rendered frame
+    const timer = setTimeout(next, items[index].video ? VIDEO_MAX_MS : IMAGE_MS);
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- next describes this rendered frame
   }, [index, playing, looping]);
 
   const screen = (
@@ -112,46 +82,25 @@ export function PhoneFeed({
           }
         }}
       >
-        {items.map((ad, k) => (
-          <div key={k} className="relative h-full w-full">
-            {ad.video ? (
-              <video
-                ref={(v) => {
-                  videos.current[k] = v;
-                }}
-                src={ad.video.src}
-                poster={ad.video.poster}
-                muted={muted}
-                loop={!looping}
-                playsInline
-                // Full-size clips are heavy: only the one on screen
-                // loads, and the next one gets ready to start.
-                preload={
-                  !playing
-                    ? "none"
-                    : k === index
-                      ? "auto"
-                      : k === index + 1
-                        ? "metadata"
-                        : "none"
-                }
-                onEnded={k === index ? next : undefined}
-                className="absolute inset-0 h-full w-full object-cover"
-                aria-label={ad.alt}
-              />
-            ) : (
-              <Image
-                src={ad.image!}
-                alt={ad.alt ?? ""}
-                fill
-                sizes={sizes}
-                preload={preload && k === 0}
-                loading={k <= index + 1 ? "eager" : "lazy"}
-                className="object-cover"
-              />
-            )}
-          </div>
-        ))}
+        {items.map((ad, k) => {
+          const preview = (preload && k === 0) || (activity.nearby &&
+            (k === index || k === index - 1 || (activity.idle && !activity.restricted && k === index + 1)));
+          const image = ad.image ?? ad.video?.poster;
+          return (
+            <div key={k} className="relative h-full w-full">
+              {preview && image && (
+                <Image src={image} alt={ad.alt ?? ""} fill sizes={sizes}
+                  preload={preload && k === 0}
+                  loading={preload && k === 0 ? undefined : "lazy"}
+                  className="object-cover" />
+              )}
+              {ad.video && playing && k === index && (
+                <FeedVideo src={ad.video.src} muted={muted} loop={!looping}
+                  label={ad.alt} onEnded={next} />
+              )}
+            </div>
+          );
+        })}
       </div>
 
       {/* Story-style progress and the feed's side actions. Ads carry
@@ -177,11 +126,18 @@ export function PhoneFeed({
         <Icon d="M20 11.5a8 8 0 0 1-11.6 7.1L4 20l1.4-4.2A8 8 0 1 1 20 11.5Z" />
         <Icon d="M21 4 10.5 14.5M21 4l-6.5 17-4-6.5L4 10.5 21 4Z" />
       </div>
-      {current.sound && (
+      {current.video && activity.restricted && !manualPlay && (
+        <button type="button" onClick={() => { setManualPlay(true); setMuted(false); }}
+          aria-label={t.feed.soundOn}
+          className="absolute left-1/2 top-1/2 z-10 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-black/60 text-white">
+          <svg viewBox="0 0 24 24" className="h-7 w-7" fill="currentColor" aria-hidden><path d="m8 5 11 7-11 7Z" /></svg>
+        </button>
+      )}
+      {current.sound && (!activity.restricted || manualPlay) && (
         <button
           type="button"
           onClick={() => {
-            videos.current.forEach((v) => v && (v.muted = !muted));
+            setManualPlay(true);
             setMuted(!muted);
           }}
           className="absolute bottom-[3cqw] right-[3cqw] z-10 flex h-[8cqw] w-[8cqw] items-center justify-center rounded-full bg-black/45 text-white backdrop-blur transition hover:bg-black/60"
@@ -315,4 +271,23 @@ function Notes({ ad }: { ad: FeedAd }) {
       ))}
     </div>
   );
+}
+
+ // Mounted only for an active visible video. Cleanup aborts buffered downloads
+ // when scrolled away or backgrounded, rather than only pausing decoding.
+function FeedVideo({ src, muted, loop, label, onEnded }: {
+  src: string; muted: boolean; loop: boolean; label?: string; onEnded: () => void;
+}) {
+  const video = useRef<HTMLVideoElement>(null);
+  const [ready, setReady] = useState(false);
+  useEffect(() => {
+    const element = video.current;
+    if (!element) return;
+    element.src = src;
+    element.play().catch(() => {});
+    return () => { element.pause(); element.removeAttribute("src"); element.load(); };
+  }, [src]);
+  return <video ref={video} muted={muted} loop={loop} playsInline preload="none"
+    aria-label={label} onEnded={loop ? undefined : onEnded} onLoadedData={() => setReady(true)}
+    className={`absolute inset-0 h-full w-full object-cover ${ready ? "opacity-100" : "opacity-0"}`} />;
 }

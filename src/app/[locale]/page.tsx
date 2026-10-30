@@ -133,13 +133,13 @@ function roundRobin(
   return ads;
 }
 
-// The hero phone opens on a video ad when there is one, then alternates.
+// Paint the hero with an optimized still immediately, then rotate into video.
 // Falls back to the Soft Mila clip before any run is picked.
 function heroFeed(images: FeedAd[], videos: FeedAd[]): FeedAd[] {
   const feed: FeedAd[] = [];
   for (let i = 0; videos[i] || images[i]; i++) {
-    if (videos[i]) feed.push(videos[i]);
     if (images[i]) feed.push(images[i]);
+    if (videos[i]) feed.push(videos[i]);
   }
   return feed.length ? feed : [FALLBACK_AD];
 }
@@ -507,7 +507,7 @@ function Pricing({ t }: { t: Messages }) {
                 ))}
               </ul>
               <Link
-                href="/dashboard"
+                href="/dashboard" prefetch={false}
                 className={`mt-8 rounded-xl px-5 py-2.5 text-center text-sm font-medium transition ${
                   i === FEATURED
                     ? "btn-primary"

@@ -26,6 +26,7 @@ const nextConfig: NextConfig = {
       { pathname: "/reels/**", search: "" },
     ],
     minimumCacheTTL: 86400,
+    imageSizes: [16, 32, 48, 64, 96, 128, 160, 192, 256, 320, 384, 480],
   },
   // Brand kit logo uploads go through a server action (logos are capped at 2 MB).
   experimental: {

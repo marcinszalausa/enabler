@@ -1,60 +1,59 @@
 name: Website performance checks
 on:
   push:
-    branches: [perf/public-media]
+    branches: [perf/public-media, main]
   pull_request:
 permissions:
   contents: read
   actions: read
+  statuses: read
 jobs:
   performance:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
       - run: npm ci
-      - name: Inspect captured baseline bottlenecks
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          gh run download 41109643726 --repo marcinszalausa/enabler --name production-performance-baseline --dir /tmp/captured-baseline
-          node - <<'JS'
-          const a=require('/tmp/captured-baseline/production-baseline.json').audits;
-          function safe(value){
-            if(Array.isArray(value))return value.map(safe);
-            if(value&&typeof value==='object')return Object.fromEntries(Object.entries(value).map(([k,v])=>[k,safe(v)]));
-            if(typeof value==='string'&&value.startsWith('http')){
-              try{const u=new URL(value);return u.origin+u.pathname+(u.pathname==='/_next/image'?' source='+u.searchParams.get('url'):'');}catch{}
-            }return value;
-          }
-          for(const id of ['largest-contentful-paint-element','uses-responsive-images','image-delivery-insight','unused-javascript','uses-long-cache-ttl'])console.log('DETAIL',id,JSON.stringify(safe(a[id]?.details)).slice(0,18000));
-          JS
-      - name: Installed performance guidance
+      - name: Installed image, font, loading, and prefetch guidance
         run: |
           python3 - <<'PY'
           from pathlib import Path
-          for name in ['image.md','lazy-loading.md','font.md']:
-            for p in Path('node_modules/next/dist/docs').rglob(name):
+          for name in ['image.md','lazy-loading.md','font.md','link.md']:
+            for p in Path('node_modules/next/dist/docs/01-app').rglob(name):
               print(f'GUIDE {p}\n{p.read_text()[:24000]}')
           PY
+      - run: node --experimental-strip-types --test tests/*.test.ts
+      - run: npx next typegen && npx tsc --noEmit
+      - name: Lint performance changes
+        run: npx eslint src/app/_landing/use-media-activity.ts src/app/_landing/phone-feed.tsx src/app/_landing/angle-explorer.tsx src/app/_landing/before-after.tsx src/app/_landing/chrome.tsx src/app/_landing/sticky-cta.tsx src/app/_landing/spotlight.tsx src/app/_landing/hero-stage.tsx 'src/app/[locale]/layout.tsx' 'src/app/[locale]/page.tsx' next.config.ts
       - run: npm install --prefix /tmp/gooidy-performance --no-package-lock playwright@1.56.1 lighthouse@12.8.2
       - run: /tmp/gooidy-performance/node_modules/.bin/playwright install --with-deps chromium
-      - name: Mobile production baseline
-        run: |
-          export CHROME_PATH="$(node -p "require('/tmp/gooidy-performance/node_modules/playwright').chromium.executablePath()")"
-          /tmp/gooidy-performance/node_modules/.bin/lighthouse https://gooidy.com --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" --only-categories=performance --output=json --output-path=/tmp/production-baseline.json --quiet
-          node - <<'JS'
-          const report=require('/tmp/production-baseline.json');
-          const audits=report.audits;
-          for(const id of ['first-contentful-paint','largest-contentful-paint','speed-index','total-blocking-time','cumulative-layout-shift','total-byte-weight','server-response-time']) console.log(id, audits[id]?.displayValue, audits[id]?.numericValue);
-          console.log('RESOURCE_SUMMARY',JSON.stringify(audits['resource-summary']?.details?.items));
-          console.log('OPPORTUNITIES',JSON.stringify(Object.entries(audits).filter(([k,v])=>v.score!==null&&v.score<0.9).map(([k,v])=>({id:k,title:v.title,displayValue:v.displayValue}))));
-          JS
+      - name: Compare media loading and verify playback policy
+        run: node scripts/check-media-performance.mjs
+        env:
+          PLAYWRIGHT_MODULE_PATH: /tmp/gooidy-performance/node_modules/playwright
+          PERFORMANCE_BASELINE_SHA: 024af206dca82c0367013c02d458f91f3a3221d4
+      - name: Product spacing and public control regression checks
+        run: node scripts/check-showcase-browser.mjs
+        env:
+          PLAYWRIGHT_MODULE_PATH: /tmp/gooidy-performance/node_modules/playwright
+      - name: Measure live mobile performance
+        run: node scripts/measure-public-performance.mjs
+        env:
+          PLAYWRIGHT_MODULE_PATH: /tmp/gooidy-performance/node_modules/playwright
+          GH_TOKEN: ${{ github.token }}
+          VERIFY_DEPLOYMENT: ${{ github.ref == 'refs/heads/main' }}
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
-          name: production-performance-baseline
-          path: /tmp/production-baseline.json
+          name: public-performance-results
+          path: |
+            /tmp/public-performance-*.json
+            /tmp/performance-summary.json
+            /tmp/media-comparison.json

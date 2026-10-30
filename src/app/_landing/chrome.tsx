@@ -88,13 +88,13 @@ export function Nav() {
           <LanguageSwitcher compact />
           <ThemeToggle />
           <Link
-            href="/login"
+            href="/login" prefetch={false}
             className="rounded-lg px-3 py-2 text-sm font-medium whitespace-nowrap text-fg hover:bg-surface"
           >
             {t.nav.signIn}
           </Link>
           <Link
-            href="/dashboard"
+            href="/dashboard" prefetch={false}
             className="btn-primary hidden rounded-lg px-4 py-2 text-sm font-medium whitespace-nowrap sm:block"
           >
             {t.nav.getStarted}
