@@ -5,8 +5,8 @@ import Image from "next/image";
 import { SCREEN } from "./screen";
 import { useI18n } from "@/i18n/client";
 
-// One real ad as people will meet it: inside Reels, Stories, the Facebook
-// feed and TikTok, with each app's own buttons around it. Only the app
+// Distinct products inside Reels, Stories, the Facebook feed and TikTok,
+// with each app's own buttons around the real ad. Only the app
 // chrome is drawn here; the ad, its headline and the store are real.
 export type PlacementAd = {
   productKey: string;

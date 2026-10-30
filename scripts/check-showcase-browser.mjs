@@ -21,8 +21,8 @@ const fixture = [
 'export default function ShowcasePreview(){return <main>',
 '{[1,2,3,4].map(n=>{const allowed=items.filter(x=>"ABCD".slice(0,n).includes(x.productKey));const plan=heroProducts(allowed);return <section key={n} data-scenario={n}><HeroStage {...plan}/></section>})}',
 '<Placements ads={items.slice(0,4).map(x=>({productKey:x.productKey,store:"example",story:{image:photo,alt:x.alt},square:{image:photo,alt:x.alt,primaryText:"Example"}}))}/>',
-'<div data-check="before"><BeforeAfter photo={photo} name="Example" url={run.productUrl} ads={ads.map(a=>({image:photo+"?ad="+a.id,alt:a.headline}))}/></div>',
-'<div data-check="demo"><RunDemo run={{...run,ads}}/></div>',
+'<div data-check="before"><BeforeAfter photo={photo} name="Example" url={run.productUrl} ads={ads.map(a=>({image:"/reels/showcase-fixture-"+a.id+".jpg",alt:a.headline}))}/></div>',
+'<div data-check="demo"><RunDemo run={{...run,url:run.productUrl,ads}}/></div>',
 '<div data-check="viewer"><RunViewer run={run} took="30 s"/></div>',
 '</main>}',
 ].join("\n");
@@ -30,6 +30,8 @@ const fixture = [
 let browser,server;
 let serverLog="";
 try{
+  const jpeg=await readFile("public/reels/softmila-cardigan.jpg");
+  for(let i=0;i<3;i++)await writeFile("public/reels/showcase-fixture-ad"+i+".jpg",jpeg);
   await mkdir("src/app/[locale]/showcase-preview",{recursive:true});
   await writeFile(fixturePath,fixture);
   server=spawn(process.execPath,["node_modules/next/dist/bin/next","dev","-p","3100"],{
@@ -45,7 +47,6 @@ try{
   }
   assert.ok(ready,"Fixture server became ready");
   browser=await chromium.launch({headless:true});
-  const jpeg=await readFile("public/reels/softmila-cardigan.jpg");
   for(const [width,motion] of [[390,"no-preference"],[1440,"no-preference"],[1440,"reduce"]]){
     const page=await browser.newPage({viewport:{width,height:1000},reducedMotion:motion,locale:"en-US"});
     const errors=[];page.on("pageerror",e=>errors.push(e.message));
@@ -95,4 +96,5 @@ finally{
   if(browser)await browser.close();
   if(server)server.kill("SIGTERM");
   await rm("src/app/[locale]/showcase-preview",{recursive:true,force:true});
+  for(let i=0;i<3;i++)await rm("public/reels/showcase-fixture-ad"+i+".jpg",{force:true});
 }

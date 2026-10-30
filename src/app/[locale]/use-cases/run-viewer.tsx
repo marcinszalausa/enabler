@@ -7,7 +7,7 @@ import { useAngles, useI18n } from "@/i18n/client";
 import { fmt } from "@/i18n/format";
 
 // One real run, shown the way it looks in Gooidy: the link, what Gooidy read
-// from the page, then each angle's feed and story ads side by side.
+// from the page, then one selected angle and format at a time.
 export function RunViewer({
   run,
   took,

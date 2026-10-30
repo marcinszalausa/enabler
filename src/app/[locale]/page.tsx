@@ -1,4 +1,3 @@
-import type { CSSProperties } from "react";
 import { distinctProducts, heroProducts, productKey } from "@/lib/product-display";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -281,7 +280,7 @@ function WhereItRuns({ t, runs }: { t: Messages; runs: ShowcaseRun[] }) {
   if (!ads.length) return null;
   return (
     <section className="reveal mx-auto max-w-6xl px-4 pb-24">
-      <SectionHeading title={t.home.whereTitle} sub={t.home.whereSub} />
+      <SectionHeading title={t.home.whereTitle} />
       <div className="mt-14"><Placements ads={ads} /></div>
     </section>
   );
@@ -334,64 +333,29 @@ function HowItWorks({ t }: { t: Messages }) {
   );
 }
 
-function Examples({
-  t,
-  locale,
-  runs,
-}: {
-  t: Messages;
-  locale: Locale;
-  runs: ShowcaseRun[];
-}) {
-  // One example per product; a single circular row has no duplicate neighbors,
-  // including its loop seam. A lone product is static and never cloned.
+function Examples({ t, locale, runs }: { t: Messages; locale: Locale; runs: ShowcaseRun[] }) {
   const row = distinctProducts(runs.flatMap(run => {
     const ad = run.ads.find(a => a.aspect === "9:16") ?? run.ads[0];
     return ad ? [{ ...ad, productKey: productKey(run.productUrl) }] : [];
   }));
-  const rows = row.length ? [row] : [];
   return (
     <section className="reveal overflow-hidden py-24">
       <div className="mx-auto max-w-6xl px-4">
         <SectionHeading title={t.home.examplesTitle} sub={t.home.examplesSub} />
       </div>
-      <div className="mt-14 flex flex-col gap-5">
-        {rows.map((row, r) => (
-          <div key={r} className={row.length > 1 ? "marquee" : "flex justify-center"} data-product-group="examples">
-            <div
-              className={row.length > 1 ? `marquee-track ${r % 2 ? "reverse" : ""}` : "flex"}
-              style={{ "--marquee-s": `${row.length * 6}s` } as CSSProperties}
-            >
-              {/* Twice, so the loop never shows a gap. */}
-              {(row.length > 1 ? [...row, ...row] : row).map((a, i) => (
-                <Image
-                  key={i}
-                  data-product-key={a.productKey}
-                  src={image(a.id)}
-                  alt={i < row.length ? a.headline : ""}
-                  width={1080}
-                  height={a.aspect === "9:16" ? 1920 : 1080}
-                  sizes={
-                    a.aspect === "9:16"
-                      ? "(min-width: 40rem) 214px, 169px"
-                      : "(min-width: 40rem) 260px, 220px"
-                  }
-                  className={`shrink-0 rounded-2xl border border-line object-cover shadow-[0_20px_50px_-30px_rgb(var(--t-shadow)/0.5)] ${
-                    a.aspect === "9:16"
-                      ? "h-[300px] w-[169px] sm:h-[380px] sm:w-[214px]"
-                      : "h-[220px] w-[220px] sm:h-[260px] sm:w-[260px]"
-                  }`}
-                />
-              ))}
-            </div>
-          </div>
-        ))}
+      <div className="mt-14 overflow-x-auto pb-5" data-product-group="examples">
+        <div className="flex w-max min-w-full justify-center gap-5 px-4">
+          {row.map(ad => (
+            <Image key={ad.productKey} data-product-key={ad.productKey}
+              src={image(ad.id)} alt={ad.headline} width={1080}
+              height={ad.aspect === "9:16" ? 1920 : 1080}
+              sizes="(min-width: 40rem) 214px, 169px"
+              className={`shrink-0 rounded-2xl border border-line object-cover shadow-xl ${ad.aspect === "9:16" ? "h-[300px] w-[169px] sm:h-[380px] sm:w-[214px]" : "h-[169px] w-[169px] sm:h-[214px] sm:w-[214px]"}`} />
+          ))}
+        </div>
       </div>
       <p className="mt-10 text-center">
-        <Link
-          href={localePath(locale, "/use-cases")}
-          className="text-sm font-medium text-accent hover:underline"
-        >
+        <Link href={localePath(locale,"/use-cases")} className="text-sm font-medium text-accent hover:underline">
           {t.home.examplesLink}
         </Link>
       </p>
