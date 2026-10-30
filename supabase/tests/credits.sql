@@ -73,13 +73,13 @@ select set_config('credit_test.workspace_id', (
     where owner_id = '10000000-0000-0000-0000-000000000001'
 ), true);
 set local role service_role;
-do $
+do $$
 begin
   if not public.spend_credits(current_setting('credit_test.workspace_id')::uuid, 1) then
     raise exception 'Service-role spend failed';
   end if;
   perform public.refund_credits(current_setting('credit_test.workspace_id')::uuid, 1);
 end;
-$;
+$$;
 reset role;
 rollback;
