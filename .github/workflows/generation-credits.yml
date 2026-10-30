@@ -1,0 +1,28 @@
+name: Generation credit checks
+on:
+  push:
+    branches: [fix/generation-credit-ledger]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  application:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Read installed framework guides
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          for p in Path('node_modules/next/dist/docs').rglob('*'):
+              if p.is_file() and any(s in p.name for s in ['after.', 'server-actions', 'mutating-data']):
+                  print(f'GUIDE {p}\n{p.read_text()}')
+          PY
+      - name: Generate migration filename
+        run: npx --yes supabase@2.81.3 migration new generation_credit_ledger
