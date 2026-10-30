@@ -6,7 +6,7 @@ on:
 permissions:
   contents: read
 jobs:
-  application:
+  webhook-application:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -16,16 +16,32 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - name: Read installed route handler guide and provider contract
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          from urllib.request import urlopen
-          for p in Path('node_modules/next/dist/docs').rglob('*route-handlers*'):
-              if p.is_file(): print(f'GUIDE {p}\n{p.read_text()}')
-          for url in ['https://docs.zernio.com/llms-mdx/webhooks', 'https://docs.zernio.com/llms-mdx/webhooks/posts', 'https://docs.zernio.com/llms-mdx/webhooks/accounts']:
-              print('PROVIDER DOC', url)
-              print(urlopen(url, timeout=20).read().decode()[:55000])
-          PY
-      - name: Generate migration filename
-        run: npx --yes supabase@2.81.3 migration new zernio_webhook_receipts
+      - run: node --experimental-strip-types --test tests/*.test.ts
+      - run: npx next typegen && npx tsc --noEmit
+      - run: npx eslint src/lib/social/webhook.ts src/lib/social/zernio.ts src/app/api/webhooks/zernio/route.ts
+  webhook-database:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        postgres: ['16', '17']
+    services:
+      postgres:
+        image: postgres:${{ matrix.postgres }}
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: webhook_tests
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y postgresql-client
+      - name: Apply migrations and run webhook transaction tests
+        env:
+          CREDIT_TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/webhook_tests
+        run: bash scripts/test-credits.sh && bash scripts/test-zernio-webhook.sh
