@@ -80,7 +80,7 @@ async function Product({
     .maybeSingle();
   if (!product) notFound();
 
-  const [{ data: generations, error: generationsError }, { data: workspace }, kit, canEdit, receiptResult] = await Promise.all([
+  const [{ data: generations, error: generationsError }, { data: workspace }, kit, canEdit] = await Promise.all([
     supabase
       .from("generations")
       .select(
@@ -96,9 +96,11 @@ async function Product({
       .single(),
     getBrandKit(supabase, product.workspace_id),
     canEditWorkspace(supabase, product.workspace_id),
-    supabase.rpc("generation_receipts", { product: id }),
   ]);
   if (generationsError) throw generationsError;
+  // Read receipts after the run snapshot: a terminal state must not race an
+  // earlier receipt query and briefly look like an unconfirmed refund.
+  const receiptResult = await supabase.rpc("generation_receipts", { product: id });
   if (receiptResult.error) console.error("generation receipts unavailable", receiptResult.error.code);
   const receipts = new Map<string, CreditReceipt>(
     (receiptResult.error ? [] : receiptResult.data ?? []).map((row: CreditReceipt & { generation_id: string }) => [row.generation_id, row]),
