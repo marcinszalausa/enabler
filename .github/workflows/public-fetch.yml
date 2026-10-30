@@ -1,0 +1,26 @@
+name: Public fetch security checks
+on:
+  push:
+    branches: [fix/public-url-fetching]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Read installed server runtime guide
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          for p in Path('node_modules/next/dist/docs').rglob('*'):
+              if p.is_file() and p.name in ['nodejs.md','nodejs-runtime.md','edge-and-nodejs-runtimes.md']:
+                  print(f'GUIDE {p}\n{p.read_text()}')
+          PY
