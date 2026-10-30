@@ -49,16 +49,17 @@ export async function ensureProfile(workspaceId: string, name: string) {
 // ones that were disconnected there.
 export async function syncAccounts(workspaceId: string) {
   const db = createAdminClient();
-  const { data: profile } = await db
+  const { data: profile, error: profileError } = await db
     .from("social_profiles")
     .select("zernio_profile_id")
     .eq("workspace_id", workspaceId)
     .maybeSingle();
+  if (profileError) throw profileError;
   if (!profile) return;
 
   const accounts = await listAccounts(profile.zernio_profile_id);
   if (accounts.length > 0) {
-    await db.from("social_accounts").upsert(
+    const { error: upsertError } = await db.from("social_accounts").upsert(
       accounts.map((a) => ({
         id: a._id,
         workspace_id: workspaceId,
@@ -68,6 +69,7 @@ export async function syncAccounts(workspaceId: string) {
         avatar_url: a.profilePicture ?? null,
       })),
     );
+    if (upsertError) throw upsertError;
   }
   const keep = accounts.map((a) => a._id);
   let stale = db
@@ -75,14 +77,15 @@ export async function syncAccounts(workspaceId: string) {
     .delete()
     .eq("workspace_id", workspaceId);
   if (keep.length > 0) stale = stale.not("id", "in", `(${keep.join(",")})`);
-  await stale;
+  const { error: staleError } = await stale;
+  if (staleError) throw staleError;
 }
 
 // The workspace's accounts the plan covers: the earliest connected, up to
 // its limit (after a downgrade the newest ones stop being used).
 export async function accountsInPlan(workspaceId: string) {
   const db = createAdminClient();
-  const [{ data: ws }, { data: accounts }] = await Promise.all([
+  const [{ data: ws, error: workspaceError }, { data: accounts, error: accountsError }] = await Promise.all([
     db.from("workspaces").select("plan").eq("id", workspaceId).single(),
     db
       .from("social_accounts")
@@ -91,7 +94,10 @@ export async function accountsInPlan(workspaceId: string) {
       .order("created_at")
       .order("id"),
   ]);
-  const limit = accountLimit(ws?.plan);
+  if (workspaceError) throw workspaceError;
+  if (accountsError) throw accountsError;
+  if (!ws) throw new Error("Workspace not found.");
+  const limit = accountLimit(ws.plan);
   return {
     limit,
     total: accounts?.length ?? 0,
