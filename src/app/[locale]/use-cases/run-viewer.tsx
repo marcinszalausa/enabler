@@ -7,7 +7,7 @@ import { useAngles, useI18n } from "@/i18n/client";
 import { fmt } from "@/i18n/format";
 
 // One real run, shown the way it looks in Gooidy: the link, what Gooidy read
-// from the page, then each angle's feed and story ads side by side.
+// from the page, then one selected angle and format at a time.
 export function RunViewer({
   run,
   took,
@@ -17,9 +17,11 @@ export function RunViewer({
 }) {
   const angles = [...new Set(run.ads.map((a) => a.angle))];
   const [active, setActive] = useState(angles[0]);
+  const [format, setFormat] = useState<"1:1" | "9:16">("1:1");
   const square = run.ads.find((a) => a.angle === active && a.aspect === "1:1");
   const story = run.ads.find((a) => a.angle === active && a.aspect === "9:16");
-  const copy = square ?? story;
+  const displayed = (format === "1:1" ? square : story) ?? square ?? story;
+  const copy = displayed;
   const { t } = useI18n();
   const angle = useAngles();
 
@@ -112,36 +114,24 @@ export function RunViewer({
 
         {/* The ads for the chosen angle. */}
         <div className="p-5 sm:p-6">
-          <div className="grid items-start gap-4 grid-cols-[1fr_0.5625fr]">
-            {square && (
-              <figure>
-                <Image
-                  key={square.id}
-                  src={`/api/creatives/${square.id}/image`}
-                  alt={square.headline}
-                  width={1080}
-                  height={1080}
-                  sizes="(min-width: 64rem) 420px, 60vw"
-                  className="angle-in aspect-square w-full rounded-xl border border-line bg-surface object-cover"
-                />
+          <div data-single-product-display="run-viewer">
+            <div className="mb-4 flex gap-2">
+              {[square, story].filter(Boolean).map(ad => ad && (
+                <button key={ad.id} type="button" aria-pressed={displayed?.id === ad.id}
+                  onClick={() => setFormat(ad.aspect)}
+                  className={`rounded-lg border px-3 py-2 text-sm ${displayed?.id === ad.id ? "border-accent bg-accent-soft" : "border-line"}`}>
+                  {ad.aspect === "1:1" ? t.useCases.feed : t.useCases.story}
+                </button>
+              ))}
+            </div>
+            {displayed && (
+              <figure className={displayed.aspect === "1:1" ? "max-w-md" : "max-w-[260px]"}>
+                <Image key={displayed.id} src={`/api/creatives/${displayed.id}/image`}
+                  alt={displayed.headline} width={1080} height={displayed.aspect === "1:1" ? 1080 : 1920}
+                  sizes="(min-width: 64rem) 448px, 90vw"
+                  className="w-full rounded-xl border border-line bg-surface object-cover" />
                 <figcaption className="mt-2 text-xs text-muted">
-                  {t.useCases.feed}
-                </figcaption>
-              </figure>
-            )}
-            {story && (
-              <figure>
-                <Image
-                  key={story.id}
-                  src={`/api/creatives/${story.id}/image`}
-                  alt={story.headline}
-                  width={1080}
-                  height={1920}
-                  sizes="(min-width: 64rem) 240px, 34vw"
-                  className="angle-in aspect-[9/16] w-full rounded-xl border border-line bg-surface object-cover"
-                />
-                <figcaption className="mt-2 text-xs text-muted">
-                  {t.useCases.story}
+                  {displayed.aspect === "1:1" ? t.useCases.feed : t.useCases.story}
                 </figcaption>
               </figure>
             )}

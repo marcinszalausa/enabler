@@ -51,7 +51,7 @@ export function HeroStage({
   }, []);
 
   return (
-    <div ref={stage} className="stage relative mx-auto w-full max-w-5xl">
+    <div ref={stage} className="stage relative mx-auto w-full max-w-5xl" data-product-group="hero">
       <div className="stage-inner relative flex justify-center">
         {left && (
           <div className="stage-side stage-left hidden sm:block">

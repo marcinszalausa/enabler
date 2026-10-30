@@ -25,6 +25,7 @@ export function RunDemo({ run }: { run: DemoRun }) {
   const root = useRef<HTMLDivElement>(null);
   const [t, setT] = useState(-1);
   const [play, setPlay] = useState(0);
+  const [selected, setSelected] = useState(0);
   const { t: m } = useI18n();
   const angle = useAngles();
 
@@ -176,28 +177,24 @@ export function RunDemo({ run }: { run: DemoRun }) {
             </ul>
           )}
 
-          {/* The finished ads */}
-          {t >= T.design && (
-            <div className="mt-5 grid max-w-xl grid-cols-5 gap-2 sm:gap-3">
-              {ads.map((a, i) => {
-                const ready = t >= T.design + 500 + i * 380;
-                return (
-                  <div
-                    key={a.id}
-                    className={`relative aspect-[9/16] overflow-hidden rounded-lg ${ready ? "" : "skeleton"}`}
-                  >
-                    {ready && (
-                      <Image
-                        src={a.image}
-                        alt={a.headline}
-                        fill
-                        sizes="(min-width: 40rem) 110px, 18vw"
-                        className="pop-in object-cover"
-                      />
-                    )}
-                  </div>
-                );
-              })}
+          {/* Variants of this product share a single display. */}
+          {t >= T.design && ads.length > 0 && (
+            <div className="mt-5" data-single-product-display="run-demo">
+              <div className="mb-3 flex flex-wrap gap-2">
+                {ads.map((ad,i) => (
+                  <button key={ad.id} type="button" aria-label={ad.headline}
+                    aria-pressed={selected === i} onClick={() => setSelected(i)}
+                    className={`rounded-lg border px-3 py-1.5 text-sm ${selected === i ? "border-accent bg-accent-soft" : "border-line"}`}>
+                    {i + 1}
+                  </button>
+                ))}
+              </div>
+              <div className={`relative aspect-[9/16] w-full max-w-[240px] overflow-hidden rounded-lg ${t < T.design + 500 ? "skeleton" : ""}`}>
+                {t >= T.design + 500 && (
+                  <Image key={ads[selected].id} src={ads[selected].image}
+                    alt={ads[selected].headline} fill sizes="240px" className="object-cover" />
+                )}
+              </div>
             </div>
           )}
 
@@ -212,6 +209,7 @@ export function RunDemo({ run }: { run: DemoRun }) {
               <button
                 type="button"
                 onClick={() => {
+                  setSelected(0);
                   setT(-1);
                   setPlay((p) => p + 1);
                 }}
