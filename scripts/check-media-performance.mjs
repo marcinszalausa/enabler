@@ -23,7 +23,7 @@ const fixture=[
 '<div data-check="visible" className="w-[250px]"><PhoneFeed ads={images} sizes="250px" preload/></div>',
 '<div data-check="hidden" style={{display:"none"}}><PhoneFeed ads={[{productKey:"hidden",image:photo("hidden")}]} sizes="250px"/></div>',
 '<div style={{height:3200}}/>',
-'<div data-check="video" className="w-[250px]"><PhoneFeed ads={[{productKey:"video",video:{src:"/reels/softmila-cardigan.mp4",poster:photo("poster")},sound:true}]} sizes="250px"/></div>',
+'<div data-check="video" className="w-[250px]"><PhoneFeed ads={[{productKey:"video",video:{src:"/reels/perf-clip.webm",poster:photo("poster")},sound:true}]} sizes="250px"/></div>',
 '<div style={{height:1200}}/>',
 '<div data-check="angles"><AngleExplorer store="example.com" ads={angles}/></div>',
 '</main>}',
@@ -41,6 +41,9 @@ try{
   await mkdir(route,{recursive:true});await writeFile(route+"/page.tsx",fixture);
   const jpeg=await readFile("public/reels/softmila-cardigan.jpg");
   for(const name of names)await writeFile("public/reels/perf-"+name+".jpg",jpeg);
+  // Bundled test Chromium has no proprietary H.264 decoder. Use an offline
+  // WebM sample to exercise playback lifecycle without changing production MP4s.
+  execFileSync(require("ffmpeg-static"),["-i","public/reels/softmila-cardigan.mp4","-t","2","-an","-c:v","libvpx-vp9","-threads","2","-b:v","200k","-y","public/reels/perf-clip.webm"],{stdio:"ignore",timeout:60000});
   browser=await chromium.launch({headless:true});
   const results={};
   for(const phase of ["before","after"]){
@@ -143,4 +146,5 @@ finally{
   for(const [path,content] of originals)await writeFile(path,content);
   await rm(route,{recursive:true,force:true});
   for(const name of names)await rm("public/reels/perf-"+name+".jpg",{force:true});
+  await rm("public/reels/perf-clip.webm",{force:true});
 }
