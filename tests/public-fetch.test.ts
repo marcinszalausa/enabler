@@ -9,7 +9,7 @@ import { mkdtemp, readFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
-import { fetchPublicUrl, parsePublicHttpUrl, isPublicAddress, verifyPublicUrl,
+import { PublicFetchError, fetchPublicUrl, parsePublicHttpUrl, isPublicAddress, verifyPublicUrl,
   requestPinnedUrl, type PublicFetchDependencies, type PublicResponse } from "../src/lib/public-fetch.ts";
 
 const public4={address:"93.184.216.34",family:4 as const};
