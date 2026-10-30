@@ -26,12 +26,12 @@ export function GenerateControls({
 
   return (
     <div className="flex flex-col items-start gap-2 lg:items-end">
-      <label className="flex items-center gap-2 text-sm">
+      <label className="flex max-w-full flex-wrap items-center gap-2 text-sm">
         <span className="text-muted">{t.app.adLanguage}</span>
         <select
           value={language}
           onChange={(e) => setLanguage(e.target.value as LanguageKey)}
-          className="rounded-lg border border-line-strong bg-raised px-2.5 py-1.5 text-sm outline-none transition focus:border-accent focus:ring-4 focus:ring-accent/20"
+          className="min-w-0 max-w-full rounded-lg border border-line-strong bg-raised px-2.5 py-1.5 text-sm outline-none transition focus:border-accent focus:ring-4 focus:ring-accent/20"
         >
           {(Object.keys(LANGUAGES) as LanguageKey[]).map((key) => (
             <option key={key} value={key}>
