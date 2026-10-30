@@ -296,14 +296,20 @@ export const de: Messages = {
   },
   login: {
     title: "Bei Gooidy anmelden",
-    sub: "Wir schicken dir einen Anmeldelink per E-Mail. Kein Passwort nötig.",
+    sub: "Wir schicken dir per E-Mail einen Anmeldelink und einen Code. Kein Passwort nötig.",
     email: "E-Mail",
     placeholder: "du@firma.de",
     send: "Link per E-Mail senden",
     sending: "Wird gesendet…",
-    sent: "Sieh in deinem Postfach {email} nach, dort wartet dein Anmeldelink.",
+    sent: "Wir haben einen Link und einen Code an {email} geschickt. Öffne den Link oder gib den Code hier ein.",
+    code: "Code aus der E-Mail",
+    verify: "Anmelden",
+    verifying: "Anmeldung läuft…",
+    codeError:
+      "Dieser Code hat nicht funktioniert. Prüfe ihn oder fordere einen neuen an.",
+    otherEmail: "Andere E-Mail verwenden",
     linkError:
-      "Dieser Anmeldelink ist abgelaufen oder wurde schon benutzt. Fordere einen neuen an.",
+      "Dieser Anmeldelink hat nicht funktioniert, vielleicht ist er abgelaufen. Fordere einen neuen an oder nutze den Code aus der E-Mail.",
   },
   app: {
     products: "Produkte",

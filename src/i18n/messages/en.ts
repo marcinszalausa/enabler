@@ -293,14 +293,19 @@ export const en = {
   },
   login: {
     title: "Sign in to Gooidy",
-    sub: "We'll email you a magic link. No password needed.",
+    sub: "We'll email you a sign-in link and code. No password needed.",
     email: "Email",
     placeholder: "you@company.com",
     send: "Email me a link",
     sending: "Sending…",
-    sent: "Check {email} for your sign-in link.",
+    sent: "We sent a link and a code to {email}. Open the link, or type the code here.",
+    code: "Code from the email",
+    verify: "Sign in",
+    verifying: "Signing in…",
+    codeError: "That code didn't work. Check it, or send a new one.",
+    otherEmail: "Use a different email",
     linkError:
-      "That sign-in link has expired or was already used. Send a new one.",
+      "That sign-in link didn't work. It may have expired. Send a new one, or use the code from the email.",
   },
   app: {
     products: "Products",

@@ -303,13 +303,19 @@ export const es: Messages = {
   },
   login: {
     title: "Inicia sesión en Gooidy",
-    sub: "Te enviaremos un enlace mágico por correo. Sin contraseña.",
+    sub: "Te enviaremos por correo un enlace y un código para entrar. Sin contraseña.",
     email: "Correo electrónico",
     placeholder: "tu@empresa.com",
     send: "Envíame un enlace",
     sending: "Enviando…",
-    sent: "Revisa {email}: ahí tienes tu enlace para entrar.",
-    linkError: "Ese enlace de acceso ha caducado o ya se usó. Pide uno nuevo.",
+    sent: "Enviamos un enlace y un código a {email}. Abre el enlace o escribe el código aquí.",
+    code: "Código del correo",
+    verify: "Entrar",
+    verifying: "Entrando…",
+    codeError: "Ese código no funcionó. Revísalo o pide uno nuevo.",
+    otherEmail: "Usar otro correo",
+    linkError:
+      "Ese enlace de acceso no funcionó; puede que haya caducado. Pide uno nuevo o usa el código del correo.",
   },
   app: {
     products: "Productos",

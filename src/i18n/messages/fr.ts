@@ -303,14 +303,20 @@ export const fr: Messages = {
   },
   login: {
     title: "Connectez-vous à Gooidy",
-    sub: "Nous vous envoyons un lien magique par e-mail. Pas de mot de passe.",
+    sub: "Nous vous envoyons par e-mail un lien et un code de connexion. Pas de mot de passe.",
     email: "E-mail",
     placeholder: "vous@entreprise.fr",
     send: "Recevoir un lien",
     sending: "Envoi…",
-    sent: "Consultez {email} : votre lien de connexion vous y attend.",
+    sent: "Nous avons envoyé un lien et un code à {email}. Ouvrez le lien ou saisissez le code ici.",
+    code: "Code reçu par e-mail",
+    verify: "Se connecter",
+    verifying: "Connexion…",
+    codeError:
+      "Ce code n'a pas fonctionné. Vérifiez-le ou demandez-en un nouveau.",
+    otherEmail: "Utiliser une autre adresse",
     linkError:
-      "Ce lien de connexion a expiré ou a déjà été utilisé. Demandez-en un nouveau.",
+      "Ce lien de connexion n'a pas fonctionné, il a peut-être expiré. Demandez-en un nouveau ou utilisez le code de l'e-mail.",
   },
   app: {
     products: "Produits",

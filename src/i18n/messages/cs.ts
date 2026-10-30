@@ -300,14 +300,19 @@ export const cs: Messages = {
   },
   login: {
     title: "Přihlaste se do Gooidy",
-    sub: "Pošleme vám e-mailem kouzelný odkaz. Bez hesla.",
+    sub: "Pošleme vám e-mailem přihlašovací odkaz a kód. Bez hesla.",
     email: "E-mail",
     placeholder: "vy@firma.cz",
     send: "Poslat odkaz e-mailem",
     sending: "Odesílám…",
-    sent: "Zkontrolujte {email}, čeká tam odkaz pro přihlášení.",
+    sent: "Poslali jsme odkaz a kód na {email}. Otevřete odkaz, nebo sem zadejte kód.",
+    code: "Kód z e-mailu",
+    verify: "Přihlásit se",
+    verifying: "Přihlašuji…",
+    codeError: "Tento kód nefungoval. Zkontrolujte ho, nebo si vyžádejte nový.",
+    otherEmail: "Použít jiný e-mail",
     linkError:
-      "Tento přihlašovací odkaz vypršel nebo už byl použit. Vyžádejte si nový.",
+      "Tento přihlašovací odkaz nefungoval, možná vypršel. Vyžádejte si nový, nebo použijte kód z e-mailu.",
   },
   app: {
     products: "Produkty",

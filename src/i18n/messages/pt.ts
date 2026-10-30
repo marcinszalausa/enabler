@@ -301,13 +301,19 @@ export const pt: Messages = {
   },
   login: {
     title: "Entre no Gooidy",
-    sub: "Enviaremos um link mágico por e-mail. Sem senha.",
+    sub: "Enviaremos por e-mail um link e um código de acesso. Sem senha.",
     email: "E-mail",
     placeholder: "voce@empresa.com",
     send: "Enviar link por e-mail",
     sending: "Enviando…",
-    sent: "Confira {email}: seu link de acesso está lá.",
-    linkError: "Esse link de acesso expirou ou já foi usado. Peça um novo.",
+    sent: "Enviamos um link e um código para {email}. Abra o link ou digite o código aqui.",
+    code: "Código do e-mail",
+    verify: "Entrar",
+    verifying: "Entrando…",
+    codeError: "Esse código não funcionou. Confira ou peça um novo.",
+    otherEmail: "Usar outro e-mail",
+    linkError:
+      "Esse link de acesso não funcionou; talvez tenha expirado. Peça um novo ou use o código do e-mail.",
   },
   app: {
     products: "Produtos",

@@ -299,14 +299,19 @@ export const nl: Messages = {
   },
   login: {
     title: "Inloggen bij Gooidy",
-    sub: "We mailen je een magische link. Geen wachtwoord nodig.",
+    sub: "We mailen je een inloglink en een code. Geen wachtwoord nodig.",
     email: "E-mail",
     placeholder: "jij@bedrijf.nl",
     send: "Mail me een link",
     sending: "Versturen…",
-    sent: "Kijk in {email}: daar staat je inloglink.",
+    sent: "We hebben een link en een code naar {email} gestuurd. Open de link of typ de code hier.",
+    code: "Code uit de e-mail",
+    verify: "Inloggen",
+    verifying: "Inloggen…",
+    codeError: "Die code werkte niet. Controleer hem of vraag een nieuwe aan.",
+    otherEmail: "Ander e-mailadres gebruiken",
     linkError:
-      "Deze inloglink is verlopen of al gebruikt. Vraag een nieuwe aan.",
+      "Deze inloglink werkte niet, misschien is hij verlopen. Vraag een nieuwe aan of gebruik de code uit de e-mail.",
   },
   app: {
     products: "Producten",

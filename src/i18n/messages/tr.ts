@@ -297,14 +297,19 @@ export const tr: Messages = {
   },
   login: {
     title: "Gooidy'ye giriş yapın",
-    sub: "Size e-postayla sihirli bir link göndereceğiz. Şifre gerekmez.",
+    sub: "Size e-postayla bir giriş linki ve kodu göndereceğiz. Şifre gerekmez.",
     email: "E-posta",
     placeholder: "siz@sirket.com",
     send: "Bana link gönder",
     sending: "Gönderiliyor…",
-    sent: "{email} adresini kontrol edin, giriş linkiniz orada.",
+    sent: "{email} adresine bir link ve kod gönderdik. Linki açın ya da kodu buraya yazın.",
+    code: "E-postadaki kod",
+    verify: "Giriş yap",
+    verifying: "Giriş yapılıyor…",
+    codeError: "Bu kod çalışmadı. Kontrol edin ya da yenisini isteyin.",
+    otherEmail: "Başka bir e-posta kullan",
     linkError:
-      "Bu giriş linkinin süresi doldu ya da zaten kullanıldı. Yenisini isteyin.",
+      "Bu giriş linki çalışmadı, süresi dolmuş olabilir. Yenisini isteyin ya da e-postadaki kodu kullanın.",
   },
   app: {
     products: "Ürünler",

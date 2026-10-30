@@ -300,14 +300,19 @@ export const pl: Messages = {
   },
   login: {
     title: "Zaloguj się do Gooidy",
-    sub: "Wyślemy Ci magiczny link e-mailem. Bez hasła.",
+    sub: "Wyślemy Ci e-mailem link i kod do logowania. Bez hasła.",
     email: "E-mail",
     placeholder: "ty@firma.pl",
     send: "Wyślij mi link",
     sending: "Wysyłam…",
-    sent: "Sprawdź skrzynkę {email}, czeka tam link do logowania.",
+    sent: "Wysłaliśmy link i kod na {email}. Otwórz link albo wpisz kod tutaj.",
+    code: "Kod z e-maila",
+    verify: "Zaloguj się",
+    verifying: "Logowanie…",
+    codeError: "Ten kod nie zadziałał. Sprawdź go albo wyślij nowy.",
+    otherEmail: "Użyj innego e-maila",
     linkError:
-      "Ten link do logowania wygasł lub został już użyty. Wyślij nowy.",
+      "Ten link do logowania nie zadziałał, mógł wygasnąć. Wyślij nowy albo użyj kodu z e-maila.",
   },
   app: {
     products: "Produkty",
