@@ -82,13 +82,23 @@ try{
     const angles=page.locator('[data-check="angles"]');await angles.scrollIntoViewIfNeeded();await pause(1000);
     const total={images:requests.size,bytes,angleNodes:await angles.locator("img").count()};
     results[phase]={initial,total};
+    console.log("MEDIA_PHASE",phase,JSON.stringify(results[phase]));
     if(phase==="after"){
       assert.equal(total.angleNodes,1,"Only selected angle mounts an image");
       const tabs=angles.getByRole("tab");await tabs.nth(2).click();
       await angles.locator('img[alt="Angle 2"]').waitFor({state:"visible"});
       const video=page.locator('[data-check="video"]');await video.scrollIntoViewIfNeeded();
       await video.locator("video").waitFor({state:"visible",timeout:15000});
-      await page.waitForFunction(()=>{const v=document.querySelector('[data-check="video"] video');return v&&!v.paused&&v.readyState>=2;});
+      try {
+        await page.waitForFunction(()=>{const v=document.querySelector('[data-check="video"] video');return v&&!v.paused&&v.readyState>=2;});
+      } catch(error) {
+        console.log("VIDEO_DIAGNOSTIC",await video.locator("video").evaluate(v=>({
+          paused:v.paused,readyState:v.readyState,networkState:v.networkState,muted:v.muted,
+          error:v.error?.message,errorCode:v.error?.code,source:v.currentSrc,
+          mp4:v.canPlayType('video/mp4; codecs="avc1.42E01E"'),visibility:document.visibilityState,
+        })));
+        throw error;
+      }
       await page.evaluate(()=>{Object.defineProperty(document,"visibilityState",{configurable:true,get:()=>"hidden"});document.dispatchEvent(new Event("visibilitychange"));});
       await video.locator("video").waitFor({state:"detached"});
       await page.evaluate(()=>{Object.defineProperty(document,"visibilityState",{configurable:true,get:()=>"visible"});document.dispatchEvent(new Event("visibilitychange"));});
