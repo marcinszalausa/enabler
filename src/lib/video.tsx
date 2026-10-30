@@ -1,4 +1,5 @@
 import "server-only";
+import { fetchPublicUrl } from "@/lib/public-fetch";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { claimGeneration, finalizeGeneration } from "@/lib/generation-credits";
 import { writeVideoAds, type BrandBrief, type VideoAd } from "@/lib/ai/claude";
@@ -400,9 +401,9 @@ async function saveVideo(
 }
 
 async function download(url: string): Promise<Buffer> {
-  const res = await fetch(url, { signal: AbortSignal.timeout(60_000) });
-  if (!res.ok) throw new Error(`Couldn't download ${new URL(url).pathname}.`);
-  return Buffer.from(await res.arrayBuffer());
+  const response = await fetchPublicUrl(url, { maxBytes: 64*1024*1024, timeoutMs: 60000 });
+  if (response.status < 200 || response.status >= 300) throw new Error("Couldn't download generated media.");
+  return response.body;
 }
 
 async function downloadStored(path: string): Promise<Buffer> {

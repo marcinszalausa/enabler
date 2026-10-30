@@ -1,4 +1,5 @@
 import "server-only";
+import { fetchPublicUrl } from "@/lib/public-fetch";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { claimGeneration, finalizeGeneration } from "@/lib/generation-credits";
 import { reviewAdImage, writeAdAngles, type BrandBrief } from "@/lib/ai/claude";
@@ -59,15 +60,13 @@ export async function runGeneration({
           referenceImageUrl,
           product: brief.product_name,
         });
-        const image = await fetch(imageUrl, {
-          signal: AbortSignal.timeout(30_000),
-        });
-        if (!image.ok) throw new Error("Couldn't download generated image.");
+        const image = await fetchPublicUrl(imageUrl, { maxBytes: 8*1024*1024, timeoutMs: 30000, accept: "image/*" });
+        if (image.status < 200 || image.status >= 300) throw new Error("Couldn't download generated image.");
 
         const path = `${workspaceId}/${generationId}/${i + 1}-${aspect.replace(":", "x")}.jpg`;
         const upload = await db.storage
           .from("creatives")
-          .upload(path, await image.arrayBuffer(), {
+          .upload(path, new Uint8Array(image.body).buffer, {
             contentType: "image/jpeg",
             upsert: true,
           });

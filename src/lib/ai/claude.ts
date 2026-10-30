@@ -1,4 +1,5 @@
 import "server-only";
+import { verifyPublicUrl } from "@/lib/public-fetch";
 import { UserError } from "@/lib/errors";
 import Anthropic from "@anthropic-ai/sdk";
 import { betaZodOutputFormat } from "@anthropic-ai/sdk/helpers/beta/zod";
@@ -304,16 +305,20 @@ export async function reviewAdImage(opts: {
   referenceImageUrl: string | null;
   product: string;
 }): Promise<ImageReview> {
+  const [imageUrl, referenceImageUrl] = await Promise.all([
+    verifyPublicUrl(opts.imageUrl).then(url => url.toString()),
+    opts.referenceImageUrl ? verifyPublicUrl(opts.referenceImageUrl).then(url => url.toString()) : null,
+  ]);
   const content: Anthropic.Beta.BetaContentBlockParam[] = [];
-  if (opts.referenceImageUrl) {
+  if (referenceImageUrl) {
     content.push(
       { type: "text", text: "The real product photo:" },
-      { type: "image", source: { type: "url", url: opts.referenceImageUrl } },
+      { type: "image", source: { type: "url", url: referenceImageUrl } },
     );
   }
   content.push(
     { type: "text", text: "The generated ad photo to check:" },
-    { type: "image", source: { type: "url", url: opts.imageUrl } },
+    { type: "image", source: { type: "url", url: imageUrl } },
     {
       type: "text",
       text: `Product: ${opts.product}. Check the generated photo closely. Reject it for any of: hands or fingers that are malformed, merged, extra or missing; distorted faces, eyes or limbs; garbled text or logos; the product shown in a different color, pattern or design than the real one; a second, different version of the product. Differences in pose, setting, lighting or slight shade from the lighting are fine; only reject flaws a shopper would actually notice.`,

@@ -1,4 +1,5 @@
 import "server-only";
+import { fetchPublicUrl } from "@/lib/public-fetch";
 import { validWebhookSignature } from "./webhook";
 
 // Zernio (formerly Late) posts to every network through its own approved
@@ -114,12 +115,11 @@ export async function uploadMedia(
     method: "POST",
     body: { filename, contentType, size: bytes.byteLength },
   });
-  const put = await fetch(uploadUrl, {
-    method: "PUT",
-    headers: { "content-type": contentType },
-    body: bytes,
+  const put = await fetchPublicUrl(uploadUrl, {
+    method: "PUT", body: new Uint8Array(bytes), contentType,
+    maxBytes: 64*1024, maxRedirects: 0, timeoutMs: 30000,
   });
-  if (!put.ok) throw new Error(`Media upload failed (${put.status}).`);
+  if (put.status < 200 || put.status >= 300) throw new Error(`Media upload failed (${put.status}).`);
   return publicUrl;
 }
 
