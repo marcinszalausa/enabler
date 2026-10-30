@@ -78,10 +78,11 @@ try{
     }
     const demo=page.locator('[data-check="demo"]');
     await demo.scrollIntoViewIfNeeded();
-    await page.clock.fastForward(12000);
-    await pause(200);
+    await pause(200); // Let IntersectionObserver start the demo before advancing RAF.
+    await page.clock.runFor(11000);
     const display=demo.locator('[data-single-product-display="run-demo"]');
     await display.waitFor({state:"visible"});
+    await display.locator("img").waitFor({state:"visible"});
     const buttons=display.locator("button");
     for(let i=0;i<await buttons.count();i++){
       await buttons.nth(i).click();
