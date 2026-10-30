@@ -1,7 +1,6 @@
 import { setShowcase } from "./showcase-actions";
-import { VIDEO_SECONDS, VIDEOS_PER_GENERATION } from "@/lib/video";
-import { lengthForRunCost } from "@/lib/video-options";
-import { Chip, DownloadIcon, ProgressCard, smallButton } from "../../ui";
+import { DEFAULT_VIDEO_OPTIONS, lengthForRunCost } from "@/lib/video-options";
+import { Chip, DownloadIcon, smallButton } from "../../ui";
 import {
   PublishDialog,
   PublishOneButton,
@@ -10,6 +9,8 @@ import {
 import { platformName } from "@/lib/social/platforms";
 import type { Messages } from "@/i18n/messages";
 import { fmt } from "@/i18n/format";
+import { GenerationStatus } from "./generation-status";
+import { generationPresentation, type CreditReceipt } from "@/lib/generation-presentation";
 
 // The latest post of an ad, for the line under it.
 export type AdPost = {
@@ -38,6 +39,7 @@ export type Generation = {
   showcased_at: string | null;
   cost_credits: number;
   creatives: Creative[];
+  video_jobs?: { status: string }[];
 };
 
 export function GenerationBlock({
@@ -50,6 +52,8 @@ export function GenerationBlock({
   accounts,
   nextSlot,
   posts,
+  receipt,
+  canRetry = false,
 }: {
   t: Messages;
   locale: string;
@@ -60,6 +64,8 @@ export function GenerationBlock({
   accounts: PublishAccount[] | null;
   nextSlot: string | null;
   posts: Record<string, AdPost>;
+  receipt?: CreditReceipt | null;
+  canRetry?: boolean;
 }) {
   const when = new Date(g.created_at).toLocaleString(locale, {
     dateStyle: "medium",
@@ -68,26 +74,9 @@ export function GenerationBlock({
 
   const video = g.type === "video_ads";
   // A run's length isn't stored; every length has its own price.
-  const seconds = Number(lengthForRunCost(g.cost_credits) ?? VIDEO_SECONDS);
+  const seconds = Number(lengthForRunCost(g.cost_credits) ?? DEFAULT_VIDEO_OPTIONS.length);
 
-  if (g.status === "queued" || g.status === "running") {
-    return (
-      <ProgressCard title={video ? t.app.makingVideos : t.app.makingImages}>
-        {video
-          ? fmt(t.app.makingVideosBody, { count: VIDEOS_PER_GENERATION })
-          : t.app.makingImagesBody}
-      </ProgressCard>
-    );
-  }
-
-  if (g.status === "failed") {
-    return (
-      <div className="rounded-2xl border border-danger/30 bg-danger-bg p-6 text-sm">
-        <p className="font-medium text-danger">{t.app.failed}</p>
-        {g.error && <p className="mt-1 text-muted">{g.error}</p>}
-      </div>
-    );
-  }
+  const view = generationPresentation(g);
 
   const creatives = [...g.creatives].sort(
     (a, b) =>
@@ -97,6 +86,7 @@ export function GenerationBlock({
 
   return (
     <div>
+      <GenerationStatus t={t} generation={g} receipt={receipt} canRetry={canRetry} />
       <div className="flex flex-wrap items-center justify-between gap-2">
         <h2 className="flex flex-wrap items-baseline gap-x-2 text-sm">
           <span className="font-medium">
@@ -110,10 +100,9 @@ export function GenerationBlock({
             )}
           </span>
           <span className="text-muted">{when}</span>
-          {g.error && <span className="text-warn">{g.error}</span>}
         </h2>
         <div className="flex flex-wrap items-center gap-2">
-          {accounts && creatives.length > 0 && (
+          {accounts && !view.active && g.status === "succeeded" && creatives.length > 0 && (
             <PublishDialog
               generationId={g.id}
               creatives={creatives.map((c) => ({
@@ -128,7 +117,7 @@ export function GenerationBlock({
               nextSlot={nextSlot}
             />
           )}
-          {canShowcase && (
+          {canShowcase && g.status === "succeeded" && creatives.length > 0 && (
             <form action={setShowcase}>
               <input type="hidden" name="generationId" value={g.id} />
               <input
@@ -206,7 +195,7 @@ export function GenerationBlock({
                   <DownloadIcon />
                   {video ? t.app.downloadMp4 : t.app.download}
                 </a>
-                {accounts && (
+                {accounts && !view.active && g.status === "succeeded" && (
                   <PublishOneButton generationId={g.id} creativeId={c.id} />
                 )}
               </div>
