@@ -8,6 +8,13 @@ import { deleteAccount } from "@/lib/social/zernio";
 import { canEditWorkspace } from "@/lib/workspace-access";
 import { enforceConnectedAccountLimit } from "@/lib/social/connection-limit";
 
+function redirectResponse(url: URL) {
+  const response = NextResponse.redirect(url);
+  response.headers.set("cache-control", "no-store");
+  response.headers.set("referrer-policy", "no-referrer");
+  return response;
+}
+
 // Zernio sends the customer back here after they approve (or cancel) a
 // network: ?connected=<platform>&profileId=...&accountId=...
 export async function GET(request: NextRequest) {
@@ -16,7 +23,7 @@ export async function GET(request: NextRequest) {
 
   const supabase = await createClient();
   const { data: auth } = await supabase.auth.getUser();
-  if (!auth.user) return NextResponse.redirect(new URL("/login", back));
+  if (!auth.user) return redirectResponse(new URL("/login", back));
 
   const cookie = socialConnectCookie(process.env.NODE_ENV === "production");
   const cookieStore = await cookies();
@@ -33,12 +40,12 @@ export async function GET(request: NextRequest) {
   } catch {
     console.error("social callback state verification failed");
     back.searchParams.set("error", "connect");
-    return NextResponse.redirect(back);
+    return redirectResponse(back);
   }
   if (!connection) {
     back.searchParams.set("error", "connect");
     back.searchParams.set("detail", "This connection attempt is invalid or expired. Please start again.");
-    return NextResponse.redirect(back);
+    return redirectResponse(back);
   }
   cookieStore.set(cookie.name, "", { ...cookie.options, maxAge: 0 });
 
@@ -58,12 +65,12 @@ export async function GET(request: NextRequest) {
     : { data: null };
 
   const platform = params.get("connected");
-  if (!ws || !(await canEditWorkspace(supabase, ws.id)) || !platform || params.get("error")) {
+  if (!ws || !(await canEditWorkspace(supabase, ws.id)) || !platform || params.has("error")) {
     back.searchParams.set("error", "connect");
     // Zernio's own words on what went wrong, e.g. no Facebook Page ticked.
     const detail = params.get("error_message") ?? params.get("error");
     if (detail) back.searchParams.set("detail", detail.slice(0, 200));
-    return NextResponse.redirect(back);
+    return redirectResponse(back);
   }
   try {
     // Do not perform limit enforcement if synchronization failed.
@@ -76,14 +83,14 @@ export async function GET(request: NextRequest) {
       });
       if (result !== "allowed") {
         back.searchParams.set("error", result === "removed" ? "limit" : "connect");
-        return NextResponse.redirect(back);
+        return redirectResponse(back);
       }
     }
   } catch (err) {
     console.error("account callback failed", err);
     back.searchParams.set("error", "connect");
-    return NextResponse.redirect(back);
+    return redirectResponse(back);
   }
   back.searchParams.set("connected", platform);
-  return NextResponse.redirect(back);
+  return redirectResponse(back);
 }
