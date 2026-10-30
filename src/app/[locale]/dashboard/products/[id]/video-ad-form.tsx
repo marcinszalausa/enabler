@@ -1,7 +1,7 @@
 "use client";
 
-import { useActionState, useState } from "react";
-import { startGeneration, type FormState } from "../../actions";
+import { useState } from "react";
+import { useGenerationAction } from "./use-generation-action";
 import { useI18n } from "@/i18n/client";
 import { fmt } from "@/i18n/format";
 import {
@@ -16,19 +16,19 @@ import {
   type LengthKey,
 } from "@/lib/video-options";
 
-const initialState: FormState = { error: null };
-
 const field =
   "w-full rounded-md border border-line-strong bg-raised px-3 py-2 text-sm outline-none transition focus:border-accent focus:ring-4 focus:ring-accent/20";
 
 // The video button opens a short form for what the ad says and who says it.
 export function VideoAdForm({
   productId,
+  initialRequestId,
   cost,
   label,
   language,
 }: {
   productId: string;
+  initialRequestId: string;
   cost: number;
   label: string;
   // Chosen next to the buttons; shared with image runs.
@@ -37,14 +37,7 @@ export function VideoAdForm({
   const [open, setOpen] = useState(false);
   const [length, setLength] = useState<LengthKey>(DEFAULT_VIDEO_OPTIONS.length);
   const { t } = useI18n();
-  const [state, action, pending] = useActionState(
-    async (prev: FormState, formData: FormData) => {
-      const result = await startGeneration(prev, formData);
-      if (!result.error) setOpen(false);
-      return result;
-    },
-    initialState,
-  );
+  const { state, action, pending, requestId } = useGenerationAction(initialRequestId, () => setOpen(false));
 
   if (!open) {
     return (
@@ -63,6 +56,7 @@ export function VideoAdForm({
       action={action}
       className="flex w-full flex-col gap-4 rounded-xl border border-line bg-raised p-4 text-left text-sm sm:w-96"
     >
+      <input type="hidden" name="requestId" value={requestId} />
       <input type="hidden" name="productId" value={productId} />
       <input type="hidden" name="kind" value="video" />
 

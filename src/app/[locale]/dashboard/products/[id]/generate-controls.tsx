@@ -10,12 +10,16 @@ import { VideoAdForm } from "./video-ad-form";
 // product page is written in.
 export function GenerateControls({
   productId,
+  imageRequestId,
+  videoRequestId,
   imageCost,
   videoCost,
   videoLabel,
   defaultLanguage,
 }: {
   productId: string;
+  imageRequestId: string;
+  videoRequestId: string;
   imageCost: number;
   videoCost: number;
   videoLabel: string;
@@ -42,11 +46,13 @@ export function GenerateControls({
       </label>
       <div className="flex flex-wrap items-start gap-2 lg:justify-end">
         <GenerateButton
+          initialRequestId={imageRequestId}
           productId={productId}
           cost={imageCost}
           language={language}
         />
         <VideoAdForm
+          initialRequestId={videoRequestId}
           productId={productId}
           cost={videoCost}
           label={videoLabel}

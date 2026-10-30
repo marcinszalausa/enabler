@@ -16,13 +16,35 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - name: Read installed framework guides
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          for p in Path('node_modules/next/dist/docs').rglob('*'):
-              if p.is_file() and any(s in p.name for s in ['after.', 'server-actions', 'mutating-data']):
-                  print(f'GUIDE {p}\n{p.read_text()}')
-          PY
-      - name: Generate migration filename
-        run: npx --yes supabase@2.81.3 migration new generation_credit_ledger
+      - name: Request and settlement unit tests
+        run: node --experimental-strip-types --test tests/generation-*.test.ts
+      - name: Generate route types and typecheck
+        run: npx next typegen && npx tsc --noEmit
+      - name: Lint changed application files
+        run: npx eslint src/lib/generation-request.ts src/lib/generation-credits.ts 'src/app/[locale]/dashboard/actions.ts' 'src/app/[locale]/dashboard/products/[id]/use-generation-action.ts' 'src/app/[locale]/dashboard/products/[id]/generate-controls.tsx' 'src/app/[locale]/dashboard/products/[id]/generate-button.tsx' 'src/app/[locale]/dashboard/products/[id]/video-ad-form.tsx' 'src/app/[locale]/dashboard/products/[id]/page.tsx' src/lib/pipeline.ts src/lib/video.tsx
+  ledger:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        postgres: ['16', '17']
+    services:
+      postgres:
+        image: postgres:${{ matrix.postgres }}
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: credit_tests
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y postgresql-client
+      - name: Apply migrations and run legacy and ledger regression suites
+        env:
+          CREDIT_TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/credit_tests
+        run: bash scripts/test-credits.sh && bash scripts/test-generation-ledger.sh
