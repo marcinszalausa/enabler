@@ -39,6 +39,7 @@ export function PublishingView({
   posts,
   connected,
   failed,
+  detail,
   overLimit,
   limit,
 }: {
@@ -49,6 +50,8 @@ export function PublishingView({
   posts: PostRow[];
   connected: string | null;
   failed: boolean;
+  // What the network or Zernio said, shown under the error.
+  detail: string | null;
   overLimit: boolean;
   // Accounts the plan covers; the earliest connected count first.
   limit: number;
@@ -85,6 +88,9 @@ export function PublishingView({
           className="rounded-xl bg-danger-bg px-4 py-3 text-sm text-danger"
         >
           {t.publish.connectFailed}
+          {detail && (
+            <span className="mt-1 block text-xs opacity-80">{detail}</span>
+          )}
         </p>
       )}
       {overLimit && (

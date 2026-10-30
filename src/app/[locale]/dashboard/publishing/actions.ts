@@ -58,7 +58,10 @@ export async function connectAccount(formData: FormData) {
     );
   } catch (err) {
     console.error("connect failed", platform, err);
-    redirect("/dashboard/publishing?error=connect");
+    const detail = err instanceof Error ? err.message.slice(0, 200) : "";
+    redirect(
+      `/dashboard/publishing?error=connect&detail=${encodeURIComponent(detail)}`,
+    );
   }
   redirect(authUrl);
 }

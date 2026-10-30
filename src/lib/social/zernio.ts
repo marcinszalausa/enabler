@@ -75,8 +75,6 @@ export async function connectUrl(
     query: {
       profileId,
       redirect_url: redirectUrl,
-      brandName: "Gooidy",
-      logoUrl: "https://gooidy.com/brand/icon-512.png",
     },
   });
   return data.authUrl;

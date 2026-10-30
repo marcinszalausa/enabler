@@ -31,6 +31,9 @@ export async function GET(request: NextRequest) {
   const platform = params.get("connected");
   if (!ws || !platform || params.get("error")) {
     back.searchParams.set("error", "connect");
+    // Zernio's own words on what went wrong, e.g. no Facebook Page ticked.
+    const detail = params.get("error_message") ?? params.get("error");
+    if (detail) back.searchParams.set("detail", detail.slice(0, 200));
     return NextResponse.redirect(back);
   }
   try {

@@ -106,6 +106,7 @@ async function Publishing({
       posts={(posts ?? []) as unknown as PostRow[]}
       connected={typeof query.connected === "string" ? query.connected : null}
       failed={query.error === "connect"}
+      detail={typeof query.detail === "string" ? query.detail : null}
       overLimit={query.error === "limit"}
       limit={accountLimit(ws.plan)}
     />
