@@ -1,3 +1,4 @@
+import assert from "node:assert/strict";
 import { execFileSync, spawnSync } from "node:child_process";
 import { readFile,writeFile } from "node:fs/promises";
 import { createRequire } from "node:module";
@@ -46,3 +47,31 @@ const summary={
 };
 console.log("PERFORMANCE_MEDIAN",JSON.stringify(summary));
 await writeFile("/tmp/performance-summary.json",JSON.stringify(summary,null,2));
+
+if(process.env.VERIFY_DEPLOYMENT==="true"){
+  const html=await (await fetch("https://gooidy.com")).text();
+  const normalized=html.replaceAll("%2F","/").replaceAll("%2f","/");
+  const ids=[...new Set([...normalized.matchAll(/\/api\/creatives\/([0-9a-f-]{36})\/image/g)].map(match=>match[1]))];
+  for(const id of ids.slice(0,3)){
+    const base="https://gooidy.com/api/creatives/"+id+"/image";
+    const full=await fetch(base);
+    if(full.status===404)continue;
+    assert.equal(full.status,200,"Public original image loads");
+    assert.match(full.headers.get("content-type")??"",/^image\/png/);
+    const original=Buffer.from(await full.arrayBuffer());
+    const preview=await fetch(base+"?preview=1");
+    assert.equal(preview.status,200,"Preview loads on deployed runtime");
+    assert.match(preview.headers.get("content-type")??"",/^image\/webp/);
+    const small=Buffer.from(await preview.arrayBuffer());
+    assert.ok(small.length<original.length,"Preview is smaller than export");
+    const exportResponse=await fetch(base+"?preview=1&download=1");
+    assert.equal(exportResponse.status,200);
+    assert.match(exportResponse.headers.get("content-type")??"",/^image\/png/);
+    assert.match(exportResponse.headers.get("content-disposition")??"",/attachment/);
+    const exported=Buffer.from(await exportResponse.arrayBuffer());
+    assert.equal(exported.readUInt32BE(16),original.readUInt32BE(16),"Export keeps original width");
+    assert.equal(exported.readUInt32BE(20),original.readUInt32BE(20),"Export keeps original height");
+    console.log("LIVE_PREVIEW_VERIFIED",JSON.stringify({originalBytes:original.length,previewBytes:small.length,width:original.readUInt32BE(16),height:original.readUInt32BE(20)}));
+    break;
+  }
+}

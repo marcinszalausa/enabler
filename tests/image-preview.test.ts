@@ -33,3 +33,12 @@ test("photographic previews transfer substantially less data without changing th
   assert.equal(response.headers.get("cache-control"),"public, max-age=3600");
   console.log("DASHBOARD_PREVIEW_BYTES",JSON.stringify({original:full.length,preview:preview.length}));
 });
+
+test("preview processing failures preserve the original response and private cache headers",async(t)=>{
+  t.mock.method(console,"error",()=>{});
+  const source=new Uint8Array([1,2,3]);
+  const response=await makeImagePreview(new Response(source,{headers:{"content-type":"image/png","cache-control":"private, max-age=3600"}}));
+  assert.equal(response.headers.get("content-type"),"image/png");
+  assert.equal(response.headers.get("cache-control"),"private, max-age=3600");
+  assert.deepEqual(new Uint8Array(await response.arrayBuffer()),source);
+});
