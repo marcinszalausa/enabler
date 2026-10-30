@@ -28,7 +28,7 @@ export function BeforeAfter({ photo, name, url, madeIn, ads }: {
 }) {
   const [active, setActive] = useState(-1);
   const { hostname, pathname } = new URL(url);
-  const store = hostname.replace(/^www\\./, "");
+  const store = hostname.replace(/^www\./, "");
   const { t } = useI18n();
   const ad = ads[active];
   return (
