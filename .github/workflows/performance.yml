@@ -9,6 +9,7 @@ permissions:
   statuses: read
 jobs:
   performance:
+    if: github.ref != 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
@@ -57,3 +58,27 @@ jobs:
             /tmp/public-performance-*.json
             /tmp/performance-summary.json
             /tmp/media-comparison.json
+  production-measure:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --prefix /tmp/gooidy-performance --no-package-lock playwright@1.56.1 lighthouse@12.8.2
+      - run: /tmp/gooidy-performance/node_modules/.bin/playwright install --with-deps chromium
+      - name: Measure deployed production commit
+        run: node scripts/measure-public-performance.mjs
+        env:
+          PLAYWRIGHT_MODULE_PATH: /tmp/gooidy-performance/node_modules/playwright
+          GH_TOKEN: ${{ github.token }}
+          VERIFY_DEPLOYMENT: 'true'
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: public-performance-results
+          path: |
+            /tmp/public-performance-*.json
+            /tmp/performance-summary.json
