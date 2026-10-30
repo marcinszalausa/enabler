@@ -23,7 +23,7 @@ jobs:
           from urllib.request import urlopen
           for p in Path('node_modules/next/dist/docs').rglob('*route-handlers*'):
               if p.is_file(): print(f'GUIDE {p}\n{p.read_text()}')
-          for url in ['https://docs.zernio.com/webhooks', 'https://docs.zernio.com/webhooks/posts', 'https://docs.zernio.com/webhooks/accounts']:
+          for url in ['https://docs.zernio.com/llms-mdx/webhooks', 'https://docs.zernio.com/llms-mdx/webhooks/posts', 'https://docs.zernio.com/llms-mdx/webhooks/accounts']:
               print('PROVIDER DOC', url)
               print(urlopen(url, timeout=20).read().decode()[:55000])
           PY
