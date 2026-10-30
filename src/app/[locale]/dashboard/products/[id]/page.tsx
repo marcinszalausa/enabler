@@ -1,3 +1,5 @@
+import { canEditWorkspace } from "@/lib/workspace-access";
+import type { CreditReceipt } from "@/lib/generation-presentation";
 import { randomUUID } from "node:crypto";
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
@@ -78,11 +80,11 @@ async function Product({
     .maybeSingle();
   if (!product) notFound();
 
-  const [{ data: generations }, { data: workspace }, kit] = await Promise.all([
+  const [{ data: generations, error: generationsError }, { data: workspace }, kit, canEdit, receiptResult] = await Promise.all([
     supabase
       .from("generations")
       .select(
-        "id, type, status, error, created_at, showcased_at, cost_credits, creatives(id, kind, aspect, angle, headline, primary_text, cta)",
+        "id, type, status, error, created_at, showcased_at, cost_credits, creatives(id, kind, aspect, angle, headline, primary_text, cta), video_jobs(status)",
       )
       .eq("product_id", id)
       .order("created_at", { ascending: false })
@@ -93,7 +95,14 @@ async function Product({
       .eq("id", product.workspace_id)
       .single(),
     getBrandKit(supabase, product.workspace_id),
+    canEditWorkspace(supabase, product.workspace_id),
+    supabase.rpc("generation_receipts", { product: id }),
   ]);
+  if (generationsError) throw generationsError;
+  if (receiptResult.error) console.error("generation receipts unavailable", receiptResult.error.code);
+  const receipts = new Map<string, CreditReceipt>(
+    (receiptResult.error ? [] : receiptResult.data ?? []).map((row: CreditReceipt & { generation_id: string }) => [row.generation_id, row]),
+  );
   // Changes with the brand kit, so browsers refetch re-branded images.
   const imageVersion = encodeURIComponent(
     `${kit.accent_color}${kit.font}${kit.logo_path ?? ""}`,
@@ -118,7 +127,7 @@ async function Product({
     <>
       <AutoRefresh
         active={running.length > 0}
-        videoRuns={running
+        videoRuns={(canEdit ? running : [])
           .filter((g) => g.type === "video_ads")
           .map((g) => g.id)}
       />
@@ -146,7 +155,7 @@ async function Product({
             </a>
           </div>
         </div>
-        <div className="flex flex-col items-start gap-2 rounded-2xl border border-line bg-raised p-4 lg:items-end">
+        <div id="generate-ads" tabIndex={-1} className="flex scroll-mt-24 flex-col items-start gap-2 rounded-2xl border border-line bg-raised p-4 focus:outline-2 focus:outline-accent lg:items-end">
           <GenerateControls
             imageRequestId={randomUUID()}
             videoRequestId={randomUUID()}
@@ -218,6 +227,8 @@ async function Product({
             accounts={publishing?.accounts ?? null}
             nextSlot={publishing?.nextSlot ?? null}
             posts={publishing?.posts ?? {}}
+            receipt={receipts.get(g.id)}
+            canRetry={canEdit}
           />
         ))}
       </section>
