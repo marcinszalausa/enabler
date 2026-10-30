@@ -179,7 +179,7 @@ export function PhoneFeed({
     <div ref={root} className={`relative ${className}`} data-product-key={current.productKey}>
       {notes && <Notes ad={current} key={index % ads.length} />}
       {/* A phone's own screen stays left to right in every language. */}
-      <div dir="ltr">
+      <div dir="ltr" className={depth > 0 ? "iphone-space" : undefined}>
         {bare ? (
           <div className={SCREEN}>{screen}</div>
         ) : (

@@ -8,9 +8,8 @@ import type { FeedAd } from "./reel";
 // the middle, single ads turned away on each side. The phones have real
 // thickness, and the whole stage leans a few degrees toward the pointer,
 // which makes them feel like objects, not images.
-// Body thickness in % of width. The real phone is 11.2% (8.75 mm on 78 mm),
-// which reads a little heavy on screen.
-const DEPTH = 9;
+// Physical body depth, as a percentage of the phone width.
+const DEPTH = 11.5;
 // Ad widths inside the side phones, which only show from 640 px up.
 const SIDE = "(min-width: 64rem) 270px, (min-width: 48rem) 225px, 200px";
 
@@ -44,7 +43,7 @@ export function HeroStage({
         const x = e.clientX / innerWidth - 0.5;
         const y = e.clientY / innerHeight - 0.5;
         el.style.setProperty("--ry", `${(x * 10).toFixed(2)}deg`);
-        el.style.setProperty("--rx", `${(-y * 6).toFixed(2)}deg`);
+        el.style.setProperty("--rx", `${(4 - y * 4).toFixed(2)}deg`);
       });
     };
     addEventListener("pointermove", onMove);
