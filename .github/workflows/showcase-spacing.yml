@@ -1,0 +1,26 @@
+name: Showcase product spacing checks
+on:
+  push:
+    branches: [fix/showcase-product-spacing]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  showcase:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Installed server/client and image guidance
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          for name in ['server-and-client-components.mdx', 'server-and-client-components.md', 'image.md']:
+            for p in Path('node_modules/next/dist/docs').rglob(name):
+              print(f'GUIDE {p}\n{p.read_text()[:25000]}')
+          PY
