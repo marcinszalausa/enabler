@@ -1,0 +1,47 @@
+name: Zernio webhook checks
+on:
+  push:
+    branches: [fix/zernio-webhook-hardening]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  webhook-application:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: node --experimental-strip-types --test tests/*.test.ts
+      - run: npx next typegen && npx tsc --noEmit
+      - run: npx eslint src/lib/social/webhook.ts src/lib/social/zernio.ts src/app/api/webhooks/zernio/route.ts
+  webhook-database:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        postgres: ['16', '17']
+    services:
+      postgres:
+        image: postgres:${{ matrix.postgres }}
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: webhook_tests
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y postgresql-client
+      - name: Apply migrations and run webhook transaction tests
+        env:
+          CREDIT_TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/webhook_tests
+        run: bash scripts/test-credits.sh && bash scripts/test-zernio-webhook.sh

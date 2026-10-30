@@ -1,5 +1,5 @@
 import "server-only";
-import { createHmac, timingSafeEqual } from "node:crypto";
+import { validWebhookSignature } from "./webhook";
 
 // Zernio (formerly Late) posts to every network through its own approved
 // platform apps, so customers connect accounts without Gooidy going through
@@ -190,12 +190,7 @@ export async function deletePost(postId: string) {
   await call(`/posts/${postId}`, { method: "DELETE" });
 }
 
-// Webhook bodies are signed: lowercase hex HMAC-SHA256 of the raw body.
+// Retain the existing helper API; verification is shared with the webhook handler.
 export function validSignature(rawBody: string, header: string | null) {
-  const secret = process.env.ZERNIO_WEBHOOK_SECRET;
-  if (!secret || !header) return false;
-  const expected = createHmac("sha256", secret).update(rawBody).digest("hex");
-  const a = Buffer.from(expected);
-  const b = Buffer.from(header);
-  return a.length === b.length && timingSafeEqual(a, b);
+  return validWebhookSignature(rawBody, header, process.env.ZERNIO_WEBHOOK_SECRET);
 }
