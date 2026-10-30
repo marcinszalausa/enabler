@@ -93,6 +93,10 @@ async function showcaseAds(t: Messages) {
     getShowcase(),
     getShowcase("video_ads"),
   ]);
+  const posters = new Map(imageRuns.flatMap(run => {
+    const still = run.ads.find(ad => ad.aspect === "9:16");
+    return still ? [[productKey(run.productUrl), image(still.id)] as const] : [];
+  }));
   return {
     runs: imageRuns,
     images: roundRobin(imageRuns, (r, a) => ({
@@ -101,7 +105,7 @@ async function showcaseAds(t: Messages) {
     })),
     videos: roundRobin(videoRuns, (r, a) => ({
       ...about(r, a),
-      video: { src: `/api/creatives/${a.id}/video` },
+      video: { src: `/api/creatives/${a.id}/video`, poster: posters.get(productKey(r.productUrl)) },
       format: fmt(t.home.videoFormat, COUNTS),
       sound: true,
     })),
