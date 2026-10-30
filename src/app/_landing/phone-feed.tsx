@@ -57,10 +57,13 @@ export function PhoneFeed({
   const current = ads[index % ads.length];
 
   const next = () => {
-    setAnimate(true);
-    setIndex((i) =>
-      reduceMotion.current ? (i + 1) % ads.length : Math.min(i + 1, ads.length),
-    );
+    const following = (index + 1) % ads.length;
+    // Variants of one product swap in-place; sliding them would briefly show
+    // the same product twice at the boundary between outgoing/incoming cards.
+    const slide = !reduceMotion.current &&
+      ads[following].productKey !== ads[index % ads.length].productKey;
+    setAnimate(slide);
+    setIndex(slide ? Math.min(index + 1, ads.length) : following);
   };
 
   useEffect(() => {
@@ -94,7 +97,7 @@ export function PhoneFeed({
     if (!playing || !looping) return;
     const t = setTimeout(next, items[index].video ? VIDEO_MAX_MS : IMAGE_MS);
     return () => clearTimeout(t);
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- next only reads refs and setters
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- next uses the index/ads for this rendered frame
   }, [index, playing, looping]);
 
   const screen = (
@@ -207,7 +210,7 @@ export function PhoneFeed({
   );
 
   return (
-    <div ref={root} className={`relative ${className}`}>
+    <div ref={root} className={`relative ${className}`} data-product-key={current.productKey}>
       {notes && <Notes ad={current} key={index % ads.length} />}
       {/* A phone's own screen stays left to right in every language. */}
       <div dir="ltr">

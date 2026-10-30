@@ -24,3 +24,14 @@ jobs:
             for p in Path('node_modules/next/dist/docs').rglob(name):
               print(f'GUIDE {p}\n{p.read_text()[:25000]}')
           PY
+      - name: Security and product identity tests
+        run: node --experimental-strip-types --test tests/*.test.ts
+      - run: npx next typegen && npx tsc --noEmit
+      - name: Lint showcase changes
+        run: npx eslint src/lib/product-display.ts src/lib/showcase.ts 'src/app/[locale]/page.tsx' src/app/_landing/reel.tsx src/app/_landing/phone-feed.tsx src/app/_landing/hero-stage.tsx src/app/_landing/placements.tsx src/app/_landing/before-after.tsx src/app/_landing/run-demo.tsx 'src/app/[locale]/use-cases/run-viewer.tsx'
+      - run: npm install --prefix /tmp/gooidy-showcase-browser --no-package-lock playwright@1.56.1
+      - run: /tmp/gooidy-showcase-browser/node_modules/.bin/playwright install --with-deps chromium
+      - name: Mobile, desktop and reduced-motion rotation checks
+        run: node scripts/check-showcase-browser.mjs
+        env:
+          PLAYWRIGHT_MODULE_PATH: /tmp/gooidy-showcase-browser/node_modules/playwright

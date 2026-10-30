@@ -9,6 +9,7 @@ import { useI18n } from "@/i18n/client";
 // feed and TikTok, with each app's own buttons around it. Only the app
 // chrome is drawn here; the ad, its headline and the store are real.
 export type PlacementAd = {
+  productKey: string;
   story: { image: string; alt: string };
   square: { image: string; alt: string; primaryText: string };
   store: string;
@@ -16,22 +17,20 @@ export type PlacementAd = {
 
 const SIZES = "(min-width: 64rem) 230px, (min-width: 40rem) 200px, 44vw";
 
-export function Placements({ ad }: { ad: PlacementAd }) {
+export function Placements({ ads }: { ads: PlacementAd[] }) {
   const { t } = useI18n();
-  const phones = [
-    { label: t.feed.reels, screen: <Reels ad={ad} /> },
-    { label: t.feed.stories, screen: <Story ad={ad} /> },
-    { label: t.feed.facebook, screen: <Feed ad={ad} /> },
-    { label: t.feed.tiktok, screen: <TikTok ad={ad} /> },
+  const formats = [
+    { label: t.feed.reels, render: (ad: PlacementAd) => <Reels ad={ad} /> },
+    { label: t.feed.stories, render: (ad: PlacementAd) => <Story ad={ad} /> },
+    { label: t.feed.facebook, render: (ad: PlacementAd) => <Feed ad={ad} /> },
+    { label: t.feed.tiktok, render: (ad: PlacementAd) => <TikTok ad={ad} /> },
   ];
   return (
-    <ul className="stagger grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 lg:grid-cols-4">
-      {phones.map((p) => (
-        <li key={p.label} className="flex flex-col items-center">
-          <div className={`${SCREEN} lift w-full max-w-[230px]`}>
-            {p.screen}
-          </div>
-          <p className="mt-4 text-sm font-medium">{p.label}</p>
+    <ul data-product-group="placements" className={`stagger grid gap-x-4 gap-y-10 sm:gap-x-6 ${ads.length === 1 ? "grid-cols-1 justify-items-center" : ads.length === 2 ? "grid-cols-2" : ads.length === 3 ? "grid-cols-2 lg:grid-cols-3" : "grid-cols-2 lg:grid-cols-4"}`}>
+      {ads.slice(0,4).map((ad,i) => (
+        <li key={ad.productKey} data-product-key={ad.productKey} className="flex w-full max-w-[230px] flex-col items-center">
+          <div className={`${SCREEN} lift w-full`}>{formats[i].render(ad)}</div>
+          <p className="mt-4 text-sm font-medium">{formats[i].label}</p>
         </li>
       ))}
     </ul>

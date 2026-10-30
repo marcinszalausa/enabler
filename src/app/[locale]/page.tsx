@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import { distinctProducts, heroProducts, productKey } from "@/lib/product-display";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -44,22 +45,20 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
   if (!isLocale(locale)) notFound();
   const t = await getMessages(locale);
   const { runs, images, videos } = await showcaseAds(t);
-  const feed = heroFeed(images, videos);
-  // Side phones show other ads than the one the middle phone opens on.
-  const sides = images.length > 2 ? images.slice(-2) : [];
+  const hero = heroProducts(heroFeed(images, videos));
   const run = runs[0];
   const pictured = runs.find((r) => r.productImage);
   return (
     <div className="landing flex flex-1 flex-col bg-bg text-fg">
       <Nav />
       <main className="flex-1">
-        <Hero t={t} feed={feed} left={sides[0]} right={sides[1]} />
+        <Hero t={t} feed={hero.feed} left={hero.left} right={hero.right} />
         <WorksWith t={t} />
         {pictured && <FromPhoto run={pictured} />}
         {run ? <HowItWorksLive t={t} run={run} /> : <HowItWorks t={t} />}
         {videos.length > 0 && <VideoAds t={t} ads={videos} />}
         {run && <Angles t={t} run={run} />}
-        {run && <WhereItRuns t={t} run={run} />}
+        {runs.length > 0 && <WhereItRuns t={t} runs={runs} />}
         {runs.length > 0 && <Examples t={t} locale={locale} runs={runs} />}
         <Features t={t} run={run} />
         <Pricing t={t} />
@@ -114,6 +113,7 @@ type Ad = ShowcaseRun["ads"][number];
 
 function about(r: ShowcaseRun, a: Ad): FeedAd {
   return {
+    productKey: productKey(r.productUrl),
     alt: a.headline,
     angle: a.angle,
     store: r.store,
@@ -138,9 +138,9 @@ function roundRobin(
 // Falls back to the Soft Mila clip before any run is picked.
 function heroFeed(images: FeedAd[], videos: FeedAd[]): FeedAd[] {
   const feed: FeedAd[] = [];
-  for (let i = 0; feed.length < 6 && (videos[i] || images[i]); i++) {
+  for (let i = 0; videos[i] || images[i]; i++) {
     if (videos[i]) feed.push(videos[i]);
-    if (images[i] && feed.length < 6) feed.push(images[i]);
+    if (images[i]) feed.push(images[i]);
   }
   return feed.length ? feed : [FALLBACK_AD];
 }
@@ -266,25 +266,23 @@ function FromPhoto({ run }: { run: ShowcaseRun }) {
 }
 
 // One real ad from the run, shown inside each app it runs in.
-function WhereItRuns({ t, run }: { t: Messages; run: ShowcaseRun }) {
-  const story = run.ads.find((a) => a.aspect === "9:16");
-  const square = run.ads.find((a) => a.aspect === "1:1");
-  if (!story || !square) return null;
-  const ad: PlacementAd = {
-    story: { image: image(story.id), alt: story.headline },
-    square: {
-      image: image(square.id),
-      alt: square.headline,
-      primaryText: square.primaryText,
-    },
-    store: run.store,
-  };
+function WhereItRuns({ t, runs }: { t: Messages; runs: ShowcaseRun[] }) {
+  const ads = distinctProducts(runs.flatMap(run => {
+    const story = run.ads.find(a => a.aspect === "9:16");
+    const square = run.ads.find(a => a.aspect === "1:1");
+    if (!story || !square) return [];
+    return [{
+      productKey: productKey(run.productUrl),
+      story: { image: image(story.id), alt: story.headline },
+      square: { image: image(square.id), alt: square.headline, primaryText: square.primaryText },
+      store: run.store,
+    } satisfies PlacementAd];
+  })).slice(0,4);
+  if (!ads.length) return null;
   return (
     <section className="reveal mx-auto max-w-6xl px-4 pb-24">
       <SectionHeading title={t.home.whereTitle} sub={t.home.whereSub} />
-      <div className="mt-14">
-        <Placements ad={ad} />
-      </div>
+      <div className="mt-14"><Placements ads={ads} /></div>
     </section>
   );
 }
@@ -345,11 +343,13 @@ function Examples({
   locale: Locale;
   runs: ShowcaseRun[];
 }) {
-  const all = runs.flatMap((r) => r.ads);
-  const rows = [
-    all.filter((a) => a.aspect === "9:16"),
-    all.filter((a) => a.aspect === "1:1"),
-  ].filter((row) => row.length > 0);
+  // One example per product; a single circular row has no duplicate neighbors,
+  // including its loop seam. A lone product is static and never cloned.
+  const row = distinctProducts(runs.flatMap(run => {
+    const ad = run.ads.find(a => a.aspect === "9:16") ?? run.ads[0];
+    return ad ? [{ ...ad, productKey: productKey(run.productUrl) }] : [];
+  }));
+  const rows = row.length ? [row] : [];
   return (
     <section className="reveal overflow-hidden py-24">
       <div className="mx-auto max-w-6xl px-4">
@@ -357,15 +357,16 @@ function Examples({
       </div>
       <div className="mt-14 flex flex-col gap-5">
         {rows.map((row, r) => (
-          <div key={r} className="marquee">
+          <div key={r} className={row.length > 1 ? "marquee" : "flex justify-center"} data-product-group="examples">
             <div
-              className={`marquee-track ${r % 2 ? "reverse" : ""}`}
+              className={row.length > 1 ? `marquee-track ${r % 2 ? "reverse" : ""}` : "flex"}
               style={{ "--marquee-s": `${row.length * 6}s` } as CSSProperties}
             >
               {/* Twice, so the loop never shows a gap. */}
-              {[...row, ...row].map((a, i) => (
+              {(row.length > 1 ? [...row, ...row] : row).map((a, i) => (
                 <Image
                   key={i}
+                  data-product-key={a.productKey}
                   src={image(a.id)}
                   alt={i < row.length ? a.headline : ""}
                   width={1080}
