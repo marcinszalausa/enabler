@@ -1,4 +1,5 @@
 import "server-only";
+import { creativeDirection, type CreativePreferences } from "@/lib/creative-preferences";
 import { verifyPublicUrl } from "@/lib/public-fetch";
 import { UserError } from "@/lib/errors";
 import Anthropic from "@anthropic-ai/sdk";
@@ -42,7 +43,7 @@ export const BrandBriefSchema = z.object({
     .describe("The language the page is written in")
     .optional(),
 });
-export type BrandBrief = z.infer<typeof BrandBriefSchema>;
+export type BrandBrief = z.infer<typeof BrandBriefSchema> & { creative_preferences?: CreativePreferences; requires_personalization?: boolean; preferences_confirmed_at?: string };
 
 export const AdAngleSchema = z.object({
   angle: z.enum(["pain", "benefit", "social_proof", "offer", "curiosity"]),
@@ -179,6 +180,7 @@ export async function writeAdAngles(
           role: "user",
           content: [
             `Write ${count} ads, one per angle (pain, benefit, social_proof, offer, curiosity), for this brand brief:\n\n${JSON.stringify(brief, null, 2)}`,
+            creativeDirection(brief.creative_preferences),
             language !== "english" &&
               languageDirection(
                 language,
@@ -247,6 +249,7 @@ export async function writeVideoAds(
   const words = `${Math.round(spoken * 2.4)} to ${Math.round(spoken * 3)}`;
   const person = PEOPLE[options.person].direction;
   const direction = [
+    creativeDirection(brief.creative_preferences),
     `Energy: ${ENERGIES[options.energy].direction}. Let it shape the words, the pace of the motion and the music.`,
     isEnglish(options)
       ? `Narrator: ${GENDERS[options.gender].label.toLowerCase()}, speaking English with a${/^[AEIOU]/.test(ACCENTS[options.accent].label) ? "n" : ""} ${ACCENTS[options.accent].label} accent. Write the voiceover in English.`

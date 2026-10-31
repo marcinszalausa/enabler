@@ -1,4 +1,5 @@
 import "server-only";
+import { withCreativePreferences, type CreativePreferences } from "@/lib/creative-preferences";
 import { fetchPublicUrl } from "@/lib/public-fetch";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { claimGeneration, finalizeGeneration } from "@/lib/generation-credits";
@@ -21,6 +22,7 @@ type Job = {
   workspaceId: string;
   productId: string;
   language: LanguageKey;
+  creativePreferences?: CreativePreferences | null;
 };
 
 // Runs one ad generation end to end: copy, images, storage, rows.
@@ -30,6 +32,7 @@ export async function runGeneration({
   workspaceId,
   productId,
   language,
+  creativePreferences,
 }: Job) {
   const db = createAdminClient();
   if (!(await claimGeneration(db, generationId))) return;
@@ -45,7 +48,7 @@ export async function runGeneration({
       .single();
     if (error || !product?.brand_brief) throw new Error("Product not found.");
 
-    const brief = product.brand_brief as BrandBrief;
+    const brief = withCreativePreferences(product.brand_brief as BrandBrief, creativePreferences);
     const referenceImageUrl = (product.image_urls as string[])[0] ?? null;
     const angles = await writeAdAngles(brief, ADS_PER_GENERATION, language);
 

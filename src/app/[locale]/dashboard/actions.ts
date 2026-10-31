@@ -1,5 +1,6 @@
 "use server";
 
+import { parseCreativePreferences, preferenceForm } from "@/lib/creative-preferences";
 import { redirect } from "next/navigation";
 import { after } from "next/server";
 import { revalidatePath } from "next/cache";
@@ -56,7 +57,10 @@ export async function createProduct(
         description: brief.summary,
         price: brief.price ?? page.price,
         image_urls: page.imageUrls,
-        brand_brief: brief,
+        brand_brief: {
+          ...brief,
+          ...(formData.get("onboardingKind") === "image" || formData.get("onboardingKind") === "video" ? { requires_personalization: true } : {}),
+        },
       })
       .select("id")
       .single();
@@ -90,11 +94,17 @@ export async function startGeneration(
   // RLS: only returns the product if the user is a member of its workspace.
   const { data: product } = await supabase
     .from("products")
-    .select("id, workspace_id")
+    .select("id, workspace_id, brand_brief")
     .eq("id", productId)
     .single();
   if (!product || product.workspace_id !== workspaceId) {
     return { error: (await requestMessages()).app.errors.notFound };
+  }
+
+  const brief = product.brand_brief as { creative_preferences?: unknown; requires_personalization?: boolean } | null;
+  const creativePreferences = parseCreativePreferences(brief?.creative_preferences);
+  if (brief?.requires_personalization && !creativePreferences) {
+    return { error: (await requestMessages()).personal.confirmFirst };
   }
 
   const requestId = String(formData.get("requestId") ?? "");
@@ -111,7 +121,7 @@ export async function startGeneration(
       ? "claude-opus-5-5 + fal flux + kling 2.6"
       : "claude-opus-5-5 + fal flux",
     amount: cost,
-    options: options ?? { language },
+    options: { ...(options ?? { language }), ...(creativePreferences ? { creative_preferences: creativePreferences } : {}) },
   });
   if (error) {
     console.error("reserve generation failed", error);
@@ -121,7 +131,7 @@ export async function startGeneration(
     return { error: fmt((await requestMessages()).app.errors.noCredits, { cost }) };
   }
 
-  const job = { generationId: String(generationId), workspaceId, productId };
+  const job = { generationId: String(generationId), workspaceId, productId, creativePreferences };
   after(() =>
     options
       ? runVideoGeneration({ ...job, options })
@@ -130,4 +140,24 @@ export async function startGeneration(
 
   revalidatePath(`/dashboard/products/${productId}`);
   return { error: null };
+}
+
+export type PreferenceState = { error: string | null; saved: boolean };
+export async function saveCreativePreferences(_prev: PreferenceState, form: FormData): Promise<PreferenceState> {
+  const { supabase, workspaceId, canEdit } = await currentWorkspaceId();
+  if (!canEdit) return { error: WORKSPACE_WRITE_DENIED, saved: false };
+  const preferences=preferenceForm(form);
+  if (!preferences) return { error: (await requestMessages()).personal.invalid, saved: false };
+  const productId=String(form.get("productId")??"");
+  const {data:product,error:readError}=await supabase.from("products").select("id, brand_brief")
+    .eq("id",productId).eq("workspace_id",workspaceId).maybeSingle();
+  if (readError || !product?.brand_brief || typeof product.brand_brief!=="object") {
+    return {error:(await requestMessages()).app.errors.notFound,saved:false};
+  }
+  const {data:updated,error}=await supabase.from("products").update({
+    brand_brief:{...product.brand_brief,creative_preferences:preferences,preferences_confirmed_at:typeof product.brand_brief.preferences_confirmed_at==="string"?product.brand_brief.preferences_confirmed_at:new Date().toISOString()},
+  }).eq("id",productId).eq("workspace_id",workspaceId).select("id").maybeSingle();
+  if (error || !updated) return {error:(await requestMessages()).personal.couldntSave,saved:false};
+  revalidatePath("/dashboard/products/"+productId);
+  return {error:null,saved:true};
 }
