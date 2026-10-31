@@ -7,6 +7,7 @@ import { platformName, takesKind } from "@/lib/social/platforms";
 import { useI18n } from "@/i18n/client";
 import { fmt } from "@/i18n/format";
 import { smallButton } from "../../ui";
+import {clearAdChoice} from "@/lib/ad-choice";
 import { useBrowserTimeZone } from "../../time-zone";
 
 export type PublishCreative = {
@@ -32,25 +33,30 @@ const field =
 export function PublishOneButton({
   generationId,
   creativeId,
+  primary=false,
+  onPrepare,
 }: {
   generationId: string;
   creativeId: string;
+  primary?: boolean;
+  onPrepare?: ()=>void;
 }) {
   const { t } = useI18n();
   return (
     <button
       type="button"
-      className={smallButton}
-      onClick={() =>
+      className={primary?"btn-primary inline-flex min-h-12 items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-medium":smallButton}
+      onClick={() => {
+        onPrepare?.();
         window.dispatchEvent(
           new CustomEvent(OPEN_EVENT, {
             detail: { generationId, creativeId },
           }),
-        )
-      }
+        );
+      }}
     >
       <SendIcon />
-      {t.publish.publish}
+      {primary?t.choose.post:t.publish.publish}
     </button>
   );
 }
@@ -83,19 +89,19 @@ export function PublishDialog({
   useEffect(() => {
     function open(e: Event) {
       const detail = (e as CustomEvent).detail;
-      if (detail?.generationId !== generationId) return;
+      if (detail?.generationId !== generationId || !creatives.some(c=>c.id===detail.creativeId) || dialog.current?.open) return;
       setOpened({ at: Date.now(), ads: [detail.creativeId] });
       dialog.current?.showModal();
     }
     window.addEventListener(OPEN_EVENT, open);
     return () => window.removeEventListener(OPEN_EVENT, open);
-  }, [generationId]);
+  }, [generationId,creatives]);
 
   return (
     <>
-      <button
+      <details><summary className="min-h-11 cursor-pointer content-center text-sm text-muted">{t.choose.more}</summary><button
         type="button"
-        className="btn-primary inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium"
+        className="inline-flex min-h-11 border border-line-strong bg-raised items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium"
         onClick={() => {
           setOpened({ at: Date.now(), ads: runDefault });
           dialog.current?.showModal();
@@ -103,17 +109,20 @@ export function PublishDialog({
       >
         <SendIcon />
         {t.publish.publishRun}
-      </button>
+      </button></details>
       <dialog
         ref={dialog}
+        aria-label={t.choose.review}
         className="m-auto w-[min(36rem,calc(100vw-2rem))] rounded-2xl border border-line bg-raised p-0 text-fg shadow-2xl backdrop:bg-black/50"
         onClick={(e) => {
           if (e.target === dialog.current) dialog.current.close();
         }}
       >
         {accounts.length === 0 ? (
-          <div className="flex flex-col items-start gap-4 p-6">
-            <p className="text-lg font-semibold">{t.publish.publishRun}</p>
+          <div className="flex max-h-[85vh] flex-col items-start gap-4 overflow-y-auto p-6">
+            <div className="flex w-full items-center justify-between gap-4"><h2 className="text-lg font-semibold">{t.choose.review}</h2><button type="button" onClick={()=>dialog.current?.close()} aria-label={t.app.cancel} className="min-h-11 min-w-11 rounded-lg text-xl">×</button></div>
+            {opened.ads.length===1&&creatives.find(c=>c.id===opened.ads[0])&&<CreativePreview creative={creatives.find(c=>c.id===opened.ads[0])!}/>}
+            <p className="text-sm text-muted">{t.choose.resumeConnect}</p>
             <p className="text-sm text-muted">{t.publish.noAccountsYet}</p>
             <Link
               href="/dashboard/publishing"
@@ -125,6 +134,7 @@ export function PublishDialog({
         ) : (
           <PublishForm
             key={opened.at}
+            generationId={generationId}
             initialAds={opened.ads}
             creatives={creatives}
             accounts={accounts}
@@ -138,12 +148,14 @@ export function PublishDialog({
 }
 
 function PublishForm({
+  generationId,
   initialAds,
   creatives,
   accounts,
   nextSlot,
   close,
 }: {
+  generationId: string;
   initialAds: string[];
   creatives: PublishCreative[];
   accounts: PublishAccount[];
@@ -155,7 +167,7 @@ function PublishForm({
   const [ads, setAds] = useState<string[]>(initialAds);
   const [picked, setPicked] = useState<string[]>(accounts.map((a) => a.id));
   const [when, setWhen] = useState<"now" | "queue" | "at">(
-    nextSlot ? "queue" : "now",
+    initialAds.length===1?"now":nextSlot ? "queue" : "now",
   );
   const timeZone = useBrowserTimeZone();
 
@@ -165,6 +177,7 @@ function PublishForm({
     [...kinds].some((k) => takesKind(a.platform, k));
   const targets = accounts.filter((a) => picked.includes(a.id) && usable(a));
   const single = chosen.length === 1 ? chosen[0] : null;
+  useEffect(()=>{if(state.done&&single){try{clearAdChoice(window.sessionStorage,generationId,single.id);}catch{}}},[state.done,single,generationId]);
   const toggle = (list: string[], id: string) =>
     list.includes(id) ? list.filter((x) => x !== id) : [...list, id];
 
@@ -174,7 +187,7 @@ function PublishForm({
       className="flex max-h-[85vh] flex-col gap-5 overflow-y-auto p-6 text-sm"
     >
       <div className="flex items-start justify-between gap-4">
-        <p className="text-lg font-semibold">{t.publish.publishRun}</p>
+        <h2 className="text-lg font-semibold">{t.choose.review}</h2>
         <button
           type="button"
           onClick={close}
@@ -185,7 +198,8 @@ function PublishForm({
         </button>
       </div>
 
-      <fieldset>
+      {single&&<CreativePreview creative={single}/>}
+      <details open={!single}><summary className="min-h-11 cursor-pointer content-center text-sm text-accent">{t.choose.change}</summary><fieldset>
         <legend className="mb-2 flex w-full items-center justify-between font-medium">
           {t.publish.ads}
           <button
@@ -227,7 +241,7 @@ function PublishForm({
               ) : (
                 // eslint-disable-next-line @next/next/no-img-element -- rendered on demand by our own route
                 <img
-                  src={`/api/creatives/${c.id}/image`}
+                  src={`/api/creatives/${c.id}/image?preview=1`}
                   alt=""
                   loading="lazy"
                   className={`w-full bg-surface object-cover ${
@@ -238,7 +252,7 @@ function PublishForm({
             </label>
           ))}
         </div>
-      </fieldset>
+      </fieldset></details>
 
       <fieldset>
         <legend className="mb-2 flex w-full items-center justify-between font-medium">
@@ -360,20 +374,19 @@ function PublishForm({
         </p>
       )}
 
+      <p className="text-xs leading-relaxed text-muted">{t.home.adSpend}</p>
       <div className="flex flex-wrap items-center gap-3">
         <button
           type="submit"
-          disabled={pending || chosen.length === 0 || targets.length === 0}
+          disabled={pending || !!state.done || chosen.length === 0 || targets.length === 0}
           className="btn-primary rounded-lg px-4 py-2 font-medium"
         >
           {pending
             ? t.publish.publishing
-            : fmt(t.publish.publishCount, { count: chosen.length })}
+            : single ? (when==="now"?t.choose.confirm:t.choose.schedule) : fmt(t.publish.publishCount, { count: chosen.length })}
         </button>
         {state.done && (
-          <p role="status" className="text-ok">
-            {state.done}
-          </p>
+          <div role="status" className="text-ok"><p>{state.done}</p><Link href="/dashboard/publishing" className="mt-2 inline-block min-h-11 content-center underline underline-offset-4">{t.choose.viewPosts}</Link></div>
         )}
         {state.error && (
           <p role="alert" className="text-danger">
@@ -439,4 +452,13 @@ function SendIcon() {
       <path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z" />
     </svg>
   );
+}
+
+function CreativePreview({creative}:{creative:PublishCreative}){
+ const {t}=useI18n();
+ return <figure data-publish-preview className="flex w-full justify-center rounded-xl bg-surface p-3">
+ {creative.kind==="video"?<video src={`/api/creatives/${creative.id}/video`} controls playsInline preload="metadata" className="max-h-[45vh] max-w-full rounded-lg object-contain"/>:
+ // eslint-disable-next-line @next/next/no-img-element -- bounded private preview
+ <img src={`/api/creatives/${creative.id}/image?preview=1`} alt={t.choose.review} className="max-h-[45vh] max-w-full rounded-lg object-contain"/>}
+ </figure>;
 }

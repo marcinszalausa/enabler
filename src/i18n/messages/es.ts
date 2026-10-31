@@ -310,6 +310,22 @@ export const es: Messages = {
     englishOnly:
       "Esta página está disponible en inglés, que es la versión que se aplica.",
   },
+  choose: {
+    title: "Elige tu favorito",
+    help: "Toca un anuncio para verlo completo. Revisas todo antes de publicar.",
+    post: "Publicar este anuncio",
+    preview: "Ver anuncio {number}",
+    more: "Más opciones",
+    review: "Revisar y publicar",
+    change: "Elegir otro anuncio",
+    confirm: "Publicar ahora",
+    schedule: "Programar este anuncio",
+    viewPosts: "Ver estado de publicación",
+    kept: "Tu anuncio elegido se guarda en esta pestaña",
+    resumeReady: "Continúa para revisar tu anuncio y elegir dónde publicarlo.",
+    resumeConnect: "Conecta una cuenta y vuelve para revisar este anuncio. Nada se publica automáticamente.",
+    return: "Volver a mi anuncio",
+  },
   trial: {
     title: "Tu primera campaña",
     oneTime: "100 créditos iniciales, una sola vez. Sin caducidad ni recarga automática.",

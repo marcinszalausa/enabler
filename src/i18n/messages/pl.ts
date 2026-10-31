@@ -307,6 +307,22 @@ export const pl: Messages = {
     englishOnly:
       "Ta strona jest dostępna po angielsku i to wersja angielska obowiązuje.",
   },
+  choose: {
+    title: "Wybierz ulubioną reklamę",
+    help: "Dotknij reklamy, aby zobaczyć ją w całości. Sprawdzisz wszystko przed publikacją.",
+    post: "Opublikuj tę reklamę",
+    preview: "Podgląd reklamy {number}",
+    more: "Więcej opcji",
+    review: "Sprawdź i opublikuj",
+    change: "Wybierz inną reklamę",
+    confirm: "Opublikuj teraz",
+    schedule: "Zaplanuj tę reklamę",
+    viewPosts: "Sprawdź status publikacji",
+    kept: "Twój wybór zostaje w tej karcie",
+    resumeReady: "Przejdź dalej, sprawdź reklamę i wybierz miejsce publikacji.",
+    resumeConnect: "Połącz konto, a potem wróć do sprawdzenia reklamy. Nic nie opublikuje się automatycznie.",
+    return: "Wróć do mojej reklamy",
+  },
   trial: {
     title: "Twoja pierwsza kampania",
     oneTime: "100 kredytów na start, jednorazowo. Bez daty ważności i automatycznego doładowania.",

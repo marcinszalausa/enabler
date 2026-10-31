@@ -307,6 +307,22 @@ export const cs: Messages = {
     englishOnly:
       "Tato stránka je k dispozici v angličtině a platí anglické znění.",
   },
+  choose: {
+    title: "Vyberte si oblíbenou reklamu",
+    help: "Klepnutím zobrazíte celou reklamu. Před zveřejněním vše zkontrolujete.",
+    post: "Zveřejnit tuto reklamu",
+    preview: "Náhled reklamy {number}",
+    more: "Další možnosti",
+    review: "Zkontrolovat a zveřejnit",
+    change: "Vybrat jinou reklamu",
+    confirm: "Zveřejnit nyní",
+    schedule: "Naplánovat tuto reklamu",
+    viewPosts: "Zobrazit stav příspěvku",
+    kept: "Váš výběr zůstane v této kartě",
+    resumeReady: "Pokračujte ke kontrole reklamy a vyberte, kde ji zveřejníte.",
+    resumeConnect: "Připojte účet a vraťte se ke kontrole reklamy. Nic se nezveřejní automaticky.",
+    return: "Zpět k mé reklamě",
+  },
   trial: {
     title: "Vaše první kampaň",
     oneTime: "100 kreditů na začátek, jednorázově. Bez vypršení či automatického doplňování.",
