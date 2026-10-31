@@ -52,12 +52,16 @@ if(process.env.VERIFY_DEPLOYMENT==="true"){
   const html=await (await fetch("https://gooidy.com")).text();
   const normalized=html.replaceAll("%2F","/").replaceAll("%2f","/");
   const ids=[...new Set([...normalized.matchAll(/\/api\/creatives\/([0-9a-f-]{36})\/image/g)].map(match=>match[1]))];
+  let faceRuntimeVerified=false;
   for(const id of ids.slice(0,3)){
     const base="https://gooidy.com/api/creatives/"+id+"/image";
-    const full=await fetch(base);
+    const full=await fetch(base+"?layout=face-aware-v2");
     if(full.status===404)continue;
     assert.equal(full.status,200,"Public original image loads");
     assert.match(full.headers.get("content-type")??"",/^image\/png/);
+    assert.equal(full.headers.get("x-gooidy-layout"),"face-aware-v2","Adaptive layout deployed");
+    assert.equal(full.headers.get("x-gooidy-layout-analysis"),"ready","Bundled face detector runs in production");
+    faceRuntimeVerified=true;
     const original=Buffer.from(await full.arrayBuffer());
     const preview=await fetch(base+"?preview=1");
     assert.equal(preview.status,200,"Preview loads on deployed runtime");
@@ -74,4 +78,5 @@ if(process.env.VERIFY_DEPLOYMENT==="true"){
     console.log("LIVE_PREVIEW_VERIFIED",JSON.stringify({originalBytes:original.length,previewBytes:small.length,width:original.readUInt32BE(16),height:original.readUInt32BE(20)}));
     break;
   }
+  assert.ok(faceRuntimeVerified,"At least one public image verifies the deployed face detector");
 }

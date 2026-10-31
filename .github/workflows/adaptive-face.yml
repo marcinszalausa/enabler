@@ -1,0 +1,23 @@
+name: Adaptive face placement
+on:
+  push:
+    branches: [fix/adaptive-face-text]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  adaptive-placement:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: node --experimental-strip-types --test tests/face-safe-layout.test.ts
+      - run: npx next typegen && npx tsc --noEmit
+      - run: npx eslint src/lib/face-safe-layout.ts src/lib/face-detection.ts src/lib/video-face-analysis.ts src/lib/ad-layout.tsx src/lib/ad-image.tsx src/lib/ad-text.ts src/lib/video-layout.tsx src/lib/video-edit.tsx next.config.ts
+      - run: npm install --prefix /tmp/gooidy-adaptive-tests --no-package-lock tsx@4.20.6
+      - run: /tmp/gooidy-adaptive-tests/node_modules/.bin/tsx scripts/check-face-safe-render.tsx

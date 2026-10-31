@@ -292,7 +292,7 @@ function PostList({
               ) : (
                 // eslint-disable-next-line @next/next/no-img-element -- rendered on demand by our own route
                 <img
-                  src={`/api/creatives/${p.creative_id}/image?preview=1&layout=face-safe-v1`}
+                  src={`/api/creatives/${p.creative_id}/image?preview=1&layout=face-aware-v2`}
                   alt=""
                   loading="lazy"
                   className="h-16 w-12 shrink-0 rounded-md bg-surface object-cover"

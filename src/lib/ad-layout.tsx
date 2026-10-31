@@ -1,4 +1,4 @@
-import {IMAGE_REGIONS,MEDIA_BACKGROUND} from "@/lib/face-safe-layout";
+import {NO_OVERLAYS,type OverlayPlan} from "@/lib/face-safe-layout";
 // The finished ad as a Satori tree: photo, headline, call to action, logo.
 // Kept free of server imports so it can be rendered in isolation.
 
@@ -25,20 +25,20 @@ export type TextStyle = {
 
 const PAD_X = 72;
 
-export function adTextStyles(aspect: AdAspect, accentTextColor: string) {
+export function adTextStyles(aspect: AdAspect, accentTextColor: string, placement?:OverlayPlan) {
   return {
     headline: {
-      fontSize: aspect === "9:16" ? 72 : 60,
+      fontSize: placement?.headline?.fontSize??(aspect === "9:16" ? 72 : 60),
       lineHeight: 1.1,
-      maxWidth: AD_SIZES[aspect].width - PAD_X * 2,
+      maxWidth: placement?.headline?.width??AD_SIZES[aspect].width - PAD_X * 2,
       color: "white",
       align: "start",
-      shadow: false,
+      shadow: true,
     },
     cta: {
-      fontSize: 44,
+      fontSize: 40,
       lineHeight: 1.2,
-      maxWidth: 640,
+      maxWidth: placement?.cta?placement.cta.width-64:536,
       color: accentTextColor,
       align: "start",
       shadow: false,
@@ -63,7 +63,7 @@ export function Copy({ text }: { text: AdText }) {
 }
 
 export type AdLayoutProps = {
-  // Null renders an opaque closing card; no footage shows through the copy.
+  // Null renders only transparent overlays, for video footage.
   photoUrl: string | null;
   aspect: AdAspect;
   headline: AdText;
@@ -74,29 +74,21 @@ export type AdLayoutProps = {
   accentColor: string;
   accentTextColor: string;
   logoUrl: string | null;
+  placement?: OverlayPlan;
 };
 
-export function AdLayout(p: AdLayoutProps) {
- const size=AD_SIZES[p.aspect],regions=IMAGE_REGIONS[p.aspect],story=p.aspect==="9:16";
- const headline=p.photoUrl?regions.headline:{x:72,y:story?540:200,width:936,height:story?420:300};
- const footer=p.photoUrl?regions.footer:{x:72,y:story?1120:660,width:936,height:116};
- const styles=adTextStyles(p.aspect,p.accentTextColor);
- return <div style={{...size,display:"flex",position:"relative",fontFamily:p.fontFamily,background:MEDIA_BACKGROUND}}>
-  {p.photoUrl&&<div style={{position:"absolute",left:regions.media.x,top:regions.media.y,width:regions.media.width,height:regions.media.height,display:"flex",overflow:"hidden",alignItems:"center",justifyContent:"center"}}>
-   {/* eslint-disable-next-line @next/next/no-img-element -- Satori embeds the complete photo inside a protected window */}
-   <img src={p.photoUrl} width={regions.media.width} height={regions.media.height} style={{objectFit:"contain"}} alt=""/>
-  </div>}
-  <div style={{position:"absolute",left:headline.x,top:headline.y,width:headline.width,height:headline.height,display:"flex",overflow:"hidden",flexWrap:"wrap",alignItems:"center",justifyContent:p.rtl?"flex-end":"flex-start",color:"white",fontSize:styles.headline.fontSize,fontWeight:700,lineHeight:styles.headline.lineHeight,letterSpacing:-1}}>
-   <Copy text={p.headline}/>
-  </div>
-  <div style={{position:"absolute",left:footer.x,top:footer.y,width:footer.width,height:footer.height,display:"flex",overflow:"hidden",flexDirection:p.rtl?"row-reverse":"row",alignItems:"center",justifyContent:"space-between",gap:20}}>
-   <div style={{display:"flex",maxWidth:640,maxHeight:108,overflow:"hidden",background:p.accentColor,color:p.accentTextColor,fontSize:44,fontWeight:700,lineHeight:1.2,padding:"22px 44px",borderRadius:999}}>
-    <Copy text={p.cta}/>
-   </div>
-   {p.logoUrl&&<div style={{display:"flex",alignItems:"center",maxWidth:320,maxHeight:104,overflow:"hidden",background:"white",borderRadius:24,padding:"16px 24px"}}>
-    {/* eslint-disable-next-line @next/next/no-img-element -- bounded brand mark in its own footer */}
-    <img src={p.logoUrl} height={72} style={{maxWidth:272,objectFit:"contain"}} alt=""/>
-   </div>}
-  </div>
+export function AdLayout(p:AdLayoutProps){
+ const size=AD_SIZES[p.aspect],plan=p.placement??NO_OVERLAYS,styles=adTextStyles(p.aspect,p.accentTextColor,plan);
+ return <div style={{...size,display:"flex",position:"relative",fontFamily:p.fontFamily}}>
+ {p.photoUrl&&
+ // eslint-disable-next-line @next/next/no-img-element -- full-frame generated image, already normalized server-side
+ <img src={p.photoUrl} width={size.width} height={size.height} style={{position:"absolute",left:0,top:0,...size,objectFit:"cover"}} alt=""/>}
+ {plan.headline&&<div style={{position:"absolute",left:plan.headline.x,top:plan.headline.y,width:plan.headline.width,height:plan.headline.height,display:"flex",overflow:"hidden",alignItems:"center",justifyContent:p.rtl?"flex-end":"flex-start",flexWrap:"wrap",color:"white",fontSize:styles.headline.fontSize,fontWeight:700,lineHeight:1.1,letterSpacing:-1,textShadow:"0 2px 12px rgba(0,0,0,.8)",backgroundImage:"linear-gradient(to bottom,rgba(0,0,0,.3),rgba(0,0,0,0))"}}><Copy text={p.headline}/></div>}
+ {plan.cta&&<div style={{position:"absolute",left:plan.cta.x,top:plan.cta.y,width:plan.cta.width,height:plan.cta.height,display:"flex",overflow:"hidden",alignItems:"center",justifyContent:p.rtl?"flex-end":"flex-start"}}>
+ <div style={{display:"flex",maxWidth:plan.cta.width,maxHeight:plan.cta.height,overflow:"hidden",background:p.accentColor,color:p.accentTextColor,fontSize:40,fontWeight:700,lineHeight:1.2,padding:"20px 32px",borderRadius:999}}><Copy text={p.cta}/></div></div>}
+ {plan.logo&&p.logoUrl&&<div style={{position:"absolute",left:plan.logo.x,top:plan.logo.y,width:plan.logo.width,height:plan.logo.height,display:"flex",overflow:"hidden",alignItems:"center",justifyContent:"center"}}>
+ <div style={{display:"flex",overflow:"hidden",background:"rgba(255,255,255,.94)",borderRadius:18,padding:"12px 10px"}}>
+ {/* eslint-disable-next-line @next/next/no-img-element -- bounded brand chip selected away from faces */}
+ <img src={p.logoUrl} width={180} height={60} style={{objectFit:"contain"}} alt=""/></div></div>}
  </div>;
 }

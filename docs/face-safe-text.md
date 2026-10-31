@@ -1,32 +1,37 @@
-# Text outside faces
-The image compositor now puts the complete generated photo into a protected
-media window with object-fit contain. Headline, CTA and logo have independent,
-clipped text regions outside it. The same source pixel therefore cannot belong
-to both a photo and a copy layer. No face detector or provider guess is needed.
-Square and portrait output dimensions are unchanged. Photos are not cropped.
+# Full-frame face-aware text
+Photos and footage fill the frame. Local YuNet face detection at 640 and 320
+pixels supplies bounding boxes; expanded margins protect forehead, hair and
+chin. The planner picks disjoint headline, CTA and logo rectangles around every
+protected face. Copy, gradients, shadows and brand chips are clipped to their
+rectangles. Alternate wide/side/lower positions avoid a fixed top headline.
 
-Video footage is scaled to fit entirely within a 1080x1360 window and padded
-to 1080x1920. Hooks and timed captions are placed only below that window, above
-the bottom 220px used by social player controls. Caption/audio timing remains
-unchanged. The closing card is fully opaque and cuts in without an alpha fade,
-so footage cannot show through its lettering during a transition.
+Unknown detection or a crowded frame uses a full-image fallback with no unsafe
+overlay. No inset photo, separate text panels, bars or cut-away closing card.
+This is detection, not recognition: no identities/embeddings are inferred,
+photos are not sent to a face-analysis service, and only bounded process-local
+geometry promises keyed by image hash are cached. Detectors can miss faces;
+human review of creatives remains important. No claim of perfect detection.
 
-Source prompts ask for complete visible faces and no baked text. This is
-additional guidance, not the mechanism enforcing the compositor's separation.
-Copy regions clip oversized text rather than allowing it to enter media.
+Images normalize the exact output crop before analysis, then compose text over
+that same raster. Public/private image URLs use face-aware-v2 to bypass cached
+panels. A response header distinguishes ready local analysis from fallback for
+deployment checks. Unknown analysis never uses a hardcoded overlay.
 
-Existing image ads are composed at request time and pick up the new layout
-without generating new photos or spending credits. Versioned preview and
-showcase URLs bypass older image/optimizer caches, with matching Next local
-image patterns. Original image downloads also use the new compositor.
-Video text is baked into saved MP4s: only newly rendered videos use this layout;
-previously exported videos must be re-edited from source clips, voice and music.
-This change does not replace or charge for existing video assets, regenerate
-ads, post anything, or change credits, auth, database schema or user content.
+Video analyzes every frame at the same crop and frame rate as the export,
+including all shots touched by the hook or closing interval. A stable per-shot
+face set avoids jitter; captions split at shot boundaries. Hook, captions and
+closing copy avoid those sets and one another. Incomplete/time-limited analysis
+disables overlays for the entire edit, including any timing uncertainty. Analysis is bounded to 120 seconds per
+edit; no partial scan is treated as complete. All source footage stays full-frame.
+New renders use this layout; old baked MP4 files still require re-editing.
 
-Tests check geometry plus actual Satori/Skia output pixels for Latin, Arabic,
-Hindi and oversized strings. Both video text layers are fully transparent over
-the footage rectangle, and the closing card is opaque. A real FFmpeg edit with
-a moving face marker is sampled across shots, hook/subtitles and the end card
-to verify source visibility, no overlay text in footage, frame size and the
-opaque closing transition. No model/provider calls or paid generation in tests.
+Bundled YuNet dynamic model (OpenCV Zoo 48b10fa505aeb51fbd127fc60a5c660040e823b7) is MIT licensed.
+SHA256 ebafce4e3c118d6554634be5c27ab333b4c047a9a8c3faf1d7cf93101c22f0f0.
+Runtime onnxruntime-web 1.31.1 is pinned with its lockfile.
+Model and WASM assets are traced into rendering functions. No remote model
+download, paid generation, credit, auth or database-schema change.
+
+Tests exercise positions/groups/edges/crowding/failure; actual local inference
+on a real portrait without network; full-frame corners and zero overlay alpha
+in protected faces for Latin/Arabic/Hindi; actual video scan/edit with moving
+real face footage; full existing regression and deployment checks.

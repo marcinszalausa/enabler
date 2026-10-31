@@ -150,7 +150,7 @@ function heroFeed(images: FeedAd[], videos: FeedAd[]): FeedAd[] {
   return feed.length ? feed : [FALLBACK_AD];
 }
 
-const image = (id: string) => `/api/creatives/${id}/image?layout=face-safe-v1`;
+const image = (id: string) => `/api/creatives/${id}/image?layout=face-aware-v2`;
 
 function duration(seconds: number) {
   if (seconds < 60) return `${seconds} s`;
