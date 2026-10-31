@@ -19,3 +19,6 @@ jobs:
       - run: node --experimental-strip-types --test tests/face-safe-layout.test.ts
       - run: npx next typegen && npx tsc --noEmit
       - run: npx eslint src/lib/face-safe-layout.ts src/lib/ad-layout.tsx src/lib/video-layout.tsx src/lib/video-edit.tsx src/lib/ai/fal.ts 'src/app/[locale]/dashboard/products/[id]/ad-gallery.tsx' 'src/app/[locale]/dashboard/products/[id]/publish-dialog.tsx' 'src/app/[locale]/dashboard/products/[id]/generation-block.tsx' 'src/app/[locale]/dashboard/publishing/publishing-view.tsx' 'src/app/[locale]/page.tsx' 'src/app/[locale]/use-cases/run-viewer.tsx' next.config.ts
+      - run: npm install --prefix /tmp/gooidy-face-tests --no-package-lock tsx@4.20.6
+      - name: Verify actual image pixels, text layers and a moving FFmpeg composite
+        run: /tmp/gooidy-face-tests/node_modules/.bin/tsx scripts/check-face-safe-render.tsx
