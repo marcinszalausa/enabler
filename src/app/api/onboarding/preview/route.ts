@@ -5,6 +5,7 @@ import { productLink } from "@/lib/onboarding";
 import { PreviewBudget } from "@/lib/onboarding-preview-limit";
 export const maxDuration = 60;
 const budget = new PreviewBudget();
+let activePreviews = 0;
 const cache = new Map<string, { at: number; value: { url: string; title: string; photo: string | null } }>();
 export async function POST(request: Request) {
   if (request.headers.get("origin") !== new URL(request.url).origin) return new Response(null, { status: 403 });
@@ -31,6 +32,8 @@ export async function POST(request: Request) {
   if (!budget.take(ip.slice(0, 128))) return new Response(null, { status: 429, headers: { "Retry-After": "60" } });
   const prior = cache.get(url);
   if (prior && Date.now() - prior.at < 300000) return NextResponse.json(prior.value, { headers: { "Cache-Control": "no-store" } });
+  if (activePreviews >= 2) return new Response(null, { status: 429, headers: { "Retry-After": "5" } });
+  activePreviews++;
   try {
     // Metadata only, using the existing pinned-DNS downloader. No accounts,
     // database writes or paid models. Photos are resized here, never hotlinked.
@@ -49,4 +52,5 @@ export async function POST(request: Request) {
     cache.set(url, { at: Date.now(), value });
     return NextResponse.json(value, { headers: { "Cache-Control": "no-store" } });
   } catch { return new Response(null, { status: 422 }); }
+  finally { activePreviews--; }
 }
