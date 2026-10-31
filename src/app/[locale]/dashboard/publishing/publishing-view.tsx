@@ -99,7 +99,7 @@ export function PublishingView({
           className="rounded-xl bg-danger-bg px-4 py-3 text-sm text-danger"
         >
           {t.publish.limitReached}{" "}
-          <Link href="/dashboard/billing" className="font-medium underline">
+          <Link href="/#pricing" className="font-medium underline">
             {t.publish.upgrade}
           </Link>
         </p>
@@ -120,7 +120,7 @@ export function PublishingView({
               <>
                 {" · "}
                 <Link
-                  href="/dashboard/billing"
+                  href="/#pricing"
                   className="font-medium text-accent underline underline-offset-4"
                 >
                   {t.publish.upgradeMore}

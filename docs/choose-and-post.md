@@ -25,3 +25,6 @@ temporarily replaces the publishing server action with a local stub and restores
 it in finally. It sends no real posts, messages, accounts or provider requests.
 Full existing regressions run on the pull request. Billing is separate; the
 older Stripe draft is not merged by this change.
+
+Until paid checkout is activated, existing Publishing upgrade links lead to the
+real plan comparison instead of the absent /dashboard/billing route.
