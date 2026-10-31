@@ -306,6 +306,22 @@ export const nl: Messages = {
     englishOnly:
       "Deze pagina is beschikbaar in het Engels; de Engelse versie is leidend.",
   },
+  onboard: {
+    title: "Je eerste advertenties, stap voor stap",
+    confirm: "Controleer je product en kies je advertenties",
+    continue: "Doorgaan",
+    back: "Terug",
+    accountTitle: "Maak je gratis account",
+    prepareTitle: "Je bent ingelogd. Laten we je advertenties voorbereiden.",
+    prepare: "Mijn product voorbereiden",
+    prepareNote: "Na het inloggen lezen we je productgegevens. Daarna kun je de instellingen controleren en een reeks starten tegen de getoonde kosten.",
+    previewError: "De preview kon niet worden geladen. Je kunt doorgaan; we controleren het product na het inloggen.",
+    invalidUrl: "Voer een openbare product- of winkellink in.",
+    videoChoice: "{count} verticale video's van elk {seconds} seconden, met voice-over en ondertiteling.",
+    advanced: "Optionele instellingen",
+    recommended: "De snelste manier om te beginnen",
+    accountContinue: "Doorgaan naar gratis account",
+  },
   login: {
     title: "Inloggen bij Gooidy",
     sub: "We mailen je een inloglink en een code. Geen wachtwoord nodig.",

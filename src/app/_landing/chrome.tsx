@@ -96,7 +96,7 @@ export function Nav() {
             {t.nav.signIn}
           </Link>
           <Link
-            href="/dashboard" prefetch={false}
+            href={href("/start")} prefetch={false}
             className="btn-primary hidden min-h-11 items-center rounded-lg px-4 py-2 text-sm font-medium whitespace-nowrap lg:flex"
           >
             {t.nav.getStarted}
@@ -125,7 +125,7 @@ export function Nav() {
                 ["/login", t.nav.signIn],
               ].map(([to, label]) => <Link key={to} href={to} prefetch={false}
                 className="flex min-h-11 items-center rounded-xl px-4 text-sm font-medium hover:bg-surface">{label}</Link>)}
-              <Link href="/dashboard" prefetch={false} className="btn-primary mt-2 flex min-h-11 items-center justify-center rounded-xl px-4 text-sm font-medium">{t.nav.getStarted}</Link>
+              <Link href={href("/start")} prefetch={false} className="btn-primary mt-2 flex min-h-11 items-center justify-center rounded-xl px-4 text-sm font-medium">{t.nav.getStarted}</Link>
             </div>
           </details>
         </div>
@@ -136,11 +136,12 @@ export function Nav() {
 
 export function UrlForm({ id }: { id: string }) {
   const { t } = useI18n();
+  const href = useHref();
   // A plain GET form: signed-out visitors go through sign-in and land on the
   // dashboard with the link already filled in.
   return (
     <form
-      action="/dashboard"
+      action={href("/start")}
       method="get"
       className="flex w-full max-w-xl flex-col gap-2 sm:flex-row"
     >
@@ -199,7 +200,7 @@ export function Footer() {
     {
       title: t.footer.account,
       links: [
-        { href: "/dashboard", label: t.nav.getStarted },
+        { href: href("/start"), label: t.nav.getStarted },
         { href: "/login", label: t.nav.signIn },
       ],
     },

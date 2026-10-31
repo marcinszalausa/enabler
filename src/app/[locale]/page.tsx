@@ -62,9 +62,9 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
         {runs.length > 0 && <WhereItRuns t={t} runs={runs} />}
         {runs.length > 0 && <Examples t={t} locale={locale} runs={runs} />}
         <Features t={t} run={run} />
-        <Pricing t={t} />
+        <Pricing t={t} locale={locale} />
         <Faq t={t} />
-        <FinalCta t={t} />
+        <FinalCta t={t} locale={locale} />
       </main>
       <Footer />
       <StickyCta />
@@ -474,7 +474,7 @@ function Features({ t, run }: { t: Messages; run?: ShowcaseRun }) {
   );
 }
 
-function Pricing({ t }: { t: Messages }) {
+function Pricing({ t, locale }: { t: Messages; locale: Locale }) {
   const planCredits = [100, 300, 1000];
   return (
     <section id="pricing" className="scroll-mt-16 bg-surface py-20">
@@ -514,7 +514,7 @@ function Pricing({ t }: { t: Messages }) {
                 ))}
               </ul>
               <Link
-                href="/dashboard" prefetch={false}
+                href={localePath(locale,"/start")} prefetch={false}
                 className={`mt-8 rounded-xl px-5 py-2.5 text-center text-sm font-medium transition ${
                   i === FEATURED
                     ? "btn-primary"
@@ -565,7 +565,7 @@ function Faq({ t }: { t: Messages }) {
   );
 }
 
-function FinalCta({ t }: { t: Messages }) {
+function FinalCta({ t, locale }: { t: Messages; locale: Locale }) {
   return (
     <section className="px-4 pb-24">
       <div className="cta-panel relative mx-auto flex max-w-6xl flex-col items-center overflow-hidden rounded-[2rem] px-6 py-20 text-center text-white shadow-[0_40px_120px_-40px_#4f46e5]">
@@ -575,7 +575,7 @@ function FinalCta({ t }: { t: Messages }) {
         </h2>
         <p className="mt-4 text-lg text-white/80">{t.home.finalSub}</p>
         <form
-          action="/dashboard"
+          action={localePath(locale,"/start")}
           method="get"
           className="mt-9 flex w-full max-w-xl flex-col gap-2 rounded-2xl bg-white/10 p-2 ring-1 ring-white/25 backdrop-blur sm:flex-row"
         >

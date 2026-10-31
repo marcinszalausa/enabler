@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { isLocale } from "@/i18n/config";
+import { isLocale, localePath, type Locale } from "@/i18n/config";
 import { pageMetadata } from "@/lib/seo";
 import { getMessages, type Messages } from "@/i18n/messages";
 import { fmt } from "@/i18n/format";
@@ -69,7 +69,7 @@ export default async function UseCases({
         </section>
 
         {runs.length === 0 ? (
-          <HowARunWorks t={t} />
+          <HowARunWorks t={t} locale={locale} />
         ) : (
           runs.map((run, i) => <Run key={run.id} t={t} run={run} index={i} />)
         )}
@@ -144,7 +144,7 @@ function Run({
 }
 
 // Shown until the team picks real runs to feature.
-function HowARunWorks({ t }: { t: Messages }) {
+function HowARunWorks({ t, locale }: { t: Messages; locale: Locale }) {
   return (
     <section className="mx-auto max-w-5xl px-4 py-20">
       <SectionHeading title={t.useCases.whatTitle} />
@@ -160,7 +160,7 @@ function HowARunWorks({ t }: { t: Messages }) {
         ))}
       </ol>
       <p className="mt-8 text-center text-sm text-muted">
-        <Link href="/dashboard" className="text-accent hover:underline">
+        <Link href={localePath(locale, "/start")} className="text-accent hover:underline">
           {t.useCases.tryLink}
         </Link>
       </p>

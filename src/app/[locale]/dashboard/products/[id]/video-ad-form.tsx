@@ -26,6 +26,7 @@ export function VideoAdForm({
   cost,
   label,
   language,
+  initiallyOpen = false,
 }: {
   productId: string;
   initialRequestId: string;
@@ -33,8 +34,9 @@ export function VideoAdForm({
   label: string;
   // Chosen next to the buttons; shared with image runs.
   language: string;
+  initiallyOpen?: boolean;
 }) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(initiallyOpen);
   const [length, setLength] = useState<LengthKey>(DEFAULT_VIDEO_OPTIONS.length);
   const { t } = useI18n();
   const { state, action, pending, requestId } = useGenerationAction(initialRequestId, () => setOpen(false));
@@ -60,6 +62,8 @@ export function VideoAdForm({
       <input type="hidden" name="productId" value={productId} />
       <input type="hidden" name="kind" value="video" />
 
+      <p className="text-sm leading-relaxed text-muted">{fmt(t.onboard.videoChoice, { count: 2, seconds: length })}</p>
+      <details><summary className="min-h-11 cursor-pointer py-3 font-medium text-accent">{t.onboard.advanced}</summary><div className="flex flex-col gap-4 pt-2">
       <label className="flex flex-col gap-1.5">
         <span className="font-medium">{t.app.message}</span>
         <textarea
@@ -173,6 +177,7 @@ export function VideoAdForm({
         </select>
       </label>
 
+      </div></details>
       <div className="flex items-center gap-3">
         <button
           type="submit"

@@ -311,6 +311,22 @@ export const ro: Messages = {
     englishOnly:
       "Această pagină este disponibilă în engleză, iar versiunea în engleză este cea valabilă.",
   },
+  onboard: {
+    title: "Primele tale reclame, pas cu pas",
+    confirm: "Verifică produsul și alege reclamele",
+    continue: "Continuă",
+    back: "Înapoi",
+    accountTitle: "Creează contul gratuit",
+    prepareTitle: "Ești autentificat. Să pregătim reclamele.",
+    prepare: "Pregătește produsul meu",
+    prepareNote: "Vom citi detaliile produsului după autentificare. Apoi poți verifica setările și porni un set la costul afișat.",
+    previewError: "Nu am putut încărca previzualizarea. Poți continua; vom verifica produsul după autentificare.",
+    invalidUrl: "Introdu un link public către produs sau magazin.",
+    videoChoice: "{count} videoclipuri verticale de câte {seconds} secunde, cu voce și subtitrări.",
+    advanced: "Setări opționale",
+    recommended: "Cel mai rapid mod de a începe",
+    accountContinue: "Continuă la contul gratuit",
+  },
   login: {
     title: "Autentifică-te în Gooidy",
     sub: "Îți trimitem pe e-mail un link și un cod de autentificare. Fără parolă.",

@@ -1,0 +1,22 @@
+name: Guided onboarding checks
+on:
+  push:
+    branches: [feat/guided-onboarding]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  onboarding:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: node --experimental-strip-types --test tests/onboarding.test.ts tests/public-fetch.test.ts
+      - run: npx next typegen && npx tsc --noEmit
+      - name: Lint guided signup and handoff
+        run: npx eslint src/lib/onboarding.ts src/lib/onboarding-preview-limit.ts src/lib/image-pricing.ts src/lib/pipeline.ts src/lib/supabase/proxy.ts src/app/api/onboarding/preview/route.ts src/app/auth/callback/route.ts src/app/_landing/chrome.tsx src/app/_landing/sticky-cta.tsx src/app/_landing/setup-steps.tsx 'src/app/[locale]/start/' 'src/app/[locale]/login/' 'src/app/[locale]/dashboard/setup/' 'src/app/[locale]/dashboard/product-url-form.tsx' 'src/app/[locale]/dashboard/actions.ts' 'src/app/[locale]/dashboard/products/[id]/generate-controls.tsx' 'src/app/[locale]/dashboard/products/[id]/video-ad-form.tsx' 'src/app/[locale]/dashboard/products/[id]/page.tsx' 'src/app/[locale]/page.tsx' 'src/app/[locale]/use-cases/page.tsx' src/i18n/messages/*.ts

@@ -6,12 +6,13 @@ import { useI18n } from "@/i18n/client";
 
 const initialState: FormState = { error: null };
 
-export function ProductUrlForm({ defaultUrl }: { defaultUrl: string }) {
+export function ProductUrlForm({ defaultUrl, onboardingKind }: { defaultUrl: string; onboardingKind?: "image" | "video" }) {
   const [state, action, pending] = useActionState(createProduct, initialState);
   const { t } = useI18n();
 
   return (
     <form action={action} className="flex flex-col gap-2">
+      {onboardingKind && <input type="hidden" name="onboardingKind" value={onboardingKind}/>}
       <label htmlFor="url" className="sr-only">
         {t.app.urlLabel}
       </label>
@@ -31,7 +32,7 @@ export function ProductUrlForm({ defaultUrl }: { defaultUrl: string }) {
           disabled={pending}
           className="btn-primary rounded-xl px-6 py-3 font-medium"
         >
-          {pending ? t.app.reading : t.app.addProduct}
+          {pending ? t.app.reading : onboardingKind ? t.onboard.prepare : t.app.addProduct}
         </button>
       </div>
       {pending && <p className="text-sm text-muted">{t.app.readingNote}</p>}
