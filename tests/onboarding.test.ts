@@ -27,3 +27,37 @@ test("preview budget bounds one visitor and aggregate work and resets",()=>{
  assert.equal(budget.take("fresh",100000),false);
  assert.equal(budget.take("one",160001),true);
 });
+
+import { readFile } from "node:fs/promises";
+import ts from "typescript";
+async function routeFunction(path: string, name: string, names: string[], values: unknown[]) {
+ const source=(await readFile(path,"utf8")).replace(/^import .*;\r?$/gm,"").replace("export async function "+name,"async function "+name);
+ const js=ts.transpileModule(source,{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.None}}).outputText;
+ return new Function(...names,js+";return "+name)(...values);
+}
+const response={next:()=>({}),rewrite:()=>({}),redirect:(url:URL)=>({redirect:url.toString()})};
+test("session proxy preserves the selected destination for signed-in and signed-out visitors",async()=>{
+ let signedIn=true;
+ const update=await routeFunction("src/lib/supabase/proxy.ts","updateSession",
+  ["NextResponse","createServerClient","supabaseUrl","supabasePublishableKey","safeNextPath"],
+  [response,()=>({auth:{getClaims:async()=>({data:{claims:signedIn?{sub:"fixture"}:null}})}}),"https://example.supabase.co","fixture",safeNextPath]);
+ const target=setupPath("https://store.example/products/a?variant=3","video");
+ const req=(url:string)=>({url,nextUrl:new URL(url),cookies:{getAll:()=>[],set:()=>{}}});
+ assert.equal((await update(req("https://gooidy.com/login?"+new URLSearchParams({next:target})))).redirect,"https://gooidy.com"+target);
+ assert.equal((await update(req("https://gooidy.com/login?next=%2F%2Fevil.example"))).redirect,"https://gooidy.com/dashboard");
+ signedIn=false;
+ const redirect=new URL((await update(req("https://gooidy.com"+target))).redirect);
+ assert.equal(redirect.pathname,"/login");assert.equal(redirect.searchParams.get("next"),target);
+});
+test("successful and failed magic-link callbacks preserve a safe setup destination",async()=>{
+ let error: unknown=null;
+ const callback=await routeFunction("src/app/auth/callback/route.ts","GET",["NextResponse","createClient","safeNextPath"],
+  [response,async()=>({auth:{exchangeCodeForSession:async()=>({error})}}),safeNextPath]);
+ const target=setupPath("https://store.example/products/a","image");
+ const url=new URL("https://gooidy.com/auth/callback");url.searchParams.set("code","fixture");url.searchParams.set("next",target);
+ const request={nextUrl:url};
+ assert.equal((await callback(request)).redirect,"https://gooidy.com"+target);
+ error={message:"expired"};
+ const failed=new URL((await callback(request)).redirect);
+ assert.equal(failed.pathname,"/login");assert.equal(failed.searchParams.get("next"),target);assert.equal(failed.searchParams.get("error"),"link");
+});

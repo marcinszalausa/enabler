@@ -1,12 +1,14 @@
 name: Guided onboarding checks
 on:
   push:
-    branches: [feat/guided-onboarding]
+    branches: [feat/guided-onboarding, main]
   pull_request:
 permissions:
   contents: read
+  statuses: read
 jobs:
   onboarding:
+    if: github.ref != 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -26,3 +28,16 @@ jobs:
         run: node scripts/check-onboarding-browser.mjs
         env:
           PLAYWRIGHT_MODULE_PATH: /tmp/gooidy-onboarding-browser/node_modules/playwright
+  production-onboarding:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Verify deployed setup without accounts, emails or generation
+        run: node scripts/check-onboarding-live.mjs
+        env:
+          GH_TOKEN: ${{ github.token }}
