@@ -18,6 +18,10 @@ try{
   const response=await fetch(endpoint,{method:"POST",headers:{"Content-Type":type,...(origin?{Origin:"http://localhost:3100"}:{})},body:JSON.stringify(body)});
   assert.equal(response.status,status);
  }
+ const live=await fetch(endpoint,{method:"POST",headers:{"Content-Type":"application/json",Origin:"http://localhost:3100"},body:JSON.stringify({url:"https://softmila.com/products/modest-wrap-cardigan"}),signal:AbortSignal.timeout(55000)});
+ assert.ok([200,422].includes(live.status));
+ if(live.ok){const data=await live.json();assert.ok(data.title);assert.ok(!data.photo||data.photo.startsWith("data:image/webp;base64,"));console.log("LIVE_PRODUCT_PREVIEW",JSON.stringify({status:live.status,title:data.title,thumbnail:!!data.photo}));}
+ else console.log("LIVE_PRODUCT_PREVIEW store blocked metadata; optional preview fallback applies");
  browser=await chromium.launch({headless:true});
  const jpeg=await readFile("public/reels/softmila-cardigan.jpg"),photo="data:image/jpeg;base64,"+jpeg.toString("base64");
  for(const [width,locale,theme] of [[390,"en","light"],[1440,"en","dark"],[390,"ar","light"]]){
@@ -39,25 +43,25 @@ try{
   // Blocked previews remain an optional aid, never a signup dead end.
   previewFails=true;
   await page.goto("http://localhost:3100"+prefix+"/start?"+new URLSearchParams({url:"https://store.example/blocked"}),{waitUntil:"networkidle"});
-  await page.waitForFunction(()=>document.querySelector('[data-onboarding-step="2"] [role="status"]')?.textContent?.length>0);
-  await page.locator("[data-onboarding-step='2'] > div.mt-7 button").first().count().catch(()=>0);
+  await page.locator('[data-preview-state="error"]').waitFor();
+  assert.equal(await page.locator("[data-continue-account]").isEnabled(),true);
   previewFails=false;
   await page.goto("http://localhost:3100"+prefix+"/start",{waitUntil:"networkidle"});
   await page.locator("#setup-url").fill("javascript:alert(1)");
   await page.locator("form button[type=submit]").click();
-  assert.equal(await page.locator('[role="alert"]').count(),1);
+  assert.equal(await page.locator('[data-onboarding-step="1"] [role="alert"]').count(),1);
   await page.locator("#setup-url").fill("store.example/products/cardigan?variant=42");
   await page.locator("form button[type=submit]").click();
   await page.locator('[data-onboarding-step="2"]').waitFor();
   await page.locator('input[name="kind"][value="video"]').check();
-  await page.locator('img').filter({visible:true}).first().waitFor().catch(()=>{});
+  await page.locator('[data-preview-state="ready"] img').waitFor();
   await page.evaluate(theme=>{document.documentElement.dataset.theme=theme;},theme);
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
   if(locale==="en"){
    const b=await page.screenshot({type:"jpeg",quality:75}),data=b.toString("base64"),name=theme+"-"+width;
    for(let i=0;i<data.length;i+=4000)console.log("ONBOARDING_IMAGE",name,i/4000,data.slice(i,i+4000));
   }
-  await page.locator("button").filter({hasText:locale==="en"?"Continue to free account":"متابعة إلى الحساب المجاني"}).click();
+  await page.locator("[data-continue-account]").click();
   await page.waitForURL("**/login?**");
   const next=new URL(page.url()).searchParams.get("next");
   const setup=new URL(next,"http://localhost:3100");
@@ -69,13 +73,16 @@ try{
   await page.goto("http://localhost:3100/auth/callback?"+new URLSearchParams({next}),{waitUntil:"networkidle"});
   assert.equal(new URL(page.url()).searchParams.get("next"),next);
   assert.equal(new URL(page.url()).searchParams.get("error"),"link");
+  const cors={"Access-Control-Allow-Origin":"http://localhost:3100","Access-Control-Allow-Headers":"*","Access-Control-Allow-Methods":"POST, OPTIONS"};
   await page.route("https://example.supabase.co/auth/v1/otp**",route=>{
+   if(route.request().method()==="OPTIONS")return route.fulfill({status:204,headers:cors});
    otpNext=new URL(new URL(route.request().url()).searchParams.get("redirect_to")).searchParams.get("next");
-   return route.fulfill({status:200,contentType:"application/json",body:"{}"});
+   return route.fulfill({status:200,headers:cors,contentType:"application/json",body:"{}"});
   });
   await page.route("https://example.supabase.co/auth/v1/verify**",route=>{
+   if(route.request().method()==="OPTIONS")return route.fulfill({status:204,headers:cors});
    const payload=Buffer.from(JSON.stringify({sub:"10000000-0000-4000-8000-000000000001",exp:Math.floor(Date.now()/1000)+3600,aud:"authenticated"})).toString("base64url");
-   return route.fulfill({status:200,contentType:"application/json",body:JSON.stringify({access_token:"eyJhbGciOiJIUzI1NiJ9."+payload+".fixture",refresh_token:"fixture",token_type:"bearer",expires_in:3600,user:{id:"10000000-0000-4000-8000-000000000001",email:"fixture@example.invalid"}})});
+   return route.fulfill({status:200,headers:cors,contentType:"application/json",body:JSON.stringify({access_token:"eyJhbGciOiJIUzI1NiJ9."+payload+".fixture",refresh_token:"fixture",token_type:"bearer",expires_in:3600,user:{id:"10000000-0000-4000-8000-000000000001",email:"fixture@example.invalid"}})});
   });
   // Successful verification must navigate to the chosen setup. Its destination
   // is fulfilled locally: no real account, message or protected mutation occurs.

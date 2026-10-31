@@ -59,7 +59,7 @@ export function StartFlow(){
       {error&&<p role="alert" className="text-sm text-danger">{t.onboard.invalidUrl}</p>}
       <button type="submit" className="btn-primary min-h-12 rounded-xl px-6 py-3 font-medium">{t.onboard.continue}</button>
     </form>:<>
-      <div className="mt-7 flex items-center gap-4 rounded-2xl border border-line bg-surface p-4">
+      <div data-preview-state={loading?"loading":previewError?"error":preview?"ready":"idle"} className="mt-7 flex items-center gap-4 rounded-2xl border border-line bg-surface p-4">
         {preview?.photo&&
           // eslint-disable-next-line @next/next/no-img-element -- bounded image data returned by our preview endpoint
           <img src={preview.photo} alt="" className="h-28 w-24 shrink-0 rounded-xl bg-bg object-contain"/>}
@@ -84,7 +84,7 @@ export function StartFlow(){
         </div>
       </fieldset>
       <div className="mt-7 flex flex-wrap items-center gap-3">
-        <button type="button" onClick={()=>router.push("/login?"+new URLSearchParams({next:setupPath(url,kind)}))}
+        <button data-continue-account type="button" onClick={()=>router.push("/login?"+new URLSearchParams({next:setupPath(url,kind)}))}
           className="btn-primary min-h-12 rounded-xl px-6 py-3 font-medium">{t.onboard.accountContinue}</button>
         <button type="button" onClick={()=>{setStep(1);setTimeout(()=>heading.current?.focus(),0);}}
           className="min-h-12 rounded-xl border border-line px-5 py-3 text-sm font-medium">{t.onboard.back}</button>
