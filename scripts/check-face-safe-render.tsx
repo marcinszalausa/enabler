@@ -54,7 +54,7 @@ try{
  await writeFile(join(dir,"edited.mp4"),edited);
  for(const time of [0.6,1.6,2.7,4.5,6]){
   const result:{stdout:Buffer;stderr:Buffer}=await exec(ffmpegPath,["-v","error","-ss",String(time),"-i",join(dir,"edited.mp4"),"-frames:v","1","-f","image2pipe","-vcodec","png","pipe:1"],{encoding:"buffer",maxBuffer:10e6,timeout:30000});
-  const {data,info}:{data:Buffer;info:sharp.OutputInfo}=await sharp(result.stdout).removeAlpha().raw().toBuffer({resolveWithObject:true});assert.equal(info.width,1080);assert.equal(info.height,1920);
+  const {data,info}:{data:Buffer;info:{width:number;height:number;channels:number}}=await sharp(result.stdout).removeAlpha().raw().toBuffer({resolveWithObject:true});assert.equal(info.width,1080);assert.equal(info.height,1920);
   let red=0,white=0,green=0;
   for(let y=0;y<VIDEO_REGIONS.media.height;y++)for(let x=0;x<info.width;x++){const i=(y*info.width+x)*info.channels;const [r,g,b]=[data[i],data[i+1],data[i+2]];if(r>170&&g<90&&b<90)red++;if(r>200&&g>200&&b>200)white++;if(r<60&&g>90&&b<60)green++;}
   if(time<5.5){assert.ok(red>1500,"Moving face must remain visible");assert.equal(white,0,"Text pixels overlap moving footage");assert.ok(green>100000);}
