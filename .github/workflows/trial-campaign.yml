@@ -13,7 +13,8 @@ jobs:
       - name: Read installed framework guides and create migration with Supabase CLI
         run: |
           npm ci
-          cat node_modules/next/dist/docs/01-app/03-api-reference/01-directives/use-client.mdx
-          curl -fsSL https://supabase.com/changelog.md | head -c 22000
+          find node_modules/next/dist/docs -iname '*client*' -type f -exec sh -c 'head -c 18000 "$1"' sh {} \;
+          curl -fsSL https://supabase.com/changelog.md -o /tmp/changelog.md
+          head -c 22000 /tmp/changelog.md
           npx --yes supabase@2.81.3 migration new trial_campaign_safeguards
           ls supabase/migrations/*trial_campaign_safeguards.sql
