@@ -7,6 +7,9 @@ psql "$db_url" -X -v ON_ERROR_STOP=1 -f supabase/tests/bootstrap.sql
 for migration in supabase/migrations/*.sql; do
   psql "$db_url" -X -v ON_ERROR_STOP=1 -f "$migration"
 done
+# Legacy accounting suites exercise paid concurrency. Free limits and unverified
+# signups are exercised separately in test-trial-campaign.sh.
+psql "$db_url" -X -v ON_ERROR_STOP=1 -c "alter table public.workspaces alter column plan set default 'starter';"
 psql "$db_url" -X -v ON_ERROR_STOP=1 -f supabase/tests/credits.sql
 
 # An actual unprivileged call must fail, not just return an unchanged balance.

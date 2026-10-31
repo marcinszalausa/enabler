@@ -304,6 +304,20 @@ export const tr: Messages = {
     englishOnly:
       "Bu sayfa İngilizce olarak sunulmaktadır ve geçerli olan İngilizce sürümdür.",
   },
+  trial: {
+    title: "İlk kampanyanız",
+    oneTime: "Bir defaya mahsus 100 başlangıç kredisi. Süresi dolmaz, otomatik yenilenmez.",
+    capacity: "10’lu gruplar halinde {count} görsel daha oluşturmaya yeter.",
+    create: "10 görsel oluşturun",
+    pick: "Favorinizi seçin",
+    publish: "Bağlayın ve paylaşın",
+    continue: "Düzenli reklam oluşturmak ister misiniz?",
+    plans: "Planları karşılaştırın",
+    afterVideo: "Bu grup {cost} kredi kullanır. {remaining} krediniz kalır.",
+    notEnough: "Bu grup için {cost} kredi gerekir. Daha kısa bir video seçin veya görsel oluşturun.",
+    busy: "Bir reklam grubu zaten hazırlanıyor. Bitmesini bekleyin.",
+    rate: "Kısa süre önce birkaç grup başlattınız. Bir saat sonra tekrar deneyin.",
+  },
   personal: {
     preview: "Reklamınızın fikri",
     offerExample: "Örnek: Pazar gününe kadar seçili ürünlerde %10 indirim",

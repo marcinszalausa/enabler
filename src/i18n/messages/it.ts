@@ -311,6 +311,20 @@ export const it: Messages = {
     englishOnly:
       "Questa pagina è disponibile in inglese, che è la versione valida.",
   },
+  trial: {
+    title: "La tua prima campagna",
+    oneTime: "100 crediti iniziali, una sola volta. Senza scadenza o ricarica automatica.",
+    capacity: "Bastano per altre {count} immagini, in gruppi di 10.",
+    create: "Crea 10 immagini",
+    pick: "Scegli la tua preferita",
+    publish: "Collega e pubblica",
+    continue: "Vuoi creare annunci regolarmente?",
+    plans: "Confronta i piani",
+    afterVideo: "Questo gruppo usa {cost} crediti. Te ne resteranno {remaining}.",
+    notEnough: "Servono {cost} crediti. Scegli un video più breve o crea immagini.",
+    busy: "Un gruppo di annunci è già in corso. Attendi che finisca prima di avviarne un altro.",
+    rate: "Hai avviato diversi gruppi di recente. Riprova tra un’ora.",
+  },
   personal: {
     preview: "L’idea del tuo annuncio",
     offerExample: "Esempio: 10% di sconto su articoli selezionati fino a domenica",

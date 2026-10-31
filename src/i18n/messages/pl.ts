@@ -307,6 +307,20 @@ export const pl: Messages = {
     englishOnly:
       "Ta strona jest dostępna po angielsku i to wersja angielska obowiązuje.",
   },
+  trial: {
+    title: "Twoja pierwsza kampania",
+    oneTime: "100 kredytów na start, jednorazowo. Bez daty ważności i automatycznego doładowania.",
+    capacity: "Wystarczy na jeszcze {count} obrazów, po 10 naraz.",
+    create: "Utwórz 10 obrazów",
+    pick: "Wybierz ulubiony",
+    publish: "Połącz konto i opublikuj",
+    continue: "Chcesz tworzyć reklamy regularnie?",
+    plans: "Porównaj plany",
+    afterVideo: "Ta seria zużyje {cost} kredytów. Zostanie Ci {remaining}.",
+    notEnough: "Ta seria wymaga {cost} kredytów. Wybierz krótszy film lub utwórz obrazy.",
+    busy: "Jedna seria już się tworzy. Poczekaj na jej zakończenie przed rozpoczęciem kolejnej.",
+    rate: "Ostatnio rozpoczęto kilka serii. Spróbuj ponownie za godzinę.",
+  },
   personal: {
     preview: "Pomysł na Twoją reklamę",
     offerExample: "Przykład: 10% rabatu na wybrane produkty do niedzieli",

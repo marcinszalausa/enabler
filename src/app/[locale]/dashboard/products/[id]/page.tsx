@@ -1,6 +1,7 @@
 import { canEditWorkspace } from "@/lib/workspace-access";
 import type { CreditReceipt } from "@/lib/generation-presentation";
 import { parseCreativePreferences } from "@/lib/creative-preferences";
+import { TrialCampaign } from "../../trial-campaign";
 import { PersonalizationForm } from "./personalization-form";
 import { randomUUID } from "node:crypto";
 import { Suspense } from "react";
@@ -170,6 +171,8 @@ async function Product({
           {canEdit && (needsPreferences ? <a href="#ad-preferences" className="inline-flex min-h-11 max-w-sm items-center text-sm font-medium text-accent hover:underline">{t.personal.confirmFirst}</a> : <GenerateControls
             key={JSON.stringify(preferences)}
             initialKind={initialKind}
+            credits={workspace?.credits ?? 0}
+            freeTrial={workspace?.plan === "free"}
             imageRequestId={randomUUID()}
             videoRequestId={randomUUID()}
             productId={product.id}
@@ -190,6 +193,7 @@ async function Product({
         </div>
       </header>
 
+      {workspace?.plan==="free"&&<TrialCampaign credits={workspace.credits??0} hasAds={(generations??[]).some(g=>g.creatives.length>0)} published={Object.values(publishing?.posts??{}).some(post=>post.status==="published")} canEdit={canEdit}/>}
       {brief && canEdit && <PersonalizationForm productId={product.id} initial={preferences} audience={brief.audience} focus={brief.benefits[0]??""} benefits={brief.benefits} required={needsPreferences}/>}
 
       {brief && (
@@ -220,7 +224,7 @@ async function Product({
         </section>
       )}
 
-      <section className="mt-10 flex flex-col gap-10">
+      <section id="your-ads" className="mt-10 flex scroll-mt-24 flex-col gap-10">
         {(generations ?? []).length === 0 && (
           <EmptyState title={t.app.noAds}>
             {fmt(t.app.noAdsBody, {

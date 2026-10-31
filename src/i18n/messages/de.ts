@@ -303,6 +303,20 @@ export const de: Messages = {
     englishOnly:
       "Diese Seite ist auf Englisch verfügbar; maßgeblich ist die englische Fassung.",
   },
+  trial: {
+    title: "Deine erste Kampagne",
+    oneTime: "100 Startguthaben, einmalig. Kein Ablauf und keine automatische Auffüllung.",
+    capacity: "Reicht für {count} weitere Bilder, in Paketen mit je 10.",
+    create: "10 Bilder erstellen",
+    pick: "Favoriten auswählen",
+    publish: "Verbinden und posten",
+    continue: "Regelmäßig Anzeigen erstellen?",
+    plans: "Tarife vergleichen",
+    afterVideo: "Dieses Paket kostet {cost} Credits. Danach bleiben {remaining}.",
+    notEnough: "Dieses Paket benötigt {cost} Credits. Wähle ein kürzeres Video oder erstelle Bilder.",
+    busy: "Ein Anzeigenpaket wird bereits erstellt. Warte, bis es fertig ist.",
+    rate: "Du hast kürzlich mehrere Pakete gestartet. Versuche es in einer Stunde erneut.",
+  },
   personal: {
     preview: "Die Idee für deine Anzeige",
     offerExample: "Beispiel: 10 % auf ausgewählte Artikel bis Sonntag",

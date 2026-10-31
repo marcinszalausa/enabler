@@ -311,6 +311,20 @@ export const ro: Messages = {
     englishOnly:
       "Această pagină este disponibilă în engleză, iar versiunea în engleză este cea valabilă.",
   },
+  trial: {
+    title: "Prima ta campanie",
+    oneTime: "100 de credite inițiale, o singură dată. Fără expirare sau reîncărcare automată.",
+    capacity: "Suficiente pentru încă {count} imagini, în serii de 10.",
+    create: "Creează 10 imagini",
+    pick: "Alege favorita",
+    publish: "Conectează și publică",
+    continue: "Vrei să creezi reclame regulat?",
+    plans: "Compară planurile",
+    afterVideo: "Această serie folosește {cost} credite. Îți rămân {remaining}.",
+    notEnough: "Această serie necesită {cost} credite. Alege un videoclip mai scurt sau creează imagini.",
+    busy: "O serie este deja în curs. Așteaptă să se termine.",
+    rate: "Ai început mai multe serii recent. Încearcă din nou peste o oră.",
+  },
   personal: {
     preview: "Ideea reclamei tale",
     offerExample: "Exemplu: 10% reducere la produse selectate până duminică",

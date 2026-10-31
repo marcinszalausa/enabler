@@ -305,6 +305,20 @@ export const sv: Messages = {
     englishOnly:
       "Den här sidan finns på engelska, och det är den engelska versionen som gäller.",
   },
+  trial: {
+    title: "Din första kampanj",
+    oneTime: "100 startkrediter, en gång. Ingen utgångstid eller automatisk påfyllning.",
+    capacity: "Räcker till {count} fler bilder, i omgångar om 10.",
+    create: "Skapa 10 bilder",
+    pick: "Välj din favorit",
+    publish: "Anslut och publicera",
+    continue: "Vill du skapa annonser regelbundet?",
+    plans: "Jämför planer",
+    afterVideo: "Den här omgången kostar {cost} krediter. Du har {remaining} kvar.",
+    notEnough: "Den här omgången kräver {cost} krediter. Välj en kortare video eller skapa bilder.",
+    busy: "En omgång pågår redan. Vänta tills den är klar.",
+    rate: "Du har startat flera omgångar nyligen. Försök igen om en timme.",
+  },
   personal: {
     preview: "Idén för din annons",
     offerExample: "Exempel: 10 % rabatt på utvalda varor till söndag",
