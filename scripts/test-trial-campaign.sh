@@ -20,4 +20,20 @@ done
 for pid in "${pids[@]}"; do wait "$pid"; done
 balance="$(psql "$CREDIT_TEST_DATABASE_URL" -XAt -v ON_ERROR_STOP=1 -c "select sum(credits) from public.workspaces w join auth.users u on u.id=w.owner_id where u.email='race@example.invalid';")"
 [[ "$balance" == 100 ]] || { echo "Concurrent signup grants: $balance" >&2; exit 1; }
+# Distinct simultaneous free requests may charge exactly one batch.
+psql "$CREDIT_TEST_DATABASE_URL" -X -v ON_ERROR_STOP=1 -c "insert into auth.users(id,email,email_confirmed_at) values('72000000-0000-4000-8000-000000000001','batch-race@example.invalid',now());"
+ws="$(psql "$CREDIT_TEST_DATABASE_URL" -XAt -v ON_ERROR_STOP=1 -c "select id from public.workspaces where owner_id='72000000-0000-4000-8000-000000000001';")"
+product="$(psql "$CREDIT_TEST_DATABASE_URL" -XAtq -v ON_ERROR_STOP=1 -c "insert into public.products(workspace_id,url) values('$ws','https://example.invalid') returning id;")"
+pids=()
+for i in {1..12}; do
+ (
+  if ! psql "$CREDIT_TEST_DATABASE_URL" -XAtq -v ON_ERROR_STOP=1 -c "set role service_role;select public.reserve_generation('$ws',gen_random_uuid(),'$product','image_ads','test',10,'{}');" >"$output/batch-$i" 2>"$output/error-$i"; then
+   rg -q 'TRIAL_BATCH_ACTIVE' "$output/error-$i"
+  fi
+ ) &
+ pids+=("$!")
+done
+for pid in "${pids[@]}"; do wait "$pid"; done
+result="$(psql "$CREDIT_TEST_DATABASE_URL" -XAt -v ON_ERROR_STOP=1 -c "select credits||':'||(select count(*) from public.generations where workspace_id='$ws') from public.workspaces where id='$ws';")"
+[[ "$result" == "90:1" ]] || { echo "Parallel free requests: $result" >&2; exit 1; }
 echo "Trial verification, reset prevention, permissions, limits and concurrency checks passed."
