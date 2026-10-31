@@ -20,3 +20,9 @@ jobs:
       - run: npx next typegen && npx tsc --noEmit
       - name: Lint preference UI and generation wiring
         run: npx eslint src/lib/creative-preferences.ts src/lib/ai/claude.ts src/lib/pipeline.ts src/lib/video.tsx 'src/app/[locale]/dashboard/actions.ts' 'src/app/[locale]/dashboard/products/[id]/personalization-form.tsx' 'src/app/[locale]/dashboard/products/[id]/page.tsx' 'src/app/[locale]/dashboard/setup/page.tsx' src/i18n/messages/*.ts
+
+      - run: npm install --prefix /tmp/gooidy-personal-browser --no-package-lock playwright@1.56.1
+      - run: /tmp/gooidy-personal-browser/node_modules/.bin/playwright install --with-deps chromium
+      - run: node scripts/check-personalization-browser.mjs
+        env:
+          PLAYWRIGHT_MODULE_PATH: /tmp/gooidy-personal-browser/node_modules/playwright
