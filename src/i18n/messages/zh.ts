@@ -289,8 +289,10 @@ export const zh: Messages = {
     englishOnly: "本页面以英文提供，以英文版本为准。",
   },
   personal: {
+    preview: "广告方向",
+    offerExample: "例如：指定商品周日前享九折",
     title: "让广告更符合你的想法",
-    intro: "确认或修改建议。回答会影响文案与画面，并为此产品保存。",
+    intro: "选择推广内容，保留或修改我们的建议。",
     promotion: "今天你想推广什么？",
     product: "这个产品",
     collection: "一个系列",

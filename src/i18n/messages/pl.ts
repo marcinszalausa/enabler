@@ -308,8 +308,10 @@ export const pl: Messages = {
       "Ta strona jest dostępna po angielsku i to wersja angielska obowiązuje.",
   },
   personal: {
+    preview: "Pomysł na Twoją reklamę",
+    offerExample: "Przykład: 10% rabatu na wybrane produkty do niedzieli",
     title: "Dopasuj reklamy do siebie",
-    intro: "Potwierdź lub popraw sugestie. Odpowiedzi wpływają na przekaz i obraz oraz zostają zapisane dla tego produktu.",
+    intro: "Wybierz, co promować. Zostaw nasze propozycje lub je zmień.",
     promotion: "Co dziś promujesz?",
     product: "Ten produkt",
     collection: "Kolekcję",

@@ -295,8 +295,10 @@ export const ko: Messages = {
     englishOnly: "이 페이지는 영어로 제공되며, 영어 원문이 우선합니다.",
   },
   personal: {
+    preview: "광고 방향",
+    offerExample: "예: 일요일까지 일부 상품 10% 할인",
     title: "내 브랜드에 맞는 광고 만들기",
-    intro: "제안을 확인하거나 수정하세요. 답변은 메시지와 이미지에 반영되며 이 제품에 대해 저장됩니다.",
+    intro: "홍보할 대상을 고르고 제안을 그대로 쓰거나 수정하세요.",
     promotion: "오늘 무엇을 홍보하시나요?",
     product: "이 제품",
     collection: "컬렉션",

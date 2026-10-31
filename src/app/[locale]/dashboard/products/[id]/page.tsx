@@ -190,7 +190,7 @@ async function Product({
         </div>
       </header>
 
-      {brief && canEdit && <PersonalizationForm productId={product.id} initial={preferences} audience={brief.audience} focus={brief.benefits[0]??""} required={needsPreferences}/>}
+      {brief && canEdit && <PersonalizationForm productId={product.id} initial={preferences} audience={brief.audience} focus={brief.benefits[0]??""} benefits={brief.benefits} required={needsPreferences}/>}
 
       {brief && (
         <section className="edge mt-8 grid gap-6 p-6 text-sm sm:grid-cols-2">

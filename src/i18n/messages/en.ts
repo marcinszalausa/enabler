@@ -301,8 +301,10 @@ export const en = {
       "This page is available in English, which is the version that applies.",
   },
   personal: {
+    preview: "Your ad direction",
+    offerExample: "Example: 10% off selected items until Sunday",
     title: "Make these ads yours",
-    intro: "Confirm or edit these suggestions. Your answers guide the message and visuals, and are remembered for this product.",
+    intro: "Choose what to promote. Keep our suggestions or change them.",
     promotion: "What are you promoting today?",
     product: "This product",
     collection: "A collection",

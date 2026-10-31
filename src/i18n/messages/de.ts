@@ -304,8 +304,10 @@ export const de: Messages = {
       "Diese Seite ist auf Englisch verfügbar; maßgeblich ist die englische Fassung.",
   },
   personal: {
+    preview: "Die Idee für deine Anzeige",
+    offerExample: "Beispiel: 10 % auf ausgewählte Artikel bis Sonntag",
     title: "Mach diese Anzeigen zu deinen",
-    intro: "Bestätige oder bearbeite die Vorschläge. Deine Antworten bestimmen Botschaft und Bildgestaltung und werden für dieses Produkt gespeichert.",
+    intro: "Wähle, was du bewerben möchtest. Übernimm oder ändere unsere Vorschläge.",
     promotion: "Was bewirbst du heute?",
     product: "Dieses Produkt",
     collection: "Eine Kollektion",

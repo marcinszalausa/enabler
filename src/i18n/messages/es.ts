@@ -311,8 +311,10 @@ export const es: Messages = {
       "Esta página está disponible en inglés, que es la versión que se aplica.",
   },
   personal: {
+    preview: "La idea de tu anuncio",
+    offerExample: "Ejemplo: 10 % de descuento en artículos seleccionados hasta el domingo",
     title: "Haz tuyos estos anuncios",
-    intro: "Confirma o edita las sugerencias. Tus respuestas guían el mensaje y las imágenes, y se guardan para este producto.",
+    intro: "Elige qué promocionar. Usa nuestras sugerencias o cámbialas.",
     promotion: "¿Qué promocionas hoy?",
     product: "Este producto",
     collection: "Una colección",

@@ -312,8 +312,10 @@ export const it: Messages = {
       "Questa pagina è disponibile in inglese, che è la versione valida.",
   },
   personal: {
+    preview: "L’idea del tuo annuncio",
+    offerExample: "Esempio: 10% di sconto su articoli selezionati fino a domenica",
     title: "Rendi tuoi questi annunci",
-    intro: "Conferma o modifica i suggerimenti. Le risposte guidano il messaggio e le immagini e vengono ricordate per questo prodotto.",
+    intro: "Scegli cosa promuovere. Usa i suggerimenti o modificali.",
     promotion: "Cosa promuovi oggi?",
     product: "Questo prodotto",
     collection: "Una collezione",
