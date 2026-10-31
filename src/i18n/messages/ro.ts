@@ -311,6 +311,22 @@ export const ro: Messages = {
     englishOnly:
       "Această pagină este disponibilă în engleză, iar versiunea în engleză este cea valabilă.",
   },
+  choose: {
+    title: "Alege reclama preferată",
+    help: "Atinge o reclamă pentru a o vedea complet. Verifici totul înainte de publicare.",
+    post: "Publică această reclamă",
+    preview: "Vezi reclama {number}",
+    more: "Mai multe opțiuni",
+    review: "Verifică și publică",
+    change: "Alege altă reclamă",
+    confirm: "Publică acum",
+    schedule: "Programează reclama",
+    viewPosts: "Vezi starea postării",
+    kept: "Alegerea ta rămâne în această filă",
+    resumeReady: "Continuă pentru a verifica reclama și a alege unde o publici.",
+    resumeConnect: "Conectează un cont, apoi revino pentru a verifica reclama. Nimic nu se publică automat.",
+    return: "Înapoi la reclama mea",
+  },
   trial: {
     title: "Prima ta campanie",
     oneTime: "100 de credite inițiale, o singură dată. Fără expirare sau reîncărcare automată.",

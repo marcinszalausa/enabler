@@ -1,3 +1,4 @@
+import {ChosenAdResume} from "./chosen-ad-resume";
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -98,6 +99,8 @@ async function Publishing({
     ]);
 
   return (
+    <>
+    <ChosenAdResume workspaceId={ws.id} connected={(accounts??[]).length>0}/>
     <PublishingView
       t={t}
       locale={locale}
@@ -110,5 +113,6 @@ async function Publishing({
       overLimit={query.error === "limit"}
       limit={accountLimit(ws.plan)}
     />
+    </>
   );
 }

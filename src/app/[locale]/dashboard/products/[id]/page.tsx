@@ -243,6 +243,8 @@ async function Product({
             imageVersion={imageVersion}
             canShowcase={canShowcase}
             productUrl={product.url}
+            productId={product.id}
+            workspaceId={product.workspace_id}
             accounts={publishing?.accounts ?? null}
             nextSlot={publishing?.nextSlot ?? null}
             posts={publishing?.posts ?? {}}

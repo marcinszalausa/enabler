@@ -308,6 +308,22 @@ export const pt: Messages = {
     englishOnly:
       "Esta página está disponível em inglês, que é a versão que vale.",
   },
+  choose: {
+    title: "Escolha seu favorito",
+    help: "Toque em um anúncio para vê-lo inteiro. Revise tudo antes de publicar.",
+    post: "Publicar este anúncio",
+    preview: "Ver anúncio {number}",
+    more: "Mais opções",
+    review: "Revisar e publicar",
+    change: "Escolher outro anúncio",
+    confirm: "Publicar agora",
+    schedule: "Agendar este anúncio",
+    viewPosts: "Ver status da publicação",
+    kept: "Seu anúncio escolhido fica nesta aba",
+    resumeReady: "Continue para revisar seu anúncio e escolher onde publicar.",
+    resumeConnect: "Conecte uma conta e volte para revisar este anúncio. Nada é publicado automaticamente.",
+    return: "Voltar ao meu anúncio",
+  },
   trial: {
     title: "Sua primeira campanha",
     oneTime: "100 créditos iniciais, uma única vez. Sem validade ou recarga automática.",

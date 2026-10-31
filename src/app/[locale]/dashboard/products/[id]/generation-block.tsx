@@ -1,9 +1,9 @@
+import {AdGallery} from "./ad-gallery";
 import { setShowcase } from "./showcase-actions";
 import { DEFAULT_VIDEO_OPTIONS, lengthForRunCost } from "@/lib/video-options";
 import { Chip, DownloadIcon, smallButton } from "../../ui";
 import {
   PublishDialog,
-  PublishOneButton,
   type PublishAccount,
 } from "./publish-dialog";
 import { platformName } from "@/lib/social/platforms";
@@ -20,7 +20,7 @@ export type AdPost = {
   when: string | null;
 };
 
-type Creative = {
+export type Creative = {
   id: string;
   kind: "image" | "video";
   aspect: string;
@@ -54,6 +54,8 @@ export function GenerationBlock({
   posts,
   receipt,
   canRetry = false,
+  productId,
+  workspaceId,
 }: {
   t: Messages;
   locale: string;
@@ -66,6 +68,8 @@ export function GenerationBlock({
   posts: Record<string, AdPost>;
   receipt?: CreditReceipt | null;
   canRetry?: boolean;
+  productId?: string;
+  workspaceId?: string;
 }) {
   const when = new Date(g.created_at).toLocaleString(locale, {
     dateStyle: "medium",
@@ -85,7 +89,7 @@ export function GenerationBlock({
   );
 
   return (
-    <div>
+    <div id={`ad-${g.id}`} className="scroll-mt-24">
       <GenerationStatus t={t} generation={g} receipt={receipt} canRetry={canRetry} />
       <div className="flex flex-wrap items-center justify-between gap-2">
         <h2 className="flex flex-wrap items-baseline gap-x-2 text-sm">
@@ -102,7 +106,7 @@ export function GenerationBlock({
           <span className="text-muted">{when}</span>
         </h2>
         <div className="flex flex-wrap items-center gap-2">
-          {accounts && !view.active && g.status === "succeeded" && creatives.length > 0 && (
+          {canRetry && accounts && !view.active && g.status === "succeeded" && creatives.length > 0 && (
             <PublishDialog
               generationId={g.id}
               creatives={creatives.map((c) => ({
@@ -139,7 +143,7 @@ export function GenerationBlock({
           )}
         </div>
       </div>
-      <ul
+      {!view.active&&creatives.length>0?<AdGallery creatives={creatives} generationId={g.id} imageVersion={imageVersion} seconds={seconds} canPublish={canRetry&&accounts!==null&&g.status==="succeeded"} productId={productId} workspaceId={workspaceId} posts={posts}/>:<ul
         className={`mt-4 grid grid-cols-2 items-start gap-4 ${video ? "md:grid-cols-3" : "md:grid-cols-4"}`}
       >
         {creatives.map((c) => (
@@ -195,14 +199,12 @@ export function GenerationBlock({
                   <DownloadIcon />
                   {video ? t.app.downloadMp4 : t.app.download}
                 </a>
-                {accounts && !view.active && g.status === "succeeded" && (
-                  <PublishOneButton generationId={g.id} creativeId={c.id} />
-                )}
               </div>
             </div>
           </li>
         ))}
-      </ul>
+      </ul>}
+
     </div>
   );
 }

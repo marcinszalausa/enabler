@@ -305,6 +305,22 @@ export const sv: Messages = {
     englishOnly:
       "Den här sidan finns på engelska, och det är den engelska versionen som gäller.",
   },
+  choose: {
+    title: "Välj din favorit",
+    help: "Tryck på en annons för att se hela. Granska allt innan du publicerar.",
+    post: "Publicera den här annonsen",
+    preview: "Visa annons {number}",
+    more: "Fler alternativ",
+    review: "Granska och publicera",
+    change: "Välj en annan annons",
+    confirm: "Publicera nu",
+    schedule: "Schemalägg annonsen",
+    viewPosts: "Visa inläggsstatus",
+    kept: "Ditt val sparas i den här fliken",
+    resumeReady: "Fortsätt för att granska annonsen och välja var den ska publiceras.",
+    resumeConnect: "Anslut ett konto och återvänd för att granska annonsen. Inget publiceras automatiskt.",
+    return: "Tillbaka till min annons",
+  },
   trial: {
     title: "Din första kampanj",
     oneTime: "100 startkrediter, en gång. Ingen utgångstid eller automatisk påfyllning.",

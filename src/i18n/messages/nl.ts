@@ -306,6 +306,22 @@ export const nl: Messages = {
     englishOnly:
       "Deze pagina is beschikbaar in het Engels; de Engelse versie is leidend.",
   },
+  choose: {
+    title: "Kies je favoriet",
+    help: "Tik op een advertentie om hem volledig te zien. Controleer alles voor je plaatst.",
+    post: "Plaats deze advertentie",
+    preview: "Bekijk advertentie {number}",
+    more: "Meer opties",
+    review: "Controleren en plaatsen",
+    change: "Andere advertentie kiezen",
+    confirm: "Nu plaatsen",
+    schedule: "Deze advertentie inplannen",
+    viewPosts: "Bekijk berichtstatus",
+    kept: "Je keuze blijft in dit tabblad bewaard",
+    resumeReady: "Controleer je advertentie en kies waar je hem wilt plaatsen.",
+    resumeConnect: "Verbind een account en kom terug om de advertentie te controleren. Er wordt niets automatisch geplaatst.",
+    return: "Terug naar mijn advertentie",
+  },
   trial: {
     title: "Je eerste campagne",
     oneTime: "Eenmalig 100 startcredits. Geen vervaldatum of automatische aanvulling.",

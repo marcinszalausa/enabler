@@ -304,6 +304,22 @@ export const tr: Messages = {
     englishOnly:
       "Bu sayfa İngilizce olarak sunulmaktadır ve geçerli olan İngilizce sürümdür.",
   },
+  choose: {
+    title: "Favorinizi seçin",
+    help: "Tamamını görmek için reklama dokunun. Paylaşmadan önce her şeyi kontrol edin.",
+    post: "Bu reklamı paylaş",
+    preview: "{number}. reklamı önizle",
+    more: "Diğer seçenekler",
+    review: "Kontrol et ve paylaş",
+    change: "Başka bir reklam seç",
+    confirm: "Şimdi paylaş",
+    schedule: "Bu reklamı zamanla",
+    viewPosts: "Gönderi durumunu gör",
+    kept: "Seçiminiz bu sekmede saklanır",
+    resumeReady: "Reklamınızı kontrol edin ve nerede paylaşacağınızı seçin.",
+    resumeConnect: "Bir hesap bağlayıp reklamı kontrol etmek için geri dönün. Hiçbir şey otomatik paylaşılmaz.",
+    return: "Reklamıma dön",
+  },
   trial: {
     title: "İlk kampanyanız",
     oneTime: "Bir defaya mahsus 100 başlangıç kredisi. Süresi dolmaz, otomatik yenilenmez.",

@@ -303,6 +303,22 @@ export const de: Messages = {
     englishOnly:
       "Diese Seite ist auf Englisch verfügbar; maßgeblich ist die englische Fassung.",
   },
+  choose: {
+    title: "Wähle deinen Favoriten",
+    help: "Tippe auf eine Anzeige, um sie vollständig zu sehen. Vor dem Posten prüfst du alles.",
+    post: "Diese Anzeige posten",
+    preview: "Anzeige {number} ansehen",
+    more: "Weitere Optionen",
+    review: "Prüfen und posten",
+    change: "Andere Anzeige wählen",
+    confirm: "Jetzt posten",
+    schedule: "Diese Anzeige planen",
+    viewPosts: "Beitragsstatus ansehen",
+    kept: "Deine Auswahl bleibt in diesem Tab erhalten",
+    resumeReady: "Prüfe deine Anzeige und wähle, wo du sie posten möchtest.",
+    resumeConnect: "Verbinde ein Konto und kehre zur Prüfung zurück. Es wird nichts automatisch gepostet.",
+    return: "Zurück zu meiner Anzeige",
+  },
   trial: {
     title: "Deine erste Kampagne",
     oneTime: "100 Startguthaben, einmalig. Kein Ablauf und keine automatische Auffüllung.",

@@ -300,6 +300,22 @@ export const en = {
     englishOnly:
       "This page is available in English, which is the version that applies.",
   },
+  choose: {
+    title: "Choose your favorite",
+    help: "Tap an ad to see it full size. You review everything before posting.",
+    post: "Post this ad",
+    preview: "Preview ad {number}",
+    more: "More options",
+    review: "Review and post",
+    change: "Choose another ad",
+    confirm: "Post now",
+    schedule: "Schedule this ad",
+    viewPosts: "View post status",
+    kept: "Your chosen ad is kept in this tab",
+    resumeReady: "Continue to review your ad and choose where to post.",
+    resumeConnect: "Connect an account, then return to review this ad. Nothing posts automatically.",
+    return: "Back to my ad",
+  },
   trial: {
     title: "Your first campaign",
     oneTime: "100 starter credits, once. No expiry or automatic refill.",
