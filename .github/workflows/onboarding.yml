@@ -20,3 +20,9 @@ jobs:
       - run: npx next typegen && npx tsc --noEmit
       - name: Lint guided signup and handoff
         run: npx eslint src/lib/onboarding.ts src/lib/onboarding-preview-limit.ts src/lib/image-pricing.ts src/lib/pipeline.ts src/lib/supabase/proxy.ts src/app/api/onboarding/preview/route.ts src/app/auth/callback/route.ts src/app/_landing/chrome.tsx src/app/_landing/sticky-cta.tsx src/app/_landing/setup-steps.tsx 'src/app/[locale]/start/' 'src/app/[locale]/login/' 'src/app/[locale]/dashboard/setup/' 'src/app/[locale]/dashboard/product-url-form.tsx' 'src/app/[locale]/dashboard/actions.ts' 'src/app/[locale]/dashboard/products/[id]/generate-controls.tsx' 'src/app/[locale]/dashboard/products/[id]/video-ad-form.tsx' 'src/app/[locale]/dashboard/products/[id]/page.tsx' 'src/app/[locale]/page.tsx' 'src/app/[locale]/use-cases/page.tsx' src/i18n/messages/*.ts
+      - run: npm install --prefix /tmp/gooidy-onboarding-browser --no-package-lock playwright@1.56.1
+      - run: /tmp/gooidy-onboarding-browser/node_modules/.bin/playwright install --with-deps chromium
+      - name: Guided setup, preview fallback and sign-in handoff
+        run: node scripts/check-onboarding-browser.mjs
+        env:
+          PLAYWRIGHT_MODULE_PATH: /tmp/gooidy-onboarding-browser/node_modules/playwright
