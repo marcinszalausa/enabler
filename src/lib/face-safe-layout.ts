@@ -25,7 +25,7 @@ export function chooseOverlays(aspect:"1:1"|"9:16",faces:Rect[]|null,options:{he
   for(const y of [...new Set(ys)]){candidates.push({x:pad,y,width:936,height:config.height,fontSize:config.font});for(const x of options.rtl?[568,pad]:[pad,568])candidates.push({x,y,width:440,height:config.side,fontSize:config.small});}
  }
  const headline=options.headline===false?null:candidates.find(clear)??null;if(headline)used.push(headline);
- const ctaWidth=Math.min(600,Math.max(240,Array.from(options.cta??"").length*32+88)),ctaHeight=104;
+ const ctaWidth=Math.min(600,Math.max(240,Array.from(new Intl.Segmenter(undefined,{granularity:"grapheme"}).segment(options.cta??"")).length*32+88)),ctaHeight=104;
  const controlsY=[bottom-ctaHeight,Math.round(height*.7),top+headH+32,Math.round(height*.48)];
  const controlX=options.rtl?[width-pad-ctaWidth,pad]:[pad,width-pad-ctaWidth];
  const cta=options.cta?controlsY.flatMap(y=>controlX.map(x=>({x,y,width:ctaWidth,height:ctaHeight}))).find(clear)??null:null;if(cta)used.push(cta);
