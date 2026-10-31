@@ -1,4 +1,7 @@
 import "server-only";
+import sharp from "sharp";
+import {detectFaces} from "@/lib/face-detection";
+import {chooseOverlays,FACE_SAFE_LAYOUT_VERSION} from "@/lib/face-safe-layout";
 import { ImageResponse } from "next/og";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { getBrandKit } from "@/lib/brand-kit";
@@ -32,13 +35,13 @@ export async function renderAdImage(
   const [photo, logo, font] = await Promise.all([
     supabase.storage
       .from("creatives")
-      .createSignedUrl(creative.storage_path, 300),
+      .download(creative.storage_path),
     kit.logo_path
       ? supabase.storage.from("creatives").createSignedUrl(kit.logo_path, 300)
       : Promise.resolve(null),
     loadFont(kit.font),
   ]);
-  if (!photo.data) return null;
+  if (!photo.data || photo.data.size>12*1024*1024) return null;
 
   const aspect: AdAspect =
     creative.aspect in AD_SIZES ? (creative.aspect as AdAspect) : "1:1";
@@ -49,7 +52,10 @@ export async function renderAdImage(
   const headlineText = creative.headline ?? "";
   const ctaText = creative.cta ?? "Shop now";
   const brand = { name: FONTS[kit.font].name, data: font };
-  const styles = adTextStyles(aspect, textColorOn(kit.accent_color));
+  const normalized=await sharp(Buffer.from(await photo.data.arrayBuffer()),{limitInputPixels:24e6}).rotate().resize(size.width,size.height,{fit:"cover"}).png().toBuffer();
+  const faces=await detectFaces(normalized);
+  const placement=chooseOverlays(aspect,faces,{headline:!!headlineText,cta:ctaText,logo:!!logo?.data?.signedUrl,rtl:isRtl([headlineText,ctaText])});
+  const styles = adTextStyles(aspect, textColorOn(kit.accent_color),placement);
   const [extraFonts, headline, cta] = await Promise.all([
     fontsFor([headlineText, ctaText]),
     prepareText(headlineText, styles.headline, brand),
@@ -58,7 +64,8 @@ export async function renderAdImage(
 
   return new ImageResponse(
     <AdLayout
-      photoUrl={photo.data.signedUrl}
+      photoUrl={"data:image/png;base64,"+normalized.toString("base64")}
+      placement={placement}
       aspect={aspect}
       headline={headline}
       cta={cta}
@@ -79,7 +86,7 @@ export async function renderAdImage(
         },
         ...extraFonts,
       ],
-      headers,
+      headers:{...headers,"x-gooidy-layout":FACE_SAFE_LAYOUT_VERSION,"x-gooidy-layout-analysis":faces===null?"fallback":"ready"},
     },
   );
 }

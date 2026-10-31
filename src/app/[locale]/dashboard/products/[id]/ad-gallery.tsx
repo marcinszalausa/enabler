@@ -27,7 +27,7 @@ export function AdGallery({creatives,generationId,imageVersion,seconds,canPublis
   <div data-selected-preview className="flex min-h-40 min-w-0 justify-center rounded-xl bg-surface p-3">
    {video?<video key={selected.id} src={`/api/creatives/${selected.id}/video`} controls playsInline preload="metadata" className="max-h-[65vh] w-auto max-w-full rounded-lg object-contain"/>:
    // eslint-disable-next-line @next/next/no-img-element -- authenticated bounded preview, full original only on download
-   <img src={`/api/creatives/${selected.id}/image?preview=1&layout=face-safe-v1&v=${imageVersion}`} alt={selected.headline??t.choose.title} className="max-h-[65vh] w-auto max-w-full rounded-lg object-contain"/>}
+   <img src={`/api/creatives/${selected.id}/image?preview=1&layout=face-aware-v2&v=${imageVersion}`} alt={selected.headline??t.choose.title} className="max-h-[65vh] w-auto max-w-full rounded-lg object-contain"/>}
   </div>
   <div className="min-w-0">
    <p className="text-xs text-muted">{video?fmt(t.app.reel,{seconds}):selected.aspect==="1:1"?t.app.feedSize:t.app.storySize}</p>
@@ -36,12 +36,12 @@ export function AdGallery({creatives,generationId,imageVersion,seconds,canPublis
    {post&&<p data-selected-post-status className={"mt-4 text-sm "+(post.status==="published"?"text-ok":post.status==="failed"||post.status==="partial"?"text-danger":"text-accent")}>{t.publish.status[post.status]}{post.platforms.length>0&&" · "+post.platforms.map(platformName).join(", ")}{post.when&&" · "+post.when}</p>}
    <div className="mt-5 flex flex-wrap items-center gap-3">
     {canPublish&&<PublishOneButton generationId={generationId} creativeId={selected.id} primary onPrepare={()=>remember(selected.id)}/>}
-    <a href={`/api/creatives/${selected.id}/${video?"video":"image"}?download=1&layout=face-safe-v1`} className={smallButton}><DownloadIcon/>{video?t.app.downloadMp4:t.app.download}</a>
+    <a href={`/api/creatives/${selected.id}/${video?"video":"image"}?download=1&layout=face-aware-v2`} className={smallButton}><DownloadIcon/>{video?t.app.downloadMp4:t.app.download}</a>
    </div>
    <div className="mt-6 grid grid-cols-4 gap-2 sm:grid-cols-5" aria-label={t.choose.title} data-ad-choices>{creatives.map((c,i)=><button key={c.id} type="button" aria-pressed={c.id===selected.id} aria-label={fmt(t.choose.preview,{number:i+1})} onClick={()=>{setSelectedId(c.id);remember(c.id);}} className={"relative min-w-0 overflow-hidden rounded-lg border-2 bg-surface p-1 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent "+(c.id===selected.id?"border-accent":"border-transparent hover:border-line-strong")}>
      {c.kind==="video"?<video src={`/api/creatives/${c.id}/video`} muted playsInline preload="metadata" className="aspect-[4/5] w-full object-contain"/>:
      // eslint-disable-next-line @next/next/no-img-element -- bounded private thumbnails
-     <img src={`/api/creatives/${c.id}/image?preview=1&layout=face-safe-v1&v=${imageVersion}`} alt="" loading="lazy" className="aspect-[4/5] w-full object-contain"/>}
+     <img src={`/api/creatives/${c.id}/image?preview=1&layout=face-aware-v2&v=${imageVersion}`} alt="" loading="lazy" className="aspect-[4/5] w-full object-contain"/>}
      <span className="absolute end-1 top-1 flex h-5 w-5 items-center justify-center rounded-full bg-raised text-xs font-medium">{c.id===selected.id?"✓":i+1}</span>
    </button>)}</div>
   </div>

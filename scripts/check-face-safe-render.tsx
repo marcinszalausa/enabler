@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
-import {readFile,writeFile,mkdtemp,rm} from "node:fs/promises";
-import {join} from "node:path";
+import {readFile,writeFile,mkdtemp,rm,readdir,stat} from "node:fs/promises";
+import {createRequire} from "node:module";
+import {dirname,join} from "node:path";
 import {tmpdir} from "node:os";
 import {execFile} from "node:child_process";
 import {promisify} from "node:util";
@@ -9,63 +10,71 @@ import ffmpegPath from "ffmpeg-static";
 import {ImageResponse} from "next/og";
 import {AdLayout,AD_SIZES,adTextStyles} from "../src/lib/ad-layout";
 import {HookLayer,CaptionLayer,EndCardLayer,VIDEO_TEXT_STYLES} from "../src/lib/video-layout";
-import {IMAGE_REGIONS,VIDEO_REGIONS,type Rect} from "../src/lib/face-safe-layout";
+import {chooseOverlays,chooseCaption,protectFaces,type Rect} from "../src/lib/face-safe-layout";
+import {detectFaces} from "../src/lib/face-detection";
 import {prepareText} from "../src/lib/ad-text";
 import {editVideoAd} from "../src/lib/video-edit";
 async function main(){
-const exec=promisify(execFile),font=await readFile("src/fonts/Inter-Bold.ttf");
-const fonts=[{name:"Inter",data:font,weight:700 as const,style:"normal" as const}];
-const brand={name:"Inter",data:font};
-const base={fontFamily:"Inter",accentColor:"#7364ff",accentTextColor:"white",logoUrl:null};
-const dir=await mkdtemp(join(tmpdir(),"face-safe-test-"));
-async function png(tree:React.ReactElement,aspect:"1:1"|"9:16"="9:16"){return Buffer.from(await new ImageResponse(tree,{...AD_SIZES[aspect],fonts}).arrayBuffer());}
-async function mediaIsTransparent(bytes:Buffer,rect:Rect){
- const {data,info}=await sharp(bytes).ensureAlpha().raw().toBuffer({resolveWithObject:true});
- for(let y=rect.y;y<rect.y+rect.height;y++)for(let x=rect.x;x<rect.x+rect.width;x++)assert.equal(data[(y*info.width+x)*4+3],0,"A text layer painted over footage");
-}
-try{
- // A saturated test photo makes any overlay of text/brand pixels measurable.
- for(const aspect of ["1:1","9:16"] as const){
-  const r=IMAGE_REGIONS[aspect].media;
-  const photo=await sharp({create:{width:r.width,height:r.height,channels:3,background:"#00ff00"}}).png().toBuffer();
-  for(const [headline,cta] of [["Your Shoes Shouldn’t Slow You Down","Shop now"],["راحة تدوم طوال اليوم","تسوق الآن"],["हर कदम पर आराम","अभी खरीदें"],["Very long copy ".repeat(30),"Long button ".repeat(20)]]){
-   const style=adTextStyles(aspect,"white"),h=await prepareText(headline,style.headline,brand),c=await prepareText(cta,style.cta,brand);
-   const out=await png(<AdLayout {...base} aspect={aspect} photoUrl={"data:image/png;base64,"+photo.toString("base64")} headline={h} cta={c} rtl={headline.includes("راحة")}/>,aspect);
-   const {data,info}=await sharp(out).extract({left:r.x+2,top:r.y+2,width:r.width-4,height:r.height-4}).removeAlpha().raw().toBuffer({resolveWithObject:true});
-   for(let i=0;i<data.length;i+=info.channels){assert.ok(data[i]<5&&data[i+1]>250&&data[i+2]<5,"Text or brand control entered the photo");}
+ const exec=promisify(execFile),font=await readFile("src/fonts/Inter-Bold.ttf"),source=await readFile("public/reels/softmila-still.jpg");
+ const fonts=[{name:"Inter",data:font,weight:700 as const,style:"normal" as const}],brand={name:"Inter",data:font};
+ const base={fontFamily:"Inter",accentColor:"#7364ff",accentTextColor:"white",logoUrl:null};
+ const dir=await mkdtemp(join(tmpdir(),"adaptive-face-test-"));
+ async function png(tree:React.ReactElement,aspect:"1:1"|"9:16"="9:16"){return Buffer.from(await new ImageResponse(tree,{...AD_SIZES[aspect],fonts}).arrayBuffer());}
+ async function transparentAtFaces(bytes:Buffer,faces:Rect[],width=1080,height=1920){
+  const {data,info}=await sharp(bytes).ensureAlpha().raw().toBuffer({resolveWithObject:true});
+  for(const r of protectFaces(faces,width,height))for(let y=r.y;y<r.y+r.height;y++)for(let x=r.x;x<r.x+r.width;x++)assert.equal(data[(y*info.width+x)*4+3],0,"Overlay paints into protected face");
+ }
+ try{
+  const require=createRequire(import.meta.url),dist=dirname(require.resolve("onnxruntime-web"));
+  console.log("ORT_FILES",dist,(await Promise.all((await readdir(dist)).filter(n=>n.endsWith(".wasm")).map(async n=>({name:n,bytes:(await stat(join(dist,n))).size})))));
+  const originalFetch=globalThis.fetch;globalThis.fetch=async()=>{throw new Error("Face analysis must not make network calls");};
+  let originalFaces:Rect[]|null=null;try{originalFaces=await detectFaces(source);}finally{globalThis.fetch=originalFetch;}
+  assert.ok(originalFaces&&originalFaces.length>=1,"Real portrait face must be detected locally");
+  console.log("PASS actual local model detects real portrait without network",originalFaces.length);
+  for(const aspect of ["1:1","9:16"] as const){
+   const size=AD_SIZES[aspect],photo=await sharp(source).resize(size.width,size.height,{fit:"cover"}).png().toBuffer(),faces=await detectFaces(photo);
+   assert.ok(faces&&faces.length>0);
+   for(const [title,button] of [["Your Shoes Shouldn’t Slow You Down","Shop now"],["راحة تدوم طوال اليوم","تسوق الآن"],["हर कदम पर आराम","अभी खरीदें"]]){
+    const placement=chooseOverlays(aspect,faces,{headline:true,cta:button,logo:false}),style=adTextStyles(aspect,"white",placement);
+    assert.ok(placement.headline&&placement.cta,"Normal portrait keeps a headline and button");
+    const headline=await prepareText(title,style.headline,brand),cta=await prepareText(button,style.cta,brand);
+    const props={...base,aspect,headline,cta,placement,rtl:title.includes("راحة")};
+    const overlays=await png(<AdLayout {...props} photoUrl={null}/>,aspect);await transparentAtFaces(overlays,faces,size.width,size.height);
+    const full=await png(<AdLayout {...props} photoUrl={"data:image/png;base64,"+photo.toString("base64")}/>,aspect);
+    const pixels=await sharp(full).ensureAlpha().raw().toBuffer(),original=await sharp(photo).ensureAlpha().raw().toBuffer();
+    // Full image reaches all four corners; no framed or letterboxed fallback.
+    for(const [x,y] of [[1,1],[1078,1],[1,size.height-2],[1078,size.height-2]]){const i=(y*size.width+x)*4;for(let c=0;c<3;c++)assert.ok(Math.abs(pixels[i+c]-original[i+c])<=2);}
+    if(aspect==="9:16"&&title.startsWith("Your")){
+     const b=(await sharp(full).resize({width:390}).jpeg({quality:80}).toBuffer()).toString("base64");for(let i=0;i<b.length;i+=4000)console.log("ADAPTIVE_IMAGE",i/4000,b.slice(i,i+4000));
+    }
+   }
+   console.log("PASS full-frame render and zero face-overlay pixels in Latin, Arabic and Hindi",aspect);
   }
-  console.log("PASS protected photo pixels with Latin, Arabic, Hindi and oversized copy",aspect);
- }
- const hook=await prepareText("Your Shoes Shouldn’t Slow You Down",VIDEO_TEXT_STYLES.hook,brand);
- const caption=await prepareText("Move at your own pace",VIDEO_TEXT_STYLES.caption,brand);
- const hookPng=await png(<HookLayer headline={hook} fontFamily="Inter"/>),captionPng=await png(<CaptionLayer text={caption} fontFamily="Inter"/>);
- await mediaIsTransparent(hookPng,VIDEO_REGIONS.media);await mediaIsTransparent(captionPng,VIDEO_REGIONS.media);
- const end=await png(<EndCardLayer {...base} headline="Your next great run" cta="Shop now"/>);
- const alpha=await sharp(end).ensureAlpha().extractChannel(3).raw().toBuffer();assert.ok(alpha.every(v=>v===255),"Closing card must completely replace footage");
- console.log("PASS video hooks/subtitles never paint into footage; closing card is fully opaque");
- assert.ok(ffmpegPath);
- const faceSvg='<svg width="128" height="128" xmlns="http://www.w3.org/2000/svg"><circle cx="64" cy="64" r="60" fill="#ff0000"/><circle cx="44" cy="48" r="7" fill="#111"/><circle cx="84" cy="48" r="7" fill="#111"/><path d="M40 82Q64 106 88 82" fill="none" stroke="#111" stroke-width="6"/></svg>';
- await sharp(Buffer.from(faceSvg)).png().toFile(join(dir,"face.png"));
- await exec(ffmpegPath,["-y","-f","lavfi","-i","color=c=0x008000:s=1080x1920:r=30:d=4","-loop","1","-i",join(dir,"face.png"),"-filter_complex","[0:v][1:v]overlay=x=(W-w)/2+300*sin(t*4):y=(H-h)/2+800*sin(t*2):shortest=1","-t","4","-c:v","libx264","-preset","ultrafast","-pix_fmt","yuv420p",join(dir,"clip.mp4")],{timeout:60000,maxBuffer:3e6});
- await exec(ffmpegPath,["-y","-f","lavfi","-i","sine=frequency=440:duration=4.5",join(dir,"voice.mp3")],{timeout:30000,maxBuffer:3e6});
- await exec(ffmpegPath,["-y","-f","lavfi","-i","sine=frequency=220:duration=7",join(dir,"music.wav")],{timeout:30000,maxBuffer:3e6});
- const clip=await readFile(join(dir,"clip.mp4"));
- const edited=await editVideoAd({...base,fontName:"Inter",font,clips:[clip,clip],shotSeconds:[4,3],voice:await readFile(join(dir,"voice.mp3")),music:await readFile(join(dir,"music.wav")),voiceover:"Comfort for every step. Move at your own pace. Find your next favorite.",headline:"Your Shoes Shouldn’t Slow You Down",cta:"Shop now"});
- await writeFile(join(dir,"edited.mp4"),edited);
- for(const time of [0.6,1.6,2.7,4.5,6]){
-  const result:{stdout:Buffer;stderr:Buffer}=await exec(ffmpegPath,["-v","error","-ss",String(time),"-i",join(dir,"edited.mp4"),"-frames:v","1","-f","image2pipe","-vcodec","png","pipe:1"],{encoding:"buffer",maxBuffer:10e6,timeout:30000});
-  const {data,info}:{data:Buffer;info:{width:number;height:number;channels:number}}=await sharp(result.stdout).removeAlpha().raw().toBuffer({resolveWithObject:true});assert.equal(info.width,1080);assert.equal(info.height,1920);
-  let red=0,white=0,green=0;
-  for(let y=0;y<VIDEO_REGIONS.media.height;y++)for(let x=0;x<info.width;x++){const i=(y*info.width+x)*info.channels;const [r,g,b]=[data[i],data[i+1],data[i+2]];if(r>170&&g<90&&b<90)red++;if(r>200&&g>200&&b>200)white++;if(r<60&&g>90&&b<60)green++;}
-  if(time<5.5){assert.ok(red>1500,"Moving face must remain visible");assert.equal(white,0,"Text pixels overlap moving footage");assert.ok(green>100000);}
-  else{assert.equal(red,0);assert.equal(green,0);}
- }
- console.log("PASS real FFmpeg composite: moving face stays visible, all source footage fits, no text overlap, opaque end card");
- // A compact rendered artifact for human inspection, not a provider-generated ad.
- const preview=await png(<AdLayout {...base} aspect="9:16" photoUrl={"data:image/png;base64,"+(await sharp({create:{width:1080,height:1920,channels:3,background:"#e5e0d6"}}).composite([{input:await readFile(join(dir,"face.png")),left:476,top:100}]).png().toBuffer()).toString("base64")} headline="Your Shoes Shouldn’t Slow You Down" cta="Shop now"/>);
- const b=(await sharp(preview).resize({width:390}).jpeg({quality:80}).toBuffer()).toString("base64");for(let i=0;i<b.length;i+=4000)console.log("FACE_SAFE_IMAGE",i/4000,b.slice(i,i+4000));
-}finally{await rm(dir,{recursive:true,force:true});}
-
-
+  const f=protectFaces(originalFaces,800,800)[0];
+  const crop=await sharp(source).extract({left:f.x,top:f.y,width:f.width,height:f.height}).resize({width:260,height:320,fit:"cover"}).png().toBuffer();
+  const group=await sharp({create:{width:1080,height:1920,channels:3,background:"#b9b0a0"}}).composite([{input:crop,left:30,top:200},{input:crop,left:770,top:1320}]).png().toBuffer();
+  const groups=await detectFaces(group);assert.ok(groups&&groups.length>=2,"Group faces must both be protected");
+  const plan=chooseOverlays("9:16",groups,{headline:true,cta:"Shop now",logo:false});
+  await transparentAtFaces(await png(<AdLayout {...base} photoUrl={null} aspect="9:16" headline="Made for your everyday" cta="Shop now" placement={plan}/>),groups);
+  const captionRegion=chooseCaption("9:16",groups),hook=chooseOverlays("9:16",groups,{headline:true},captionRegion?[captionRegion]:[]);
+  await transparentAtFaces(await png(<HookLayer headline="Made for your everyday" fontFamily="Inter" region={hook.headline}/>),groups);
+  const caption=await prepareText("Move at your own pace",VIDEO_TEXT_STYLES.caption,brand);
+  await transparentAtFaces(await png(<CaptionLayer text={caption} fontFamily="Inter" region={captionRegion}/>),groups);
+  await transparentAtFaces(await png(<EndCardLayer {...base} headline="Made for your everyday" cta="Shop now" placement={chooseOverlays("9:16",groups,{headline:true,cta:"Shop now"},captionRegion?[captionRegion]:[])}/>),groups);
+  console.log("PASS group and edge-face protection for image, hook, subtitles and closing overlays");
+  assert.ok(ffmpegPath);await writeFile(join(dir,"face.png"),crop);
+  await exec(ffmpegPath,["-y","-f","lavfi","-i","color=c=0xb9b0a0:s=1080x1920:r=30:d=2","-loop","1","-i",join(dir,"face.png"),"-filter_complex","[0:v][1:v]overlay=x=350+300*sin(t*3):y=150+200*sin(t*2):shortest=1","-t","2","-c:v","libx264","-preset","ultrafast","-pix_fmt","yuv420p",join(dir,"clip.mp4")],{timeout:60000,maxBuffer:3e6});
+  await exec(ffmpegPath,["-y","-f","lavfi","-i","sine=frequency=440:duration=2.8",join(dir,"voice.mp3")],{timeout:30000,maxBuffer:3e6});
+  await exec(ffmpegPath,["-y","-f","lavfi","-i","sine=frequency=220:duration=4",join(dir,"music.wav")],{timeout:30000,maxBuffer:3e6});
+  const clip=await readFile(join(dir,"clip.mp4")),start=performance.now();
+  const edited=await editVideoAd({...base,fontName:"Inter",font,clips:[clip,clip],shotSeconds:[2,2],voice:await readFile(join(dir,"voice.mp3")),music:await readFile(join(dir,"music.wav")),voiceover:"Comfort for every step. Find your next favorite.",headline:"Made for your everyday",cta:"Shop now"});
+  await writeFile(join(dir,"edited.mp4"),edited);
+  for(const time of [.6,1.5,2.2,3.4]){
+   const frame:{stdout:Buffer;stderr:Buffer}=await exec(ffmpegPath,["-v","error","-ss",String(time),"-i",join(dir,"edited.mp4"),"-frames:v","1","-f","image2pipe","-vcodec","png","pipe:1"],{encoding:"buffer",maxBuffer:10e6,timeout:30000});
+   const info=await sharp(frame.stdout).metadata();assert.equal(info.width,1080);assert.equal(info.height,1920);
+   const visible=await detectFaces(frame.stdout);assert.ok(visible&&visible.length>0,"Moving face remains visible through hook, captions and closing copy");
+  }
+  console.log("PASS real all-frame video analysis and full-frame FFmpeg edit",Math.round(performance.now()-start),"ms");
+ }finally{await rm(dir,{recursive:true,force:true});}
 }
 main().catch(error=>{console.error(error);process.exitCode=1;});
