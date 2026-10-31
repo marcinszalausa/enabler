@@ -22,7 +22,7 @@ async function Setup({params,searchParams}:PageProps<"/[locale]/dashboard/setup"
   return <section className="rounded-2xl border border-line bg-raised p-6 sm:p-8">
     <p className="text-sm font-medium text-ok">✓ {t.footer.account}</p>
     <h1 className="mt-3 text-2xl font-semibold">{t.onboard.prepareTitle}</h1>
-    <p className="mt-3 text-sm leading-relaxed text-muted">{t.onboard.prepareNote}</p>
+    <p className="mt-3 text-sm leading-relaxed text-muted">{t.personal.setupNote}</p>
     <div className="my-6 rounded-xl bg-surface p-4 text-sm">
       <p className="font-medium">{fmt(kind==="image"?t.app.imageAds:t.app.videoAds,{count:kind==="image"?10:VIDEOS_PER_GENERATION})}</p>
       <p className="mt-1 text-muted">{fmt(t.app.credits,{count:kind==="image"?GENERATION_COST:videoRunCost(DEFAULT_VIDEO_OPTIONS.length)})}</p>

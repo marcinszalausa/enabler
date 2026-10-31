@@ -1,4 +1,5 @@
 import "server-only";
+import { withCreativePreferences, type CreativePreferences } from "@/lib/creative-preferences";
 import { transitionVideoJob } from "@/lib/video-job-state";
 import { fetchPublicUrl } from "@/lib/public-fetch";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -35,7 +36,7 @@ const DRAFTING_TIMEOUT_MS = 10 * 60_000;
 const PENDING_TIMEOUT_MS = 30 * 60_000;
 const PROCESSING_TIMEOUT_MS = 5 * 60_000;
 
-type Job = { generationId: string; workspaceId: string; productId: string };
+type Job = { generationId: string; workspaceId: string; productId: string; creativePreferences?: CreativePreferences | null };
 
 type VideoJob = {
   id: string;
@@ -61,6 +62,7 @@ export async function runVideoGeneration({
   workspaceId,
   productId,
   options,
+  creativePreferences,
 }: Job & { options: VideoOptions }) {
   const db = createAdminClient();
   if (!(await claimGeneration(db, generationId))) return;
@@ -73,7 +75,7 @@ export async function runVideoGeneration({
       .single();
     if (error || !product?.brand_brief) throw new Error("Product not found.");
 
-    const brief = product.brand_brief as BrandBrief;
+    const brief = withCreativePreferences(product.brand_brief as BrandBrief, creativePreferences);
     const referenceImageUrl = (product.image_urls as string[])[0] ?? null;
     const shotSeconds = LENGTHS[options.length];
     const ads = await writeVideoAds(

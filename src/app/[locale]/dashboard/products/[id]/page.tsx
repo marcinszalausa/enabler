@@ -1,5 +1,7 @@
 import { canEditWorkspace } from "@/lib/workspace-access";
 import type { CreditReceipt } from "@/lib/generation-presentation";
+import { parseCreativePreferences } from "@/lib/creative-preferences";
+import { PersonalizationForm } from "./personalization-form";
 import { randomUUID } from "node:crypto";
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
@@ -125,6 +127,8 @@ async function Product({
     : null;
 
   const brief = product.brand_brief as BrandBrief | null;
+  const preferences = parseCreativePreferences(brief?.creative_preferences);
+  const needsPreferences = brief?.requires_personalization === true && !preferences;
   const photo = (product.image_urls as string[] | null)?.[0];
   const running = (generations ?? []).filter(
     (g) => g.status === "queued" || g.status === "running",
@@ -163,7 +167,8 @@ async function Product({
           </div>
         </div>
         <div id="generate-ads" tabIndex={-1} className="flex scroll-mt-24 flex-col items-start gap-2 rounded-2xl border border-line bg-raised p-4 focus:outline-2 focus:outline-accent lg:items-end">
-          <GenerateControls
+          {canEdit && (needsPreferences ? <a href="#ad-preferences" className="inline-flex min-h-11 max-w-sm items-center text-sm font-medium text-accent hover:underline">{t.personal.confirmFirst}</a> : <GenerateControls
+            key={JSON.stringify(preferences)}
             initialKind={initialKind}
             imageRequestId={randomUUID()}
             videoRequestId={randomUUID()}
@@ -178,12 +183,14 @@ async function Product({
                 ? brief?.language
                 : DEFAULT_LANGUAGE
             }
-          />
+          />)}
           <p className="text-xs text-muted">
             {fmt(t.app.creditsLeft, { count: workspace?.credits ?? 0 })}
           </p>
         </div>
       </header>
+
+      {brief && canEdit && <PersonalizationForm productId={product.id} initial={preferences} audience={brief.audience} focus={brief.benefits[0]??""} required={needsPreferences}/>}
 
       {brief && (
         <section className="edge mt-8 grid gap-6 p-6 text-sm sm:grid-cols-2">

@@ -1,0 +1,22 @@
+name: Creative personalization checks
+on:
+  push:
+    branches: [feat/creative-personalization]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  personalization:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: node --experimental-strip-types --test tests/creative-preferences.test.ts
+      - run: npx next typegen && npx tsc --noEmit
+      - name: Lint preference UI and generation wiring
+        run: npx eslint src/lib/creative-preferences.ts src/lib/ai/claude.ts src/lib/pipeline.ts src/lib/video.tsx 'src/app/[locale]/dashboard/actions.ts' 'src/app/[locale]/dashboard/products/[id]/personalization-form.tsx' 'src/app/[locale]/dashboard/products/[id]/page.tsx' 'src/app/[locale]/dashboard/setup/page.tsx' src/i18n/messages/*.ts
