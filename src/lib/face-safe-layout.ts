@@ -20,8 +20,10 @@ export function chooseOverlays(aspect:"1:1"|"9:16",faces:Rect[]|null,options:{he
  const clear=(r:Rect)=>r.x>=pad&&r.y>=top&&r.x+r.width<=width-pad&&r.y+r.height<=bottom&&!forbidden.some(f=>overlaps(r,f))&&!used.some(f=>overlaps(r,f));
  const headH=story?224:188,sideH=story?300:260;
  const candidates:TextRegion[]=[];
- const ys=[top,Math.round(height*.34),Math.round(height*.51),bottom-headH-136];
- for(const y of ys){candidates.push({x:pad,y,width:936,height:headH,fontSize:story?72:60});for(const x of options.rtl?[568,pad]:[pad,568])candidates.push({x,y,width:440,height:sideH,fontSize:story?54:48});}
+ for(const config of [{height:headH,side:sideH,font:story?72:60,small:story?54:48},{height:story?184:144,side:story?248:208,font:story?64:52,small:story?48:42}]){
+  const ys=[top,Math.round(height*.34),Math.round(height*.51),bottom-config.height-136,...forbidden.flatMap(f=>[Math.ceil(f.y+f.height+16),Math.floor(f.y-config.height-16)])];
+  for(const y of [...new Set(ys)]){candidates.push({x:pad,y,width:936,height:config.height,fontSize:config.font});for(const x of options.rtl?[568,pad]:[pad,568])candidates.push({x,y,width:440,height:config.side,fontSize:config.small});}
+ }
  const headline=options.headline===false?null:candidates.find(clear)??null;if(headline)used.push(headline);
  const ctaWidth=Math.min(600,Math.max(240,Array.from(options.cta??"").length*32+88)),ctaHeight=104;
  const controlsY=[bottom-ctaHeight,Math.round(height*.7),top+headH+32,Math.round(height*.48)];
