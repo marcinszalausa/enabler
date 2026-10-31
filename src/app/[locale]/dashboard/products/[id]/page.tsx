@@ -42,6 +42,7 @@ export const maxDuration = 300;
 
 export default function ProductPage({
   params,
+  searchParams,
 }: PageProps<"/[locale]/dashboard/products/[id]">) {
   return (
     <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-10">
@@ -55,7 +56,7 @@ export default function ProductPage({
           </p>
         }
       >
-        <Product params={params} />
+        <Product params={params} searchParams={searchParams} />
       </Suspense>
     </main>
   );
@@ -63,12 +64,16 @@ export default function ProductPage({
 
 async function Product({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string; locale: string }>;
+  searchParams: PageProps<"/[locale]/dashboard/products/[id]">["searchParams"];
 }) {
   const { id, locale } = await params;
   if (!isLocale(locale)) notFound();
   const t = await getMessages(locale);
+  const setup = (await searchParams).setup;
+  const initialKind = setup === "image" || setup === "video" ? setup : undefined;
   const user = await getCurrentUser();
   const canShowcase = isShowcaseAdmin(user.email);
   const supabase = await createClient();
@@ -159,6 +164,7 @@ async function Product({
         </div>
         <div id="generate-ads" tabIndex={-1} className="flex scroll-mt-24 flex-col items-start gap-2 rounded-2xl border border-line bg-raised p-4 focus:outline-2 focus:outline-accent lg:items-end">
           <GenerateControls
+            initialKind={initialKind}
             imageRequestId={randomUUID()}
             videoRequestId={randomUUID()}
             productId={product.id}

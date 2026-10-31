@@ -305,6 +305,22 @@ export const sv: Messages = {
     englishOnly:
       "Den här sidan finns på engelska, och det är den engelska versionen som gäller.",
   },
+  onboard: {
+    title: "Dina första annonser, steg för steg",
+    confirm: "Kontrollera produkten och välj dina annonser",
+    continue: "Fortsätt",
+    back: "Tillbaka",
+    accountTitle: "Skapa ditt gratiskonto",
+    prepareTitle: "Du är inloggad. Låt oss förbereda dina annonser.",
+    prepare: "Förbered min produkt",
+    prepareNote: "Efter inloggningen läser vi produktuppgifterna. Sedan kan du granska inställningarna och starta en omgång till kostnaden som visas.",
+    previewError: "Förhandsvisningen kunde inte laddas. Du kan fortsätta; vi kontrollerar produkten efter inloggningen.",
+    invalidUrl: "Ange en offentlig produkt- eller butikslänk.",
+    videoChoice: "{count} vertikala videor på {seconds} sekunder vardera, med berättarröst och undertexter.",
+    advanced: "Valfria inställningar",
+    recommended: "Snabbaste sättet att börja",
+    accountContinue: "Fortsätt till gratiskonto",
+  },
   login: {
     title: "Logga in på Gooidy",
     sub: "Vi mejlar dig en inloggningslänk och en kod. Inget lösenord behövs.",

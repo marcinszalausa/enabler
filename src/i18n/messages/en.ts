@@ -300,6 +300,22 @@ export const en = {
     englishOnly:
       "This page is available in English, which is the version that applies.",
   },
+  onboard: {
+    title: "Your first ads, step by step",
+    confirm: "Check your product and choose your ads",
+    continue: "Continue",
+    back: "Back",
+    accountTitle: "Create your free account",
+    prepareTitle: "You’re signed in. Let’s prepare your ads.",
+    prepare: "Prepare my product",
+    prepareNote: "We’ll read your product details after sign-in. You can then review settings and start a batch at the cost shown.",
+    previewError: "We couldn’t load a preview. You can continue; we’ll check the product after sign-in.",
+    invalidUrl: "Enter a public product or store link.",
+    videoChoice: "{count} vertical videos, {seconds} seconds each, with voiceover and captions.",
+    advanced: "Optional settings",
+    recommended: "Quickest way to start",
+    accountContinue: "Continue to free account",
+  },
   login: {
     title: "Sign in to Gooidy",
     sub: "We'll email you a sign-in link and code. No password needed.",

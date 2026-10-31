@@ -303,6 +303,22 @@ export const de: Messages = {
     englishOnly:
       "Diese Seite ist auf Englisch verfügbar; maßgeblich ist die englische Fassung.",
   },
+  onboard: {
+    title: "Deine ersten Anzeigen, Schritt für Schritt",
+    confirm: "Prüfe dein Produkt und wähle deine Anzeigen",
+    continue: "Weiter",
+    back: "Zurück",
+    accountTitle: "Erstelle dein kostenloses Konto",
+    prepareTitle: "Du bist angemeldet. Bereiten wir deine Anzeigen vor.",
+    prepare: "Mein Produkt vorbereiten",
+    prepareNote: "Nach der Anmeldung lesen wir die Produktdetails. Danach kannst du die Einstellungen prüfen und einen Durchlauf zu den angezeigten Kosten starten.",
+    previewError: "Die Vorschau konnte nicht geladen werden. Du kannst fortfahren; wir prüfen das Produkt nach der Anmeldung.",
+    invalidUrl: "Gib einen öffentlichen Produkt- oder Shoplink ein.",
+    videoChoice: "{count} Hochformatvideos mit je {seconds} Sekunden, Sprecherstimme und Untertiteln.",
+    advanced: "Optionale Einstellungen",
+    recommended: "Der schnellste Einstieg",
+    accountContinue: "Weiter zum kostenlosen Konto",
+  },
   login: {
     title: "Bei Gooidy anmelden",
     sub: "Wir schicken dir per E-Mail einen Anmeldelink und einen Code. Kein Passwort nötig.",

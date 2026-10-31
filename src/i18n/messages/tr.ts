@@ -304,6 +304,22 @@ export const tr: Messages = {
     englishOnly:
       "Bu sayfa İngilizce olarak sunulmaktadır ve geçerli olan İngilizce sürümdür.",
   },
+  onboard: {
+    title: "İlk reklamlarınız, adım adım",
+    confirm: "Ürününüzü kontrol edin ve reklamlarınızı seçin",
+    continue: "Devam et",
+    back: "Geri",
+    accountTitle: "Ücretsiz hesabınızı oluşturun",
+    prepareTitle: "Giriş yaptınız. Reklamlarınızı hazırlayalım.",
+    prepare: "Ürünümü hazırla",
+    prepareNote: "Girişten sonra ürün bilgilerinizi okuyacağız. Ardından ayarları inceleyip gösterilen maliyetle bir grup başlatabilirsiniz.",
+    previewError: "Önizleme yüklenemedi. Devam edebilirsiniz; girişten sonra ürünü kontrol edeceğiz.",
+    invalidUrl: "Herkese açık bir ürün veya mağaza bağlantısı girin.",
+    videoChoice: "Her biri {seconds} saniyelik, seslendirme ve altyazılı {count} dikey video.",
+    advanced: "İsteğe bağlı ayarlar",
+    recommended: "Başlamanın en hızlı yolu",
+    accountContinue: "Ücretsiz hesaba devam et",
+  },
   login: {
     title: "Gooidy'ye giriş yapın",
     sub: "Size e-postayla bir giriş linki ve kodu göndereceğiz. Şifre gerekmez.",

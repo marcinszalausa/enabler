@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { useI18n } from "@/i18n/client";
+import { safeNextPath } from "@/lib/onboarding";
 
 type Status = "idle" | "sending" | "sent" | "error";
 type CodeStatus = "idle" | "verifying" | "error";
@@ -18,7 +19,7 @@ export function LoginForm() {
   const [code, setCode] = useState("");
   const [codeStatus, setCodeStatus] = useState<CodeStatus>("idle");
 
-  const next = safeNext(searchParams.get("next"));
+  const next = safeNextPath(searchParams.get("next"));
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -148,9 +149,3 @@ export function LoginForm() {
   );
 }
 
-// Only same-site paths, never another site.
-function safeNext(next: string | null) {
-  return next && next.startsWith("/") && !next.startsWith("//")
-    ? next
-    : "/dashboard";
-}

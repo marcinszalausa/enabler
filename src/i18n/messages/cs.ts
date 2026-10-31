@@ -307,6 +307,22 @@ export const cs: Messages = {
     englishOnly:
       "Tato stránka je k dispozici v angličtině a platí anglické znění.",
   },
+  onboard: {
+    title: "Vaše první reklamy, krok za krokem",
+    confirm: "Zkontrolujte produkt a vyberte reklamy",
+    continue: "Pokračovat",
+    back: "Zpět",
+    accountTitle: "Vytvořte si bezplatný účet",
+    prepareTitle: "Jste přihlášeni. Připravme vaše reklamy.",
+    prepare: "Připravit můj produkt",
+    prepareNote: "Po přihlášení načteme údaje o produktu. Pak můžete zkontrolovat nastavení a spustit sadu za uvedenou cenu.",
+    previewError: "Náhled se nepodařilo načíst. Můžete pokračovat; produkt ověříme po přihlášení.",
+    invalidUrl: "Zadejte veřejný odkaz na produkt nebo obchod.",
+    videoChoice: "{count} svislá videa, každé o délce {seconds} sekund, s hlasem a titulky.",
+    advanced: "Volitelná nastavení",
+    recommended: "Nejrychlejší způsob, jak začít",
+    accountContinue: "Pokračovat k bezplatnému účtu",
+  },
   login: {
     title: "Přihlaste se do Gooidy",
     sub: "Pošleme vám e-mailem přihlašovací odkaz a kód. Bez hesla.",

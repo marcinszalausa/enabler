@@ -308,6 +308,22 @@ export const pt: Messages = {
     englishOnly:
       "Esta página está disponível em inglês, que é a versão que vale.",
   },
+  onboard: {
+    title: "Seus primeiros anúncios, passo a passo",
+    confirm: "Confira seu produto e escolha os anúncios",
+    continue: "Continuar",
+    back: "Voltar",
+    accountTitle: "Crie sua conta gratuita",
+    prepareTitle: "Você entrou. Vamos preparar seus anúncios.",
+    prepare: "Preparar meu produto",
+    prepareNote: "Vamos ler os detalhes do produto após o login. Depois você pode revisar as opções e iniciar um lote pelo custo mostrado.",
+    previewError: "Não conseguimos carregar a prévia. Você pode continuar; verificaremos o produto após o login.",
+    invalidUrl: "Insira um link público de produto ou loja.",
+    videoChoice: "{count} vídeos verticais, com {seconds} segundos cada, narração e legendas.",
+    advanced: "Opções adicionais",
+    recommended: "A forma mais rápida de começar",
+    accountContinue: "Continuar para a conta gratuita",
+  },
   login: {
     title: "Entre no Gooidy",
     sub: "Enviaremos por e-mail um link e um código de acesso. Sem senha.",

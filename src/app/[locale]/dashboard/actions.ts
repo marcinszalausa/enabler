@@ -68,7 +68,8 @@ export async function createProduct(
     return { error: userMessage(err) };
   }
 
-  redirect(`/dashboard/products/${productId}`);
+  const setup = formData.get("onboardingKind");
+  redirect(`/dashboard/products/${productId}${setup === "image" || setup === "video" ? "?setup=" + setup : ""}`);
 }
 
 export async function startGeneration(

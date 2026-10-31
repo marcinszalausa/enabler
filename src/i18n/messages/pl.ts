@@ -307,6 +307,22 @@ export const pl: Messages = {
     englishOnly:
       "Ta strona jest dostępna po angielsku i to wersja angielska obowiązuje.",
   },
+  onboard: {
+    title: "Twoje pierwsze reklamy, krok po kroku",
+    confirm: "Sprawdź produkt i wybierz reklamy",
+    continue: "Dalej",
+    back: "Wstecz",
+    accountTitle: "Utwórz bezpłatne konto",
+    prepareTitle: "Jesteś zalogowany. Przygotujmy Twoje reklamy.",
+    prepare: "Przygotuj mój produkt",
+    prepareNote: "Po zalogowaniu odczytamy dane produktu. Następnie sprawdzisz ustawienia i uruchomisz zestaw za widoczny koszt.",
+    previewError: "Nie udało się wczytać podglądu. Możesz kontynuować; sprawdzimy produkt po zalogowaniu.",
+    invalidUrl: "Podaj publiczny link do produktu lub sklepu.",
+    videoChoice: "{count} pionowe filmy po {seconds} sekund, z lektorem i napisami.",
+    advanced: "Ustawienia opcjonalne",
+    recommended: "Najszybszy sposób na start",
+    accountContinue: "Przejdź do bezpłatnego konta",
+  },
   login: {
     title: "Zaloguj się do Gooidy",
     sub: "Wyślemy Ci e-mailem link i kod do logowania. Bez hasła.",

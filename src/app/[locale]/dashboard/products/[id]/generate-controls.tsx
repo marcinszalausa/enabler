@@ -16,6 +16,7 @@ export function GenerateControls({
   videoCost,
   videoLabel,
   defaultLanguage,
+  initialKind,
 }: {
   productId: string;
   imageRequestId: string;
@@ -24,12 +25,15 @@ export function GenerateControls({
   videoCost: number;
   videoLabel: string;
   defaultLanguage: LanguageKey;
+  initialKind?: "image" | "video";
 }) {
   const [language, setLanguage] = useState<LanguageKey>(defaultLanguage);
   const { t } = useI18n();
+  const [kind, setKind] = useState(initialKind ?? "image");
 
   return (
     <div className="flex flex-col items-start gap-2 lg:items-end">
+      {initialKind && <div className="flex flex-wrap gap-2">{(["image","video"] as const).map(value => <button key={value} type="button" aria-pressed={kind === value} onClick={() => setKind(value)} className={"min-h-11 rounded-lg border px-3 text-sm " + (kind === value ? "border-accent bg-accent-soft text-accent" : "border-line")}>{value === "image" ? t.app.imageAds.replace("{count}", "10") : t.app.videoAds.replace("{count}", "2")}</button>)}</div>}
       <label className="flex max-w-full flex-wrap items-center gap-2 text-sm">
         <span className="text-muted">{t.app.adLanguage}</span>
         <select
@@ -45,19 +49,20 @@ export function GenerateControls({
         </select>
       </label>
       <div className="flex flex-wrap items-start gap-2 lg:justify-end">
-        <GenerateButton
+        {(!initialKind || kind === "image") && <GenerateButton
           initialRequestId={imageRequestId}
           productId={productId}
           cost={imageCost}
           language={language}
-        />
-        <VideoAdForm
+        />}
+        {(!initialKind || kind === "video") && <VideoAdForm
+          initiallyOpen={!!initialKind}
           initialRequestId={videoRequestId}
           productId={productId}
           cost={videoCost}
           label={videoLabel}
           language={language}
-        />
+        />}
       </div>
     </div>
   );

@@ -1,3 +1,4 @@
+import { safeNextPath } from "@/lib/onboarding";
 import { NextResponse, type NextRequest } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 import { supabasePublishableKey, supabaseUrl } from "./env";
@@ -45,9 +46,7 @@ export async function updateSession(request: NextRequest, rewrite?: URL) {
   }
 
   if (isSignedIn && path === "/login") {
-    const url = request.nextUrl.clone();
-    url.pathname = "/dashboard";
-    url.search = "";
+    const url = new URL(safeNextPath(request.nextUrl.searchParams.get("next")), request.url);
     return NextResponse.redirect(url);
   }
 

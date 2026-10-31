@@ -8,11 +8,8 @@ import { userMessage } from "@/lib/errors";
 import { autopilotRun } from "@/lib/social/publish";
 import type { LanguageKey } from "@/lib/languages";
 
-export const ASPECTS: Aspect[] = ["1:1", "9:16"];
-export const ADS_PER_GENERATION = 5;
-export const CREDITS_PER_IMAGE = 1;
-export const GENERATION_COST =
-  ADS_PER_GENERATION * ASPECTS.length * CREDITS_PER_IMAGE;
+import { ASPECTS, ADS_PER_GENERATION, CREDITS_PER_IMAGE, GENERATION_COST } from "@/lib/image-pricing";
+export { ASPECTS, ADS_PER_GENERATION, CREDITS_PER_IMAGE, GENERATION_COST } from "@/lib/image-pricing";
 
 // fal limits how many requests an account may run at once; stay under it.
 const IMAGE_CONCURRENCY = 3;
