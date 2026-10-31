@@ -1,3 +1,4 @@
+begin;
 -- One starter allowance per verified email and per user. Existing balances stay intact.
 -- Keep only a hash for replay detection; claims intentionally survive account deletion.
 lock table auth.users in share row exclusive mode;
@@ -128,3 +129,4 @@ begin
 end;
 $$;
 
+commit;

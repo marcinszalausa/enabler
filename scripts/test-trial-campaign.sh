@@ -3,12 +3,11 @@ set -euo pipefail
 : "${CREDIT_TEST_DATABASE_URL:?Use an empty disposable database}"
 cd "$(dirname "$0")/.."
 psql "$CREDIT_TEST_DATABASE_URL" -X -v ON_ERROR_STOP=1 -f supabase/tests/bootstrap.sql
-psql "$CREDIT_TEST_DATABASE_URL" -X -v ON_ERROR_STOP=1 -c "alter table auth.users add column email_confirmed_at timestamptz, add column created_at timestamptz default now();"
 for file in supabase/migrations/0001_init.sql supabase/migrations/0002_generation.sql supabase/migrations/0010_validate_credit_amounts.sql supabase/migrations/20261030143244_generation_credit_ledger.sql; do
  psql "$CREDIT_TEST_DATABASE_URL" -X -v ON_ERROR_STOP=1 -f "$file"
 done
 psql "$CREDIT_TEST_DATABASE_URL" -X -v ON_ERROR_STOP=1 -c "insert into auth.users(id,email,email_confirmed_at) values('71000000-0000-4000-8000-000000000001','existing@example.invalid',now()); update public.workspaces set credits=73;"
-psql "$CREDIT_TEST_DATABASE_URL" -X --single-transaction -v ON_ERROR_STOP=1 -f supabase/migrations/20261031145607_trial_campaign_safeguards.sql
+psql "$CREDIT_TEST_DATABASE_URL" -X -v ON_ERROR_STOP=1 -f supabase/migrations/20261031145607_trial_campaign_safeguards.sql
 psql "$CREDIT_TEST_DATABASE_URL" -X -v ON_ERROR_STOP=1 -f supabase/tests/trial-campaign.sql
 # Concurrent verified signups with the same normalized address get one grant.
 output="$(mktemp -d)"

@@ -6,7 +6,7 @@ import {ASPECTS,ADS_PER_GENERATION,GENERATION_COST} from "@/lib/image-pricing";
 import {imageCapacity} from "@/lib/trial-capacity";
 export function TrialCampaign({credits,hasAds,published,canEdit=true}:{credits:number;hasAds:boolean;published:boolean;canEdit?:boolean}){
  const {t}=useI18n();
- const steps=[{label:t.trial.create,href:"#generate-ads",done:hasAds,icon:"image"},{label:t.trial.pick,href:"#your-ads",done:published,icon:"heart"},{label:t.trial.publish,href:"/dashboard/publishing",done:published,icon:"send"}];
+ const steps=[{label:t.trial.create,href:"?setup=image#generate-ads",done:hasAds,icon:"image"},{label:t.trial.pick,href:"#your-ads",done:published,icon:"heart"},{label:t.trial.publish,href:"/dashboard/publishing",done:published,icon:"send"}];
  return <section data-trial-campaign className="mt-8 rounded-2xl border border-line bg-raised p-5 sm:p-7">
    <div className="flex flex-wrap items-start justify-between gap-4"><div><h2 className="text-lg font-semibold">{t.trial.title}</h2><p className="mt-1 text-sm text-muted">{t.trial.oneTime}</p></div>
    <p data-image-capacity className="rounded-xl bg-accent-soft px-4 py-3 text-sm font-medium text-accent">{fmt(t.trial.capacity,{count:imageCapacity(credits,GENERATION_COST,ADS_PER_GENERATION*ASPECTS.length)})}</p></div>

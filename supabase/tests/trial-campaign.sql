@@ -3,7 +3,7 @@ do $$
 declare u uuid:=gen_random_uuid(); v uuid; ws uuid; extra uuid; p uuid; req uuid:=gen_random_uuid(); n integer;
 begin
  if (select credits from public.workspaces where owner_id='71000000-0000-4000-8000-000000000001')<>73 then raise exception 'Existing balance changed'; end if;
- insert into auth.users(id,email) values(u,'trial@example.invalid');
+ insert into auth.users(id,email,email_confirmed_at) values(u,'trial@example.invalid',null);
  select id into ws from public.workspaces where owner_id=u;
  if (select credits from public.workspaces where id=ws)<>0 then raise exception 'Unverified signup funded'; end if;
  update auth.users set email_confirmed_at=now() where id=u;
