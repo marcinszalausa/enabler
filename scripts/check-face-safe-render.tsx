@@ -12,7 +12,7 @@ import {AdLayout,AD_SIZES,adTextStyles} from "../src/lib/ad-layout";
 import {HookLayer,CaptionLayer,EndCardLayer,VIDEO_TEXT_STYLES} from "../src/lib/video-layout";
 import {chooseOverlays,chooseCaption,protectFaces,type Rect} from "../src/lib/face-safe-layout";
 import {detectFaces} from "../src/lib/face-detection";
-import {prepareText} from "../src/lib/ad-text";
+import {prepareText,measureCopyWidth} from "../src/lib/ad-text";
 import {editVideoAd} from "../src/lib/video-edit";
 async function main(){
  const exec=promisify(execFile),font=await readFile("src/fonts/Inter-Bold.ttf"),source=await readFile("public/reels/softmila-still.jpg");
@@ -35,7 +35,7 @@ async function main(){
    const size=AD_SIZES[aspect],photo=await sharp(source).resize(size.width,size.height,{fit:"cover"}).png().toBuffer(),faces=await detectFaces(photo);
    assert.ok(faces&&faces.length>0);
    for(const [title,button] of [["Your Shoes Shouldn’t Slow You Down","Shop now"],["راحة تدوم طوال اليوم","تسوق الآن"],["हर कदम पर आराम","अभी खरीदें"]]){
-    const placement=chooseOverlays(aspect,faces,{headline:true,cta:button,logo:false}),style=adTextStyles(aspect,"white",placement);
+    const placement=chooseOverlays(aspect,faces,{headline:true,cta:button,ctaWidth:72+await measureCopyWidth(button,brand),logo:false}),style=adTextStyles(aspect,"white",placement);
     console.log("PORTRAIT_PLAN",JSON.stringify({aspect,faces,placement}));
     assert.ok(placement.headline&&placement.cta,"Normal portrait keeps a headline and button");
     const headline=await prepareText(title,style.headline,brand),cta=await prepareText(button,style.cta,brand);

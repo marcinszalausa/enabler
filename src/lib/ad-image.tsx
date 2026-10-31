@@ -12,7 +12,7 @@ import {
   adTextStyles,
   type AdAspect,
 } from "@/lib/ad-layout";
-import { fontsFor, isRtl, prepareText } from "@/lib/ad-text";
+import { fontsFor, isRtl, prepareText, measureCopyWidth } from "@/lib/ad-text";
 
 export type AdImageCreative = {
   workspace_id: string;
@@ -54,7 +54,7 @@ export async function renderAdImage(
   const brand = { name: FONTS[kit.font].name, data: font };
   const normalized=await sharp(Buffer.from(await photo.data.arrayBuffer()),{limitInputPixels:24e6}).rotate().resize(size.width,size.height,{fit:"cover"}).png().toBuffer();
   const faces=await detectFaces(normalized);
-  const placement=chooseOverlays(aspect,faces,{headline:!!headlineText,cta:ctaText,logo:!!logo?.data?.signedUrl,rtl:isRtl([headlineText,ctaText])});
+  const placement=chooseOverlays(aspect,faces,{headline:!!headlineText,cta:ctaText,ctaWidth:72+await measureCopyWidth(ctaText,brand),logo:!!logo?.data?.signedUrl,rtl:isRtl([headlineText,ctaText])});
   const styles = adTextStyles(aspect, textColorOn(kit.accent_color),placement);
   const [extraFonts, headline, cta] = await Promise.all([
     fontsFor([headlineText, ctaText]),

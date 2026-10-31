@@ -4,13 +4,13 @@ const nextConfig: NextConfig = {
   // Ad images read bundled font files at runtime; video ads also run the
   // bundled ffmpeg binary to put the headline on the clip.
   outputFileTracingIncludes: {
-    "/api/creatives/*/image": ["./src/fonts/**/*", "./src/models/yunet.onnx", "./node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.wasm", "./node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.mjs"],
+    "/api/creatives/*/image": ["./src/fonts/**/*", "./src/models/yunet.onnx", "./src/models/YUNET-LICENSE.txt", "./node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.wasm", "./node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.mjs"],
     "/api/generations/*/advance": [
-      "./src/fonts/**/*", "./src/models/yunet.onnx", "./node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.wasm", "./node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.mjs",
+      "./src/fonts/**/*", "./src/models/yunet.onnx", "./src/models/YUNET-LICENSE.txt", "./node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.wasm", "./node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.mjs",
       "./node_modules/ffmpeg-static/ffmpeg",
     ],
     "/dashboard/products/*": [
-      "./src/fonts/**/*", "./src/models/yunet.onnx", "./node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.wasm", "./node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.mjs",
+      "./src/fonts/**/*", "./src/models/yunet.onnx", "./src/models/YUNET-LICENSE.txt", "./node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.wasm", "./node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.mjs",
       "./node_modules/ffmpeg-static/ffmpeg",
     ],
   },

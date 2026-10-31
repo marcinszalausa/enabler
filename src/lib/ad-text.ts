@@ -208,3 +208,13 @@ function wrap(text: string, maxWidth: number, width: (s: string) => number) {
   if (line) lines.push(line);
   return lines.length ? lines : [""];
 }
+
+/** Pixel width for the actual brand/script font, without remote font calls. */
+export async function measureCopyWidth(text:string,brand:{name:string;data:Buffer},fontSize=40):Promise<number>{
+ const script=scriptOf(text);
+ if(script==="japanese"||script==="korean"||script==="chinese")return Array.from(new Intl.Segmenter(undefined,{granularity:"grapheme"}).segment(text)).length*fontSize;
+ const brandFamily=registerBrandFont(brand.name,brand.data);
+ let family=`"${brandFamily}"`;
+ if(script==="arabic"||script==="devanagari"){await registerShapedFonts();family=`"${SHAPED[script].family}", "${brandFamily}"`;}
+ const ctx=createCanvas(1,1).getContext("2d");ctx.font=`bold ${fontSize}px ${family}`;return Math.ceil(ctx.measureText(text).width);
+}

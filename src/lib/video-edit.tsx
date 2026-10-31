@@ -14,7 +14,7 @@ import { ImageResponse } from "next/og";
 import {chooseOverlays,chooseCaption,type Rect} from "@/lib/face-safe-layout";
 import {analyzeShotFaces,VIDEO_CROP} from "@/lib/video-face-analysis";
 import { AD_SIZES, adTextStyles } from "@/lib/ad-layout";
-import { fontsFor, isRtl, prepareText } from "@/lib/ad-text";
+import { fontsFor, isRtl, prepareText, measureCopyWidth } from "@/lib/ad-text";
 import {
   CaptionLayer,
   EndCardLayer,
@@ -81,7 +81,7 @@ export async function editVideoAd(edit: VideoEdit): Promise<Buffer> {
     const hookShots=touched(0,hookDuration),endShots=touched(endCardStart,total);
     const blockers=(indices:number[])=>indices.flatMap(i=>captionRegions[i]?[captionRegions[i]!]:[]);
     const hookPlan=chooseOverlays("9:16",collect(hookShots),{headline:!!edit.headline},blockers(hookShots));
-    const endPlan=chooseOverlays("9:16",collect(endShots),{headline:!!edit.headline,cta:edit.cta,logo:!!edit.logoUrl},blockers(endShots));
+    const endPlan=chooseOverlays("9:16",collect(endShots),{headline:!!edit.headline,cta:edit.cta,ctaWidth:72+await measureCopyWidth(edit.cta,{name:edit.fontName,data:edit.font}),logo:!!edit.logoUrl},blockers(endShots));
     let shotStart=0;
     const captionSegments=edit.shotSeconds.flatMap((seconds,i)=>{
      const begin=shotStart;shotStart+=seconds;
