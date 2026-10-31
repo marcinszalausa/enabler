@@ -42,7 +42,7 @@ test("session proxy preserves the selected destination for signed-in and signed-
   ["NextResponse","createServerClient","supabaseUrl","supabasePublishableKey","safeNextPath"],
   [response,()=>({auth:{getClaims:async()=>({data:{claims:signedIn?{sub:"fixture"}:null}})}}),"https://example.supabase.co","fixture",safeNextPath]);
  const target=setupPath("https://store.example/products/a?variant=3","video");
- const req=(url:string)=>({url,nextUrl:new URL(url),cookies:{getAll:()=>[],set:()=>{}}});
+ const req=(url:string)=>({url,nextUrl:Object.assign(new URL(url),{clone:()=>new URL(url)}),cookies:{getAll:()=>[],set:()=>{}}});
  assert.equal((await update(req("https://gooidy.com/login?"+new URLSearchParams({next:target})))).redirect,"https://gooidy.com"+target);
  assert.equal((await update(req("https://gooidy.com/login?next=%2F%2Fevil.example"))).redirect,"https://gooidy.com/dashboard");
  signedIn=false;
