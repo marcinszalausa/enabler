@@ -11,6 +11,7 @@ import { promisify } from "node:util";
 import type { ReactElement } from "react";
 import ffmpegPath from "ffmpeg-static";
 import { ImageResponse } from "next/og";
+import {VIDEO_REGIONS,MEDIA_BACKGROUND} from "@/lib/face-safe-layout";
 import { AD_SIZES, adTextStyles } from "@/lib/ad-layout";
 import { fontsFor, isRtl, prepareText } from "@/lib/ad-text";
 import {
@@ -120,7 +121,7 @@ export async function editVideoAd(edit: VideoEdit): Promise<Buffer> {
     const args = ["-y"];
     edit.clips.forEach((_, i) => args.push("-i", file(`shot${i}.mp4`)));
     args.push("-i", file("voice.mp3"), "-i", file("music.audio"));
-    // The hook and end card fade, so they run as 30 fps streams; captions
+    // The hook fades; the end card cuts to an opaque frame. Both run as 30 fps streams; captions
     // are single frames that overlay holds until it's told to stop.
     layers.forEach((_, i) =>
       args.push(
@@ -135,7 +136,7 @@ export async function editVideoAd(edit: VideoEdit): Promise<Buffer> {
     const f: string[] = [];
     edit.shotSeconds.forEach((s, i) =>
       f.push(
-        `[${i}:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,setsar=1,fps=30,trim=duration=${s},setpts=PTS-STARTPTS[s${i}]`,
+        `[${i}:v]scale=${VIDEO_REGIONS.media.width}:${VIDEO_REGIONS.media.height}:force_original_aspect_ratio=decrease:force_divisible_by=2,pad=1080:1920:(ow-iw)/2:0:color=${MEDIA_BACKGROUND.replace("#","0x")},setsar=1,fps=30,trim=duration=${s},setpts=PTS-STARTPTS[s${i}]`,
       ),
     );
     f.push(
@@ -154,7 +155,7 @@ export async function editVideoAd(edit: VideoEdit): Promise<Buffer> {
       last = next;
     });
     f.push(
-      `[${layerIn(1)}:v]format=rgba,fade=t=in:st=${endCardStart}:d=0.3:alpha=1[end]`,
+      `[${layerIn(1)}:v]format=rgba[end]`,
       `[${last}][end]overlay=0:0:enable='gte(t,${endCardStart})',fps=30,format=yuv420p[vout]`,
     );
     // Delay before the tempo change: atempo followed by adelay ends the

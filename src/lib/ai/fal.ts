@@ -23,7 +23,7 @@ export async function generateAdImage(opts: {
 }): Promise<string> {
   const referenceImageUrl = opts.referenceImageUrl
     ? (await verifyPublicUrl(opts.referenceImageUrl)).toString() : null;
-  const prompt = `${opts.prompt}. Professional advertising photograph, clean composition, leave calm empty space near the top for a headline. Anatomically correct hands with five fingers each, relaxed and natural. No text, letters, logos or watermarks.${opts.avoid ? ` Avoid these problems: ${opts.avoid}.` : ""}`;
+  const prompt = `${opts.prompt}. Professional advertising photograph, clean composition, keep every person's entire face visible within the image; headline and captions will be placed outside the photograph. Anatomically correct hands with five fingers each, relaxed and natural. No text, letters, logos or watermarks.${opts.avoid ? ` Avoid these problems: ${opts.avoid}.` : ""}`;
 
   const result = await callFal(() =>
     referenceImageUrl
@@ -66,7 +66,7 @@ export async function submitAdVideo(opts: {
   const { request_id } = await callFal(() =>
     fal.queue.submit(VIDEO_MODEL, {
       input: {
-        prompt: `${opts.prompt} Vertical social video ad, photorealistic, steady and smooth. The product keeps exactly the color, fabric and design of the first frame. Natural hands and faces.`,
+        prompt: `${opts.prompt} Vertical social video ad, photorealistic, steady and smooth. The product keeps exactly the color, fabric and design of the first frame. Natural hands and faces. Keep faces fully inside the frame throughout the motion. No text or captions in the footage.`,
         start_image_url: startImageUrl,
         duration: String(opts.seconds) as "5",
         negative_prompt:

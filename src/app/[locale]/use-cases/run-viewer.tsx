@@ -126,7 +126,7 @@ export function RunViewer({
             </div>
             {displayed && (
               <figure className={displayed.aspect === "1:1" ? "max-w-md" : "max-w-[260px]"}>
-                <Image key={displayed.id} src={`/api/creatives/${displayed.id}/image`}
+                <Image key={displayed.id} src={`/api/creatives/${displayed.id}/image?layout=face-safe-v1`}
                   alt={displayed.headline} width={1080} height={displayed.aspect === "1:1" ? 1080 : 1920}
                   sizes="(min-width: 64rem) 448px, 90vw"
                   className="w-full rounded-xl border border-line bg-surface object-cover" />
