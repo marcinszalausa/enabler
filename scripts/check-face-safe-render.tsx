@@ -12,6 +12,7 @@ import {HookLayer,CaptionLayer,EndCardLayer,VIDEO_TEXT_STYLES} from "../src/lib/
 import {IMAGE_REGIONS,VIDEO_REGIONS,type Rect} from "../src/lib/face-safe-layout";
 import {prepareText} from "../src/lib/ad-text";
 import {editVideoAd} from "../src/lib/video-edit";
+async function main(){
 const exec=promisify(execFile),font=await readFile("src/fonts/Inter-Bold.ttf");
 const fonts=[{name:"Inter",data:font,weight:700 as const,style:"normal" as const}];
 const brand={name:"Inter",data:font};
@@ -64,3 +65,7 @@ try{
  const preview=await png(<AdLayout {...base} aspect="9:16" photoUrl={"data:image/png;base64,"+(await sharp({create:{width:1080,height:1920,channels:3,background:"#e5e0d6"}}).composite([{input:await readFile(join(dir,"face.png")),left:476,top:100}]).png().toBuffer()).toString("base64")} headline="Your Shoes Shouldn’t Slow You Down" cta="Shop now"/>);
  const b=(await sharp(preview).resize({width:390}).jpeg({quality:80}).toBuffer()).toString("base64");for(let i=0;i<b.length;i+=4000)console.log("FACE_SAFE_IMAGE",i/4000,b.slice(i,i+4000));
 }finally{await rm(dir,{recursive:true,force:true});}
+
+
+}
+main().catch(error=>{console.error(error);process.exitCode=1;});
