@@ -292,8 +292,10 @@ export const ja: Messages = {
     englishOnly: "このページは英語で提供しており、英語版が正式な内容です。",
   },
   personal: {
+    preview: "広告の方向性",
+    offerExample: "例：日曜日まで対象商品が10%オフ",
     title: "広告をあなたらしく",
-    intro: "提案を確認または編集してください。回答はメッセージや画像に反映され、この商品用に保存されます。",
+    intro: "宣伝するものを選び、提案をそのまま使うか変更してください。",
     promotion: "今日は何を宣伝しますか？",
     product: "この商品",
     collection: "コレクション",

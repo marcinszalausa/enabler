@@ -305,8 +305,10 @@ export const tr: Messages = {
       "Bu sayfa İngilizce olarak sunulmaktadır ve geçerli olan İngilizce sürümdür.",
   },
   personal: {
+    preview: "Reklamınızın fikri",
+    offerExample: "Örnek: Pazar gününe kadar seçili ürünlerde %10 indirim",
     title: "Bu reklamları kendinize uyarlayın",
-    intro: "Önerileri onaylayın veya düzenleyin. Yanıtlarınız mesajı ve görselleri yönlendirir ve bu ürün için hatırlanır.",
+    intro: "Neyi tanıtacağınızı seçin. Önerilerimizi kullanın veya değiştirin.",
     promotion: "Bugün neyi tanıtıyorsunuz?",
     product: "Bu ürünü",
     collection: "Bir koleksiyonu",

@@ -312,8 +312,10 @@ export const ro: Messages = {
       "Această pagină este disponibilă în engleză, iar versiunea în engleză este cea valabilă.",
   },
   personal: {
+    preview: "Ideea reclamei tale",
+    offerExample: "Exemplu: 10% reducere la produse selectate până duminică",
     title: "Personalizează aceste reclame",
-    intro: "Confirmă sau editează sugestiile. Răspunsurile ghidează mesajul și imaginile și sunt reținute pentru acest produs.",
+    intro: "Alege ce promovezi. Păstrează sugestiile sau modifică-le.",
     promotion: "Ce promovezi astăzi?",
     product: "Acest produs",
     collection: "O colecție",

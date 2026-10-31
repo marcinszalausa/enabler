@@ -1,7 +1,7 @@
 name: Creative personalization checks
 on:
   push:
-    branches: [feat/creative-personalization]
+    branches: [feat/creative-personalization, feat/visual-personalization]
   pull_request:
 permissions:
   contents: read

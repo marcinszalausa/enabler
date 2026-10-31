@@ -306,8 +306,10 @@ export const sv: Messages = {
       "Den här sidan finns på engelska, och det är den engelska versionen som gäller.",
   },
   personal: {
+    preview: "Idén för din annons",
+    offerExample: "Exempel: 10 % rabatt på utvalda varor till söndag",
     title: "Gör annonserna till dina",
-    intro: "Bekräfta eller ändra förslagen. Dina svar styr budskap och bildspråk och sparas för den här produkten.",
+    intro: "Välj vad du vill marknadsföra. Behåll eller ändra våra förslag.",
     promotion: "Vad marknadsför du idag?",
     product: "Den här produkten",
     collection: "En kollektion",

@@ -307,8 +307,10 @@ export const nl: Messages = {
       "Deze pagina is beschikbaar in het Engels; de Engelse versie is leidend.",
   },
   personal: {
+    preview: "Het idee voor je advertentie",
+    offerExample: "Voorbeeld: 10% korting op geselecteerde artikelen tot zondag",
     title: "Maak deze advertenties van jou",
-    intro: "Bevestig of wijzig de suggesties. Je antwoorden sturen de boodschap en beelden en worden voor dit product onthouden.",
+    intro: "Kies wat je wilt promoten. Gebruik onze suggesties of pas ze aan.",
     promotion: "Wat promoot je vandaag?",
     product: "Dit product",
     collection: "Een collectie",

@@ -308,8 +308,10 @@ export const cs: Messages = {
       "Tato stránka je k dispozici v angličtině a platí anglické znění.",
   },
   personal: {
+    preview: "Nápad pro vaši reklamu",
+    offerExample: "Příklad: 10% sleva na vybrané zboží do neděle",
     title: "Přizpůsobte si tyto reklamy",
-    intro: "Potvrďte nebo upravte návrhy. Odpovědi ovlivní sdělení i vizuály a zapamatují se pro tento produkt.",
+    intro: "Vyberte, co chcete propagovat. Ponechte naše návrhy nebo je změňte.",
     promotion: "Co dnes propagujete?",
     product: "Tento produkt",
     collection: "Kolekci",

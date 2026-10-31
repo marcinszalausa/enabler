@@ -311,8 +311,10 @@ export const fr: Messages = {
     englishOnly: "Cette page est disponible en anglais, version qui fait foi.",
   },
   personal: {
+    preview: "L’idée de votre publicité",
+    offerExample: "Exemple : −10 % sur une sélection jusqu’à dimanche",
     title: "Des publicités qui vous ressemblent",
-    intro: "Confirmez ou modifiez ces suggestions. Vos réponses guident le message et les visuels, et sont mémorisées pour ce produit.",
+    intro: "Choisissez quoi promouvoir. Gardez nos suggestions ou modifiez-les.",
     promotion: "Que souhaitez-vous promouvoir aujourd’hui ?",
     product: "Ce produit",
     collection: "Une collection",
