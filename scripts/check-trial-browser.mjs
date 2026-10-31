@@ -31,10 +31,12 @@ try{
   assert.equal(await free.locator('input[name="kind"]').inputValue(),"video");
   assert.ok((await free.locator("[data-video-balance]").innerText()).includes("60"));
   await free.locator("details summary").click();
-  await free.locator('input[name="length"][value="30"]').check();
+  await free.locator('label:has(input[name="length"][value="30"])').click();
+  assert.equal(await free.locator('input[name="length"][value="30"]').isChecked(),true);
   assert.equal(await free.locator('button[type="submit"]').isDisabled(),true);
   assert.ok((await free.locator("[data-video-balance]").innerText()).includes("180"));
-  await free.locator('input[name="length"][value="7"]').check();
+  await free.locator('label:has(input[name="length"][value="7"])').click();
+  assert.equal(await free.locator('input[name="length"][value="7"]').isChecked(),true);
   assert.equal(await free.locator('button[type="submit"]').isEnabled(),true);
   assert.equal(await page.locator('[data-zero] button[type="submit"]').isDisabled(),true);
   assert.equal(await page.locator('[data-paid] button[aria-pressed]').count(),0);

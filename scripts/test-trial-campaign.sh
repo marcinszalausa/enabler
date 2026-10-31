@@ -28,7 +28,7 @@ pids=()
 for i in {1..12}; do
  (
   if ! psql "$CREDIT_TEST_DATABASE_URL" -XAtq -v ON_ERROR_STOP=1 -c "set role service_role;select public.reserve_generation('$ws',gen_random_uuid(),'$product','image_ads','test',10,'{}');" >"$output/batch-$i" 2>"$output/error-$i"; then
-   rg -q 'TRIAL_BATCH_ACTIVE' "$output/error-$i"
+   grep -q 'TRIAL_BATCH_ACTIVE' "$output/error-$i"
   fi
  ) &
  pids+=("$!")
