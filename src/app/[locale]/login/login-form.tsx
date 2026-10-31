@@ -4,13 +4,7 @@ import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { useI18n } from "@/i18n/client";
-import Link from "next/link";
-import { localePath } from "@/i18n/config";
-import { safeNextPath, setupContext } from "@/lib/onboarding";
-import { SetupSteps } from "@/app/_landing/setup-steps";
-import { fmt } from "@/i18n/format";
-import { GENERATION_COST } from "@/lib/image-pricing";
-import { DEFAULT_VIDEO_OPTIONS, VIDEOS_PER_GENERATION, videoRunCost } from "@/lib/video-options";
+import { safeNextPath } from "@/lib/onboarding";
 
 type Status = "idle" | "sending" | "sent" | "error";
 type CodeStatus = "idle" | "verifying" | "error";
@@ -18,7 +12,7 @@ type CodeStatus = "idle" | "verifying" | "error";
 export function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { t, locale } = useI18n();
+  const { t } = useI18n();
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState("");
@@ -26,19 +20,6 @@ export function LoginForm() {
   const [codeStatus, setCodeStatus] = useState<CodeStatus>("idle");
 
   const next = safeNextPath(searchParams.get("next"));
-  const setup = setupContext(next);
-  const intro = <>
-    {setup && <SetupSteps t={t} current={3}/>}
-    <h1 className="text-2xl font-semibold">{setup?t.onboard.accountTitle:t.login.title}</h1>
-    <p className="mt-2 text-sm text-muted">{setup?t.home.finalSub:t.login.sub}</p>
-    {setup && <div className="mt-5 rounded-xl border border-line bg-surface p-4 text-sm">
-      <p className="break-all font-medium">{new URL(setup.url).hostname}</p>
-      <p className="mt-1 break-all text-xs text-muted">{setup.url}</p>
-      <p className="mt-3 font-medium">{fmt(setup.kind==="image"?t.app.imageAds:t.app.videoAds,{count:setup.kind==="image"?10:VIDEOS_PER_GENERATION})} · {fmt(t.app.credits,{count:setup.kind==="image"?GENERATION_COST:videoRunCost(DEFAULT_VIDEO_OPTIONS.length)})}</p>
-      <p className="mt-2 text-xs leading-relaxed text-muted">{t.onboard.prepareNote}</p>
-    </div>}
-    <div className="mt-4 flex gap-4 text-xs text-muted"><Link href={localePath(locale,"/privacy")} className="underline">{t.footer.privacy}</Link><Link href={localePath(locale,"/terms")} className="underline">{t.footer.terms}</Link></div>
-  </>;
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -80,7 +61,7 @@ export function LoginForm() {
 
   if (status === "sent") {
     return (
-      <>{intro}<form onSubmit={onVerify} className="mt-6 flex flex-col gap-3">
+      <form onSubmit={onVerify} className="mt-6 flex flex-col gap-3">
         <p className="rounded-xl border border-line bg-surface p-4 text-sm">
           {t.login.sent.split("{email}")[0]}
           <strong>{email}</strong>
@@ -128,12 +109,12 @@ export function LoginForm() {
         >
           {t.login.otherEmail}
         </button>
-      </form></>
+      </form>
     );
   }
 
   return (
-    <>{intro}<form onSubmit={onSubmit} className="mt-6 flex flex-col gap-3">
+    <form onSubmit={onSubmit} className="mt-6 flex flex-col gap-3">
       <label htmlFor="email" className="text-sm font-medium">
         {t.login.email}
       </label>
@@ -164,7 +145,7 @@ export function LoginForm() {
           {message}
         </p>
       )}
-    </form></>
+    </form>
   );
 }
 
