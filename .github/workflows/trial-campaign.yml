@@ -1,0 +1,19 @@
+name: Trial campaign checks
+on:
+  push:
+    branches: [feat/trial-campaign]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Read installed framework guides and create migration with Supabase CLI
+        run: |
+          npm ci
+          cat node_modules/next/dist/docs/01-app/03-api-reference/01-directives/use-client.mdx
+          curl -fsSL https://supabase.com/changelog.md | head -c 22000
+          npx --yes supabase@2.81.3 migration new trial_campaign_safeguards
+          ls supabase/migrations/*trial_campaign_safeguards.sql
