@@ -2,7 +2,7 @@ import {execFileSync} from "node:child_process";
 import {readFileSync,writeFileSync,mkdirSync} from "node:fs";
 import {createHash} from "node:crypto";
 const version=execFileSync("npm",["view","onnxruntime-web","version"],{encoding:"utf8"}).trim();
-if(!/^\d+\\.\d+\\.\d+$/.test(version))throw new Error("Expected stable runtime version");
+if(version.split(".").length!==3||version.split(".").some(piece=>!piece||String(Number(piece))!==piece))throw new Error("Expected stable runtime version");
 execFileSync("npm",["install","--save-exact","onnxruntime-web@"+version],{stdio:"inherit"});
 const url="https://media.githubusercontent.com/media/opencv/opencv_zoo/48b10fa505aeb51fbd127fc60a5c660040e823b7/models/face_detection_yunet/face_detection_yunet_2026may.onnx";
 const response=await fetch(url);if(!response.ok)throw new Error("Model download failed");
