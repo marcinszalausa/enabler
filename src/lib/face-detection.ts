@@ -50,7 +50,7 @@ export function detectFaces(image:Buffer,raw?:{width:number;height:number}):Prom
   try{
    const all=[...await scan(image,640,raw),...await scan(image,320,raw)].sort((a,b)=>b.score-a.score);
    const keep:Detection[]=[];for(const item of all){if(!keep.some(other=>iou(item.box,other.box)>.3))keep.push(item);if(keep.length>=100)return null;}
-   return keep.map(item=>item.box);
+   return keep.map(item=>({...item.box,score:item.score}));
   }catch(error){console.error("Face placement analysis unavailable",error instanceof Error?error.message:"unknown");return null;}
  });
  tail=work.then(()=>undefined,()=>undefined);

@@ -21,7 +21,7 @@ Video analyzes every frame at the same crop and frame rate as the export,
 including all shots touched by the hook or closing interval. A stable per-shot
 face set avoids jitter; captions split at shot boundaries. Hook, captions and
 closing copy avoid those sets and one another. Incomplete/time-limited analysis
-disables overlays for the affected shot. Analysis is bounded to 120 seconds per
+disables overlays for the entire edit, including any timing uncertainty. Analysis is bounded to 120 seconds per
 edit; no partial scan is treated as complete. All source footage stays full-frame.
 New renders use this layout; old baked MP4 files still require re-editing.
 

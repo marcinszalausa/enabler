@@ -36,6 +36,7 @@ async function main(){
    assert.ok(faces&&faces.length>0);
    for(const [title,button] of [["Your Shoes Shouldn’t Slow You Down","Shop now"],["راحة تدوم طوال اليوم","تسوق الآن"],["हर कदम पर आराम","अभी खरीदें"]]){
     const placement=chooseOverlays(aspect,faces,{headline:true,cta:button,logo:false}),style=adTextStyles(aspect,"white",placement);
+    console.log("PORTRAIT_PLAN",JSON.stringify({aspect,faces,placement}));
     assert.ok(placement.headline&&placement.cta,"Normal portrait keeps a headline and button");
     const headline=await prepareText(title,style.headline,brand),cta=await prepareText(button,style.cta,brand);
     const props={...base,aspect,headline,cta,placement,rtl:title.includes("راحة")};

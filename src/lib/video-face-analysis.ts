@@ -27,7 +27,7 @@ export async function analyzeShotFaces(path:string,seconds:number,deadline:numbe
    }
   }
   await ended;
-  if(pending.length||frames<Math.round(seconds*30)-1)throw new Error("Incomplete frame analysis");
+  if(pending.length||frames!==Math.round(seconds*30))throw new Error("Incomplete frame analysis");
   return all;
  }catch(error){child.kill("SIGKILL");await ended.catch(()=>undefined);console.error("Video overlay analysis unavailable",error instanceof Error?error.message:stderr);return null;}
  finally{clearTimeout(timer);}

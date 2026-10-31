@@ -70,6 +70,9 @@ export async function editVideoAd(edit: VideoEdit): Promise<Buffer> {
     await Promise.all(edit.clips.map((clip,i)=>writeFile(/*turbopackIgnore: true*/ file(`shot${i}.mp4`),clip)));
     const deadline=performance.now()+120000;
     const shotFaces:Array<Rect[]|null>=[];for(let i=0;i<edit.clips.length;i++)shotFaces.push(await analyzeShotFaces(file(`shot${i}.mp4`),edit.shotSeconds[i],deadline));
+    // A short or incomplete clip can shift later cut times. Fail closed for
+    // the entire edit instead of trusting partially analyzed timing.
+    if(shotFaces.some(faces=>faces===null))shotFaces.fill(null);
     const captionRegions=shotFaces.map(faces=>chooseCaption("9:16",faces));
     let spanStart=0;
     const spans=edit.shotSeconds.map(seconds=>{const start=spanStart;spanStart+=seconds;return {start,end:spanStart};});
