@@ -68,7 +68,8 @@ try{
   assert.equal(setup.pathname,"/dashboard/setup");
   assert.equal(setup.searchParams.get("kind"),"video");
   assert.equal(setup.searchParams.get("url"),"https://store.example/products/cardigan?variant=42");
-  assert.equal(await page.locator('ol [aria-current="step"]').count(),1);
+  await page.locator("#email").waitFor();
+  assert.equal(await page.locator('[data-account-form] ol [aria-current="step"]').count(),1);
   // An expired/missing magic-link code preserves the setup destination.
   await page.goto("http://localhost:3100/auth/callback?"+new URLSearchParams({next}),{waitUntil:"networkidle"});
   assert.equal(new URL(page.url()).searchParams.get("next"),next);
