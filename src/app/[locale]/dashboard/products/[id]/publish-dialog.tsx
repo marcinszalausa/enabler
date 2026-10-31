@@ -7,6 +7,7 @@ import { platformName, takesKind } from "@/lib/social/platforms";
 import { useI18n } from "@/i18n/client";
 import { fmt } from "@/i18n/format";
 import { smallButton } from "../../ui";
+import {notifyAdChoice} from "../../use-ad-choice";
 import {clearAdChoice} from "@/lib/ad-choice";
 import { useBrowserTimeZone } from "../../time-zone";
 
@@ -177,7 +178,7 @@ function PublishForm({
     [...kinds].some((k) => takesKind(a.platform, k));
   const targets = accounts.filter((a) => picked.includes(a.id) && usable(a));
   const single = chosen.length === 1 ? chosen[0] : null;
-  useEffect(()=>{if(state.done&&single){try{clearAdChoice(window.sessionStorage,generationId,single.id);}catch{}}},[state.done,single,generationId]);
+  useEffect(()=>{if(state.done&&single){try{clearAdChoice(window.sessionStorage,generationId,single.id);notifyAdChoice();}catch{}}},[state.done,single,generationId]);
   const toggle = (list: string[], id: string) =>
     list.includes(id) ? list.filter((x) => x !== id) : [...list, id];
 

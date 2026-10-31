@@ -1,8 +1,9 @@
 "use client";
-import {useEffect,useRef,useState} from "react";
+import {useState} from "react";
+import {useAdChoice,notifyAdChoice} from "../../use-ad-choice";
 import {useI18n} from "@/i18n/client";
 import {fmt} from "@/i18n/format";
-import {readAdChoice,rememberAdChoice} from "@/lib/ad-choice";
+import {rememberAdChoice} from "@/lib/ad-choice";
 import {PublishOneButton} from "./publish-dialog";
 import {DownloadIcon,smallButton} from "../../ui";
 import type {Creative,AdPost} from "./generation-block";
@@ -11,19 +12,12 @@ export function AdGallery({creatives,generationId,imageVersion,seconds,canPublis
  creatives:Creative[];generationId:string;imageVersion:string;seconds:number;canPublish?:boolean;
  workspaceId?:string;productId?:string;posts:Record<string,AdPost>;
 }){
- const {t}=useI18n();const restored=useRef<string|null>(null);const [selectedId,setSelectedId]=useState(creatives[0]?.id);
- useEffect(()=>{
-  if(restored.current===generationId)return;restored.current=generationId;
-  const query=new URLSearchParams(window.location.search).get("favorite");
-  if(query&&creatives.some(c=>c.id===query)){setSelectedId(query);return;}
-  try{const saved=workspaceId?readAdChoice(window.sessionStorage,workspaceId):null;
-   if(saved?.generationId===generationId&&creatives.some(c=>c.id===saved.creativeId))setSelectedId(saved.creativeId);
-  }catch{}
- },[workspaceId,generationId,creatives]);
- const selected=creatives.find(c=>c.id===selectedId)??creatives[0];
+ const {t}=useI18n();const [selectedId,setSelectedId]=useState<string|null>(null);
+ const {choice,favorite}=useAdChoice(workspaceId);
+ const selected=creatives.find(c=>c.id===selectedId)??creatives.find(c=>c.id===favorite)??creatives.find(c=>choice?.generationId===generationId&&c.id===choice.creativeId)??creatives[0];
  function remember(id:string){
   if(!workspaceId||!productId)return;
-  try{rememberAdChoice(window.sessionStorage,{workspaceId,productId,generationId,creativeId:id});}catch{}
+  try{rememberAdChoice(window.sessionStorage,{workspaceId,productId,generationId,creativeId:id});notifyAdChoice();}catch{}
  }
  if(!selected)return null;
  const post=posts[selected.id],video=selected.kind==="video";
