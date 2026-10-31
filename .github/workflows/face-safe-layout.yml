@@ -1,0 +1,21 @@
+name: Face-safe media checks
+on:
+  push:
+    branches: [fix/face-safe-text]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  face-safe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: node --experimental-strip-types --test tests/face-safe-layout.test.ts
+      - run: npx next typegen && npx tsc --noEmit
+      - run: npx eslint src/lib/face-safe-layout.ts src/lib/ad-layout.tsx src/lib/video-layout.tsx src/lib/video-edit.tsx src/lib/ai/fal.ts 'src/app/[locale]/dashboard/products/[id]/ad-gallery.tsx' 'src/app/[locale]/dashboard/products/[id]/publish-dialog.tsx' 'src/app/[locale]/dashboard/products/[id]/generation-block.tsx' 'src/app/[locale]/dashboard/publishing/publishing-view.tsx' 'src/app/[locale]/page.tsx' 'src/app/[locale]/use-cases/run-viewer.tsx' next.config.ts

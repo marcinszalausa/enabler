@@ -163,7 +163,7 @@ export function GenerationBlock({
             ) : (
               // eslint-disable-next-line @next/next/no-img-element -- rendered on demand by our own route
               <img
-                src={`/api/creatives/${c.id}/image?preview=1&v=${imageVersion}`}
+                src={`/api/creatives/${c.id}/image?preview=1&layout=face-safe-v1&v=${imageVersion}`}
                 alt={c.headline ?? "Ad creative"}
                 loading="lazy"
                 className={`w-full rounded-xl object-cover ${
@@ -193,7 +193,7 @@ export function GenerationBlock({
               {posts[c.id] && <PostLine t={t} post={posts[c.id]} />}
               <div className="mt-auto flex flex-wrap gap-2">
                 <a
-                  href={`/api/creatives/${c.id}/${video ? "video" : "image"}?download=1`}
+                  href={`/api/creatives/${c.id}/${video ? "video" : "image"}?download=1&layout=face-safe-v1`}
                   className={smallButton}
                 >
                   <DownloadIcon />

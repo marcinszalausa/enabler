@@ -242,7 +242,7 @@ function PublishForm({
               ) : (
                 // eslint-disable-next-line @next/next/no-img-element -- rendered on demand by our own route
                 <img
-                  src={`/api/creatives/${c.id}/image?preview=1`}
+                  src={`/api/creatives/${c.id}/image?preview=1&layout=face-safe-v1`}
                   alt=""
                   loading="lazy"
                   className={`w-full bg-surface object-cover ${
@@ -460,6 +460,6 @@ function CreativePreview({creative}:{creative:PublishCreative}){
  return <figure data-publish-preview className="flex w-full justify-center rounded-xl bg-surface p-3">
  {creative.kind==="video"?<video src={`/api/creatives/${creative.id}/video`} controls playsInline preload="metadata" className="max-h-[45vh] max-w-full rounded-lg object-contain"/>:
  // eslint-disable-next-line @next/next/no-img-element -- bounded private preview
- <img src={`/api/creatives/${creative.id}/image?preview=1`} alt={t.choose.review} className="max-h-[45vh] max-w-full rounded-lg object-contain"/>}
+ <img src={`/api/creatives/${creative.id}/image?preview=1&layout=face-safe-v1`} alt={t.choose.review} className="max-h-[45vh] max-w-full rounded-lg object-contain"/>}
  </figure>;
 }
