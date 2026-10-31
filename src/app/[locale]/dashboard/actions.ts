@@ -124,6 +124,8 @@ export async function startGeneration(
     options: { ...(options ?? { language }), ...(creativePreferences ? { creative_preferences: creativePreferences } : {}) },
   });
   if (error) {
+    if(error.code==="P0001"&&error.message==="TRIAL_BATCH_ACTIVE")return {error:(await requestMessages()).trial.busy};
+    if(error.code==="P0001"&&error.message==="TRIAL_BATCH_RATE")return {error:(await requestMessages()).trial.rate};
     console.error("reserve generation failed", error);
     return { error: (await requestMessages()).app.errors.couldntStart };
   }

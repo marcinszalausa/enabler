@@ -17,6 +17,8 @@ export function GenerateControls({
   videoLabel,
   defaultLanguage,
   initialKind,
+  credits,
+  freeTrial = false,
 }: {
   productId: string;
   imageRequestId: string;
@@ -26,6 +28,8 @@ export function GenerateControls({
   videoLabel: string;
   defaultLanguage: LanguageKey;
   initialKind?: "image" | "video";
+  credits?: number;
+  freeTrial?: boolean;
 }) {
   const [language, setLanguage] = useState<LanguageKey>(defaultLanguage);
   const { t } = useI18n();
@@ -33,7 +37,7 @@ export function GenerateControls({
 
   return (
     <div className="flex flex-col items-start gap-2 lg:items-end">
-      {initialKind && <div className="flex flex-wrap gap-2">{(["image","video"] as const).map(value => <button key={value} type="button" aria-pressed={kind === value} onClick={() => setKind(value)} className={"min-h-11 rounded-lg border px-3 text-sm " + (kind === value ? "border-accent bg-accent-soft text-accent" : "border-line")}>{value === "image" ? t.app.imageAds.replace("{count}", "10") : t.app.videoAds.replace("{count}", "2")}</button>)}</div>}
+      {(initialKind || freeTrial) && <div className="flex flex-wrap gap-2">{(["image","video"] as const).map(value => <button key={value} type="button" aria-pressed={kind === value} onClick={() => setKind(value)} className={"min-h-11 rounded-lg border px-3 text-sm " + (kind === value ? "border-accent bg-accent-soft text-accent" : "border-line")}>{value === "image" ? t.app.imageAds.replace("{count}", "10") : t.app.videoAds.replace("{count}", "2")}{value === "image" && freeTrial && <span className="ms-2 text-xs">{t.onboard.recommended}</span>}</button>)}</div>}
       <label className="flex max-w-full flex-wrap items-center gap-2 text-sm">
         <span className="text-muted">{t.app.adLanguage}</span>
         <select
@@ -49,14 +53,15 @@ export function GenerateControls({
         </select>
       </label>
       <div className="flex flex-wrap items-start gap-2 lg:justify-end">
-        {(!initialKind || kind === "image") && <GenerateButton
+        {(!(initialKind || freeTrial) || kind === "image") && <GenerateButton
           initialRequestId={imageRequestId}
           productId={productId}
           cost={imageCost}
           language={language}
         />}
-        {(!initialKind || kind === "video") && <VideoAdForm
-          initiallyOpen={!!initialKind}
+        {(!(initialKind || freeTrial) || kind === "video") && <VideoAdForm
+          initiallyOpen={!!initialKind || freeTrial}
+          credits={credits}
           initialRequestId={videoRequestId}
           productId={productId}
           cost={videoCost}

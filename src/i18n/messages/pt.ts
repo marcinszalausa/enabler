@@ -308,6 +308,20 @@ export const pt: Messages = {
     englishOnly:
       "Esta página está disponível em inglês, que é a versão que vale.",
   },
+  trial: {
+    title: "Sua primeira campanha",
+    oneTime: "100 créditos iniciais, uma única vez. Sem validade ou recarga automática.",
+    capacity: "Suficientes para mais {count} imagens, em lotes de 10.",
+    create: "Crie 10 imagens",
+    pick: "Escolha sua favorita",
+    publish: "Conecte e publique",
+    continue: "Quer criar anúncios regularmente?",
+    plans: "Comparar planos",
+    afterVideo: "Este lote usa {cost} créditos. Restarão {remaining}.",
+    notEnough: "Este lote precisa de {cost} créditos. Escolha um vídeo mais curto ou crie imagens.",
+    busy: "Já há um lote em andamento. Aguarde a conclusão antes de iniciar outro.",
+    rate: "Você iniciou vários lotes recentemente. Tente novamente em uma hora.",
+  },
   personal: {
     preview: "A ideia do seu anúncio",
     offerExample: "Exemplo: 10% de desconto em itens selecionados até domingo",

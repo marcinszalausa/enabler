@@ -27,6 +27,7 @@ export function VideoAdForm({
   label,
   language,
   initiallyOpen = false,
+  credits,
 }: {
   productId: string;
   initialRequestId: string;
@@ -35,6 +36,7 @@ export function VideoAdForm({
   // Chosen next to the buttons; shared with image runs.
   language: string;
   initiallyOpen?: boolean;
+  credits?: number;
 }) {
   const [open, setOpen] = useState(initiallyOpen);
   const [length, setLength] = useState<LengthKey>(DEFAULT_VIDEO_OPTIONS.length);
@@ -178,10 +180,11 @@ export function VideoAdForm({
       </label>
 
       </div></details>
-      <div className="flex items-center gap-3">
+      {credits !== undefined && <p data-video-balance role="status" className="rounded-lg bg-surface p-3 text-sm">{fmt(videoRunCost(length)>credits?t.trial.notEnough:t.trial.afterVideo,{cost:videoRunCost(length),remaining:Math.max(0,credits-videoRunCost(length))})}</p>}
+      <div className="flex flex-wrap items-center gap-3">
         <button
           type="submit"
-          disabled={pending}
+          disabled={pending || (credits !== undefined && videoRunCost(length)>credits)}
           className="btn-primary rounded-lg px-4 py-2 font-medium"
         >
           {pending

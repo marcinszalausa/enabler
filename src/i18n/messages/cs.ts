@@ -307,6 +307,20 @@ export const cs: Messages = {
     englishOnly:
       "Tato stránka je k dispozici v angličtině a platí anglické znění.",
   },
+  trial: {
+    title: "Vaše první kampaň",
+    oneTime: "100 kreditů na začátek, jednorázově. Bez vypršení či automatického doplňování.",
+    capacity: "Stačí na dalších {count} obrázků, v sadách po 10.",
+    create: "Vytvořte 10 obrázků",
+    pick: "Vyberte si oblíbený",
+    publish: "Propojte účet a zveřejněte",
+    continue: "Chcete vytvářet reklamy pravidelně?",
+    plans: "Porovnat tarify",
+    afterVideo: "Tato sada stojí {cost} kreditů. Zbude vám {remaining}.",
+    notEnough: "Tato sada vyžaduje {cost} kreditů. Zvolte kratší video nebo vytvořte obrázky.",
+    busy: "Jedna sada se již vytváří. Počkejte na dokončení.",
+    rate: "Nedávno jste spustili několik sad. Zkuste to znovu za hodinu.",
+  },
   personal: {
     preview: "Nápad pro vaši reklamu",
     offerExample: "Příklad: 10% sleva na vybrané zboží do neděle",

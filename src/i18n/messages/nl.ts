@@ -306,6 +306,20 @@ export const nl: Messages = {
     englishOnly:
       "Deze pagina is beschikbaar in het Engels; de Engelse versie is leidend.",
   },
+  trial: {
+    title: "Je eerste campagne",
+    oneTime: "Eenmalig 100 startcredits. Geen vervaldatum of automatische aanvulling.",
+    capacity: "Genoeg voor nog {count} afbeeldingen, in sets van 10.",
+    create: "Maak 10 afbeeldingen",
+    pick: "Kies je favoriet",
+    publish: "Verbind en plaats",
+    continue: "Regelmatig advertenties maken?",
+    plans: "Vergelijk abonnementen",
+    afterVideo: "Deze set kost {cost} credits. Je houdt er {remaining} over.",
+    notEnough: "Deze set vereist {cost} credits. Kies een kortere video of maak afbeeldingen.",
+    busy: "Er wordt al een set gemaakt. Wacht tot deze klaar is.",
+    rate: "Je hebt onlangs meerdere sets gestart. Probeer het over een uur opnieuw.",
+  },
   personal: {
     preview: "Het idee voor je advertentie",
     offerExample: "Voorbeeld: 10% korting op geselecteerde artikelen tot zondag",

@@ -300,6 +300,20 @@ export const en = {
     englishOnly:
       "This page is available in English, which is the version that applies.",
   },
+  trial: {
+    title: "Your first campaign",
+    oneTime: "100 starter credits, once. No expiry or automatic refill.",
+    capacity: "Enough for {count} more images, in batches of 10.",
+    create: "Create 10 images",
+    pick: "Choose a favorite",
+    publish: "Connect and post",
+    continue: "Ready to make ads regularly?",
+    plans: "Compare plans",
+    afterVideo: "This batch uses {cost} credits. You’ll have {remaining} left.",
+    notEnough: "This batch needs {cost} credits. Choose a shorter video or create images.",
+    busy: "An ad batch is already in progress. Wait for it to finish before starting another.",
+    rate: "You’ve started several batches recently. Please try again in an hour.",
+  },
   personal: {
     preview: "Your ad direction",
     offerExample: "Example: 10% off selected items until Sunday",
