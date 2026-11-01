@@ -79,4 +79,6 @@ if(process.env.VERIFY_DEPLOYMENT==="true"){
     break;
   }
   assert.ok(faceRuntimeVerified,"At least one public image verifies the deployed face detector");
+  const {verifyLiveHomepageImages}=await import("./check-live-homepage-images.mjs");
+  await verifyLiveHomepageImages();
 }

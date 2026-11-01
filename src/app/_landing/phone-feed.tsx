@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
+import Image from "./ad-image";
 import { flushSync } from "react-dom";
 import { useMediaActivity } from "./use-media-activity";
 import { HomeIndicator, IPhone, StatusBar } from "./iphone";

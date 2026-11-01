@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Image from "@/app/_landing/ad-image";
 import { useState } from "react";
 import type { ShowcaseRun } from "@/lib/showcase";
 import { useAngles, useI18n } from "@/i18n/client";
