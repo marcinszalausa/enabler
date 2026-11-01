@@ -1,0 +1,16 @@
+name: Homepage image diagnostics
+on:
+  push:
+    branches: [fix/homepage-image-loading]
+permissions:
+  contents: read
+jobs:
+  image-diagnostics:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/probe-homepage-images.mjs
