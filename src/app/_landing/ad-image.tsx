@@ -8,7 +8,7 @@ import {publicAdPreview,publicAdRetry} from "@/lib/public-ad-image";
 // the small authorized preview directly, with one further bounded retry.
 export default function AdImage(props:ImageProps){
  const src=typeof props.src==="string"?publicAdPreview(props.src):props.src;
- return <RecoveringImage key={typeof src==="string"?src:src.src} {...props} src={src}/>;
+ return <RecoveringImage key={typeof src==="string"?src:undefined} {...props} src={src}/>;
 }
 function RecoveringImage({src,onError,...props}:ImageProps){
  const [attempt,setAttempt]=useState(0);
