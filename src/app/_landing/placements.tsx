@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import Image from "next/image";
+import Image from "./ad-image";
 import { SCREEN } from "./screen";
 import { useI18n } from "@/i18n/client";
 

@@ -24,6 +24,7 @@ const nextConfig: NextConfig = {
     localPatterns: [
       { pathname: "/api/creatives/*/image", search: "" },
       { pathname: "/api/creatives/*/image", search: "?layout=face-aware-v2" },
+      { pathname: "/api/creatives/*/image", search: "?layout=face-aware-v2&preview=1" },
       { pathname: "/reels/**", search: "" },
     ],
     minimumCacheTTL: 86400,

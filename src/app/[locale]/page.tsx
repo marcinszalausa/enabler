@@ -2,7 +2,7 @@ import { distinctProducts, heroProducts, productKey } from "@/lib/product-displa
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
+import Image from "@/app/_landing/ad-image";
 import { FALLBACK_AD, type FeedAd } from "@/app/_landing/reel";
 import { PhoneFeed } from "@/app/_landing/phone-feed";
 import { getShowcase, type ShowcaseRun } from "@/lib/showcase";

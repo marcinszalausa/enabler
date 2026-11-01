@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Image from "./ad-image";
 import { useEffect, useRef, useState } from "react";
 import { useAngles, useI18n } from "@/i18n/client";
 import { fmt } from "@/i18n/format";

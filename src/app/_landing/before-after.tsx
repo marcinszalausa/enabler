@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Image from "./ad-image";
 import { useState } from "react";
 import { SectionHeading } from "./chrome";
 import { useI18n } from "@/i18n/client";
