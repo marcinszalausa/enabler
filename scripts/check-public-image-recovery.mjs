@@ -24,12 +24,12 @@ try{
    const u=new URL(route.request().url()),source=u.searchParams.get("url");
    requests.push({source,optimized:true});
    assert.ok(source.endsWith("?layout=face-aware-v2&preview=1"),"Optimizer fetches bounded preview");
-   if(source.includes(ids[0])||source.includes("55555555"))await route.fulfill({status:200,contentType:"image/jpeg",body:jpeg});
+   if(source.includes("/creatives/"+ids[0]+"-")||source.includes("/creatives/55555555-"))await route.fulfill({status:200,contentType:"image/jpeg",body:jpeg});
    else await route.fulfill({status:503,body:"Temporary optimizer failure"});
   });
   await page.route("**/api/creatives/*/image?**",async route=>{
    const source=route.request().url();requests.push({source,optimized:false});
-   if(source.includes(ids[3])||(source.includes(ids[2])&&source.endsWith("retry=1")))await route.abort("failed");
+   if(source.includes("/creatives/"+ids[3]+"-")||(source.includes("/creatives/"+ids[2]+"-")&&source.endsWith("retry=1")))await route.abort("failed");
    else await route.fulfill({status:200,contentType:"image/jpeg",body:jpeg});
   });
   await page.goto("http://localhost:3107/image-recovery-fixture",{waitUntil:"networkidle",timeout:90000});
@@ -38,13 +38,14 @@ try{
    await page.waitForFunction(i=>{const image=document.querySelector('img[data-case="'+i+'"]');return image.complete&&image.naturalWidth>0;},i);
   }
   await page.locator('img[data-case="3"]').scrollIntoViewIfNeeded();await pause(1000);
-  assert.equal(requests.filter(r=>r.source.includes(ids[0])).length,1,"Successful optimized image requests no fallback");
-  assert.equal(requests.filter(r=>r.source.includes(ids[1])).length,2,"Optimizer failure recovers directly");
-  assert.equal(requests.filter(r=>r.source.includes(ids[2])).length,3,"Network interruption gets one further retry");
-  assert.equal(requests.filter(r=>r.source.includes(ids[3])).length,3,"Persistent failures cannot loop");
+  assert.ok(requests.some(r=>r.optimized&&r.source.includes("/creatives/"+ids[0]+"-")));
+  assert.equal(requests.filter(r=>!r.optimized&&r.source.includes("/creatives/"+ids[0]+"-")).length,0,"Successful optimized image requests no fallback");
+  assert.equal(requests.filter(r=>!r.optimized&&r.source.includes("/creatives/"+ids[1]+"-")).length,1,"Optimizer failure recovers directly");
+  assert.equal(requests.filter(r=>!r.optimized&&r.source.includes("/creatives/"+ids[2]+"-")).length,2,"Network interruption gets one further retry");
+  assert.equal(requests.filter(r=>!r.optimized&&r.source.includes("/creatives/"+ids[3]+"-")).length,2,"Persistent failures cannot loop");
   await page.getByRole("button",{name:"Change image"}).click();
   await page.waitForFunction(()=>{const i=document.querySelector('img[data-case="1"]');return i.complete&&i.naturalWidth>0&&i.currentSrc.includes("55555555");});
-  assert.ok(requests.find(r=>r.source.includes("55555555")&&r.optimized),"Changing creative resets recovery");
+  assert.ok(requests.find(r=>r.source.includes("/creatives/55555555-")&&r.optimized),"Changing creative resets recovery");
   assert.deepEqual(errors,[]);
   console.log("PASS optimized success, failed optimizer, network retry, bounded failure and changed source; DPR",deviceScaleFactor);
   await page.close();
