@@ -8,6 +8,7 @@ export function publicAdPreview(src:string):string{
 }
 export function publicAdRetry(src:string,attempt:number):string{
  const preview=publicAdPreview(src);
- if(preview===src&&!preview.includes("preview=1"))return src;
+ const suffix="?layout=face-aware-v2&preview=1";
+ if(!preview.endsWith(suffix)||!creativeImage.test(preview.slice(0,-suffix.length)))return src;
  return preview+"&retry="+attempt;
 }

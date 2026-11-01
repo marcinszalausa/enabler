@@ -12,7 +12,7 @@ export default function AdImage(props:ImageProps){
 }
 function RecoveringImage({src,onError,...props}:ImageProps){
  const [attempt,setAttempt]=useState(0);
- const canRecover=typeof src==="string"&&publicAdPreview(src).includes("preview=1");
+ const canRecover=typeof src==="string"&&publicAdRetry(src,1)!==src;
  const retrying=canRecover&&attempt>0;
  return <Image {...props}
    src={retrying?publicAdRetry(src as string,attempt):src}

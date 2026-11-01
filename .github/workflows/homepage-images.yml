@@ -1,11 +1,12 @@
-name: Homepage image diagnostics
+name: Homepage image reliability
 on:
   push:
     branches: [fix/homepage-image-loading]
+  pull_request:
 permissions:
   contents: read
 jobs:
-  image-diagnostics:
+  public-image-recovery:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -13,6 +14,16 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Installed Image guidance
+        run: find node_modules/next/dist/docs/01-app -name image.md -exec cat {} +
+      - run: node --experimental-strip-types --test tests/public-ad-image.test.ts tests/image-preview.test.ts
+      - run: npx next typegen && npx tsc --noEmit
+      - run: npx eslint src/lib/public-ad-image.ts src/app/_landing/ad-image.tsx
       - run: npm install --prefix /tmp/homepage-browser --no-package-lock playwright@1.56.1
       - run: /tmp/homepage-browser/node_modules/.bin/playwright install --with-deps chromium
-      - run: node scripts/probe-homepage-images.mjs
+      - name: Real browser failure recovery at normal and high pixel density
+        run: node scripts/check-public-image-recovery.mjs
+        env:
+          PLAYWRIGHT_MODULE_PATH: /tmp/homepage-browser/node_modules/playwright
