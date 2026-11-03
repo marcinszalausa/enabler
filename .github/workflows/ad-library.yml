@@ -2,6 +2,7 @@ name: My ads library checks
 on:
   push:
     branches: [feat/my-ads-library]
+  pull_request:
 permissions:
   contents: read
 jobs:
@@ -49,3 +50,9 @@ jobs:
       - run: npm install --prefix /tmp/library-browser --no-package-lock tsx@4.20.6 playwright@1.56.1
       - name: Actual API joins and filtered pagination
         run: /tmp/library-browser/node_modules/.bin/tsx scripts/check-ad-library-api.ts
+      - run: /tmp/library-browser/node_modules/.bin/playwright install --with-deps chromium
+      - name: Mobile and RTL library with real favorite writes in disposable database
+        run: node scripts/check-ad-library-browser.mjs
+        env:
+          PLAYWRIGHT_MODULE_PATH: /tmp/library-browser/node_modules/playwright
+          CREDIT_TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/library_tests
