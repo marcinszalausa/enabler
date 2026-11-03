@@ -30,6 +30,7 @@ export async function LegalPage({
       <main id="main-content" tabIndex={-1} className="flex-1">
         <article
           lang="en"
+          dir="ltr"
           className="legal mx-auto max-w-2xl px-4 pb-24 pt-14 sm:pt-20"
         >
           <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
