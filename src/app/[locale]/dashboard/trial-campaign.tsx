@@ -15,7 +15,7 @@ export function TrialCampaign({credits,hasAds,published,canEdit=true,hideSteps=f
      {canEdit?<Link href={step.href} className="min-h-11 content-center text-sm font-medium hover:text-accent">{i+1}. {step.label}</Link>:<span className="text-sm">{i+1}. {step.label}</span>}
    </li>)}</ol>}
    <p className="mt-4 text-xs leading-relaxed text-muted">{t.home.adSpend}</p>
-   {hasAds&&<div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-line pt-5"><p className="text-sm font-medium">{t.trial.continue}</p><Link href="/dashboard/billing" prefetch={false} className="min-h-11 content-center rounded-lg border border-line-strong px-4 text-sm font-medium hover:text-accent">{t.trial.plans}</Link></div>}
+   {hasAds&&<div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-line pt-5"><p className="text-sm font-medium">{t.trial.continue}</p><Link href="/#pricing" prefetch={false} className="min-h-11 content-center rounded-lg border border-line-strong px-4 text-sm font-medium hover:text-accent">{t.trial.plans}</Link></div>}
  </section>;
 }
 function StepIcon({kind}:{kind:string}){
