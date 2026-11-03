@@ -22,6 +22,7 @@ export default async function DashboardLayout({
           <AppNav
             items={[
               { href: "/dashboard", label: t.app.products },
+              { href: "/dashboard/ads", label: t.library.title },
               { href: "/dashboard/publishing", label: t.publish.title },
               { href: "/dashboard/brand", label: t.app.brandKit },
             ]}

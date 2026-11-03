@@ -273,7 +273,7 @@ export function AppBar({
       {tabs && (
         // Phones: the sections get a row of their own.
         <nav aria-label={t.app.dashboard} className="no-scrollbar border-t border-line lg:hidden">
-          <div className="mx-auto grid w-full grid-cols-3 items-stretch gap-1 px-3 py-1.5 text-sm">
+          <div className="mx-auto grid w-full grid-flow-col auto-cols-fr items-stretch gap-1 px-3 py-1.5 text-sm">
             {tabs}
           </div>
         </nav>

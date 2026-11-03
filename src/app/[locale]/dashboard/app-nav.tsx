@@ -55,5 +55,5 @@ function Tabs({ items, path }: { items: AppNavItem[]; path: string }) {
 }
 
 function NavIcon({href}:{href:string}){
- return <svg viewBox="0 0 24 24" className="h-5 w-5 shrink-0" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{href.endsWith("/publishing")?<><path d="m3 10 18-7-7 18-3-8-8-3Z"/><path d="m11 13 10-10"/></>:href.endsWith("/brand")?<><path d="M4 20c5 0 5-3 5-5l-3-1c-3 1-1 4-2 6Z"/><path d="m9 15 11-11-2-2L7 13"/></>:<><path d="m3 7 9-4 9 4v11l-9 4-9-4V7Z"/><path d="m3 7 9 4 9-4M12 11v11"/></>}</svg>;
+ return <svg viewBox="0 0 24 24" className="h-5 w-5 shrink-0" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{href.endsWith("/ads")?<><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.5"/><path d="m3 18 6-6 4 4 3-4 5 6"/></>:href.endsWith("/publishing")?<><path d="m3 10 18-7-7 18-3-8-8-3Z"/><path d="m11 13 10-10"/></>:href.endsWith("/brand")?<><path d="M4 20c5 0 5-3 5-5l-3-1c-3 1-1 4-2 6Z"/><path d="m9 15 11-11-2-2L7 13"/></>:<><path d="m3 7 9-4 9 4v11l-9 4-9-4V7Z"/><path d="m3 7 9 4 9-4M12 11v11"/></>}</svg>;
 }

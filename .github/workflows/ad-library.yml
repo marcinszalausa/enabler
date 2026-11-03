@@ -1,0 +1,58 @@
+name: My ads library checks
+on:
+  push:
+    branches: [feat/my-ads-library]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  ad-library:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: library_tests
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+      postgrest:
+        image: postgrest/postgrest:v16.5
+        env:
+          PGRST_DB_URI: postgres://postgres:postgres@postgres:5432/library_tests
+          PGRST_DB_SCHEMAS: public
+          PGRST_DB_ANON_ROLE: anon
+          PGRST_JWT_SECRET: library-fixture-jwt-secret-at-least-32-characters
+        ports: ['3000:3000']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Installed action and revalidation guidance
+        run: find node_modules/next/dist/docs/01-app -iname '*revalidate*' -o -iname '*server-actions*' | xargs cat
+      - run: node --experimental-strip-types --test tests/ad-library.test.ts
+      - run: npx next typegen && npx tsc --noEmit
+      - run: npx eslint src/lib/ad-library.ts src/lib/ad-library-query.ts 'src/app/[locale]/dashboard/ads/' 'src/app/[locale]/dashboard/layout.tsx' 'src/app/[locale]/dashboard/app-nav.tsx' src/app/_landing/chrome.tsx src/i18n/messages/*.ts
+      - run: sudo apt-get update && sudo apt-get install -y postgresql-client
+      - name: Favorite permissions and workspace isolation
+        run: bash scripts/test-ad-library.sh
+        env:
+          CREDIT_TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/library_tests
+      - run: npm install --prefix /tmp/library-browser --no-package-lock tsx@4.20.6 playwright@1.56.1
+      - name: Actual API joins and filtered pagination
+        run: /tmp/library-browser/node_modules/.bin/tsx scripts/check-ad-library-api.ts
+      - run: /tmp/library-browser/node_modules/.bin/playwright install --with-deps chromium
+      - name: Mobile and RTL library with real favorite writes in disposable database
+        run: node scripts/check-ad-library-browser.mjs
+        env:
+          PLAYWRIGHT_MODULE_PATH: /tmp/library-browser/node_modules/playwright
+          CREDIT_TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/library_tests
