@@ -311,6 +311,15 @@ export const it: Messages = {
     englishOnly:
       "Questa pagina è disponibile in inglese, che è la versione valida.",
   },
+  journey: {
+  "title": "Prossimo passo",
+  "product": "Prodotto",
+  "direction": "Messaggio",
+  "create": "Crea annunci",
+  "pick": "Scegli e pubblica",
+  "start": "Controlla le impostazioni e crea il primo gruppo di annunci.",
+  "addHint": "Aggiungi un prodotto, scegli il messaggio, poi crea e pubblica i tuoi annunci."
+},
   choose: {
     title: "Scegli il tuo preferito",
     help: "Tocca un annuncio per vederlo intero. Controlla tutto prima di pubblicare.",

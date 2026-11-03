@@ -304,6 +304,15 @@ export const tr: Messages = {
     englishOnly:
       "Bu sayfa İngilizce olarak sunulmaktadır ve geçerli olan İngilizce sürümdür.",
   },
+  journey: {
+  "title": "Sonraki adım",
+  "product": "Ürün",
+  "direction": "Reklam mesajı",
+  "create": "Reklam oluştur",
+  "pick": "Seç ve paylaş",
+  "start": "Ayarları kontrol edip ilk reklam grubunu oluşturun.",
+  "addHint": "Bir ürün ekleyin, mesajınızı seçin, reklamlarınızı oluşturup paylaşın."
+},
   choose: {
     title: "Favorinizi seçin",
     help: "Tamamını görmek için reklama dokunun. Paylaşmadan önce her şeyi kontrol edin.",

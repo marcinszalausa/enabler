@@ -1,3 +1,4 @@
+import { AccountMenu } from "./account-menu";
 import { AppBar } from "@/app/_landing/chrome";
 import { Spotlight } from "@/app/_landing/spotlight";
 import { isLocale } from "@/i18n/config";
@@ -15,40 +16,21 @@ export default async function DashboardLayout({
   // "landing" gives the app the site's cards and hover effects.
   return (
     <div className="landing flex flex-1 flex-col bg-bg text-fg">
-      <AppBar
+      <a href="#app-content" className="skip-link">{t.nav.skip}</a>
+      <AppBar homeHref="/dashboard"
         tabs={
           <AppNav
             items={[
               { href: "/dashboard", label: t.app.products },
-              { href: "/dashboard/brand", label: t.app.brandKit },
               { href: "/dashboard/publishing", label: t.publish.title },
+              { href: "/dashboard/brand", label: t.app.brandKit },
             ]}
           />
         }
       >
-        <form action="/auth/signout" method="post">
-          <button
-            title={t.app.signOut}
-            className="flex h-9 items-center whitespace-nowrap rounded-lg px-2 text-muted transition hover:bg-surface hover:text-fg sm:px-3"
-          >
-            {/* Phones show an icon, so the bar fits on one line. */}
-            <svg
-              viewBox="0 0 24 24"
-              className="h-5 w-5 sm:hidden rtl:-scale-x-100"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={1.8}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden
-            >
-              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" />
-            </svg>
-            <span className="sr-only sm:not-sr-only">{t.app.signOut}</span>
-          </button>
-        </form>
+        <AccountMenu />
       </AppBar>
-      {children}
+      <div id="app-content" tabIndex={-1} className="flex flex-1 flex-col focus:outline-none">{children}</div>
       <Spotlight />
     </div>
   );

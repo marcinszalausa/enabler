@@ -303,6 +303,15 @@ export const de: Messages = {
     englishOnly:
       "Diese Seite ist auf Englisch verfügbar; maßgeblich ist die englische Fassung.",
   },
+  journey: {
+  "title": "Nächster Schritt",
+  "product": "Produkt",
+  "direction": "Werbebotschaft",
+  "create": "Anzeigen erstellen",
+  "pick": "Auswählen & posten",
+  "start": "Prüfe die Einstellungen und erstelle deine ersten Anzeigen.",
+  "addHint": "Füge ein Produkt hinzu, wähle deine Botschaft und erstelle und veröffentliche deine Anzeigen."
+},
   choose: {
     title: "Wähle deinen Favoriten",
     help: "Tippe auf eine Anzeige, um sie vollständig zu sehen. Vor dem Posten prüfst du alles.",

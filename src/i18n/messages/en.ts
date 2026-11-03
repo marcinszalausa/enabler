@@ -300,6 +300,15 @@ export const en = {
     englishOnly:
       "This page is available in English, which is the version that applies.",
   },
+  journey: {
+  "title": "Next step",
+  "product": "Product",
+  "direction": "Ad direction",
+  "create": "Create ads",
+  "pick": "Choose & post",
+  "start": "Review your settings, then create your first batch.",
+  "addHint": "Add a product, choose your message, then create and post your ads."
+},
   choose: {
     title: "Choose your favorite",
     help: "Tap an ad to see it full size. You review everything before posting.",

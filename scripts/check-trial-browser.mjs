@@ -39,7 +39,7 @@ try{
   assert.equal(await free.locator('input[name="length"][value="7"]').isChecked(),true);
   assert.equal(await free.locator('button[type="submit"]').isEnabled(),true);
   assert.equal(await page.locator('[data-zero] button[type="submit"]').isDisabled(),true);
-  assert.equal(await page.locator('[data-paid] button[aria-pressed]').count(),0);
+  assert.equal(await page.locator('[data-paid] button[aria-pressed]').count(),2);
   assert.equal(await page.locator('[data-paid] form').count(),1);
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
   assert.equal(posts,0);assert.deepEqual(errors,[]);

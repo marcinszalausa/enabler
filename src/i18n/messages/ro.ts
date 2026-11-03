@@ -311,6 +311,15 @@ export const ro: Messages = {
     englishOnly:
       "Această pagină este disponibilă în engleză, iar versiunea în engleză este cea valabilă.",
   },
+  journey: {
+  "title": "Pasul următor",
+  "product": "Produs",
+  "direction": "Mesajul reclamei",
+  "create": "Creează reclame",
+  "pick": "Alege și publică",
+  "start": "Verifică setările și creează primul set.",
+  "addHint": "Adaugă un produs, alege mesajul, apoi creează și publică reclamele."
+},
   choose: {
     title: "Alege reclama preferată",
     help: "Atinge o reclamă pentru a o vedea complet. Verifici totul înainte de publicare.",

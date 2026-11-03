@@ -1,3 +1,4 @@
+import { ProductJourney } from "../../product-journey";
 import { canEditWorkspace } from "@/lib/workspace-access";
 import type { CreditReceipt } from "@/lib/generation-presentation";
 import { parseCreativePreferences } from "@/lib/creative-preferences";
@@ -168,7 +169,7 @@ async function Product({
           </div>
         </div>
         <div id="generate-ads" tabIndex={-1} className="flex scroll-mt-24 flex-col items-start gap-2 rounded-2xl border border-line bg-raised p-4 focus:outline-2 focus:outline-accent lg:items-end">
-          {canEdit && (needsPreferences ? <a href="#ad-preferences" className="inline-flex min-h-11 max-w-sm items-center text-sm font-medium text-accent hover:underline">{t.personal.confirmFirst}</a> : <GenerateControls
+          {canEdit && (running.length>0 ? <a href="#your-ads" className="inline-flex min-h-11 items-center text-sm font-medium text-accent">{t.run.check}</a> : needsPreferences ? <a href="#ad-preferences" className="inline-flex min-h-11 max-w-sm items-center text-sm font-medium text-accent hover:underline">{t.personal.confirmFirst}</a> : <GenerateControls
             key={JSON.stringify(preferences)}
             initialKind={initialKind}
             credits={workspace?.credits ?? 0}
@@ -193,38 +194,12 @@ async function Product({
         </div>
       </header>
 
-      {workspace?.plan==="free"&&<TrialCampaign credits={workspace.credits??0} hasAds={(generations??[]).some(g=>g.creatives.length>0)} published={Object.values(publishing?.posts??{}).some(post=>post.status==="published")} canEdit={canEdit}/>}
+      <ProductJourney t={t} needsPreferences={needsPreferences} hasAds={(generations??[]).some(g=>g.creatives.length>0)} running={running.length>0} posted={Object.values(publishing?.posts??{}).some(post=>post.status==="published"||post.status==="scheduled"||post.status==="publishing")} canEdit={canEdit}/>
+
+      {workspace?.plan==="free"&&<TrialCampaign hideSteps credits={workspace.credits??0} hasAds={(generations??[]).some(g=>g.creatives.length>0)} published={Object.values(publishing?.posts??{}).some(post=>post.status==="published")} canEdit={canEdit}/>}
       {brief && canEdit && <PersonalizationForm productId={product.id} initial={preferences} audience={brief.audience} focus={brief.benefits[0]??""} benefits={brief.benefits} required={needsPreferences}/>}
 
-      {brief && (
-        <section className="edge mt-8 grid gap-6 p-6 text-sm sm:grid-cols-2">
-          <div>
-            <h2 className="flex items-center gap-2 font-medium">
-              {t.app.brief}
-              <span className="rounded-full bg-accent-soft px-2 py-0.5 text-xs font-normal text-accent">
-                {t.app.writtenBy}
-              </span>
-            </h2>
-            <p className="mt-2 leading-relaxed text-muted">{brief.summary}</p>
-            <dl className="mt-4 space-y-2">
-              <div>
-                <dt className="inline font-medium">{t.app.audience}</dt>
-                <dd className="inline text-muted">{brief.audience}</dd>
-              </div>
-              <div>
-                <dt className="inline font-medium">{t.app.tone}</dt>
-                <dd className="inline text-muted">{brief.tone}</dd>
-              </div>
-            </dl>
-          </div>
-          <div className="grid gap-5 sm:grid-cols-2">
-            <BriefList title={t.app.pains} items={brief.pain_points} />
-            <BriefList title={t.app.benefits} items={brief.benefits} />
-          </div>
-        </section>
-      )}
-
-      <section id="your-ads" className="mt-10 flex scroll-mt-24 flex-col gap-10">
+      <section id="your-ads" tabIndex={-1} className="mt-10 flex scroll-mt-24 flex-col gap-10">
         {(generations ?? []).length === 0 && (
           <EmptyState title={t.app.noAds}>
             {fmt(t.app.noAdsBody, {
@@ -253,6 +228,37 @@ async function Product({
           />
         ))}
       </section>
+      {brief && (
+        <details className="edge mt-8 p-5 text-sm">
+          <summary className="min-h-11 cursor-pointer py-3 font-medium">{t.app.brief} · {t.onboard.advanced}</summary>
+          <div className="grid gap-6 pt-4 sm:grid-cols-2">
+          <div>
+            <h2 className="flex items-center gap-2 font-medium">
+              {t.app.brief}
+              <span className="rounded-full bg-accent-soft px-2 py-0.5 text-xs font-normal text-accent">
+                {t.app.writtenBy}
+              </span>
+            </h2>
+            <p className="mt-2 leading-relaxed text-muted">{brief.summary}</p>
+            <dl className="mt-4 space-y-2">
+              <div>
+                <dt className="inline font-medium">{t.app.audience}</dt>
+                <dd className="inline text-muted">{brief.audience}</dd>
+              </div>
+              <div>
+                <dt className="inline font-medium">{t.app.tone}</dt>
+                <dd className="inline text-muted">{brief.tone}</dd>
+              </div>
+            </dl>
+          </div>
+          <div className="grid gap-5 sm:grid-cols-2">
+            <BriefList title={t.app.pains} items={brief.pain_points} />
+            <BriefList title={t.app.benefits} items={brief.benefits} />
+          </div>
+          </div>
+        </details>
+      )}
+
     </>
   );
 }

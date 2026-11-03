@@ -306,6 +306,15 @@ export const nl: Messages = {
     englishOnly:
       "Deze pagina is beschikbaar in het Engels; de Engelse versie is leidend.",
   },
+  journey: {
+  "title": "Volgende stap",
+  "product": "Product",
+  "direction": "Advertentieboodschap",
+  "create": "Advertenties maken",
+  "pick": "Kiezen en plaatsen",
+  "start": "Controleer de instellingen en maak je eerste reeks.",
+  "addHint": "Voeg een product toe, kies je boodschap en maak en plaats je advertenties."
+},
   choose: {
     title: "Kies je favoriet",
     help: "Tik op een advertentie om hem volledig te zien. Controleer alles voor je plaatst.",

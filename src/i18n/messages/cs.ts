@@ -307,6 +307,15 @@ export const cs: Messages = {
     englishOnly:
       "Tato stránka je k dispozici v angličtině a platí anglické znění.",
   },
+  journey: {
+  "title": "Další krok",
+  "product": "Produkt",
+  "direction": "Sdělení reklamy",
+  "create": "Vytvořit reklamy",
+  "pick": "Vybrat a zveřejnit",
+  "start": "Zkontrolujte nastavení a vytvořte první sadu.",
+  "addHint": "Přidejte produkt, zvolte sdělení a vytvořte a zveřejněte reklamy."
+},
   choose: {
     title: "Vyberte si oblíbenou reklamu",
     help: "Klepnutím zobrazíte celou reklamu. Před zveřejněním vše zkontrolujete.",

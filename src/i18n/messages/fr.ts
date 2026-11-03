@@ -310,6 +310,15 @@ export const fr: Messages = {
     updated: "Dernière mise à jour : {date}",
     englishOnly: "Cette page est disponible en anglais, version qui fait foi.",
   },
+  journey: {
+  "title": "Prochaine étape",
+  "product": "Produit",
+  "direction": "Message publicitaire",
+  "create": "Créer les annonces",
+  "pick": "Choisir et publier",
+  "start": "Vérifiez les réglages, puis créez votre premier lot.",
+  "addHint": "Ajoutez un produit, choisissez votre message, puis créez et publiez vos annonces."
+},
   choose: {
     title: "Choisissez votre préféré",
     help: "Touchez une publicité pour la voir en entier. Vous vérifiez tout avant de publier.",
