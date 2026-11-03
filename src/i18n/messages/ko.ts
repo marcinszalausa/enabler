@@ -314,7 +314,8 @@ export const ko: Messages = {
   "next": "다음",
   "page": "{number}페이지",
   "pages": "광고 페이지",
-  "loadError": "광고를 불러오지 못했습니다."
+  "loadError": "광고를 불러오지 못했습니다.",
+  "retry": "다시 시도"
 },
   journey: {
   "title": "다음 단계",

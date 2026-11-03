@@ -330,7 +330,8 @@ export const fr: Messages = {
   "next": "Suivant",
   "page": "Page {number}",
   "pages": "Pages d’annonces",
-  "loadError": "Impossible de charger vos annonces."
+  "loadError": "Impossible de charger vos annonces.",
+  "retry": "Réessayer"
 },
   journey: {
   "title": "Prochaine étape",

@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import {setTimeout as pause} from "node:timers/promises";
 import {libraryTestClient,LIBRARY_TEST_USER} from "./library-fixture-client";
 import {readAdLibrary} from "../src/lib/ad-library-query";
+async function main(){
 const client=libraryTestClient(),base={kind:"all" as const,favorites:false,page:1};
 let ready=false;for(let i=0;i<40;i++){const {error}=await client.from("creatives").select("id").limit(1);if(!error){ready=true;break;}await pause(500);}assert.ok(ready,"Local PostgREST ready after schema reload");
 const first=await readAdLibrary(client,LIBRARY_TEST_USER,base);
@@ -22,3 +23,6 @@ const foreignId="84000000-0000-4000-8000-000000000099";
 const denied=await client.from("creative_favorites").insert({creative_id:foreignId,user_id:LIBRARY_TEST_USER});
 assert.ok(denied.error,"REST cannot favorite another workspace");
 console.log("PASS actual Supabase/PostgREST joins, pagination, filters, partial ads, viewer scope and private favorites");
+
+}
+main().catch(error=>{console.error(error);process.exitCode=1;});

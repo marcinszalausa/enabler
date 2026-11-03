@@ -331,7 +331,8 @@ export const it: Messages = {
   "next": "Successiva",
   "page": "Pagina {number}",
   "pages": "Pagine degli annunci",
-  "loadError": "Impossibile caricare gli annunci."
+  "loadError": "Impossibile caricare gli annunci.",
+  "retry": "Riprova"
 },
   journey: {
   "title": "Prossimo passo",

@@ -5,6 +5,7 @@ create table public.creative_favorites (
   created_at timestamptz not null default now(),
   primary key (user_id, creative_id)
 );
+create index creatives_library_created_idx on public.creatives(created_at desc,id desc) where status <> 'rejected';
 create index creative_favorites_creative_idx on public.creative_favorites(creative_id);
 alter table public.creative_favorites enable row level security;
 revoke all on public.creative_favorites from public, anon, authenticated;

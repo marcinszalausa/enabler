@@ -326,7 +326,8 @@ export const nl: Messages = {
   "next": "Volgende",
   "page": "Pagina {number}",
   "pages": "Advertentiepagina’s",
-  "loadError": "Je advertenties konden niet worden geladen."
+  "loadError": "Je advertenties konden niet worden geladen.",
+  "retry": "Opnieuw proberen"
 },
   journey: {
   "title": "Volgende stap",

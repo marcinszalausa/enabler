@@ -310,7 +310,8 @@ export const ar: Messages = {
   "next": "التالي",
   "page": "الصفحة {number}",
   "pages": "صفحات الإعلانات",
-  "loadError": "تعذر تحميل إعلاناتك."
+  "loadError": "تعذر تحميل إعلاناتك.",
+  "retry": "حاول مجددًا"
 },
   journey: {
   "title": "الخطوة التالية",

@@ -323,7 +323,8 @@ export const de: Messages = {
   "next": "Weiter",
   "page": "Seite {number}",
   "pages": "Anzeigenseiten",
-  "loadError": "Deine Anzeigen konnten nicht geladen werden."
+  "loadError": "Deine Anzeigen konnten nicht geladen werden.",
+  "retry": "Erneut versuchen"
 },
   journey: {
   "title": "Nächster Schritt",

@@ -328,7 +328,8 @@ export const pt: Messages = {
   "next": "Seguinte",
   "page": "Página {number}",
   "pages": "Páginas de anúncios",
-  "loadError": "Não foi possível carregar os anúncios."
+  "loadError": "Não foi possível carregar os anúncios.",
+  "retry": "Tentar novamente"
 },
   journey: {
   "title": "Próximo passo",

@@ -308,7 +308,8 @@ export const zh: Messages = {
   "next": "下一页",
   "page": "第 {number} 页",
   "pages": "广告分页",
-  "loadError": "无法加载广告。"
+  "loadError": "无法加载广告。",
+  "retry": "重试"
 },
   journey: {
   "title": "下一步",

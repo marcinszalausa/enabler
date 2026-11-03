@@ -325,7 +325,8 @@ export const sv: Messages = {
   "next": "Nästa",
   "page": "Sida {number}",
   "pages": "Annonssidor",
-  "loadError": "Dina annonser kunde inte laddas."
+  "loadError": "Dina annonser kunde inte laddas.",
+  "retry": "Försök igen"
 },
   journey: {
   "title": "Nästa steg",

@@ -320,7 +320,8 @@ export const en = {
   "next": "Next",
   "page": "Page {number}",
   "pages": "Ad pages",
-  "loadError": "We couldn’t load your ads."
+  "loadError": "We couldn’t load your ads.",
+  "retry": "Try again"
 },
   journey: {
   "title": "Next step",

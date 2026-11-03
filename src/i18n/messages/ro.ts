@@ -331,7 +331,8 @@ export const ro: Messages = {
   "next": "Următoare",
   "page": "Pagina {number}",
   "pages": "Pagini de reclame",
-  "loadError": "Nu am putut încărca reclamele."
+  "loadError": "Nu am putut încărca reclamele.",
+  "retry": "Încearcă din nou"
 },
   journey: {
   "title": "Pasul următor",

@@ -327,7 +327,8 @@ export const pl: Messages = {
   "next": "Następna",
   "page": "Strona {number}",
   "pages": "Strony reklam",
-  "loadError": "Nie udało się wczytać reklam."
+  "loadError": "Nie udało się wczytać reklam.",
+  "retry": "Spróbuj ponownie"
 },
   journey: {
   "title": "Następny krok",

@@ -327,7 +327,8 @@ export const cs: Messages = {
   "next": "Další",
   "page": "Stránka {number}",
   "pages": "Stránky reklam",
-  "loadError": "Reklamy se nepodařilo načíst."
+  "loadError": "Reklamy se nepodařilo načíst.",
+  "retry": "Zkusit znovu"
 },
   journey: {
   "title": "Další krok",

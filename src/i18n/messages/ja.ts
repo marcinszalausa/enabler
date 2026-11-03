@@ -311,7 +311,8 @@ export const ja: Messages = {
   "next": "次へ",
   "page": "{number} ページ",
   "pages": "広告のページ",
-  "loadError": "広告を読み込めませんでした。"
+  "loadError": "広告を読み込めませんでした。",
+  "retry": "もう一度試す"
 },
   journey: {
   "title": "次のステップ",

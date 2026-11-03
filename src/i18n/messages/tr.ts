@@ -324,7 +324,8 @@ export const tr: Messages = {
   "next": "Sonraki",
   "page": "Sayfa {number}",
   "pages": "Reklam sayfaları",
-  "loadError": "Reklamlarınız yüklenemedi."
+  "loadError": "Reklamlarınız yüklenemedi.",
+  "retry": "Tekrar dene"
 },
   journey: {
   "title": "Sonraki adım",

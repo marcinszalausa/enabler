@@ -323,7 +323,8 @@ export const hi: Messages = {
   "next": "अगला",
   "page": "पृष्ठ {number}",
   "pages": "विज्ञापन पृष्ठ",
-  "loadError": "आपके विज्ञापन लोड नहीं हो सके।"
+  "loadError": "आपके विज्ञापन लोड नहीं हो सके।",
+  "retry": "फिर कोशिश करें"
 },
   journey: {
   "title": "अगला कदम",
