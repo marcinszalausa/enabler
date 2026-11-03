@@ -1,8 +1,10 @@
 "use client";
 import {useEffect,useRef} from "react";
+import Link from "next/link";
+import {localePath} from "@/i18n/config";
 import {useI18n} from "@/i18n/client";
 export function AccountMenu(){
- const {t}=useI18n();const root=useRef<HTMLDetailsElement>(null);
+ const {t,locale}=useI18n();const root=useRef<HTMLDetailsElement>(null);
  useEffect(()=>{
   const close=(event:PointerEvent)=>{if(!root.current?.contains(event.target as Node))root.current?.removeAttribute("open");};
   document.addEventListener("pointerdown",close);return()=>document.removeEventListener("pointerdown",close);
@@ -13,6 +15,7 @@ export function AccountMenu(){
    <span>{t.footer.account}</span>
   </summary>
   <div className="absolute end-0 top-full z-40 mt-2 w-48 rounded-xl border border-line bg-bg p-2 shadow-xl">
+   <Link href={localePath(locale,"/policies")} className="flex min-h-11 items-center rounded-lg px-3 text-sm hover:bg-surface">{t.legal.center}</Link>
    <form action="/auth/signout" method="post"><button type="submit" className="flex min-h-11 w-full items-center rounded-lg px-3 text-start text-sm hover:bg-surface">{t.app.signOut}</button></form>
   </div>
  </details>;

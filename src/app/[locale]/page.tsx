@@ -78,7 +78,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
             homeJsonLd(
               locale,
               t.meta.description,
-              t.home.plans.map((p, i) => ({
+              t.home.plans.slice(0,1).map((p, i) => ({
                 name: p.name,
                 price: Number(PRICES[i].slice(1)),
               })),
@@ -477,6 +477,7 @@ function Pricing({ t, locale }: { t: Messages; locale: Locale }) {
     <section id="pricing" className="scroll-mt-16 bg-surface py-20">
       <div className="reveal mx-auto max-w-6xl px-4">
         <SectionHeading title={t.home.pricingTitle} sub={t.home.pricingSub} />
+        <p data-checkout-unavailable className="mx-auto mt-6 max-w-xl text-center text-sm text-muted">{t.legal.checkoutClosed} <Link href={localePath(locale,"/policies/billing")} className="font-medium text-accent underline">{t.legal.billing}</Link></p>
         <div className="stagger mt-12 grid gap-6 md:grid-cols-3">
           {t.home.plans.map((plan, i) => (
             <div
@@ -498,7 +499,7 @@ function Pricing({ t, locale }: { t: Messages; locale: Locale }) {
               <p className="mt-4">
                 <span className="text-5xl font-semibold tracking-tight">
                   {PRICES[i]}
-                </span>
+                </span><span className="ms-1 text-sm text-muted">USD</span>
                 {i > 0 && <span className="text-muted">{t.home.perMonth}</span>}
               </p>
               <p className="mt-1 text-sm text-muted">{plan.credits}</p>
@@ -511,14 +512,14 @@ function Pricing({ t, locale }: { t: Messages; locale: Locale }) {
                 ))}
               </ul>
               <Link
-                href={localePath(locale,"/start")} prefetch={false}
+                href={localePath(locale,i>0?"/policies/billing":"/start")} prefetch={false}
                 className={`mt-8 rounded-xl px-5 py-2.5 text-center text-sm font-medium transition ${
                   i === FEATURED
                     ? "btn-primary"
                     : "border border-line text-fg hover:bg-surface"
                 }`}
               >
-                {t.nav.getStarted}
+                {i>0?t.legal.billing:t.nav.getStarted}
               </Link>
             </div>
           ))}

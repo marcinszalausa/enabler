@@ -205,7 +205,7 @@ export const sv: Messages = {
       },
       {
         q: "Kan jag avsluta när som helst?",
-        a: "Ja. Abonnemangen löper månadsvis och du behåller tillgången till slutet av perioden du betalat för.",
+        a: "Betalda abonnemang är inte tillgängliga ännu.",
       },
     ],
     finalTitle: "Din nästa kampanj börjar med en länk",
@@ -305,9 +305,11 @@ export const sv: Messages = {
     home: "Till startsidan",
   },
   legal: {
+    center: "Policyer och integritet",
+    billing: "Betalning och återbetalning",
+    checkoutClosed: "Betalda abonnemang är inte tillgängliga ännu.",
     updated: "Senast uppdaterad {date}",
-    englishOnly:
-      "Den här sidan finns på engelska, och det är den engelska versionen som gäller.",
+    englishOnly: "Policytexten finns för närvarande på engelska.",
   },
   library: {
   "title": "Mina annonser",

@@ -206,7 +206,7 @@ export const cs: Messages = {
       },
       {
         q: "Mohu kdykoli zrušit?",
-        a: "Ano. Tarify jsou měsíční a přístup vám zůstane do konce zaplaceného období.",
+        a: "Placené tarify zatím nejsou dostupné.",
       },
     ],
     finalTitle: "Vaše příští kampaň začíná odkazem",
@@ -307,9 +307,11 @@ export const cs: Messages = {
     home: "Přejít na úvodní stránku",
   },
   legal: {
+    center: "Pravidla a soukromí",
+    billing: "Platby a vrácení peněz",
+    checkoutClosed: "Placené tarify zatím nejsou dostupné.",
     updated: "Naposledy aktualizováno {date}",
-    englishOnly:
-      "Tato stránka je k dispozici v angličtině a platí anglické znění.",
+    englishOnly: "Text pravidel je nyní dostupný v angličtině.",
   },
   library: {
   "title": "Moje reklamy",

@@ -221,6 +221,7 @@ export function Footer() {
       links: [
         { href: href("/privacy"), label: t.footer.privacy },
         { href: href("/terms"), label: t.footer.terms },
+        { href: href("/policies"), label: t.legal.center },
       ],
     },
   ];

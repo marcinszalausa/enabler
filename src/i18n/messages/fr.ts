@@ -210,7 +210,7 @@ export const fr: Messages = {
       },
       {
         q: "Puis-je résilier à tout moment ?",
-        a: "Oui. Les abonnements sont mensuels et vous gardez l'accès jusqu'à la fin de la période payée.",
+        a: "Le paiement des forfaits n’est pas encore disponible.",
       },
     ],
     finalTitle: "Votre prochaine campagne commence par un lien",
@@ -311,8 +311,11 @@ export const fr: Messages = {
     home: "Aller à l'accueil",
   },
   legal: {
+    center: "Politiques et confidentialité",
+    billing: "Facturation et remboursements",
+    checkoutClosed: "Le paiement des forfaits n’est pas encore disponible.",
     updated: "Dernière mise à jour : {date}",
-    englishOnly: "Cette page est disponible en anglais, version qui fait foi.",
+    englishOnly: "Le texte des politiques est actuellement disponible en anglais.",
   },
   library: {
   "title": "Mes annonces",

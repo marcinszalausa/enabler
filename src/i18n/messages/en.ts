@@ -203,7 +203,7 @@ export const en = {
       },
       {
         q: "Can I cancel anytime?",
-        a: "Yes. Plans are month to month, and you keep access until the end of the period you paid for.",
+        a: "Paid checkout is not available yet.",
       },
     ],
     finalTitle: "Your next campaign starts with a link",
@@ -300,9 +300,11 @@ export const en = {
     home: "Go to the home page",
   },
   legal: {
+    center: "Policies & privacy",
+    billing: "Billing and refunds",
+    checkoutClosed: "Paid checkout is not available yet.",
     updated: "Last updated {date}",
-    englishOnly:
-      "This page is available in English, which is the version that applies.",
+    englishOnly: "Policy text is currently available in English.",
   },
   library: {
   "title": "My ads",

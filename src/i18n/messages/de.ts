@@ -205,7 +205,7 @@ export const de: Messages = {
       },
       {
         q: "Kann ich jederzeit kündigen?",
-        a: "Ja. Die Pläne laufen monatlich, und du behältst den Zugang bis zum Ende des bezahlten Zeitraums.",
+        a: "Kostenpflichtige Tarife sind noch nicht verfügbar.",
       },
     ],
     finalTitle: "Deine nächste Kampagne beginnt mit einem Link",
@@ -303,9 +303,11 @@ export const de: Messages = {
     home: "Zur Startseite",
   },
   legal: {
+    center: "Richtlinien und Datenschutz",
+    billing: "Abrechnung und Erstattungen",
+    checkoutClosed: "Kostenpflichtige Tarife sind noch nicht verfügbar.",
     updated: "Zuletzt aktualisiert am {date}",
-    englishOnly:
-      "Diese Seite ist auf Englisch verfügbar; maßgeblich ist die englische Fassung.",
+    englishOnly: "Die Richtlinien sind derzeit auf Englisch verfügbar.",
   },
   library: {
   "title": "Meine Anzeigen",

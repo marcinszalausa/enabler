@@ -204,7 +204,7 @@ export const tr: Messages = {
       },
       {
         q: "İstediğim zaman iptal edebilir miyim?",
-        a: "Evet. Planlar aylıktır ve ödediğiniz dönemin sonuna kadar erişiminiz devam eder.",
+        a: "Ücretli planlar henüz kullanıma açık değil.",
       },
     ],
     finalTitle: "Sonraki kampanyanız bir bağlantıyla başlar",
@@ -304,9 +304,11 @@ export const tr: Messages = {
     home: "Ana sayfaya git",
   },
   legal: {
+    center: "Politikalar ve gizlilik",
+    billing: "Faturalandırma ve iadeler",
+    checkoutClosed: "Ücretli planlar henüz kullanıma açık değil.",
     updated: "Son güncelleme: {date}",
-    englishOnly:
-      "Bu sayfa İngilizce olarak sunulmaktadır ve geçerli olan İngilizce sürümdür.",
+    englishOnly: "Politika metinleri şu anda İngilizce olarak sunulmaktadır.",
   },
   library: {
   "title": "Reklamlarım",

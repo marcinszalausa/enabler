@@ -1,12 +1,13 @@
 name: Pre-launch legal and privacy
 on:
   push:
-    branches: [legal/us-prelaunch]
+    branches: [legal/us-prelaunch, main]
   pull_request:
 permissions:
   contents: read
 jobs:
   legal-privacy:
+    if: github.ref != 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -27,3 +28,18 @@ jobs:
             /tmp/legal-browser/node_modules/.bin/playwright install --with-deps chromium
             PLAYWRIGHT_MODULE_PATH=/tmp/legal-browser/node_modules/playwright node scripts/check-legal-privacy.mjs
           fi
+  production-legal:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      statuses: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/check-live-legal.mjs
+        env:
+          GH_TOKEN: ${{ github.token }}

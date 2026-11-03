@@ -209,7 +209,7 @@ export const pl: Messages = {
       },
       {
         q: "Czy mogę zrezygnować w każdej chwili?",
-        a: "Tak. Plany są miesięczne, a dostęp zachowujesz do końca opłaconego okresu.",
+        a: "Płatne plany nie są jeszcze dostępne.",
       },
     ],
     finalTitle: "Twoja kolejna kampania zaczyna się od linku",
@@ -307,9 +307,11 @@ export const pl: Messages = {
     home: "Przejdź na stronę główną",
   },
   legal: {
+    center: "Zasady i prywatność",
+    billing: "Płatności i zwroty",
+    checkoutClosed: "Płatne plany nie są jeszcze dostępne.",
     updated: "Ostatnia aktualizacja: {date}",
-    englishOnly:
-      "Ta strona jest dostępna po angielsku i to wersja angielska obowiązuje.",
+    englishOnly: "Treść zasad jest obecnie dostępna w języku angielskim.",
   },
   library: {
   "title": "Moje reklamy",
