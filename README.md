@@ -20,12 +20,12 @@ Import the repo in Vercel, add the variables from `.env.example` under Settings 
 
 Prices are set in US dollars only. Stripe's Adaptive Pricing shows each buyer the price in their own currency (PLN, EUR, JPY...) and pays out in dollars; the buyer pays the 2–4% conversion fee. Don't add other currencies to the prices: a price with a currency option for, say, EUR stops Adaptive Pricing from converting to EUR.
 
-1. **Plans, webhook and portal:** `STRIPE_SECRET_KEY=sk_test_... npm run stripe:setup -- https://<your-domain>`. It creates a product and monthly price per plan (Starter, Plus, Growth), the webhook endpoint `/api/stripe/webhook` and the customer portal, and prints the environment variables to add. It is safe to run again.
+1. **Plans, webhook and portal:** `STRIPE_SECRET_KEY=sk_test_... npm run stripe:setup -- https://<your-domain>`. It creates Pro ($79 a month) and Boost ($39 a year), the webhook endpoint `/api/stripe/webhook` and the customer portal, and prints the environment variables to add. It is safe to run again.
 2. **Adaptive Pricing:** turn it on in Stripe > Settings > Payments > Adaptive Pricing.
-3. **Payment methods:** turn on the ones you want in Stripe > Settings > Payments > Payment methods. Checkout offers each buyer the ones that fit their country. Monthly plans paid in another currency can use cards, Apple Pay, Google Pay and Link; one-time credit packs can also use local methods such as BLIK, Przelewy24, iDEAL, Bancontact, PayPal, Klarna, Pix, Alipay and WeChat Pay.
+3. **Payment methods:** turn on the ones you want in Stripe > Settings > Payments > Payment methods. Checkout offers each buyer the ones that fit their country. Pro and Boost paid in another currency can use cards, Apple Pay, Google Pay and Link; one-time credit packs can also use local methods such as BLIK, Przelewy24, iDEAL, Bancontact, PayPal, Klarna, Pix, Alipay and WeChat Pay.
 4. **Tax (optional):** set up Stripe Tax and set `STRIPE_AUTOMATIC_TAX=on` to add VAT or sales tax at checkout and collect business tax ids.
 
-Plan credits are in `src/lib/billing.ts` and prices in `src/lib/pricing.ts`; each paid invoice tops the workspace up to its plan's monthly allowance, and each paid credit pack adds its credits once. To test another country in Checkout, give the Stripe customer an email such as `test+location_PL@example.com`.
+Pricing follows Zeely's: a first Pro subscription pays $29 for its first 28 days (a 28-day trial plus a one-time $29 charge), then $79 a month. Boost is a separate yearly subscription that adds credits to the monthly allowance. Credits are in `src/lib/billing.ts` and prices in `src/lib/pricing.ts`; each paid invoice tops the workspace up to its monthly allowance (Pro's credits, plus Boost's while it is on), and each paid credit pack adds its credits once. To test another country in Checkout, give the Stripe customer an email such as `test+location_PL@example.com`.
 
 ## Layout
 

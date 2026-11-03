@@ -20,7 +20,7 @@ import { BeforeAfter } from "@/app/_landing/before-after";
 import { alternates, isLocale, localePath, type Locale } from "@/i18n/config";
 import { getMessages, type Messages } from "@/i18n/messages";
 import { fmt } from "@/i18n/format";
-import { PLAN_PRICES, usd } from "@/lib/pricing";
+import { BOOST_PRICE, PLAN_PRICES, PRO_INTRO, usd } from "@/lib/pricing";
 import { LocalPrice } from "@/app/_landing/local-price";
 
 export async function generateMetadata({
@@ -38,7 +38,6 @@ export async function generateMetadata({
 
 // Prices stay in dollars in every language (buyers pay in their own currency
 // at checkout); the names and perks are in the messages.
-const PRICES = Object.values(PLAN_PRICES);
 const FEATURED = 1;
 
 // Placeholders shared by several strings.
@@ -494,17 +493,31 @@ function Features({ t, run }: { t: Messages; run?: ShowcaseRun }) {
 }
 
 function Pricing({ t, locale }: { t: Messages; locale: Locale }) {
+  const [free, pro] = t.home.plans;
+  const boost = t.home.boost;
+  // Free, then Pro at its intro price (renewing monthly), then the yearly
+  // Boost add-on, as Zeely lays it out.
+  const cards = [
+    { ...free, usd: 0, period: "", note: null },
+    {
+      ...pro,
+      usd: PRO_INTRO.usd,
+      period: ` ${fmt(t.home.introPeriod, { days: PRO_INTRO.days })}`,
+      note: fmt(t.home.then, { price: usd(PLAN_PRICES.pro, locale) }),
+    },
+    { ...boost, usd: BOOST_PRICE, period: boost.period, note: null },
+  ];
   return (
     <section id="pricing" className="scroll-mt-16 bg-surface py-20">
       <div className="reveal mx-auto max-w-6xl px-4">
         <SectionHeading title={t.home.pricingTitle} sub={t.home.pricingSub} />
-        <div className="stagger mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {t.home.plans.map((plan, i) => (
+        <div className="stagger mt-12 grid gap-6 md:grid-cols-3">
+          {cards.map((plan, i) => (
             <div
               key={plan.name}
               className={`spot lift flex flex-col p-7 ${
                 i === FEATURED
-                  ? "edge shadow-[0_30px_80px_-30px_var(--t-accent)] lg:-my-3 lg:py-10"
+                  ? "edge shadow-[0_30px_80px_-30px_var(--t-accent)] md:-my-3 md:py-10"
                   : "rounded-2xl border border-line bg-raised"
               }`}
             >
@@ -518,12 +531,15 @@ function Pricing({ t, locale }: { t: Messages; locale: Locale }) {
               </div>
               <p className="mt-4">
                 <span className="text-5xl font-semibold tracking-tight">
-                  {usd(PRICES[i], locale)}
+                  {usd(plan.usd, locale)}
                 </span>
-                {i > 0 && <span className="text-muted">{t.home.perMonth}</span>}
+                <span className="text-muted">{plan.period}</span>
               </p>
+              {plan.note && (
+                <p className="mt-1 text-sm font-medium">{plan.note}</p>
+              )}
               <LocalPrice
-                usd={PRICES[i]}
+                usd={plan.usd}
                 locale={locale}
                 template={t.home.approx}
                 className="text-sm text-muted"
@@ -538,7 +554,7 @@ function Pricing({ t, locale }: { t: Messages; locale: Locale }) {
                 ))}
               </ul>
               <Link
-                href="/dashboard"
+                href={i === 0 ? "/dashboard" : "/dashboard/billing"}
                 className={`mt-8 rounded-xl px-5 py-2.5 text-center text-sm font-medium transition ${
                   i === FEATURED
                     ? "btn-primary"

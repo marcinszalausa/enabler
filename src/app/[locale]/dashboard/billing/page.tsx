@@ -7,6 +7,7 @@ import { fmt } from "@/i18n/format";
 import { getCurrentUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import {
+  BOOST,
   FREE_PLAN,
   PACKS,
   PLANS,
@@ -66,7 +67,7 @@ async function Billing({
   const { data: ws } = await supabase
     .from("workspaces")
     .select(
-      "plan, credits, stripe_subscription_id, subscription_status, current_period_end",
+      "plan, credits, stripe_subscription_id, subscription_status, current_period_end, had_subscription, boost_subscription_id, boost_until",
     )
     .order("created_at")
     .limit(1)
@@ -76,19 +77,28 @@ async function Billing({
   const b = t.billing;
   const n = (value: number) => value.toLocaleString(locale);
   const subscribed = Boolean(ws.stripe_subscription_id);
-  const renews = ws.current_period_end
-    ? new Date(ws.current_period_end).toLocaleDateString(locale, {
-        month: "long",
-        day: "numeric",
-        year: "numeric",
-      })
-    : null;
+  const date = (value: string | null) =>
+    value
+      ? new Date(value).toLocaleDateString(locale, {
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+        })
+      : null;
+  const renews = date(ws.current_period_end);
+  const boostUntil = ws.boost_subscription_id ? date(ws.boost_until) : null;
 
   return (
     <>
-      {(checkout === "success" || checkout === "pack") && (
+      {(checkout === "success" ||
+        checkout === "pack" ||
+        checkout === "boost") && (
         <p className="mt-6 rounded-xl border border-green-600/30 bg-green-600/10 p-4 text-sm">
-          {checkout === "pack" ? b.packPaid : b.paid}
+          {checkout === "pack"
+            ? b.packPaid
+            : checkout === "boost"
+              ? b.boostPaid
+              : b.paid}
         </p>
       )}
 
@@ -112,53 +122,93 @@ async function Billing({
         )}
       </section>
 
-      {!subscribed && (
-        <section className="mt-10">
-          <h2 className="text-lg font-medium">{b.plansTitle}</h2>
-          <p className="mt-1 text-sm text-muted">{b.plansSub}</p>
-          <div className="mt-4 grid gap-5 md:grid-cols-3">
-            {(Object.keys(PLANS) as PlanKey[]).map((key, i) => {
-              const plan = PLANS[key];
-              const name = planName(t, key);
-              return (
-                <div
-                  key={key}
-                  className="flex flex-col rounded-2xl border border-line bg-raised p-6"
-                >
-                  <h3 className="font-medium">{name}</h3>
-                  <p className="mt-3">
-                    <span className="text-3xl font-semibold tracking-tight">
-                      {usd(plan.usd, locale)}
-                    </span>
-                    <span className="text-muted">{t.home.perMonth}</span>
+      <section className="mt-10 grid gap-5 md:grid-cols-2">
+        {!subscribed &&
+          (Object.keys(PLANS) as PlanKey[]).map((key) => {
+            const plan = PLANS[key];
+            const name = planName(t, key);
+            const intro = !ws.had_subscription;
+            return (
+              <div key={key} className="edge flex flex-col p-6">
+                <h2 className="font-medium">{name}</h2>
+                <p className="mt-3">
+                  <span className="text-3xl font-semibold tracking-tight">
+                    {usd(intro ? plan.intro.usd : plan.usd, locale)}
+                  </span>
+                  <span className="text-muted">
+                    {intro
+                      ? ` ${fmt(t.home.introPeriod, { days: plan.intro.days })}`
+                      : t.home.perMonth}
+                  </span>
+                </p>
+                {intro && (
+                  <p className="mt-1 text-sm font-medium">
+                    {fmt(t.home.then, { price: usd(plan.usd, locale) })}
                   </p>
-                  <LocalPrice
-                    usd={plan.usd}
-                    locale={locale}
-                    template={t.home.approx}
-                    className="text-sm text-muted"
+                )}
+                <LocalPrice
+                  usd={intro ? plan.intro.usd : plan.usd}
+                  locale={locale}
+                  template={t.home.approx}
+                  className="text-sm text-muted"
+                />
+                <p className="mt-2 flex-1 text-sm text-muted">
+                  {fmt(b.monthly, {
+                    count: n(plan.credits),
+                    ads: n(adsFor(plan.credits)),
+                  })}
+                </p>
+                <div className="mt-6">
+                  <CheckoutButton
+                    kind="plan"
+                    value={key}
+                    label={fmt(b.choose, { plan: name })}
+                    pendingLabel={b.openingCheckout}
+                    primary
                   />
-                  <p className="mt-1 flex-1 text-sm text-muted">
-                    {fmt(b.monthly, {
-                      count: n(plan.credits),
-                      ads: n(adsFor(plan.credits)),
-                    })}
-                  </p>
-                  <div className="mt-6">
-                    <CheckoutButton
-                      kind="plan"
-                      value={key}
-                      label={fmt(b.choose, { plan: name })}
-                      pendingLabel={b.openingCheckout}
-                      primary={i === 0}
-                    />
-                  </div>
                 </div>
-              );
+              </div>
+            );
+          })}
+
+        <div className="flex flex-col rounded-2xl border border-line bg-raised p-6">
+          <h2 className="font-medium">{t.home.boost.name}</h2>
+          <p className="mt-3">
+            <span className="text-3xl font-semibold tracking-tight">
+              {usd(BOOST.usd, locale)}
+            </span>
+            <span className="text-muted">{t.home.boost.period}</span>
+          </p>
+          <LocalPrice
+            usd={BOOST.usd}
+            locale={locale}
+            template={t.home.approx}
+            className="text-sm text-muted"
+          />
+          <p className="mt-2 flex-1 text-sm text-muted">
+            {fmt(b.boostBody, {
+              count: n(BOOST.monthlyCredits),
+              price: usd(BOOST.usd, locale),
             })}
+          </p>
+          <div className="mt-6">
+            {boostUntil ? (
+              <p className="text-sm font-medium">
+                {fmt(b.boostOn, { date: boostUntil })}
+              </p>
+            ) : subscribed ? (
+              <CheckoutButton
+                kind="boost"
+                value="boost"
+                label={b.addBoost}
+                pendingLabel={b.openingCheckout}
+              />
+            ) : (
+              <p className="text-sm text-muted">{b.errors.boostNeedsPlan}</p>
+            )}
           </div>
-        </section>
-      )}
+        </div>
+      </section>
 
       <section className="mt-10">
         <h2 className="text-lg font-medium">{b.packsTitle}</h2>

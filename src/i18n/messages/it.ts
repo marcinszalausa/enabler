@@ -145,6 +145,18 @@ export const it: Messages = {
       "Inizia gratis. Passa a un piano superiore quando ti servono più annunci.",
     popular: "Più scelto",
     perMonth: " / mese",
+    introPeriod: "per i primi {days} giorni",
+    then: "poi {price} / mese",
+    boost: {
+      name: "Boost",
+      period: " / anno",
+      credits: "300 crediti extra ogni mese",
+      perks: [
+        "Si aggiunge al piano Pro",
+        "Fatturato una volta l'anno",
+        "Promozione degli annunci con un tocco quando arriva",
+      ],
+    },
     payNote:
       "Prezzi in dollari statunitensi. Al pagamento paghi nella tua valuta.",
     approx: "circa {price}",
@@ -159,30 +171,12 @@ export const it: Messages = {
         ],
       },
       {
-        name: "Starter",
-        credits: "300 crediti ogni mese",
-        perks: [
-          "Circa 150 annunci al mese",
-          "Tutto ciò che c'è in Free",
-          "Disdici quando vuoi",
-        ],
-      },
-      {
-        name: "Plus",
-        credits: "600 crediti ogni mese",
-        perks: [
-          "Circa 300 annunci al mese",
-          "Tutto ciò che c'è in Starter",
-          "Disdici quando vuoi",
-        ],
-      },
-      {
-        name: "Growth",
+        name: "Pro",
         credits: "1.000 crediti ogni mese",
         perks: [
           "Circa 500 annunci al mese",
-          "Tutto ciò che c'è in Plus",
-          "Assistenza prioritaria",
+          "Tutto ciò che c'è in Free",
+          "Disdici quando vuoi",
         ],
       },
     ],
@@ -460,7 +454,7 @@ export const it: Messages = {
     payTitle: "Paga nella tua valuta",
     payBody:
       "I prezzi sono in dollari statunitensi. Al pagamento vedi l'importo nella tua valuta e i metodi di pagamento più diffusi nel tuo paese.",
-    payPlans: "Piani mensili: carta, Apple Pay, Google Pay o Link.",
+    payPlans: "Pro e Boost: carta, Apple Pay, Google Pay o Link.",
     payPacks:
       "Pacchetti di crediti: anche PayPal, Satispay, Klarna, iDEAL, Bancontact, Pix, Alipay, WeChat Pay e altri, in base al tuo paese.",
     paid: "Pagamento ricevuto, grazie. Piano e crediti si aggiornano in pochi secondi; ricarica la pagina se non compaiono ancora.",
@@ -468,7 +462,15 @@ export const it: Messages = {
       "Grazie! I crediti vengono aggiunti appena il pagamento è confermato. La maggior parte dei pagamenti è immediata; gli addebiti bancari possono richiedere alcuni giorni.",
     footnote:
       "Un credito crea un'immagine pubblicitaria. I pagamenti sono gestiti in modo sicuro da Stripe.",
+    boostBody:
+      "{count} crediti extra ogni mese oltre al tuo piano, a {price} l'anno. La promozione degli annunci con un tocco arriverà in Boost con la pubblicazione.",
+    addBoost: "Aggiungi Boost",
+    boostOn: "Boost è attivo fino al {date}.",
+    boostPaid:
+      "Boost è attivo, grazie. I crediti extra vengono aggiunti in pochi secondi.",
     errors: {
+      boostNeedsPlan:
+        "Boost si aggiunge a un piano a pagamento. Inizia prima con Pro.",
       pickPlan: "Scegli un piano.",
       notSetUp: "Questo piano non è ancora configurato.",
       noWorkspace: "Nessuno spazio di lavoro trovato.",

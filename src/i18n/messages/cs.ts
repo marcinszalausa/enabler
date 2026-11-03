@@ -145,6 +145,18 @@ export const cs: Messages = {
       "Začněte zdarma. Přejděte na vyšší tarif, až budete potřebovat víc reklam.",
     popular: "Oblíbený",
     perMonth: " / měsíc",
+    introPeriod: "za prvních {days} dní",
+    then: "potom {price} / měsíc",
+    boost: {
+      name: "Boost",
+      period: " / rok",
+      credits: "300 kreditů navíc každý měsíc",
+      perks: [
+        "Doplněk k tarifu Pro",
+        "Účtuje se jednou ročně",
+        "Propagace reklam jedním klepnutím, až bude spuštěna",
+      ],
+    },
     payNote: "Ceny v amerických dolarech. Při placení zaplatíte ve své měně.",
     approx: "přibližně {price}",
     plans: [
@@ -154,30 +166,12 @@ export const cs: Messages = {
         perks: ["Asi 50 reklam", "Firemní styl", "Stažení každé reklamy"],
       },
       {
-        name: "Starter",
-        credits: "300 kreditů každý měsíc",
-        perks: [
-          "Asi 150 reklam měsíčně",
-          "Vše z tarifu Free",
-          "Zrušení kdykoli",
-        ],
-      },
-      {
-        name: "Plus",
-        credits: "600 kreditů každý měsíc",
-        perks: [
-          "Asi 300 reklam měsíčně",
-          "Vše z tarifu Starter",
-          "Zrušení kdykoli",
-        ],
-      },
-      {
-        name: "Growth",
+        name: "Pro",
         credits: "1 000 kreditů každý měsíc",
         perks: [
           "Asi 500 reklam měsíčně",
-          "Vše z tarifu Plus",
-          "Přednostní podpora",
+          "Vše z tarifu Free",
+          "Zrušení kdykoli",
         ],
       },
     ],
@@ -454,7 +448,7 @@ export const cs: Messages = {
     payTitle: "Plaťte ve své měně",
     payBody:
       "Ceny jsou v amerických dolarech. V pokladně uvidíte částku ve své měně a způsoby platby, které jsou u vás běžné.",
-    payPlans: "Měsíční tarify: karta, Apple Pay, Google Pay nebo Link.",
+    payPlans: "Pro a Boost: karta, Apple Pay, Google Pay nebo Link.",
     payPacks:
       "Balíčky kreditů: také PayPal, Klarna, iDEAL, Bancontact, Pix, Alipay, WeChat Pay a další podle vaší země.",
     paid: "Platba přijata, děkujeme. Tarif a kredity se aktualizují během několika sekund; pokud se ještě nezobrazují, obnovte stránku.",
@@ -462,7 +456,15 @@ export const cs: Messages = {
       "Děkujeme! Kredity přidáme, jakmile bude platba potvrzena. Většina plateb je okamžitá; inkaso může trvat několik dní.",
     footnote:
       "Jeden kredit vytvoří jeden reklamní obrázek. Platby bezpečně zpracovává Stripe.",
+    boostBody:
+      "{count} kreditů navíc každý měsíc k vašemu tarifu, za {price} ročně. Propagace reklam jedním klepnutím přibude do Boost se spuštěním publikování.",
+    addBoost: "Přidat Boost",
+    boostOn: "Boost je aktivní do {date}.",
+    boostPaid:
+      "Boost je aktivní, děkujeme. Kredity navíc přibudou během několika sekund.",
     errors: {
+      boostNeedsPlan:
+        "Boost je doplněk k placenému tarifu. Nejdřív začněte s Pro.",
       pickPlan: "Vyberte tarif.",
       notSetUp: "Tento tarif ještě není nastavený.",
       noWorkspace: "Pracovní prostor nebyl nalezen.",

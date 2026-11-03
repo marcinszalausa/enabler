@@ -143,6 +143,18 @@ export const en = {
     pricingSub: "Start free. Upgrade when you need more ads.",
     popular: "Popular",
     perMonth: " / month",
+    introPeriod: "for your first {days} days",
+    then: "then {price} / month",
+    boost: {
+      name: "Boost",
+      period: " / year",
+      credits: "300 extra credits every month",
+      perks: [
+        "Adds to your Pro plan",
+        "Billed once a year",
+        "One-tap ad promotion when it launches",
+      ],
+    },
     payNote: "Prices in US dollars. Pay in your own currency at checkout.",
     approx: "about {price}",
     plans: [
@@ -152,30 +164,12 @@ export const en = {
         perks: ["About 50 ads", "Brand kit", "Download every ad"],
       },
       {
-        name: "Starter",
-        credits: "300 credits every month",
-        perks: [
-          "About 150 ads a month",
-          "Everything in Free",
-          "Cancel anytime",
-        ],
-      },
-      {
-        name: "Plus",
-        credits: "600 credits every month",
-        perks: [
-          "About 300 ads a month",
-          "Everything in Starter",
-          "Cancel anytime",
-        ],
-      },
-      {
-        name: "Growth",
+        name: "Pro",
         credits: "1,000 credits every month",
         perks: [
           "About 500 ads a month",
-          "Everything in Plus",
-          "Priority support",
+          "Everything in Free",
+          "Cancel anytime",
         ],
       },
     ],
@@ -448,7 +442,7 @@ export const en = {
     payTitle: "Pay in your currency",
     payBody:
       "Prices are in US dollars. At checkout you see the amount in your own currency and the ways to pay that are common where you live.",
-    payPlans: "Monthly plans: card, Apple Pay, Google Pay or Link.",
+    payPlans: "Pro and Boost: card, Apple Pay, Google Pay or Link.",
     payPacks:
       "Credit packs: also PayPal, BLIK, Przelewy24, iDEAL, Bancontact, Klarna, Pix, Alipay, WeChat Pay and more, depending on your country.",
     paid: "Payment received, thank you. Your plan and credits update within a few seconds; refresh if they don't show yet.",
@@ -456,7 +450,14 @@ export const en = {
       "Thank you! Your credits are added as soon as the payment is confirmed. Most payments are instant; bank debits can take a few days.",
     footnote:
       "One credit makes one ad image. Payments are handled securely by Stripe.",
+    boostBody:
+      "{count} extra credits every month on top of your plan, for {price} a year. One-tap ad promotion comes to Boost when publishing launches.",
+    addBoost: "Add Boost",
+    boostOn: "Boost is on until {date}.",
+    boostPaid:
+      "Boost is on, thank you. Your extra credits are added within a few seconds.",
     errors: {
+      boostNeedsPlan: "Boost adds to a paid plan. Start Pro first.",
       pickPlan: "Pick a plan.",
       notSetUp: "This plan isn't set up yet.",
       noWorkspace: "No workspace found.",

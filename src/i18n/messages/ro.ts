@@ -145,6 +145,18 @@ export const ro: Messages = {
       "Începe gratuit. Treci la un plan superior când ai nevoie de mai multe reclame.",
     popular: "Popular",
     perMonth: " / lună",
+    introPeriod: "pentru primele {days} zile",
+    then: "apoi {price} / lună",
+    boost: {
+      name: "Boost",
+      period: " / an",
+      credits: "300 de credite în plus în fiecare lună",
+      perks: [
+        "Se adaugă la planul Pro",
+        "Facturat o dată pe an",
+        "Promovarea reclamelor dintr-o atingere când se lansează",
+      ],
+    },
     payNote: "Prețuri în dolari americani. La plată plătești în moneda ta.",
     approx: "aproximativ {price}",
     plans: [
@@ -158,30 +170,12 @@ export const ro: Messages = {
         ],
       },
       {
-        name: "Starter",
-        credits: "300 de credite în fiecare lună",
-        perks: [
-          "Aproximativ 150 de reclame pe lună",
-          "Tot ce include Free",
-          "Anulezi oricând",
-        ],
-      },
-      {
-        name: "Plus",
-        credits: "600 de credite în fiecare lună",
-        perks: [
-          "Aproximativ 300 de reclame pe lună",
-          "Tot ce include Starter",
-          "Anulezi oricând",
-        ],
-      },
-      {
-        name: "Growth",
+        name: "Pro",
         credits: "1.000 de credite în fiecare lună",
         perks: [
           "Aproximativ 500 de reclame pe lună",
-          "Tot ce include Plus",
-          "Suport prioritar",
+          "Tot ce include Free",
+          "Anulezi oricând",
         ],
       },
     ],
@@ -458,7 +452,7 @@ export const ro: Messages = {
     payTitle: "Plătește în moneda ta",
     payBody:
       "Prețurile sunt în dolari americani. La plată vezi suma în moneda ta și metodele de plată obișnuite în țara ta.",
-    payPlans: "Planuri lunare: card, Apple Pay, Google Pay sau Link.",
+    payPlans: "Pro și Boost: card, Apple Pay, Google Pay sau Link.",
     payPacks:
       "Pachete de credite: și PayPal, Klarna, iDEAL, Bancontact, Pix, Alipay, WeChat Pay și altele, în funcție de țară.",
     paid: "Plata a fost primită, mulțumim. Planul și creditele se actualizează în câteva secunde; reîncarcă pagina dacă nu apar încă.",
@@ -466,7 +460,15 @@ export const ro: Messages = {
       "Mulțumim! Creditele se adaugă imediat ce plata este confirmată. Majoritatea plăților sunt instantanee; debitările bancare pot dura câteva zile.",
     footnote:
       "Un credit creează o imagine publicitară. Plățile sunt procesate în siguranță de Stripe.",
+    boostBody:
+      "{count} de credite în plus în fiecare lună, peste planul tău, pentru {price} pe an. Promovarea reclamelor dintr-o atingere vine în Boost când se lansează publicarea.",
+    addBoost: "Adaugă Boost",
+    boostOn: "Boost este activ până pe {date}.",
+    boostPaid:
+      "Boost este activ, mulțumim. Creditele în plus se adaugă în câteva secunde.",
     errors: {
+      boostNeedsPlan:
+        "Boost se adaugă la un plan plătit. Începe mai întâi cu Pro.",
       pickPlan: "Alege un plan.",
       notSetUp: "Acest plan nu este configurat încă.",
       noWorkspace: "Nu a fost găsit niciun spațiu de lucru.",

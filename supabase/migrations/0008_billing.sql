@@ -6,7 +6,13 @@ alter table public.workspaces
   add column stripe_customer_id text unique,
   add column stripe_subscription_id text,
   add column subscription_status text,
-  add column current_period_end timestamptz;
+  add column current_period_end timestamptz,
+  -- Set once a workspace has had a paid plan: the intro price is for the
+  -- first subscription only.
+  add column had_subscription boolean not null default false,
+  -- The yearly Boost add-on, a subscription of its own.
+  add column boost_subscription_id text,
+  add column boost_until timestamptz;
 
 -- Stripe event ids already handled, so retried webhooks don't apply twice.
 -- RLS on with no policies: only the service role can read or write it.

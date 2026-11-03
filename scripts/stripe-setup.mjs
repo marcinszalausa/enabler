@@ -1,17 +1,31 @@
-// Sets up Stripe for Gooidy in one go: a product and monthly USD price per
-// plan, the webhook endpoint and the customer portal. Safe to run again; it
-// reuses what is already there.
+// Sets up Stripe for Gooidy in one go: Pro (monthly) and Boost (yearly) as
+// USD prices, the webhook endpoint and the customer portal. Safe to run
+// again; it reuses what is already there.
 //
 //   STRIPE_SECRET_KEY=sk_test_... node scripts/stripe-setup.mjs https://gooidy.com
 //
-// Prints the environment variables to add in Vercel. Plan prices must match
-// src/lib/pricing.ts and credits src/lib/billing.ts.
+// Prints the environment variables to add in Vercel. Prices must match
+// src/lib/pricing.ts. Pro's intro price and the credit packs are charged
+// with inline prices, so they need nothing here.
 import Stripe from "stripe";
 
-const PLANS = [
-  { key: "starter", name: "Gooidy Starter", usd: 29, credits: 300 },
-  { key: "plus", name: "Gooidy Plus", usd: 49, credits: 600 },
-  { key: "growth", name: "Gooidy Growth", usd: 79, credits: 1000 },
+const PRICES = [
+  {
+    key: "pro",
+    env: "STRIPE_PRICE_PRO",
+    name: "Gooidy Pro",
+    usd: 79,
+    interval: "month",
+    description: "1,000 credits every month",
+  },
+  {
+    key: "boost",
+    env: "STRIPE_PRICE_BOOST",
+    name: "Gooidy Boost",
+    usd: 39,
+    interval: "year",
+    description: "300 extra credits every month on top of Pro",
+  },
 ];
 
 const EVENTS = [
@@ -34,10 +48,10 @@ if (!key || !/^https:\/\//.test(site)) {
 const stripe = new Stripe(key);
 const env = {};
 
-// 1. Plans: one product and one monthly price each, found by lookup key.
-const products = [];
-for (const plan of PLANS) {
-  const lookup = `gooidy_${plan.key}_monthly`;
+// 1. Pro (monthly) and Boost (yearly): a product and price each, found by
+// lookup key.
+for (const plan of PRICES) {
+  const lookup = `gooidy_${plan.key}_${plan.interval}ly`;
   const amount = plan.usd * 100;
   const { data } = await stripe.prices.list({
     lookup_keys: [lookup],
@@ -51,32 +65,29 @@ for (const plan of PLANS) {
       product: price.product.id,
       currency: "usd",
       unit_amount: amount,
-      recurring: { interval: "month" },
+      recurring: { interval: plan.interval },
       lookup_key: lookup,
       transfer_lookup_key: true,
     });
-    console.log(`Updated ${plan.name} to $${plan.usd}/month`);
+    console.log(`Updated ${plan.name} to $${plan.usd}/${plan.interval}`);
   } else if (!price) {
     const product = await stripe.products.create({
       name: plan.name,
-      description: `${plan.credits.toLocaleString("en-US")} credits every month`,
+      description: plan.description,
       metadata: { plan: plan.key },
     });
     price = await stripe.prices.create({
       product: product.id,
       currency: "usd",
       unit_amount: amount,
-      recurring: { interval: "month" },
+      recurring: { interval: plan.interval },
       lookup_key: lookup,
     });
-    console.log(`Created ${plan.name} at $${plan.usd}/month`);
+    console.log(`Created ${plan.name} at $${plan.usd}/${plan.interval}`);
   } else {
     console.log(`${plan.name} is already set up`);
   }
-  const productId =
-    typeof price.product === "string" ? price.product : price.product.id;
-  products.push({ product: productId, prices: [price.id] });
-  env[`STRIPE_PRICE_${plan.key.toUpperCase()}`] = price.id;
+  env[plan.env] = price.id;
 }
 
 // 2. Webhook endpoint.
@@ -98,7 +109,8 @@ if (existing) {
   console.log(`Created webhook ${url}`);
 }
 
-// 3. Customer portal: switch plans, update the card, see invoices, cancel.
+// 3. Customer portal: update the card, see invoices, cancel. There is one
+// plan, so no plan switching.
 const portal = {
   business_profile: {
     headline: "Manage your Gooidy plan",
@@ -114,12 +126,7 @@ const portal = {
     invoice_history: { enabled: true },
     payment_method_update: { enabled: true },
     subscription_cancel: { enabled: true, mode: "at_period_end" },
-    subscription_update: {
-      enabled: true,
-      default_allowed_updates: ["price"],
-      proration_behavior: "create_prorations",
-      products,
-    },
+    subscription_update: { enabled: false },
   },
 };
 const configs = await stripe.billingPortal.configurations.list({

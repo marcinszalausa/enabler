@@ -144,6 +144,18 @@ export const nl: Messages = {
     pricingSub: "Begin gratis. Upgrade als je meer advertenties nodig hebt.",
     popular: "Populair",
     perMonth: " / maand",
+    introPeriod: "voor je eerste {days} dagen",
+    then: "daarna {price} / maand",
+    boost: {
+      name: "Boost",
+      period: " / jaar",
+      credits: "300 extra credits per maand",
+      perks: [
+        "Bovenop je Pro-abonnement",
+        "Eén keer per jaar gefactureerd",
+        "Advertenties met één tik promoten zodra het live is",
+      ],
+    },
     payNote:
       "Prijzen in Amerikaanse dollars. Bij het afrekenen betaal je in je eigen valuta.",
     approx: "ongeveer {price}",
@@ -158,30 +170,12 @@ export const nl: Messages = {
         ],
       },
       {
-        name: "Starter",
-        credits: "300 credits per maand",
-        perks: [
-          "Ongeveer 150 advertenties per maand",
-          "Alles uit Free",
-          "Altijd opzegbaar",
-        ],
-      },
-      {
-        name: "Plus",
-        credits: "600 credits per maand",
-        perks: [
-          "Ongeveer 300 advertenties per maand",
-          "Alles uit Starter",
-          "Altijd opzegbaar",
-        ],
-      },
-      {
-        name: "Growth",
+        name: "Pro",
         credits: "1.000 credits per maand",
         perks: [
           "Ongeveer 500 advertenties per maand",
-          "Alles uit Plus",
-          "Voorrang bij support",
+          "Alles uit Free",
+          "Altijd opzegbaar",
         ],
       },
     ],
@@ -456,7 +450,7 @@ export const nl: Messages = {
     payTitle: "Betaal in je eigen valuta",
     payBody:
       "De prijzen zijn in Amerikaanse dollars. Bij het afrekenen zie je het bedrag in je eigen valuta en de betaalmethoden die in jouw land gebruikelijk zijn.",
-    payPlans: "Maandabonnementen: kaart, Apple Pay, Google Pay of Link.",
+    payPlans: "Pro en Boost: kaart, Apple Pay, Google Pay of Link.",
     payPacks:
       "Creditpakketten: ook iDEAL, Bancontact, PayPal, Klarna, SEPA-incasso, Pix, Alipay, WeChat Pay en meer, afhankelijk van je land.",
     paid: "Betaling ontvangen, bedankt. Je abonnement en credits worden binnen een paar seconden bijgewerkt; vernieuw de pagina als ze er nog niet staan.",
@@ -464,7 +458,15 @@ export const nl: Messages = {
       "Bedankt! Je credits worden toegevoegd zodra de betaling is bevestigd. De meeste betalingen zijn direct; incasso's kunnen een paar dagen duren.",
     footnote:
       "Eén credit maakt één advertentieafbeelding. Betalingen worden veilig verwerkt door Stripe.",
+    boostBody:
+      "{count} extra credits per maand bovenop je abonnement, voor {price} per jaar. Advertenties met één tik promoten komt naar Boost zodra publiceren live is.",
+    addBoost: "Boost toevoegen",
+    boostOn: "Boost staat aan tot {date}.",
+    boostPaid:
+      "Boost staat aan, bedankt. Je extra credits worden binnen een paar seconden toegevoegd.",
     errors: {
+      boostNeedsPlan:
+        "Boost komt bovenop een betaald abonnement. Begin eerst met Pro.",
       pickPlan: "Kies een abonnement.",
       notSetUp: "Dit abonnement is nog niet ingesteld.",
       noWorkspace: "Geen werkruimte gevonden.",

@@ -6,7 +6,14 @@ import { redirect, unstable_rethrow } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { stripe } from "@/lib/stripe";
-import { PACKS, isPackKey, isPlanKey, priceIdFor } from "@/lib/billing";
+import {
+  PACKS,
+  PLANS,
+  boostPriceId,
+  isPackKey,
+  isPlanKey,
+  priceIdFor,
+} from "@/lib/billing";
 import { UserError, userMessage } from "@/lib/errors";
 import { requestLocale, requestMessages } from "@/i18n/server";
 import type { Locale } from "@/i18n/config";
@@ -22,7 +29,9 @@ async function ownerWorkspace() {
   const t = (await requestMessages()).billing.errors;
   const { data: ws } = await supabase
     .from("workspaces")
-    .select("id, name, stripe_customer_id, stripe_subscription_id")
+    .select(
+      "id, name, stripe_customer_id, stripe_subscription_id, had_subscription, boost_subscription_id",
+    )
     .order("created_at")
     .limit(1)
     .single();
@@ -137,13 +146,45 @@ export async function startCheckout(
     if (!price) throw new UserError(t.notSetUp);
 
     const { ws, email } = await ownerWorkspace();
-    // Already subscribed: plan changes happen in the billing portal.
+    // Already subscribed: changes happen in the billing portal.
     if (!ws.stripe_subscription_id) {
+      const base = await checkoutBase(ws, email);
+      // A first subscription pays the intro price up front for the intro
+      // days, as a trial; the monthly price starts when they end.
+      const { intro } = PLANS[plan];
+      const firstTime =
+        !ws.had_subscription &&
+        !(
+          await stripe().subscriptions.list({
+            customer: base.customer as string,
+            status: "all",
+            limit: 1,
+          })
+        ).data.length;
       const session = await stripe().checkout.sessions.create({
-        ...(await checkoutBase(ws, email)),
+        ...base,
         mode: "subscription",
-        line_items: [{ price, quantity: 1 }],
-        subscription_data: { metadata: { workspace_id: ws.id } },
+        line_items: [
+          { price, quantity: 1 },
+          ...(firstTime
+            ? [
+                {
+                  quantity: 1,
+                  price_data: {
+                    currency: "usd",
+                    unit_amount: intro.usd * 100,
+                    product_data: {
+                      name: `Gooidy ${PLANS[plan].name}: first ${intro.days} days`,
+                    },
+                  },
+                },
+              ]
+            : []),
+        ],
+        subscription_data: {
+          metadata: { workspace_id: ws.id },
+          ...(firstTime && { trial_period_days: intro.days }),
+        },
         success_url: `${await siteOrigin()}/dashboard/billing?checkout=success`,
       });
       if (!session.url) throw new Error("Checkout session has no URL");
@@ -155,6 +196,37 @@ export async function startCheckout(
     return { error: userMessage(err, t.checkout) };
   }
   // redirect() throws, so it stays outside the try above.
+  if (!url) return openPortal();
+  redirect(url);
+}
+
+// The yearly Boost add-on, for workspaces on a paid plan.
+export async function buyBoost(): Promise<BillingState> {
+  let url: string | null = null;
+  const t = (await requestMessages()).billing.errors;
+  try {
+    const price = boostPriceId();
+    if (!price) throw new UserError(t.notSetUp);
+    const { ws, email } = await ownerWorkspace();
+    if (!ws.stripe_subscription_id) throw new UserError(t.boostNeedsPlan);
+    if (!ws.boost_subscription_id) {
+      const session = await stripe().checkout.sessions.create({
+        ...(await checkoutBase(ws, email)),
+        mode: "subscription",
+        line_items: [{ price, quantity: 1 }],
+        subscription_data: {
+          metadata: { workspace_id: ws.id, addon: "boost" },
+        },
+        success_url: `${await siteOrigin()}/dashboard/billing?checkout=boost`,
+      });
+      if (!session.url) throw new Error("Checkout session has no URL");
+      url = session.url;
+    }
+  } catch (err) {
+    unstable_rethrow(err);
+    console.error("buyBoost failed", err);
+    return { error: userMessage(err, t.checkout) };
+  }
   if (!url) return openPortal();
   redirect(url);
 }

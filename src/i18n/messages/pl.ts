@@ -145,6 +145,18 @@ export const pl: Messages = {
       "Zacznij za darmo. Przejdź na wyższy plan, gdy potrzebujesz więcej reklam.",
     popular: "Popularny",
     perMonth: " / mies.",
+    introPeriod: "za pierwsze {days} dni",
+    then: "potem {price} / mies.",
+    boost: {
+      name: "Boost",
+      period: " / rok",
+      credits: "300 dodatkowych kredytów co miesiąc",
+      perks: [
+        "Dodatek do planu Pro",
+        "Płatność raz w roku",
+        "Promowanie reklam jednym kliknięciem, gdy wystartuje",
+      ],
+    },
     payNote:
       "Ceny w dolarach amerykańskich. Przy płatności zapłacisz we własnej walucie.",
     approx: "ok. {price}",
@@ -159,30 +171,12 @@ export const pl: Messages = {
         ],
       },
       {
-        name: "Starter",
-        credits: "300 kredytów co miesiąc",
-        perks: [
-          "Około 150 reklam miesięcznie",
-          "Wszystko z planu Free",
-          "Rezygnacja w dowolnym momencie",
-        ],
-      },
-      {
-        name: "Plus",
-        credits: "600 kredytów co miesiąc",
-        perks: [
-          "Około 300 reklam miesięcznie",
-          "Wszystko z planu Starter",
-          "Rezygnacja w dowolnym momencie",
-        ],
-      },
-      {
-        name: "Growth",
+        name: "Pro",
         credits: "1000 kredytów co miesiąc",
         perks: [
           "Około 500 reklam miesięcznie",
-          "Wszystko z planu Plus",
-          "Priorytetowe wsparcie",
+          "Wszystko z planu Free",
+          "Rezygnacja w dowolnym momencie",
         ],
       },
     ],
@@ -456,7 +450,7 @@ export const pl: Messages = {
     payTitle: "Płać w swojej walucie",
     payBody:
       "Ceny są w dolarach amerykańskich. Przy płatności zobaczysz kwotę w swojej walucie i metody płatności popularne w Twoim kraju.",
-    payPlans: "Plany miesięczne: karta, Apple Pay, Google Pay lub Link.",
+    payPlans: "Pro i Boost: karta, Apple Pay, Google Pay lub Link.",
     payPacks:
       "Pakiety kredytów: także BLIK, Przelewy24, PayPal, Klarna, iDEAL, Pix, Alipay, WeChat Pay i inne, zależnie od kraju.",
     paid: "Płatność otrzymana, dziękujemy. Plan i kredyty zaktualizują się w ciągu kilku sekund; odśwież stronę, jeśli jeszcze ich nie widać.",
@@ -464,7 +458,15 @@ export const pl: Messages = {
       "Dziękujemy! Kredyty zostaną dodane, gdy tylko płatność zostanie potwierdzona. Większość płatności jest natychmiastowa; polecenia zapłaty mogą potrwać kilka dni.",
     footnote:
       "Jeden kredyt to jedna grafika reklamowa. Płatności bezpiecznie obsługuje Stripe.",
+    boostBody:
+      "{count} dodatkowych kredytów co miesiąc ponad Twój plan, za {price} rocznie. Promowanie reklam jednym kliknięciem trafi do Boost, gdy wystartuje publikowanie.",
+    addBoost: "Dodaj Boost",
+    boostOn: "Boost jest aktywny do {date}.",
+    boostPaid:
+      "Boost jest aktywny, dziękujemy. Dodatkowe kredyty pojawią się w ciągu kilku sekund.",
     errors: {
+      boostNeedsPlan:
+        "Boost to dodatek do płatnego planu. Najpierw wybierz Pro.",
       pickPlan: "Wybierz plan.",
       notSetUp: "Ten plan nie jest jeszcze skonfigurowany.",
       noWorkspace: "Nie znaleziono przestrzeni roboczej.",

@@ -2,7 +2,15 @@ import "server-only";
 import type Stripe from "stripe";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { stripe } from "@/lib/stripe";
-import { PACKS, PLANS, isPackKey, planForPrice } from "@/lib/billing";
+import {
+  BOOST,
+  PACKS,
+  PLANS,
+  boostPriceId,
+  isPackKey,
+  isPlanKey,
+  planForPrice,
+} from "@/lib/billing";
 
 // Statuses that keep the paid plan. past_due keeps it while Stripe retries
 // the card; Stripe cancels the subscription if the retries fail.
@@ -16,22 +24,26 @@ function customerId(customer: string | { id: string }): string {
   return typeof customer === "string" ? customer : customer.id;
 }
 
-// Copies a subscription's plan and status onto its workspace.
+function periodEnd(item: Stripe.SubscriptionItem | undefined) {
+  return item ? new Date(item.current_period_end * 1000).toISOString() : null;
+}
+
+// Copies a subscription's plan or Boost and its status onto its workspace.
 export async function syncSubscription(sub: Stripe.Subscription) {
-  const admin = createAdminClient();
   const item = sub.items.data[0];
+  if (item && item.price.id === boostPriceId()) return syncBoost(sub, item);
+
   const plan = item ? planForPrice(item.price.id) : null;
   const live = LIVE_STATUSES.includes(sub.status) && plan !== null;
 
-  const update = admin
+  const update = createAdminClient()
     .from("workspaces")
     .update({
       plan: live ? plan : "free",
       stripe_subscription_id: live ? sub.id : null,
       subscription_status: sub.status,
-      current_period_end: item
-        ? new Date(item.current_period_end * 1000).toISOString()
-        : null,
+      current_period_end: periodEnd(item),
+      ...(live && { had_subscription: true }),
     })
     .eq("stripe_customer_id", customerId(sub.customer));
 
@@ -43,8 +55,27 @@ export async function syncSubscription(sub: Stripe.Subscription) {
   if (error) throw error;
 }
 
-// A paid subscription invoice (first payment, renewal or plan change):
-// refresh the plan and top credits up to its monthly allowance.
+async function syncBoost(
+  sub: Stripe.Subscription,
+  item: Stripe.SubscriptionItem,
+) {
+  const live = LIVE_STATUSES.includes(sub.status);
+  const update = createAdminClient()
+    .from("workspaces")
+    .update({
+      boost_subscription_id: live ? sub.id : null,
+      boost_until: live ? periodEnd(item) : null,
+    })
+    .eq("stripe_customer_id", customerId(sub.customer));
+  const { error } = live
+    ? await update
+    : await update.eq("boost_subscription_id", sub.id);
+  if (error) throw error;
+}
+
+// A paid subscription invoice (the intro payment, a renewal, or Boost):
+// refresh the plan and top credits up to the monthly allowance, which is the
+// plan's credits plus Boost's while it is on.
 export async function handleInvoicePaid(invoice: Stripe.Invoice) {
   const ref = invoice.parent?.subscription_details?.subscription;
   if (!ref || !invoice.customer) return;
@@ -54,22 +85,23 @@ export async function handleInvoicePaid(invoice: Stripe.Invoice) {
   );
   await syncSubscription(sub);
 
-  const priceId = sub.items.data[0]?.price.id;
-  const plan = priceId ? planForPrice(priceId) : null;
-  if (!plan) return;
-
   const admin = createAdminClient();
   const { data: ws, error } = await admin
     .from("workspaces")
-    .select("id")
+    .select("id, plan, boost_subscription_id")
     .eq("stripe_customer_id", customerId(invoice.customer))
     .maybeSingle();
   if (error) throw error;
   if (!ws) return;
 
+  const allowance =
+    (isPlanKey(ws.plan) ? PLANS[ws.plan].credits : 0) +
+    (ws.boost_subscription_id ? BOOST.monthlyCredits : 0);
+  if (!allowance) return;
+
   const { error: grantError } = await admin.rpc("grant_plan_credits", {
     ws: ws.id,
-    allowance: PLANS[plan].credits,
+    allowance,
   });
   if (grantError) throw grantError;
 }

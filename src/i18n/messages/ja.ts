@@ -143,6 +143,18 @@ export const ja: Messages = {
     pricingSub: "無料で開始。広告が足りなくなったらアップグレード。",
     popular: "人気",
     perMonth: " / 月",
+    introPeriod: "最初の{days}日間",
+    then: "その後 {price} / 月",
+    boost: {
+      name: "Boost",
+      period: " / 年",
+      credits: "毎月300クレジットを追加",
+      perks: [
+        "Pro プランに追加",
+        "年に1回のお支払い",
+        "公開開始後はワンタップで広告を宣伝",
+      ],
+    },
     payNote: "価格は米ドル表示です。お支払い時はお住まいの国の通貨で払えます。",
     approx: "約{price}",
     plans: [
@@ -152,23 +164,9 @@ export const ja: Messages = {
         perks: ["広告 約50本", "ブランドキット", "すべての広告をダウンロード"],
       },
       {
-        name: "Starter",
-        credits: "毎月300クレジット",
-        perks: ["月に広告 約150本", "Free のすべての機能", "いつでも解約可能"],
-      },
-      {
-        name: "Plus",
-        credits: "毎月600クレジット",
-        perks: [
-          "月に広告 約300本",
-          "Starter のすべての機能",
-          "いつでも解約可能",
-        ],
-      },
-      {
-        name: "Growth",
+        name: "Pro",
         credits: "毎月1,000クレジット",
-        perks: ["月に広告 約500本", "Plus のすべての機能", "優先サポート"],
+        perks: ["月に広告 約500本", "Free のすべての機能", "いつでも解約可能"],
       },
     ],
     faqTitle: "よくある質問",
@@ -439,7 +437,7 @@ export const ja: Messages = {
     payTitle: "自分の通貨で支払う",
     payBody:
       "価格は米ドル表示です。お支払い画面では、お住まいの国の通貨での金額と、その国でよく使われる支払い方法が表示されます。",
-    payPlans: "月額プラン：カード、Apple Pay、Google Pay、Link。",
+    payPlans: "Pro と Boost：カード、Apple Pay、Google Pay、Link。",
     payPacks:
       "クレジットパック：国によっては PayPal、Alipay、WeChat Pay、Klarna なども使えます。",
     paid: "お支払いを受け付けました。ありがとうございます。プランとクレジットは数秒で更新されます。表示されない場合はページを再読み込みしてください。",
@@ -447,7 +445,14 @@ export const ja: Messages = {
       "ありがとうございます！お支払いが確認され次第、クレジットが追加されます。ほとんどのお支払いはすぐに完了しますが、口座振替は数日かかることがあります。",
     footnote:
       "1クレジットで広告画像を1枚作成します。お支払いは Stripe が安全に処理します。",
+    boostBody:
+      "プランに加えて毎月{count}クレジットを追加、年額{price}。広告の公開機能が始まると、ワンタップの広告宣伝も Boost に加わります。",
+    addBoost: "Boost を追加",
+    boostOn: "Boost は{date}まで有効です。",
+    boostPaid: "Boost が有効になりました。追加クレジットは数秒で反映されます。",
     errors: {
+      boostNeedsPlan:
+        "Boost は有料プランへの追加です。まず Pro を始めてください。",
       pickPlan: "プランを選んでください。",
       notSetUp: "このプランはまだ設定されていません。",
       noWorkspace: "ワークスペースが見つかりません。",

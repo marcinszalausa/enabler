@@ -144,6 +144,18 @@ export const de: Messages = {
     pricingSub: "Kostenlos starten. Upgraden, wenn du mehr Anzeigen brauchst.",
     popular: "Beliebt",
     perMonth: " / Monat",
+    introPeriod: "für deine ersten {days} Tage",
+    then: "danach {price} / Monat",
+    boost: {
+      name: "Boost",
+      period: " / Jahr",
+      credits: "300 zusätzliche Credits pro Monat",
+      perks: [
+        "Ergänzt deinen Pro-Tarif",
+        "Einmal im Jahr abgerechnet",
+        "Anzeigen mit einem Tipp bewerben, sobald es startet",
+      ],
+    },
     payNote:
       "Preise in US-Dollar. Beim Bezahlen zahlst du in deiner eigenen Währung.",
     approx: "etwa {price}",
@@ -154,30 +166,12 @@ export const de: Messages = {
         perks: ["Etwa 50 Anzeigen", "Brand-Kit", "Jede Anzeige herunterladen"],
       },
       {
-        name: "Starter",
-        credits: "300 Credits pro Monat",
-        perks: [
-          "Etwa 150 Anzeigen pro Monat",
-          "Alles aus Free",
-          "Jederzeit kündbar",
-        ],
-      },
-      {
-        name: "Plus",
-        credits: "600 Credits pro Monat",
-        perks: [
-          "Etwa 300 Anzeigen pro Monat",
-          "Alles aus Starter",
-          "Jederzeit kündbar",
-        ],
-      },
-      {
-        name: "Growth",
+        name: "Pro",
         credits: "1.000 Credits pro Monat",
         perks: [
           "Etwa 500 Anzeigen pro Monat",
-          "Alles aus Plus",
-          "Bevorzugter Support",
+          "Alles aus Free",
+          "Jederzeit kündbar",
         ],
       },
     ],
@@ -454,7 +448,7 @@ export const de: Messages = {
     payTitle: "Zahle in deiner Währung",
     payBody:
       "Die Preise sind in US-Dollar. Beim Bezahlen siehst du den Betrag in deiner eigenen Währung und die Zahlungsarten, die in deinem Land üblich sind.",
-    payPlans: "Monatstarife: Karte, Apple Pay, Google Pay oder Link.",
+    payPlans: "Pro und Boost: Karte, Apple Pay, Google Pay oder Link.",
     payPacks:
       "Credit-Pakete: außerdem PayPal, Klarna, SEPA-Lastschrift, EPS, iDEAL, TWINT, Pix, Alipay, WeChat Pay und mehr, je nach Land.",
     paid: "Zahlung erhalten, danke. Dein Tarif und deine Credits werden in wenigen Sekunden aktualisiert; lade neu, falls sie noch nicht erscheinen.",
@@ -462,7 +456,15 @@ export const de: Messages = {
       "Danke! Deine Credits werden gutgeschrieben, sobald die Zahlung bestätigt ist. Die meisten Zahlungen sind sofort da; Lastschriften können ein paar Tage dauern.",
     footnote:
       "Ein Credit erstellt ein Anzeigenbild. Zahlungen werden sicher über Stripe abgewickelt.",
+    boostBody:
+      "{count} zusätzliche Credits pro Monat zu deinem Tarif, für {price} im Jahr. Anzeigen mit einem Tipp bewerben kommt zu Boost, sobald das Veröffentlichen startet.",
+    addBoost: "Boost hinzufügen",
+    boostOn: "Boost ist aktiv bis {date}.",
+    boostPaid:
+      "Boost ist aktiv, danke. Deine zusätzlichen Credits werden in wenigen Sekunden gutgeschrieben.",
     errors: {
+      boostNeedsPlan:
+        "Boost ergänzt einen bezahlten Tarif. Starte zuerst mit Pro.",
       pickPlan: "Wähle einen Tarif.",
       notSetUp: "Dieser Tarif ist noch nicht eingerichtet.",
       noWorkspace: "Kein Arbeitsbereich gefunden.",

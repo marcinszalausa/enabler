@@ -143,6 +143,18 @@ export const ko: Messages = {
     pricingSub: "무료로 시작하고, 광고가 더 필요할 때 업그레이드하세요.",
     popular: "인기",
     perMonth: " / 월",
+    introPeriod: "처음 {days}일",
+    then: "이후 {price} / 월",
+    boost: {
+      name: "Boost",
+      period: " / 년",
+      credits: "매달 300크레딧 추가",
+      perks: [
+        "Pro 요금제에 추가",
+        "1년에 한 번 결제",
+        "출시되면 원탭 광고 홍보",
+      ],
+    },
     payNote:
       "가격은 미국 달러 기준입니다. 결제할 때 현지 통화로 낼 수 있습니다.",
     approx: "약 {price}",
@@ -153,19 +165,9 @@ export const ko: Messages = {
         perks: ["광고 약 50개", "브랜드 키트", "모든 광고 다운로드"],
       },
       {
-        name: "Starter",
-        credits: "매달 300 크레딧",
-        perks: ["월 광고 약 150개", "Free의 모든 기능", "언제든 해지 가능"],
-      },
-      {
-        name: "Plus",
-        credits: "매달 600 크레딧",
-        perks: ["월 광고 약 300개", "Starter의 모든 기능", "언제든 해지 가능"],
-      },
-      {
-        name: "Growth",
+        name: "Pro",
         credits: "매달 1,000 크레딧",
-        perks: ["월 광고 약 500개", "Plus의 모든 기능", "우선 지원"],
+        perks: ["월 광고 약 500개", "Free의 모든 기능", "언제든 해지 가능"],
       },
     ],
     faqTitle: "자주 묻는 질문",
@@ -440,7 +442,7 @@ export const ko: Messages = {
     payTitle: "현지 통화로 결제",
     payBody:
       "가격은 미국 달러 기준입니다. 결제 화면에서 현지 통화 금액과 거주 국가에서 흔히 쓰는 결제 수단을 볼 수 있습니다.",
-    payPlans: "월간 요금제: 카드, Apple Pay, Google Pay 또는 Link.",
+    payPlans: "Pro와 Boost: 카드, Apple Pay, Google Pay 또는 Link.",
     payPacks:
       "크레딧 팩: 국가에 따라 카카오페이, 네이버페이, PAYCO, 삼성페이, PayPal 등도 사용할 수 있습니다.",
     paid: "결제가 완료되었습니다. 감사합니다. 요금제와 크레딧은 몇 초 안에 업데이트됩니다. 보이지 않으면 새로고침하세요.",
@@ -448,7 +450,15 @@ export const ko: Messages = {
       "감사합니다! 결제가 확인되는 즉시 크레딧이 추가됩니다. 대부분의 결제는 즉시 처리되며, 계좌 자동이체는 며칠 걸릴 수 있습니다.",
     footnote:
       "1크레딧으로 광고 이미지 1개를 만듭니다. 결제는 Stripe가 안전하게 처리합니다.",
+    boostBody:
+      "요금제에 더해 매달 {count}크레딧 추가, 연 {price}. 게시 기능이 출시되면 원탭 광고 홍보도 Boost에 포함됩니다.",
+    addBoost: "Boost 추가",
+    boostOn: "Boost는 {date}까지 켜져 있습니다.",
+    boostPaid:
+      "Boost가 켜졌습니다. 감사합니다. 추가 크레딧은 몇 초 안에 들어옵니다.",
     errors: {
+      boostNeedsPlan:
+        "Boost는 유료 요금제에 추가됩니다. 먼저 Pro를 시작하세요.",
       pickPlan: "요금제를 선택하세요.",
       notSetUp: "이 요금제는 아직 설정되지 않았습니다.",
       noWorkspace: "워크스페이스를 찾을 수 없습니다.",

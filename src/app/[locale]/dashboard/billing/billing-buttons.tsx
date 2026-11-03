@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import {
+  buyBoost,
   buyPack,
   openPortal,
   startCheckout,
@@ -10,7 +11,7 @@ import {
 
 const initialState: BillingState = { error: null };
 
-const ACTIONS = { plan: startCheckout, pack: buyPack };
+const ACTIONS = { plan: startCheckout, pack: buyPack, boost: buyBoost };
 
 // Opens Stripe Checkout for a plan or a credit pack. Labels come worded from
 // the page, in the visitor's language.

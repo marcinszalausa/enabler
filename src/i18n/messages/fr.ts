@@ -145,6 +145,18 @@ export const fr: Messages = {
       "Commencez gratuitement. Passez à la suite quand il vous faut plus de pubs.",
     popular: "Populaire",
     perMonth: " / mois",
+    introPeriod: "pour vos {days} premiers jours",
+    then: "puis {price} / mois",
+    boost: {
+      name: "Boost",
+      period: " / an",
+      credits: "300 crédits en plus chaque mois",
+      perks: [
+        "S'ajoute à votre offre Pro",
+        "Facturé une fois par an",
+        "Promotion des publicités en un geste dès son lancement",
+      ],
+    },
     payNote:
       "Prix en dollars américains. Payez dans votre propre devise au moment du paiement.",
     approx: "environ {price}",
@@ -159,30 +171,12 @@ export const fr: Messages = {
         ],
       },
       {
-        name: "Starter",
-        credits: "300 crédits par mois",
-        perks: [
-          "Environ 150 pubs par mois",
-          "Tout le plan Free",
-          "Résiliable à tout moment",
-        ],
-      },
-      {
-        name: "Plus",
-        credits: "600 crédits par mois",
-        perks: [
-          "Environ 300 pubs par mois",
-          "Tout le plan Starter",
-          "Résiliable à tout moment",
-        ],
-      },
-      {
-        name: "Growth",
+        name: "Pro",
         credits: "1 000 crédits par mois",
         perks: [
           "Environ 500 pubs par mois",
-          "Tout le plan Plus",
-          "Support prioritaire",
+          "Tout le plan Free",
+          "Résiliable à tout moment",
         ],
       },
     ],
@@ -460,7 +454,7 @@ export const fr: Messages = {
     payTitle: "Payez dans votre devise",
     payBody:
       "Les prix sont en dollars américains. Au paiement, vous voyez le montant dans votre propre devise et les moyens de paiement courants dans votre pays.",
-    payPlans: "Offres mensuelles : carte, Apple Pay, Google Pay ou Link.",
+    payPlans: "Pro et Boost : carte, Apple Pay, Google Pay ou Link.",
     payPacks:
       "Packs de crédits : aussi PayPal, Bancontact, iDEAL, Klarna, TWINT, Pix, Alipay, WeChat Pay et plus, selon votre pays.",
     paid: "Paiement reçu, merci. Votre offre et vos crédits se mettent à jour en quelques secondes ; actualisez s'ils n'apparaissent pas encore.",
@@ -468,7 +462,15 @@ export const fr: Messages = {
       "Merci ! Vos crédits sont ajoutés dès que le paiement est confirmé. La plupart des paiements sont immédiats ; les prélèvements bancaires peuvent prendre quelques jours.",
     footnote:
       "Un crédit crée une image publicitaire. Les paiements sont traités en toute sécurité par Stripe.",
+    boostBody:
+      "{count} crédits en plus chaque mois en plus de votre offre, pour {price} par an. La promotion des publicités en un geste arrivera dans Boost avec la publication.",
+    addBoost: "Ajouter Boost",
+    boostOn: "Boost est actif jusqu'au {date}.",
+    boostPaid:
+      "Boost est actif, merci. Vos crédits en plus sont ajoutés en quelques secondes.",
     errors: {
+      boostNeedsPlan:
+        "Boost s'ajoute à une offre payante. Commencez d'abord par Pro.",
       pickPlan: "Choisissez une offre.",
       notSetUp: "Cette offre n'est pas encore configurée.",
       noWorkspace: "Espace de travail introuvable.",

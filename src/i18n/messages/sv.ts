@@ -144,6 +144,18 @@ export const sv: Messages = {
     pricingSub: "Börja gratis. Uppgradera när du behöver fler annonser.",
     popular: "Populär",
     perMonth: " / mån",
+    introPeriod: "för dina första {days} dagar",
+    then: "sedan {price} / månad",
+    boost: {
+      name: "Boost",
+      period: " / år",
+      credits: "300 extra krediter varje månad",
+      perks: [
+        "Läggs till din Pro-plan",
+        "Faktureras en gång om året",
+        "Marknadsför annonser med ett tryck när det lanseras",
+      ],
+    },
     payNote:
       "Priser i amerikanska dollar. Du betalar i din egen valuta i kassan.",
     approx: "cirka {price}",
@@ -154,30 +166,12 @@ export const sv: Messages = {
         perks: ["Cirka 50 annonser", "Varumärkeskit", "Ladda ner varje annons"],
       },
       {
-        name: "Starter",
-        credits: "300 krediter varje månad",
-        perks: [
-          "Cirka 150 annonser i månaden",
-          "Allt i Free",
-          "Avsluta när du vill",
-        ],
-      },
-      {
-        name: "Plus",
-        credits: "600 krediter varje månad",
-        perks: [
-          "Cirka 300 annonser i månaden",
-          "Allt i Starter",
-          "Avsluta när du vill",
-        ],
-      },
-      {
-        name: "Growth",
+        name: "Pro",
         credits: "1 000 krediter varje månad",
         perks: [
           "Cirka 500 annonser i månaden",
-          "Allt i Plus",
-          "Prioriterad support",
+          "Allt i Free",
+          "Avsluta när du vill",
         ],
       },
     ],
@@ -454,7 +448,7 @@ export const sv: Messages = {
     payTitle: "Betala i din valuta",
     payBody:
       "Priserna är i amerikanska dollar. I kassan ser du beloppet i din egen valuta och de betalsätt som är vanliga där du bor.",
-    payPlans: "Månadsplaner: kort, Apple Pay, Google Pay eller Link.",
+    payPlans: "Pro och Boost: kort, Apple Pay, Google Pay eller Link.",
     payPacks:
       "Kreditpaket: även Klarna, PayPal, iDEAL, Bancontact, Pix, Alipay, WeChat Pay och fler, beroende på land.",
     paid: "Betalningen är mottagen, tack. Din plan och dina krediter uppdateras inom några sekunder; ladda om om de inte syns än.",
@@ -462,7 +456,14 @@ export const sv: Messages = {
       "Tack! Dina krediter läggs till så snart betalningen är bekräftad. De flesta betalningar går direkt; autogiro kan ta några dagar.",
     footnote:
       "En kredit skapar en annonsbild. Betalningar hanteras säkert av Stripe.",
+    boostBody:
+      "{count} extra krediter varje månad utöver din plan, för {price} om året. Marknadsföring med ett tryck kommer till Boost när publicering lanseras.",
+    addBoost: "Lägg till Boost",
+    boostOn: "Boost är på till {date}.",
+    boostPaid:
+      "Boost är på, tack. Dina extra krediter läggs till inom några sekunder.",
     errors: {
+      boostNeedsPlan: "Boost läggs till en betald plan. Börja med Pro först.",
       pickPlan: "Välj en plan.",
       notSetUp: "Den här planen är inte konfigurerad än.",
       noWorkspace: "Ingen arbetsyta hittades.",

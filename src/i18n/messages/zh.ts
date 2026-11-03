@@ -139,6 +139,14 @@ export const zh: Messages = {
     pricingSub: "免费开始，需要更多广告时再升级。",
     popular: "热门",
     perMonth: " / 月",
+    introPeriod: "前 {days} 天",
+    then: "之后 {price} / 月",
+    boost: {
+      name: "Boost",
+      period: " / 年",
+      credits: "每月额外 300 积分",
+      perks: ["叠加在 Pro 套餐上", "每年付款一次", "上线后一键推广广告"],
+    },
     payNote: "价格以美元计。结账时可用你所在国家的货币付款。",
     approx: "约 {price}",
     plans: [
@@ -148,19 +156,9 @@ export const zh: Messages = {
         perks: ["约 50 条广告", "品牌套件", "下载所有广告"],
       },
       {
-        name: "Starter",
-        credits: "每月 300 积分",
-        perks: ["每月约 150 条广告", "包含 Free 的全部功能", "随时取消"],
-      },
-      {
-        name: "Plus",
-        credits: "每月 600 积分",
-        perks: ["每月约 300 条广告", "包含 Starter 的全部功能", "随时取消"],
-      },
-      {
-        name: "Growth",
+        name: "Pro",
         credits: "每月 1,000 积分",
-        perks: ["每月约 500 条广告", "包含 Plus 的全部功能", "优先支持"],
+        perks: ["每月约 500 条广告", "包含 Free 的全部功能", "随时取消"],
       },
     ],
     faqTitle: "常见问题",
@@ -424,13 +422,19 @@ export const zh: Messages = {
     payTitle: "用本国货币付款",
     payBody:
       "价格以美元计。结账时你会看到本国货币的金额，以及当地常用的付款方式。",
-    payPlans: "月度套餐：银行卡、Apple Pay、Google Pay 或 Link。",
+    payPlans: "Pro 和 Boost：银行卡、Apple Pay、Google Pay 或 Link。",
     payPacks: "积分包：还可使用支付宝、微信支付、PayPal 等，视所在国家而定。",
     paid: "已收到付款，谢谢。套餐和积分会在几秒内更新；如果还没显示，请刷新页面。",
     packPaid:
       "谢谢！付款确认后积分会立即到账。大多数付款即时完成；银行扣款可能需要几天。",
     footnote: "1 积分生成 1 张广告图片。付款由 Stripe 安全处理。",
+    boostBody:
+      "在套餐之外每月额外 {count} 积分，每年 {price}。发布功能上线后，Boost 还会加入一键推广广告。",
+    addBoost: "添加 Boost",
+    boostOn: "Boost 有效期至 {date}。",
+    boostPaid: "Boost 已开启，谢谢。额外积分会在几秒内到账。",
     errors: {
+      boostNeedsPlan: "Boost 需搭配付费套餐。请先开通 Pro。",
       pickPlan: "请选择一个套餐。",
       notSetUp: "该套餐尚未设置。",
       noWorkspace: "未找到工作区。",

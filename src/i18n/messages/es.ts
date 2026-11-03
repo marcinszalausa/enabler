@@ -144,6 +144,18 @@ export const es: Messages = {
     pricingSub: "Empieza gratis. Mejora tu plan cuando necesites más anuncios.",
     popular: "Popular",
     perMonth: " / mes",
+    introPeriod: "durante tus primeros {days} días",
+    then: "después {price} / mes",
+    boost: {
+      name: "Boost",
+      period: " / año",
+      credits: "300 créditos extra cada mes",
+      perks: [
+        "Se suma a tu plan Pro",
+        "Se cobra una vez al año",
+        "Promoción de anuncios con un toque cuando llegue",
+      ],
+    },
     payNote:
       "Precios en dólares estadounidenses. Paga en tu propia moneda al finalizar la compra.",
     approx: "aprox. {price}",
@@ -158,30 +170,12 @@ export const es: Messages = {
         ],
       },
       {
-        name: "Starter",
-        credits: "300 créditos cada mes",
-        perks: [
-          "Unos 150 anuncios al mes",
-          "Todo lo de Free",
-          "Cancela cuando quieras",
-        ],
-      },
-      {
-        name: "Plus",
-        credits: "600 créditos cada mes",
-        perks: [
-          "Unos 300 anuncios al mes",
-          "Todo lo de Starter",
-          "Cancela cuando quieras",
-        ],
-      },
-      {
-        name: "Growth",
+        name: "Pro",
         credits: "1.000 créditos cada mes",
         perks: [
           "Unos 500 anuncios al mes",
-          "Todo lo de Plus",
-          "Soporte prioritario",
+          "Todo lo de Free",
+          "Cancela cuando quieras",
         ],
       },
     ],
@@ -457,7 +451,7 @@ export const es: Messages = {
     payTitle: "Paga en tu moneda",
     payBody:
       "Los precios están en dólares estadounidenses. Al pagar verás el importe en tu propia moneda y los métodos de pago habituales en tu país.",
-    payPlans: "Planes mensuales: tarjeta, Apple Pay, Google Pay o Link.",
+    payPlans: "Pro y Boost: tarjeta, Apple Pay, Google Pay o Link.",
     payPacks:
       "Paquetes de créditos: también PayPal, Bizum, iDEAL, Bancontact, Klarna, Pix, Alipay, WeChat Pay y más, según tu país.",
     paid: "Pago recibido, gracias. Tu plan y tus créditos se actualizan en unos segundos; recarga la página si aún no aparecen.",
@@ -465,7 +459,15 @@ export const es: Messages = {
       "¡Gracias! Tus créditos se añaden en cuanto se confirma el pago. La mayoría de los pagos son inmediatos; los adeudos bancarios pueden tardar unos días.",
     footnote:
       "Un crédito crea una imagen de anuncio. Stripe procesa los pagos de forma segura.",
+    boostBody:
+      "{count} créditos extra cada mes además de tu plan, por {price} al año. La promoción de anuncios con un toque llegará a Boost cuando se lance la publicación.",
+    addBoost: "Añadir Boost",
+    boostOn: "Boost está activo hasta el {date}.",
+    boostPaid:
+      "Boost está activo, gracias. Tus créditos extra se añaden en unos segundos.",
     errors: {
+      boostNeedsPlan:
+        "Boost se suma a un plan de pago. Empieza primero con Pro.",
       pickPlan: "Elige un plan.",
       notSetUp: "Este plan aún no está configurado.",
       noWorkspace: "No se encontró el espacio de trabajo.",

@@ -3,12 +3,11 @@ import type { Messages } from "@/i18n/messages";
 // Prices in US dollars, shared by the pricing table and billing. Stripe's
 // Adaptive Pricing shows each buyer the amount in their own currency at
 // checkout, and payouts stay in dollars.
-export const PLAN_PRICES = {
-  free: 0,
-  starter: 29,
-  plus: 49,
-  growth: 79,
-} as const;
+export const PLAN_PRICES = { free: 0, pro: 79 } as const;
+// A first Pro subscription: this much for this many days, then the monthly
+// price.
+export const PRO_INTRO = { usd: 29, days: 28 } as const;
+export const BOOST_PRICE = 39;
 export const PACK_PRICES = { small: 35, large: 95 } as const;
 
 // "$29" in any language's number format.
@@ -21,7 +20,7 @@ export function usd(amount: number, locale = "en") {
   }).format(amount);
 }
 
-// Plans in pricing-table order: Free, Starter, Plus, Growth.
+// Plans in pricing-table order: Free, Pro.
 export const PLAN_KEYS = Object.keys(PLAN_PRICES);
 
 // A plan's name as the pricing table shows it, in the page's language.

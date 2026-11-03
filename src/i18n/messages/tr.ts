@@ -145,6 +145,18 @@ export const tr: Messages = {
       "Ücretsiz başlayın. Daha fazla reklama ihtiyacınız olduğunda yükseltin.",
     popular: "Popüler",
     perMonth: " / ay",
+    introPeriod: "ilk {days} gün için",
+    then: "sonra {price} / ay",
+    boost: {
+      name: "Boost",
+      period: " / yıl",
+      credits: "Her ay 300 ek kredi",
+      perks: [
+        "Pro planınıza eklenir",
+        "Yılda bir kez faturalandırılır",
+        "Yayına girdiğinde tek dokunuşla reklam tanıtımı",
+      ],
+    },
     payNote:
       "Fiyatlar ABD doları cinsindendir. Ödeme sırasında kendi para biriminizle ödersiniz.",
     approx: "yaklaşık {price}",
@@ -155,30 +167,12 @@ export const tr: Messages = {
         perks: ["Yaklaşık 50 reklam", "Marka kiti", "Her reklamı indirme"],
       },
       {
-        name: "Starter",
-        credits: "Her ay 300 kredi",
-        perks: [
-          "Ayda yaklaşık 150 reklam",
-          "Free'deki her şey",
-          "İstediğiniz zaman iptal",
-        ],
-      },
-      {
-        name: "Plus",
-        credits: "Her ay 600 kredi",
-        perks: [
-          "Ayda yaklaşık 300 reklam",
-          "Starter'daki her şey",
-          "İstediğiniz zaman iptal",
-        ],
-      },
-      {
-        name: "Growth",
+        name: "Pro",
         credits: "Her ay 1.000 kredi",
         perks: [
           "Ayda yaklaşık 500 reklam",
-          "Plus'daki her şey",
-          "Öncelikli destek",
+          "Free'deki her şey",
+          "İstediğiniz zaman iptal",
         ],
       },
     ],
@@ -455,7 +449,7 @@ export const tr: Messages = {
     payTitle: "Kendi para biriminizle ödeyin",
     payBody:
       "Fiyatlar ABD doları cinsindendir. Ödeme sırasında tutarı kendi para biriminizde ve ülkenizde yaygın ödeme yöntemlerini görürsünüz.",
-    payPlans: "Aylık planlar: kart, Apple Pay, Google Pay veya Link.",
+    payPlans: "Pro ve Boost: kart, Apple Pay, Google Pay veya Link.",
     payPacks:
       "Kredi paketleri: ülkenize göre PayPal, Klarna, iDEAL, Pix, Alipay, WeChat Pay ve daha fazlası.",
     paid: "Ödeme alındı, teşekkürler. Planınız ve kredileriniz birkaç saniye içinde güncellenir; görünmüyorsa sayfayı yenileyin.",
@@ -463,7 +457,14 @@ export const tr: Messages = {
       "Teşekkürler! Kredileriniz ödeme onaylanır onaylanmaz eklenir. Çoğu ödeme anında gerçekleşir; banka talimatları birkaç gün sürebilir.",
     footnote:
       "Bir kredi bir reklam görseli oluşturur. Ödemeler Stripe tarafından güvenle işlenir.",
+    boostBody:
+      "Planınıza ek olarak her ay {count} ek kredi, yıllık {price}. Tek dokunuşla reklam tanıtımı, yayınlama başladığında Boost'a gelecek.",
+    addBoost: "Boost ekle",
+    boostOn: "Boost {date} tarihine kadar açık.",
+    boostPaid:
+      "Boost açık, teşekkürler. Ek kredileriniz birkaç saniye içinde eklenir.",
     errors: {
+      boostNeedsPlan: "Boost ücretli bir plana eklenir. Önce Pro ile başlayın.",
       pickPlan: "Bir plan seçin.",
       notSetUp: "Bu plan henüz ayarlanmadı.",
       noWorkspace: "Çalışma alanı bulunamadı.",

@@ -1,29 +1,33 @@
 import "server-only";
-import { PACK_PRICES, PLAN_PRICES } from "@/lib/pricing";
+import {
+  BOOST_PRICE,
+  PACK_PRICES,
+  PLAN_PRICES,
+  PRO_INTRO,
+} from "@/lib/pricing";
 
 // Paid plans. Prices live in Stripe (one monthly USD price per plan, its id
 // in the env var); credits are granted here each time an invoice is paid.
+// A first subscription starts with a cheaper intro period, like Zeely's.
 export const PLANS = {
-  starter: {
-    name: "Starter",
-    usd: PLAN_PRICES.starter,
-    credits: 300,
-    priceEnv: "STRIPE_PRICE_STARTER",
-  },
-  plus: {
-    name: "Plus",
-    usd: PLAN_PRICES.plus,
-    credits: 600,
-    priceEnv: "STRIPE_PRICE_PLUS",
-  },
-  growth: {
-    name: "Growth",
-    usd: PLAN_PRICES.growth,
+  pro: {
+    name: "Pro",
+    usd: PLAN_PRICES.pro,
     credits: 1000,
-    priceEnv: "STRIPE_PRICE_GROWTH",
+    intro: PRO_INTRO,
+    priceEnv: "STRIPE_PRICE_PRO",
   },
 } as const;
 export type PlanKey = keyof typeof PLANS;
+
+// A yearly add-on to a paid plan: extra credits every month on top of the
+// plan's. Its own subscription, since Stripe can't mix yearly and monthly
+// prices in one.
+export const BOOST = {
+  usd: BOOST_PRICE,
+  monthlyCredits: 300,
+  priceEnv: "STRIPE_PRICE_BOOST",
+} as const;
 
 // One-time credit packs. Charged in USD with an inline price, so they need
 // no setup in Stripe. Unlike subscriptions abroad, one-time payments can use
@@ -46,6 +50,10 @@ export function isPackKey(value: unknown): value is PackKey {
 
 export function priceIdFor(plan: PlanKey): string | undefined {
   return process.env[PLANS[plan].priceEnv];
+}
+
+export function boostPriceId(): string | undefined {
+  return process.env[BOOST.priceEnv];
 }
 
 export function planForPrice(priceId: string): PlanKey | null {
