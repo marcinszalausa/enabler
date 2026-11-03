@@ -1,0 +1,24 @@
+name: Ad library checks
+on:
+  push:
+    branches: [feat/my-ads-library]
+permissions:
+  contents: read
+jobs:
+  prepare-library:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Current changelog and migration CLI
+        run: |
+          curl -fsS https://supabase.com/changelog.md | head -c 12000
+          npx --yes supabase@3.0.0 migration new --help
+          npx --yes supabase@3.0.0 migration new creative_favorites
+          find supabase/migrations -name '*_creative_favorites.sql' -print
+      - run: npm ci
+      - name: Installed page and action guidance
+        run: |
+          find node_modules/next/dist/docs/01-app -name page.md -o -name server-actions-and-mutations.md -o -name revalidate-path.md | xargs cat
