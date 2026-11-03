@@ -272,11 +272,11 @@ export function AppBar({
       </nav>
       {tabs && (
         // Phones: the sections get a row of their own.
-        <div className="no-scrollbar overflow-x-auto border-t border-line sm:hidden">
+        <nav aria-label={t.app.dashboard} className="no-scrollbar border-t border-line sm:hidden">
           <div className="mx-auto grid w-full grid-cols-3 items-stretch gap-1 px-3 py-1.5 text-sm">
             {tabs}
           </div>
-        </div>
+        </nav>
       )}
     </header>
   );

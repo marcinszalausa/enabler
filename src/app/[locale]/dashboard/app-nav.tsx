@@ -42,6 +42,7 @@ function Tabs({ items, path }: { items: AppNavItem[]; path: string }) {
       ?.href ?? (path.startsWith(items[0].href) ? items[0].href : null);
   return items.map((item) => (
     <Link
+      data-app-tab
       key={item.href}
       href={item.href}
       aria-current={item.href === current ? "page" : undefined}

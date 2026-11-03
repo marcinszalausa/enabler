@@ -168,7 +168,7 @@ async function Product({
             </a>
           </div>
         </div>
-        <div id="generate-ads" tabIndex={-1} className="flex scroll-mt-24 flex-col items-start gap-2 rounded-2xl border border-line bg-raised p-4 focus:outline-2 focus:outline-accent lg:items-end">
+        <div id="generate-ads" tabIndex={-1} className="flex scroll-mt-40 flex-col items-start gap-2 rounded-2xl border border-line bg-raised p-4 focus:outline-2 focus:outline-accent lg:items-end">
           {canEdit && (running.length>0 ? <a href="#your-ads" className="inline-flex min-h-11 items-center text-sm font-medium text-accent">{t.run.check}</a> : needsPreferences ? <a href="#ad-preferences" className="inline-flex min-h-11 max-w-sm items-center text-sm font-medium text-accent hover:underline">{t.personal.confirmFirst}</a> : <GenerateControls
             key={JSON.stringify(preferences)}
             initialKind={initialKind}
@@ -199,7 +199,7 @@ async function Product({
       {workspace?.plan==="free"&&<TrialCampaign hideSteps credits={workspace.credits??0} hasAds={(generations??[]).some(g=>g.creatives.length>0)} published={Object.values(publishing?.posts??{}).some(post=>post.status==="published")} canEdit={canEdit}/>}
       {brief && canEdit && <PersonalizationForm productId={product.id} initial={preferences} audience={brief.audience} focus={brief.benefits[0]??""} benefits={brief.benefits} required={needsPreferences}/>}
 
-      <section id="your-ads" tabIndex={-1} className="mt-10 flex scroll-mt-24 flex-col gap-10">
+      <section id="your-ads" tabIndex={-1} className="mt-10 flex scroll-mt-40 flex-col gap-10">
         {(generations ?? []).length === 0 && (
           <EmptyState title={t.app.noAds}>
             {fmt(t.app.noAdsBody, {

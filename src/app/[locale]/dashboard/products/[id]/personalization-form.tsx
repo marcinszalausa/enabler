@@ -19,7 +19,7 @@ export function PersonalizationForm({ productId, initial, audience, focus, benef
    if(result.saved){router.refresh();setTimeout(()=>document.getElementById("generate-ads")?.focus(),100);}
    return result;
  },{error:null,saved:false});
- return <section id="ad-preferences" className="mt-8 scroll-mt-24 rounded-2xl border border-line bg-raised p-5 sm:p-7">
+ return <section id="ad-preferences" className="mt-8 scroll-mt-40 rounded-2xl border border-line bg-raised p-5 sm:p-7">
    <details open={required}>
      <summary className="min-h-11 cursor-pointer py-2 text-lg font-semibold">{t.personal.title}</summary>
      <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted">{t.personal.intro}</p>
