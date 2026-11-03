@@ -25,7 +25,6 @@ export default async function DashboardLayout({
               { href: "/dashboard/ads", label: t.library.title },
               { href: "/dashboard/publishing", label: t.publish.title },
               { href: "/dashboard/brand", label: t.app.brandKit },
-              { href: "/dashboard/billing", label: t.billing.nav },
             ]}
           />
         }

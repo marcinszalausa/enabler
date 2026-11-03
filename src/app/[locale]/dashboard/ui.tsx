@@ -24,17 +24,33 @@ export function BackLink({
 export function CreditsBadge({
   credits,
   plan,
+  href,
 }: {
   // Already worded, e.g. "40 credits" and "· free plan".
   credits: string;
   plan?: string;
+  // Makes the badge a link, e.g. to the billing page.
+  href?: string;
 }) {
-  return (
-    <p className="inline-flex items-center gap-2 rounded-full border border-line bg-raised px-3.5 py-1.5 text-sm shadow-sm">
+  const body = (
+    <>
       <span className="h-2 w-2 rounded-full bg-accent" aria-hidden />
       <span className="font-medium">{credits}</span>
       {plan && <span className="text-muted">{plan}</span>}
-    </p>
+    </>
+  );
+  const style =
+    "inline-flex items-center gap-2 rounded-full border border-line bg-raised px-3.5 py-1.5 text-sm shadow-sm";
+  return href ? (
+    <Link
+      href={href}
+      prefetch={false}
+      className={`${style} min-h-11 transition hover:border-accent`}
+    >
+      {body}
+    </Link>
+  ) : (
+    <p className={style}>{body}</p>
   );
 }
 

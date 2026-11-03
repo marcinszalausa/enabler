@@ -82,6 +82,7 @@ async function Dashboard({
         <CreditsBadge
           credits={fmt(t.app.credits, { count: workspace?.credits ?? 0 })}
           plan={fmt(t.app.plan, { plan: planName(t, workspace?.plan) })}
+          href="/dashboard/billing"
         />
       </header>
 
