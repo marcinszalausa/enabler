@@ -43,7 +43,11 @@ try{
   assert.equal(await menu.locator("button").isVisible(),false);
   await summary.click();assert.equal(await menu.locator("button").isVisible(),true);
   await summary.press("Escape");assert.equal(await menu.getAttribute("open"),null);assert.equal(await summary.evaluate(e=>document.activeElement===e),true);
-  await summary.click();await page.locator("h1").click();assert.equal(await menu.getAttribute("open"),null);
+  await summary.click();
+  const policyLink=menu.locator('a[href$="/policies"]');assert.equal(await policyLink.count(),1);assert.ok(await policyLink.isVisible());assert.ok((await policyLink.boundingBox()).height>=44);
+  // The expanded account menu may legitimately overlap the heading. Click the
+  // outside page gutter below the menu, rather than an obscured element.
+  await page.mouse.click(4,300);assert.equal(await menu.getAttribute("open"),null);
   for(const [state,href,step] of [["preferences","#ad-preferences",1],["new","#generate-ads",2],["running","#your-ads",2],["ready","#your-ads",3],["posted","/dashboard/publishing",null],["viewer","#your-ads",3]]){
    const group=page.locator('[data-state="'+state+'"]');
    assert.equal(await group.locator("[data-next-step]").count(),1);

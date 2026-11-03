@@ -195,7 +195,7 @@ export const ja: Messages = {
       },
       {
         q: "いつでも解約できますか？",
-        a: "はい。プランは月単位で、お支払い済みの期間が終わるまでご利用いただけます。",
+        a: "有料プランのお支払いはまだご利用いただけません。",
       },
     ],
     finalTitle: "次のキャンペーンはリンクから",
@@ -292,8 +292,11 @@ export const ja: Messages = {
     home: "ホームへ戻る",
   },
   legal: {
+    center: "ポリシーとプライバシー",
+    billing: "お支払いと返金",
+    checkoutClosed: "有料プランのお支払いはまだご利用いただけません。",
     updated: "最終更新日：{date}",
-    englishOnly: "このページは英語で提供しており、英語版が正式な内容です。",
+    englishOnly: "ポリシーの本文は現在英語で提供されています。",
   },
   library: {
   "title": "マイ広告",

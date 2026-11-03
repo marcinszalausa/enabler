@@ -210,7 +210,7 @@ export const ro: Messages = {
       },
       {
         q: "Pot anula oricând?",
-        a: "Da. Planurile sunt lunare și păstrezi accesul până la sfârșitul perioadei plătite.",
+        a: "Planurile plătite nu sunt încă disponibile.",
       },
     ],
     finalTitle: "Următoarea ta campanie începe cu un link",
@@ -311,9 +311,11 @@ export const ro: Messages = {
     home: "Mergi la pagina principală",
   },
   legal: {
+    center: "Politici și confidențialitate",
+    billing: "Facturare și rambursări",
+    checkoutClosed: "Planurile plătite nu sunt încă disponibile.",
     updated: "Ultima actualizare: {date}",
-    englishOnly:
-      "Această pagină este disponibilă în engleză, iar versiunea în engleză este cea valabilă.",
+    englishOnly: "Textul politicilor este disponibil momentan în engleză.",
   },
   library: {
   "title": "Reclamele mele",

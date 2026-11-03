@@ -210,7 +210,7 @@ export const it: Messages = {
       },
       {
         q: "Posso disdire quando voglio?",
-        a: "Sì. I piani sono mensili e mantieni l'accesso fino alla fine del periodo già pagato.",
+        a: "Il pagamento dei piani non è ancora disponibile.",
       },
     ],
     finalTitle: "La tua prossima campagna inizia con un link",
@@ -311,9 +311,11 @@ export const it: Messages = {
     home: "Vai alla home",
   },
   legal: {
+    center: "Politiche e privacy",
+    billing: "Fatturazione e rimborsi",
+    checkoutClosed: "Il pagamento dei piani non è ancora disponibile.",
     updated: "Ultimo aggiornamento: {date}",
-    englishOnly:
-      "Questa pagina è disponibile in inglese, che è la versione valida.",
+    englishOnly: "Il testo delle politiche è attualmente disponibile in inglese.",
   },
   library: {
   "title": "I miei annunci",

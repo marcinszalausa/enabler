@@ -3,6 +3,9 @@ import { Nav, Footer } from "./chrome";
 import type { Locale } from "@/i18n/config";
 import { getMessages } from "@/i18n/messages";
 import { fmt } from "@/i18n/format";
+import Link from "next/link";
+import {localePath} from "@/i18n/config";
+import {LEGAL_POLICY_VERSION} from "@/lib/legal-policy";
 
 // Where people reach us about their data or these terms.
 export { CONTACT_EMAIL } from "@/lib/contact";
@@ -27,6 +30,7 @@ export async function LegalPage({
       <main id="main-content" tabIndex={-1} className="flex-1">
         <article
           lang="en"
+          dir="ltr"
           className="legal mx-auto max-w-2xl px-4 pb-24 pt-14 sm:pt-20"
         >
           <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
@@ -40,6 +44,11 @@ export async function LegalPage({
               {t.legal.englishOnly}
             </p>
           )}
+          <aside data-prelaunch-legal lang="en" className="mt-7 rounded-2xl border border-accent/30 bg-accent-soft p-5 text-sm leading-relaxed">
+            <p className="font-semibold">Pre-launch · Paid checkout is disabled</p>
+            <p className="mt-2">Operator details are unspecified pending entity formation. These policies are being prepared for the US launch and are not finalized paid-subscription terms. They do not authorize a charge.</p>
+            <p className="mt-2">Version {LEGAL_POLICY_VERSION} · <Link href={localePath(locale,"/policies")} className="underline">All policies and privacy requests</Link></p>
+          </aside>
           <div className="mt-10">{children}</div>
         </article>
       </main>

@@ -209,7 +209,7 @@ export const nl: Messages = {
       },
       {
         q: "Kan ik altijd opzeggen?",
-        a: "Ja. Abonnementen lopen per maand en je houdt toegang tot het einde van de betaalde periode.",
+        a: "Betaalde abonnementen zijn nog niet beschikbaar.",
       },
     ],
     finalTitle: "Je volgende campagne begint met een link",
@@ -306,9 +306,11 @@ export const nl: Messages = {
     home: "Naar de homepage",
   },
   legal: {
+    center: "Beleid en privacy",
+    billing: "Facturering en terugbetalingen",
+    checkoutClosed: "Betaalde abonnementen zijn nog niet beschikbaar.",
     updated: "Laatst bijgewerkt op {date}",
-    englishOnly:
-      "Deze pagina is beschikbaar in het Engels; de Engelse versie is leidend.",
+    englishOnly: "De beleidstekst is momenteel beschikbaar in het Engels.",
   },
   library: {
   "title": "Mijn advertenties",

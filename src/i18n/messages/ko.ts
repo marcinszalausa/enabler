@@ -195,7 +195,7 @@ export const ko: Messages = {
       },
       {
         q: "언제든 해지할 수 있나요?",
-        a: "네. 요금제는 월 단위이며, 결제한 기간이 끝날 때까지 계속 이용할 수 있습니다.",
+        a: "유료 플랜 결제는 아직 이용할 수 없어요.",
       },
     ],
     finalTitle: "다음 캠페인은 링크 하나로 시작됩니다",
@@ -295,8 +295,11 @@ export const ko: Messages = {
     home: "홈으로 가기",
   },
   legal: {
+    center: "정책 및 개인정보 보호",
+    billing: "결제 및 환불",
+    checkoutClosed: "유료 플랜 결제는 아직 이용할 수 없어요.",
     updated: "최종 업데이트: {date}",
-    englishOnly: "이 페이지는 영어로 제공되며, 영어 원문이 우선합니다.",
+    englishOnly: "정책 본문은 현재 영어로 제공됩니다.",
   },
   library: {
   "title": "내 광고",

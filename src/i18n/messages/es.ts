@@ -209,7 +209,7 @@ export const es: Messages = {
       },
       {
         q: "¿Puedo cancelar cuando quiera?",
-        a: "Sí. Los planes son mensuales y mantienes el acceso hasta el final del periodo que pagaste.",
+        a: "El pago de planes aún no está disponible.",
       },
     ],
     finalTitle: "Tu próxima campaña empieza con un enlace",
@@ -310,9 +310,11 @@ export const es: Messages = {
     home: "Ir a la página de inicio",
   },
   legal: {
+    center: "Políticas y privacidad",
+    billing: "Facturación y reembolsos",
+    checkoutClosed: "El pago de planes aún no está disponible.",
     updated: "Última actualización: {date}",
-    englishOnly:
-      "Esta página está disponible en inglés, que es la versión que se aplica.",
+    englishOnly: "El texto de las políticas está disponible actualmente en inglés.",
   },
   library: {
   "title": "Mis anuncios",

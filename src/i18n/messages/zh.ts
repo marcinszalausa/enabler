@@ -192,7 +192,7 @@ export const zh: Messages = {
       },
       {
         q: "可以随时取消吗？",
-        a: "可以。套餐按月计费，你可以一直使用到已付费周期结束。",
+        a: "付费套餐暂未开放购买。",
       },
     ],
     finalTitle: "下一次营销活动，从一个链接开始",
@@ -289,8 +289,11 @@ export const zh: Messages = {
     home: "返回首页",
   },
   legal: {
+    center: "政策与隐私",
+    billing: "账单与退款",
+    checkoutClosed: "付费套餐暂未开放购买。",
     updated: "最后更新：{date}",
-    englishOnly: "本页面以英文提供，以英文版本为准。",
+    englishOnly: "政策正文目前以英语提供。",
   },
   library: {
   "title": "我的广告",
