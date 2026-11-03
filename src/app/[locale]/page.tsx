@@ -137,7 +137,7 @@ function roundRobin(
 }
 
 // Paint the hero with an optimized still immediately, then rotate into video.
-// Falls back to the Soft Mila clip before any run is picked.
+// Only reviewed media from currently eligible public runs appears here.
 function heroFeed(images: FeedAd[], videos: FeedAd[]): FeedAd[] {
   const feed: FeedAd[] = [];
   for (let i = 0; videos[i] || images[i]; i++) {

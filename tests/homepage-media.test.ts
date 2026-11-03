@@ -11,3 +11,21 @@ test("homepage snapshot selection excludes the confirmed cropped ads and has rea
  }
  for(const video of Object.values(media.videos) as {src:string;poster:string;bytes:number}[]){assert.ok(video.poster);assert.ok(video.bytes<1800000);assert.ok((await readFile(new URL("../public"+video.src,import.meta.url))).length===video.bytes);}
 });
+
+test("snapshots are content hashed and video metadata arrives before playback bytes",async()=>{
+ const {createHash}=await import("node:crypto");
+ const media=JSON.parse(await readFile(new URL("../src/lib/homepage-media.json",import.meta.url),"utf8"));
+ let smallBytes=0;
+ for(const asset of [...Object.values(media.images),...Object.values(media.photos),...Object.values(media.posters)] as Asset[]){
+  for(const path of [asset.src,asset.small]){
+   const bytes=await readFile(new URL("../public"+path,import.meta.url));
+   assert.ok(path.includes(createHash("sha256").update(bytes).digest("hex").slice(0,12)));
+   if(path===asset.small)smallBytes+=bytes.length;
+  }
+ }
+ assert.ok(smallBytes<600000);
+ for(const video of Object.values(media.videos) as {src:string}[]){
+  const bytes=await readFile(new URL("../public"+video.src,import.meta.url));
+  assert.ok(bytes.indexOf("moov")>0&&bytes.indexOf("moov")<bytes.indexOf("mdat"));
+ }
+});

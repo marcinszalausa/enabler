@@ -31,9 +31,8 @@ execFileSync(ffmpeg,["-y","-ss","0.1","-i","/tmp/home-assets/walk.mp4","-frames:
 const poster=await makeImage(await readFile("/tmp/home-assets/poster.png"),"poster-walk");
 manifest.videos[videoId]={src:await publish(clip,"walk",0),poster:poster.src,bytes:clip.length};
 manifest.posters={[poster.src]:poster};
-for(const file of files){
- const data=file.bytes.toString("base64");for(let i=0;i<data.length;i+=24000)console.log("MEDIA_BYTES",file.name,i/24000,data.slice(i,i+24000));
-}
-console.log("ASSET_MANIFEST",Buffer.from(JSON.stringify(manifest)).toString("base64"));
+await mkdir("public/showcase",{recursive:true});
+for(const file of files)await writeFile("public/showcase/"+file.name,file.bytes);
+manifest.selection=selected.map(item=>item.id);
+await writeFile("src/lib/homepage-media.json",JSON.stringify(manifest,null,2)+"\n");
 console.log("ASSET_SIZES",JSON.stringify(files.map(f=>({name:f.name,bytes:f.bytes.length}))));
-console.log("SOURCE_PHOTO_REVIEW",(await sharp(await readFile("/tmp/home-assets/poster.png")).resize(240).jpeg().toBuffer()).toString("base64"));
