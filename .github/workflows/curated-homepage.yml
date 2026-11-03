@@ -1,0 +1,21 @@
+name: Curated homepage media
+on:
+  push:
+    branches: [perf/curated-homepage]
+permissions:
+  contents: read
+jobs:
+  media-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Installed image and cache header guidance
+        run: find node_modules/next/dist/docs/01-app -name image.md -o -name headers.md | xargs cat
+      - name: Review publicly showcased ad candidates
+        run: node scripts/review-homepage-media.mjs
