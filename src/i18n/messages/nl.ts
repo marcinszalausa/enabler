@@ -296,6 +296,10 @@ export const nl: Messages = {
     story: "Story · 9:16",
     adText: "Advertentietekst",
   },
+  recovery: {
+      "title": "Deze pagina kon niet worden geladen",
+      "body": "Probeer het opnieuw of neem contact met ons op als je hulp nodig hebt."
+  },
   notFound: {
     title: "Deze pagina bestaat niet",
     body: "De link is misschien oud of verkeerd getypt.",

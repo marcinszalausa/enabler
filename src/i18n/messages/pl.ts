@@ -297,6 +297,10 @@ export const pl: Messages = {
     story: "Stories · 9:16",
     adText: "Tekst reklamy",
   },
+  recovery: {
+      "title": "Nie udało się wczytać tej strony",
+      "body": "Spróbuj ponownie lub skontaktuj się z nami, jeśli potrzebujesz pomocy."
+  },
   notFound: {
     title: "Ta strona nie istnieje",
     body: "Link może być stary lub zawierać literówkę.",

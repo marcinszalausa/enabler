@@ -294,6 +294,10 @@ export const tr: Messages = {
     story: "Hikaye · 9:16",
     adText: "Reklam metni",
   },
+  recovery: {
+      "title": "Bu sayfa yüklenemedi",
+      "body": "Tekrar deneyin veya yardıma ihtiyacınız varsa bizimle iletişime geçin."
+  },
   notFound: {
     title: "Bu sayfa mevcut değil",
     body: "Link eski olabilir ya da yanlış yazılmış olabilir.",

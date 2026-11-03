@@ -21,7 +21,7 @@ jobs:
       - run: npx next typegen && npx tsc --noEmit
       - run: |
           if test -f scripts/check-launch-experience.mjs; then
-            npx eslint src/app/_landing/recovery-panel.tsx 'src/app/[locale]/error.tsx' 'src/app/[locale]/dashboard/error.tsx' 'src/app/[locale]/start/start-flow.tsx'
+            npx eslint src/app/_landing/recovery-panel.tsx 'src/app/[locale]/error.tsx' 'src/app/[locale]/dashboard/error.tsx' 'src/app/[locale]/start/start-flow.tsx' 'src/app/[locale]/dashboard/ads/error.tsx' src/app/_landing/chrome.tsx
             npm install --prefix /tmp/launch-browser --no-package-lock playwright@1.56.1
             /tmp/launch-browser/node_modules/.bin/playwright install --with-deps chromium
             PLAYWRIGHT_MODULE_PATH=/tmp/launch-browser/node_modules/playwright node scripts/check-launch-experience.mjs

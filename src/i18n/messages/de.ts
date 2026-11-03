@@ -293,6 +293,10 @@ export const de: Messages = {
     story: "Story · 9:16",
     adText: "Anzeigentext",
   },
+  recovery: {
+      "title": "Diese Seite konnte nicht geladen werden",
+      "body": "Versuche es erneut oder kontaktiere uns, wenn du Hilfe brauchst."
+  },
   notFound: {
     title: "Diese Seite gibt es nicht",
     body: "Der Link ist vielleicht veraltet oder falsch geschrieben.",
