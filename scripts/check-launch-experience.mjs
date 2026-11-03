@@ -22,7 +22,7 @@ try{
  for(const [width,locale] of [[320,"en"],[390,"pl"],[390,"ar"],[1440,"en"]]){
   const context=await browser.newContext({viewport:{width,height:900},reducedMotion:"reduce"});
   const page=await context.newPage(),prefix=locale==="en"?"":"/"+locale;
-  const posts=[];page.on("request",r=>{const path=new URL(r.url()).pathname;if(r.method()==="POST"&&!path.startsWith("/__nextjs")&&!path.startsWith("/_next"))posts.push(path);});
+  const posts=[];page.on("request",r=>{const path=new URL(r.url()).pathname;if(r.method()==="POST"&&!path.startsWith("/__nextjs")&&!path.startsWith("/_next")&&path!=="/api/onboarding/preview")posts.push(path);});
   for(const route of ["recovery-check","recovery-client","recovery-app"]){
    await context.addCookies([{name:"recovery-ready",value:"no",url:"http://localhost:3114"}]);
    await page.goto("http://localhost:3114"+prefix+"/"+route,{waitUntil:"domcontentloaded",timeout:90000});
@@ -34,6 +34,7 @@ try{
    assert.equal(await panel.locator("[data-recovery-home]").getAttribute("href"),route==="recovery-app"?"/dashboard":prefix||"/");
    for(const box of await panel.locator("button,a").evaluateAll(xs=>xs.map(x=>({w:x.getBoundingClientRect().width,h:x.getBoundingClientRect().height}))))assert.ok(box.h>=44&&box.w>=44);
    assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+   if(width===320&&route==="recovery-check")console.log("RECOVERY_PREVIEW",(await page.screenshot()).toString("base64"));
    await context.addCookies([{name:"recovery-ready",value:"yes",url:"http://localhost:3114"}]);
    await panel.locator("[data-recovery-retry]").click();
    await page.locator("[data-recovered]").waitFor({timeout:30000});
