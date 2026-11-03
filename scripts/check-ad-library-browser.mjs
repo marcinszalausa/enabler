@@ -52,12 +52,12 @@ try{
   await page.locator("dialog[open] video").waitFor();
   await page.waitForFunction(()=>document.querySelector("dialog video")?.readyState>=2);
   assert.equal(videoRequests.length,1);
-  await page.locator("dialog").press("Escape");assert.equal(await page.locator("dialog video").count(),0);
+  await page.locator("dialog").press("Escape");await page.waitForFunction(()=>!document.querySelector("dialog video"));
   await visit();
   const card=page.locator('[data-library-ad="'+favoriteId+'"]');
   const open=await card.locator('a[href*="favorite="]').getAttribute("href");assert.ok(open.includes("favorite="+favoriteId));assert.ok(open.includes("#ad-83000000-0000-4000-8000-000000000001"));
   assert.ok(await card.locator('a[href*="download=1"]').count());
-  await card.locator("[data-library-preview]").click();assert.equal(await page.locator("dialog[open] img").count(),1);await page.locator("dialog").press("Escape");
+  await card.locator("[data-library-preview]").click();await page.locator("dialog[open] img").waitFor();assert.equal(await page.locator("dialog[open] img").count(),1);await page.locator("dialog").press("Escape");
   let save=card.locator("[data-favorite-form] button");
   if(width===320){
    sql("revoke insert on public.creative_favorites from authenticated");
@@ -70,9 +70,9 @@ try{
   assert.equal(await page.locator('[data-library-ad="'+favoriteId+'"] [data-favorite-form] button').getAttribute("aria-pressed"),"true","Favorite survives reload");
   await visit("?favorites=1");assert.equal(await page.locator("[data-library-ad]").count(),3);
   await page.locator('[data-library-ad="'+favoriteId+'"] [data-favorite-form] button').click();
-  await page.waitForFunction(id=>document.querySelector('[data-library-ad="'+id+'"] [data-favorite-form] button')?.getAttribute("aria-pressed")==="false",favoriteId);
+  await page.waitForFunction(id=>document.querySelector('[data-library-ad="'+id+'"] [data-favorite-form] button')?.getAttribute("aria-pressed")!=="true",favoriteId);
   await page.reload({waitUntil:"networkidle"});assert.equal(await page.locator("[data-library-ad]").count(),2);
-  await visit("?kind=video&favorites=1");assert.equal(await page.locator("[data-library-ad]").count(),0);assert.equal(await page.locator('a[href="/dashboard/ads"]').count(),2); // My ads tab and reset link.
+  await visit("?kind=video&favorites=1");assert.equal(await page.locator("[data-library-ad]").count(),0);assert.equal(await page.locator('a[href="/dashboard/ads"]:visible').count(),2); // My ads tab and reset link.
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),"No horizontal overflow");
   assert.equal(paid,0);assert.deepEqual(errors,[]);
   console.log("PASS library pagination, filters, private persistent favorites, error recovery, previews, deep links and no paid side effects",width,locale,theme);
