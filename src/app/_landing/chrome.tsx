@@ -264,7 +264,7 @@ export function AppBar({
       <nav className="mx-auto flex h-14 w-full max-w-5xl items-center justify-between gap-4 px-4">
         <Logo to={homeHref} label={homeHref?t.app.products:undefined}/>
         <div className="flex items-center gap-1 text-sm [&_button]:min-h-11 [&_button]:min-w-11">
-          {tabs && <div className="hidden items-center gap-1 sm:flex">{tabs}</div>}
+          {tabs && <div className="hidden items-center gap-1 lg:flex">{tabs}</div>}
           {children}
           <LanguageSwitcher compact />
           <ThemeToggle />
@@ -272,7 +272,7 @@ export function AppBar({
       </nav>
       {tabs && (
         // Phones: the sections get a row of their own.
-        <nav aria-label={t.app.dashboard} className="no-scrollbar border-t border-line sm:hidden">
+        <nav aria-label={t.app.dashboard} className="no-scrollbar border-t border-line lg:hidden">
           <div className="mx-auto grid w-full grid-cols-3 items-stretch gap-1 px-3 py-1.5 text-sm">
             {tabs}
           </div>
