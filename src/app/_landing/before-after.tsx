@@ -53,6 +53,8 @@ export function BeforeAfter({ photo, name, url, madeIn, ads }: {
           <div className="relative aspect-[9/16] bg-surface">
             {ad ? (
               <Image key={ad.image} src={ad.image} alt={ad.alt} fill sizes="384px" className="object-contain" />
+            ) : photo.startsWith("/showcase/") ? (
+              <Image src={photo} alt={name} fill sizes="384px" className="object-contain"/>
             ) : (
               // eslint-disable-next-line @next/next/no-img-element -- source product photo may be on any store host
               <img src={webSize(photo, 480)}

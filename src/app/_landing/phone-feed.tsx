@@ -96,9 +96,9 @@ export function PhoneFeed({
         }}
       >
         {items.map((ad, k) => {
-          const preview = (preload && k === 0) || (activity.nearby &&
-            (k === index || k === index - 1 || (activity.idle && !activity.restricted && k === index + 1)));
           const image = ad.image ?? ad.video?.poster;
+          const preview = (k===0 && image?.startsWith("/showcase/")) || (preload && k === 0) || (activity.nearby &&
+            (k === index || k === index - 1 || (activity.idle && !activity.restricted && k === index + 1)));
           return (
             <div key={k} className="relative h-full w-full">
               {preview && image && (
