@@ -305,6 +305,28 @@ export const sv: Messages = {
     englishOnly:
       "Den här sidan finns på engelska, och det är den engelska versionen som gäller.",
   },
+  library: {
+  "title": "Mina annonser",
+  "intro": "Alla dina produktannonser på ett ställe. Förhandsgranska, spara favoriter eller öppna en annons före publicering.",
+  "all": "Alla",
+  "images": "Bilder",
+  "videos": "Videor",
+  "favorites": "Favoriter",
+  "save": "Spara favorit",
+  "unsave": "Ta bort favorit",
+  "saved": "Sparad",
+  "saveError": "Ändringen kunde inte sparas. Försök igen.",
+  "empty": "Inga annonser här ännu",
+  "emptyFavorites": "Inga favoriter här ännu",
+  "favoritesHelp": "Använd hjärtat på en annons för att hitta den här senare.",
+  "open": "Öppna annons",
+  "previewVideo": "Förhandsvisa video",
+  "previous": "Föregående",
+  "next": "Nästa",
+  "page": "Sida {number}",
+  "pages": "Annonssidor",
+  "loadError": "Dina annonser kunde inte laddas."
+},
   journey: {
   "title": "Nästa steg",
   "product": "Produkt",

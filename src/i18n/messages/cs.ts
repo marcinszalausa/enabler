@@ -307,6 +307,28 @@ export const cs: Messages = {
     englishOnly:
       "Tato stránka je k dispozici v angličtině a platí anglické znění.",
   },
+  library: {
+  "title": "Moje reklamy",
+  "intro": "Všechny reklamy na jednom místě. Prohlížejte náhledy, ukládejte oblíbené nebo otevřete reklamu před zveřejněním.",
+  "all": "Vše",
+  "images": "Obrázky",
+  "videos": "Videa",
+  "favorites": "Oblíbené",
+  "save": "Uložit do oblíbených",
+  "unsave": "Odebrat z oblíbených",
+  "saved": "Uloženo",
+  "saveError": "Změnu se nepodařilo uložit. Zkuste to znovu.",
+  "empty": "Zatím zde nejsou reklamy",
+  "emptyFavorites": "Zatím zde nejsou oblíbené",
+  "favoritesHelp": "Klikněte na srdce u reklamy, abyste ji zde později našli.",
+  "open": "Otevřít reklamu",
+  "previewVideo": "Přehrát náhled videa",
+  "previous": "Předchozí",
+  "next": "Další",
+  "page": "Stránka {number}",
+  "pages": "Stránky reklam",
+  "loadError": "Reklamy se nepodařilo načíst."
+},
   journey: {
   "title": "Další krok",
   "product": "Produkt",

@@ -307,6 +307,28 @@ export const pl: Messages = {
     englishOnly:
       "Ta strona jest dostępna po angielsku i to wersja angielska obowiązuje.",
   },
+  library: {
+  "title": "Moje reklamy",
+  "intro": "Wszystkie reklamy w jednym miejscu. Oglądaj podglądy, zapisuj ulubione lub otwórz reklamę przed publikacją.",
+  "all": "Wszystkie",
+  "images": "Obrazy",
+  "videos": "Filmy",
+  "favorites": "Ulubione",
+  "save": "Zapisz w ulubionych",
+  "unsave": "Usuń z ulubionych",
+  "saved": "Zapisano",
+  "saveError": "Nie udało się zapisać zmiany. Spróbuj ponownie.",
+  "empty": "Nie ma tu jeszcze reklam",
+  "emptyFavorites": "Nie ma tu jeszcze ulubionych",
+  "favoritesHelp": "Naciśnij serce przy reklamie, aby później znaleźć ją tutaj.",
+  "open": "Otwórz reklamę",
+  "previewVideo": "Podgląd filmu",
+  "previous": "Poprzednia",
+  "next": "Następna",
+  "page": "Strona {number}",
+  "pages": "Strony reklam",
+  "loadError": "Nie udało się wczytać reklam."
+},
   journey: {
   "title": "Następny krok",
   "product": "Produkt",

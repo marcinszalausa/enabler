@@ -308,6 +308,28 @@ export const pt: Messages = {
     englishOnly:
       "Esta página está disponível em inglês, que é a versão que vale.",
   },
+  library: {
+  "title": "Meus anúncios",
+  "intro": "Todos os seus anúncios num só lugar. Veja prévias, guarde favoritos ou abra um anúncio para o rever antes de publicar.",
+  "all": "Todos",
+  "images": "Imagens",
+  "videos": "Vídeos",
+  "favorites": "Favoritos",
+  "save": "Guardar favorito",
+  "unsave": "Remover favorito",
+  "saved": "Guardado",
+  "saveError": "Não foi possível guardar a alteração. Tente novamente.",
+  "empty": "Ainda não há anúncios aqui",
+  "emptyFavorites": "Ainda não há favoritos aqui",
+  "favoritesHelp": "Use o coração num anúncio para o encontrar aqui mais tarde.",
+  "open": "Abrir anúncio",
+  "previewVideo": "Ver vídeo",
+  "previous": "Anterior",
+  "next": "Seguinte",
+  "page": "Página {number}",
+  "pages": "Páginas de anúncios",
+  "loadError": "Não foi possível carregar os anúncios."
+},
   journey: {
   "title": "Próximo passo",
   "product": "Produto",

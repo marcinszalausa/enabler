@@ -311,6 +311,28 @@ export const it: Messages = {
     englishOnly:
       "Questa pagina è disponibile in inglese, che è la versione valida.",
   },
+  library: {
+  "title": "I miei annunci",
+  "intro": "Tutti gli annunci in un unico posto. Visualizza le anteprime, salva i preferiti o apri un annuncio prima di pubblicarlo.",
+  "all": "Tutti",
+  "images": "Immagini",
+  "videos": "Video",
+  "favorites": "Preferiti",
+  "save": "Salva nei preferiti",
+  "unsave": "Rimuovi dai preferiti",
+  "saved": "Salvato",
+  "saveError": "Impossibile salvare la modifica. Riprova.",
+  "empty": "Nessun annuncio qui per ora",
+  "emptyFavorites": "Nessun preferito qui per ora",
+  "favoritesHelp": "Usa il cuore su un annuncio per ritrovarlo qui.",
+  "open": "Apri annuncio",
+  "previewVideo": "Anteprima video",
+  "previous": "Precedente",
+  "next": "Successiva",
+  "page": "Pagina {number}",
+  "pages": "Pagine degli annunci",
+  "loadError": "Impossibile caricare gli annunci."
+},
   journey: {
   "title": "Prossimo passo",
   "product": "Prodotto",

@@ -303,6 +303,28 @@ export const de: Messages = {
     englishOnly:
       "Diese Seite ist auf Englisch verfügbar; maßgeblich ist die englische Fassung.",
   },
+  library: {
+  "title": "Meine Anzeigen",
+  "intro": "Alle Produktanzeigen an einem Ort. Sieh dir Vorschauen an, speichere Favoriten oder öffne eine Anzeige vor dem Posten.",
+  "all": "Alle",
+  "images": "Bilder",
+  "videos": "Videos",
+  "favorites": "Favoriten",
+  "save": "Als Favorit speichern",
+  "unsave": "Favorit entfernen",
+  "saved": "Gespeichert",
+  "saveError": "Die Änderung konnte nicht gespeichert werden. Versuche es erneut.",
+  "empty": "Hier sind noch keine Anzeigen",
+  "emptyFavorites": "Hier sind noch keine Favoriten",
+  "favoritesHelp": "Tippe auf das Herz einer Anzeige, um sie hier wiederzufinden.",
+  "open": "Anzeige öffnen",
+  "previewVideo": "Video ansehen",
+  "previous": "Zurück",
+  "next": "Weiter",
+  "page": "Seite {number}",
+  "pages": "Anzeigenseiten",
+  "loadError": "Deine Anzeigen konnten nicht geladen werden."
+},
   journey: {
   "title": "Nächster Schritt",
   "product": "Produkt",
