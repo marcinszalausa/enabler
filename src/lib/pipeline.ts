@@ -1,15 +1,16 @@
 import "server-only";
+import { withCreativePreferences, type CreativePreferences } from "@/lib/creative-preferences";
+import { fetchPublicUrl } from "@/lib/public-fetch";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { claimGeneration, finalizeGeneration } from "@/lib/generation-credits";
 import { reviewAdImage, writeAdAngles, type BrandBrief } from "@/lib/ai/claude";
 import { generateAdImage, type Aspect } from "@/lib/ai/fal";
 import { userMessage } from "@/lib/errors";
+import { autopilotRun } from "@/lib/social/publish";
 import type { LanguageKey } from "@/lib/languages";
 
-export const ASPECTS: Aspect[] = ["1:1", "9:16"];
-export const ADS_PER_GENERATION = 5;
-export const CREDITS_PER_IMAGE = 1;
-export const GENERATION_COST =
-  ADS_PER_GENERATION * ASPECTS.length * CREDITS_PER_IMAGE;
+import { ASPECTS, ADS_PER_GENERATION, CREDITS_PER_IMAGE, GENERATION_COST } from "@/lib/image-pricing";
+export { ASPECTS, ADS_PER_GENERATION, CREDITS_PER_IMAGE, GENERATION_COST } from "@/lib/image-pricing";
 
 // fal limits how many requests an account may run at once; stay under it.
 const IMAGE_CONCURRENCY = 3;
@@ -21,6 +22,7 @@ type Job = {
   workspaceId: string;
   productId: string;
   language: LanguageKey;
+  creativePreferences?: CreativePreferences | null;
 };
 
 // Runs one ad generation end to end: copy, images, storage, rows.
@@ -30,12 +32,13 @@ export async function runGeneration({
   workspaceId,
   productId,
   language,
+  creativePreferences,
 }: Job) {
   const db = createAdminClient();
-  await db
-    .from("generations")
-    .update({ status: "running" })
-    .eq("id", generationId);
+  if (!(await claimGeneration(db, generationId))) return;
+  let delivered = 0;
+  let prompt: string | null = null;
+  let failure: string | null = null;
 
   try {
     const { data: product, error } = await db
@@ -45,7 +48,7 @@ export async function runGeneration({
       .single();
     if (error || !product?.brand_brief) throw new Error("Product not found.");
 
-    const brief = product.brand_brief as BrandBrief;
+    const brief = withCreativePreferences(product.brand_brief as BrandBrief, creativePreferences);
     const referenceImageUrl = (product.image_urls as string[])[0] ?? null;
     const angles = await writeAdAngles(brief, ADS_PER_GENERATION, language);
 
@@ -57,21 +60,19 @@ export async function runGeneration({
           referenceImageUrl,
           product: brief.product_name,
         });
-        const image = await fetch(imageUrl, {
-          signal: AbortSignal.timeout(30_000),
-        });
-        if (!image.ok) throw new Error("Couldn't download generated image.");
+        const image = await fetchPublicUrl(imageUrl, { maxBytes: 8*1024*1024, timeoutMs: 30000, accept: "image/*" });
+        if (image.status < 200 || image.status >= 300) throw new Error("Couldn't download generated image.");
 
         const path = `${workspaceId}/${generationId}/${i + 1}-${aspect.replace(":", "x")}.jpg`;
         const upload = await db.storage
           .from("creatives")
-          .upload(path, await image.arrayBuffer(), {
+          .upload(path, new Uint8Array(image.body).buffer, {
             contentType: "image/jpeg",
             upsert: true,
           });
         if (upload.error) throw upload.error;
 
-        return {
+        const creative = {
           workspace_id: workspaceId,
           generation_id: generationId,
           kind: "image" as const,
@@ -82,6 +83,11 @@ export async function runGeneration({
           primary_text: ad.primary_text,
           cta: ad.cta,
         };
+        // Checkpoint each delivered ad before starting the next task. A killed
+        // worker can then be settled from durable rows by the database sweep.
+        const { error: saveError } = await db.from("creatives").insert(creative);
+        if (saveError) throw saveError;
+        return creative;
       }),
     );
 
@@ -100,38 +106,31 @@ export async function runGeneration({
       throw firstError?.reason ?? new Error("No images were generated.");
     }
 
-    const insert = await db.from("creatives").insert(creatives);
-    if (insert.error) throw insert.error;
-
-    // Refund the images that failed.
-    const failed = results.length - creatives.length;
-    if (failed > 0) {
-      await db.rpc("refund_credits", {
-        ws: workspaceId,
-        amount: failed * CREDITS_PER_IMAGE,
-      });
-    }
-
-    await db
-      .from("generations")
-      .update({
-        status: "succeeded",
-        prompt: angles.map((a) => a.image_prompt).join("\n"),
-        error: failed > 0 ? failureNote(results, failed) : null,
-      })
-      .eq("id", generationId);
+    delivered = creatives.length;
+    const failed = ADS_PER_GENERATION * ASPECTS.length - delivered;
+    prompt = angles.map((a) => a.image_prompt).join("\n");
+    failure = failed > 0 ? failureNote(results, failed) : null;
   } catch (err) {
-    const message = userMessage(err, "Generation failed. Please try again.");
+    failure = userMessage(err, "Generation failed. Please try again.");
     console.error("generation failed", generationId, err);
-    await db.rpc("refund_credits", {
-      ws: workspaceId,
-      amount: GENERATION_COST,
-    });
-    await db
-      .from("generations")
-      .update({ status: "failed", error: message })
-      .eq("id", generationId);
   }
+
+  // An insert can commit even if its response is lost. Count durable outputs,
+  // rather than treating a rejected request as proof that nothing was saved.
+  const { count, error: countError } = await db.from("creatives")
+    .select("id", { count: "exact", head: true })
+    .eq("generation_id", generationId).eq("workspace_id", workspaceId).eq("kind", "image");
+  if (countError || count === null) throw countError ?? new Error("Missing output count.");
+  delivered = count;
+  if (delivered === ADS_PER_GENERATION * ASPECTS.length) failure = null;
+
+  // Keep settlement outside the generation catch. A lost RPC response must not
+  // turn a successful partial delivery into a second, full refund.
+  const closed = await finalizeGeneration(
+    db, generationId, delivered > 0 ? "succeeded" : "failed",
+    GENERATION_COST - delivered * CREDITS_PER_IMAGE, failure, prompt,
+  );
+  if (closed && delivered > 0) await autopilotRun(workspaceId, generationId);
 }
 
 // An image that kept failing the quality check; the message says why.

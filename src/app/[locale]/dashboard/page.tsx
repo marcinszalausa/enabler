@@ -85,6 +85,8 @@ async function Dashboard({
         />
       </header>
 
+      <p className="mt-4 max-w-2xl text-sm text-muted">{t.journey.addHint}</p>
+
       <section className="edge mt-8 p-6 sm:p-8">
         <h2 className="text-lg font-medium">{t.app.addTitle}</h2>
         <p className="mt-1 text-sm text-muted">{t.app.addBody}</p>

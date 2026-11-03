@@ -3,6 +3,7 @@
 // yet.
 
 export type FeedAd = {
+  productKey: string;
   // A finished 9:16 ad (headline and button already drawn on it)...
   image?: string;
   alt?: string;
@@ -19,6 +20,7 @@ export type FeedAd = {
 };
 
 export const FALLBACK_AD: FeedAd = {
+  productKey: "softmila.com/products/modest-wrap-cardigan",
   video: {
     src: "/reels/softmila-cardigan.mp4",
     poster: "/reels/softmila-cardigan.jpg",

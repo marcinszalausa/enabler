@@ -1,0 +1,62 @@
+name: Generation interface checks
+on:
+  push:
+    branches: [fix/generation-status-ui]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  generation-ui:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Installed rendering guidance
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          for p in Path('node_modules/next/dist/docs').rglob('*server-and-client-components*'):
+            print(f'GUIDE {p}\n{p.read_text()[:22000]}')
+          PY
+      - run: npx next typegen && npx tsc --noEmit
+      - run: node --experimental-strip-types --test tests/generation-presentation.test.ts
+      - run: npx eslint src/lib/generation-presentation.ts 'src/app/[locale]/dashboard/products/[id]/generation-status.tsx' 'src/app/[locale]/dashboard/products/[id]/generation-block.tsx' 'src/app/[locale]/dashboard/products/[id]/auto-refresh.tsx' 'src/app/[locale]/dashboard/products/[id]/page.tsx' src/i18n/messages/*.ts
+      - run: npm install --prefix /tmp/gooidy-generation-browser --no-package-lock playwright@1.56.1
+      - run: /tmp/gooidy-generation-browser/node_modules/.bin/playwright install --with-deps chromium
+      - name: Generation states, credits and offline recovery
+        run: node scripts/check-generation-ui.mjs
+        env:
+          PLAYWRIGHT_MODULE_PATH: /tmp/gooidy-generation-browser/node_modules/playwright
+  receipt-database:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        postgres: ['16', '17']
+    services:
+      postgres:
+        image: postgres:${{ matrix.postgres }}
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: credit_tests
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y postgresql-client
+      - name: Apply migrations and verify member-only receipts
+        env:
+          CREDIT_TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/credit_tests
+        run: |
+          bash scripts/test-credits.sh
+          psql "$CREDIT_TEST_DATABASE_URL" -X -v ON_ERROR_STOP=1 -f supabase/tests/generation-receipts.sql

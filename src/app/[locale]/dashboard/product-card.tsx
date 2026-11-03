@@ -21,14 +21,14 @@ export function ProductCard({ product: p }: { product: ProductSummary }) {
       href={`/dashboard/products/${p.id}`}
       className="spot lift group block overflow-hidden rounded-2xl border border-line bg-raised"
     >
-      <div className="aspect-[4/3] bg-surface">
+      <div className="relative aspect-[4/5] bg-surface">
         {photo ? (
           // eslint-disable-next-line @next/next/no-img-element -- the store's own photo, on any host
           <img
             src={photo}
             alt=""
             loading="lazy"
-            className="h-full w-full object-cover"
+            className="absolute inset-0 h-full w-full object-contain p-2"
           />
         ) : (
           <span className="flex h-full items-center justify-center text-4xl font-semibold uppercase text-muted/50">

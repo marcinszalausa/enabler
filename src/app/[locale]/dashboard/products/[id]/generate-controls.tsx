@@ -10,28 +10,40 @@ import { VideoAdForm } from "./video-ad-form";
 // product page is written in.
 export function GenerateControls({
   productId,
+  imageRequestId,
+  videoRequestId,
   imageCost,
   videoCost,
   videoLabel,
   defaultLanguage,
+  initialKind,
+  credits,
+  freeTrial = false,
 }: {
   productId: string;
+  imageRequestId: string;
+  videoRequestId: string;
   imageCost: number;
   videoCost: number;
   videoLabel: string;
   defaultLanguage: LanguageKey;
+  initialKind?: "image" | "video";
+  credits?: number;
+  freeTrial?: boolean;
 }) {
   const [language, setLanguage] = useState<LanguageKey>(defaultLanguage);
   const { t } = useI18n();
+  const [kind, setKind] = useState(initialKind ?? "image");
 
   return (
     <div className="flex flex-col items-start gap-2 lg:items-end">
-      <label className="flex items-center gap-2 text-sm">
+      {<div className="flex flex-wrap gap-2">{(["image","video"] as const).map(value => <button key={value} type="button" aria-pressed={kind === value} onClick={() => setKind(value)} className={"min-h-11 rounded-lg border px-3 text-sm " + (kind === value ? "border-accent bg-accent-soft text-accent" : "border-line")}>{value === "image" ? t.app.imageAds.replace("{count}", "10") : t.app.videoAds.replace("{count}", "2")}{value === "image" && freeTrial && <span className="ms-2 text-xs">{t.onboard.recommended}</span>}</button>)}</div>}
+      <label className="flex max-w-full flex-wrap items-center gap-2 text-sm">
         <span className="text-muted">{t.app.adLanguage}</span>
         <select
           value={language}
           onChange={(e) => setLanguage(e.target.value as LanguageKey)}
-          className="rounded-lg border border-line-strong bg-raised px-2.5 py-1.5 text-sm outline-none transition focus:border-accent focus:ring-4 focus:ring-accent/20"
+          className="min-w-0 max-w-full rounded-lg border border-line-strong bg-raised px-2.5 py-1.5 text-sm outline-none transition focus:border-accent focus:ring-4 focus:ring-accent/20"
         >
           {(Object.keys(LANGUAGES) as LanguageKey[]).map((key) => (
             <option key={key} value={key}>
@@ -41,17 +53,22 @@ export function GenerateControls({
         </select>
       </label>
       <div className="flex flex-wrap items-start gap-2 lg:justify-end">
-        <GenerateButton
+        {kind === "image" && <GenerateButton
+          initialRequestId={imageRequestId}
           productId={productId}
           cost={imageCost}
+          credits={credits}
           language={language}
-        />
-        <VideoAdForm
+        />}
+        {kind === "video" && <VideoAdForm
+          initiallyOpen
+          credits={credits}
+          initialRequestId={videoRequestId}
           productId={productId}
           cost={videoCost}
           label={videoLabel}
           language={language}
-        />
+        />}
       </div>
     </div>
   );

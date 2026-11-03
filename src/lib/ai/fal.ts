@@ -1,4 +1,5 @@
 import "server-only";
+import { verifyPublicUrl } from "@/lib/public-fetch";
 import { ApiError, fal } from "@fal-ai/client";
 import { UserError } from "@/lib/errors";
 
@@ -20,10 +21,12 @@ export async function generateAdImage(opts: {
   aspect: Aspect;
   referenceImageUrl: string | null;
 }): Promise<string> {
-  const prompt = `${opts.prompt}. Professional advertising photograph, clean composition, leave calm empty space near the top for a headline. Anatomically correct hands with five fingers each, relaxed and natural. No text, letters, logos or watermarks.${opts.avoid ? ` Avoid these problems: ${opts.avoid}.` : ""}`;
+  const referenceImageUrl = opts.referenceImageUrl
+    ? (await verifyPublicUrl(opts.referenceImageUrl)).toString() : null;
+  const prompt = `${opts.prompt}. Professional advertising photograph, clean composition, keep every person's entire face visible within the image; headline and captions will be placed outside the photograph. Anatomically correct hands with five fingers each, relaxed and natural. No text, letters, logos or watermarks.${opts.avoid ? ` Avoid these problems: ${opts.avoid}.` : ""}`;
 
   const result = await callFal(() =>
-    opts.referenceImageUrl
+    referenceImageUrl
       ? fal.subscribe(
           opts.best ? "fal-ai/flux-pro/kontext/max" : "fal-ai/flux-pro/kontext",
           {
@@ -31,7 +34,7 @@ export async function generateAdImage(opts: {
               prompt: opts.sameScene
                 ? `Show the same person, wearing exactly the same outfit, in the same setting and light as this image, from a new framing. The product keeps its color, fabric and design unchanged: ${prompt}`
                 : `Place this exact product in a new scene, keeping its color, fabric and design unchanged. Show it only once; nobody else in the scene wears or holds a similar item in another color: ${prompt}`,
-              image_url: opts.referenceImageUrl,
+              image_url: referenceImageUrl,
               aspect_ratio: opts.aspect,
               output_format: "jpeg",
             },
@@ -59,11 +62,12 @@ export async function submitAdVideo(opts: {
   prompt: string;
   seconds: number;
 }): Promise<string> {
+  const startImageUrl = (await verifyPublicUrl(opts.startImageUrl)).toString();
   const { request_id } = await callFal(() =>
     fal.queue.submit(VIDEO_MODEL, {
       input: {
-        prompt: `${opts.prompt} Vertical social video ad, photorealistic, steady and smooth. The product keeps exactly the color, fabric and design of the first frame. Natural hands and faces.`,
-        start_image_url: opts.startImageUrl,
+        prompt: `${opts.prompt} Vertical social video ad, photorealistic, steady and smooth. The product keeps exactly the color, fabric and design of the first frame. Natural hands and faces. Keep faces fully inside the frame throughout the motion. No text or captions in the footage.`,
+        start_image_url: startImageUrl,
         duration: String(opts.seconds) as "5",
         negative_prompt:
           "blur, distortion, warped hands, extra fingers, morphing product, color change, text, subtitles, watermark, low quality",

@@ -1,12 +1,7 @@
 import type { CSSProperties, ReactNode } from "react";
 
-// The iPhone 18 Pro Max, drawn in CSS so it stays sharp at any size and
-// costs nothing to load. Everything is sized in container units (cqw) of the
-// phone's own width, so proportions hold from a thumbnail to the hero:
-// a 78 × 163.4 mm aluminum body, thin even bezels, a 19.5:9 screen with
-// Apple's corner radius, the smaller Dynamic Island, and the side buttons
-// including Camera Control.
-// With `depth` (in % of its width), the body gets thickness for 3D scenes.
+// CSS phone chassis: a glass front, rounded body, continuous metal side
+// rails, hardware buttons and a bottom port. No image or 3D engine is needed.
 export function IPhone({
   children,
   depth = 0,
@@ -16,14 +11,15 @@ export function IPhone({
   depth?: number;
   className?: string;
 }) {
-  // One slice of body per 0.7% of depth, so the rail stays solid when turned.
-  const slabs = Math.round(depth / 0.7);
+  // Layers shape the rounded shoulders; continuous rails fill the straight
+  // edges. Fewer layers and no per-layer filters keep compositing light.
+  const slabs = depth > 0 ? Math.min(12, Math.max(2, Math.ceil(depth))) : 0;
   return (
     <div
       className={`@container ${depth ? "iphone-3d" : ""} ${className}`}
       style={
         depth
-          ? ({ "--step": `${depth / slabs}cqw` } as CSSProperties)
+          ? ({ "--step": `${depth / slabs}cqw`, "--body-depth": `${depth}cqw` } as CSSProperties)
           : undefined
       }
     >
@@ -31,33 +27,38 @@ export function IPhone({
         Array.from({ length: slabs }, (_, i) => (
           <span
             key={i}
-            className="iphone-slab"
+            className={`iphone-slab ${i === slabs - 1 ? "iphone-back" : ""}`}
             style={
               {
                 "--i": i + 1,
-                // The rail is rounded: brightest in the middle of its depth,
-                // falling off toward the front and back edges.
-                filter: `brightness(${(1.25 - 0.9 * Math.abs((i + 0.5) / slabs - 0.5)).toFixed(3)})`,
+                "--edge-tone": `${Math.round(45 + 45 * (1 - Math.abs((i + 0.5) / slabs - 0.5) * 2))}%`,
               } as CSSProperties
             }
             aria-hidden
           />
         ))}
-      <div className="iphone-frame relative aspect-[78/163.4] rounded-[15.3cqw] p-[1.15cqw]">
+      {depth > 0 && (
+        <>
+          <span className="iphone-rail iphone-rail-left" aria-hidden />
+          <span className="iphone-rail iphone-rail-right" aria-hidden />
+          <span className="iphone-bottom" aria-hidden><span className="iphone-port" /></span>
+        </>
+      )}
+      <div className="iphone-frame relative aspect-[78/163.4] rounded-[15.3cqw] p-[0.7cqw]">
         {/* Left: Action button, volume up, volume down. */}
-        <span className="iphone-key left-[-0.75cqw] top-[18.5%] h-[5.5%]" />
-        <span className="iphone-key left-[-0.75cqw] top-[27%] h-[9.5%]" />
-        <span className="iphone-key left-[-0.75cqw] top-[38.5%] h-[9.5%]" />
+        <span className="iphone-key iphone-key-left left-[-0.75cqw] top-[18.5%] h-[5.5%]" />
+        <span className="iphone-key iphone-key-left left-[-0.75cqw] top-[27%] h-[9.5%]" />
+        <span className="iphone-key iphone-key-left left-[-0.75cqw] top-[38.5%] h-[9.5%]" />
         {/* Right: side button and the flush Camera Control. */}
-        <span className="iphone-key right-[-0.75cqw] top-[30%] h-[14%]" />
-        <span className="iphone-key iphone-key-flush right-[-0.45cqw] top-[61%] h-[8%]" />
+        <span className="iphone-key iphone-key-right right-[-0.75cqw] top-[30%] h-[14%]" />
+        <span className="iphone-key iphone-key-right iphone-key-flush right-[-0.45cqw] top-[61%] h-[8%]" />
 
-        <div className="iphone-bezel h-full w-full rounded-[14.2cqw] p-[2.7cqw]">
-          <div className="relative h-full w-full overflow-hidden rounded-[11.6cqw] bg-black [transform:translateZ(0)]">
+        <div className="iphone-bezel h-full w-full rounded-[14.6cqw] p-[1.4cqw]">
+          <div className="relative h-full w-full overflow-hidden rounded-[13.2cqw] bg-black [transform:translateZ(0)]">
             {children}
             {/* Dynamic Island, with the front camera's lens on its right. */}
-            <div className="pointer-events-none absolute left-1/2 top-[2.4cqw] z-20 flex h-[7.6cqw] w-[22cqw] -translate-x-1/2 items-center justify-end rounded-full bg-black pr-[2.2cqw]">
-              <span className="h-[2.9cqw] w-[2.9cqw] rounded-full bg-[radial-gradient(circle_at_35%_35%,#3a3f5c,#0b0c14_60%)]" />
+            <div className="pointer-events-none absolute left-1/2 top-[2.4cqw] z-20 flex h-[5.8cqw] w-[18cqw] -translate-x-1/2 items-center justify-end rounded-full bg-black pr-[1.7cqw]">
+              <span className="h-[2.2cqw] w-[2.2cqw] rounded-full bg-[radial-gradient(circle_at_35%_35%,#3a3f5c,#0b0c14_60%)]" />
             </div>
             {/* Faint glass reflection. */}
             <div className="iphone-glare pointer-events-none absolute inset-0 z-30" />

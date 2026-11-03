@@ -1,0 +1,51 @@
+name: Trial campaign checks
+on:
+  push:
+    branches: [feat/trial-campaign]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  trial-ui:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: node --experimental-strip-types --test tests/trial-capacity.test.ts tests/creative-preferences.test.ts
+      - run: npx next typegen && npx tsc --noEmit
+      - run: npx eslint src/lib/trial-capacity.ts 'src/app/[locale]/dashboard/trial-campaign.tsx' 'src/app/[locale]/dashboard/actions.ts' 'src/app/[locale]/dashboard/products/[id]/generate-controls.tsx' 'src/app/[locale]/dashboard/products/[id]/video-ad-form.tsx' 'src/app/[locale]/dashboard/products/[id]/page.tsx' src/i18n/messages/*.ts
+      - run: npm install --prefix /tmp/gooidy-trial-browser --no-package-lock playwright@1.56.1
+      - run: /tmp/gooidy-trial-browser/node_modules/.bin/playwright install --with-deps chromium
+      - run: node scripts/check-trial-browser.mjs
+        env:
+          PLAYWRIGHT_MODULE_PATH: /tmp/gooidy-trial-browser/node_modules/playwright
+  trial-database:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        postgres: ['16', '17']
+    services:
+      postgres:
+        image: postgres:${{ matrix.postgres }}
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: trial_tests
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y postgresql-client
+      - run: bash scripts/test-trial-campaign.sh
+        env:
+          CREDIT_TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/trial_tests

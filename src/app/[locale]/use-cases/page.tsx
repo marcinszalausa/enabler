@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { alternates, isLocale } from "@/i18n/config";
+import { isLocale, localePath, type Locale } from "@/i18n/config";
+import { pageMetadata } from "@/lib/seo";
 import { getMessages, type Messages } from "@/i18n/messages";
 import { fmt } from "@/i18n/format";
 import { Nav, UrlForm, SectionHeading, Footer } from "@/app/_landing/chrome";
@@ -15,11 +16,12 @@ export async function generateMetadata({
   const { locale } = await params;
   if (!isLocale(locale)) return {};
   const t = await getMessages(locale);
-  return {
-    title: t.meta.useCasesTitle,
-    description: t.meta.useCasesDescription,
-    alternates: alternates(locale, "/use-cases"),
-  };
+  return pageMetadata(
+    locale,
+    "/use-cases",
+    t.meta.useCasesTitle,
+    t.meta.useCasesDescription,
+  );
 }
 
 export default async function UseCases({
@@ -35,7 +37,7 @@ export default async function UseCases({
   return (
     <div className="landing flex flex-1 flex-col bg-bg text-fg">
       <Nav />
-      <main className="flex-1">
+      <main id="main-content" tabIndex={-1} className="flex-1">
         <section className="hero-bg">
           <div className="mx-auto flex max-w-3xl flex-col items-center px-4 pb-14 pt-14 text-center sm:pt-20">
             <p className="inline-flex items-center gap-2 rounded-full border border-line bg-bg px-3 py-1 text-sm text-muted shadow-sm">
@@ -67,7 +69,7 @@ export default async function UseCases({
         </section>
 
         {runs.length === 0 ? (
-          <HowARunWorks t={t} />
+          <HowARunWorks t={t} locale={locale} />
         ) : (
           runs.map((run, i) => <Run key={run.id} t={t} run={run} index={i} />)
         )}
@@ -142,7 +144,7 @@ function Run({
 }
 
 // Shown until the team picks real runs to feature.
-function HowARunWorks({ t }: { t: Messages }) {
+function HowARunWorks({ t, locale }: { t: Messages; locale: Locale }) {
   return (
     <section className="mx-auto max-w-5xl px-4 py-20">
       <SectionHeading title={t.useCases.whatTitle} />
@@ -158,7 +160,7 @@ function HowARunWorks({ t }: { t: Messages }) {
         ))}
       </ol>
       <p className="mt-8 text-center text-sm text-muted">
-        <Link href="/dashboard" className="text-accent hover:underline">
+        <Link href={localePath(locale, "/start")} className="text-accent hover:underline">
           {t.useCases.tryLink}
         </Link>
       </p>

@@ -7,6 +7,7 @@ import { NavShell } from "./nav-shell";
 import { LanguageSwitcher } from "./language-switcher";
 import { useI18n } from "@/i18n/client";
 import { localePath } from "@/i18n/config";
+import { CONTACT_EMAIL } from "@/lib/contact";
 
 // Pieces shared by the public pages: nav, link form, footer. Client
 // components, so they read the page's language from the I18nProvider.
@@ -25,13 +26,13 @@ const G_PATH =
 const OOIDY_PATH =
   "M95.9 -26.7Q95.9 -35.1 99.15 -41.4Q102.4 -47.7 108.35 -51.15Q114.3 -54.6 122.2 -54.6Q130 -54.6 135.95 -51.15Q141.9 -47.7 145.15 -41.4Q148.4 -35.1 148.4 -26.7Q148.4 -18.3 145.15 -12Q141.9 -5.7 135.95 -2.25Q130 1.2 122.2 1.2Q114.3 1.2 108.35 -2.25Q102.4 -5.7 99.15 -12Q95.9 -18.3 95.9 -26.7ZM135.2 -26.7Q135.2 -35 131.75 -39.6Q128.3 -44.2 122.2 -44.2Q116 -44.2 112.6 -39.6Q109.2 -35 109.2 -26.7Q109.2 -18.4 112.6 -13.8Q116 -9.2 122.2 -9.2Q128.4 -9.2 131.8 -13.8Q135.2 -18.4 135.2 -26.7ZM154.1 -26.7Q154.1 -35.1 157.35 -41.4Q160.6 -47.7 166.55 -51.15Q172.5 -54.6 180.4 -54.6Q188.2 -54.6 194.15 -51.15Q200.1 -47.7 203.35 -41.4Q206.6 -35.1 206.6 -26.7Q206.6 -18.3 203.35 -12Q200.1 -5.7 194.15 -2.25Q188.2 1.2 180.4 1.2Q172.5 1.2 166.55 -2.25Q160.6 -5.7 157.35 -12Q154.1 -18.3 154.1 -26.7ZM193.4 -26.7Q193.4 -35 189.95 -39.6Q186.5 -44.2 180.4 -44.2Q174.2 -44.2 170.8 -39.6Q167.4 -35 167.4 -26.7Q167.4 -18.4 170.8 -13.8Q174.2 -9.2 180.4 -9.2Q186.6 -9.2 190 -13.8Q193.4 -18.4 193.4 -26.7ZM215.2 -53.4H228V0H215.2ZM215 -71.9H228.3V-60.5H215ZM236.7 -26.7Q236.7 -35.2 239.45 -41.5Q242.2 -47.8 247.2 -51.2Q252.2 -54.6 258.9 -54.6Q264.4 -54.6 268.65 -52.25Q272.9 -49.9 275.1 -45.8V-71H287.9V0H275.8L275.5 -7.9Q273.2 -3.6 268.8 -1.2Q264.4 1.2 258.9 1.2Q252.1 1.2 247.1 -2.2Q242.1 -5.6 239.4 -11.9Q236.7 -18.2 236.7 -26.7ZM275.1 -26.7Q275.1 -35.2 271.9 -39.7Q268.7 -44.2 262.7 -44.2Q256.8 -44.2 253.4 -39.5Q250 -34.8 250 -26.7Q250 -18.7 253.45 -13.95Q256.9 -9.2 262.7 -9.2Q268.6 -9.2 271.85 -13.75Q275.1 -18.3 275.1 -26.7ZM303.2 5.1H310Q312.6 5.1 313.85 4.3Q315.1 3.5 315.9 1.6L317.3 -2.1H313.6L294.6 -53.4H307.8L321.3 -14.1L334 -53.4H347.3L326.4 5.6Q324.7 10.6 321.4 12.8Q318.1 15 312.3 15H303.2Z";
 
-export function Logo() {
+export function Logo({ to, label }: { to?: string; label?: string } = {}) {
   const { t } = useI18n();
   const href = useHref();
   return (
     <Link
-      href={href("/")}
-      aria-label={t.nav.home}
+      href={to ?? href("/")}
+      aria-label={label ?? t.nav.home}
       className="flex items-center text-fg"
     >
       <svg viewBox="0 -72.9 348.3 98.1" className="h-7 w-auto" role="img">
@@ -68,9 +69,10 @@ export function Nav() {
   const href = useHref();
   return (
     <NavShell>
-      <nav className="site-nav mx-auto flex items-center justify-between gap-4 px-4">
+      <a href="#main-content" className="skip-link">{t.nav.skip}</a>
+      <nav className="site-nav relative mx-auto flex items-center justify-between gap-2 px-2 sm:gap-4 sm:px-4">
         <Logo />
-        <div className="hidden items-center gap-8 text-sm text-muted md:flex">
+        <div className="hidden items-center gap-6 text-sm text-muted lg:flex">
           <Link href={href("/use-cases")} className="hover:text-fg">
             {t.nav.examples}
           </Link>
@@ -88,17 +90,44 @@ export function Nav() {
           <LanguageSwitcher compact />
           <ThemeToggle />
           <Link
-            href="/login"
-            className="rounded-lg px-3 py-2 text-sm font-medium whitespace-nowrap text-fg hover:bg-surface"
+            href="/login" prefetch={false}
+            className="hidden min-h-11 items-center rounded-lg px-3 py-2 text-sm font-medium whitespace-nowrap text-fg hover:bg-surface lg:flex"
           >
             {t.nav.signIn}
           </Link>
           <Link
-            href="/dashboard"
-            className="btn-primary hidden rounded-lg px-4 py-2 text-sm font-medium whitespace-nowrap sm:block"
+            href={href("/start")} prefetch={false}
+            className="btn-primary hidden min-h-11 items-center rounded-lg px-4 py-2 text-sm font-medium whitespace-nowrap lg:flex"
           >
             {t.nav.getStarted}
           </Link>
+          <details className="mobile-nav lg:hidden"
+            onKeyDown={(event) => {
+              if (event.key === "Escape") {
+                event.currentTarget.open = false;
+                event.currentTarget.querySelector("summary")?.focus();
+              }
+            }}>
+            <summary className="flex min-h-11 cursor-pointer list-none items-center gap-1 rounded-lg px-2 text-sm font-medium">
+              <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={1.8} aria-hidden><path d="M4 6h16M4 12h16M4 18h16" /></svg>
+              <span className="sr-only sm:not-sr-only">{t.nav.menu}</span>
+            </summary>
+            <div className="absolute inset-x-0 top-[calc(100%+0.5rem)] rounded-2xl border border-line bg-bg p-3 shadow-xl"
+              onClick={(event) => {
+                if ((event.target as HTMLElement).closest("a")) event.currentTarget.closest("details")?.removeAttribute("open");
+              }}>
+              {[
+                [href("/use-cases"), t.nav.examples],
+                [href("/") + "#how", t.nav.how],
+                [href("/") + "#angles", t.nav.angles],
+                [href("/") + "#pricing", t.nav.pricing],
+                [href("/") + "#faq", t.nav.faq],
+                ["/login", t.nav.signIn],
+              ].map(([to, label]) => <Link key={to} href={to} prefetch={false}
+                className="flex min-h-11 items-center rounded-xl px-4 text-sm font-medium hover:bg-surface">{label}</Link>)}
+              <Link href={href("/start")} prefetch={false} className="btn-primary mt-2 flex min-h-11 items-center justify-center rounded-xl px-4 text-sm font-medium">{t.nav.getStarted}</Link>
+            </div>
+          </details>
         </div>
       </nav>
     </NavShell>
@@ -107,11 +136,12 @@ export function Nav() {
 
 export function UrlForm({ id }: { id: string }) {
   const { t } = useI18n();
+  const href = useHref();
   // A plain GET form: signed-out visitors go through sign-in and land on the
   // dashboard with the link already filled in.
   return (
     <form
-      action="/dashboard"
+      action={href("/start")}
       method="get"
       className="flex w-full max-w-xl flex-col gap-2 sm:flex-row"
     >
@@ -170,7 +200,7 @@ export function Footer() {
     {
       title: t.footer.account,
       links: [
-        { href: "/dashboard", label: t.nav.getStarted },
+        { href: href("/start"), label: t.nav.getStarted },
         { href: "/login", label: t.nav.signIn },
       ],
     },
@@ -183,13 +213,14 @@ export function Footer() {
     },
   ];
   return (
-    <footer className="border-t border-line">
+    <footer className="border-t border-line pb-24 sm:pb-0">
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr_1fr]">
         <div>
           <Logo />
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted">
             {t.footer.tagline}
           </p>
+          <a href={`mailto:${CONTACT_EMAIL}`} className="mt-4 inline-flex min-h-11 flex-col justify-center text-sm text-accent hover:underline"><span className="font-medium">{t.footer.contact}</span><span>{CONTACT_EMAIL}</span></a>
         </div>
         {columns.map((col) => (
           <nav key={col.title} aria-label={col.title}>
@@ -218,17 +249,35 @@ export function Footer() {
 
 // Top bar for the signed-in app and the sign-in page: same logo, colors and
 // theme switch as the public site, with the page's own links on the right.
-export function AppBar({ children }: { children?: ReactNode }) {
+export function AppBar({
+  tabs,
+  children,
+  homeHref,
+}: {
+  tabs?: ReactNode;
+  children?: ReactNode;
+  homeHref?: string;
+}) {
+  const {t}=useI18n();
   return (
     <header className="sticky top-0 z-30 border-b border-line bg-bg/85 backdrop-blur">
       <nav className="mx-auto flex h-14 w-full max-w-5xl items-center justify-between gap-4 px-4">
-        <Logo />
-        <div className="flex items-center gap-1 text-sm">
+        <Logo to={homeHref} label={homeHref?t.app.products:undefined}/>
+        <div className="flex items-center gap-1 text-sm [&_button]:min-h-11 [&_button]:min-w-11">
+          {tabs && <div className="hidden items-center gap-1 lg:flex">{tabs}</div>}
           {children}
           <LanguageSwitcher compact />
           <ThemeToggle />
         </div>
       </nav>
+      {tabs && (
+        // Phones: the sections get a row of their own.
+        <nav aria-label={t.app.dashboard} className="no-scrollbar border-t border-line lg:hidden">
+          <div className="mx-auto grid w-full grid-flow-col auto-cols-fr items-stretch gap-1 px-3 py-1.5 text-sm">
+            {tabs}
+          </div>
+        </nav>
+      )}
     </header>
   );
 }

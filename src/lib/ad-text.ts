@@ -1,4 +1,5 @@
 // Server code only (reads fonts, runs a native module).
+import { fetchPublicUrl } from "@/lib/public-fetch";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { createCanvas, GlobalFonts } from "@napi-rs/canvas";
@@ -49,17 +50,18 @@ type SatoriFont = {
 const subsetCache = new Map<string, Promise<Buffer | null>>();
 
 async function fetchSubset(family: string, text: string) {
-  const css = await fetch(
+  const cssResponse = await fetchPublicUrl(
     `https://fonts.googleapis.com/css2?family=${encodeURIComponent(family)}:wght@700&text=${encodeURIComponent(text)}`,
-    { signal: AbortSignal.timeout(10_000) },
-  ).then((r) => (r.ok ? r.text() : Promise.reject(new Error(`${r.status}`))));
-  const url = css.match(
+    { maxBytes: 256*1024, timeoutMs: 10000, accept: "text/css" },
+  );
+  if (cssResponse.status < 200 || cssResponse.status >= 300) throw new Error("Font CSS unavailable");
+  const url = cssResponse.body.toString("utf8").match(
     /src: url\((.+?)\) format\('(?:truetype|opentype)'\)/,
   )?.[1];
   if (!url) throw new Error("no font file in Google Fonts CSS");
-  const res = await fetch(url, { signal: AbortSignal.timeout(10_000) });
-  if (!res.ok) throw new Error(`${res.status}`);
-  return Buffer.from(await res.arrayBuffer());
+  const font = await fetchPublicUrl(url, { maxBytes: 8*1024*1024, timeoutMs: 10000 });
+  if (font.status < 200 || font.status >= 300) throw new Error("Font unavailable");
+  return font.body;
 }
 
 function subset(family: string, text: string): Promise<Buffer | null> {
@@ -205,4 +207,14 @@ function wrap(text: string, maxWidth: number, width: (s: string) => number) {
   }
   if (line) lines.push(line);
   return lines.length ? lines : [""];
+}
+
+/** Pixel width for the actual brand/script font, without remote font calls. */
+export async function measureCopyWidth(text:string,brand:{name:string;data:Buffer},fontSize=40):Promise<number>{
+ const script=scriptOf(text);
+ if(script==="japanese"||script==="korean"||script==="chinese")return Array.from(new Intl.Segmenter(undefined,{granularity:"grapheme"}).segment(text)).length*fontSize;
+ const brandFamily=registerBrandFont(brand.name,brand.data);
+ let family=`"${brandFamily}"`;
+ if(script==="arabic"||script==="devanagari"){await registerShapedFonts();family=`"${SHAPED[script].family}", "${brandFamily}"`;}
+ const ctx=createCanvas(1,1).getContext("2d");ctx.font=`bold ${fontSize}px ${family}`;return Math.ceil(ctx.measureText(text).width);
 }

@@ -1,7 +1,7 @@
 "use client";
 
-import { useActionState, useState } from "react";
-import { startGeneration, type FormState } from "../../actions";
+import { useState } from "react";
+import { useGenerationAction } from "./use-generation-action";
 import { useI18n } from "@/i18n/client";
 import { fmt } from "@/i18n/format";
 import {
@@ -9,11 +9,12 @@ import {
   DEFAULT_VIDEO_OPTIONS,
   ENERGIES,
   GENDERS,
+  LENGTHS,
   MAX_MESSAGE_LENGTH,
   PEOPLE,
+  videoRunCost,
+  type LengthKey,
 } from "@/lib/video-options";
-
-const initialState: FormState = { error: null };
 
 const field =
   "w-full rounded-md border border-line-strong bg-raised px-3 py-2 text-sm outline-none transition focus:border-accent focus:ring-4 focus:ring-accent/20";
@@ -21,26 +22,26 @@ const field =
 // The video button opens a short form for what the ad says and who says it.
 export function VideoAdForm({
   productId,
+  initialRequestId,
   cost,
   label,
   language,
+  initiallyOpen = false,
+  credits,
 }: {
   productId: string;
+  initialRequestId: string;
   cost: number;
   label: string;
   // Chosen next to the buttons; shared with image runs.
   language: string;
+  initiallyOpen?: boolean;
+  credits?: number;
 }) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(initiallyOpen);
+  const [length, setLength] = useState<LengthKey>(DEFAULT_VIDEO_OPTIONS.length);
   const { t } = useI18n();
-  const [state, action, pending] = useActionState(
-    async (prev: FormState, formData: FormData) => {
-      const result = await startGeneration(prev, formData);
-      if (!result.error) setOpen(false);
-      return result;
-    },
-    initialState,
-  );
+  const { state, action, pending, requestId } = useGenerationAction(initialRequestId, () => setOpen(false));
 
   if (!open) {
     return (
@@ -59,9 +60,12 @@ export function VideoAdForm({
       action={action}
       className="flex w-full flex-col gap-4 rounded-xl border border-line bg-raised p-4 text-left text-sm sm:w-96"
     >
+      <input type="hidden" name="requestId" value={requestId} />
       <input type="hidden" name="productId" value={productId} />
       <input type="hidden" name="kind" value="video" />
 
+      <p className="text-sm leading-relaxed text-muted">{fmt(t.onboard.videoChoice, { count: 2, seconds: length })}</p>
+      <details><summary className="min-h-11 cursor-pointer py-3 font-medium text-accent">{t.onboard.advanced}</summary><div className="flex flex-col gap-4 pt-2">
       <label className="flex flex-col gap-1.5">
         <span className="font-medium">{t.app.message}</span>
         <textarea
@@ -75,6 +79,32 @@ export function VideoAdForm({
       </label>
 
       <input type="hidden" name="language" value={language} />
+
+      <fieldset className="flex flex-col gap-1.5">
+        <legend className="mb-1.5 font-medium">{t.app.length}</legend>
+        <div className="grid grid-cols-5 overflow-hidden rounded-md border border-line-strong">
+          {(Object.keys(LENGTHS) as LengthKey[]).map((key) => (
+            <label
+              key={key}
+              className="flex cursor-pointer flex-col items-center gap-0.5 border-line-strong px-1 py-2 text-center not-last:border-r has-checked:bg-accent-soft has-checked:text-accent"
+            >
+              <input
+                type="radio"
+                name="length"
+                value={key}
+                checked={key === length}
+                onChange={() => setLength(key)}
+                className="peer sr-only"
+              />
+              <span className="font-medium">{key} s</span>
+              <span className="text-[11px] leading-tight text-muted peer-checked:text-accent/80">
+                {fmt(t.app.credits, { count: videoRunCost(key) })}
+              </span>
+            </label>
+          ))}
+        </div>
+        <span className="text-xs text-muted">{t.app.lengthHelp}</span>
+      </fieldset>
 
       <div className="grid grid-cols-2 gap-3">
         <label className="flex flex-col gap-1.5">
@@ -149,13 +179,17 @@ export function VideoAdForm({
         </select>
       </label>
 
-      <div className="flex items-center gap-3">
+      </div></details>
+      {credits !== undefined && <p data-video-balance role="status" className="rounded-lg bg-surface p-3 text-sm">{fmt(videoRunCost(length)>credits?t.trial.notEnough:t.trial.afterVideo,{cost:videoRunCost(length),remaining:Math.max(0,credits-videoRunCost(length))})}</p>}
+      <div className="flex flex-wrap items-center gap-3">
         <button
           type="submit"
-          disabled={pending}
+          disabled={pending || (credits !== undefined && videoRunCost(length)>credits)}
           className="btn-primary rounded-lg px-4 py-2 font-medium"
         >
-          {pending ? t.app.starting : fmt(t.app.withCost, { label, cost })}
+          {pending
+            ? t.app.starting
+            : fmt(t.app.withCost, { label, cost: videoRunCost(length) })}
         </button>
         <button
           type="button"

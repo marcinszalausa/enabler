@@ -1,7 +1,8 @@
 import "server-only";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { parsePublicUrl, type ScrapedPage } from "@/lib/scrape";
+import type { ScrapedPage } from "@/lib/scrape";
+import { fetchPublicUrl } from "@/lib/public-fetch";
 import {
   DEFAULT_BRAND_KIT,
   LOGO_TYPES,
@@ -49,18 +50,12 @@ export async function storeLogo(
 async function downloadLogo(
   rawUrl: string,
 ): Promise<{ bytes: ArrayBuffer; type: string } | null> {
-  const url = parsePublicUrl(rawUrl);
-  // Ask for PNG/JPEG: Shopify's and Next's image CDNs otherwise send WebP,
-  // which the ad renderer can't draw.
-  const res = await fetch(url, {
-    headers: { accept: "image/png,image/jpeg;q=0.9" },
-    signal: AbortSignal.timeout(10_000),
+  const response = await fetchPublicUrl(rawUrl, {
+    maxBytes: MAX_LOGO_BYTES, timeoutMs: 10000, accept: "image/png,image/jpeg;q=0.9",
   });
-  const type = res.headers.get("content-type")?.split(";")[0].trim() ?? "";
-  if (!res.ok || !(LOGO_TYPES as readonly string[]).includes(type)) return null;
-  const bytes = await res.arrayBuffer();
-  if (bytes.byteLength > MAX_LOGO_BYTES) return null;
-  return { bytes, type };
+  const type = response.contentType;
+  if (response.status < 200 || response.status >= 300 || !(LOGO_TYPES as readonly string[]).includes(type)) return null;
+  return { bytes: new Uint8Array(response.body).buffer, type };
 }
 
 // First product added: start the brand kit from what the site shows.
@@ -80,7 +75,7 @@ export async function seedBrandKit(workspaceId: string, page: ScrapedPage) {
       const logo = await downloadLogo(page.logoUrl);
       if (logo) logoPath = await storeLogo(workspaceId, logo.bytes, logo.type);
     } catch (err) {
-      console.error("logo download failed", page.logoUrl, err);
+      console.error("logo download failed", err);
     }
   }
 

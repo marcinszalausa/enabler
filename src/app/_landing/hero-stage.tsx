@@ -8,9 +8,9 @@ import type { FeedAd } from "./reel";
 // the middle, single ads turned away on each side. The phones have real
 // thickness, and the whole stage leans a few degrees toward the pointer,
 // which makes them feel like objects, not images.
-// Body thickness in % of width. The real phone is 11.2% (8.75 mm on 78 mm),
-// which reads a little heavy on screen.
-const DEPTH = 9;
+// Physical body depth, as a percentage of the phone width.
+// iPhone 18 Pro Max: 78 × 163.4 × 8.75 mm (Apple technical specifications).
+const DEPTH = (8.75 / 78) * 100;
 // Ad widths inside the side phones, which only show from 640 px up.
 const SIDE = "(min-width: 64rem) 270px, (min-width: 48rem) 225px, 200px";
 
@@ -34,24 +34,29 @@ export function HeroStage({
     )
       return;
     let frame = 0;
+    let visible = false;
+    const observer = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; });
+    observer.observe(el);
     const onMove = (e: PointerEvent) => {
+      if (!visible || document.hidden) return;
       cancelAnimationFrame(frame);
       frame = requestAnimationFrame(() => {
         const x = e.clientX / innerWidth - 0.5;
         const y = e.clientY / innerHeight - 0.5;
         el.style.setProperty("--ry", `${(x * 10).toFixed(2)}deg`);
-        el.style.setProperty("--rx", `${(-y * 6).toFixed(2)}deg`);
+        el.style.setProperty("--rx", `${(2 - y * 2).toFixed(2)}deg`);
       });
     };
     addEventListener("pointermove", onMove);
     return () => {
       removeEventListener("pointermove", onMove);
+      observer.disconnect();
       cancelAnimationFrame(frame);
     };
   }, []);
 
   return (
-    <div ref={stage} className="stage relative mx-auto w-full max-w-5xl">
+    <div ref={stage} className="stage relative mx-auto w-full max-w-5xl" data-product-group="hero">
       <div className="stage-inner relative flex justify-center">
         {left && (
           <div className="stage-side stage-left hidden sm:block">

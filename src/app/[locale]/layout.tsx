@@ -9,13 +9,16 @@ import { getMessages } from "@/i18n/messages";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
-  // latin-ext covers Polish, Czech, Romanian, Turkish and the rest.
-  subsets: ["latin", "latin-ext"],
+  // Preload only the common subset; other Unicode subsets load as needed.
+  subsets: ["latin"],
+  display: "optional",
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "optional",
+  preload: false,
 });
 
 export function generateStaticParams() {

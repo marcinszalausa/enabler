@@ -1,12 +1,10 @@
-import Link from "next/link";
+import { AccountMenu } from "./account-menu";
 import { AppBar } from "@/app/_landing/chrome";
 import { Spotlight } from "@/app/_landing/spotlight";
 import { isLocale } from "@/i18n/config";
 import { getMessages } from "@/i18n/messages";
 import { notFound } from "next/navigation";
-
-const navLink =
-  "rounded-lg px-3 py-2 text-muted transition hover:bg-surface hover:text-fg";
+import { AppNav } from "./app-nav";
 
 export default async function DashboardLayout({
   children,
@@ -18,21 +16,23 @@ export default async function DashboardLayout({
   // "landing" gives the app the site's cards and hover effects.
   return (
     <div className="landing flex flex-1 flex-col bg-bg text-fg">
-      <AppBar>
-        <Link href="/dashboard" className={navLink}>
-          {t.app.products}
-        </Link>
-        <Link href="/dashboard/brand" className={navLink}>
-          {t.app.brandKit}
-        </Link>
-        <Link href="/dashboard/billing" className={navLink}>
-          {t.billing.nav}
-        </Link>
-        <form action="/auth/signout" method="post">
-          <button className={navLink}>{t.app.signOut}</button>
-        </form>
+      <a href="#app-content" className="skip-link">{t.nav.skip}</a>
+      <AppBar homeHref="/dashboard"
+        tabs={
+          <AppNav
+            items={[
+              { href: "/dashboard", label: t.app.products },
+              { href: "/dashboard/ads", label: t.library.title },
+              { href: "/dashboard/publishing", label: t.publish.title },
+              { href: "/dashboard/brand", label: t.app.brandKit },
+              { href: "/dashboard/billing", label: t.billing.nav },
+            ]}
+          />
+        }
+      >
+        <AccountMenu />
       </AppBar>
-      {children}
+      <div id="app-content" tabIndex={-1} className="flex flex-1 flex-col focus:outline-none">{children}</div>
       <Spotlight />
     </div>
   );

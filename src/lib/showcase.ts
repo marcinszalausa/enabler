@@ -1,4 +1,5 @@
 import "server-only";
+import { productKey } from "@/lib/product-display";
 import { cacheLife, cacheTag } from "next/cache";
 import { createAdminClient } from "@/lib/supabase/admin";
 import type { BrandBrief } from "@/lib/ai/claude";
@@ -115,18 +116,3 @@ export async function getShowcase(
   });
 }
 
-// Same product even if the link differs by www, query string, case or
-// collection path.
-function productKey(url: string) {
-  try {
-    const u = new URL(url);
-    // Shopify serves one product under /collections/…/products/<handle> too.
-    const path = u.pathname
-      .replace(/^.*(\/products\/[^/]+).*$/, "$1")
-      .replace(/\/+$/, "")
-      .toLowerCase();
-    return `${u.hostname.replace(/^www\./, "").toLowerCase()}${path}`;
-  } catch {
-    return url;
-  }
-}

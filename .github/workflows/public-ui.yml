@@ -1,0 +1,27 @@
+name: Public interface checks
+on:
+  push:
+    branches: [fix/public-ui-trust]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  public-ui:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx next typegen && npx tsc --noEmit
+      - name: Lint public interface
+        run: npx eslint src/app/_landing/chrome.tsx src/app/_landing/credit-guide.tsx src/app/_landing/before-after.tsx src/app/_landing/legal.tsx src/app/_landing/phone-feed.tsx src/app/_landing/language-switcher.tsx src/app/_landing/theme-toggle.tsx 'src/app/[locale]/page.tsx' 'src/app/[locale]/use-cases/page.tsx' 'src/app/[locale]/not-found.tsx' src/i18n/messages/*.ts src/lib/contact.ts
+      - run: npm install --prefix /tmp/gooidy-ui-browser --no-package-lock playwright@1.56.1
+      - run: /tmp/gooidy-ui-browser/node_modules/.bin/playwright install --with-deps chromium
+      - name: Mobile, keyboard, RTL and comparison controls
+        run: node scripts/check-public-ui.mjs
+        env:
+          PLAYWRIGHT_MODULE_PATH: /tmp/gooidy-ui-browser/node_modules/playwright

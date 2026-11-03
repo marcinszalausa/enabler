@@ -1,5 +1,9 @@
 import "server-only";
+import { withCreativePreferences, type CreativePreferences } from "@/lib/creative-preferences";
+import { transitionVideoJob } from "@/lib/video-job-state";
+import { fetchPublicUrl } from "@/lib/public-fetch";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { claimGeneration, finalizeGeneration } from "@/lib/generation-credits";
 import { writeVideoAds, type BrandBrief, type VideoAd } from "@/lib/ai/claude";
 import {
   generateMusic,
@@ -12,14 +16,19 @@ import { getBrandKit } from "@/lib/brand-kit";
 import { FONTS, loadFont, textColorOn } from "@/lib/brand";
 import { editVideoAd } from "@/lib/video-edit";
 import { userMessage } from "@/lib/errors";
-import { voiceFor, type VideoOptions } from "@/lib/video-options";
+import { autopilotRun } from "@/lib/social/publish";
+import {
+  DEFAULT_VIDEO_OPTIONS,
+  LENGTHS,
+  VIDEOS_PER_GENERATION,
+  shotSecondsFor,
+  voiceFor,
+  type VideoOptions,
+} from "@/lib/video-options";
 
-export const VIDEOS_PER_GENERATION = 2;
-export const CREDITS_PER_VIDEO = 20;
-export const VIDEO_GENERATION_COST = VIDEOS_PER_GENERATION * CREDITS_PER_VIDEO;
-// Length of each shot; together they make the ad.
-export const SHOT_SECONDS = [4, 3];
-export const VIDEO_SECONDS = SHOT_SECONDS.reduce((a, b) => a + b, 0);
+export { VIDEOS_PER_GENERATION };
+// The default length, used where a run's own length isn't known.
+export const VIDEO_SECONDS = Number(DEFAULT_VIDEO_OPTIONS.length);
 
 // Past these ages a job's worker is presumed dead and the job is failed
 // (or, while processing, picked up again by the next check).
@@ -27,7 +36,7 @@ const DRAFTING_TIMEOUT_MS = 10 * 60_000;
 const PENDING_TIMEOUT_MS = 30 * 60_000;
 const PROCESSING_TIMEOUT_MS = 5 * 60_000;
 
-type Job = { generationId: string; workspaceId: string; productId: string };
+type Job = { generationId: string; workspaceId: string; productId: string; creativePreferences?: CreativePreferences | null };
 
 type VideoJob = {
   id: string;
@@ -53,12 +62,10 @@ export async function runVideoGeneration({
   workspaceId,
   productId,
   options,
+  creativePreferences,
 }: Job & { options: VideoOptions }) {
   const db = createAdminClient();
-  await db
-    .from("generations")
-    .update({ status: "running" })
-    .eq("id", generationId);
+  if (!(await claimGeneration(db, generationId))) return;
 
   try {
     const { data: product, error } = await db
@@ -68,12 +75,13 @@ export async function runVideoGeneration({
       .single();
     if (error || !product?.brand_brief) throw new Error("Product not found.");
 
-    const brief = product.brand_brief as BrandBrief;
+    const brief = withCreativePreferences(product.brand_brief as BrandBrief, creativePreferences);
     const referenceImageUrl = (product.image_urls as string[])[0] ?? null;
+    const shotSeconds = LENGTHS[options.length];
     const ads = await writeVideoAds(
       brief,
       VIDEOS_PER_GENERATION,
-      SHOT_SECONDS,
+      shotSeconds,
       options,
     );
 
@@ -117,10 +125,11 @@ export async function runVideoGeneration({
         const jobId = jobs[i].id;
         try {
           const [requestIds, sound] = await Promise.all([
-            filmShots(ad, referenceImageUrl, brief.product_name),
+            filmShots(ad, shotSeconds, referenceImageUrl, brief.product_name),
             recordSound(
               options,
               ad,
+              shotSeconds,
               `${workspaceId}/${generationId}/video-${jobId.slice(0, 8)}`,
             ),
           ]);
@@ -158,6 +167,7 @@ export async function runVideoGeneration({
 // Returns the video model's request ids, in shot order.
 async function filmShots(
   ad: VideoAd,
+  shotSeconds: readonly number[],
   referenceImageUrl: string | null,
   product: string,
 ): Promise<string[]> {
@@ -177,30 +187,31 @@ async function filmShots(
     );
   } catch (err) {
     if (!(err instanceof QualityError)) throw err;
-    // A later shot kept failing the check; film the first one for the
-    // whole ad rather than drop it.
-    console.warn("later shot rejected, using one shot", err.message);
-    return [
-      await submitAdVideo({
-        startImageUrl: first,
-        prompt: ad.shots[0].motion_prompt,
-        seconds: VIDEO_SECONDS,
-      }),
-    ];
+    // A later shot kept failing the check; start every shot from the first
+    // frame rather than drop the ad. The shot count stays, so the edit
+    // still knows the ad's length.
+    console.warn("later shot rejected, filming from the first", err.message);
+    rest = ad.shots.slice(1).map(() => first);
   }
   return Promise.all(
     [first, ...rest].map((frame, i) =>
       submitAdVideo({
         startImageUrl: frame,
         prompt: ad.shots[i].motion_prompt,
-        seconds: SHOT_SECONDS[i],
+        seconds: shotSeconds[i],
       }),
     ),
   );
 }
 
 // Voiceover and music, kept in storage until the shots are ready.
-async function recordSound(options: VideoOptions, ad: VideoAd, base: string) {
+async function recordSound(
+  options: VideoOptions,
+  ad: VideoAd,
+  shotSeconds: readonly number[],
+  base: string,
+) {
+  const seconds = shotSeconds.reduce((a, b) => a + b, 0);
   const voice = voiceFor(options);
   const [voiceUrl, musicUrl] = await Promise.all([
     generateVoiceover({
@@ -209,7 +220,7 @@ async function recordSound(options: VideoOptions, ad: VideoAd, base: string) {
       tag: voice.tag,
       languageCode: voice.languageCode,
     }),
-    generateMusic({ prompt: ad.music_prompt, seconds: VIDEO_SECONDS + 1 }),
+    generateMusic({ prompt: ad.music_prompt, seconds: seconds + 1 }),
   ]);
   const [voice_path, music_path] = await Promise.all(
     [
@@ -289,7 +300,6 @@ export async function advanceVideoGeneration(generationId: string) {
           job,
           clipUrls as string[],
         );
-        job.status = "done";
       } catch (err) {
         console.error("video job failed", job.id, err);
         await failJob(job, userMessage(err, "The video couldn't be made."));
@@ -326,18 +336,24 @@ async function finishGeneration(
   done = 0,
 ) {
   const db = createAdminClient();
-  const { data: closed } = await db
-    .from("generations")
-    .update({ status: done > 0 ? "succeeded" : "failed", error })
-    .eq("id", generationId)
-    .eq("status", "running")
-    .select("cost_credits");
-  const cost = closed?.[0]?.cost_credits;
-  if (cost === undefined) return;
-  const refund = cost - done * CREDITS_PER_VIDEO;
-  if (refund > 0) {
-    await db.rpc("refund_credits", { ws: workspaceId, amount: refund });
-  }
+  const { data: generation, error: readError } = await db
+    .from("generations").select("cost_credits")
+    .eq("id", generationId).eq("workspace_id", workspaceId).single();
+  if (readError || !generation) throw readError ?? new Error("Generation not found.");
+  const { count, error: countError } = await db.from("creatives")
+    .select("id", { count: "exact", head: true })
+    .eq("generation_id", generationId).eq("workspace_id", workspaceId).eq("kind", "video");
+  if (countError || count === null) throw countError ?? new Error("Missing video output count.");
+  // A creative insert may commit even when its response is lost.
+  done = count;
+  if (done === VIDEOS_PER_GENERATION) error = null;
+  else if (done > 0) error = "Some videos could not be completed. Undelivered videos were refunded.";
+  const cost = generation.cost_credits as number;
+  const refund = cost - done * (cost / VIDEOS_PER_GENERATION);
+  const closed = await finalizeGeneration(
+    db, generationId, done > 0 ? "succeeded" : "failed", refund, error,
+  );
+  if (closed && done > 0) await autopilotRun(workspaceId, generationId);
 }
 
 async function saveVideo(
@@ -360,8 +376,7 @@ async function saveVideo(
 
   const video = await editVideoAd({
     clips,
-    // One request means a later shot was dropped and the first runs long.
-    shotSeconds: clipUrls.length === 1 ? [VIDEO_SECONDS] : SHOT_SECONDS,
+    shotSeconds: [...shotSecondsFor(clipUrls.length)],
     voice,
     music,
     voiceover: job.voiceover ?? "",
@@ -380,7 +395,9 @@ async function saveVideo(
     .upload(path, video, { contentType: "video/mp4", upsert: true });
   if (upload.error) throw upload.error;
 
-  const insert = await db.from("creatives").insert({
+  const insert = await db.from("creatives").upsert({
+    // One creative per job, even if a processing worker is reclaimed.
+    id: job.id,
     workspace_id: workspaceId,
     generation_id: generationId,
     kind: "video",
@@ -390,15 +407,15 @@ async function saveVideo(
     headline: job.headline,
     primary_text: job.primary_text,
     cta: job.cta,
-  });
+  }, { onConflict: "id", ignoreDuplicates: true });
   if (insert.error) throw insert.error;
-  await updateJob(job.id, { status: "done", error: null });
+  await transitionVideoJob(db, job, { status: "done", error: null });
 }
 
 async function download(url: string): Promise<Buffer> {
-  const res = await fetch(url, { signal: AbortSignal.timeout(60_000) });
-  if (!res.ok) throw new Error(`Couldn't download ${new URL(url).pathname}.`);
-  return Buffer.from(await res.arrayBuffer());
+  const response = await fetchPublicUrl(url, { maxBytes: 64*1024*1024, timeoutMs: 60000 });
+  if (response.status < 200 || response.status >= 300) throw new Error("Couldn't download generated media.");
+  return response.body;
 }
 
 async function downloadStored(path: string): Promise<Buffer> {
@@ -412,27 +429,19 @@ async function downloadStored(path: string): Promise<Buffer> {
 // Moves a job from pending (or a stale processing) to processing; false if
 // another check got there first.
 async function claimJob(job: VideoJob): Promise<boolean> {
-  const { data } = await createAdminClient()
-    .from("video_jobs")
-    .update({ status: "processing", updated_at: new Date().toISOString() })
-    .eq("id", job.id)
-    .eq("status", job.status)
-    .eq("updated_at", job.updated_at)
-    .select("id");
-  return (data?.length ?? 0) > 0;
+  return transitionVideoJob(createAdminClient(), job, { status: "processing" });
 }
 
 async function failJob(job: VideoJob, error: string) {
-  await updateJob(job.id, { status: "failed", error });
-  job.status = "failed";
-  job.error = error;
+  await transitionVideoJob(createAdminClient(), job, { status: "failed", error });
 }
 
 async function updateJob(id: string, fields: Partial<VideoJob>) {
-  await createAdminClient()
+  const { error } = await createAdminClient()
     .from("video_jobs")
     .update({ ...fields, updated_at: new Date().toISOString() })
     .eq("id", id);
+  if (error) throw error;
 }
 
 function age(timestamp: string) {

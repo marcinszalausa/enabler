@@ -11,8 +11,10 @@ import { promisify } from "node:util";
 import type { ReactElement } from "react";
 import ffmpegPath from "ffmpeg-static";
 import { ImageResponse } from "next/og";
+import {chooseOverlays,chooseCaption,type Rect} from "@/lib/face-safe-layout";
+import {analyzeShotFaces,VIDEO_CROP} from "@/lib/video-face-analysis";
 import { AD_SIZES, adTextStyles } from "@/lib/ad-layout";
-import { fontsFor, isRtl, prepareText } from "@/lib/ad-text";
+import { fontsFor, isRtl, prepareText, measureCopyWidth } from "@/lib/ad-text";
 import {
   CaptionLayer,
   EndCardLayer,
@@ -25,7 +27,8 @@ const execFileAsync = promisify(execFile);
 // Voiceover starts just after the first frame, so the shot hooks first.
 const VOICE_START = 0.3;
 const HOOK_END = 2.5;
-const END_CARD_SECONDS = 1.5;
+// Longer ads hold the end card longer.
+const endCardSeconds = (total: number) => (total >= 15 ? 2.5 : 1.5);
 // A voiceover longer than the ad is sped up, but no more than this.
 const MAX_TEMPO = 1.2;
 
@@ -49,7 +52,8 @@ export type VideoEdit = {
 export async function editVideoAd(edit: VideoEdit): Promise<Buffer> {
   if (!ffmpegPath) throw new Error("ffmpeg is not available here.");
   const total = edit.shotSeconds.reduce((a, b) => a + b, 0);
-  const endCardStart = total - END_CARD_SECONDS;
+  const endCardStart = Math.max(0,total - endCardSeconds(total));
+  const hookDuration=Math.min(HOOK_END,endCardStart);
 
   // Scratch files live in the OS temp folder; tell the bundler not to trace
   // these paths into the deployment.
@@ -63,17 +67,38 @@ export async function editVideoAd(edit: VideoEdit): Promise<Buffer> {
     const room = total - VOICE_START - 0.2;
     const tempo = Math.min(MAX_TEMPO, Math.max(1, spoken / room));
     const captions = timeCaptions(edit.voiceover, VOICE_START, spoken / tempo);
+    await Promise.all(edit.clips.map((clip,i)=>writeFile(/*turbopackIgnore: true*/ file(`shot${i}.mp4`),clip)));
+    const deadline=performance.now()+120000;
+    const shotFaces:Array<Rect[]|null>=[];for(let i=0;i<edit.clips.length;i++)shotFaces.push(await analyzeShotFaces(file(`shot${i}.mp4`),edit.shotSeconds[i],deadline));
+    // A short or incomplete clip can shift later cut times. Fail closed for
+    // the entire edit instead of trusting partially analyzed timing.
+    if(shotFaces.some(faces=>faces===null))shotFaces.fill(null);
+    const captionRegions=shotFaces.map(faces=>chooseCaption("9:16",faces));
+    let spanStart=0;
+    const spans=edit.shotSeconds.map(seconds=>{const start=spanStart;spanStart+=seconds;return {start,end:spanStart};});
+    const touched=(start:number,end:number)=>spans.flatMap((s,i)=>s.start<end&&s.end>start?[i]:[]);
+    const collect=(indices:number[]):Rect[]|null=>indices.some(i=>shotFaces[i]===null)?null:indices.flatMap(i=>shotFaces[i]??[]);
+    const hookShots=touched(0,hookDuration),endShots=touched(endCardStart,total);
+    const blockers=(indices:number[])=>indices.flatMap(i=>captionRegions[i]?[captionRegions[i]!]:[]);
+    const hookPlan=chooseOverlays("9:16",collect(hookShots),{headline:!!edit.headline},blockers(hookShots));
+    const endPlan=chooseOverlays("9:16",collect(endShots),{headline:!!edit.headline,cta:edit.cta,ctaWidth:72+await measureCopyWidth(edit.cta,{name:edit.fontName,data:edit.font}),logo:!!edit.logoUrl},blockers(endShots));
+    let shotStart=0;
+    const captionSegments=edit.shotSeconds.flatMap((seconds,i)=>{
+     const begin=shotStart;shotStart+=seconds;
+     return captions.filter(c=>c.start<shotStart&&c.end>begin).map(c=>({...c,start:Math.max(begin,c.start),end:Math.min(shotStart,c.end),region:captionRegions[i]}));
+    });
 
     // Copy in scripts Satori can't shape arrives as images (see ad-text).
     const brand = { name: edit.fontName, data: edit.font };
-    const card = adTextStyles("9:16", edit.accentTextColor);
+    const card = adTextStyles("9:16", edit.accentTextColor,endPlan);
+    const hookStyle={...VIDEO_TEXT_STYLES.hook,fontSize:hookPlan.headline?.fontSize??72,maxWidth:hookPlan.headline?.width??936};
     const rtl = isRtl([edit.headline, edit.cta]);
     const [fonts, hook, headline, cta, ...captionTexts] = await Promise.all([
       fontsFor([edit.headline, edit.cta, edit.voiceover]),
-      prepareText(edit.headline, VIDEO_TEXT_STYLES.hook, brand),
+      prepareText(hookPlan.headline?edit.headline:"", hookStyle, brand),
       prepareText(edit.headline, card.headline, brand),
       prepareText(edit.cta, card.cta, brand),
-      ...captions.map((c) =>
+      ...captionSegments.map((c) =>
         prepareText(c.text, VIDEO_TEXT_STYLES.caption, brand),
       ),
     ]);
@@ -84,11 +109,12 @@ export async function editVideoAd(edit: VideoEdit): Promise<Buffer> {
       ]);
     const layers = await Promise.all([
       render(
-        <HookLayer headline={hook} fontFamily={edit.fontName} rtl={rtl} />,
+        <HookLayer headline={hook} fontFamily={edit.fontName} rtl={rtl} region={hookPlan.headline}/>,
       ),
       render(
         <EndCardLayer
           headline={headline}
+          placement={endPlan}
           cta={cta}
           rtl={rtl}
           fontFamily={edit.fontName}
@@ -97,15 +123,12 @@ export async function editVideoAd(edit: VideoEdit): Promise<Buffer> {
           logoUrl={edit.logoUrl}
         />,
       ),
-      ...captionTexts.map((text) =>
-        render(<CaptionLayer text={text} fontFamily={edit.fontName} />),
+      ...captionTexts.map((text,i) =>
+        render(<CaptionLayer text={text} fontFamily={edit.fontName} region={captionSegments[i].region}/>),
       ),
     ]);
 
     await Promise.all([
-      ...edit.clips.map((clip, i) =>
-        writeFile(/*turbopackIgnore: true*/ file(`shot${i}.mp4`), clip),
-      ),
       writeFile(/*turbopackIgnore: true*/ file("music.audio"), edit.music),
       ...layers.map((png, i) =>
         writeFile(/*turbopackIgnore: true*/ file(`layer${i}.png`), png),
@@ -119,7 +142,7 @@ export async function editVideoAd(edit: VideoEdit): Promise<Buffer> {
     const args = ["-y"];
     edit.clips.forEach((_, i) => args.push("-i", file(`shot${i}.mp4`)));
     args.push("-i", file("voice.mp3"), "-i", file("music.audio"));
-    // The hook and end card fade, so they run as 30 fps streams; captions
+    // Hook and closing copy fade over full-frame footage in selected safe areas; captions
     // are single frames that overlay holds until it's told to stop.
     layers.forEach((_, i) =>
       args.push(
@@ -134,18 +157,18 @@ export async function editVideoAd(edit: VideoEdit): Promise<Buffer> {
     const f: string[] = [];
     edit.shotSeconds.forEach((s, i) =>
       f.push(
-        `[${i}:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,setsar=1,fps=30,trim=duration=${s},setpts=PTS-STARTPTS[s${i}]`,
+        `[${i}:v]${VIDEO_CROP},trim=duration=${s},setpts=PTS-STARTPTS[s${i}]`,
       ),
     );
     f.push(
       `${edit.shotSeconds.map((_, i) => `[s${i}]`).join("")}concat=n=${n}:v=1:a=0[v0]`,
     );
     f.push(
-      `[${layerIn(0)}:v]format=rgba,fade=t=in:st=0.15:d=0.25:alpha=1,fade=t=out:st=${HOOK_END - 0.25}:d=0.25:alpha=1[hook]`,
-      `[v0][hook]overlay=0:0:enable='lt(t,${HOOK_END})'[v1]`,
+      `[${layerIn(0)}:v]format=rgba,fade=t=in:st=0.15:d=0.25:alpha=1,fade=t=out:st=${Math.max(.15,hookDuration - .25)}:d=0.25:alpha=1[hook]`,
+      `[v0][hook]overlay=0:0:enable='lt(t,${hookDuration})'[v1]`,
     );
     let last = "v1";
-    captions.forEach((c, i) => {
+    captionSegments.forEach((c, i) => {
       const next = `c${i}`;
       f.push(
         `[${last}][${layerIn(2 + i)}:v]overlay=0:0:enable='between(t,${c.start.toFixed(2)},${c.end.toFixed(2)})'[${next}]`,
@@ -193,7 +216,8 @@ export async function editVideoAd(edit: VideoEdit): Promise<Buffer> {
       file("out.mp4"),
     );
     await execFileAsync(ffmpegPath, args, {
-      timeout: 120_000,
+      // A 30-second ad has many shots and captions to lay over each other.
+      timeout: 240_000,
       maxBuffer: 10 * 1024 * 1024,
     });
     return await readFile(/*turbopackIgnore: true*/ file("out.mp4"));

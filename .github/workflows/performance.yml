@@ -1,0 +1,84 @@
+name: Website performance checks
+on:
+  push:
+    branches: [perf/public-media, main]
+  pull_request:
+permissions:
+  contents: read
+  actions: read
+  statuses: read
+jobs:
+  performance:
+    if: github.ref != 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Installed image, font, loading, and prefetch guidance
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          for name in ['image.md','lazy-loading.md','font.md','link.md']:
+            for p in Path('node_modules/next/dist/docs/01-app').rglob(name):
+              print(f'GUIDE {p}\n{p.read_text()[:24000]}')
+          PY
+      - run: node --experimental-strip-types --test tests/*.test.ts
+      - run: npx next typegen && npx tsc --noEmit
+      - name: Lint performance changes
+        run: npx eslint src/app/_landing/use-media-activity.ts src/app/_landing/phone-feed.tsx src/app/_landing/angle-explorer.tsx src/app/_landing/before-after.tsx src/app/_landing/chrome.tsx src/app/_landing/sticky-cta.tsx src/app/_landing/spotlight.tsx src/app/_landing/hero-stage.tsx 'src/app/[locale]/layout.tsx' 'src/app/[locale]/page.tsx' next.config.ts src/lib/image-preview.ts 'src/app/api/creatives/[id]/image/route.ts' 'src/app/[locale]/dashboard/products/[id]/generation-block.tsx'
+      - run: npm install --prefix /tmp/gooidy-performance --no-package-lock playwright@1.56.1 lighthouse@12.8.2
+      - run: /tmp/gooidy-performance/node_modules/.bin/playwright install --with-deps chromium
+      - name: Compare media loading and verify playback policy
+        run: node scripts/check-media-performance.mjs
+        env:
+          PLAYWRIGHT_MODULE_PATH: /tmp/gooidy-performance/node_modules/playwright
+          PERFORMANCE_BASELINE_SHA: 024af206dca82c0367013c02d458f91f3a3221d4
+      - name: Product spacing and public control regression checks
+        run: node scripts/check-showcase-browser.mjs
+        env:
+          PLAYWRIGHT_MODULE_PATH: /tmp/gooidy-performance/node_modules/playwright
+      - name: Measure live mobile performance
+        run: node scripts/measure-public-performance.mjs
+        env:
+          PLAYWRIGHT_MODULE_PATH: /tmp/gooidy-performance/node_modules/playwright
+          GH_TOKEN: ${{ github.token }}
+          VERIFY_DEPLOYMENT: ${{ github.ref == 'refs/heads/main' }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: public-performance-results
+          path: |
+            /tmp/public-performance-*.json
+            /tmp/performance-summary.json
+            /tmp/media-comparison.json
+  production-measure:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --prefix /tmp/gooidy-performance --no-package-lock playwright@1.56.1 lighthouse@12.8.2
+      - run: /tmp/gooidy-performance/node_modules/.bin/playwright install --with-deps chromium
+      - name: Measure deployed production commit
+        run: node scripts/measure-public-performance.mjs
+        env:
+          PLAYWRIGHT_MODULE_PATH: /tmp/gooidy-performance/node_modules/playwright
+          GH_TOKEN: ${{ github.token }}
+          VERIFY_DEPLOYMENT: 'true'
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: public-performance-results
+          path: |
+            /tmp/public-performance-*.json
+            /tmp/performance-summary.json

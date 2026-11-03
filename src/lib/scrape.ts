@@ -1,5 +1,6 @@
 import "server-only";
 import { UserError } from "@/lib/errors";
+import { fetchPublicUrl, parsePublicHttpUrl, verifyPublicUrl } from "@/lib/public-fetch";
 
 export type ScrapedPage = {
   url: string;
@@ -16,48 +17,16 @@ export type ScrapedPage = {
 const MAX_HTML_BYTES = 2_000_000;
 const MAX_TEXT_CHARS = 12_000;
 
-// Rejects non-http(s) URLs and obvious internal hosts so the scraper can't be
-// pointed at private infrastructure.
+// Syntax/address checks here; every actual request also resolves and pins DNS.
 export function parsePublicUrl(raw: string): URL {
-  let url: URL;
-  try {
-    url = new URL(
-      raw.trim().match(/^https?:\/\//i) ? raw.trim() : `https://${raw.trim()}`,
-    );
-  } catch {
-    throw new UserError("That doesn't look like a valid URL.");
-  }
-  if (url.protocol !== "http:" && url.protocol !== "https:") {
-    throw new UserError("Only http and https links are supported.");
-  }
-  const host = url.hostname.toLowerCase();
-  if (
-    host === "localhost" ||
-    host.endsWith(".local") ||
-    host.endsWith(".internal") ||
-    /^(127\.|10\.|192\.168\.|169\.254\.|0\.)/.test(host) ||
-    /^172\.(1[6-9]|2\d|3[01])\./.test(host) ||
-    host.includes(":") ||
-    !host.includes(".")
-  ) {
-    throw new UserError("That address isn't a public website.");
-  }
-  return url;
+  try { return parsePublicHttpUrl(raw); }
+  catch { throw new UserError("That address isn't a supported public website."); }
 }
 
-async function fetchText(url: URL, accept: string): Promise<string | null> {
-  const res = await fetch(url, {
-    headers: {
-      accept,
-      "user-agent":
-        "Mozilla/5.0 (compatible; GooidyBot/0.1; +https://gooidy.com)",
-    },
-    redirect: "follow",
-    signal: AbortSignal.timeout(15_000),
-  });
-  if (!res.ok) return null;
-  const body = await res.text();
-  return body.slice(0, MAX_HTML_BYTES);
+async function fetchText(url: URL, accept: string) {
+  const response = await fetchPublicUrl(url, { maxBytes: MAX_HTML_BYTES, accept, timeoutMs: 15000 });
+  if (response.status < 200 || response.status >= 300) return null;
+  return { text: response.body.toString("utf8"), url: response.url };
 }
 
 function decodeEntities(s: string): string {
@@ -125,9 +94,7 @@ function visibleText(html: string): string {
 function absolutize(src: string, base: URL): string | null {
   try {
     const u = new URL(src.startsWith("//") ? `https:${src}` : src, base);
-    return u.protocol === "https:" || u.protocol === "http:"
-      ? u.toString()
-      : null;
+    return parsePublicHttpUrl(u).toString();
   } catch {
     return null;
   }
@@ -168,7 +135,7 @@ async function tryShopify(url: URL): Promise<Partial<ScrapedPage> | null> {
   const body = await fetchText(jsonUrl, "application/json").catch(() => null);
   if (!body) return null;
   try {
-    const { product } = JSON.parse(body) as {
+    const { product } = JSON.parse(body.text) as {
       product?: {
         title?: string;
         body_html?: string;
@@ -189,16 +156,15 @@ async function tryShopify(url: URL): Promise<Partial<ScrapedPage> | null> {
 }
 
 export async function scrapePage(rawUrl: string): Promise<ScrapedPage> {
-  const url = parsePublicUrl(rawUrl);
-  const html = await fetchText(url, "text/html,application/xhtml+xml").catch(
-    () => null,
-  );
-  if (!html) {
+  const requestedUrl = parsePublicUrl(rawUrl);
+  const response = await fetchText(requestedUrl, "text/html,application/xhtml+xml").catch(() => null);
+  if (!response) {
     throw new UserError(
       "We couldn't open that page. Check the link and try again.",
     );
   }
 
+  const { text: html, url } = response;
   const product = findJsonLdProduct(html);
   const shopify = await tryShopify(url);
 
@@ -222,6 +188,26 @@ export async function scrapePage(rawUrl: string): Promise<ScrapedPage> {
     .flatMap((src) => (src ? [absolutize(src, url)] : []))
     .filter((u): u is string => Boolean(u));
 
+  // Validate extracted URLs as well, including URLs in Shopify/JSON-LD data.
+  // Cache only within this parse; every later download/provider handoff checks again.
+  const checks = new Map<string, Promise<boolean>>();
+  const validate = async (raw: string | null): Promise<string | null> => {
+    if (!raw) return null;
+    try {
+      const candidate = parsePublicHttpUrl(raw);
+      let check = checks.get(candidate.hostname);
+      if (!check) {
+        check = verifyPublicUrl(candidate).then(() => true, () => false);
+        checks.set(candidate.hostname, check);
+      }
+      return await check ? candidate.toString() : null;
+    } catch { return null; }
+  };
+  const [safeImages, logoUrl] = await Promise.all([
+    Promise.all([...new Set(images)].slice(0,8).map(validate)),
+    validate(findLogo(html,url)),
+  ]);
+
   return {
     url: url.toString(),
     title:
@@ -240,12 +226,12 @@ export async function scrapePage(rawUrl: string): Promise<ScrapedPage> {
       (offers?.price != null
         ? `${offers.price}${offers.priceCurrency ? ` ${offers.priceCurrency}` : ""}`
         : null),
-    imageUrls: [...new Set(images)].slice(0, 8),
+    imageUrls: safeImages.filter((value): value is string => value !== null),
     text: visibleText(html),
     themeColor: (() => {
       const c = meta(html, "theme-color");
       return c && /^#[0-9a-fA-F]{6}$/.test(c) ? c.toLowerCase() : null;
     })(),
-    logoUrl: findLogo(html, url),
+    logoUrl,
   };
 }

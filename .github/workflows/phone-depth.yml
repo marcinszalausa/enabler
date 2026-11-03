@@ -1,0 +1,33 @@
+name: Phone depth checks
+on:
+  push:
+    branches: [fix/phone-depth]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  phone-depth:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Installed CSS guidance
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          for p in Path('node_modules/next/dist/docs/01-app').rglob('*css*.md'):
+            print(f'GUIDE {p}\n{p.read_text()[:16000]}')
+          PY
+      - run: npx next typegen && npx tsc --noEmit
+      - run: npx eslint src/app/_landing/iphone.tsx src/app/_landing/phone-feed.tsx src/app/_landing/hero-stage.tsx
+      - run: npm install --prefix /tmp/gooidy-phone-browser --no-package-lock playwright@1.56.1
+      - run: /tmp/gooidy-phone-browser/node_modules/.bin/playwright install --with-deps chromium
+      - name: Inspect 3D geometry and capture light/dark phone previews
+        run: node scripts/check-phone-depth.mjs
+        env:
+          PLAYWRIGHT_MODULE_PATH: /tmp/gooidy-phone-browser/node_modules/playwright

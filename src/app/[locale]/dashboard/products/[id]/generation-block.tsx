@@ -1,10 +1,26 @@
+import {AdGallery} from "./ad-gallery";
 import { setShowcase } from "./showcase-actions";
-import { VIDEO_SECONDS, VIDEOS_PER_GENERATION } from "@/lib/video";
-import { Chip, DownloadIcon, ProgressCard, smallButton } from "../../ui";
+import { DEFAULT_VIDEO_OPTIONS, lengthForRunCost } from "@/lib/video-options";
+import { Chip, DownloadIcon, smallButton } from "../../ui";
+import {
+  PublishDialog,
+  type PublishAccount,
+} from "./publish-dialog";
+import { platformName } from "@/lib/social/platforms";
 import type { Messages } from "@/i18n/messages";
 import { fmt } from "@/i18n/format";
+import { GenerationStatus } from "./generation-status";
+import { generationPresentation, type CreditReceipt } from "@/lib/generation-presentation";
 
-type Creative = {
+// The latest post of an ad, for the line under it.
+export type AdPost = {
+  status: keyof Messages["publish"]["status"];
+  platforms: string[];
+  // Already worded in the page's language and the schedule's time zone.
+  when: string | null;
+};
+
+export type Creative = {
   id: string;
   kind: "image" | "video";
   aspect: string;
@@ -21,7 +37,9 @@ export type Generation = {
   error: string | null;
   created_at: string;
   showcased_at: string | null;
+  cost_credits: number;
   creatives: Creative[];
+  video_jobs?: { status: string }[];
 };
 
 export function GenerationBlock({
@@ -30,12 +48,28 @@ export function GenerationBlock({
   generation: g,
   imageVersion,
   canShowcase,
+  productUrl,
+  accounts,
+  nextSlot,
+  posts,
+  receipt,
+  canRetry = false,
+  productId,
+  workspaceId,
 }: {
   t: Messages;
   locale: string;
   generation: Generation;
   imageVersion: string;
   canShowcase: boolean;
+  productUrl: string;
+  accounts: PublishAccount[] | null;
+  nextSlot: string | null;
+  posts: Record<string, AdPost>;
+  receipt?: CreditReceipt | null;
+  canRetry?: boolean;
+  productId?: string;
+  workspaceId?: string;
 }) {
   const when = new Date(g.created_at).toLocaleString(locale, {
     dateStyle: "medium",
@@ -43,25 +77,10 @@ export function GenerationBlock({
   });
 
   const video = g.type === "video_ads";
+  // A run's length isn't stored; every length has its own price.
+  const seconds = Number(lengthForRunCost(g.cost_credits) ?? DEFAULT_VIDEO_OPTIONS.length);
 
-  if (g.status === "queued" || g.status === "running") {
-    return (
-      <ProgressCard title={video ? t.app.makingVideos : t.app.makingImages}>
-        {video
-          ? fmt(t.app.makingVideosBody, { count: VIDEOS_PER_GENERATION })
-          : t.app.makingImagesBody}
-      </ProgressCard>
-    );
-  }
-
-  if (g.status === "failed") {
-    return (
-      <div className="rounded-2xl border border-danger/30 bg-danger-bg p-6 text-sm">
-        <p className="font-medium text-danger">{t.app.failed}</p>
-        {g.error && <p className="mt-1 text-muted">{g.error}</p>}
-      </div>
-    );
-  }
+  const view = generationPresentation(g);
 
   const creatives = [...g.creatives].sort(
     (a, b) =>
@@ -70,7 +89,8 @@ export function GenerationBlock({
   );
 
   return (
-    <div>
+    <div id={`ad-${g.id}`} className="scroll-mt-40">
+      <GenerationStatus t={t} generation={g} receipt={receipt} canRetry={canRetry} />
       <div className="flex flex-wrap items-center justify-between gap-2">
         <h2 className="flex flex-wrap items-baseline gap-x-2 text-sm">
           <span className="font-medium">
@@ -84,30 +104,46 @@ export function GenerationBlock({
             )}
           </span>
           <span className="text-muted">{when}</span>
-          {g.error && <span className="text-warn">{g.error}</span>}
         </h2>
-        {canShowcase && (
-          <form action={setShowcase}>
-            <input type="hidden" name="generationId" value={g.id} />
-            <input
-              type="hidden"
-              name="show"
-              value={g.showcased_at ? "0" : "1"}
+        <div className="flex flex-wrap items-center gap-2">
+          {canRetry && accounts && !view.active && g.status === "succeeded" && creatives.length > 0 && (
+            <PublishDialog
+              generationId={g.id}
+              creatives={creatives.map((c) => ({
+                id: c.id,
+                kind: c.kind,
+                aspect: c.aspect,
+                caption: [c.primary_text, productUrl]
+                  .filter(Boolean)
+                  .join("\n\n"),
+              }))}
+              accounts={accounts}
+              nextSlot={nextSlot}
             />
-            <button
-              type="submit"
-              className={`rounded-lg border px-3 py-1.5 text-sm font-medium transition ${
-                g.showcased_at
-                  ? "border-ok/40 bg-ok-bg text-ok"
-                  : "border-line-strong bg-raised hover:border-accent hover:text-accent"
-              }`}
-            >
-              {g.showcased_at ? t.app.shown : t.app.show}
-            </button>
-          </form>
-        )}
+          )}
+          {canShowcase && g.status === "succeeded" && creatives.length > 0 && (
+            <form action={setShowcase}>
+              <input type="hidden" name="generationId" value={g.id} />
+              <input
+                type="hidden"
+                name="show"
+                value={g.showcased_at ? "0" : "1"}
+              />
+              <button
+                type="submit"
+                className={`rounded-lg border px-3 py-1.5 text-sm font-medium transition ${
+                  g.showcased_at
+                    ? "border-ok/40 bg-ok-bg text-ok"
+                    : "border-line-strong bg-raised hover:border-accent hover:text-accent"
+                }`}
+              >
+                {g.showcased_at ? t.app.shown : t.app.show}
+              </button>
+            </form>
+          )}
+        </div>
       </div>
-      <ul
+      {!view.active&&creatives.length>0?<AdGallery creatives={creatives} generationId={g.id} imageVersion={imageVersion} seconds={seconds} canPublish={canRetry&&accounts!==null&&g.status==="succeeded"} productId={productId} workspaceId={workspaceId} posts={posts}/>:<ul
         className={`mt-4 grid grid-cols-2 items-start gap-4 ${video ? "md:grid-cols-3" : "md:grid-cols-4"}`}
       >
         {creatives.map((c) => (
@@ -127,7 +163,7 @@ export function GenerationBlock({
             ) : (
               // eslint-disable-next-line @next/next/no-img-element -- rendered on demand by our own route
               <img
-                src={`/api/creatives/${c.id}/image?v=${imageVersion}`}
+                src={`/api/creatives/${c.id}/image?preview=1&layout=face-aware-v2&v=${imageVersion}`}
                 alt={c.headline ?? "Ad creative"}
                 loading="lazy"
                 className={`w-full rounded-xl object-cover ${
@@ -145,7 +181,7 @@ export function GenerationBlock({
                 )}
                 <span className="text-xs text-muted">
                   {video
-                    ? fmt(t.app.reel, { seconds: VIDEO_SECONDS })
+                    ? fmt(t.app.reel, { seconds })
                     : c.aspect === "1:1"
                       ? t.app.feedSize
                       : t.app.storySize}
@@ -154,17 +190,38 @@ export function GenerationBlock({
               <p className="line-clamp-3 text-sm leading-relaxed">
                 {c.primary_text}
               </p>
-              <a
-                href={`/api/creatives/${c.id}/${video ? "video" : "image"}?download=1`}
-                className={`${smallButton} mt-auto self-start`}
-              >
-                <DownloadIcon />
-                {video ? t.app.downloadMp4 : t.app.download}
-              </a>
+              {posts[c.id] && <PostLine t={t} post={posts[c.id]} />}
+              <div className="mt-auto flex flex-wrap gap-2">
+                <a
+                  href={`/api/creatives/${c.id}/${video ? "video" : "image"}?download=1&layout=face-aware-v2`}
+                  className={smallButton}
+                >
+                  <DownloadIcon />
+                  {video ? t.app.downloadMp4 : t.app.download}
+                </a>
+              </div>
             </div>
           </li>
         ))}
-      </ul>
+      </ul>}
+
     </div>
+  );
+}
+
+function PostLine({ t, post }: { t: Messages; post: AdPost }) {
+  const tone =
+    post.status === "published"
+      ? "text-ok"
+      : post.status === "failed" || post.status === "partial"
+        ? "text-danger"
+        : "text-accent";
+  return (
+    <p className={`text-xs ${tone}`}>
+      <span className="font-medium">{t.publish.status[post.status]}</span>
+      {post.when && ` · ${post.when}`}
+      {post.platforms.length > 0 &&
+        ` · ${post.platforms.map(platformName).join(", ")}`}
+    </p>
   );
 }

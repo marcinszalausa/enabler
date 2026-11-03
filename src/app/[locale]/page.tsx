@@ -1,8 +1,12 @@
-import type { CSSProperties } from "react";
+import {
+  distinctProducts,
+  heroProducts,
+  productKey,
+} from "@/lib/product-display";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
+import Image from "@/app/_landing/ad-image";
 import { FALLBACK_AD, type FeedAd } from "@/app/_landing/reel";
 import { PhoneFeed } from "@/app/_landing/phone-feed";
 import { getShowcase, type ShowcaseRun } from "@/lib/showcase";
@@ -16,8 +20,16 @@ import { Reveal } from "@/app/_landing/reveal";
 import { Placements, type PlacementAd } from "@/app/_landing/placements";
 import { StickyCta } from "@/app/_landing/sticky-cta";
 import { Spotlight } from "@/app/_landing/spotlight";
+import { CreditGuide } from "@/app/_landing/credit-guide";
+import {
+  ASPECTS,
+  ADS_PER_GENERATION,
+  GENERATION_COST,
+  CREDITS_PER_IMAGE,
+} from "@/lib/pipeline";
 import { BeforeAfter } from "@/app/_landing/before-after";
-import { alternates, isLocale, localePath, type Locale } from "@/i18n/config";
+import { isLocale, localePath, type Locale } from "@/i18n/config";
+import { homeJsonLd, pageMetadata } from "@/lib/seo";
 import { getMessages, type Messages } from "@/i18n/messages";
 import { fmt } from "@/i18n/format";
 import { BOOST_PRICE, PLAN_PRICES, PRO_INTRO, usd } from "@/lib/pricing";
@@ -29,11 +41,7 @@ export async function generateMetadata({
   const { locale } = await params;
   if (!isLocale(locale)) return {};
   const t = await getMessages(locale);
-  return {
-    title: t.meta.title,
-    description: t.meta.description,
-    alternates: alternates(locale, "/"),
-  };
+  return pageMetadata(locale, "/", t.meta.title, t.meta.description);
 }
 
 // Prices stay in dollars in every language (buyers pay in their own currency
@@ -48,32 +56,45 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
   if (!isLocale(locale)) notFound();
   const t = await getMessages(locale);
   const { runs, images, videos } = await showcaseAds(t);
-  const feed = heroFeed(images, videos);
-  // Side phones show other ads than the one the middle phone opens on.
-  const sides = images.length > 2 ? images.slice(-2) : [];
+  const hero = heroProducts(heroFeed(images, videos));
   const run = runs[0];
   const pictured = runs.find((r) => r.productImage);
   return (
     <div className="landing flex flex-1 flex-col bg-bg text-fg">
       <Nav />
-      <main className="flex-1">
-        <Hero t={t} feed={feed} left={sides[0]} right={sides[1]} />
+      <main id="main-content" tabIndex={-1} className="flex-1">
+        <Hero t={t} feed={hero.feed} left={hero.left} right={hero.right} />
         <WorksWith t={t} />
         {pictured && <FromPhoto run={pictured} />}
         {run ? <HowItWorksLive t={t} run={run} /> : <HowItWorks t={t} />}
         {videos.length > 0 && <VideoAds t={t} ads={videos} />}
         {run && <Angles t={t} run={run} />}
-        {run && <WhereItRuns t={t} run={run} />}
+        {runs.length > 0 && <WhereItRuns t={t} runs={runs} />}
         {runs.length > 0 && <Examples t={t} locale={locale} runs={runs} />}
         <Features t={t} run={run} />
         <Pricing t={t} locale={locale} />
         <Faq t={t} />
-        <FinalCta t={t} />
+        <FinalCta t={t} locale={locale} />
       </main>
       <Footer />
       <StickyCta />
       <Spotlight />
       <Reveal />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            homeJsonLd(
+              locale,
+              t.meta.description,
+              t.home.plans.map((p, i) => ({
+                name: p.name,
+                price: Object.values(PLAN_PRICES)[i],
+              })),
+            ),
+          ).replace(/</g, "\\u003c"),
+        }}
+      />
     </div>
   );
 }
@@ -84,6 +105,14 @@ async function showcaseAds(t: Messages) {
     getShowcase(),
     getShowcase("video_ads"),
   ]);
+  const posters = new Map(
+    imageRuns.flatMap((run) => {
+      const still = run.ads.find((ad) => ad.aspect === "9:16");
+      return still
+        ? [[productKey(run.productUrl), image(still.id)] as const]
+        : [];
+    }),
+  );
   return {
     runs: imageRuns,
     images: roundRobin(imageRuns, (r, a) => ({
@@ -92,7 +121,10 @@ async function showcaseAds(t: Messages) {
     })),
     videos: roundRobin(videoRuns, (r, a) => ({
       ...about(r, a),
-      video: { src: `/api/creatives/${a.id}/video` },
+      video: {
+        src: `/api/creatives/${a.id}/video`,
+        poster: posters.get(productKey(r.productUrl)),
+      },
       format: fmt(t.home.videoFormat, COUNTS),
       sound: true,
     })),
@@ -103,6 +135,7 @@ type Ad = ShowcaseRun["ads"][number];
 
 function about(r: ShowcaseRun, a: Ad): FeedAd {
   return {
+    productKey: productKey(r.productUrl),
     alt: a.headline,
     angle: a.angle,
     store: r.store,
@@ -123,18 +156,18 @@ function roundRobin(
   return ads;
 }
 
-// The hero phone opens on a video ad when there is one, then alternates.
+// Paint the hero with an optimized still immediately, then rotate into video.
 // Falls back to the Soft Mila clip before any run is picked.
 function heroFeed(images: FeedAd[], videos: FeedAd[]): FeedAd[] {
   const feed: FeedAd[] = [];
-  for (let i = 0; feed.length < 6 && (videos[i] || images[i]); i++) {
+  for (let i = 0; videos[i] || images[i]; i++) {
+    if (images[i]) feed.push(images[i]);
     if (videos[i]) feed.push(videos[i]);
-    if (images[i] && feed.length < 6) feed.push(images[i]);
   }
   return feed.length ? feed : [FALLBACK_AD];
 }
 
-const image = (id: string) => `/api/creatives/${id}/image`;
+const image = (id: string) => `/api/creatives/${id}/image?layout=face-aware-v2`;
 
 function duration(seconds: number) {
   if (seconds < 60) return `${seconds} s`;
@@ -203,7 +236,7 @@ function WorksWith({ t }: { t: Messages }) {
     <section className="border-y border-line">
       <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-4 py-8 sm:flex-row sm:justify-between">
         <p className="text-sm text-muted">{t.home.worksWith}</p>
-        <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-base font-semibold text-muted/80">
+        <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-base font-semibold text-muted">
           <span>Shopify</span>
           <span>WooCommerce</span>
           <span>Wix</span>
@@ -255,24 +288,32 @@ function FromPhoto({ run }: { run: ShowcaseRun }) {
 }
 
 // One real ad from the run, shown inside each app it runs in.
-function WhereItRuns({ t, run }: { t: Messages; run: ShowcaseRun }) {
-  const story = run.ads.find((a) => a.aspect === "9:16");
-  const square = run.ads.find((a) => a.aspect === "1:1");
-  if (!story || !square) return null;
-  const ad: PlacementAd = {
-    story: { image: image(story.id), alt: story.headline },
-    square: {
-      image: image(square.id),
-      alt: square.headline,
-      primaryText: square.primaryText,
-    },
-    store: run.store,
-  };
+function WhereItRuns({ t, runs }: { t: Messages; runs: ShowcaseRun[] }) {
+  const ads = distinctProducts(
+    runs.flatMap((run) => {
+      const story = run.ads.find((a) => a.aspect === "9:16");
+      const square = run.ads.find((a) => a.aspect === "1:1");
+      if (!story || !square) return [];
+      return [
+        {
+          productKey: productKey(run.productUrl),
+          story: { image: image(story.id), alt: story.headline },
+          square: {
+            image: image(square.id),
+            alt: square.headline,
+            primaryText: square.primaryText,
+          },
+          store: run.store,
+        } satisfies PlacementAd,
+      ];
+    }),
+  ).slice(0, 4);
+  if (!ads.length) return null;
   return (
     <section className="reveal mx-auto max-w-6xl px-4 pb-24">
-      <SectionHeading title={t.home.whereTitle} sub={t.home.whereSub} />
+      <SectionHeading title={t.home.whereTitle} />
       <div className="mt-14">
-        <Placements ad={ad} />
+        <Placements ads={ads} />
       </div>
     </section>
   );
@@ -334,46 +375,32 @@ function Examples({
   locale: Locale;
   runs: ShowcaseRun[];
 }) {
-  const all = runs.flatMap((r) => r.ads);
-  const rows = [
-    all.filter((a) => a.aspect === "9:16"),
-    all.filter((a) => a.aspect === "1:1"),
-  ].filter((row) => row.length > 0);
+  const row = distinctProducts(
+    runs.flatMap((run) => {
+      const ad = run.ads.find((a) => a.aspect === "9:16") ?? run.ads[0];
+      return ad ? [{ ...ad, productKey: productKey(run.productUrl) }] : [];
+    }),
+  );
   return (
     <section className="reveal overflow-hidden py-24">
       <div className="mx-auto max-w-6xl px-4">
-        <SectionHeading title={t.home.examplesTitle} sub={t.home.examplesSub} />
+        <SectionHeading title={t.home.examplesTitle} sub={t.useCases.badge} />
       </div>
-      <div className="mt-14 flex flex-col gap-5">
-        {rows.map((row, r) => (
-          <div key={r} className="marquee">
-            <div
-              className={`marquee-track ${r % 2 ? "reverse" : ""}`}
-              style={{ "--marquee-s": `${row.length * 6}s` } as CSSProperties}
-            >
-              {/* Twice, so the loop never shows a gap. */}
-              {[...row, ...row].map((a, i) => (
-                <Image
-                  key={i}
-                  src={image(a.id)}
-                  alt={i < row.length ? a.headline : ""}
-                  width={1080}
-                  height={a.aspect === "9:16" ? 1920 : 1080}
-                  sizes={
-                    a.aspect === "9:16"
-                      ? "(min-width: 40rem) 214px, 169px"
-                      : "(min-width: 40rem) 260px, 220px"
-                  }
-                  className={`shrink-0 rounded-2xl border border-line object-cover shadow-[0_20px_50px_-30px_rgb(var(--t-shadow)/0.5)] ${
-                    a.aspect === "9:16"
-                      ? "h-[300px] w-[169px] sm:h-[380px] sm:w-[214px]"
-                      : "h-[220px] w-[220px] sm:h-[260px] sm:w-[260px]"
-                  }`}
-                />
-              ))}
-            </div>
-          </div>
-        ))}
+      <div className="mt-14 overflow-x-auto pb-5" data-product-group="examples">
+        <div className="flex w-max min-w-full justify-center gap-5 px-4">
+          {row.map((ad) => (
+            <Image
+              key={ad.productKey}
+              data-product-key={ad.productKey}
+              src={image(ad.id)}
+              alt={ad.headline}
+              width={1080}
+              height={ad.aspect === "9:16" ? 1920 : 1080}
+              sizes="(min-width: 40rem) 214px, 169px"
+              className={`shrink-0 rounded-2xl border border-line object-cover shadow-xl ${ad.aspect === "9:16" ? "h-[300px] w-[169px] sm:h-[380px] sm:w-[214px]" : "h-[169px] w-[169px] sm:h-[214px] sm:w-[214px]"}`}
+            />
+          ))}
+        </div>
       </div>
       <p className="mt-10 text-center">
         <Link
@@ -498,14 +525,21 @@ function Pricing({ t, locale }: { t: Messages; locale: Locale }) {
   // Free, then Pro at its intro price (renewing monthly), then the yearly
   // Boost add-on, as Zeely lays it out.
   const cards = [
-    { ...free, usd: 0, period: "", note: null },
+    { ...free, usd: 0, period: "", note: null, creditCount: 100 },
     {
       ...pro,
       usd: PRO_INTRO.usd,
       period: ` ${fmt(t.home.introPeriod, { days: PRO_INTRO.days })}`,
       note: fmt(t.home.then, { price: usd(PLAN_PRICES.pro, locale) }),
+      creditCount: 1000,
     },
-    { ...boost, usd: BOOST_PRICE, period: boost.period, note: null },
+    {
+      ...boost,
+      usd: BOOST_PRICE,
+      period: boost.period,
+      note: null,
+      creditCount: 0,
+    },
   ];
   return (
     <section id="pricing" className="scroll-mt-16 bg-surface py-20">
@@ -546,15 +580,25 @@ function Pricing({ t, locale }: { t: Messages; locale: Locale }) {
               />
               <p className="mt-1 text-sm text-muted">{plan.credits}</p>
               <ul className="mt-6 flex-1 space-y-2.5 text-sm">
-                {plan.perks.map((perk) => (
+                {plan.perks.map((perk, index) => (
                   <li key={perk} className="flex gap-2">
                     <span className="text-accent">✓</span>
-                    {perk}
+                    {index === 0 && plan.creditCount
+                      ? fmt(t.app.imageAds, {
+                          count: (
+                            plan.creditCount / CREDITS_PER_IMAGE
+                          ).toLocaleString(locale),
+                        })
+                      : perk}
                   </li>
                 ))}
               </ul>
               <Link
-                href={i === 0 ? "/dashboard" : "/dashboard/billing"}
+                href={localePath(
+                  locale,
+                  i === 0 ? "/start" : "/dashboard/billing",
+                )}
+                prefetch={false}
                 className={`mt-8 rounded-xl px-5 py-2.5 text-center text-sm font-medium transition ${
                   i === FEATURED
                     ? "btn-primary"
@@ -567,6 +611,10 @@ function Pricing({ t, locale }: { t: Messages; locale: Locale }) {
           ))}
         </div>
         <p className="mt-8 text-center text-sm text-muted">{t.home.payNote}</p>
+        <CreditGuide
+          imageCost={GENERATION_COST}
+          imagesPerRun={ADS_PER_GENERATION * ASPECTS.length}
+        />
       </div>
     </section>
   );
@@ -605,7 +653,7 @@ function Faq({ t }: { t: Messages }) {
   );
 }
 
-function FinalCta({ t }: { t: Messages }) {
+function FinalCta({ t, locale }: { t: Messages; locale: Locale }) {
   return (
     <section className="px-4 pb-24">
       <div className="cta-panel relative mx-auto flex max-w-6xl flex-col items-center overflow-hidden rounded-[2rem] px-6 py-20 text-center text-white shadow-[0_40px_120px_-40px_#4f46e5]">
@@ -615,7 +663,7 @@ function FinalCta({ t }: { t: Messages }) {
         </h2>
         <p className="mt-4 text-lg text-white/80">{t.home.finalSub}</p>
         <form
-          action="/dashboard"
+          action={localePath(locale, "/start")}
           method="get"
           className="mt-9 flex w-full max-w-xl flex-col gap-2 rounded-2xl bg-white/10 p-2 ring-1 ring-white/25 backdrop-blur sm:flex-row"
         >

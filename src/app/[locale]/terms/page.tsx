@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { alternates, isLocale } from "@/i18n/config";
+import { isLocale } from "@/i18n/config";
+import { pageMetadata } from "@/lib/seo";
 import { getMessages } from "@/i18n/messages";
 import Link from "next/link";
 import { CONTACT_EMAIL, LegalPage } from "@/app/_landing/legal";
@@ -11,11 +12,12 @@ export async function generateMetadata({
   const { locale } = await params;
   if (!isLocale(locale)) return {};
   const t = await getMessages(locale);
-  return {
-    title: t.meta.termsTitle,
-    description: "The terms for using Gooidy.",
-    alternates: alternates(locale, "/terms"),
-  };
+  return pageMetadata(
+    locale,
+    "/terms",
+    t.meta.termsTitle,
+    "The terms for using Gooidy.",
+  );
 }
 
 export default async function Terms({ params }: PageProps<"/[locale]/terms">) {

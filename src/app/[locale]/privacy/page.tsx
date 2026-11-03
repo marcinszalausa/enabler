@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { alternates, isLocale } from "@/i18n/config";
+import { isLocale } from "@/i18n/config";
+import { pageMetadata } from "@/lib/seo";
 import { getMessages } from "@/i18n/messages";
 import { CONTACT_EMAIL, LegalPage } from "@/app/_landing/legal";
 
@@ -10,12 +11,12 @@ export async function generateMetadata({
   const { locale } = await params;
   if (!isLocale(locale)) return {};
   const t = await getMessages(locale);
-  return {
-    title: t.meta.privacyTitle,
-    description:
-      "What Gooidy collects, why, who helps us run it, and your choices.",
-    alternates: alternates(locale, "/privacy"),
-  };
+  return pageMetadata(
+    locale,
+    "/privacy",
+    t.meta.privacyTitle,
+    "What Gooidy collects, why, who helps us run it, and your choices.",
+  );
 }
 
 export default async function Privacy({

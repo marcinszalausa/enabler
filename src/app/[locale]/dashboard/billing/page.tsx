@@ -15,6 +15,7 @@ import {
   type PlanKey,
 } from "@/lib/billing";
 import { planName, usd } from "@/lib/pricing";
+import { CREDITS_PER_IMAGE } from "@/lib/image-pricing";
 import { BackLink } from "../ui";
 import { LocalPrice } from "@/app/_landing/local-price";
 import { CheckoutButton, ManageButton } from "./billing-buttons";
@@ -49,8 +50,7 @@ export default async function BillingPage({
   );
 }
 
-// One image ad uses one credit.
-const adsFor = (credits: number) => Math.round(credits / 2);
+const adsFor = (credits: number) => Math.floor(credits / CREDITS_PER_IMAGE);
 
 async function Billing({
   t,
