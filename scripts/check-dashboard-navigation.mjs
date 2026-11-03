@@ -9,12 +9,13 @@ let browser,server,log="";
 try{
  await mkdir(folder,{recursive:true});
  await writeFile(folder+"/page.tsx",[
+ 'import {Suspense} from "react";',
  'import {AppBar} from "@/app/_landing/chrome";',
  'import {AppNav} from "@/app/[locale]/dashboard/app-nav";',
  'import {AccountMenu} from "@/app/[locale]/dashboard/account-menu";',
  'import {ProductJourney} from "@/app/[locale]/dashboard/product-journey";',
  'import {getMessages} from "@/i18n/messages";import {isLocale} from "@/i18n/config";',
- 'export default async function Preview({params}:{params:Promise<{locale:string}>}){const {locale}=await params;if(!isLocale(locale))return null;const t=await getMessages(locale);return <div className="landing flex min-h-screen flex-col"><AppBar homeHref="/navigation-preview" tabs={<AppNav items={[{href:"/navigation-preview",label:t.app.products},{href:"/navigation-preview/publishing",label:t.publish.title},{href:"/navigation-preview/brand",label:t.app.brandKit}]}/>}><AccountMenu/></AppBar><main className="mx-auto w-full max-w-5xl p-4"><h1 className="text-2xl font-semibold">Navigation preview</h1><div data-state="preferences"><ProductJourney t={t} needsPreferences/></div><div data-state="new"><ProductJourney t={t}/></div><div data-state="running"><ProductJourney t={t} running/></div><div data-state="ready"><ProductJourney t={t} hasAds/></div><div data-state="posted"><ProductJourney t={t} hasAds posted/></div><div data-state="viewer"><ProductJourney t={t} hasAds canEdit={false}/></div><div className="h-[800px]"/>{["ad-preferences","generate-ads","your-ads"].map(id=><section id={id} key={id} tabIndex={-1} className="min-h-[600px] scroll-mt-40 border p-4">{id}</section>)}</main></div>}'
+ 'export default function Preview(props:{params:Promise<{locale:string}>}){return <Suspense fallback={<p>Loading…</p>}><PreviewContent {...props}/></Suspense>}async function PreviewContent({params}:{params:Promise<{locale:string}>}){const {locale}=await params;if(!isLocale(locale))return null;const t=await getMessages(locale);return <div className="landing flex min-h-screen flex-col"><AppBar homeHref="/navigation-preview" tabs={<AppNav items={[{href:"/navigation-preview",label:t.app.products},{href:"/navigation-preview/publishing",label:t.publish.title},{href:"/navigation-preview/brand",label:t.app.brandKit}]}/>}><AccountMenu/></AppBar><main className="mx-auto w-full max-w-5xl p-4"><h1 className="text-2xl font-semibold">Navigation preview</h1><div data-state="preferences"><ProductJourney t={t} needsPreferences/></div><div data-state="new"><ProductJourney t={t}/></div><div data-state="running"><ProductJourney t={t} running/></div><div data-state="ready"><ProductJourney t={t} hasAds/></div><div data-state="posted"><ProductJourney t={t} hasAds posted/></div><div data-state="viewer"><ProductJourney t={t} hasAds canEdit={false}/></div><div className="h-[800px]"/>{["ad-preferences","generate-ads","your-ads"].map(id=><section id={id} key={id} tabIndex={-1} className="min-h-[600px] scroll-mt-40 border p-4">{id}</section>)}</main></div>}'
  ].join("\n"));
  server=spawn(process.execPath,["node_modules/next/dist/bin/next","dev","-p","3109"],{env:{...process.env,NEXT_PUBLIC_SUPABASE_URL:"https://example.supabase.co",NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:"sb_publishable_fixture"},detached:true,stdio:["ignore","pipe","pipe"]});
  const capture=b=>{log=(log+b).slice(-16000);};server.stdout.on("data",capture);server.stderr.on("data",capture);
@@ -22,7 +23,7 @@ try{
  browser=await chromium.launch({headless:true});
  for(const [width,locale,theme] of [[320,"en","light"],[390,"pl","dark"],[390,"ar","light"],[768,"de","light"],[1440,"en","dark"]]){
   const page=await browser.newPage({viewport:{width,height:900},reducedMotion:"reduce"});const errors=[];let posts=0;
-  page.on("pageerror",e=>errors.push(e.message));page.on("request",r=>{if(r.method()==="POST")posts++;});
+  page.on("pageerror",e=>errors.push(e.message));page.on("request",r=>{if(r.method()==="POST"){const path=new URL(r.url()).pathname;if(!path.startsWith("/__nextjs")&&!path.startsWith("/_next")){posts++;console.log("UNEXPECTED_POST",path);}}});
   const prefix=locale==="en"?"":"/"+locale;
   const base="http://localhost:3109"+prefix+"/navigation-preview";
   await page.goto(base,{waitUntil:"networkidle",timeout:90000});
