@@ -20,7 +20,7 @@ try{
  const capture=b=>{log=(log+b).slice(-16000);};server.stdout.on("data",capture);server.stderr.on("data",capture);
  let ready=false;for(let i=0;i<100;i++){try{if((await fetch("http://localhost:3109/navigation-preview",{signal:AbortSignal.timeout(2000)})).ok){ready=true;break;}}catch{}await pause(1000);}assert.ok(ready,"Fixture ready");
  browser=await chromium.launch({headless:true});
- for(const [width,locale,theme] of [[320,"en","light"],[390,"pl","dark"],[390,"ar","light"],[1440,"en","dark"]]){
+ for(const [width,locale,theme] of [[320,"en","light"],[390,"pl","dark"],[390,"ar","light"],[768,"de","light"],[1440,"en","dark"]]){
   const page=await browser.newPage({viewport:{width,height:900},reducedMotion:"reduce"});const errors=[];let posts=0;
   page.on("pageerror",e=>errors.push(e.message));page.on("request",r=>{if(r.method()==="POST")posts++;});
   const prefix=locale==="en"?"":"/"+locale;
@@ -49,6 +49,7 @@ try{
    assert.equal(await group.locator("[data-next-step]").getAttribute("href"),href);
    assert.equal(await group.locator('li[aria-current="step"]').count(),step===null?0:1);
   }
+  await page.addStyleTag({content:"html{scroll-behavior:auto!important}"});
   for(const [state,id] of [["preferences","ad-preferences"],["new","generate-ads"],["ready","your-ads"]]){
    await page.locator('[data-state="'+state+'"] [data-next-step]').click();await pause(300);
    const target=await page.locator("#"+id).boundingBox(),header=await page.locator("header").boundingBox();
