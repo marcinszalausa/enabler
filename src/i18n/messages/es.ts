@@ -300,6 +300,10 @@ export const es: Messages = {
     story: "Story · 9:16",
     adText: "Texto del anuncio",
   },
+  recovery: {
+      "title": "No se pudo cargar esta página",
+      "body": "Inténtalo de nuevo o contáctanos si necesitas ayuda."
+  },
   notFound: {
     title: "Esta página no existe",
     body: "Puede que el enlace sea antiguo o esté mal escrito.",

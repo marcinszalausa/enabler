@@ -295,6 +295,10 @@ export const sv: Messages = {
     story: "Story · 9:16",
     adText: "Annonstext",
   },
+  recovery: {
+      "title": "Sidan kunde inte laddas",
+      "body": "Försök igen eller kontakta oss om du behöver hjälp."
+  },
   notFound: {
     title: "Den här sidan finns inte",
     body: "Länken kan vara gammal eller felskriven.",

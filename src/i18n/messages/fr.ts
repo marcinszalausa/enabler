@@ -301,6 +301,10 @@ export const fr: Messages = {
     story: "Story · 9:16",
     adText: "Texte de la pub",
   },
+  recovery: {
+      "title": "Cette page n’a pas pu se charger",
+      "body": "Réessayez ou contactez-nous si vous avez besoin d’aide."
+  },
   notFound: {
     title: "Cette page n'existe pas",
     body: "Le lien est peut-être ancien ou mal saisi.",

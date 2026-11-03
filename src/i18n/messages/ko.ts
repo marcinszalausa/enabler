@@ -285,6 +285,10 @@ export const ko: Messages = {
     story: "스토리 · 9:16",
     adText: "광고 문구",
   },
+  recovery: {
+      "title": "페이지를 불러오지 못했어요",
+      "body": "다시 시도하거나 도움이 필요하면 문의해 주세요."
+  },
   notFound: {
     title: "존재하지 않는 페이지입니다",
     body: "링크가 오래되었거나 잘못 입력되었을 수 있습니다.",

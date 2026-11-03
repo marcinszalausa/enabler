@@ -301,6 +301,10 @@ export const ro: Messages = {
     story: "Story · 9:16",
     adText: "Textul reclamei",
   },
+  recovery: {
+      "title": "Pagina nu a putut fi încărcată",
+      "body": "Încearcă din nou sau contactează-ne dacă ai nevoie de ajutor."
+  },
   notFound: {
     title: "Această pagină nu există",
     body: "Linkul poate fi vechi sau scris greșit.",

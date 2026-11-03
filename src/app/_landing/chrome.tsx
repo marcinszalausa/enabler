@@ -1,6 +1,7 @@
 "use client";
 
-import type { ReactNode } from "react";
+import {useState,type ReactNode} from "react";
+import {productLink} from "@/lib/onboarding";
 import Link from "next/link";
 import { ThemeToggle } from "./theme-toggle";
 import { NavShell } from "./nav-shell";
@@ -136,6 +137,7 @@ export function Nav() {
 
 export function UrlForm({ id }: { id: string }) {
   const { t } = useI18n();
+  const [error,setError]=useState(false);
   const href = useHref();
   // A plain GET form: signed-out visitors go through sign-in and land on the
   // dashboard with the link already filled in.
@@ -143,16 +145,24 @@ export function UrlForm({ id }: { id: string }) {
     <form
       action={href("/start")}
       method="get"
-      className="flex w-full max-w-xl flex-col gap-2 sm:flex-row"
+      onSubmit={event=>{
+        const input=event.currentTarget.querySelector<HTMLInputElement>("input[name=url]");
+        if(input?.value.trim()&&!productLink(input.value)){event.preventDefault();setError(true);input.focus();}
+      }}
+      className="flex w-full max-w-xl flex-col gap-2"
     >
       <label htmlFor={id} className="sr-only">
         {t.urlForm.label}
       </label>
+      <div className="flex flex-col gap-2 sm:flex-row">
       <input
         id={id}
         name="url"
         type="text"
         inputMode="url"
+        maxLength={2048} autoCapitalize="none" autoCorrect="off" spellCheck={false}
+        aria-invalid={error||undefined} aria-describedby={error?id+"-error":undefined}
+        onChange={()=>setError(false)}
         placeholder={t.urlForm.placeholder}
         className="min-w-0 flex-1 rounded-xl border border-line bg-bg px-4 py-3 text-fg shadow-sm outline-none transition placeholder:text-muted focus:border-accent focus:ring-4 focus:ring-accent/20"
       />
@@ -162,6 +172,8 @@ export function UrlForm({ id }: { id: string }) {
       >
         {t.urlForm.submit}
       </button>
+      </div>
+      {error&&<p id={id+"-error"} role="alert" className="text-start text-sm text-danger">{t.onboard.invalidUrl}</p>}
     </form>
   );
 }

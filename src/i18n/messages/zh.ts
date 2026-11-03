@@ -279,6 +279,10 @@ export const zh: Messages = {
     story: "快拍 · 9:16",
     adText: "广告文案",
   },
+  recovery: {
+      "title": "此页面未能加载",
+      "body": "请重试，如需帮助，请联系我们。"
+  },
   notFound: {
     title: "此页面不存在",
     body: "链接可能已过期或输入有误。",

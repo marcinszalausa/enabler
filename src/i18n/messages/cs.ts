@@ -297,6 +297,10 @@ export const cs: Messages = {
     story: "Stories · 9:16",
     adText: "Text reklamy",
   },
+  recovery: {
+      "title": "Tuto stránku se nepodařilo načíst",
+      "body": "Zkus to znovu, nebo nás kontaktuj, pokud potřebuješ pomoc."
+  },
   notFound: {
     title: "Tato stránka neexistuje",
     body: "Odkaz může být starý nebo překlepnutý.",

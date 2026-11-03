@@ -290,6 +290,10 @@ export const en = {
     story: "Story · 9:16",
     adText: "Ad text",
   },
+  recovery: {
+      "title": "This page couldn’t load",
+      "body": "Try again, or contact us if you need a hand."
+  },
   notFound: {
     title: "This page doesn't exist",
     body: "The link may be old or mistyped.",

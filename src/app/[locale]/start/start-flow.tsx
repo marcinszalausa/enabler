@@ -50,13 +50,13 @@ export function StartFlow(){
     <h1 ref={heading} tabIndex={-1} className="mt-3 text-3xl font-semibold tracking-tight outline-none sm:text-4xl">{step===1?t.onboard.title:t.onboard.confirm}</h1>
     {step===1?<form className="mt-8 space-y-4" onSubmit={event=>{
       event.preventDefault();const link=productLink(url);
-      if(!link){setError(true);return;}
+      if(!link){setError(true);event.currentTarget.querySelector<HTMLInputElement>("input[name=url]")?.focus();return;}
       setError(false);setUrl(link);updateAddress(link,kind);setStep(2);setTimeout(()=>heading.current?.focus(),0);
     }}>
       <label className="block text-sm font-medium" htmlFor="setup-url">{t.urlForm.label}</label>
-      <input id="setup-url" name="url" inputMode="url" required maxLength={2048} value={url} onChange={e=>{setUrl(e.target.value);setError(false);}}
+      <input id="setup-url" name="url" inputMode="url" required maxLength={2048} autoCapitalize="none" autoCorrect="off" spellCheck={false} aria-invalid={error||undefined} aria-describedby={error?"setup-url-error":undefined} value={url} onChange={e=>{setUrl(e.target.value);setError(false);}}
         placeholder={t.urlForm.placeholder} className="w-full rounded-xl border border-line-strong bg-raised px-4 py-3 text-base outline-none focus:border-accent focus:ring-4 focus:ring-accent/20"/>
-      {error&&<p role="alert" className="text-sm text-danger">{t.onboard.invalidUrl}</p>}
+      {error&&<p id="setup-url-error" role="alert" className="text-sm text-danger">{t.onboard.invalidUrl}</p>}
       <button type="submit" className="btn-primary min-h-12 rounded-xl px-6 py-3 font-medium">{t.onboard.continue}</button>
     </form>:<>
       <div data-preview-state={loading?"loading":previewError?"error":preview?"ready":"idle"} className="mt-7 flex items-center gap-4 rounded-2xl border border-line bg-surface p-4">
