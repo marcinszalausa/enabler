@@ -1,4 +1,5 @@
 -- Disposable database fixtures only.
+grant select,insert,update on public.brand_kits to authenticated;
 grant usage on schema auth to authenticated;
 grant select on public.creatives,public.generations,public.products,public.workspaces to authenticated;
 create or replace function auth.uid() returns uuid language sql stable as $$

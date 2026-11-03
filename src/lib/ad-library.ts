@@ -13,5 +13,5 @@ export function libraryPath(filter:LibraryFilter):string{
 }
 export type LibraryAd={
  id:string;workspaceId:string;generationId:string;productId:string;productName:string;
- kind:"image"|"video";aspect:string;headline:string|null;caption:string|null;createdAt:string;favorite:boolean;
+ kind:"image"|"video";aspect:string;headline:string|null;caption:string|null;createdAt:string;favorite:boolean;imageVersion:string;
 };

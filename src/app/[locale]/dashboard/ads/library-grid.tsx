@@ -6,7 +6,7 @@ import {type LibraryAd} from "@/lib/ad-library";
 import {adChoicePath} from "@/lib/ad-choice";
 import {FavoriteButton} from "./favorite-button";
 import {DownloadIcon} from "../ui";
-const preview=(id:string)=>"/api/creatives/"+id+"/image?preview=1&layout=face-aware-v2";
+const preview=(ad:LibraryAd)=>"/api/creatives/"+ad.id+"/image?preview=1&layout=face-aware-v2&v="+ad.imageVersion;
 const original=(ad:LibraryAd)=>"/api/creatives/"+ad.id+"/"+(ad.kind==="video"?"video":"image")+"?download=1&layout=face-aware-v2";
 const review=(ad:LibraryAd)=>adChoicePath({workspaceId:ad.workspaceId,productId:ad.productId,generationId:ad.generationId,creativeId:ad.id,savedAt:0});
 export function LibraryGrid({ads}:{ads:LibraryAd[]}){
@@ -18,7 +18,7 @@ export function LibraryGrid({ads}:{ads:LibraryAd[]}){
    <button type="button" data-library-preview onClick={()=>setSelected(ad)} aria-label={t.app.preview+": "+(ad.headline??ad.productName)} className="flex h-64 w-full items-center justify-center bg-surface p-3 focus-visible:outline-2 focus-visible:outline-accent">
     {ad.kind==="image"?
     // eslint-disable-next-line @next/next/no-img-element -- bounded authenticated image preview
-    <img src={preview(ad.id)} alt={ad.headline??ad.productName} loading="lazy" className="h-full w-full object-contain"/>:
+    <img src={preview(ad)} alt={ad.headline??ad.productName} loading="lazy" className="h-full w-full object-contain"/>:
     <span className="flex flex-col items-center gap-3 text-accent"><svg viewBox="0 0 24 24" className="h-14 w-14" fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m10 7 7 5-7 5V7Z" fill="currentColor" stroke="none"/></svg><span className="text-sm font-medium">{t.library.previewVideo}</span></span>}
    </button>
    <div className="flex flex-1 flex-col gap-3 p-4">
@@ -34,7 +34,7 @@ export function LibraryGrid({ads}:{ads:LibraryAd[]}){
   {selected&&<><div className="flex items-start justify-between gap-3"><h2 className="break-words text-lg font-semibold">{selected.headline??selected.productName}</h2><button type="button" onClick={()=>dialog.current?.close()} aria-label={t.app.cancel} className="flex min-h-11 min-w-11 items-center justify-center rounded-xl border border-line text-xl">×</button></div>
    <div className="mt-4 flex justify-center rounded-xl bg-surface p-2">{selected.kind==="video"?<video key={selected.id} src={"/api/creatives/"+selected.id+"/video"} controls autoPlay playsInline preload="none" className="max-h-[60vh] max-w-full object-contain"/>:
    // eslint-disable-next-line @next/next/no-img-element -- private bounded preview
-   <img src={preview(selected.id)} alt={selected.headline??selected.productName} className="max-h-[60vh] max-w-full object-contain"/>}</div>
+   <img src={preview(selected)} alt={selected.headline??selected.productName} className="max-h-[60vh] max-w-full object-contain"/>}</div>
    <p className="mt-4 whitespace-pre-line break-words text-sm">{selected.caption}</p>
    <div className="mt-4 flex flex-wrap gap-3"><Link href={review(selected)} className="btn-primary inline-flex min-h-11 items-center rounded-xl px-4 text-sm font-medium">{t.library.open}</Link><a href={original(selected)} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-line px-4 text-sm"><DownloadIcon/>{t.app.download}</a></div>
   </>}

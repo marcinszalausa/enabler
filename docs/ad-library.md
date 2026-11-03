@@ -3,7 +3,7 @@ The authenticated /dashboard/ads page lists accessible saved ads across products
 
 Favorites are stored per authenticated user in creative_favorites. RLS requires both ownership and current access to the creative. Workspace viewers may keep their own favorites, without gaining editing or publishing privileges. Other members cannot read or modify those favorites; lost membership hides them. No UPDATE privileges or administrative clients are used. Repeated save/remove requests express a desired state rather than toggling blindly.
 
-Browsing uses bounded authenticated image previews. Videos have no media element or network source until the preview dialog opens. Downloads retain the existing original export path. Open ad links to the exact selected creative in its product's existing review flow; it never posts or spends credits. Favorites are separate from the existing tab-local publishing navigation hint.
+Browsing uses bounded authenticated image previews, versioned by the current brand kit so logo, color and font edits invalidate browser caches. Videos have no media element or network source until the preview dialog opens. Downloads retain the existing original export path. Open ad links to the exact selected creative in its product's existing review flow; it never posts or spends credits. Favorites are separate from the existing tab-local publishing navigation hint.
 
 ## Deployment
 Apply the additive creative_favorites migration before deploying the application. It adds the protected table and lookup/chronology indexes without modifying balances or existing creative rows. Check RLS/grants and database advisors after application. For an application rollback, revert the app and leave the table intact to preserve user favorites.
