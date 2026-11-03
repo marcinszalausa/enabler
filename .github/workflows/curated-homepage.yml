@@ -17,3 +17,8 @@ jobs:
       - run: node --experimental-strip-types --test tests/homepage-media.test.ts
       - run: npx next typegen && npx tsc --noEmit
       - run: npx eslint src/lib/homepage-media.ts src/app/_landing/ad-image.tsx src/app/_landing/phone-feed.tsx src/app/_landing/before-after.tsx 'src/app/[locale]/page.tsx' next.config.ts
+      - run: npm install --prefix /tmp/homepage-browser --no-package-lock playwright@1.56.1
+      - run: /tmp/homepage-browser/node_modules/.bin/playwright install --with-deps chromium
+      - run: node scripts/check-curated-homepage.mjs
+        env:
+          PLAYWRIGHT_MODULE_PATH: /tmp/homepage-browser/node_modules/playwright
