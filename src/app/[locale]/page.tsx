@@ -1,13 +1,14 @@
+import {curateHomepageRuns,homepageImage,homepageVideo,homepagePhoto} from "@/lib/homepage-media";
 import { distinctProducts, heroProducts, productKey } from "@/lib/product-display";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "@/app/_landing/ad-image";
-import { FALLBACK_AD, type FeedAd } from "@/app/_landing/reel";
+import { type FeedAd } from "@/app/_landing/reel";
 import { PhoneFeed } from "@/app/_landing/phone-feed";
 import { getShowcase, type ShowcaseRun } from "@/lib/showcase";
 import { LANGUAGES } from "@/lib/video-options";
-import { VIDEO_SECONDS } from "@/lib/video";
+import { DEFAULT_VIDEO_OPTIONS } from "@/lib/video-options";
 import { Nav, UrlForm, SectionHeading, Footer } from "@/app/_landing/chrome";
 import { AngleExplorer, type AngleAd } from "@/app/_landing/angle-explorer";
 import { HeroStage } from "@/app/_landing/hero-stage";
@@ -17,7 +18,7 @@ import { Placements, type PlacementAd } from "@/app/_landing/placements";
 import { StickyCta } from "@/app/_landing/sticky-cta";
 import { Spotlight } from "@/app/_landing/spotlight";
 import { CreditGuide } from "@/app/_landing/credit-guide";
-import { ASPECTS, ADS_PER_GENERATION, GENERATION_COST, CREDITS_PER_IMAGE } from "@/lib/pipeline";
+import { ASPECTS, ADS_PER_GENERATION, GENERATION_COST, CREDITS_PER_IMAGE } from "@/lib/image-pricing";
 import { BeforeAfter } from "@/app/_landing/before-after";
 import { isLocale, localePath, type Locale } from "@/i18n/config";
 import { homeJsonLd, pageMetadata } from "@/lib/seo";
@@ -39,7 +40,7 @@ const PRICES = ["$0", "$29", "$79"];
 const FEATURED = 1;
 
 // Placeholders shared by several strings.
-const COUNTS = { count: Object.keys(LANGUAGES).length, seconds: VIDEO_SECONDS };
+const COUNTS = { count: Object.keys(LANGUAGES).length, seconds: Number(DEFAULT_VIDEO_OPTIONS.length) };
 
 export default async function Home({ params }: PageProps<"/[locale]">) {
   const { locale } = await params;
@@ -48,7 +49,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
   const { runs, images, videos } = await showcaseAds(t);
   const hero = heroProducts(heroFeed(images, videos));
   const run = runs[0];
-  const pictured = runs.find((r) => r.productImage);
+  const pictured = runs.find((r) => r.productImage && homepagePhoto(r.productImage));
   return (
     <div className="landing flex flex-1 flex-col bg-bg text-fg">
       <Nav />
@@ -92,13 +93,9 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
 // Real 9:16 ads from the showcase, one per product first, then more angles.
 async function showcaseAds(t: Messages) {
   const [imageRuns, videoRuns] = await Promise.all([
-    getShowcase(),
-    getShowcase("video_ads"),
+    getShowcase().then(curateHomepageRuns),
+    getShowcase("video_ads").then(curateHomepageRuns),
   ]);
-  const posters = new Map(imageRuns.flatMap(run => {
-    const still = run.ads.find(ad => ad.aspect === "9:16");
-    return still ? [[productKey(run.productUrl), image(still.id)] as const] : [];
-  }));
   return {
     runs: imageRuns,
     images: roundRobin(imageRuns, (r, a) => ({
@@ -107,7 +104,7 @@ async function showcaseAds(t: Messages) {
     })),
     videos: roundRobin(videoRuns, (r, a) => ({
       ...about(r, a),
-      video: { src: `/api/creatives/${a.id}/video`, poster: posters.get(productKey(r.productUrl)) },
+      video: homepageVideo(a.id),
       format: fmt(t.home.videoFormat, COUNTS),
       sound: true,
     })),
@@ -140,17 +137,17 @@ function roundRobin(
 }
 
 // Paint the hero with an optimized still immediately, then rotate into video.
-// Falls back to the Soft Mila clip before any run is picked.
+// Only reviewed media from currently eligible public runs appears here.
 function heroFeed(images: FeedAd[], videos: FeedAd[]): FeedAd[] {
   const feed: FeedAd[] = [];
   for (let i = 0; videos[i] || images[i]; i++) {
     if (images[i]) feed.push(images[i]);
     if (videos[i]) feed.push(videos[i]);
   }
-  return feed.length ? feed : [FALLBACK_AD];
+  return feed;
 }
 
-const image = (id: string) => `/api/creatives/${id}/image?layout=face-aware-v2`;
+const image = homepageImage;
 
 function duration(seconds: number) {
   if (seconds < 60) return `${seconds} s`;
@@ -208,7 +205,7 @@ function Hero({
         </ul>
       </div>
       <div className="relative mx-auto mt-16 max-w-6xl px-4 pb-24">
-        <HeroStage feed={feed} left={left} right={right} />
+        {feed.length>0&&<HeroStage feed={feed} left={left} right={right} />}
       </div>
     </section>
   );
@@ -261,7 +258,7 @@ function FromPhoto({ run }: { run: ShowcaseRun }) {
   if (!run.productImage || ads.length === 0) return null;
   return (
     <BeforeAfter
-      photo={run.productImage}
+      photo={homepagePhoto(run.productImage)!}
       name={run.productName}
       url={run.productUrl}
       madeIn={run.seconds ? duration(run.seconds) : undefined}
@@ -347,7 +344,7 @@ function Examples({ t, locale, runs }: { t: Messages; locale: Locale; runs: Show
   return (
     <section className="reveal overflow-hidden py-24">
       <div className="mx-auto max-w-6xl px-4">
-        <SectionHeading title={t.home.examplesTitle} sub={t.useCases.badge} />
+        <SectionHeading title={t.home.examplesTitle} sub={t.home.examplesSub} />
       </div>
       <div className="mt-14 overflow-x-auto pb-5" data-product-group="examples">
         <div className="flex w-max min-w-full justify-center gap-5 px-4">

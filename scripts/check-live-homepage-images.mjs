@@ -14,9 +14,10 @@ export async function verifyLiveHomepageImages(){
    }
    await page.waitForFunction(()=>[...document.images].filter(i=>i.getBoundingClientRect().width>0).every(i=>i.complete&&i.naturalWidth>0),{},{timeout:60000});
    const images=await page.locator("img").evaluateAll(imgs=>imgs.filter(i=>i.getBoundingClientRect().width>0).map(i=>({src:i.currentSrc||i.src,width:i.naturalWidth,complete:i.complete})));
-   const creatives=images.filter(i=>decodeURIComponent(i.src).includes("/api/creatives/"));
+   const creatives=images.filter(i=>decodeURIComponent(i.src).includes("/showcase/"));
    assert.ok(creatives.length>=4,"Real public creative images were checked");
-   assert.ok(creatives.every(i=>decodeURIComponent(i.src).includes("preview=1")),"Public ads use lightweight previews");
+   assert.equal(await page.locator("[data-home-fallback]").count(),0,"Full snapshots load without falling back");
+   assert.ok(images.every(i=>!i.src.includes("/_next/image")&&!i.src.includes("/api/creatives/")),"Homepage images bypass runtime rendering and optimization");
    assert.ok(images.every(i=>i.complete&&i.width>0),"Every displayed image decodes");
    console.log("LIVE_HOMEPAGE_IMAGES_VERIFIED",JSON.stringify({width:device.viewport.width,dpr:device.deviceScaleFactor,images:images.length,creatives:creatives.length,broken:0}));
    await page.close();
