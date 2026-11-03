@@ -9,11 +9,13 @@ export function GenerateButton({
   initialRequestId,
   cost,
   language,
+  credits,
 }: {
   productId: string;
   initialRequestId: string;
   cost: number;
   language: string;
+  credits?: number;
 }) {
   const { state, action, pending, requestId } = useGenerationAction(initialRequestId);
   const { t } = useI18n();
@@ -25,11 +27,12 @@ export function GenerateButton({
       <input type="hidden" name="language" value={language} />
       <button
         type="submit"
-        disabled={pending}
-        className="btn-primary rounded-xl px-4 py-2.5 font-medium"
+        disabled={pending || (credits!==undefined&&credits<cost)}
+        className="btn-primary min-h-11 rounded-xl px-4 py-2.5 font-medium"
       >
-        {pending ? t.app.starting : fmt(t.app.generateImages, { cost })}
+        {pending ? t.app.starting : fmt(t.app.withCost, { label:t.trial.create, cost })}
       </button>
+      {credits!==undefined&&credits<cost&&<p className="text-sm text-muted">{fmt(t.app.errors.noCredits,{cost})}</p>}
       {state.error && (
         <p role="alert" className="text-sm text-danger">
           {state.error}

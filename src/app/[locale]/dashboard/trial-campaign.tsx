@@ -4,16 +4,16 @@ import {useI18n} from "@/i18n/client";
 import {fmt} from "@/i18n/format";
 import {ASPECTS,ADS_PER_GENERATION,GENERATION_COST} from "@/lib/image-pricing";
 import {imageCapacity} from "@/lib/trial-capacity";
-export function TrialCampaign({credits,hasAds,published,canEdit=true}:{credits:number;hasAds:boolean;published:boolean;canEdit?:boolean}){
+export function TrialCampaign({credits,hasAds,published,canEdit=true,hideSteps=false}:{credits:number;hasAds:boolean;published:boolean;canEdit?:boolean;hideSteps?:boolean}){
  const {t}=useI18n();
  const steps=[{label:t.trial.create,href:"?setup=image#generate-ads",done:hasAds,icon:"image"},{label:t.trial.pick,href:"#your-ads",done:published,icon:"heart"},{label:t.trial.publish,href:"/dashboard/publishing",done:published,icon:"send"}];
  return <section data-trial-campaign className="mt-8 rounded-2xl border border-line bg-raised p-5 sm:p-7">
    <div className="flex flex-wrap items-start justify-between gap-4"><div><h2 className="text-lg font-semibold">{t.trial.title}</h2><p className="mt-1 text-sm text-muted">{t.trial.oneTime}</p></div>
    <p data-image-capacity className="rounded-xl bg-accent-soft px-4 py-3 text-sm font-medium text-accent">{fmt(t.trial.capacity,{count:imageCapacity(credits,GENERATION_COST,ADS_PER_GENERATION*ASPECTS.length)})}</p></div>
-   <ol className="mt-5 grid gap-3 sm:grid-cols-3">{steps.map((step,i)=><li key={step.icon} className="flex min-w-0 items-center gap-3 rounded-xl border border-line p-4">
+   {!hideSteps&&<ol className="mt-5 grid gap-3 sm:grid-cols-3">{steps.map((step,i)=><li key={step.icon} className="flex min-w-0 items-center gap-3 rounded-xl border border-line p-4">
      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-accent-soft text-accent" aria-hidden="true">{step.done?"✓":<StepIcon kind={step.icon}/>}</span>
      {canEdit?<Link href={step.href} className="min-h-11 content-center text-sm font-medium hover:text-accent">{i+1}. {step.label}</Link>:<span className="text-sm">{i+1}. {step.label}</span>}
-   </li>)}</ol>
+   </li>)}</ol>}
    <p className="mt-4 text-xs leading-relaxed text-muted">{t.home.adSpend}</p>
    {hasAds&&<div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-line pt-5"><p className="text-sm font-medium">{t.trial.continue}</p><Link href="/#pricing" prefetch={false} className="min-h-11 content-center rounded-lg border border-line-strong px-4 text-sm font-medium hover:text-accent">{t.trial.plans}</Link></div>}
  </section>;

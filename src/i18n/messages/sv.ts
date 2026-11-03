@@ -305,6 +305,15 @@ export const sv: Messages = {
     englishOnly:
       "Den här sidan finns på engelska, och det är den engelska versionen som gäller.",
   },
+  journey: {
+  "title": "Nästa steg",
+  "product": "Produkt",
+  "direction": "Annonsbudskap",
+  "create": "Skapa annonser",
+  "pick": "Välj och publicera",
+  "start": "Kontrollera inställningarna och skapa din första omgång.",
+  "addHint": "Lägg till en produkt, välj budskap och skapa och publicera dina annonser."
+},
   choose: {
     title: "Välj din favorit",
     help: "Tryck på en annons för att se hela. Granska allt innan du publicerar.",

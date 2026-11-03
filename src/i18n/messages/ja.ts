@@ -291,6 +291,15 @@ export const ja: Messages = {
     updated: "最終更新日：{date}",
     englishOnly: "このページは英語で提供しており、英語版が正式な内容です。",
   },
+  journey: {
+  "title": "次のステップ",
+  "product": "商品",
+  "direction": "広告の方向性",
+  "create": "広告を作成",
+  "pick": "選んで投稿",
+  "start": "設定を確認して、最初の広告セットを作成しましょう。",
+  "addHint": "商品を追加し、メッセージを選んで、広告を作成・投稿しましょう。"
+},
   choose: {
     title: "お気に入りを選ぶ",
     help: "広告をタップすると全体を表示します。投稿前にすべて確認できます。",

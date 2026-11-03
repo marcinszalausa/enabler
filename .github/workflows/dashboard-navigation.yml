@@ -1,0 +1,29 @@
+name: Dashboard navigation and journey
+on:
+  push:
+    branches: [ux/dashboard-navigation]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  dashboard-navigation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Installed navigation and component guidance
+        run: find node_modules/next/dist/docs/01-app -name link.md -o -name use-pathname.md | xargs cat
+      - run: npx next typegen && npx tsc --noEmit
+      - name: Lint dashboard UI
+        run: npx eslint src/app/_landing/chrome.tsx 'src/app/[locale]/dashboard/account-menu.tsx' 'src/app/[locale]/dashboard/app-nav.tsx' 'src/app/[locale]/dashboard/product-journey.tsx' 'src/app/[locale]/dashboard/layout.tsx' 'src/app/[locale]/dashboard/page.tsx' 'src/app/[locale]/dashboard/products/[id]/page.tsx' 'src/app/[locale]/dashboard/products/[id]/generate-controls.tsx' 'src/app/[locale]/dashboard/products/[id]/generate-button.tsx' 'src/app/[locale]/dashboard/trial-campaign.tsx'
+      - run: npm install --prefix /tmp/dashboard-browser --no-package-lock playwright@1.56.1
+      - run: /tmp/dashboard-browser/node_modules/.bin/playwright install --with-deps chromium
+      - name: Mobile, desktop and RTL navigation
+        run: node scripts/check-dashboard-navigation.mjs
+        env:
+          PLAYWRIGHT_MODULE_PATH: /tmp/dashboard-browser/node_modules/playwright

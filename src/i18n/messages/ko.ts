@@ -294,6 +294,15 @@ export const ko: Messages = {
     updated: "최종 업데이트: {date}",
     englishOnly: "이 페이지는 영어로 제공되며, 영어 원문이 우선합니다.",
   },
+  journey: {
+  "title": "다음 단계",
+  "product": "상품",
+  "direction": "광고 메시지",
+  "create": "광고 만들기",
+  "pick": "선택하고 게시",
+  "start": "설정을 확인하고 첫 광고 묶음을 만드세요.",
+  "addHint": "상품을 추가하고 메시지를 정한 다음 광고를 만들고 게시하세요."
+},
   choose: {
     title: "마음에 드는 광고 선택",
     help: "광고를 누르면 전체를 볼 수 있습니다. 게시 전에 모두 확인하세요.",

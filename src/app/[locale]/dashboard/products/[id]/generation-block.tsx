@@ -89,7 +89,7 @@ export function GenerationBlock({
   );
 
   return (
-    <div id={`ad-${g.id}`} className="scroll-mt-24">
+    <div id={`ad-${g.id}`} className="scroll-mt-40">
       <GenerationStatus t={t} generation={g} receipt={receipt} canRetry={canRetry} />
       <div className="flex flex-wrap items-center justify-between gap-2">
         <h2 className="flex flex-wrap items-baseline gap-x-2 text-sm">

@@ -307,6 +307,15 @@ export const pl: Messages = {
     englishOnly:
       "Ta strona jest dostępna po angielsku i to wersja angielska obowiązuje.",
   },
+  journey: {
+  "title": "Następny krok",
+  "product": "Produkt",
+  "direction": "Przekaz reklamy",
+  "create": "Utwórz reklamy",
+  "pick": "Wybierz i opublikuj",
+  "start": "Sprawdź ustawienia i utwórz pierwszy zestaw.",
+  "addHint": "Dodaj produkt, wybierz przekaz, a następnie utwórz i opublikuj reklamy."
+},
   choose: {
     title: "Wybierz ulubioną reklamę",
     help: "Dotknij reklamy, aby zobaczyć ją w całości. Sprawdzisz wszystko przed publikacją.",

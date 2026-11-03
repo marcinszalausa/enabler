@@ -288,6 +288,15 @@ export const zh: Messages = {
     updated: "最后更新：{date}",
     englishOnly: "本页面以英文提供，以英文版本为准。",
   },
+  journey: {
+  "title": "下一步",
+  "product": "商品",
+  "direction": "广告方向",
+  "create": "创建广告",
+  "pick": "选择并发布",
+  "start": "检查设置，然后创建第一批广告。",
+  "addHint": "添加商品，选择宣传信息，然后创建并发布广告。"
+},
   choose: {
     title: "选择最喜欢的广告",
     help: "点击广告查看完整预览，发布前可确认所有内容。",

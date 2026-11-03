@@ -13,9 +13,9 @@ export function BackLink({
   return (
     <Link
       href={href}
-      className="inline-flex items-center gap-1.5 rounded-full border border-line bg-raised px-3 py-1 text-sm text-muted transition hover:border-line-strong hover:text-fg"
+      className="inline-flex min-h-11 items-center gap-1.5 rounded-full border border-line bg-raised px-3 py-1 text-sm text-muted transition hover:border-line-strong hover:text-fg"
     >
-      <span aria-hidden>←</span>
+      <span aria-hidden className="rtl:-scale-x-100">←</span>
       {children}
     </Link>
   );

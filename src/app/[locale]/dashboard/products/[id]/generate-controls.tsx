@@ -37,7 +37,7 @@ export function GenerateControls({
 
   return (
     <div className="flex flex-col items-start gap-2 lg:items-end">
-      {(initialKind || freeTrial) && <div className="flex flex-wrap gap-2">{(["image","video"] as const).map(value => <button key={value} type="button" aria-pressed={kind === value} onClick={() => setKind(value)} className={"min-h-11 rounded-lg border px-3 text-sm " + (kind === value ? "border-accent bg-accent-soft text-accent" : "border-line")}>{value === "image" ? t.app.imageAds.replace("{count}", "10") : t.app.videoAds.replace("{count}", "2")}{value === "image" && freeTrial && <span className="ms-2 text-xs">{t.onboard.recommended}</span>}</button>)}</div>}
+      {<div className="flex flex-wrap gap-2">{(["image","video"] as const).map(value => <button key={value} type="button" aria-pressed={kind === value} onClick={() => setKind(value)} className={"min-h-11 rounded-lg border px-3 text-sm " + (kind === value ? "border-accent bg-accent-soft text-accent" : "border-line")}>{value === "image" ? t.app.imageAds.replace("{count}", "10") : t.app.videoAds.replace("{count}", "2")}{value === "image" && freeTrial && <span className="ms-2 text-xs">{t.onboard.recommended}</span>}</button>)}</div>}
       <label className="flex max-w-full flex-wrap items-center gap-2 text-sm">
         <span className="text-muted">{t.app.adLanguage}</span>
         <select
@@ -53,14 +53,15 @@ export function GenerateControls({
         </select>
       </label>
       <div className="flex flex-wrap items-start gap-2 lg:justify-end">
-        {(!(initialKind || freeTrial) || kind === "image") && <GenerateButton
+        {kind === "image" && <GenerateButton
           initialRequestId={imageRequestId}
           productId={productId}
           cost={imageCost}
+          credits={credits}
           language={language}
         />}
-        {(!(initialKind || freeTrial) || kind === "video") && <VideoAdForm
-          initiallyOpen={!!initialKind || freeTrial}
+        {kind === "video" && <VideoAdForm
+          initiallyOpen
           credits={credits}
           initialRequestId={videoRequestId}
           productId={productId}
