@@ -5,7 +5,7 @@ on:
 permissions:
   contents: read
 jobs:
-  media-review:
+  media-export:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -15,7 +15,5 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - name: Installed image and cache header guidance
-        run: find node_modules/next/dist/docs/01-app -name image.md -o -name headers.md | xargs cat
-      - name: Review publicly showcased ad candidates
-        run: node scripts/review-homepage-media.mjs
+      - name: Export selected public images and video once
+        run: node scripts/export-homepage-media.mjs
