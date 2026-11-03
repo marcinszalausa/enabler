@@ -1,0 +1,28 @@
+name: Launch experience
+on:
+  push:
+    branches: [ux/launch-recovery]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  launch-experience:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Installed error handling and form guidance
+        run: find node_modules/next/dist/docs/01-app -name error-handling.md -o -name error.md -o -name forms.md | xargs cat
+      - run: npx next typegen && npx tsc --noEmit
+      - run: |
+          if test -f scripts/check-launch-experience.mjs; then
+            npx eslint src/app/_landing/recovery-panel.tsx 'src/app/[locale]/error.tsx' 'src/app/[locale]/dashboard/error.tsx' 'src/app/[locale]/start/start-flow.tsx'
+            npm install --prefix /tmp/launch-browser --no-package-lock playwright@1.56.1
+            /tmp/launch-browser/node_modules/.bin/playwright install --with-deps chromium
+            PLAYWRIGHT_MODULE_PATH=/tmp/launch-browser/node_modules/playwright node scripts/check-launch-experience.mjs
+          fi
