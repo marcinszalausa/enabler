@@ -1,11 +1,10 @@
-name: Curated homepage media
+name: Curated homepage
 on:
+  pull_request:
   push:
     branches: [perf/curated-homepage]
-permissions:
-  contents: read
 jobs:
-  media-export:
+  curated-homepage:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -15,5 +14,6 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - name: Export selected public images and video once
-        run: node scripts/export-homepage-media.mjs
+      - run: node --experimental-strip-types --test tests/homepage-media.test.ts
+      - run: npx next typegen && npx tsc --noEmit
+      - run: npx eslint src/lib/homepage-media.ts src/app/_landing/ad-image.tsx src/app/_landing/phone-feed.tsx src/app/_landing/before-after.tsx 'src/app/[locale]/page.tsx' next.config.ts
