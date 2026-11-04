@@ -14,7 +14,7 @@ try{
  const plain=await browser.newPage({javaScriptEnabled:false});await plain.goto("http://localhost:3126/pricing",{waitUntil:"domcontentloaded"});assert.equal(await plain.locator("[data-plan-details] dt").count(),87,"All feature entries exist without JavaScript");assert.equal(await plain.locator("[data-pricing-faq] details").count(),11);await plain.close();
  for(const [width,locale]of [[320,"en"],[390,"en"],[390,"ar"],[1440,"en"]]){
   const page=await browser.newPage({viewport:{width,height:950},reducedMotion:"reduce"});const errors=[];page.on("pageerror",e=>errors.push(e.message));await page.goto("http://localhost:3126"+(locale==="en"?"":"/"+locale)+"/pricing",{waitUntil:"networkidle"});
-  assert.equal(await page.locator("[data-plan]").count(),3);assert.equal(await page.locator("[data-plan-details]").count(),3);for(const p of ["starter","plus","growth"])assert.equal(await page.locator(`[data-plan-details="${p}"] dt`).count(),29);
+  assert.equal(await page.locator("button[data-buy-plan]:disabled").count(),3);assert.equal(await page.locator("a[data-buy-plan]").count(),0);assert.equal(await page.locator("[data-plan]").count(),3);assert.equal(await page.locator("[data-plan-details]").count(),3);for(const p of ["starter","plus","growth"])assert.equal(await page.locator(`[data-plan-details="${p}"] dt`).count(),29);
   assert.match(await page.locator('[data-plan-details="starter"]').innerText(),/Not included — Plus and Growth/);assert.match(await page.locator('[data-plan-details="growth"]').innerText(),/Up to 30/);
   const questions=await page.locator("[data-pricing-faq] summary").allTextContents();const answers=await page.locator("[data-pricing-faq] details p").allTextContents();const faq=JSON.parse(await page.locator("script[data-pricing-structured]").textContent())["@graph"].find(n=>n["@type"]==="FAQPage");assert.deepEqual(faq.mainEntity.map(q=>q.name),questions);assert.deepEqual(faq.mainEntity.map(q=>q.acceptedAnswer.text),answers);
   await page.getByRole("navigation",{name:"Jump to full plan details"}).getByRole("link",{name:"growth details ↓"}).click();const box=await page.locator("#details-growth").boundingBox(),header=await page.locator("header").first().boundingBox();assert.ok(box.y>=header.y+header.height-1,"Jump clears sticky navigation");assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),"No page overflow");
@@ -26,12 +26,20 @@ try{
   await page.goto("http://localhost:3126/pricing",{waitUntil:"networkidle"});
   assert.equal(await page.locator('[data-recommended-plan]').count(),1);assert.equal(await page.locator('[data-plan="plus"] [data-recommended-plan]').innerText(),"Recommended");
   assert.equal(await page.locator('[data-plan] del,[data-plan] s').count(),0);
+  const buys=page.locator('[data-buy-plan="'+plan+'"]');assert.match(await buys.innerText(),/^Buy /);
+  assert.equal(await buys.isDisabled(),true);assert.equal(await buys.getAttribute("href"),null);
+  const before=page.url();await buys.evaluate(el=>el.click());assert.equal(page.url(),before,"Disabled Buy never navigates");
+  assert.match(await page.locator("#purchase-status").innerText(),/Purchases are currently unavailable/);
+  await page.goto("http://localhost:3126/checkout?plan="+plan,{waitUntil:"networkidle"});
+  await page.locator('[data-purchase-plan="'+plan+'"]').waitFor();assert.match(await page.locator("h1").innerText(),new RegExp(plan,"i"));assert.equal(await page.locator("[data-purchase-unavailable]").count(),1);assert.equal(await page.locator("[data-onboarding-step]").count(),0);
+  assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),"Purchase summary fits mobile");
+  await page.goto("http://localhost:3126/pricing",{waitUntil:"networkidle"});assert.equal(await page.locator('[data-try-plan="'+plan+'"]').innerText(),"Try for free");
   await page.locator('[data-try-plan="'+plan+'"]').click();await page.waitForURL(u=>u.pathname==="/start"&&u.searchParams.get("plan")===plan);
   await page.locator('[data-selected-plan="'+plan+'"]').waitFor();await page.locator('input[name="url"]').fill("https://example.invalid/product");await page.locator('form button[type="submit"]').click();
   await page.locator('[data-onboarding-step="2"]').waitFor();await page.locator('input[value="video"]').check();assert.equal(new URL(page.url()).searchParams.get("plan"),plan);
   await page.locator('[data-continue-account]').click();await page.waitForURL(u=>u.pathname==="/login");
   const next=new URL(new URL(page.url()).searchParams.get("next"),"https://gooidy.com");assert.equal(next.pathname,"/dashboard/setup");assert.equal(next.searchParams.get("plan"),plan);assert.equal(next.searchParams.get("kind"),"video");assert.equal(next.searchParams.get("url"),"https://example.invalid/product");
-  console.log("PASS selected plan survives limited Try mode to login",plan);await page.close();
+  console.log("PASS selected plan survives optional free preview to login",plan);await page.close();
  }
  console.log("PASS raw HTML content is readable without JavaScript");
 }catch(error){console.error(log);throw error;}finally{await browser?.close();if(server?.pid)try{process.kill(-server.pid,"SIGTERM");}catch{}}
