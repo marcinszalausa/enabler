@@ -4,6 +4,7 @@ import {readFile} from "node:fs/promises";
 import ts from "typescript";
 import {z} from "zod";
 import {parseCreativePreferences,preferenceForm,withCreativePreferences,creativeDirection} from "../src/lib/creative-preferences.ts";
+import {workflowDirection,parseCampaign,EMPTY_BRAND_MEMORY} from "../src/lib/customer-workflow.ts";
 const prefs={promotion:"offer" as const,audience:"Dog owners who take daily walks",focus:"Comfortable everyday walks",offer:"Free shipping this week"};
 test("preferences validate, trim and discard irrelevant offers",()=>{
  assert.deepEqual(parseCreativePreferences({...prefs,audience:"  Dog owners  "}),{...prefs,audience:"Dog owners"});
@@ -34,8 +35,8 @@ test("both real model request builders receive the saved creative direction",asy
  const calls:Record<string,unknown>[]=[];
  class FakeAnthropic { beta={messages:{parse:async(request:Record<string,unknown>)=>{calls.push(request);return {stop_reason:"end_turn",parsed_output:{ads:[{headline:"Test",shots:[{},{}]}]}};}}}; }
  const source=await readFile("src/lib/ai/claude.ts","utf8");
- const writers=compile(source,["Anthropic","betaZodOutputFormat","z","ACCENTS","ENERGIES","GENDERS","LANGUAGES","PEOPLE","isEnglish","verifyPublicUrl","UserError","creativeDirection"],
-  [FakeAnthropic,()=>({}),z,{american:{label:"American"}},{upbeat:{direction:"upbeat"}},{female:{label:"Female"}},{english:{label:"English",script:"latin"}},{auto:{direction:null}},()=>true,()=>{throw Error("Unexpected network");},Error,creativeDirection],"{writeAdAngles,writeVideoAds}");
+ const writers=compile(source,["Anthropic","betaZodOutputFormat","z","ACCENTS","ENERGIES","GENDERS","LANGUAGES","PEOPLE","isEnglish","verifyPublicUrl","UserError","creativeDirection","workflowDirection"],
+  [FakeAnthropic,()=>({}),z,{american:{label:"American"}},{upbeat:{direction:"upbeat"}},{female:{label:"Female"}},{english:{label:"English",script:"latin"}},{auto:{direction:null}},()=>true,()=>{throw Error("Unexpected network");},Error,creativeDirection,workflowDirection],"{writeAdAngles,writeVideoAds}");
  const brief=withCreativePreferences({audience:"Page audience",product_name:"Walking set",price:"29"},prefs);
  await writers.writeAdAngles(brief,1,"english");
  await writers.writeVideoAds(brief,1,[4,3],{language:"english",gender:"female",accent:"american",energy:"upbeat",person:"auto",message:""});
@@ -47,12 +48,14 @@ test("both real model request builders receive the saved creative direction",asy
 });
 test("saving preferences is editor/workspace checked and generation uses an immutable snapshot",async()=>{
  let canEdit=true;let product:any={id:"product",workspace_id:"workspace",brand_brief:{audience:"Page audience",benefits:["Real benefit"],requires_personalization:true}};
+ let campaign:any=null;
  const writes:any[]=[],reservations:any[]=[],pending:(()=>unknown)[]=[],workers:any[]=[];
  const db={auth:{getUser:async()=>({data:{user:{id:"owner"}}})},from:(table:string)=>{
   const filters:Record<string,unknown>={};let update:any;
   const query:any={select:()=>query,order:()=>query,limit:()=>query,eq:(key:string,value:unknown)=>{filters[key]=value;return query;},
    single:async()=>({data:table==="workspaces"?{id:"workspace"}:product}),
    maybeSingle:async()=>{
+    if(table==="campaigns")return {data:campaign&&filters.id===campaign.id&&filters.workspace_id==="workspace"&&filters.product_id===product.id?campaign:null};
     if(table!=="products"||filters.id!==product.id||filters.workspace_id!==product.workspace_id)return {data:null};
     if(update){product={...product,...update};writes.push(update);return {data:{id:product.id}};}
     return {data:product};
@@ -61,8 +64,8 @@ test("saving preferences is editor/workspace checked and generation uses an immu
  }};
  const messages={personal:{invalid:"invalid",couldntSave:"save failed",confirmFirst:"confirm first"},app:{errors:{notFound:"not found",couldntStart:"failed",noCredits:"credits"}}};
  const source=await readFile("src/app/[locale]/dashboard/actions.ts","utf8");
- const actions=compile(source,["redirect","after","revalidatePath","createClient","createAdminClient","scrapePage","extractBrandBrief","imageRunCost","runGeneration","runVideoGeneration","parseVideoOptions","videoRunCost","DEFAULT_LANGUAGE","isLanguageKey","userMessage","seedBrandKit","requestMessages","fmt","canEditWorkspace","WORKSPACE_WRITE_DENIED","parseCreativePreferences","preferenceForm","DEFAULT_IMAGE_QUALITY","parseQuality","parseIdeas"],
-  [(path:string)=>{throw Error(path);},(cb:()=>unknown)=>pending.push(cb),()=>{},async()=>db,()=>({rpc:async(_name:string,args:unknown)=>{reservations.push(args);return {data:"batch"};}}),()=>{throw Error("Unexpected scrape");},()=>{throw Error("Unexpected model");},()=>10,(job:unknown)=>workers.push(job),(job:unknown)=>workers.push(job),()=>null,()=>40,"english",()=>true,()=>"",()=>{},async()=>messages,(s:string)=>s,async()=>canEdit,"editor required",parseCreativePreferences,preferenceForm,"best",(value:unknown,fallback:string)=>typeof value==="string"?value:fallback,()=>5],"{saveCreativePreferences,startGeneration}");
+ const actions=compile(source,["redirect","after","revalidatePath","createClient","createAdminClient","scrapePage","extractBrandBrief","imageRunCost","runGeneration","runVideoGeneration","parseVideoOptions","videoRunCost","DEFAULT_LANGUAGE","isLanguageKey","userMessage","seedBrandKit","requestMessages","fmt","canEditWorkspace","WORKSPACE_WRITE_DENIED","parseCreativePreferences","preferenceForm","DEFAULT_IMAGE_QUALITY","parseQuality","getBrandMemory","parseCampaign","parseIdeas"],
+  [(path:string)=>{throw Error(path);},(cb:()=>unknown)=>pending.push(cb),()=>{},async()=>db,()=>({rpc:async(_name:string,args:unknown)=>{reservations.push(args);return {data:"batch"};}}),()=>{throw Error("Unexpected scrape");},()=>{throw Error("Unexpected model");},()=>10,(job:unknown)=>workers.push(job),(job:unknown)=>workers.push(job),()=>null,()=>40,"english",()=>true,()=>"",()=>{},async()=>messages,(s:string)=>s,async()=>canEdit,"editor required",parseCreativePreferences,preferenceForm,"best",(value:unknown,fallback:string)=>typeof value==="string"?value:fallback,async()=>({...EMPTY_BRAND_MEMORY}),parseCampaign,()=>5],"{saveCreativePreferences,startGeneration}");
  const form=new FormData();for(const [k,v] of Object.entries(prefs))form.set(k,v);form.set("productId","product");
  canEdit=false;assert.equal((await actions.saveCreativePreferences({error:null,saved:false},form)).saved,false);assert.equal(writes.length,0);
  canEdit=true;product.workspace_id="other";assert.equal((await actions.saveCreativePreferences({error:null,saved:false},form)).saved,false);assert.equal(writes.length,0);
@@ -76,4 +79,14 @@ test("saving preferences is editor/workspace checked and generation uses an immu
  await pending[0]();
  assert.equal(workers[0].creativePreferences.audience,prefs.audience);
  assert.equal(reservations[0].options.creative_preferences.audience,prefs.audience);
+ run.set("campaignId","20000000-0000-4000-8000-000000000001");
+ assert.match((await actions.startGeneration({error:null},run)).error,/could not be loaded/);assert.equal(reservations.length,1);
+ campaign={id:run.get("campaignId"),name:"Fresh campaign",goal:"introduce",message:"A new factual benefit",offer:"",scene:"Bright room"};
+ assert.equal((await actions.startGeneration({error:null},run)).error,null);
+ assert.equal(reservations[1].options.campaign.id,campaign.id);
+ assert.equal(reservations[1].options.creative_preferences.offer,"");
+ assert.equal(reservations[1].options.creative_preferences.promotion,"product");
+ assert.equal(reservations[1].options.creative_preferences.focus,campaign.message);
 });
+
+

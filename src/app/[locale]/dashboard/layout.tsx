@@ -23,6 +23,7 @@ export default async function DashboardLayout({
             items={[
               { href: "/dashboard", label: t.app.products },
               { href: "/dashboard/ads", label: t.library.title },
+              { href: "/dashboard/campaigns", label: "Campaigns" },
               { href: "/dashboard/publishing", label: t.publish.title },
               { href: "/dashboard/brand", label: t.app.brandKit },
             ]}
@@ -36,3 +37,4 @@ export default async function DashboardLayout({
     </div>
   );
 }
+

@@ -23,6 +23,7 @@ const field =
 // The video button opens a short form for what the ad says and who says it.
 export function VideoAdForm({
   productId,
+  campaignId,
   initialRequestId,
   label,
   language,
@@ -31,6 +32,7 @@ export function VideoAdForm({
   credits,
 }: {
   productId: string;
+  campaignId?: string;
   initialRequestId: string;
   label: string;
   // Chosen next to the buttons.
@@ -64,6 +66,7 @@ export function VideoAdForm({
     >
       <input type="hidden" name="requestId" value={requestId} />
       <input type="hidden" name="productId" value={productId} />
+      {campaignId && <input type="hidden" name="campaignId" value={campaignId}/>}
       <input type="hidden" name="kind" value="video" />
       <input type="hidden" name="quality" value={quality} />
 
@@ -210,3 +213,4 @@ export function VideoAdForm({
     </form>
   );
 }
+

@@ -1,4 +1,7 @@
+import Link from "next/link";
 import { ProductJourney } from "../../product-journey";
+import { parseCampaign } from "@/lib/customer-workflow";
+import { CampaignBundle } from "../../campaigns/campaign-bundle";
 import { canEditWorkspace } from "@/lib/workspace-access";
 import type { CreditReceipt } from "@/lib/generation-presentation";
 import { parseCreativePreferences } from "@/lib/creative-preferences";
@@ -77,7 +80,8 @@ async function Product({
   const { id, locale } = await params;
   if (!isLocale(locale)) notFound();
   const t = await getMessages(locale);
-  const setup = (await searchParams).setup;
+  const query = await searchParams;
+  const setup = query.setup;
   const initialKind = setup === "image" || setup === "video" ? setup : undefined;
   const user = await getCurrentUser();
   const canShowcase = isShowcaseAdmin(user.email);
@@ -89,6 +93,14 @@ async function Product({
     .eq("id", id)
     .maybeSingle();
   if (!product) notFound();
+  const selectedCampaignId = typeof query.campaign === "string" ? query.campaign : null;
+  let campaign = null;
+  if (selectedCampaignId) {
+    const {data:plan,error:planError}=await supabase.from("campaigns").select("id,name,goal,message,offer,scene").eq("id",selectedCampaignId).eq("workspace_id",product.workspace_id).eq("product_id",product.id).maybeSingle();
+    if (planError) throw planError;
+    campaign=parseCampaign(plan);
+    if(!campaign) notFound();
+  }
 
   const [{ data: generations, error: generationsError }, { data: workspace }, kit, canEdit] = await Promise.all([
     supabase
@@ -108,6 +120,7 @@ async function Product({
     canEditWorkspace(supabase, product.workspace_id),
   ]);
   if (generationsError) throw generationsError;
+  const campaignRuns = campaign ? (generations ?? []).filter(g => parseCampaign((g.request_options as {campaign?:unknown}|null)?.campaign)?.id === campaign.id) : (generations ?? []);
   // Read receipts after the run snapshot: a terminal state must not race an
   // earlier receipt query and briefly look like an unconfirmed refund.
   const receiptResult = await supabase.rpc("generation_receipts", { product: id });
@@ -179,6 +192,7 @@ async function Product({
         <div id="generate-ads" tabIndex={-1} className="flex scroll-mt-40 flex-col items-start gap-2 rounded-2xl border border-line bg-raised p-4 focus:outline-2 focus:outline-accent lg:items-end">
           {canEdit && (running.length>0 ? <a href="#your-ads" className="inline-flex min-h-11 items-center text-sm font-medium text-accent">{t.run.check}</a> : needsPreferences ? <a href="#ad-preferences" className="inline-flex min-h-11 max-w-sm items-center text-sm font-medium text-accent hover:underline">{t.personal.confirmFirst}</a> : <GenerateControls
             key={JSON.stringify(preferences)}
+            campaignId={campaign?.id}
             initialKind={initialKind}
             credits={workspace?.credits ?? 0}
             freeTrial={workspace?.plan === "free"}
@@ -202,6 +216,7 @@ async function Product({
           </p>
         </div>
       </header>
+      {campaign ? <CampaignBundle campaign={campaign} copy={campaignRuns.flatMap(g=>g.creatives)}/> : <Link href="/dashboard/campaigns" className="mt-5 inline-flex min-h-11 items-center text-sm font-medium text-accent">Plan a coordinated campaign →</Link>}
 
       <ProductJourney t={t} needsPreferences={needsPreferences} hasAds={(generations??[]).some(g=>g.creatives.length>0)} running={running.length>0} posted={Object.values(publishing?.posts??{}).some(post=>post.status==="published"||post.status==="scheduled"||post.status==="publishing")} canEdit={canEdit}/>
 
@@ -209,7 +224,8 @@ async function Product({
       {brief && canEdit && <PersonalizationForm productId={product.id} initial={preferences} audience={brief.audience} focus={brief.benefits[0]??""} benefits={brief.benefits} required={needsPreferences}/>}
 
       <section id="your-ads" tabIndex={-1} className="mt-10 flex scroll-mt-40 flex-col gap-10">
-        {(generations ?? []).length === 0 && (
+        {campaign && <p className="text-sm text-muted">Showing ads from this campaign. <a className="text-accent underline" href={`/dashboard/products/${product.id}`}>View all product ads</a></p>}
+        {campaignRuns.length === 0 && (
           <EmptyState title={t.app.noAds}>
             {fmt(t.app.noAdsBody, {
               videos: VIDEOS_PER_GENERATION,
@@ -218,7 +234,7 @@ async function Product({
             })}
           </EmptyState>
         )}
-        {(generations ?? []).map((g) => (
+        {campaignRuns.map((g) => (
           <GenerationBlock
             key={g.id}
             t={t}
@@ -367,3 +383,4 @@ async function publishingFor(
     posts: byCreative,
   };
 }
+

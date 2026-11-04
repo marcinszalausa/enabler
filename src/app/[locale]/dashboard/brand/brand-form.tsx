@@ -3,6 +3,7 @@
 import { useActionState, useState } from "react";
 import { saveBrandKit, type BrandFormState } from "./actions";
 import { useI18n } from "@/i18n/client";
+import { EMPTY_BRAND_MEMORY, type BrandMemory } from "@/lib/customer-workflow";
 
 const initialState: BrandFormState = { error: null, saved: false };
 
@@ -11,11 +12,13 @@ export function BrandForm({
   font,
   fonts,
   logoUrl,
+  memory = EMPTY_BRAND_MEMORY,
 }: {
   accentColor: string;
   font: string;
   fonts: { key: string; label: string }[];
   logoUrl: string | null;
+  memory?: BrandMemory;
 }) {
   const [state, action, pending] = useActionState(saveBrandKit, initialState);
   const [color, setColor] = useState(accentColor);
@@ -23,6 +26,12 @@ export function BrandForm({
 
   return (
     <form action={action} className="flex flex-col gap-6">
+      <fieldset className="grid gap-4 rounded-2xl border border-line p-4">
+        <legend className="px-1 font-semibold">Remember my brand</legend>
+        <p className="text-sm text-muted">Save once. New campaigns use your voice and preferences. Product-specific audience choices take priority.</p>
+        {([['name','Brand name','Example: Soft Mila'],['audience','Usual customers','Example: Women looking for comfortable everyday clothing'],['tone','Brand voice','Example: Warm, clear and reassuring'],['avoid','Things to avoid','Example: Slang, exaggerated promises, busy backgrounds']] as const).map(([key,label,placeholder]) => <label key={key} className="grid gap-1 text-sm font-medium">{label}<input name={key} defaultValue={memory[key]} maxLength={240} placeholder={placeholder} className="min-h-11 rounded-lg border border-line-strong bg-raised px-3 py-2 font-normal"/></label>)}
+        <p className="text-xs text-muted">Optional · saving preferences uses no credits.</p>
+      </fieldset>
       <div className="flex flex-col gap-2">
         <label htmlFor="logo" className="text-sm font-medium">
           {t.app.logo}
@@ -105,3 +114,4 @@ export function BrandForm({
     </form>
   );
 }
+

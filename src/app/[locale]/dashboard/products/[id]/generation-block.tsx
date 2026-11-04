@@ -149,7 +149,7 @@ export function GenerationBlock({
           )}
         </div>
       </div>
-      {!view.active&&creatives.length>0?<AdGallery creatives={creatives} generationId={g.id} imageVersion={imageVersion} seconds={seconds} canPublish={canRetry&&accounts!==null&&g.status==="succeeded"} productId={productId} workspaceId={workspaceId} posts={posts}/>:<ul
+      {!view.active&&creatives.length>0?<AdGallery creatives={creatives} generationId={g.id} imageVersion={imageVersion} seconds={seconds} canPublish={canRetry&&accounts!==null&&g.status==="succeeded"} canEdit={canRetry&&g.status==="succeeded"&&!g.showcased_at} productId={productId} workspaceId={workspaceId} posts={posts}/>:<ul
         className={`mt-4 grid grid-cols-2 items-start gap-4 ${video ? "md:grid-cols-3" : "md:grid-cols-4"}`}
       >
         {creatives.map((c) => (
@@ -231,3 +231,4 @@ function PostLine({ t, post }: { t: Messages; post: AdPost }) {
     </p>
   );
 }
+

@@ -1,0 +1,51 @@
+name: Customer workflow
+on:
+  push:
+    branches: [enhance/customer-workflow]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  customer-workflow:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: workflow_tests
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Installed framework guidance
+        run: |
+          find node_modules/next/dist/docs -name server-actions-and-mutations.md -o -name updating-data.md -o -name route-handlers.md -o -name forms.md | xargs cat
+          curl --fail --silent --show-error https://supabase.com/changelog.md | head -c 20000
+          npx --yes supabase --version
+          npx --yes supabase migration new customer_workflow
+      - run: npx next typegen && npx tsc --noEmit
+      - run: |
+          if test -f tests/customer-workflow.test.ts; then
+            node --experimental-strip-types --test tests/customer-workflow*.test.ts tests/creative-preferences.test.ts
+          fi
+      - run: npx eslint 'src/app/[locale]/dashboard/campaigns' 'src/app/[locale]/dashboard/insights' 'src/app/[locale]/dashboard/products/[id]/ad-revisions.tsx' 'src/app/[locale]/dashboard/products/[id]/revision-actions.ts' 'src/app/[locale]/dashboard/publishing/posting-calendar.tsx' src/lib/customer-workflow.ts src/lib/generation-direction.ts src/lib/social/analytics.ts
+      - run: bash scripts/test-customer-workflow.sh
+        env:
+          CREDIT_TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/workflow_tests
+      - run: npm install --prefix /tmp/workflow-browser --no-package-lock playwright@1.56.1
+      - run: /tmp/workflow-browser/node_modules/.bin/playwright install --with-deps chromium
+      - run: node scripts/check-customer-workflow.mjs
+        env:
+          PLAYWRIGHT_MODULE_PATH: /tmp/workflow-browser/node_modules/playwright

@@ -1,4 +1,5 @@
 import "server-only";
+import { generationDirection } from "@/lib/generation-direction";
 import {sampleVideoShots} from "@/lib/media-quality";
 import {requireReview} from "@/lib/media-quality-policy";
 import { withCreativePreferences, type CreativePreferences } from "@/lib/creative-preferences";
@@ -78,7 +79,10 @@ export async function runVideoGeneration({
       .single();
     if (error || !product?.brand_brief) throw new Error("Product not found.");
 
-    const brief = withCreativePreferences(product.brand_brief as BrandBrief, creativePreferences);
+    const direction = await generationDirection(db, generationId, workspaceId);
+    const brief = { ...withCreativePreferences(product.brand_brief as BrandBrief, creativePreferences), ...direction };
+    if (direction.brand_memory?.tone) brief.tone = direction.brand_memory.tone;
+    if (!brief.creative_preferences && direction.brand_memory?.audience) brief.audience = direction.brand_memory.audience;
     const referenceImageUrl = (product.image_urls as string[])[0] ?? null;
     const shotSeconds = LENGTHS[options.length];
     const ads = await writeVideoAds(
@@ -453,3 +457,4 @@ async function updateJob(id: string, fields: Partial<VideoJob>) {
 function age(timestamp: string) {
   return Date.now() - Date.parse(timestamp);
 }
+
