@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import {planFeatureGroups,PRICING_QUESTIONS,pricingStructuredData,pricingStructuredJson} from "../src/lib/pricing-catalog.ts";
 const plans=[{id:"free",price:0,credits:100,accounts:1},{id:"starter",price:29,credits:300,accounts:3},{id:"growth",price:79,credits:1000,accounts:10}];
 test("feature lists preserve common tools while describing actual upgrade entitlements",()=>{
- const rows=(id:string)=>Object.fromEntries(planFeatureGroups(plans.find(p=>p.id===id)!).flatMap(g=>g.features));
+ const rows=(id:string)=>Object.fromEntries(planFeatureGroups(plans.find(p=>p.id===id)!).flatMap(g=>g.features.map(([label,value])=>[label,value] as [string,string])));
  const free=rows("free"),starter=rows("starter"),growth=rows("growth");
  assert.match(free["Weekly planning preview"],/Not included/);assert.match(starter["Weekly planning preview"],/Included/);assert.match(starter["Download a results CSV"],/Not included/);assert.match(growth["Download a results CSV"],/Included/);
  assert.equal(free["Recent published posts in results"],"Up to 8");assert.equal(growth["Recent published posts in results"],"Up to 30");
