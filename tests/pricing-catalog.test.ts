@@ -13,6 +13,6 @@ test("feature lists preserve common tools while describing actual upgrade entitl
 test("structured FAQ matches visible content and does not publish purchasable offers",()=>{
  const data=pricingStructuredData(PAID_PLANS);const faq=data["@graph"].find(x=>x["@type"]==="FAQPage") as {mainEntity:{name:string;acceptedAnswer:{text:string}}[]};
  assert.deepEqual(faq.mainEntity.map(q=>[q.name,q.acceptedAnswer.text]),PRICING_QUESTIONS);
- const text=JSON.stringify(data);assert.ok(!text.includes('"offers"'));assert.ok(!text.includes('"aggregateRating"'));assert.ok(!text.includes('"price":29'));assert.equal(JSON.parse(pricingStructuredJson(PAID_PLANS))["@graph"].length,3);
+ const text=JSON.stringify(data);assert.ok(!text.includes('"offers"'));assert.ok(!text.includes('"aggregateRating"'));assert.ok(!text.includes('"price":39'));assert.equal(JSON.parse(pricingStructuredJson(PAID_PLANS))["@graph"].length,3);
 });
 test("JSON-LD cannot end its containing script when future content includes HTML",()=>{const hostile=[{...plans[0],id:'</script><script>alert("x")</script>'}];const encoded=pricingStructuredJson(hostile);assert.ok(!encoded.includes("<"));assert.deepEqual(JSON.parse(encoded),pricingStructuredData(hostile));});
