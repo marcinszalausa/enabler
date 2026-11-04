@@ -15,6 +15,7 @@ import {
   videoRunCost,
   type LengthKey,
 } from "@/lib/video-options";
+import type { Quality } from "@/lib/quality";
 
 const field =
   "w-full rounded-md border border-line-strong bg-raised px-3 py-2 text-sm outline-none transition focus:border-accent focus:ring-4 focus:ring-accent/20";
@@ -22,17 +23,20 @@ const field =
 // The video button opens a short form for what the ad says and who says it.
 export function VideoAdForm({
   productId,
+  campaignId,
   initialRequestId,
-  cost,
   label,
   language,
+  quality,
   initiallyOpen = false,
   credits,
 }: {
   productId: string;
+  campaignId?: string;
   initialRequestId: string;
-  cost: number;
   label: string;
+  // Chosen next to the buttons.
+  quality: Quality;
   // Chosen next to the buttons; shared with image runs.
   language: string;
   initiallyOpen?: boolean;
@@ -50,7 +54,7 @@ export function VideoAdForm({
         onClick={() => setOpen(true)}
         className="rounded-xl border border-line-strong bg-raised px-4 py-2.5 font-medium transition hover:border-accent hover:text-accent"
       >
-        {fmt(t.app.withCost, { label, cost })}
+        {fmt(t.app.withCost, { label, cost: videoRunCost(length, quality) })}
       </button>
     );
   }
@@ -62,7 +66,9 @@ export function VideoAdForm({
     >
       <input type="hidden" name="requestId" value={requestId} />
       <input type="hidden" name="productId" value={productId} />
+      {campaignId && <input type="hidden" name="campaignId" value={campaignId}/>}
       <input type="hidden" name="kind" value="video" />
+      <input type="hidden" name="quality" value={quality} />
 
       <p className="text-sm leading-relaxed text-muted">{fmt(t.onboard.videoChoice, { count: 2, seconds: length })}</p>
       <details><summary className="min-h-11 cursor-pointer py-3 font-medium text-accent">{t.onboard.advanced}</summary><div className="flex flex-col gap-4 pt-2">
@@ -98,7 +104,7 @@ export function VideoAdForm({
               />
               <span className="font-medium">{key} s</span>
               <span className="text-[11px] leading-tight text-muted peer-checked:text-accent/80">
-                {fmt(t.app.credits, { count: videoRunCost(key) })}
+                {fmt(t.app.credits, { count: videoRunCost(key, quality) })}
               </span>
             </label>
           ))}
@@ -180,16 +186,16 @@ export function VideoAdForm({
       </label>
 
       </div></details>
-      {credits !== undefined && <p data-video-balance role="status" className="rounded-lg bg-surface p-3 text-sm">{fmt(videoRunCost(length)>credits?t.trial.notEnough:t.trial.afterVideo,{cost:videoRunCost(length),remaining:Math.max(0,credits-videoRunCost(length))})}</p>}
+      {credits !== undefined && <p data-video-balance role="status" className="rounded-lg bg-surface p-3 text-sm">{fmt(videoRunCost(length, quality)>credits?t.trial.notEnough:t.trial.afterVideo,{cost:videoRunCost(length, quality),remaining:Math.max(0,credits-videoRunCost(length, quality))})}</p>}
       <div className="flex flex-wrap items-center gap-3">
         <button
           type="submit"
-          disabled={pending || (credits !== undefined && videoRunCost(length)>credits)}
+          disabled={pending || (credits !== undefined && videoRunCost(length, quality)>credits)}
           className="btn-primary rounded-lg px-4 py-2 font-medium"
         >
           {pending
             ? t.app.starting
-            : fmt(t.app.withCost, { label, cost: videoRunCost(length) })}
+            : fmt(t.app.withCost, { label, cost: videoRunCost(length, quality) })}
         </button>
         <button
           type="button"
@@ -207,3 +213,4 @@ export function VideoAdForm({
     </form>
   );
 }
+

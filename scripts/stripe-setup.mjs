@@ -1,32 +1,44 @@
-// Sets up Stripe for Gooidy in one go: Pro (monthly) and Boost (yearly) as
-// USD prices, the webhook endpoint and the customer portal. Safe to run
-// again; it reuses what is already there.
+// Sets up Stripe for Gooidy in one go: Starter and Growth with a monthly and
+// a yearly USD price each, the webhook endpoint and the customer portal. Safe
+// to run again; it reuses what is already there.
 //
 //   STRIPE_SECRET_KEY=sk_test_... node scripts/stripe-setup.mjs https://gooidy.com
 //
 // Prints the environment variables to add in Vercel. Prices must match
-// src/lib/pricing.ts. Pro's intro price and the credit packs are charged
+// src/lib/pricing.ts (yearly = 12 months less 20%). Credit packs are charged
 // with inline prices, so they need nothing here.
 import Stripe from "stripe";
 
-const PRICES = [
+const YEARLY_DISCOUNT = 0.2;
+const PLANS = [
   {
-    key: "pro",
-    env: "STRIPE_PRICE_PRO",
-    name: "Gooidy Pro",
-    usd: 79,
-    interval: "month",
-    description: "1,000 credits every month",
+    key: "starter",
+    name: "Gooidy Starter",
+    usd: 39,
+    description: "300 credits every month; unused credits carry over one month",
   },
   {
-    key: "boost",
-    env: "STRIPE_PRICE_BOOST",
-    name: "Gooidy Boost",
-    usd: 39,
-    interval: "year",
-    description: "300 extra credits a year on top of Pro",
+    key: "growth",
+    name: "Gooidy Growth",
+    usd: 99,
+    description:
+      "1,000 credits every month; unused credits carry over one month",
   },
 ];
+const PRICES = PLANS.flatMap((plan) => [
+  {
+    ...plan,
+    interval: "month",
+    cents: plan.usd * 100,
+    env: `STRIPE_PRICE_${plan.key.toUpperCase()}`,
+  },
+  {
+    ...plan,
+    interval: "year",
+    cents: Math.round(plan.usd * 12 * (1 - YEARLY_DISCOUNT) * 100),
+    env: `STRIPE_PRICE_${plan.key.toUpperCase()}_YEARLY`,
+  },
+]);
 
 const EVENTS = [
   "customer.subscription.created",
@@ -48,11 +60,14 @@ if (!key || !/^https:\/\//.test(site)) {
 const stripe = new Stripe(key);
 const env = {};
 
-// 1. Pro (monthly) and Boost (yearly): a product and price each, found by
-// lookup key.
+// 1. A product per plan with a monthly and a yearly price, found by lookup
+// key.
+const products = new Map();
+const byPlan = new Map();
 for (const plan of PRICES) {
   const lookup = `gooidy_${plan.key}_${plan.interval}ly`;
-  const amount = plan.usd * 100;
+  const amount = plan.cents;
+  const label = `$${(amount / 100).toFixed(2)}/${plan.interval}`;
   const { data } = await stripe.prices.list({
     lookup_keys: [lookup],
     expand: ["data.product"],
@@ -69,13 +84,22 @@ for (const plan of PRICES) {
       lookup_key: lookup,
       transfer_lookup_key: true,
     });
-    console.log(`Updated ${plan.name} to $${plan.usd}/${plan.interval}`);
+    console.log(`Updated ${plan.name} to ${label}`);
   } else if (!price) {
-    const product = await stripe.products.create({
-      name: plan.name,
-      description: plan.description,
-      metadata: { plan: plan.key },
+    // The monthly and yearly prices share one product per plan.
+    const found = await stripe.products.search({
+      query: `metadata['plan']:'${plan.key}'`,
     });
+    // (Search can lag a few seconds behind, so this run's own products
+    // come first.)
+    const product =
+      byPlan.get(plan.key) ??
+      found.data[0] ??
+      (await stripe.products.create({
+        name: plan.name,
+        description: plan.description,
+        metadata: { plan: plan.key },
+      }));
     price = await stripe.prices.create({
       product: product.id,
       currency: "usd",
@@ -83,11 +107,15 @@ for (const plan of PRICES) {
       recurring: { interval: plan.interval },
       lookup_key: lookup,
     });
-    console.log(`Created ${plan.name} at $${plan.usd}/${plan.interval}`);
+    console.log(`Created ${plan.name} at ${label}`);
   } else {
-    console.log(`${plan.name} is already set up`);
+    console.log(`${plan.name} ${plan.interval}ly is already set up`);
   }
   env[plan.env] = price.id;
+  const productId =
+    typeof price.product === "string" ? price.product : price.product.id;
+  products.set(productId, [...(products.get(productId) ?? []), price.id]);
+  byPlan.set(plan.key, { id: productId });
 }
 
 // 2. Webhook endpoint.
@@ -109,8 +137,10 @@ if (existing) {
   console.log(`Created webhook ${url}`);
 }
 
-// 3. Customer portal: update the card, see invoices, cancel. There is one
-// plan, so no plan switching.
+// 3. Customer portal: switch plans or between monthly and yearly, update the
+// card, see invoices, cancel. Upgrades apply now and charge the difference;
+// downgrades and yearly-to-monthly switches wait for the end of the paid
+// period.
 const portal = {
   business_profile: {
     headline: "Manage your Gooidy plan",
@@ -126,7 +156,18 @@ const portal = {
     invoice_history: { enabled: true },
     payment_method_update: { enabled: true },
     subscription_cancel: { enabled: true, mode: "at_period_end" },
-    subscription_update: { enabled: false },
+    subscription_update: {
+      enabled: true,
+      default_allowed_updates: ["price"],
+      proration_behavior: "always_invoice",
+      products: [...products].map(([product, prices]) => ({ product, prices })),
+      schedule_at_period_end: {
+        conditions: [
+          { type: "decreasing_item_amount" },
+          { type: "shortening_interval" },
+        ],
+      },
+    },
   },
 };
 const configs = await stripe.billingPortal.configurations.list({
@@ -146,6 +187,9 @@ console.log("\nAdd these in Vercel > Settings > Environment Variables:\n");
 console.log(`STRIPE_SECRET_KEY=${key.slice(0, 8)}… (the key you used)`);
 for (const [name, value] of Object.entries(env))
   console.log(`${name}=${value}`);
+console.log(
+  "CRON_SECRET=<any long random string> (gives yearly plans their monthly credits)",
+);
 console.log(
   "\nThen in Stripe turn on Adaptive Pricing (Settings > Payments > Adaptive Pricing) and the payment methods you want (Settings > Payments > Payment methods).",
 );

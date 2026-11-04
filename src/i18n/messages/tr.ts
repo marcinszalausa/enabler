@@ -147,25 +147,14 @@ export const tr: Messages = {
     languagesTitle: "Alıcınızın dilinde satın",
     languagesBody:
       "Her reklam seçtiğiniz dilde, oralı birinin yazacağı gibi yazılır; böylece kendi pazarınızın ötesinde satış yapabilirsiniz. Video reklamlar da bu dili konuşur, uyumlu altyazılarla.",
+    tierTitle: "Her reklamın kalitesini seçin",
+    tierSub: "Aynı ürün her seviyede, Gooidy tarafından yapıldı ve düzenlenmeden gösteriliyor. Üst seviyeler en üst sıradaki yapay zekâ modellerini kullanır.",
+    tierPerImage: "Görsel başına {count} kredi",
+    tierPerSecond: "Video saniyesi başına {count} kredi",
     pricingTitle: "Sizinle birlikte büyüyen basit fiyatlar",
     pricingSub: "Ücretsiz başlayın. İşiniz büyüdükçe planınızı yükseltin.",
     popular: "Popüler",
     perMonth: " / ay",
-    introPeriod: "ilk {days} gün için",
-    introCredits: "İlk {days} günde {count} kredi, sonra her ay {full}",
-    then: "sonra {price} / ay",
-    boost: {
-      name: "Boost",
-      period: " / yıl",
-      credits: "Her yıl 300 ek kredi",
-      perks: [
-        "Pro planınıza eklenir",
-        "Yılda bir kez faturalandırılır",
-        "Yayına girdiğinde tek dokunuşla reklam tanıtımı",
-      ],
-    },
-    payNote:
-      "Fiyatlar ABD doları cinsindendir. Ödeme sırasında kendi para biriminizle ödersiniz.",
     approx: "yaklaşık {price}",
     plans: [
       {
@@ -174,12 +163,21 @@ export const tr: Messages = {
         perks: ["Yaklaşık 50 reklam", "Marka kiti", "Her reklamı indirme"],
       },
       {
-        name: "Pro",
+        name: "Starter",
+        credits: "Her ay 300 kredi",
+        perks: [
+          "Ayda yaklaşık 150 reklam",
+          "Free'deki her şey",
+          "İstediğiniz zaman iptal",
+        ],
+      },
+      {
+        name: "Growth",
         credits: "Her ay 1.000 kredi",
         perks: [
           "Ayda yaklaşık 500 reklam",
-          "Free'deki her şey",
-          "İstediğiniz zaman iptal",
+          "Starter'daki her şey",
+          "Öncelikli destek",
         ],
       },
     ],
@@ -195,7 +193,7 @@ export const tr: Messages = {
       },
       {
         q: "Kredi nedir?",
-        a: "Her reklam görseli 2 kredi kullanır. Her çalıştırma iki boyutta beş reklam oluşturur, yani 20 kredi kullanır.",
+        a: "Her reklam görseli seçtiğiniz kaliteye göre 2 ile 5 kredi kullanır. Her çalıştırma seçiminize göre 1, 3 veya 5 reklamı iki boyutta oluşturur; beş reklam 20 ile 50 kredi kullanır.",
       },
       {
         q: "Tasarım deneyimi gerekir mi?",
@@ -511,6 +509,16 @@ export const tr: Messages = {
     person: "Ekrandaki kişi",
     length: "Süre",
     lengthHelp: "7–15 sn Reels ve Stories için, 20–30 sn TikTok için uygundur.",
+    quality: "Kalite",
+    qualities: { good: "İyi", better: "Daha iyi", best: "En iyi" },
+    qualityExample: "Bu kalitede örnek",
+    kind: "Reklam türü",
+    kindImages: "Görseller",
+    kindVideos: "Videolar",
+    howMany: "Kaç görsel",
+    createImages: "{count} görsel oluştur",
+    ideasHelp: "Her fikir farklı bir açı; akış gönderisi ve hikâye olarak hazırlanır.",
+    qualityHelp: "Daha yüksek kalite daha yeni yapay zekâ modelleri ve daha fazla kredi kullanır. En iyi, en net ve en gerçekçi reklamlar için en üst sıradaki modelleri kullanır.",
     genders: { female: "Kadın", male: "Erkek" },
     energies: { calm: "Sakin", upbeat: "Neşeli", high: "Yüksek enerji" },
     people: {
@@ -591,6 +599,12 @@ export const tr: Messages = {
     plansSub: "Krediler her ay yenilenir. İstediğiniz zaman iptal edin.",
     monthly: "Her ay {count} kredi, yaklaşık {ads} reklam",
     choose: "{plan} planını seç",
+    rollover: "Planın kullanılmayan kredileri bir ay devreder.",
+    monthlyTab: "Aylık",
+    yearlyTab: "Yıllık",
+    yearlySave: "%{percent} tasarruf",
+    billedYearly: "{price} yılda bir kez faturalandırılır",
+    moneyBack: "İlk ödemenizde {days} gün para iade garantisi.",
     packsTitle: "Kredi paketleri",
     packsSub: "Tek seferlik ödeme, abonelik yok.",
     pack: "{count} kredi",
@@ -599,22 +613,14 @@ export const tr: Messages = {
     payTitle: "Kendi para biriminizle ödeyin",
     payBody:
       "Fiyatlar ABD doları cinsindendir. Ödeme sırasında tutarı kendi para biriminizde ve ülkenizde yaygın ödeme yöntemlerini görürsünüz.",
-    payPlans: "Pro ve Boost: kart, Apple Pay, Google Pay veya Link.",
+    payPlans: "Planlar: kart, Apple Pay, Google Pay veya Link.",
     payPacks:
       "Kredi paketleri: ülkenize göre PayPal, Klarna, iDEAL, Pix, Alipay, WeChat Pay ve daha fazlası.",
     paid: "Ödeme alındı, teşekkürler. Planınız ve kredileriniz birkaç saniye içinde güncellenir; görünmüyorsa sayfayı yenileyin.",
     packPaid:
       "Teşekkürler! Kredileriniz ödeme onaylanır onaylanmaz eklenir. Çoğu ödeme anında gerçekleşir; banka talimatları birkaç gün sürebilir.",
-    footnote:
-      "Bir kredi bir reklam görseli oluşturur. Ödemeler Stripe tarafından güvenle işlenir.",
-    boostBody:
-      "Planınıza ek olarak her yıl {count} ek kredi, yıllık {price}. Tek dokunuşla reklam tanıtımı, yayınlama başladığında Boost'a gelecek.",
-    addBoost: "Boost ekle",
-    boostOn: "Boost {date} tarihine kadar açık.",
-    boostPaid:
-      "Boost açık, teşekkürler. Ek kredileriniz birkaç saniye içinde eklenir.",
+    footnote: "Ödemeler Stripe tarafından güvenle işlenir. Kredi paketlerinin süresi dolmaz.",
     errors: {
-      boostNeedsPlan: "Boost ücretli bir plana eklenir. Önce Pro ile başlayın.",
       pickPlan: "Bir plan seçin.",
       notSetUp: "Bu plan henüz ayarlanmadı.",
       noWorkspace: "Çalışma alanı bulunamadı.",
@@ -714,5 +720,20 @@ export const tr: Messages = {
       timeZone: "Bir saat dilimi seç.",
       couldnt: "Yayınlanamadı. Lütfen tekrar dene.",
     },
+  },
+  why: {
+    title: "Görünüşüne önem veren işletmeler için",
+    sub: "Gooidy ürün sayfanızı markanıza yakışan reklamlara dönüştürür ve müşterilerinizin konuştuğu dillerde her hafta görünür olmanıza yardım eder.",
+    cards: [
+      { title: "Kaliteyi siz seçin", body: "Her reklam için İyi, Daha İyi veya En İyi; önde gelen görsel ve video modelleriyle. Hiçbir şey üretilmeden önce kesin kredi maliyetini görürsünüz." },
+      { title: "Ürününüz, olduğu gibi", body: "Gerçek ürün sayfanızdan başlar, rengini, biçimini ve ayrıntılarını koruruz. Her görsel ve tamamlanan her video size ulaşmadan önce otomatik olarak kontrol edilir." },
+      { title: "Müşterilerinizin dilini konuşun", body: "İspanyolca ve Lehçeden Japonca, Hintçe ve Arapçaya kadar 17 dilde reklam, açıklama ve video seslendirme." },
+      { title: "Markanız hatırlanır", body: "Logonuzu, renklerinizi, yazı tipinizi ve marka dilinizi bir kez kaydedin. Her yeni kampanya markanıza uygun başlar." },
+      { title: "Her hafta görünür olun", body: "Kampanya planlayın, 10 ağda gönderi zamanlayın ya da otomatik pilotu açın, sonra hangi gönderilerin tıklama aldığını görün. Ürün bağlantıları etiketlenir, böylece mağaza analitiğiniz her gönderiden gelen ziyaretleri gösterir." },
+      { title: "İlk tıklamadan itibaren dürüst", body: "Net fiyatlar, teslim edilemeyen reklamlar için iade edilen krediler ve reklamlarınızda uydurma yorum, indirim veya iddia yok." },
+    ],
+    soon: "Yakında",
+    soonTitle: "Boost",
+    soonBody: "En iyi reklamınızı tek dokunuşla Facebook ve Instagram'da yeni alıcılara gösterin.",
   },
 };

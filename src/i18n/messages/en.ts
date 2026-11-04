@@ -148,22 +148,12 @@ export const en = {
       "Every ad is written in the language you pick, the way a local would write it, so you can sell beyond your home market. Video ads speak it too, with captions to match.",
     pricingTitle: "Simple pricing that grows with you",
     pricingSub: "Start free. Upgrade as your business grows.",
+    tierTitle: "Pick the quality for every ad",
+    tierSub: "The same product at each tier, made by Gooidy and shown unedited. Higher tiers use the top-ranked AI models.",
+    tierPerImage: "{count} credits per image",
+    tierPerSecond: "{count} credits per video second",
     popular: "Popular",
     perMonth: " / month",
-    introPeriod: "for your first {days} days",
-    introCredits: "{count} credits in your first {days} days, then {full} every month",
-    then: "then {price} / month",
-    boost: {
-      name: "Boost",
-      period: " / year",
-      credits: "300 extra credits every year",
-      perks: [
-        "Adds to your Pro plan",
-        "Billed once a year",
-        "One-tap ad promotion when it launches",
-      ],
-    },
-    payNote: "Prices in US dollars. Pay in your own currency at checkout.",
     approx: "about {price}",
     plans: [
       {
@@ -172,12 +162,21 @@ export const en = {
         perks: ["About 50 ads", "Brand kit", "Download every ad"],
       },
       {
-        name: "Pro",
+        name: "Starter",
+        credits: "300 credits every month",
+        perks: [
+          "About 150 ads a month",
+          "Everything in Free",
+          "Cancel anytime",
+        ],
+      },
+      {
+        name: "Growth",
         credits: "1,000 credits every month",
         perks: [
           "About 500 ads a month",
-          "Everything in Free",
-          "Cancel anytime",
+          "Everything in Starter",
+          "Priority support",
         ],
       },
     ],
@@ -193,7 +192,7 @@ export const en = {
       },
       {
         q: "What is a credit?",
-        a: "Each ad image uses 2 credits. Each run makes five ads in two sizes, so it uses 20 credits.",
+        a: "Each ad image uses 2 to 5 credits, depending on the quality you pick. Each run makes 1, 3 or 5 ads (you choose), each in two sizes, so a run of five uses 20 to 50 credits.",
       },
       {
         q: "Do I need design experience?",
@@ -506,6 +505,16 @@ export const en = {
     person: "Person on screen",
     length: "Length",
     lengthHelp: "7–15 s suits Reels and Stories; 20–30 s suits TikTok.",
+    quality: "Quality",
+    qualities: { good: "Good", better: "Better", best: "Best" },
+    qualityHelp: "Higher quality uses newer AI models and more credits. Best uses the top-ranked models for the sharpest, most lifelike ads.",
+    qualityExample: "Example at this quality",
+    kind: "Ad type",
+    kindImages: "Images",
+    kindVideos: "Videos",
+    howMany: "How many images",
+    createImages: "Create {count} images",
+    ideasHelp: "Each idea is a different angle, made as a feed post and a Story.",
     genders: { female: "Female", male: "Male" },
     energies: { calm: "Calm", upbeat: "Upbeat", high: "High energy" },
     people: {
@@ -585,6 +594,12 @@ export const en = {
     plansSub: "Credits top up every month. Cancel anytime.",
     monthly: "{count} credits every month, about {ads} ads",
     choose: "Choose {plan}",
+    rollover: "Unused plan credits carry over for one month.",
+    monthlyTab: "Monthly",
+    yearlyTab: "Yearly",
+    yearlySave: "Save {percent}%",
+    billedYearly: "{price} billed once a year",
+    moneyBack: "{days}-day money-back guarantee on your first payment.",
     packsTitle: "Credit packs",
     packsSub: "Pay once, no subscription.",
     pack: "{count} credits",
@@ -593,22 +608,14 @@ export const en = {
     payTitle: "Pay in your currency",
     payBody:
       "Prices are in US dollars. At checkout you see the amount in your own currency and the ways to pay that are common where you live.",
-    payPlans: "Pro and Boost: card, Apple Pay, Google Pay or Link.",
+    payPlans: "Plans: card, Apple Pay, Google Pay or Link.",
     payPacks:
       "Credit packs: also PayPal, BLIK, Przelewy24, iDEAL, Bancontact, Klarna, Pix, Alipay, WeChat Pay and more, depending on your country.",
     paid: "Payment received, thank you. Your plan and credits update within a few seconds; refresh if they don't show yet.",
     packPaid:
       "Thank you! Your credits are added as soon as the payment is confirmed. Most payments are instant; bank debits can take a few days.",
-    footnote:
-      "One credit makes one ad image. Payments are handled securely by Stripe.",
-    boostBody:
-      "{count} extra credits every year on top of your plan, for {price} a year. One-tap ad promotion comes to Boost when publishing launches.",
-    addBoost: "Add Boost",
-    boostOn: "Boost is on until {date}.",
-    boostPaid:
-      "Boost is on, thank you. Your extra credits are added within a few seconds.",
+    footnote: "Payments are handled securely by Stripe. Credit packs never expire.",
     errors: {
-      boostNeedsPlan: "Boost adds to a paid plan. Start Pro first.",
       pickPlan: "Pick a plan.",
       notSetUp: "This plan isn't set up yet.",
       noWorkspace: "No workspace found.",
@@ -706,5 +713,20 @@ export const en = {
       timeZone: "Pick a time zone.",
       couldnt: "Couldn't publish. Please try again.",
     },
+  },
+  why: {
+    title: "Built for businesses that care how they look",
+    sub: "Gooidy turns your product page into ads worthy of your brand, then helps you show up every week, in the languages your customers speak.",
+    cards: [
+      { title: "Choose your quality", body: "Good, Better or Best on every ad, made with leading image and video models. You see the exact credit cost before anything is made." },
+      { title: "Your product, as it really is", body: "We start from your real product page and keep its color, shape and details. Every image and finished video is checked automatically before it reaches you." },
+      { title: "Speak your customers' language", body: "Ads, captions and video voiceovers in 17 languages, from Spanish and Polish to Japanese, Hindi and Arabic." },
+      { title: "Your brand, remembered", body: "Save your logo, colors, font and brand voice once. Every new campaign starts on brand." },
+      { title: "Show up every week", body: "Plan campaigns, schedule posts on 10 networks or turn on autopilot, then see which posts earned clicks. Product links are tagged so your store analytics show visits from each post." },
+      { title: "Honest from the first click", body: "Clear prices, credits returned when an ad can't be delivered, and no invented reviews, discounts or claims in your ads." },
+    ],
+    soon: "Coming soon",
+    soonTitle: "Boost",
+    soonBody: "Put your best ad in front of new buyers on Facebook and Instagram, with one tap.",
   },
 };

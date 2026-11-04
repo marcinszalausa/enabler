@@ -7,15 +7,21 @@ import { fmt } from "@/i18n/format";
 import { getCurrentUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import {
-  BOOST,
   FREE_PLAN,
   PACKS,
   PLANS,
   type PackKey,
   type PlanKey,
 } from "@/lib/billing";
-import { planName, usd } from "@/lib/pricing";
+import {
+  MONEY_BACK_DAYS,
+  YEARLY_DISCOUNT,
+  planName,
+  usd,
+  yearlyPrice,
+} from "@/lib/pricing";
 import { CREDITS_PER_IMAGE } from "@/lib/image-pricing";
+import Link from "next/link";
 import { BackLink } from "../ui";
 import { LocalPrice } from "@/app/_landing/local-price";
 import { CheckoutButton, ManageButton } from "./billing-buttons";
@@ -62,12 +68,13 @@ async function Billing({
   searchParams: PageProps<"/[locale]/dashboard/billing">["searchParams"];
 }) {
   await getCurrentUser();
-  const { checkout } = await searchParams;
+  const { checkout, interval: wanted } = await searchParams;
+  const yearly = wanted === "year";
   const supabase = await createClient();
   const { data: ws } = await supabase
     .from("workspaces")
     .select(
-      "plan, credits, stripe_subscription_id, subscription_status, current_period_end, had_subscription, boost_subscription_id, boost_until",
+      "plan, credits, stripe_subscription_id, subscription_status, current_period_end",
     )
     .order("created_at")
     .limit(1)
@@ -77,28 +84,23 @@ async function Billing({
   const b = t.billing;
   const n = (value: number) => value.toLocaleString(locale);
   const subscribed = Boolean(ws.stripe_subscription_id);
-  const date = (value: string | null) =>
-    value
-      ? new Date(value).toLocaleDateString(locale, {
-          month: "long",
-          day: "numeric",
-          year: "numeric",
-        })
-      : null;
-  const renews = date(ws.current_period_end);
-  const boostUntil = ws.boost_subscription_id ? date(ws.boost_until) : null;
+  const renews = ws.current_period_end
+    ? new Date(ws.current_period_end).toLocaleDateString(locale, {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+      })
+    : null;
+  const tab = (active: boolean) =>
+    `inline-flex min-h-11 items-center rounded-lg px-4 text-sm font-medium transition ${
+      active ? "bg-raised shadow-sm" : "text-muted hover:text-fg"
+    }`;
 
   return (
     <>
-      {(checkout === "success" ||
-        checkout === "pack" ||
-        checkout === "boost") && (
+      {(checkout === "success" || checkout === "pack") && (
         <p className="mt-6 rounded-xl border border-green-600/30 bg-green-600/10 p-4 text-sm">
-          {checkout === "pack"
-            ? b.packPaid
-            : checkout === "boost"
-              ? b.boostPaid
-              : b.paid}
+          {checkout === "pack" ? b.packPaid : b.paid}
         </p>
       )}
 
@@ -113,7 +115,7 @@ async function Billing({
             {subscribed && renews
               ? ws.subscription_status === "past_due"
                 ? b.pastDue
-                : fmt(b.renews, { date: renews })
+                : `${fmt(b.renews, { date: renews })} ${b.rollover}`
               : fmt(b.freeNote, { count: n(FREE_PLAN.credits) })}
           </p>
         </div>
@@ -122,99 +124,92 @@ async function Billing({
         )}
       </section>
 
-      <section className="mt-10 grid gap-5 md:grid-cols-2">
-        {!subscribed &&
-          (Object.keys(PLANS) as PlanKey[]).map((key) => {
-            const plan = PLANS[key];
-            const name = planName(t, key);
-            const intro = !ws.had_subscription;
-            return (
-              <div key={key} className="edge flex flex-col p-6">
-                <h2 className="font-medium">{name}</h2>
-                <p className="mt-3">
-                  <span className="text-3xl font-semibold tracking-tight">
-                    {usd(intro ? plan.intro.usd : plan.usd, locale)}
-                  </span>
-                  <span className="text-muted">
-                    {intro
-                      ? ` ${fmt(t.home.introPeriod, { days: plan.intro.days })}`
-                      : t.home.perMonth}
-                  </span>
-                </p>
-                {intro && (
-                  <p className="mt-1 text-sm font-medium">
-                    {fmt(t.home.then, { price: usd(plan.usd, locale) })}
-                  </p>
-                )}
-                <LocalPrice
-                  usd={intro ? plan.intro.usd : plan.usd}
-                  locale={locale}
-                  template={t.home.approx}
-                  className="text-sm text-muted"
-                />
-                <p className="mt-2 flex-1 text-sm text-muted">
-                  {intro
-                    ? fmt(t.home.introCredits, {
-                        count: n(plan.intro.credits),
-                        days: plan.intro.days,
-                        full: n(plan.credits),
-                      })
-                    : fmt(b.monthly, {
-                        count: n(plan.credits),
-                        ads: n(adsFor(plan.credits)),
-                      })}
-                </p>
-                <div className="mt-6">
-                  <CheckoutButton
-                    kind="plan"
-                    value={key}
-                    label={fmt(b.choose, { plan: name })}
-                    pendingLabel={b.openingCheckout}
-                    primary
-                  />
-                </div>
-              </div>
-            );
-          })}
-
-        <div className="flex flex-col rounded-2xl border border-line bg-raised p-6">
-          <h2 className="font-medium">{t.home.boost.name}</h2>
-          <p className="mt-3">
-            <span className="text-3xl font-semibold tracking-tight">
-              {usd(BOOST.usd, locale)}
+      {!subscribed && (
+        <section className="mt-10">
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="inline-flex rounded-xl border border-line bg-surface p-1">
+              <Link
+                href="/dashboard/billing"
+                prefetch={false}
+                className={tab(!yearly)}
+                aria-current={!yearly ? "true" : undefined}
+              >
+                {b.monthlyTab}
+              </Link>
+              <Link
+                href="/dashboard/billing?interval=year"
+                prefetch={false}
+                className={tab(yearly)}
+                aria-current={yearly ? "true" : undefined}
+              >
+                {b.yearlyTab}
+              </Link>
+            </div>
+            <span className="rounded-full bg-accent-soft px-2.5 py-0.5 text-xs font-medium text-accent">
+              {fmt(b.yearlySave, { percent: YEARLY_DISCOUNT * 100 })}
             </span>
-            <span className="text-muted">{t.home.boost.period}</span>
-          </p>
-          <LocalPrice
-            usd={BOOST.usd}
-            locale={locale}
-            template={t.home.approx}
-            className="text-sm text-muted"
-          />
-          <p className="mt-2 flex-1 text-sm text-muted">
-            {fmt(b.boostBody, {
-              count: n(BOOST.credits),
-              price: usd(BOOST.usd, locale),
-            })}
-          </p>
-          <div className="mt-6">
-            {boostUntil ? (
-              <p className="text-sm font-medium">
-                {fmt(b.boostOn, { date: boostUntil })}
-              </p>
-            ) : subscribed ? (
-              <CheckoutButton
-                kind="boost"
-                value="boost"
-                label={b.addBoost}
-                pendingLabel={b.openingCheckout}
-              />
-            ) : (
-              <p className="text-sm text-muted">{b.errors.boostNeedsPlan}</p>
-            )}
           </div>
-        </div>
-      </section>
+          <div className="mt-5 grid gap-5 md:grid-cols-2">
+            {(Object.keys(PLANS) as PlanKey[]).map((key, i) => {
+              const plan = PLANS[key];
+              const name = planName(t, key);
+              const perYear = yearlyPrice(plan.usd);
+              const shown = yearly
+                ? Math.round((perYear / 12) * 100) / 100
+                : plan.usd;
+              return (
+                <div
+                  key={key}
+                  className={
+                    i === 1
+                      ? "edge flex flex-col p-6"
+                      : "flex flex-col rounded-2xl border border-line bg-raised p-6"
+                  }
+                >
+                  <h2 className="font-medium">{name}</h2>
+                  <p className="mt-3">
+                    <span className="text-3xl font-semibold tracking-tight">
+                      {usd(shown, locale)}
+                    </span>
+                    <span className="text-muted">{t.home.perMonth}</span>
+                  </p>
+                  {yearly && (
+                    <p className="mt-1 text-sm font-medium">
+                      {fmt(b.billedYearly, { price: usd(perYear, locale) })}
+                    </p>
+                  )}
+                  <LocalPrice
+                    usd={yearly ? perYear : plan.usd}
+                    locale={locale}
+                    template={t.home.approx}
+                    className="text-sm text-muted"
+                  />
+                  <p className="mt-2 flex-1 text-sm text-muted">
+                    {fmt(b.monthly, {
+                      count: n(plan.credits),
+                      ads: n(adsFor(plan.credits)),
+                    })}{" "}
+                    {b.rollover}
+                  </p>
+                  <div className="mt-6">
+                    <CheckoutButton
+                      kind="plan"
+                      value={key}
+                      interval={yearly ? "year" : "month"}
+                      label={fmt(b.choose, { plan: name })}
+                      pendingLabel={b.openingCheckout}
+                      primary={i === 1}
+                    />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          <p className="mt-4 text-sm text-muted">
+            {fmt(b.moneyBack, { days: MONEY_BACK_DAYS })}
+          </p>
+        </section>
+      )}
 
       <section className="mt-10">
         <h2 className="text-lg font-medium">{b.packsTitle}</h2>

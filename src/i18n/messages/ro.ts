@@ -148,25 +148,15 @@ export const ro: Messages = {
     languagesTitle: "Vinde în limba cumpărătorului",
     languagesBody:
       "Fiecare reclamă este scrisă în limba aleasă, așa cum ar scrie-o un localnic, ca să poți vinde dincolo de piața ta. Reclamele video o vorbesc și ele, cu subtitrări pe măsură.",
+    tierTitle: "Alege calitatea fiecărei reclame",
+    tierSub: "Același produs la fiecare nivel, realizat de Gooidy și arătat needitat. Nivelurile mai înalte folosesc modelele AI cele mai bine clasate.",
+    tierPerImage: "{count} credite pe imagine",
+    tierPerSecond: "{count} credite pe secundă de video",
     pricingTitle: "Prețuri simple care cresc odată cu tine",
     pricingSub:
       "Începe gratuit. Treci la un plan mai mare pe măsură ce afacerea crește.",
     popular: "Popular",
     perMonth: " / lună",
-    introPeriod: "pentru primele {days} zile",
-    introCredits: "{count} credite în primele {days} zile, apoi {full} în fiecare lună",
-    then: "apoi {price} / lună",
-    boost: {
-      name: "Boost",
-      period: " / an",
-      credits: "300 de credite în plus în fiecare an",
-      perks: [
-        "Se adaugă la planul Pro",
-        "Facturat o dată pe an",
-        "Promovarea reclamelor dintr-o atingere când se lansează",
-      ],
-    },
-    payNote: "Prețuri în dolari americani. La plată plătești în moneda ta.",
     approx: "aproximativ {price}",
     plans: [
       {
@@ -179,12 +169,21 @@ export const ro: Messages = {
         ],
       },
       {
-        name: "Pro",
+        name: "Starter",
+        credits: "300 de credite în fiecare lună",
+        perks: [
+          "Aproximativ 150 de reclame pe lună",
+          "Tot ce include Free",
+          "Anulezi oricând",
+        ],
+      },
+      {
+        name: "Growth",
         credits: "1.000 de credite în fiecare lună",
         perks: [
           "Aproximativ 500 de reclame pe lună",
-          "Tot ce include Free",
-          "Anulezi oricând",
+          "Tot ce include Starter",
+          "Suport prioritar",
         ],
       },
     ],
@@ -200,7 +199,7 @@ export const ro: Messages = {
       },
       {
         q: "Ce este un credit?",
-        a: "Fiecare imagine publicitară costă 2 credite. Fiecare rulare creează cinci reclame în două formate, deci folosește 20 de credite.",
+        a: "Fiecare imagine publicitară costă între 2 și 5 credite, după calitatea aleasă. Fiecare rulare creează 1, 3 sau 5 reclame (la alegere), fiecare în două formate, deci cinci reclame folosesc între 20 și 50 de credite.",
       },
       {
         q: "Am nevoie de experiență în design?",
@@ -518,6 +517,16 @@ export const ro: Messages = {
     length: "Durată",
     lengthHelp:
       "7–15 s se potrivesc pentru Reels și Stories, 20–30 s pentru TikTok.",
+    quality: "Calitate",
+    qualities: { good: "Bună", better: "Mai bună", best: "Cea mai bună" },
+    qualityExample: "Exemplu la această calitate",
+    kind: "Tip de reclamă",
+    kindImages: "Imagini",
+    kindVideos: "Videoclipuri",
+    howMany: "Câte imagini",
+    createImages: "Creează {count} imagini",
+    ideasHelp: "Fiecare idee are alt unghi, ca postare în feed și ca story.",
+    qualityHelp: "Calitatea mai mare folosește modele AI mai noi și mai multe credite. Cea mai bună folosește modelele cele mai bine clasate pentru cele mai clare și realiste reclame.",
     genders: { female: "Feminină", male: "Masculină" },
     energies: { calm: "Calmă", upbeat: "Veselă", high: "Multă energie" },
     people: {
@@ -597,6 +606,12 @@ export const ro: Messages = {
     plansSub: "Creditele se reîncarcă în fiecare lună. Anulezi oricând.",
     monthly: "{count} credite pe lună, aproximativ {ads} reclame",
     choose: "Alege {plan}",
+    rollover: "Creditele nefolosite din plan se reportează o lună.",
+    monthlyTab: "Lunar",
+    yearlyTab: "Anual",
+    yearlySave: "Economisești {percent}%",
+    billedYearly: "{price} facturat o dată pe an",
+    moneyBack: "Garanție de returnare a banilor de {days} de zile pentru prima plată.",
     packsTitle: "Pachete de credite",
     packsSub: "Plătești o singură dată, fără abonament.",
     pack: "{count} credite",
@@ -605,23 +620,14 @@ export const ro: Messages = {
     payTitle: "Plătește în moneda ta",
     payBody:
       "Prețurile sunt în dolari americani. La plată vezi suma în moneda ta și metodele de plată obișnuite în țara ta.",
-    payPlans: "Pro și Boost: card, Apple Pay, Google Pay sau Link.",
+    payPlans: "Planuri: card, Apple Pay, Google Pay sau Link.",
     payPacks:
       "Pachete de credite: și PayPal, Klarna, iDEAL, Bancontact, Pix, Alipay, WeChat Pay și altele, în funcție de țară.",
     paid: "Plata a fost primită, mulțumim. Planul și creditele se actualizează în câteva secunde; reîncarcă pagina dacă nu apar încă.",
     packPaid:
       "Mulțumim! Creditele se adaugă imediat ce plata este confirmată. Majoritatea plăților sunt instantanee; debitările bancare pot dura câteva zile.",
-    footnote:
-      "Un credit creează o imagine publicitară. Plățile sunt procesate în siguranță de Stripe.",
-    boostBody:
-      "{count} de credite în plus în fiecare an, peste planul tău, pentru {price} pe an. Promovarea reclamelor dintr-o atingere vine în Boost când se lansează publicarea.",
-    addBoost: "Adaugă Boost",
-    boostOn: "Boost este activ până pe {date}.",
-    boostPaid:
-      "Boost este activ, mulțumim. Creditele în plus se adaugă în câteva secunde.",
+    footnote: "Plățile sunt procesate în siguranță de Stripe. Pachetele de credite nu expiră niciodată.",
     errors: {
-      boostNeedsPlan:
-        "Boost se adaugă la un plan plătit. Începe mai întâi cu Pro.",
       pickPlan: "Alege un plan.",
       notSetUp: "Acest plan nu este configurat încă.",
       noWorkspace: "Nu a fost găsit niciun spațiu de lucru.",
@@ -714,5 +720,20 @@ export const ro: Messages = {
       timeZone: "Alege un fus orar.",
       couldnt: "Publicarea a eșuat. Încearcă din nou.",
     },
+  },
+  why: {
+    title: "Creat pentru afacerile cărora le pasă cum arată",
+    sub: "Gooidy transformă pagina produsului tău în reclame demne de brandul tău și te ajută să fii prezent în fiecare săptămână, în limbile clienților tăi.",
+    cards: [
+      { title: "Alege calitatea", body: "Bună, Mai bună sau Cea mai bună pentru fiecare reclamă, realizată cu modele de top pentru imagine și video. Vezi costul exact în credite înainte de a se crea ceva." },
+      { title: "Produsul tău, așa cum este", body: "Pornim de la pagina reală a produsului și îi păstrăm culoarea, forma și detaliile. Fiecare imagine și fiecare video finalizat sunt verificate automat înainte să ajungă la tine." },
+      { title: "Vorbește limba clienților tăi", body: "Reclame, descrieri și voce din off în 17 limbi, de la spaniolă și poloneză la japoneză, hindi și arabă." },
+      { title: "Brandul tău, memorat", body: "Salvează o singură dată logo-ul, culorile, fontul și tonul brandului. Fiecare campanie nouă pornește în stilul tău." },
+      { title: "Fii prezent în fiecare săptămână", body: "Planifică campanii, programează postări pe 10 rețele sau pornește pilotul automat, apoi vezi ce postări au adus clicuri. Linkurile de produs sunt etichetate, astfel încât statisticile magazinului arată vizitele din fiecare postare." },
+      { title: "Onest de la primul clic", body: "Prețuri clare, credite returnate când o reclamă nu poate fi livrată și fără recenzii, reduceri sau afirmații inventate în reclamele tale." },
+    ],
+    soon: "În curând",
+    soonTitle: "Boost",
+    soonBody: "Arată cea mai bună reclamă a ta noilor cumpărători pe Facebook și Instagram, cu o singură atingere.",
   },
 };

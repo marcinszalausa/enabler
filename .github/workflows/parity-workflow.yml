@@ -1,0 +1,35 @@
+name: Competitive product workflow
+on:
+  push:
+    branches: [parity/discovery-and-help]
+  pull_request:
+permissions:
+  contents: read
+concurrency:
+  group: parity-workflow-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  parity-workflow:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Installed framework and database guidance
+        run: |
+          find node_modules/next/dist/docs/01-app -type f \( -name link.md -o -name generate-static-params.md -o -name forms.md \) | xargs cat
+          curl --fail --silent --show-error https://supabase.com/changelog.md | head -c 20000
+      - run: npx next typegen && npx tsc --noEmit
+      - run: |
+          if test -f scripts/check-parity-discovery.mjs; then
+            node --experimental-strip-types --test tests/discovery-content.test.ts
+            npx eslint src/lib/creative-presets.ts 'src/app/[locale]/dashboard/campaigns/campaign-form.tsx' 'src/app/[locale]/templates' src/lib/discovery-content.ts src/app/_landing/proof-preview.tsx src/app/_landing/help-search.tsx 'src/app/[locale]/industries' 'src/app/[locale]/platforms' 'src/app/[locale]/help' 'src/app/[locale]/blog'
+            npm install --prefix /tmp/parity-browser --no-package-lock playwright@1.56.1
+            /tmp/parity-browser/node_modules/.bin/playwright install --with-deps chromium
+            PLAYWRIGHT_MODULE_PATH=/tmp/parity-browser/node_modules/playwright node scripts/check-parity-discovery.mjs
+            PLAYWRIGHT_MODULE_PATH=/tmp/parity-browser/node_modules/playwright node scripts/check-customer-workflow.mjs
+          fi

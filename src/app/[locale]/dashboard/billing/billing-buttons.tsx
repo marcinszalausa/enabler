@@ -2,7 +2,6 @@
 
 import { useActionState } from "react";
 import {
-  buyBoost,
   buyPack,
   openPortal,
   startCheckout,
@@ -11,7 +10,7 @@ import {
 
 const initialState: BillingState = { error: null };
 
-const ACTIONS = { plan: startCheckout, pack: buyPack, boost: buyBoost };
+const ACTIONS = { plan: startCheckout, pack: buyPack };
 
 // Opens Stripe Checkout for a plan or a credit pack. Labels come worded from
 // the page, in the visitor's language.
@@ -20,10 +19,13 @@ export function CheckoutButton({
   value,
   label,
   pendingLabel,
+  interval,
   primary = false,
 }: {
   kind: keyof typeof ACTIONS;
   value: string;
+  // Plans only: "month" or "year".
+  interval?: string;
   label: string;
   pendingLabel: string;
   primary?: boolean;
@@ -32,6 +34,7 @@ export function CheckoutButton({
   return (
     <form action={action} className="flex flex-col gap-2">
       <input type="hidden" name={kind} value={value} />
+      {interval && <input type="hidden" name="interval" value={interval} />}
       <button
         type="submit"
         disabled={pending}

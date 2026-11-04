@@ -148,25 +148,14 @@ export const de: Messages = {
     languagesTitle: "Verkaufe in der Sprache deiner Käufer",
     languagesBody:
       "Jede Anzeige wird in der Sprache geschrieben, die du wählst, so wie ein Einheimischer schreiben würde, damit du über deinen Heimatmarkt hinaus verkaufen kannst. Videoanzeigen sprechen sie auch, mit passenden Untertiteln.",
+    tierTitle: "Wählen Sie die Qualität jeder Anzeige",
+    tierSub: "Dasselbe Produkt in jeder Stufe, von Gooidy erstellt und unbearbeitet gezeigt. Höhere Stufen nutzen die bestbewerteten KI-Modelle.",
+    tierPerImage: "{count} Credits pro Bild",
+    tierPerSecond: "{count} Credits pro Videosekunde",
     pricingTitle: "Einfache Preise, die mit dir wachsen",
     pricingSub: "Starte kostenlos. Steig um, wenn dein Geschäft wächst.",
     popular: "Beliebt",
     perMonth: " / Monat",
-    introPeriod: "für deine ersten {days} Tage",
-    introCredits: "{count} Credits in deinen ersten {days} Tagen, danach {full} jeden Monat",
-    then: "danach {price} / Monat",
-    boost: {
-      name: "Boost",
-      period: " / Jahr",
-      credits: "300 zusätzliche Credits pro Jahr",
-      perks: [
-        "Ergänzt deinen Pro-Tarif",
-        "Einmal im Jahr abgerechnet",
-        "Anzeigen mit einem Tipp bewerben, sobald es startet",
-      ],
-    },
-    payNote:
-      "Preise in US-Dollar. Beim Bezahlen zahlst du in deiner eigenen Währung.",
     approx: "etwa {price}",
     plans: [
       {
@@ -175,12 +164,21 @@ export const de: Messages = {
         perks: ["Etwa 50 Anzeigen", "Brand-Kit", "Jede Anzeige herunterladen"],
       },
       {
-        name: "Pro",
+        name: "Starter",
+        credits: "300 Credits pro Monat",
+        perks: [
+          "Etwa 150 Anzeigen pro Monat",
+          "Alles aus Free",
+          "Jederzeit kündbar",
+        ],
+      },
+      {
+        name: "Growth",
         credits: "1.000 Credits pro Monat",
         perks: [
           "Etwa 500 Anzeigen pro Monat",
-          "Alles aus Free",
-          "Jederzeit kündbar",
+          "Alles aus Starter",
+          "Bevorzugter Support",
         ],
       },
     ],
@@ -196,7 +194,7 @@ export const de: Messages = {
       },
       {
         q: "Was ist ein Credit?",
-        a: "Jedes Anzeigenbild kostet 2 Credits. Jeder Durchlauf erstellt fünf Anzeigen in zwei Formaten und verbraucht daher 20 Credits.",
+        a: "Jedes Anzeigenbild kostet je nach gewählter Qualität 2 bis 5 Credits. Jeder Durchlauf erstellt 1, 3 oder 5 Anzeigen (Ihre Wahl) in je zwei Formaten; fünf Anzeigen verbrauchen also 20 bis 50 Credits.",
       },
       {
         q: "Brauche ich Design-Erfahrung?",
@@ -511,6 +509,16 @@ export const de: Messages = {
     person: "Person im Bild",
     length: "Länge",
     lengthHelp: "7–15 s passen zu Reels und Stories, 20–30 s zu TikTok.",
+    quality: "Qualität",
+    qualities: { good: "Gut", better: "Besser", best: "Beste" },
+    qualityExample: "Beispiel in dieser Qualität",
+    kind: "Anzeigentyp",
+    kindImages: "Bilder",
+    kindVideos: "Videos",
+    howMany: "Wie viele Bilder",
+    createImages: "{count} Bilder erstellen",
+    ideasHelp: "Jede Idee ist ein anderer Ansatz, als Feed-Post und als Story.",
+    qualityHelp: "Höhere Qualität nutzt neuere KI-Modelle und mehr Credits. Beste nutzt die bestbewerteten Modelle für die schärfsten, realistischsten Anzeigen.",
     genders: { female: "Weiblich", male: "Männlich" },
     energies: { calm: "Ruhig", upbeat: "Fröhlich", high: "Energiegeladen" },
     people: {
@@ -593,6 +601,12 @@ export const de: Messages = {
     plansSub: "Credits werden jeden Monat aufgefüllt. Jederzeit kündbar.",
     monthly: "{count} Credits pro Monat, etwa {ads} Anzeigen",
     choose: "{plan} wählen",
+    rollover: "Nicht genutzte Tarif-Credits werden einen Monat übertragen.",
+    monthlyTab: "Monatlich",
+    yearlyTab: "Jährlich",
+    yearlySave: "{percent} % sparen",
+    billedYearly: "{price} einmal im Jahr abgerechnet",
+    moneyBack: "{days} Tage Geld-zurück-Garantie auf deine erste Zahlung.",
     packsTitle: "Credit-Pakete",
     packsSub: "Einmal zahlen, kein Abo.",
     pack: "{count} Credits",
@@ -601,23 +615,14 @@ export const de: Messages = {
     payTitle: "Zahle in deiner Währung",
     payBody:
       "Die Preise sind in US-Dollar. Beim Bezahlen siehst du den Betrag in deiner eigenen Währung und die Zahlungsarten, die in deinem Land üblich sind.",
-    payPlans: "Pro und Boost: Karte, Apple Pay, Google Pay oder Link.",
+    payPlans: "Tarife: Karte, Apple Pay, Google Pay oder Link.",
     payPacks:
       "Credit-Pakete: außerdem PayPal, Klarna, SEPA-Lastschrift, EPS, iDEAL, TWINT, Pix, Alipay, WeChat Pay und mehr, je nach Land.",
     paid: "Zahlung erhalten, danke. Dein Tarif und deine Credits werden in wenigen Sekunden aktualisiert; lade neu, falls sie noch nicht erscheinen.",
     packPaid:
       "Danke! Deine Credits werden gutgeschrieben, sobald die Zahlung bestätigt ist. Die meisten Zahlungen sind sofort da; Lastschriften können ein paar Tage dauern.",
-    footnote:
-      "Ein Credit erstellt ein Anzeigenbild. Zahlungen werden sicher über Stripe abgewickelt.",
-    boostBody:
-      "{count} zusätzliche Credits pro Jahr zu deinem Tarif, für {price} im Jahr. Anzeigen mit einem Tipp bewerben kommt zu Boost, sobald das Veröffentlichen startet.",
-    addBoost: "Boost hinzufügen",
-    boostOn: "Boost ist aktiv bis {date}.",
-    boostPaid:
-      "Boost ist aktiv, danke. Deine zusätzlichen Credits werden in wenigen Sekunden gutgeschrieben.",
+    footnote: "Zahlungen werden sicher über Stripe abgewickelt. Credit-Pakete verfallen nie.",
     errors: {
-      boostNeedsPlan:
-        "Boost ergänzt einen bezahlten Tarif. Starte zuerst mit Pro.",
       pickPlan: "Wähle einen Tarif.",
       notSetUp: "Dieser Tarif ist noch nicht eingerichtet.",
       noWorkspace: "Kein Arbeitsbereich gefunden.",
@@ -720,5 +725,20 @@ export const de: Messages = {
       timeZone: "Wähle eine Zeitzone.",
       couldnt: "Veröffentlichen fehlgeschlagen. Bitte versuche es erneut.",
     },
+  },
+  why: {
+    title: "Für Unternehmen, denen ihr Auftritt wichtig ist",
+    sub: "Gooidy macht aus deiner Produktseite Anzeigen, die deiner Marke gerecht werden, und hilft dir, jede Woche präsent zu sein – in den Sprachen deiner Kunden.",
+    cards: [
+      { title: "Wähle deine Qualität", body: "Gut, Besser oder Beste für jede Anzeige, erstellt mit führenden Bild- und Videomodellen. Du siehst die genauen Credit-Kosten, bevor etwas erstellt wird." },
+      { title: "Dein Produkt, wie es wirklich ist", body: "Wir starten mit deiner echten Produktseite und bewahren Farbe, Form und Details. Jedes Bild und jedes fertige Video wird automatisch geprüft, bevor es bei dir ankommt." },
+      { title: "Sprich die Sprache deiner Kunden", body: "Anzeigen, Texte und Video-Sprecher in 17 Sprachen, von Spanisch und Polnisch bis Japanisch, Hindi und Arabisch." },
+      { title: "Deine Marke, gespeichert", body: "Speichere Logo, Farben, Schrift und Markenstimme einmal. Jede neue Kampagne startet im Stil deiner Marke." },
+      { title: "Jede Woche präsent", body: "Plane Kampagnen, plane Beiträge auf 10 Netzwerken oder schalte den Autopiloten ein und sieh, welche Beiträge Klicks gebracht haben. Produktlinks werden markiert, damit die Analyse deines Shops die Besuche aus jedem Beitrag zeigt." },
+      { title: "Ehrlich ab dem ersten Klick", body: "Klare Preise, Credits zurück, wenn eine Anzeige nicht geliefert werden kann, und keine erfundenen Bewertungen, Rabatte oder Versprechen in deinen Anzeigen." },
+    ],
+    soon: "Demnächst",
+    soonTitle: "Boost",
+    soonBody: "Zeige deine beste Anzeige mit einem Tipp neuen Käufern auf Facebook und Instagram.",
   },
 };

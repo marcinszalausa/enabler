@@ -148,25 +148,14 @@ export const pl: Messages = {
     languagesTitle: "Sprzedawaj w języku swoich klientów",
     languagesBody:
       "Każda reklama jest pisana w wybranym języku, tak jak napisałby ją ktoś stamtąd, więc możesz sprzedawać poza swoim rynkiem. Reklamy wideo też mówią w tym języku, z pasującymi napisami.",
+    tierTitle: "Wybierz jakość każdej reklamy",
+    tierSub: "Ten sam produkt na każdym poziomie, zrobiony przez Gooidy i pokazany bez poprawek. Wyższe poziomy korzystają z najwyżej ocenianych modeli AI.",
+    tierPerImage: "{count} kredytów za grafikę",
+    tierPerSecond: "{count} kredytów za sekundę wideo",
     pricingTitle: "Proste ceny, które rosną razem z Tobą",
     pricingSub: "Zacznij za darmo. Zmień plan, gdy Twój biznes rośnie.",
     popular: "Popularny",
     perMonth: " / mies.",
-    introPeriod: "za pierwsze {days} dni",
-    introCredits: "{count} kredytów przez pierwsze {days} dni, potem {full} co miesiąc",
-    then: "potem {price} / mies.",
-    boost: {
-      name: "Boost",
-      period: " / rok",
-      credits: "300 dodatkowych kredytów co rok",
-      perks: [
-        "Dodatek do planu Pro",
-        "Płatność raz w roku",
-        "Promowanie reklam jednym kliknięciem, gdy wystartuje",
-      ],
-    },
-    payNote:
-      "Ceny w dolarach amerykańskich. Przy płatności zapłacisz we własnej walucie.",
     approx: "ok. {price}",
     plans: [
       {
@@ -179,12 +168,21 @@ export const pl: Messages = {
         ],
       },
       {
-        name: "Pro",
+        name: "Starter",
+        credits: "300 kredytów co miesiąc",
+        perks: [
+          "Około 150 reklam miesięcznie",
+          "Wszystko z planu Free",
+          "Rezygnacja w dowolnym momencie",
+        ],
+      },
+      {
+        name: "Growth",
         credits: "1000 kredytów co miesiąc",
         perks: [
           "Około 500 reklam miesięcznie",
-          "Wszystko z planu Free",
-          "Rezygnacja w dowolnym momencie",
+          "Wszystko z planu Starter",
+          "Priorytetowe wsparcie",
         ],
       },
     ],
@@ -200,7 +198,7 @@ export const pl: Messages = {
       },
       {
         q: "Czym jest kredyt?",
-        a: "Każda grafika reklamowa kosztuje 2 kredyty. Każda seria tworzy pięć reklam w dwóch formatach, więc zużywa 20 kredytów.",
+        a: "Każda grafika reklamowa kosztuje od 2 do 5 kredytów, zależnie od wybranej jakości. Każda seria tworzy 1, 3 lub 5 reklam (do wyboru), każdą w dwóch formatach, więc pięć reklam zużywa od 20 do 50 kredytów.",
       },
       {
         q: "Czy muszę znać się na projektowaniu?",
@@ -513,6 +511,16 @@ export const pl: Messages = {
     person: "Osoba w kadrze",
     length: "Długość",
     lengthHelp: "7–15 s pasuje do Reels i Stories, 20–30 s do TikToka.",
+    quality: "Jakość",
+    qualities: { good: "Dobra", better: "Lepsza", best: "Najlepsza" },
+    qualityExample: "Przykład w tej jakości",
+    kind: "Rodzaj reklamy",
+    kindImages: "Obrazy",
+    kindVideos: "Wideo",
+    howMany: "Ile obrazów",
+    createImages: "Utwórz obrazy: {count}",
+    ideasHelp: "Każdy pomysł to inne podejście, jako post w feedzie i jako relacja.",
+    qualityHelp: "Wyższa jakość to nowsze modele AI i więcej kredytów. Najlepsza korzysta z najwyżej ocenianych modeli, by reklamy były najostrzejsze i najbardziej realistyczne.",
     genders: { female: "Kobiecy", male: "Męski" },
     energies: { calm: "Spokojna", upbeat: "Pogodna", high: "Dużo energii" },
     people: {
@@ -594,6 +602,12 @@ export const pl: Messages = {
       "Kredyty uzupełniają się co miesiąc. Rezygnacja w dowolnym momencie.",
     monthly: "{count} kredytów co miesiąc, około {ads} reklam",
     choose: "Wybierz {plan}",
+    rollover: "Niewykorzystane kredyty z planu przechodzą na kolejny miesiąc.",
+    monthlyTab: "Miesięcznie",
+    yearlyTab: "Rocznie",
+    yearlySave: "Oszczędzasz {percent}%",
+    billedYearly: "{price} płatne raz w roku",
+    moneyBack: "{days}-dniowa gwarancja zwrotu pieniędzy za pierwszą płatność.",
     packsTitle: "Pakiety kredytów",
     packsSub: "Jednorazowa płatność, bez subskrypcji.",
     pack: "{count} kredytów",
@@ -602,23 +616,14 @@ export const pl: Messages = {
     payTitle: "Płać w swojej walucie",
     payBody:
       "Ceny są w dolarach amerykańskich. Przy płatności zobaczysz kwotę w swojej walucie i metody płatności popularne w Twoim kraju.",
-    payPlans: "Pro i Boost: karta, Apple Pay, Google Pay lub Link.",
+    payPlans: "Plany: karta, Apple Pay, Google Pay lub Link.",
     payPacks:
       "Pakiety kredytów: także BLIK, Przelewy24, PayPal, Klarna, iDEAL, Pix, Alipay, WeChat Pay i inne, zależnie od kraju.",
     paid: "Płatność otrzymana, dziękujemy. Plan i kredyty zaktualizują się w ciągu kilku sekund; odśwież stronę, jeśli jeszcze ich nie widać.",
     packPaid:
       "Dziękujemy! Kredyty zostaną dodane, gdy tylko płatność zostanie potwierdzona. Większość płatności jest natychmiastowa; polecenia zapłaty mogą potrwać kilka dni.",
-    footnote:
-      "Jeden kredyt to jedna grafika reklamowa. Płatności bezpiecznie obsługuje Stripe.",
-    boostBody:
-      "{count} dodatkowych kredytów co rok ponad Twój plan, za {price} rocznie. Promowanie reklam jednym kliknięciem trafi do Boost, gdy wystartuje publikowanie.",
-    addBoost: "Dodaj Boost",
-    boostOn: "Boost jest aktywny do {date}.",
-    boostPaid:
-      "Boost jest aktywny, dziękujemy. Dodatkowe kredyty pojawią się w ciągu kilku sekund.",
+    footnote: "Płatności bezpiecznie obsługuje Stripe. Pakiety kredytów nigdy nie wygasają.",
     errors: {
-      boostNeedsPlan:
-        "Boost to dodatek do płatnego planu. Najpierw wybierz Pro.",
       pickPlan: "Wybierz plan.",
       notSetUp: "Ten plan nie jest jeszcze skonfigurowany.",
       noWorkspace: "Nie znaleziono przestrzeni roboczej.",
@@ -719,5 +724,20 @@ export const pl: Messages = {
       timeZone: "Wybierz strefę czasową.",
       couldnt: "Nie udało się opublikować. Spróbuj ponownie.",
     },
+  },
+  why: {
+    title: "Dla firm, którym zależy na wizerunku",
+    sub: "Gooidy zamienia stronę Twojego produktu w reklamy godne Twojej marki i pomaga Ci być obecnym co tydzień, w językach Twoich klientów.",
+    cards: [
+      { title: "Wybierz jakość", body: "Dobra, Lepsza lub Najlepsza dla każdej reklamy, z czołowymi modelami obrazu i wideo. Dokładny koszt w kredytach widzisz, zanim cokolwiek powstanie." },
+      { title: "Twój produkt taki, jaki jest", body: "Zaczynamy od prawdziwej strony produktu i zachowujemy jego kolor, kształt i detale. Każdy obraz i gotowy film jest automatycznie sprawdzany, zanim do Ciebie trafi." },
+      { title: "Mów językiem swoich klientów", body: "Reklamy, opisy i lektor w filmach w 17 językach, od hiszpańskiego i polskiego po japoński, hindi i arabski." },
+      { title: "Twoja marka zapamiętana", body: "Zapisz raz logo, kolory, czcionkę i ton marki. Każda nowa kampania od razu jest w Twoim stylu." },
+      { title: "Bądź widoczny co tydzień", body: "Planuj kampanie, planuj posty w 10 sieciach lub włącz autopilota, a potem zobacz, które posty przyniosły kliknięcia. Linki do produktów są oznaczane, więc analityka Twojego sklepu pokazuje wizyty z każdego posta." },
+      { title: "Uczciwie od pierwszego kliknięcia", body: "Jasne ceny, zwrot kredytów, gdy reklamy nie da się dostarczyć, i żadnych zmyślonych opinii, rabatów ani obietnic w Twoich reklamach." },
+    ],
+    soon: "Wkrótce",
+    soonTitle: "Boost",
+    soonBody: "Pokaż swoją najlepszą reklamę nowym klientom na Facebooku i Instagramie jednym dotknięciem.",
   },
 };

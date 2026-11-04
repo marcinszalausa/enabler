@@ -8,12 +8,12 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { stripe } from "@/lib/stripe";
 import {
   PACKS,
-  PLANS,
-  boostPriceId,
+  isInterval,
   isPackKey,
   isPlanKey,
   priceIdFor,
 } from "@/lib/billing";
+import { PAID_CHECKOUT_STATUS } from "@/lib/legal-policy";
 import { UserError, userMessage } from "@/lib/errors";
 import { requestLocale, requestMessages } from "@/i18n/server";
 import type { Locale } from "@/i18n/config";
@@ -29,9 +29,7 @@ async function ownerWorkspace() {
   const t = (await requestMessages()).billing.errors;
   const { data: ws } = await supabase
     .from("workspaces")
-    .select(
-      "id, name, stripe_customer_id, stripe_subscription_id, had_subscription, boost_subscription_id",
-    )
+    .select("id, name, stripe_customer_id, stripe_subscription_id")
     .order("created_at")
     .limit(1)
     .single();
@@ -73,6 +71,15 @@ const STRIPE_LOCALES: Partial<
   ko: "ko",
   zh: "zh",
 };
+
+// Live payments stay off until the legal pages are final
+// (src/lib/legal-policy.ts); Stripe test mode keeps working for testing.
+function paymentsLocked() {
+  return (
+    PAID_CHECKOUT_STATUS === "unavailable" &&
+    !process.env.STRIPE_SECRET_KEY?.startsWith("sk_test_")
+  );
+}
 
 async function stripeLocale() {
   return STRIPE_LOCALES[await requestLocale()] ?? "auto";
@@ -141,50 +148,20 @@ export async function startCheckout(
   const t = (await requestMessages()).billing.errors;
   try {
     const plan = formData.get("plan");
-    if (!isPlanKey(plan)) return { error: t.pickPlan };
-    const price = priceIdFor(plan);
+    const interval = formData.get("interval") ?? "month";
+    if (!isPlanKey(plan) || !isInterval(interval)) return { error: t.pickPlan };
+    if (paymentsLocked()) throw new UserError(t.notSetUp);
+    const price = priceIdFor(plan, interval);
     if (!price) throw new UserError(t.notSetUp);
 
     const { ws, email } = await ownerWorkspace();
-    // Already subscribed: changes happen in the billing portal.
+    // Already subscribed: plan changes happen in the billing portal.
     if (!ws.stripe_subscription_id) {
-      const base = await checkoutBase(ws, email);
-      // A first subscription pays the intro price up front for the intro
-      // days, as a trial; the monthly price starts when they end.
-      const { intro } = PLANS[plan];
-      const firstTime =
-        !ws.had_subscription &&
-        !(
-          await stripe().subscriptions.list({
-            customer: base.customer as string,
-            status: "all",
-            limit: 1,
-          })
-        ).data.length;
       const session = await stripe().checkout.sessions.create({
-        ...base,
+        ...(await checkoutBase(ws, email)),
         mode: "subscription",
-        line_items: [
-          { price, quantity: 1 },
-          ...(firstTime
-            ? [
-                {
-                  quantity: 1,
-                  price_data: {
-                    currency: "usd",
-                    unit_amount: intro.usd * 100,
-                    product_data: {
-                      name: `Gooidy ${PLANS[plan].name}: first ${intro.days} days`,
-                    },
-                  },
-                },
-              ]
-            : []),
-        ],
-        subscription_data: {
-          metadata: { workspace_id: ws.id },
-          ...(firstTime && { trial_period_days: intro.days }),
-        },
+        line_items: [{ price, quantity: 1 }],
+        subscription_data: { metadata: { workspace_id: ws.id } },
         success_url: `${await siteOrigin()}/dashboard/billing?checkout=success`,
       });
       if (!session.url) throw new Error("Checkout session has no URL");
@@ -196,37 +173,6 @@ export async function startCheckout(
     return { error: userMessage(err, t.checkout) };
   }
   // redirect() throws, so it stays outside the try above.
-  if (!url) return openPortal();
-  redirect(url);
-}
-
-// The yearly Boost add-on, for workspaces on a paid plan.
-export async function buyBoost(): Promise<BillingState> {
-  let url: string | null = null;
-  const t = (await requestMessages()).billing.errors;
-  try {
-    const price = boostPriceId();
-    if (!price) throw new UserError(t.notSetUp);
-    const { ws, email } = await ownerWorkspace();
-    if (!ws.stripe_subscription_id) throw new UserError(t.boostNeedsPlan);
-    if (!ws.boost_subscription_id) {
-      const session = await stripe().checkout.sessions.create({
-        ...(await checkoutBase(ws, email)),
-        mode: "subscription",
-        line_items: [{ price, quantity: 1 }],
-        subscription_data: {
-          metadata: { workspace_id: ws.id, addon: "boost" },
-        },
-        success_url: `${await siteOrigin()}/dashboard/billing?checkout=boost`,
-      });
-      if (!session.url) throw new Error("Checkout session has no URL");
-      url = session.url;
-    }
-  } catch (err) {
-    unstable_rethrow(err);
-    console.error("buyBoost failed", err);
-    return { error: userMessage(err, t.checkout) };
-  }
   if (!url) return openPortal();
   redirect(url);
 }
@@ -244,6 +190,7 @@ export async function buyPack(
     const key = formData.get("pack");
     if (!isPackKey(key)) return { error: t.pickPlan };
     const pack = PACKS[key];
+    if (paymentsLocked()) throw new UserError(t.notSetUp);
 
     const { ws, email } = await ownerWorkspace();
     const metadata = { workspace_id: ws.id, pack: key };

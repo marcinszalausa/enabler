@@ -148,25 +148,14 @@ export const sv: Messages = {
     languagesTitle: "Sälj på köparens språk",
     languagesBody:
       "Varje annons skrivs på språket du väljer, så som en lokal person skulle skriva, så att du kan sälja utanför din hemmamarknad. Videoannonser talar det också, med matchande undertexter.",
+    tierTitle: "Välj kvalitet för varje annons",
+    tierSub: "Samma produkt på varje nivå, gjord av Gooidy och visad oredigerad. Högre nivåer använder de högst rankade AI-modellerna.",
+    tierPerImage: "{count} krediter per bild",
+    tierPerSecond: "{count} krediter per videosekund",
     pricingTitle: "Enkla priser som växer med dig",
     pricingSub: "Börja gratis. Uppgradera när ditt företag växer.",
     popular: "Populär",
     perMonth: " / mån",
-    introPeriod: "för dina första {days} dagar",
-    introCredits: "{count} krediter under dina första {days} dagar, sedan {full} varje månad",
-    then: "sedan {price} / månad",
-    boost: {
-      name: "Boost",
-      period: " / år",
-      credits: "300 extra krediter varje år",
-      perks: [
-        "Läggs till din Pro-plan",
-        "Faktureras en gång om året",
-        "Marknadsför annonser med ett tryck när det lanseras",
-      ],
-    },
-    payNote:
-      "Priser i amerikanska dollar. Du betalar i din egen valuta i kassan.",
     approx: "cirka {price}",
     plans: [
       {
@@ -175,12 +164,21 @@ export const sv: Messages = {
         perks: ["Cirka 50 annonser", "Varumärkeskit", "Ladda ner varje annons"],
       },
       {
-        name: "Pro",
+        name: "Starter",
+        credits: "300 krediter varje månad",
+        perks: [
+          "Cirka 150 annonser i månaden",
+          "Allt i Free",
+          "Avsluta när du vill",
+        ],
+      },
+      {
+        name: "Growth",
         credits: "1 000 krediter varje månad",
         perks: [
           "Cirka 500 annonser i månaden",
-          "Allt i Free",
-          "Avsluta när du vill",
+          "Allt i Starter",
+          "Prioriterad support",
         ],
       },
     ],
@@ -196,7 +194,7 @@ export const sv: Messages = {
       },
       {
         q: "Vad är en kredit?",
-        a: "Varje annonsbild kostar 2 krediter. Varje körning skapar fem annonser i två storlekar och använder alltså 20 krediter.",
+        a: "Varje annonsbild kostar 2 till 5 krediter beroende på vald kvalitet. Varje körning skapar 1, 3 eller 5 annonser (du väljer), var och en i två storlekar, så fem annonser använder 20 till 50 krediter.",
       },
       {
         q: "Behöver jag kunna design?",
@@ -512,6 +510,16 @@ export const sv: Messages = {
     person: "Person i bild",
     length: "Längd",
     lengthHelp: "7–15 s passar Reels och Stories, 20–30 s passar TikTok.",
+    quality: "Kvalitet",
+    qualities: { good: "Bra", better: "Bättre", best: "Bäst" },
+    qualityExample: "Exempel i den här kvaliteten",
+    kind: "Annonstyp",
+    kindImages: "Bilder",
+    kindVideos: "Videor",
+    howMany: "Hur många bilder",
+    createImages: "Skapa {count} bilder",
+    ideasHelp: "Varje idé har en egen vinkel, som flödesinlägg och som story.",
+    qualityHelp: "Högre kvalitet använder nyare AI-modeller och fler krediter. Bäst använder de högst rankade modellerna för de skarpaste och mest verklighetstrogna annonserna.",
     genders: { female: "Kvinna", male: "Man" },
     energies: { calm: "Lugn", upbeat: "Glad", high: "Mycket energi" },
     people: {
@@ -592,6 +600,12 @@ export const sv: Messages = {
     plansSub: "Krediterna fylls på varje månad. Avsluta när du vill.",
     monthly: "{count} krediter varje månad, cirka {ads} annonser",
     choose: "Välj {plan}",
+    rollover: "Oanvända krediter i planen följer med en månad.",
+    monthlyTab: "Månadsvis",
+    yearlyTab: "Årsvis",
+    yearlySave: "Spara {percent} %",
+    billedYearly: "{price} debiteras en gång om året",
+    moneyBack: "{days} dagars pengarna-tillbaka-garanti på din första betalning.",
     packsTitle: "Kreditpaket",
     packsSub: "Betala en gång, ingen prenumeration.",
     pack: "{count} krediter",
@@ -600,22 +614,14 @@ export const sv: Messages = {
     payTitle: "Betala i din valuta",
     payBody:
       "Priserna är i amerikanska dollar. I kassan ser du beloppet i din egen valuta och de betalsätt som är vanliga där du bor.",
-    payPlans: "Pro och Boost: kort, Apple Pay, Google Pay eller Link.",
+    payPlans: "Planer: kort, Apple Pay, Google Pay eller Link.",
     payPacks:
       "Kreditpaket: även Klarna, PayPal, iDEAL, Bancontact, Pix, Alipay, WeChat Pay och fler, beroende på land.",
     paid: "Betalningen är mottagen, tack. Din plan och dina krediter uppdateras inom några sekunder; ladda om om de inte syns än.",
     packPaid:
       "Tack! Dina krediter läggs till så snart betalningen är bekräftad. De flesta betalningar går direkt; autogiro kan ta några dagar.",
-    footnote:
-      "En kredit skapar en annonsbild. Betalningar hanteras säkert av Stripe.",
-    boostBody:
-      "{count} extra krediter varje år utöver din plan, för {price} om året. Marknadsföring med ett tryck kommer till Boost när publicering lanseras.",
-    addBoost: "Lägg till Boost",
-    boostOn: "Boost är på till {date}.",
-    boostPaid:
-      "Boost är på, tack. Dina extra krediter läggs till inom några sekunder.",
+    footnote: "Betalningar hanteras säkert av Stripe. Kreditpaket går aldrig ut.",
     errors: {
-      boostNeedsPlan: "Boost läggs till en betald plan. Börja med Pro först.",
       pickPlan: "Välj en plan.",
       notSetUp: "Den här planen är inte konfigurerad än.",
       noWorkspace: "Ingen arbetsyta hittades.",
@@ -715,5 +721,20 @@ export const sv: Messages = {
       timeZone: "Välj en tidszon.",
       couldnt: "Det gick inte att publicera. Försök igen.",
     },
+  },
+  why: {
+    title: "Byggt för företag som bryr sig om hur de ser ut",
+    sub: "Gooidy gör din produktsida till annonser som är värdiga ditt varumärke och hjälper dig att synas varje vecka, på dina kunders språk.",
+    cards: [
+      { title: "Välj din kvalitet", body: "Bra, Bättre eller Bäst för varje annons, skapad med ledande bild- och videomodeller. Du ser den exakta kreditkostnaden innan något skapas." },
+      { title: "Din produkt som den verkligen är", body: "Vi utgår från din riktiga produktsida och behåller färg, form och detaljer. Varje bild och färdig video kontrolleras automatiskt innan den når dig." },
+      { title: "Tala dina kunders språk", body: "Annonser, bildtexter och speakerröst i 17 språk, från spanska och polska till japanska, hindi och arabiska." },
+      { title: "Ditt varumärke, ihågkommet", body: "Spara logotyp, färger, typsnitt och tonläge en gång. Varje ny kampanj börjar i din stil." },
+      { title: "Synas varje vecka", body: "Planera kampanjer, schemalägg inlägg i 10 nätverk eller slå på autopiloten och se vilka inlägg som gav klick. Produktlänkar märks så att din butiks statistik visar besöken från varje inlägg." },
+      { title: "Ärligt från första klicket", body: "Tydliga priser, krediter tillbaka när en annons inte kan levereras och inga påhittade omdömen, rabatter eller påståenden i dina annonser." },
+    ],
+    soon: "Kommer snart",
+    soonTitle: "Boost",
+    soonBody: "Visa din bästa annons för nya köpare på Facebook och Instagram med ett tryck.",
   },
 };

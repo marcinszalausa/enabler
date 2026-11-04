@@ -148,25 +148,14 @@ export const nl: Messages = {
     languagesTitle: "Verkoop in de taal van je koper",
     languagesBody:
       "Elke advertentie wordt geschreven in de taal die je kiest, zoals een local het zou schrijven, zodat je buiten je eigen markt kunt verkopen. Videoadvertenties spreken die taal ook, met bijpassende ondertitels.",
+    tierTitle: "Kies de kwaliteit van elke advertentie",
+    tierSub: "Hetzelfde product op elk niveau, gemaakt door Gooidy en onbewerkt getoond. Hogere niveaus gebruiken de hoogst gewaardeerde AI-modellen.",
+    tierPerImage: "{count} credits per beeld",
+    tierPerSecond: "{count} credits per videoseconde",
     pricingTitle: "Eenvoudige prijzen die met je meegroeien",
     pricingSub: "Begin gratis. Upgrade wanneer je bedrijf groeit.",
     popular: "Populair",
     perMonth: " / maand",
-    introPeriod: "voor je eerste {days} dagen",
-    introCredits: "{count} credits in je eerste {days} dagen, daarna {full} per maand",
-    then: "daarna {price} / maand",
-    boost: {
-      name: "Boost",
-      period: " / jaar",
-      credits: "300 extra credits per jaar",
-      perks: [
-        "Bovenop je Pro-abonnement",
-        "Eén keer per jaar gefactureerd",
-        "Advertenties met één tik promoten zodra het live is",
-      ],
-    },
-    payNote:
-      "Prijzen in Amerikaanse dollars. Bij het afrekenen betaal je in je eigen valuta.",
     approx: "ongeveer {price}",
     plans: [
       {
@@ -179,12 +168,21 @@ export const nl: Messages = {
         ],
       },
       {
-        name: "Pro",
+        name: "Starter",
+        credits: "300 credits per maand",
+        perks: [
+          "Ongeveer 150 advertenties per maand",
+          "Alles uit Free",
+          "Altijd opzegbaar",
+        ],
+      },
+      {
+        name: "Growth",
         credits: "1.000 credits per maand",
         perks: [
           "Ongeveer 500 advertenties per maand",
-          "Alles uit Free",
-          "Altijd opzegbaar",
+          "Alles uit Starter",
+          "Voorrang bij support",
         ],
       },
     ],
@@ -200,7 +198,7 @@ export const nl: Messages = {
       },
       {
         q: "Wat is een credit?",
-        a: "Elk advertentiebeeld kost 2 credits. Elke ronde maakt vijf advertenties in twee formaten en gebruikt dus 20 credits.",
+        a: "Elk advertentiebeeld kost 2 tot 5 credits, afhankelijk van de gekozen kwaliteit. Elke ronde maakt 1, 3 of 5 advertenties (naar keuze), elk in twee formaten; vijf advertenties gebruiken dus 20 tot 50 credits.",
       },
       {
         q: "Heb ik ontwerpervaring nodig?",
@@ -513,6 +511,16 @@ export const nl: Messages = {
     person: "Persoon in beeld",
     length: "Lengte",
     lengthHelp: "7–15 s past bij Reels en Stories, 20–30 s bij TikTok.",
+    quality: "Kwaliteit",
+    qualities: { good: "Goed", better: "Beter", best: "Best" },
+    qualityExample: "Voorbeeld in deze kwaliteit",
+    kind: "Soort advertentie",
+    kindImages: "Afbeeldingen",
+    kindVideos: "Video's",
+    howMany: "Hoeveel afbeeldingen",
+    createImages: "{count} afbeeldingen maken",
+    ideasHelp: "Elk idee is een andere invalshoek, als feedpost en als Story.",
+    qualityHelp: "Hogere kwaliteit gebruikt nieuwere AI-modellen en meer credits. Best gebruikt de hoogst gewaardeerde modellen voor de scherpste, meest levensechte advertenties.",
     genders: { female: "Vrouw", male: "Man" },
     energies: { calm: "Rustig", upbeat: "Vrolijk", high: "Veel energie" },
     people: {
@@ -594,6 +602,12 @@ export const nl: Messages = {
     plansSub: "Credits worden elke maand aangevuld. Altijd opzegbaar.",
     monthly: "{count} credits per maand, ongeveer {ads} advertenties",
     choose: "Kies {plan}",
+    rollover: "Ongebruikte abonnementscredits schuiven één maand door.",
+    monthlyTab: "Maandelijks",
+    yearlyTab: "Jaarlijks",
+    yearlySave: "Bespaar {percent}%",
+    billedYearly: "{price} eenmaal per jaar gefactureerd",
+    moneyBack: "{days} dagen geld-terug-garantie op je eerste betaling.",
     packsTitle: "Creditpakketten",
     packsSub: "Eenmalig betalen, geen abonnement.",
     pack: "{count} credits",
@@ -602,23 +616,14 @@ export const nl: Messages = {
     payTitle: "Betaal in je eigen valuta",
     payBody:
       "De prijzen zijn in Amerikaanse dollars. Bij het afrekenen zie je het bedrag in je eigen valuta en de betaalmethoden die in jouw land gebruikelijk zijn.",
-    payPlans: "Pro en Boost: kaart, Apple Pay, Google Pay of Link.",
+    payPlans: "Abonnementen: kaart, Apple Pay, Google Pay of Link.",
     payPacks:
       "Creditpakketten: ook iDEAL, Bancontact, PayPal, Klarna, SEPA-incasso, Pix, Alipay, WeChat Pay en meer, afhankelijk van je land.",
     paid: "Betaling ontvangen, bedankt. Je abonnement en credits worden binnen een paar seconden bijgewerkt; vernieuw de pagina als ze er nog niet staan.",
     packPaid:
       "Bedankt! Je credits worden toegevoegd zodra de betaling is bevestigd. De meeste betalingen zijn direct; incasso's kunnen een paar dagen duren.",
-    footnote:
-      "Eén credit maakt één advertentieafbeelding. Betalingen worden veilig verwerkt door Stripe.",
-    boostBody:
-      "{count} extra credits per jaar bovenop je abonnement, voor {price} per jaar. Advertenties met één tik promoten komt naar Boost zodra publiceren live is.",
-    addBoost: "Boost toevoegen",
-    boostOn: "Boost staat aan tot {date}.",
-    boostPaid:
-      "Boost staat aan, bedankt. Je extra credits worden binnen een paar seconden toegevoegd.",
+    footnote: "Betalingen worden veilig verwerkt door Stripe. Creditpakketten verlopen nooit.",
     errors: {
-      boostNeedsPlan:
-        "Boost komt bovenop een betaald abonnement. Begin eerst met Pro.",
       pickPlan: "Kies een abonnement.",
       notSetUp: "Dit abonnement is nog niet ingesteld.",
       noWorkspace: "Geen werkruimte gevonden.",
@@ -720,5 +725,20 @@ export const nl: Messages = {
       timeZone: "Kies een tijdzone.",
       couldnt: "Publiceren is mislukt. Probeer het opnieuw.",
     },
+  },
+  why: {
+    title: "Gemaakt voor bedrijven die om hun uitstraling geven",
+    sub: "Gooidy maakt van je productpagina advertenties die je merk waardig zijn en helpt je elke week zichtbaar te zijn, in de talen van je klanten.",
+    cards: [
+      { title: "Kies je kwaliteit", body: "Goed, Beter of Best voor elke advertentie, gemaakt met toonaangevende beeld- en videomodellen. Je ziet de exacte creditkosten voordat er iets wordt gemaakt." },
+      { title: "Je product zoals het echt is", body: "We beginnen bij je echte productpagina en behouden kleur, vorm en details. Elke afbeelding en elke afgeronde video wordt automatisch gecontroleerd voordat je die krijgt." },
+      { title: "Spreek de taal van je klanten", body: "Advertenties, bijschriften en voice-overs in 17 talen, van Spaans en Pools tot Japans, Hindi en Arabisch." },
+      { title: "Je merk, onthouden", body: "Sla je logo, kleuren, lettertype en merkstem één keer op. Elke nieuwe campagne begint in jouw stijl." },
+      { title: "Elke week zichtbaar", body: "Plan campagnes, plan berichten op 10 netwerken of zet de automatische piloot aan en zie welke berichten klikken opleverden. Productlinks worden gemarkeerd, zodat de statistieken van je winkel de bezoeken per bericht tonen." },
+      { title: "Eerlijk vanaf de eerste klik", body: "Duidelijke prijzen, credits terug als een advertentie niet geleverd kan worden, en geen verzonnen reviews, kortingen of beweringen in je advertenties." },
+    ],
+    soon: "Binnenkort",
+    soonTitle: "Boost",
+    soonBody: "Laat je beste advertentie met één tik zien aan nieuwe kopers op Facebook en Instagram.",
   },
 };

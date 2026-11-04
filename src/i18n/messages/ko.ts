@@ -146,25 +146,14 @@ export const ko: Messages = {
     languagesTitle: "구매자의 언어로 판매하세요",
     languagesBody:
       "모든 광고는 선택한 언어로 현지인이 쓴 것처럼 작성되어 국내 시장 너머로 판매를 넓힐 수 있습니다. 영상 광고도 그 언어로 말하고 자막도 맞춰 드립니다.",
+    tierTitle: "광고마다 품질을 고르세요",
+    tierSub: "같은 상품을 품질별로, Gooidy가 만든 그대로 보정 없이 보여 드립니다. 높은 품질은 최상위 AI 모델을 사용합니다.",
+    tierPerImage: "이미지당 {count} 크레딧",
+    tierPerSecond: "동영상 1초당 {count} 크레딧",
     pricingTitle: "함께 성장하는 간단한 요금제",
     pricingSub: "무료로 시작하고, 비즈니스가 성장하면 업그레이드하세요.",
     popular: "인기",
     perMonth: " / 월",
-    introPeriod: "처음 {days}일",
-    introCredits: "처음 {days}일 동안 {count}크레딧, 이후 매월 {full}",
-    then: "이후 {price} / 월",
-    boost: {
-      name: "Boost",
-      period: " / 년",
-      credits: "매년 300크레딧 추가",
-      perks: [
-        "Pro 요금제에 추가",
-        "1년에 한 번 결제",
-        "출시되면 원탭 광고 홍보",
-      ],
-    },
-    payNote:
-      "가격은 미국 달러 기준입니다. 결제할 때 현지 통화로 낼 수 있습니다.",
     approx: "약 {price}",
     plans: [
       {
@@ -173,9 +162,14 @@ export const ko: Messages = {
         perks: ["광고 약 50개", "브랜드 키트", "모든 광고 다운로드"],
       },
       {
-        name: "Pro",
+        name: "Starter",
+        credits: "매달 300 크레딧",
+        perks: ["월 광고 약 150개", "Free의 모든 기능", "언제든 해지 가능"],
+      },
+      {
+        name: "Growth",
         credits: "매달 1,000 크레딧",
-        perks: ["월 광고 약 500개", "Free의 모든 기능", "언제든 해지 가능"],
+        perks: ["월 광고 약 500개", "Starter의 모든 기능", "우선 지원"],
       },
     ],
     faqTitle: "자주 묻는 질문",
@@ -190,7 +184,7 @@ export const ko: Messages = {
       },
       {
         q: "크레딧이 무엇인가요?",
-        a: "광고 이미지 1장에 크레딧 2개가 듭니다. 한 번 생성할 때 광고 5개를 2가지 사이즈로 만들므로 20 크레딧을 사용합니다.",
+        a: "광고 이미지 1장에 선택한 품질에 따라 크레딧 2~5개가 듭니다. 한 번 생성할 때 광고 1, 3, 5개 중 선택해 각각 2가지 사이즈로 만들며, 5개면 20~50 크레딧을 사용합니다.",
       },
       {
         q: "디자인 경험이 필요한가요?",
@@ -505,6 +499,16 @@ export const ko: Messages = {
     person: "출연자",
     length: "길이",
     lengthHelp: "릴스·스토리에는 7~15초, 틱톡에는 20~30초가 잘 맞습니다.",
+    quality: "품질",
+    qualities: { good: "기본", better: "고급", best: "최고" },
+    qualityExample: "이 품질의 예시",
+    kind: "광고 유형",
+    kindImages: "이미지",
+    kindVideos: "동영상",
+    howMany: "이미지 수",
+    createImages: "이미지 {count}개 만들기",
+    ideasHelp: "아이디어마다 다른 관점으로, 피드 게시물과 스토리로 만들어집니다.",
+    qualityHelp: "품질이 높을수록 최신 AI 모델을 쓰고 크레딧을 더 사용합니다. 최고 품질은 최상위 모델로 가장 선명하고 사실적인 광고를 만듭니다.",
     genders: { female: "여성", male: "남성" },
     energies: { calm: "차분하게", upbeat: "밝게", high: "에너지 넘치게" },
     people: {
@@ -586,6 +590,12 @@ export const ko: Messages = {
     plansSub: "크레딧은 매달 충전됩니다. 언제든지 해지할 수 있습니다.",
     monthly: "매달 {count}크레딧, 광고 약 {ads}개",
     choose: "{plan} 선택",
+    rollover: "사용하지 않은 요금제 크레딧은 한 달 동안 이월됩니다.",
+    monthlyTab: "월간",
+    yearlyTab: "연간",
+    yearlySave: "{percent}% 절약",
+    billedYearly: "연 1회 {price} 청구",
+    moneyBack: "첫 결제는 {days}일 환불 보장.",
     packsTitle: "크레딧 팩",
     packsSub: "한 번만 결제, 구독 없음.",
     pack: "{count}크레딧",
@@ -594,23 +604,14 @@ export const ko: Messages = {
     payTitle: "현지 통화로 결제",
     payBody:
       "가격은 미국 달러 기준입니다. 결제 화면에서 현지 통화 금액과 거주 국가에서 흔히 쓰는 결제 수단을 볼 수 있습니다.",
-    payPlans: "Pro와 Boost: 카드, Apple Pay, Google Pay 또는 Link.",
+    payPlans: "요금제: 카드, Apple Pay, Google Pay 또는 Link.",
     payPacks:
       "크레딧 팩: 국가에 따라 카카오페이, 네이버페이, PAYCO, 삼성페이, PayPal 등도 사용할 수 있습니다.",
     paid: "결제가 완료되었습니다. 감사합니다. 요금제와 크레딧은 몇 초 안에 업데이트됩니다. 보이지 않으면 새로고침하세요.",
     packPaid:
       "감사합니다! 결제가 확인되는 즉시 크레딧이 추가됩니다. 대부분의 결제는 즉시 처리되며, 계좌 자동이체는 며칠 걸릴 수 있습니다.",
-    footnote:
-      "1크레딧으로 광고 이미지 1개를 만듭니다. 결제는 Stripe가 안전하게 처리합니다.",
-    boostBody:
-      "요금제에 더해 매년 {count}크레딧 추가, 연 {price}. 게시 기능이 출시되면 원탭 광고 홍보도 Boost에 포함됩니다.",
-    addBoost: "Boost 추가",
-    boostOn: "Boost는 {date}까지 켜져 있습니다.",
-    boostPaid:
-      "Boost가 켜졌습니다. 감사합니다. 추가 크레딧은 몇 초 안에 들어옵니다.",
+    footnote: "결제는 Stripe가 안전하게 처리합니다. 크레딧 팩은 만료되지 않습니다.",
     errors: {
-      boostNeedsPlan:
-        "Boost는 유료 요금제에 추가됩니다. 먼저 Pro를 시작하세요.",
       pickPlan: "요금제를 선택하세요.",
       notSetUp: "이 요금제는 아직 설정되지 않았습니다.",
       noWorkspace: "워크스페이스를 찾을 수 없습니다.",
@@ -709,5 +710,20 @@ export const ko: Messages = {
       timeZone: "시간대를 선택하세요.",
       couldnt: "게시하지 못했습니다. 다시 시도해 주세요.",
     },
+  },
+  why: {
+    title: "보여지는 모습을 중요하게 여기는 비즈니스를 위해",
+    sub: "Gooidy는 상품 페이지를 브랜드에 어울리는 광고로 바꾸고, 고객의 언어로 매주 꾸준히 소통하도록 돕습니다.",
+    cards: [
+      { title: "품질을 직접 선택", body: "모든 광고에서 기본·고급·최고 품질 중 하나를 선택하세요. 최고 수준의 이미지·영상 모델로 제작하며, 제작 전에 정확한 크레딧 비용을 확인할 수 있습니다." },
+      { title: "상품 그대로의 모습", body: "실제 상품 페이지에서 시작해 색상, 형태, 디테일을 그대로 살립니다. 모든 이미지와 완성된 영상은 전달 전에 자동으로 검수됩니다." },
+      { title: "고객의 언어로 말하기", body: "광고, 캡션, 영상 내레이션을 17개 언어로. 스페인어와 폴란드어부터 일본어, 힌디어, 아랍어까지." },
+      { title: "브랜드를 기억합니다", body: "로고, 색상, 글꼴, 브랜드 말투를 한 번만 저장하세요. 새 캠페인은 처음부터 브랜드답게 시작합니다." },
+      { title: "매주 꾸준히", body: "캠페인을 계획하고 10개 네트워크에 게시물을 예약하거나 자동 게시를 켜고, 어떤 게시물이 클릭을 얻었는지 확인하세요. 상품 링크에 태그가 붙어 스토어 분석에서 게시물별 방문을 볼 수 있습니다." },
+      { title: "첫 클릭부터 정직하게", body: "명확한 가격, 광고를 전달하지 못하면 크레딧 반환, 그리고 광고에 지어낸 후기나 할인, 과장된 주장은 넣지 않습니다." },
+    ],
+    soon: "출시 예정",
+    soonTitle: "부스트",
+    soonBody: "한 번의 탭으로 최고의 광고를 Facebook과 Instagram의 새로운 고객에게 보여주세요.",
   },
 };

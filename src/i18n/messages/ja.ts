@@ -146,24 +146,14 @@ export const ja: Messages = {
     languagesTitle: "買い手の言語で売る",
     languagesBody:
       "どの広告も、選んだ言語で現地の人が書くように作られるので、国内市場の外にも販売を広げられます。動画広告もその言語で話し、字幕も合わせます。",
+    tierTitle: "広告ごとに品質を選べます",
+    tierSub: "同じ商品を各品質で、Gooidyが作ったまま無修正でお見せします。上位の品質では最上位のAIモデルを使います。",
+    tierPerImage: "画像1枚あたり{count}クレジット",
+    tierPerSecond: "動画1秒あたり{count}クレジット",
     pricingTitle: "成長に合わせたシンプルな料金",
     pricingSub: "無料で始めて、ビジネスの成長に合わせてアップグレード。",
     popular: "人気",
     perMonth: " / 月",
-    introPeriod: "最初の{days}日間",
-    introCredits: "最初の{days}日間は{count}クレジット、その後は毎月{full}",
-    then: "その後 {price} / 月",
-    boost: {
-      name: "Boost",
-      period: " / 年",
-      credits: "毎年300クレジットを追加",
-      perks: [
-        "Pro プランに追加",
-        "年に1回のお支払い",
-        "公開開始後はワンタップで広告を宣伝",
-      ],
-    },
-    payNote: "価格は米ドル表示です。お支払い時はお住まいの国の通貨で払えます。",
     approx: "約{price}",
     plans: [
       {
@@ -172,9 +162,14 @@ export const ja: Messages = {
         perks: ["広告 約50本", "ブランドキット", "すべての広告をダウンロード"],
       },
       {
-        name: "Pro",
+        name: "Starter",
+        credits: "毎月300クレジット",
+        perks: ["月に広告 約150本", "Free のすべての機能", "いつでも解約可能"],
+      },
+      {
+        name: "Growth",
         credits: "毎月1,000クレジット",
-        perks: ["月に広告 約500本", "Free のすべての機能", "いつでも解約可能"],
+        perks: ["月に広告 約500本", "Starter のすべての機能", "優先サポート"],
       },
     ],
     faqTitle: "よくある質問",
@@ -189,7 +184,7 @@ export const ja: Messages = {
       },
       {
         q: "クレジットとは何ですか？",
-        a: "広告画像1枚につき2クレジットを使います。1回の生成で5つの広告を2サイズずつ作るので、20クレジットを使います。",
+        a: "広告画像1枚につき、選んだ品質に応じて2〜5クレジットを使います。1回の生成で1・3・5つの広告（選択可）を2サイズずつ作るので、5つなら20〜50クレジットを使います。",
       },
       {
         q: "デザインの経験は必要ですか？",
@@ -503,6 +498,16 @@ export const ja: Messages = {
     length: "長さ",
     lengthHelp:
       "リール・ストーリーズには7〜15秒、TikTokには20〜30秒がおすすめです。",
+    quality: "品質",
+    qualities: { good: "標準", better: "高品質", best: "最高品質" },
+    qualityExample: "この品質の例",
+    kind: "広告の種類",
+    kindImages: "画像",
+    kindVideos: "動画",
+    howMany: "画像の枚数",
+    createImages: "画像を{count}枚作成",
+    ideasHelp: "アイデアごとに切り口が異なり、フィード投稿とストーリーズの両方を作成します。",
+    qualityHelp: "品質を上げると、新しいAIモデルを使い、クレジットも多く使います。最高品質は最上位のモデルで、最も鮮明でリアルな広告を作ります。",
     genders: { female: "女性", male: "男性" },
     energies: { calm: "落ち着いた", upbeat: "明るい", high: "ハイテンション" },
     people: {
@@ -583,6 +588,12 @@ export const ja: Messages = {
     plansSub: "クレジットは毎月補充されます。いつでも解約できます。",
     monthly: "毎月{count}クレジット、広告約{ads}本分",
     choose: "{plan}を選ぶ",
+    rollover: "プランの未使用クレジットは1か月繰り越されます。",
+    monthlyTab: "月払い",
+    yearlyTab: "年払い",
+    yearlySave: "{percent}%お得",
+    billedYearly: "年1回{price}のお支払い",
+    moneyBack: "初回のお支払いは{days}日間の返金保証付き。",
     packsTitle: "クレジットパック",
     packsSub: "1回払い、サブスクリプションなし。",
     pack: "{count}クレジット",
@@ -591,22 +602,14 @@ export const ja: Messages = {
     payTitle: "自分の通貨で支払う",
     payBody:
       "価格は米ドル表示です。お支払い画面では、お住まいの国の通貨での金額と、その国でよく使われる支払い方法が表示されます。",
-    payPlans: "Pro と Boost：カード、Apple Pay、Google Pay、Link。",
+    payPlans: "プラン：カード、Apple Pay、Google Pay、Link。",
     payPacks:
       "クレジットパック：国によっては PayPal、Alipay、WeChat Pay、Klarna なども使えます。",
     paid: "お支払いを受け付けました。ありがとうございます。プランとクレジットは数秒で更新されます。表示されない場合はページを再読み込みしてください。",
     packPaid:
       "ありがとうございます！お支払いが確認され次第、クレジットが追加されます。ほとんどのお支払いはすぐに完了しますが、口座振替は数日かかることがあります。",
-    footnote:
-      "1クレジットで広告画像を1枚作成します。お支払いは Stripe が安全に処理します。",
-    boostBody:
-      "プランに加えて毎年{count}クレジットを追加、年額{price}。広告の公開機能が始まると、ワンタップの広告宣伝も Boost に加わります。",
-    addBoost: "Boost を追加",
-    boostOn: "Boost は{date}まで有効です。",
-    boostPaid: "Boost が有効になりました。追加クレジットは数秒で反映されます。",
+    footnote: "お支払いはStripeが安全に処理します。クレジットパックに有効期限はありません。",
     errors: {
-      boostNeedsPlan:
-        "Boost は有料プランへの追加です。まず Pro を始めてください。",
       pickPlan: "プランを選んでください。",
       notSetUp: "このプランはまだ設定されていません。",
       noWorkspace: "ワークスペースが見つかりません。",
@@ -705,5 +708,20 @@ export const ja: Messages = {
       timeZone: "タイムゾーンを選んでください。",
       couldnt: "投稿できませんでした。もう一度お試しください。",
     },
+  },
+  why: {
+    title: "見せ方にこだわるビジネスのために",
+    sub: "Gooidyは商品ページをブランドにふさわしい広告に変え、お客様の言語で毎週発信し続けられるようにします。",
+    cards: [
+      { title: "品質を選べる", body: "すべての広告で「標準・高品質・最高品質」を選択。最先端の画像・動画モデルで制作します。作成前に正確なクレジット数を確認できます。" },
+      { title: "商品を、ありのままに", body: "実際の商品ページから始め、色・形・ディテールを忠実に再現。すべての画像と完成した動画は、お届け前に自動でチェックされます。" },
+      { title: "お客様の言語で届ける", body: "広告文、キャプション、動画ナレーションを17言語で。スペイン語やポーランド語から日本語、ヒンディー語、アラビア語まで。" },
+      { title: "ブランドを記憶", body: "ロゴ、カラー、フォント、ブランドの語り口を一度保存するだけ。新しいキャンペーンは最初からブランドらしく。" },
+      { title: "毎週、発信し続ける", body: "キャンペーンを計画し、10のSNSに予約投稿、またはオートパイロットをオン。どの投稿がクリックを生んだかも確認できます。商品リンクにはタグが付き、ストアの分析で投稿ごとの訪問がわかります。" },
+      { title: "最初のクリックから誠実に", body: "明確な料金、広告を納品できなかった場合のクレジット返還、そして広告に架空のレビューや割引、誇張表現は使いません。" },
+    ],
+    soon: "近日公開",
+    soonTitle: "ブースト",
+    soonBody: "ワンタップで、最高の広告をFacebookとInstagramの新しいお客様に届けます。",
   },
 };

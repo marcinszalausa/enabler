@@ -1,3 +1,4 @@
+import {revisionFromOptions} from "./creative-revision.ts";
 // Presentation follows durable saved outputs and recorded job states. Time
 // elapsed and provider error wording never manufacture a completion percentage.
 export type RunSnapshot = {
@@ -6,11 +7,15 @@ export type RunSnapshot = {
   cost_credits: number;
   creatives: { kind: "image" | "video" }[];
   video_jobs?: { status: string }[];
+  // The run's choices; image runs may hold an idea count (1, 3 or 5).
+  request_options?: unknown;
 };
 export type CreditReceipt = { charged_credits: number | null; returned_credits: number | null };
 export function generationPresentation(g: RunSnapshot) {
   const video = g.type === "video_ads";
-  const total = video ? 2 : 10;
+  const ideas = Number((g.request_options as { ideas?: unknown } | null | undefined)?.ideas);
+  // Each image idea comes in two sizes; runs before the choice made 5.
+  const total = revisionFromOptions(g.request_options) ? 1 : video ? 2 : 2 * ([1, 3, 5].includes(ideas) ? ideas : 5);
   const saved = g.creatives.filter(c => c.kind === (video ? "video" : "image")).length;
   const active = g.status === "queued" || g.status === "running";
   let phase: "queued" | "preparing" | "creating" | "finishing" | "ready" | "partial" | "failed";

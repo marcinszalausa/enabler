@@ -148,25 +148,15 @@ export const cs: Messages = {
     languagesTitle: "Prodávejte v jazyce kupujícího",
     languagesBody:
       "Každá reklama je napsaná ve zvoleném jazyce tak, jak by ji napsal místní, takže můžete prodávat i mimo svůj trh. Video reklamy jím také mluví, s odpovídajícími titulky.",
+    tierTitle: "Vyberte kvalitu každé reklamy",
+    tierSub: "Stejný produkt v každé úrovni, vytvořený Gooidy a ukázaný bez úprav. Vyšší úrovně používají nejlépe hodnocené modely AI.",
+    tierPerImage: "{count} kreditů za obrázek",
+    tierPerSecond: "{count} kreditů za sekundu videa",
     pricingTitle: "Jednoduché ceny, které rostou s vámi",
     pricingSub:
       "Začněte zdarma. Přejděte na vyšší plán, jak vaše podnikání roste.",
     popular: "Oblíbený",
     perMonth: " / měsíc",
-    introPeriod: "za prvních {days} dní",
-    introCredits: "{count} kreditů za prvních {days} dní, pak {full} každý měsíc",
-    then: "potom {price} / měsíc",
-    boost: {
-      name: "Boost",
-      period: " / rok",
-      credits: "300 kreditů navíc každý rok",
-      perks: [
-        "Doplněk k tarifu Pro",
-        "Účtuje se jednou ročně",
-        "Propagace reklam jedním klepnutím, až bude spuštěna",
-      ],
-    },
-    payNote: "Ceny v amerických dolarech. Při placení zaplatíte ve své měně.",
     approx: "přibližně {price}",
     plans: [
       {
@@ -175,12 +165,21 @@ export const cs: Messages = {
         perks: ["Asi 50 reklam", "Firemní styl", "Stažení každé reklamy"],
       },
       {
-        name: "Pro",
+        name: "Starter",
+        credits: "300 kreditů každý měsíc",
+        perks: [
+          "Asi 150 reklam měsíčně",
+          "Vše z tarifu Free",
+          "Zrušení kdykoli",
+        ],
+      },
+      {
+        name: "Growth",
         credits: "1 000 kreditů každý měsíc",
         perks: [
           "Asi 500 reklam měsíčně",
-          "Vše z tarifu Free",
-          "Zrušení kdykoli",
+          "Vše z tarifu Starter",
+          "Přednostní podpora",
         ],
       },
     ],
@@ -196,7 +195,7 @@ export const cs: Messages = {
       },
       {
         q: "Co je kredit?",
-        a: "Každý reklamní obrázek stojí 2 kredity. Každý běh vytvoří pět reklam ve dvou formátech, takže spotřebuje 20 kreditů.",
+        a: "Každý reklamní obrázek stojí 2 až 5 kreditů podle zvolené kvality. Každý běh vytvoří 1, 3 nebo 5 reklam (podle vaší volby), každou ve dvou formátech, takže pět reklam spotřebuje 20 až 50 kreditů.",
       },
       {
         q: "Potřebuji zkušenosti s grafikou?",
@@ -512,6 +511,16 @@ export const cs: Messages = {
     person: "Osoba v záběru",
     length: "Délka",
     lengthHelp: "7–15 s se hodí na Reels a Stories, 20–30 s na TikTok.",
+    quality: "Kvalita",
+    qualities: { good: "Dobrá", better: "Lepší", best: "Nejlepší" },
+    qualityExample: "Ukázka v této kvalitě",
+    kind: "Typ reklamy",
+    kindImages: "Obrázky",
+    kindVideos: "Videa",
+    howMany: "Kolik obrázků",
+    createImages: "Vytvořit obrázky: {count}",
+    ideasHelp: "Každý nápad má jiný úhel, jako příspěvek do feedu i jako příběh.",
+    qualityHelp: "Vyšší kvalita používá novější modely AI a více kreditů. Nejlepší používá nejlépe hodnocené modely pro nejostřejší a nejvěrnější reklamy.",
     genders: { female: "Ženský", male: "Mužský" },
     energies: { calm: "Klidná", upbeat: "Veselá", high: "Hodně energie" },
     people: {
@@ -592,6 +601,12 @@ export const cs: Messages = {
     plansSub: "Kredity se každý měsíc doplní. Zrušit můžete kdykoli.",
     monthly: "{count} kreditů každý měsíc, asi {ads} reklam",
     choose: "Vybrat {plan}",
+    rollover: "Nevyužité kredity z tarifu se převádějí o jeden měsíc.",
+    monthlyTab: "Měsíčně",
+    yearlyTab: "Ročně",
+    yearlySave: "Ušetříte {percent} %",
+    billedYearly: "{price} placeno jednou ročně",
+    moneyBack: "{days}denní záruka vrácení peněz za první platbu.",
     packsTitle: "Balíčky kreditů",
     packsSub: "Zaplatíte jednou, bez předplatného.",
     pack: "{count} kreditů",
@@ -600,23 +615,14 @@ export const cs: Messages = {
     payTitle: "Plaťte ve své měně",
     payBody:
       "Ceny jsou v amerických dolarech. V pokladně uvidíte částku ve své měně a způsoby platby, které jsou u vás běžné.",
-    payPlans: "Pro a Boost: karta, Apple Pay, Google Pay nebo Link.",
+    payPlans: "Tarify: karta, Apple Pay, Google Pay nebo Link.",
     payPacks:
       "Balíčky kreditů: také PayPal, Klarna, iDEAL, Bancontact, Pix, Alipay, WeChat Pay a další podle vaší země.",
     paid: "Platba přijata, děkujeme. Tarif a kredity se aktualizují během několika sekund; pokud se ještě nezobrazují, obnovte stránku.",
     packPaid:
       "Děkujeme! Kredity přidáme, jakmile bude platba potvrzena. Většina plateb je okamžitá; inkaso může trvat několik dní.",
-    footnote:
-      "Jeden kredit vytvoří jeden reklamní obrázek. Platby bezpečně zpracovává Stripe.",
-    boostBody:
-      "{count} kreditů navíc každý rok k vašemu tarifu, za {price} ročně. Propagace reklam jedním klepnutím přibude do Boost se spuštěním publikování.",
-    addBoost: "Přidat Boost",
-    boostOn: "Boost je aktivní do {date}.",
-    boostPaid:
-      "Boost je aktivní, děkujeme. Kredity navíc přibudou během několika sekund.",
+    footnote: "Platby bezpečně zpracovává Stripe. Balíčky kreditů nevyprší.",
     errors: {
-      boostNeedsPlan:
-        "Boost je doplněk k placenému tarifu. Nejdřív začněte s Pro.",
       pickPlan: "Vyberte tarif.",
       notSetUp: "Tento tarif ještě není nastavený.",
       noWorkspace: "Pracovní prostor nebyl nalezen.",
@@ -715,5 +721,20 @@ export const cs: Messages = {
       timeZone: "Vyberte časové pásmo.",
       couldnt: "Publikování se nezdařilo. Zkuste to znovu.",
     },
+  },
+  why: {
+    title: "Pro firmy, kterým záleží na tom, jak vypadají",
+    sub: "Gooidy promění stránku vašeho produktu v reklamy hodné vaší značky a pomůže vám být vidět každý týden, v jazycích vašich zákazníků.",
+    cards: [
+      { title: "Vyberte si kvalitu", body: "Dobrá, Lepší nebo Nejlepší u každé reklamy, s předními modely pro obraz a video. Přesnou cenu v kreditech vidíte dřív, než cokoli vznikne." },
+      { title: "Váš produkt takový, jaký je", body: "Vycházíme ze skutečné stránky produktu a zachováme jeho barvu, tvar i detaily. Každý obrázek i hotové video se automaticky zkontroluje, než se k vám dostane." },
+      { title: "Mluvte jazykem svých zákazníků", body: "Reklamy, popisky a hlas ve videích v 17 jazycích, od španělštiny a polštiny po japonštinu, hindštinu a arabštinu." },
+      { title: "Vaše značka, zapamatovaná", body: "Uložte jednou logo, barvy, písmo a tón značky. Každá nová kampaň začne ve vašem stylu." },
+      { title: "Buďte vidět každý týden", body: "Plánujte kampaně, naplánujte příspěvky na 10 sítích nebo zapněte autopilota a pak uvidíte, které příspěvky přinesly kliknutí. Odkazy na produkty jsou označené, takže analytika vašeho obchodu ukáže návštěvy z každého příspěvku." },
+      { title: "Poctivě od prvního kliknutí", body: "Jasné ceny, vrácené kredity, když reklamu nelze doručit, a žádné vymyšlené recenze, slevy ani tvrzení ve vašich reklamách." },
+    ],
+    soon: "Již brzy",
+    soonTitle: "Boost",
+    soonBody: "Ukažte svou nejlepší reklamu novým zákazníkům na Facebooku a Instagramu jedním klepnutím.",
   },
 };

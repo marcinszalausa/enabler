@@ -13,6 +13,7 @@ import {
   type ZernioPost,
 } from "./zernio";
 import { CAPTION_LIMITS, takesKind } from "./platforms";
+import { trackedLink } from "./tracked-link";
 import { accountLimit } from "./limits";
 import { nextSlots, parseSlots, toLocal, fromLocal } from "./schedule";
 
@@ -309,21 +310,39 @@ function platformOptions(
   NewPost["platforms"][number],
   "customContent" | "platformSpecificData"
 > {
-  const url = creative.generations?.products?.url;
+  const productUrl = creative.generations?.products?.url;
+  // Bluesky counts every link character against its 300 limit, so its
+  // link stays short and untagged.
+  const url =
+    productUrl && platform !== "bluesky"
+      ? trackedLink(productUrl, platform, creative.id)
+      : productUrl;
+  // The same caption, with this network's tracked product link.
+  const tagged =
+    productUrl && url && url !== productUrl
+      ? text.split(productUrl).join(url)
+      : text;
   const title = (creative.headline ?? "").slice(0, 100);
   const limit = CAPTION_LIMITS[platform];
   const customContent =
-    limit && text.length > limit ? shorten(text, url, limit) : undefined;
+    limit && tagged.length > limit
+      ? shorten(tagged, url, limit)
+      : tagged !== text
+        ? tagged
+        : undefined;
   const vertical = creative.aspect === "9:16";
 
   switch (platform) {
     case "instagram":
       // Instagram's feed doesn't take 9:16 photos; they go to Stories.
       return creative.kind === "image" && vertical
-        ? { platformSpecificData: { contentType: "story" } }
-        : {};
+        ? { customContent, platformSpecificData: { contentType: "story" } }
+        : customContent
+          ? { customContent }
+          : {};
     case "youtube":
       return {
+        customContent,
         platformSpecificData: { title: title || "New", visibility: "public" },
       };
     case "pinterest":

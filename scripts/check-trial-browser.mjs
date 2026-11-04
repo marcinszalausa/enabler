@@ -24,8 +24,8 @@ try{
   assert.equal(await free.locator('input[name="kind"]').count(),0);
   assert.equal(await fresh.locator('a[href="/#pricing"]').count(),0);
   assert.equal(await complete.locator('a[href="/#pricing"]').count(),1);
-  assert.ok((await fresh.locator("[data-image-capacity]").innerText()).includes("50"));
-  assert.ok((await complete.locator("[data-image-capacity]").innerText()).includes("40"));
+  assert.ok((await fresh.locator("[data-image-capacity]").innerText()).includes("20"));
+  assert.ok((await complete.locator("[data-image-capacity]").innerText()).includes("10"));
   assert.equal(await fresh.locator("ol li svg").count(),3);
   await free.locator('button[aria-pressed="false"]').click();
   assert.equal(await free.locator('input[name="kind"]').inputValue(),"video");

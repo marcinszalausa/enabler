@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -87,6 +88,7 @@ async function Dashboard({
       </header>
 
       <p className="mt-4 max-w-2xl text-sm text-muted">{t.journey.addHint}</p>
+      <div className="mt-5 flex flex-wrap gap-3"><Link href="/dashboard/campaigns" className="inline-flex min-h-11 items-center rounded-xl border border-line-strong px-4 text-sm font-medium text-accent">Plan my next campaign →</Link><Link href="/dashboard/brand" className="inline-flex min-h-11 items-center px-2 text-sm text-muted">Save my brand preferences</Link></div>
 
       <section className="edge mt-8 p-6 sm:p-8">
         <h2 className="text-lg font-medium">{t.app.addTitle}</h2>

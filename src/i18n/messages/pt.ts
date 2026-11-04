@@ -151,23 +151,12 @@ export const pt: Messages = {
       "Cada anúncio é escrito no idioma que você escolher, do jeito que um nativo escreveria, para você vender além do seu mercado. Os anúncios em vídeo também falam esse idioma, com legendas combinando.",
     pricingTitle: "Preços simples que crescem com você",
     pricingSub: "Comece grátis. Faça upgrade conforme seu negócio cresce.",
+    tierTitle: "Escolha a qualidade de cada anúncio",
+    tierSub: "O mesmo produto em cada nível, feito pelo Gooidy e sem edição. Os níveis mais altos usam os modelos de IA mais bem avaliados.",
+    tierPerImage: "{count} créditos por imagem",
+    tierPerSecond: "{count} créditos por segundo de vídeo",
     popular: "Popular",
     perMonth: " / mês",
-    introPeriod: "nos primeiros {days} dias",
-    introCredits: "{count} créditos nos primeiros {days} dias, depois {full} por mês",
-    then: "depois {price} / mês",
-    boost: {
-      name: "Boost",
-      period: " / ano",
-      credits: "300 créditos extras todo ano",
-      perks: [
-        "Soma ao seu plano Pro",
-        "Cobrado uma vez por ano",
-        "Promoção de anúncios com um toque quando lançar",
-      ],
-    },
-    payNote:
-      "Preços em dólares americanos. Pague na sua própria moeda no checkout.",
     approx: "cerca de {price}",
     plans: [
       {
@@ -180,12 +169,21 @@ export const pt: Messages = {
         ],
       },
       {
-        name: "Pro",
+        name: "Starter",
+        credits: "300 créditos por mês",
+        perks: [
+          "Cerca de 150 anúncios por mês",
+          "Tudo do Free",
+          "Cancele quando quiser",
+        ],
+      },
+      {
+        name: "Growth",
         credits: "1.000 créditos por mês",
         perks: [
           "Cerca de 500 anúncios por mês",
-          "Tudo do Free",
-          "Cancele quando quiser",
+          "Tudo do Starter",
+          "Suporte prioritário",
         ],
       },
     ],
@@ -201,7 +199,7 @@ export const pt: Messages = {
       },
       {
         q: "O que é um crédito?",
-        a: "Cada imagem de anúncio usa 2 créditos. Cada rodada cria cinco anúncios em dois tamanhos, então usa 20 créditos.",
+        a: "Cada imagem de anúncio usa de 2 a 5 créditos, conforme a qualidade escolhida. Cada rodada cria 1, 3 ou 5 anúncios (você escolhe), cada um em dois tamanhos, então cinco anúncios usam de 20 a 50 créditos.",
       },
       {
         q: "Preciso saber design?",
@@ -515,6 +513,16 @@ export const pt: Messages = {
     person: "Pessoa no vídeo",
     length: "Duração",
     lengthHelp: "7–15 s combina com Reels e Stories; 20–30 s com TikTok.",
+    quality: "Qualidade",
+    qualities: { good: "Boa", better: "Melhor", best: "Máxima" },
+    qualityHelp: "Mais qualidade usa modelos de IA mais novos e mais créditos. Máxima usa os modelos mais bem avaliados para os anúncios mais nítidos e realistas.",
+    qualityExample: "Exemplo nesta qualidade",
+    kind: "Tipo de anúncio",
+    kindImages: "Imagens",
+    kindVideos: "Vídeos",
+    howMany: "Quantas imagens",
+    createImages: "Criar {count} imagens",
+    ideasHelp: "Cada ideia é um ângulo diferente, como post no feed e como story.",
     genders: { female: "Feminina", male: "Masculina" },
     energies: { calm: "Calma", upbeat: "Animada", high: "Muita energia" },
     people: {
@@ -595,6 +603,12 @@ export const pt: Messages = {
     plansSub: "Os créditos são recarregados todo mês. Cancele quando quiser.",
     monthly: "{count} créditos por mês, cerca de {ads} anúncios",
     choose: "Escolher {plan}",
+    rollover: "Os créditos do plano não usados passam para o mês seguinte por um mês.",
+    monthlyTab: "Mensal",
+    yearlyTab: "Anual",
+    yearlySave: "Economize {percent}%",
+    billedYearly: "{price} cobrados uma vez por ano",
+    moneyBack: "Garantia de reembolso de {days} dias no seu primeiro pagamento.",
     packsTitle: "Pacotes de créditos",
     packsSub: "Pagamento único, sem assinatura.",
     pack: "{count} créditos",
@@ -603,23 +617,14 @@ export const pt: Messages = {
     payTitle: "Pague na sua moeda",
     payBody:
       "Os preços estão em dólares americanos. No checkout você vê o valor na sua própria moeda e as formas de pagamento comuns no seu país.",
-    payPlans: "Pro e Boost: cartão, Apple Pay, Google Pay ou Link.",
+    payPlans: "Planos: cartão, Apple Pay, Google Pay ou Link.",
     payPacks:
       "Pacotes de créditos: também Pix, PayPal, MB WAY, iDEAL, Klarna, Alipay, WeChat Pay e mais, conforme o seu país.",
     paid: "Pagamento recebido, obrigado. Seu plano e seus créditos são atualizados em alguns segundos; recarregue se ainda não aparecerem.",
     packPaid:
       "Obrigado! Seus créditos são adicionados assim que o pagamento é confirmado. A maioria dos pagamentos é imediata; débitos bancários podem levar alguns dias.",
-    footnote:
-      "Um crédito cria uma imagem de anúncio. Os pagamentos são processados com segurança pela Stripe.",
-    boostBody:
-      "{count} créditos extras todo ano além do seu plano, por {price} ao ano. A promoção de anúncios com um toque chega ao Boost quando a publicação for lançada.",
-    addBoost: "Adicionar Boost",
-    boostOn: "O Boost está ativo até {date}.",
-    boostPaid:
-      "O Boost está ativo, obrigado. Seus créditos extras são adicionados em alguns segundos.",
+    footnote: "Os pagamentos são processados com segurança pela Stripe. Os pacotes de créditos nunca expiram.",
     errors: {
-      boostNeedsPlan:
-        "O Boost se soma a um plano pago. Comece com o Pro primeiro.",
       pickPlan: "Escolha um plano.",
       notSetUp: "Este plano ainda não foi configurado.",
       noWorkspace: "Espaço de trabalho não encontrado.",
@@ -719,5 +724,20 @@ export const pt: Messages = {
       timeZone: "Escolha um fuso horário.",
       couldnt: "Não foi possível publicar. Tente novamente.",
     },
+  },
+  why: {
+    title: "Feito para negócios que se importam com a sua imagem",
+    sub: "O Gooidy transforma a página do seu produto em anúncios à altura da sua marca e ajuda você a aparecer toda semana, nos idiomas dos seus clientes.",
+    cards: [
+      { title: "Escolha a sua qualidade", body: "Boa, Melhor ou Máxima em cada anúncio, com os principais modelos de imagem e vídeo. Você vê o custo exato em créditos antes de qualquer criação." },
+      { title: "Seu produto, como ele é", body: "Partimos da página real do seu produto e mantemos cor, formato e detalhes. Cada imagem e cada vídeo finalizado são verificados automaticamente antes de chegar até você." },
+      { title: "Fale a língua dos seus clientes", body: "Anúncios, legendas e narrações em 17 idiomas, do espanhol e polonês ao japonês, hindi e árabe." },
+      { title: "Sua marca, lembrada", body: "Salve seu logotipo, cores, fonte e tom de voz uma vez. Cada nova campanha já começa com a sua marca." },
+      { title: "Apareça toda semana", body: "Planeje campanhas, agende posts em 10 redes ou ative o piloto automático e veja quais posts geraram cliques. Os links de produto são marcados para que a análise da sua loja mostre as visitas de cada post." },
+      { title: "Honestidade desde o primeiro clique", body: "Preços claros, créditos devolvidos quando um anúncio não pode ser entregue e nenhuma avaliação, desconto ou promessa inventada nos seus anúncios." },
+    ],
+    soon: "Em breve",
+    soonTitle: "Boost",
+    soonBody: "Mostre seu melhor anúncio a novos compradores no Facebook e no Instagram com um toque.",
   },
 };

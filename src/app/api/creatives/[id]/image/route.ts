@@ -1,4 +1,7 @@
 import type { NextRequest } from "next/server";
+import { createHash } from "node:crypto";
+import { getBrandKit } from "@/lib/brand-kit";
+import { FACE_SAFE_LAYOUT_VERSION } from "@/lib/face-safe-layout";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -37,14 +40,33 @@ export async function GET(
   }
   if (!creative) return new Response("Not found", { status: 404 });
 
+  // Revalidate edited copy without decoding, detecting faces and rendering an
+  // unchanged private photo again. Authentication/RLS always runs first.
+  let etag: string | null = null;
+  if (!showcased) {
+    const kit = await getBrandKit(supabase, creative.workspace_id);
+    etag = '"' + createHash("sha256").update(JSON.stringify([
+      id, creative, kit, request.nextUrl.searchParams.toString(),
+      process.env.VERCEL_GIT_COMMIT_SHA ?? FACE_SAFE_LAYOUT_VERSION,
+    ])).digest("hex") + '"';
+    if (request.headers.get("if-none-match") === etag) {
+      return new Response(null, { status: 304, headers: { etag, "cache-control": "private, no-cache" } });
+    }
+  }
+
   const image = await renderAdImage(supabase, creative, {
     "cache-control": showcased
       ? "public, max-age=3600, s-maxage=86400, stale-while-revalidate=604800"
-      : "private, max-age=3600",
+      : "private, no-cache",
   });
   if (!image) return new Response("Not found", { status: 404 });
 
-  if (wantsImagePreview(request.nextUrl.searchParams)) return makeImagePreview(image);
+  if (wantsImagePreview(request.nextUrl.searchParams)) {
+    const preview = await makeImagePreview(image);
+    if (etag) preview.headers.set("etag", etag);
+    return preview;
+  }
+  if (etag) image.headers.set("etag", etag);
 
   if (request.nextUrl.searchParams.get("download")) {
     image.headers.set(
@@ -54,3 +76,4 @@ export async function GET(
   }
   return image;
 }
+

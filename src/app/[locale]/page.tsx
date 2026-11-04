@@ -6,7 +6,9 @@ import Link from "next/link";
 import Image from "@/app/_landing/ad-image";
 import { type FeedAd } from "@/app/_landing/reel";
 import { PhoneFeed } from "@/app/_landing/phone-feed";
-import { getShowcase, type ShowcaseRun } from "@/lib/showcase";
+import { getShowcase, getTierExamples, type ShowcaseRun } from "@/lib/showcase";
+import { QUALITIES, type Quality } from "@/lib/quality";
+import { TierCompare, type TierExample } from "@/app/_landing/tier-compare";
 import { LANGUAGES } from "@/lib/video-options";
 import { DEFAULT_VIDEO_OPTIONS } from "@/lib/video-options";
 import { Nav, UrlForm, SectionHeading, Footer } from "@/app/_landing/chrome";
@@ -17,15 +19,15 @@ import { Reveal } from "@/app/_landing/reveal";
 import { Placements, type PlacementAd } from "@/app/_landing/placements";
 import { StickyCta } from "@/app/_landing/sticky-cta";
 import { Spotlight } from "@/app/_landing/spotlight";
+import { PublicPricing } from "@/app/_landing/public-pricing";
+import { PUBLIC_PLANS } from "@/lib/public-information";
 import { CreditGuide } from "@/app/_landing/credit-guide";
-import { ASPECTS, ADS_PER_GENERATION, GENERATION_COST, CREDITS_PER_IMAGE } from "@/lib/image-pricing";
+import { ASPECTS, ADS_PER_GENERATION, GENERATION_COST } from "@/lib/image-pricing";
 import { BeforeAfter } from "@/app/_landing/before-after";
 import { isLocale, localePath, type Locale } from "@/i18n/config";
 import { homeJsonLd, pageMetadata } from "@/lib/seo";
 import { getMessages, type Messages } from "@/i18n/messages";
 import { fmt } from "@/i18n/format";
-import { BOOST_PRICE, PLAN_PRICES, PRO_INTRO, usd } from "@/lib/pricing";
-import { LocalPrice } from "@/app/_landing/local-price";
 
 export async function generateMetadata({
   params,
@@ -36,9 +38,9 @@ export async function generateMetadata({
   return pageMetadata(locale, "/", t.meta.title, t.meta.description);
 }
 
-// Prices stay in dollars in every language (buyers pay in their own currency
-// at checkout); the names and perks are in the messages.
-const FEATURED = 1;
+// Prices stay in dollars in every language; the names and perks are in the
+// messages.
+const PRICES = PUBLIC_PLANS.map(plan => "$" + plan.price);
 
 // Placeholders shared by several strings.
 const COUNTS = { count: Object.keys(LANGUAGES).length, seconds: Number(DEFAULT_VIDEO_OPTIONS.length) };
@@ -64,6 +66,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
         {runs.length > 0 && <WhereItRuns t={t} runs={runs} />}
         {runs.length > 0 && <Examples t={t} locale={locale} runs={runs} />}
         <Features t={t} run={run} />
+        <WhyGooidy t={t} />
         <Pricing t={t} locale={locale} />
         <Faq t={t} />
         <FinalCta t={t} locale={locale} />
@@ -81,7 +84,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
               t.meta.description,
               t.home.plans.slice(0,1).map((p, i) => ({
                 name: p.name,
-                price: Object.values(PLAN_PRICES)[i],
+                price: Number(PRICES[i].slice(1)),
               })),
             ),
           ).replace(/</g, "\\u003c"),
@@ -270,32 +273,22 @@ function FromPhoto({ run }: { run: ShowcaseRun }) {
 
 // One real ad from the run, shown inside each app it runs in.
 function WhereItRuns({ t, runs }: { t: Messages; runs: ShowcaseRun[] }) {
-  const ads = distinctProducts(
-    runs.flatMap((run) => {
-      const story = run.ads.find((a) => a.aspect === "9:16");
-      const square = run.ads.find((a) => a.aspect === "1:1");
-      if (!story || !square) return [];
-      return [
-        {
-          productKey: productKey(run.productUrl),
-          story: { image: image(story.id), alt: story.headline },
-          square: {
-            image: image(square.id),
-            alt: square.headline,
-            primaryText: square.primaryText,
-          },
-          store: run.store,
-        } satisfies PlacementAd,
-      ];
-    }),
-  ).slice(0, 4);
+  const ads = distinctProducts(runs.flatMap(run => {
+    const story = run.ads.find(a => a.aspect === "9:16");
+    const square = run.ads.find(a => a.aspect === "1:1");
+    if (!story || !square) return [];
+    return [{
+      productKey: productKey(run.productUrl),
+      story: { image: image(story.id), alt: story.headline },
+      square: { image: image(square.id), alt: square.headline, primaryText: square.primaryText },
+      store: run.store,
+    } satisfies PlacementAd];
+  })).slice(0,4);
   if (!ads.length) return null;
   return (
     <section className="reveal mx-auto max-w-6xl px-4 pb-24">
       <SectionHeading title={t.home.whereTitle} />
-      <div className="mt-14">
-        <Placements ads={ads} />
-      </div>
+      <div className="mt-14"><Placements ads={ads} /></div>
     </section>
   );
 }
@@ -347,21 +340,11 @@ function HowItWorks({ t }: { t: Messages }) {
   );
 }
 
-function Examples({
-  t,
-  locale,
-  runs,
-}: {
-  t: Messages;
-  locale: Locale;
-  runs: ShowcaseRun[];
-}) {
-  const row = distinctProducts(
-    runs.flatMap((run) => {
-      const ad = run.ads.find((a) => a.aspect === "9:16") ?? run.ads[0];
-      return ad ? [{ ...ad, productKey: productKey(run.productUrl) }] : [];
-    }),
-  );
+function Examples({ t, locale, runs }: { t: Messages; locale: Locale; runs: ShowcaseRun[] }) {
+  const row = distinctProducts(runs.flatMap(run => {
+    const ad = run.ads.find(a => a.aspect === "9:16") ?? run.ads[0];
+    return ad ? [{ ...ad, productKey: productKey(run.productUrl) }] : [];
+  }));
   return (
     <section className="reveal overflow-hidden py-24">
       <div className="mx-auto max-w-6xl px-4">
@@ -369,25 +352,17 @@ function Examples({
       </div>
       <div className="mt-14 overflow-x-auto pb-5" data-product-group="examples">
         <div className="flex w-max min-w-full justify-center gap-5 px-4">
-          {row.map((ad) => (
-            <Image
-              key={ad.productKey}
-              data-product-key={ad.productKey}
-              src={image(ad.id)}
-              alt={ad.headline}
-              width={1080}
+          {row.map(ad => (
+            <Image key={ad.productKey} data-product-key={ad.productKey}
+              src={image(ad.id)} alt={ad.headline} width={1080}
               height={ad.aspect === "9:16" ? 1920 : 1080}
               sizes="(min-width: 40rem) 214px, 169px"
-              className={`shrink-0 rounded-2xl border border-line object-cover shadow-xl ${ad.aspect === "9:16" ? "h-[300px] w-[169px] sm:h-[380px] sm:w-[214px]" : "h-[169px] w-[169px] sm:h-[214px] sm:w-[214px]"}`}
-            />
+              className={`shrink-0 rounded-2xl border border-line object-cover shadow-xl ${ad.aspect === "9:16" ? "h-[300px] w-[169px] sm:h-[380px] sm:w-[214px]" : "h-[169px] w-[169px] sm:h-[214px] sm:w-[214px]"}`} />
           ))}
         </div>
       </div>
       <p className="mt-10 text-center">
-        <Link
-          href={localePath(locale, "/use-cases")}
-          className="text-sm font-medium text-accent hover:underline"
-        >
+        <Link href={localePath(locale,"/use-cases")} className="text-sm font-medium text-accent hover:underline">
           {t.home.examplesLink}
         </Link>
       </p>
@@ -500,106 +475,60 @@ function Features({ t, run }: { t: Messages; run?: ShowcaseRun }) {
   );
 }
 
+// Why businesses pick Gooidy: only what is live, plus one card marked soon.
+function WhyGooidy({ t }: { t: Messages }) {
+  return (
+    <section id="why" className="reveal mx-auto max-w-6xl scroll-mt-16 px-4 pb-24">
+      <SectionHeading title={t.why.title} sub={t.why.sub} />
+      <ol className="stagger mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {t.why.cards.map((card, i) => (
+          <li key={card.title} className="edge spot lift p-7">
+            <span
+              aria-hidden
+              className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-accent-soft font-mono text-sm text-accent"
+            >
+              {i + 1}
+            </span>
+            <h3 className="mt-4 text-lg font-medium">{card.title}</h3>
+            <p className="mt-1.5 text-sm leading-relaxed text-muted">{card.body}</p>
+          </li>
+        ))}
+      </ol>
+      <div className="mt-5 flex flex-col gap-2 rounded-2xl border border-dashed border-line p-6 sm:flex-row sm:items-center sm:gap-4">
+        <span className="w-fit rounded-full border border-line bg-surface px-3 py-1 text-xs font-medium text-muted">
+          {t.why.soon}
+        </span>
+        <p className="text-sm">
+          <span className="font-medium">{t.why.soonTitle}</span>
+          <span className="text-muted"> · {t.why.soonBody}</span>
+        </p>
+      </div>
+    </section>
+  );
+}
+
 function Pricing({ t, locale }: { t: Messages; locale: Locale }) {
-  const [free, pro] = t.home.plans;
-  const boost = t.home.boost;
-  // Free, then Pro at its intro price (renewing monthly), then the yearly
-  // Boost add-on, as Zeely lays it out.
-  const cards = [
-    { ...free, usd: 0, period: "", note: null, creditCount: 100 },
-    {
-      ...pro,
-      usd: PRO_INTRO.usd,
-      period: ` ${fmt(t.home.introPeriod, { days: PRO_INTRO.days })}`,
-      note: fmt(t.home.then, { price: usd(PLAN_PRICES.pro, locale) }),
-      credits: fmt(t.home.introCredits, {
-        count: PRO_INTRO.credits.toLocaleString(locale),
-        days: PRO_INTRO.days,
-        full: (1000).toLocaleString(locale),
-      }),
-      creditCount: 1000,
-    },
-    {
-      ...boost,
-      usd: BOOST_PRICE,
-      period: boost.period,
-      note: null,
-      creditCount: 0,
-    },
-  ];
   return (
     <section id="pricing" className="scroll-mt-16 bg-surface py-20">
       <div className="reveal mx-auto max-w-6xl px-4">
         <SectionHeading title={t.home.pricingTitle} sub={t.home.pricingSub} />
-        <div className="stagger mt-12 grid gap-6 md:grid-cols-3">
-          {cards.map((plan, i) => (
-            <div
-              key={plan.name}
-              className={`spot lift flex flex-col p-7 ${
-                i === FEATURED
-                  ? "edge shadow-[0_30px_80px_-30px_var(--t-accent)] md:-my-3 md:py-10"
-                  : "rounded-2xl border border-line bg-raised"
-              }`}
-            >
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-medium">{plan.name}</h3>
-                {i === FEATURED && (
-                  <span className="rounded-full bg-accent-soft px-2.5 py-0.5 text-xs font-medium text-accent">
-                    {t.home.popular}
-                  </span>
-                )}
-              </div>
-              <p className="mt-4">
-                <span className="text-5xl font-semibold tracking-tight">
-                  {usd(plan.usd, locale)}
-                </span><span className="ms-1 text-sm text-muted">USD</span>
-                <span className="text-muted">{plan.period}</span>
-              </p>
-              {plan.note && (
-                <p className="mt-1 text-sm font-medium">{plan.note}</p>
-              )}
-              <LocalPrice
-                usd={plan.usd}
-                locale={locale}
-                template={t.home.approx}
-                className="text-sm text-muted"
-              />
-              <p className="mt-1 text-sm text-muted">{plan.credits}</p>
-              <ul className="mt-6 flex-1 space-y-2.5 text-sm">
-                {plan.perks.map((perk, index) => (
-                  <li key={perk} className="flex gap-2">
-                    <span className="text-accent">✓</span>
-                    {index === 0 && plan.creditCount
-                      ? fmt(t.app.imageAds, {
-                          count: (
-                            plan.creditCount / CREDITS_PER_IMAGE
-                          ).toLocaleString(locale),
-                        })
-                      : perk}
-                  </li>
-                ))}
-              </ul>
-              <Link
-                href={localePath(locale,i>0?"/policies/billing":"/start")} prefetch={false}
-                className={`mt-8 rounded-xl px-5 py-2.5 text-center text-sm font-medium transition ${
-                  i === FEATURED
-                    ? "btn-primary"
-                    : "border border-line text-fg hover:bg-surface"
-                }`}
-              >
-                {i>0?t.legal.billing:t.nav.getStarted}
-              </Link>
-            </div>
-          ))}
-        </div>
-        <p className="mt-8 text-center text-sm text-muted">{t.home.payNote}</p>
-        <CreditGuide
-          imageCost={GENERATION_COST}
-          imagesPerRun={ADS_PER_GENERATION * ASPECTS.length}
-        />
+        <PublicPricing />
+        <p className="mt-6 text-center"><Link href={localePath(locale,"/pricing")} className="inline-flex min-h-11 items-center text-sm font-medium text-accent">Compare plans and calculate your credits →</Link></p>
+        <TierExamples />
+        <CreditGuide imageCost={GENERATION_COST} imagesPerRun={ADS_PER_GENERATION * ASPECTS.length} />
       </div>
     </section>
   );
+}
+
+// Real showcased runs at each quality tier, side by side.
+async function TierExamples() {
+  const [images, videos] = await Promise.all([getTierExamples("image_ads"), getTierExamples("video_ads")]);
+  const examples = Object.fromEntries(QUALITIES.map((q) => {
+    const square = images[q]?.ads.find((ad) => ad.aspect === "1:1") ?? images[q]?.ads[0];
+    return [q, { imageId: square?.id ?? null, headline: square?.headline ?? "", videoId: videos[q]?.ads[0]?.id ?? null }];
+  })) as Record<Quality, TierExample>;
+  return <TierCompare examples={examples} />;
 }
 
 function Faq({ t }: { t: Messages }) {
@@ -645,7 +574,7 @@ function FinalCta({ t, locale }: { t: Messages; locale: Locale }) {
         </h2>
         <p className="mt-4 text-lg text-white/80">{t.home.finalSub}</p>
         <form
-          action={localePath(locale, "/start")}
+          action={localePath(locale,"/start")}
           method="get"
           className="mt-9 flex w-full max-w-xl flex-col gap-2 rounded-2xl bg-white/10 p-2 ring-1 ring-white/25 backdrop-blur sm:flex-row"
         >
@@ -671,3 +600,4 @@ function FinalCta({ t, locale }: { t: Messages; locale: Locale }) {
     </section>
   );
 }
+
