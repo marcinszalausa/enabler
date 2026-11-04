@@ -27,7 +27,7 @@ function lanes():Lane[]{
    create:p.credits.toLocaleString("en-US")+(paid?" credits every month":" credits, once"),
    edit:SAME,
    publish:t.weekPlanner?"+ Weekly planner and reminders":"1 account, manual scheduling",
-   analyze:t.resultsComparison?`Compare up to ${t.resultsLimit} posts + CSV report`:`Results for your last ${t.resultsLimit} posts`,
+   analyze:t.growthActionPlan?"Compare 30 posts + a next-test action plan":t.resultsComparison?`Compare up to ${t.resultsLimit} posts + CSV report`:`Results for your last ${t.resultsLimit} posts`,
   }};
  };
  return [lane({...TRY_MODE,name:"Try"},0),...PAID_PLANS.map((p,i)=>lane(p,i+1))];
