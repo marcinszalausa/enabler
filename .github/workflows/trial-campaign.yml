@@ -18,7 +18,7 @@ jobs:
       - run: npm ci
       - run: node --experimental-strip-types --test tests/trial-capacity.test.ts tests/creative-preferences.test.ts
       - run: npx next typegen && npx tsc --noEmit
-      - run: npx eslint src/lib/trial-capacity.ts 'src/app/[locale]/dashboard/trial-campaign.tsx' 'src/app/[locale]/dashboard/actions.ts' 'src/app/[locale]/dashboard/products/[id]/generate-controls.tsx' 'src/app/[locale]/dashboard/products/[id]/video-ad-form.tsx' 'src/app/[locale]/dashboard/products/[id]/page.tsx' src/i18n/messages/*.ts
+      - run: npx eslint src/lib/trial-capacity.ts 'src/app/[locale]/dashboard/actions.ts' 'src/app/[locale]/dashboard/products/[id]/generate-controls.tsx' 'src/app/[locale]/dashboard/products/[id]/video-ad-form.tsx' 'src/app/[locale]/dashboard/products/[id]/page.tsx' src/i18n/messages/*.ts
       - run: npm install --prefix /tmp/gooidy-trial-browser --no-package-lock playwright@1.56.1
       - run: /tmp/gooidy-trial-browser/node_modules/.bin/playwright install --with-deps chromium
       - run: node scripts/check-trial-browser.mjs

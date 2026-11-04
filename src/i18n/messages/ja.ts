@@ -486,6 +486,9 @@ export const ja: Messages = {
     tone: "トーン：",
     pains: "悩み",
     benefits: "ベネフィット",
+    yourAds: "あなたの広告",
+    edit: "編集",
+    planCampaign: "連動キャンペーンを計画",
     noAds: "まだ広告がありません",
     noAdsBody:
       "最初のセットを作りましょう。5つの切り口をそれぞれ正方形 (フィード) と縦型 (ストーリーズ/リール) の画像で、または Reels と TikTok 向けにナレーション・字幕・音楽付きの{seconds}秒の縦型動画を{videos}本作れます。",

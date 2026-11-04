@@ -1,12 +1,9 @@
-import Link from "next/link";
 import {paidPlan,paidPlanName} from "@/lib/paid-plans";
-import { ProductJourney } from "../../product-journey";
 import { parseCampaign } from "@/lib/customer-workflow";
 import { CampaignBundle } from "../../campaigns/campaign-bundle";
 import { canEditWorkspace } from "@/lib/workspace-access";
 import type { CreditReceipt } from "@/lib/generation-presentation";
 import { parseCreativePreferences } from "@/lib/creative-preferences";
-import { TrialCampaign } from "../../trial-campaign";
 import { PersonalizationForm } from "./personalization-form";
 import { randomUUID } from "node:crypto";
 import { Suspense } from "react";
@@ -14,12 +11,9 @@ import { notFound } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import type { BrandBrief } from "@/lib/ai/claude";
-import { GENERATION_COST } from "@/lib/pipeline";
 import {
   LENGTHS,
   VIDEOS_PER_GENERATION,
-  videoRunCost,
-  DEFAULT_VIDEO_OPTIONS,
 } from "@/lib/video-options";
 import { getBrandKit } from "@/lib/brand-kit";
 import { DEFAULT_LANGUAGE, isLanguageKey } from "@/lib/languages";
@@ -45,7 +39,7 @@ import { QUALITIES } from "@/lib/quality";
 import { isLocale } from "@/i18n/config";
 import { getMessages } from "@/i18n/messages";
 import { AppText } from "../../i18n-text";
-import { DeleteButton } from "../../delete-button";
+import { ProductMenu } from "./product-menu";
 import { FailedBatches } from "./failed-batches";
 import { fmt } from "@/i18n/format";
 
@@ -172,6 +166,11 @@ async function Product({
     video: Object.fromEntries(QUALITIES.map((q) => [q, videoTiers[q]?.ads[0]?.id ?? null])),
   } as TierExampleIds;
 
+  const credits = workspace?.credits ?? 0;
+  const creditNote = workspace?.plan === "free"
+    ? `${fmt(t.app.creditsLeft, { count: credits })} · ${t.trial.oneTime}`
+    : fmt(t.app.creditsLeft, { count: credits });
+
   return (
     <>
       <AutoRefresh
@@ -181,68 +180,71 @@ async function Product({
           .map((g) => g.id)}
       />
       {selectedPlan&&<section data-selected-plan={selectedPlan} className="mt-6 rounded-xl border border-line bg-surface p-4 text-sm"><p className="font-medium">Selected plan: {paidPlanName(selectedPlan)}</p><p className="mt-2 text-xs text-muted">This is a preference only. Your current credits and access are unchanged. No subscription has been started.</p></section>}
-      <header className="mt-6 flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
-        <div className="flex min-w-0 items-center gap-4">
-          {photo && (
-            // eslint-disable-next-line @next/next/no-img-element -- the store's own photo, on any host
-            <img
-              src={photo}
-              alt=""
-              className="h-16 w-16 shrink-0 rounded-xl border border-line object-cover"
+      <header className="mt-5 flex items-center gap-4">
+        {photo && (
+          // eslint-disable-next-line @next/next/no-img-element -- the store's own photo, on any host
+          <img
+            src={photo}
+            alt=""
+            className="h-14 w-14 shrink-0 rounded-xl border border-line object-cover sm:h-16 sm:w-16"
+          />
+        )}
+        <div className="min-w-0 flex-1">
+          <h1 className="text-xl font-semibold tracking-tight sm:text-3xl">
+            {product.name ?? product.url}
+          </h1>
+          <a
+            href={product.url}
+            target="_blank"
+            rel="noreferrer"
+            dir="ltr"
+            className="mt-0.5 block truncate text-start text-sm text-muted transition hover:text-accent rtl:text-end"
+          >
+            {product.url.replace(/^https?:\/\/(www\.)?/, "")}
+          </a>
+        </div>
+        <ProductMenu productId={product.id} hasBrief={Boolean(brief)} canEdit={canEdit} />
+      </header>
+      {campaign && <CampaignBundle campaign={campaign} copy={campaignRuns.flatMap(g=>g.creatives)}/>}
+
+      {canEdit && (
+        <section id="generate-ads" tabIndex={-1} aria-labelledby="create-ads-title" className="mt-6 flex scroll-mt-40 flex-col gap-4 rounded-2xl border border-line bg-raised p-4 focus:outline-2 focus:outline-accent sm:p-6">
+          <h2 id="create-ads-title" className="text-lg font-semibold">{t.journey.create}</h2>
+          {brief && <PersonalizationForm productId={product.id} initial={preferences} audience={brief.audience} focus={brief.benefits[0]??""} benefits={brief.benefits} required={needsPreferences}/>}
+          {running.length > 0 ? (
+            <a href="#your-ads" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-line-strong px-4 text-sm font-medium text-accent hover:border-accent">{t.run.check}<span aria-hidden>↓</span></a>
+          ) : needsPreferences ? null : (
+            <GenerateControls
+              key={JSON.stringify(preferences)}
+              campaignId={campaign?.id}
+              initialKind={initialKind}
+              credits={workspace?.credits ?? 0}
+              freeTrial={workspace?.plan === "free"}
+              imageRequestId={randomUUID()}
+              videoRequestId={randomUUID()}
+              productId={product.id}
+              examples={tierExamples}
+              videoLabel={fmt(t.app.generateVideos, {
+                count: VIDEOS_PER_GENERATION,
+              })}
+              defaultLanguage={
+                isLanguageKey(brief?.language)
+                  ? brief?.language
+                  : DEFAULT_LANGUAGE
+              }
             />
           )}
-          <div className="min-w-0">
-            <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
-              {product.name ?? product.url}
-            </h1>
-            <a
-              href={product.url}
-              target="_blank"
-              rel="noreferrer"
-              className="mt-0.5 block truncate text-sm text-muted transition hover:text-accent"
-            >
-              {product.url}
-            </a>
-            {canEdit && <DeleteButton target="product" id={product.id} className="-ms-3 mt-1 inline-flex min-h-11 items-center gap-1.5 rounded-xl px-3 text-sm text-muted transition hover:text-danger" />}
-          </div>
+          <p className="-mt-1 text-center text-xs leading-relaxed text-muted lg:text-start">{creditNote}</p>
+        </section>
+      )}
+
+      <section id="your-ads" tabIndex={-1} aria-labelledby="your-ads-title" className="mt-10 scroll-mt-40">
+        <h2 id="your-ads-title" className="text-lg font-semibold">{t.app.yourAds}</h2>
+        {campaign && <p className="mt-2 text-sm text-muted">Showing ads from this campaign. <a className="text-accent underline" href={`/dashboard/products/${product.id}`}>View all product ads</a></p>}
+        <div className="mt-3">
+          <FailedBatches t={t} locale={locale} runs={emptyFailed} receipts={receipts} canRetry={canEdit} />
         </div>
-        <div id="generate-ads" tabIndex={-1} className="flex scroll-mt-40 flex-col items-start gap-2 rounded-2xl border border-line bg-raised p-4 focus:outline-2 focus:outline-accent lg:items-end">
-          {canEdit && (running.length>0 ? <a href="#your-ads" className="inline-flex min-h-11 items-center text-sm font-medium text-accent">{t.run.check}</a> : needsPreferences ? <a href="#ad-preferences" className="inline-flex min-h-11 max-w-sm items-center text-sm font-medium text-accent hover:underline">{t.personal.confirmFirst}</a> : <GenerateControls
-            key={JSON.stringify(preferences)}
-            campaignId={campaign?.id}
-            initialKind={initialKind}
-            credits={workspace?.credits ?? 0}
-            freeTrial={workspace?.plan === "free"}
-            imageRequestId={randomUUID()}
-            videoRequestId={randomUUID()}
-            productId={product.id}
-            examples={tierExamples}
-            imageCost={GENERATION_COST}
-            videoCost={videoRunCost(DEFAULT_VIDEO_OPTIONS.length)}
-            videoLabel={fmt(t.app.generateVideos, {
-              count: VIDEOS_PER_GENERATION,
-            })}
-            defaultLanguage={
-              isLanguageKey(brief?.language)
-                ? brief?.language
-                : DEFAULT_LANGUAGE
-            }
-          />)}
-          <p className="text-xs text-muted">
-            {fmt(t.app.creditsLeft, { count: workspace?.credits ?? 0 })}
-          </p>
-        </div>
-      </header>
-      {campaign ? <CampaignBundle campaign={campaign} copy={campaignRuns.flatMap(g=>g.creatives)}/> : <Link href="/dashboard/campaigns" className="mt-5 inline-flex min-h-11 items-center text-sm font-medium text-accent">Plan a coordinated campaign →</Link>}
-
-      <ProductJourney t={t} needsPreferences={needsPreferences} hasAds={(generations??[]).some(g=>g.creatives.length>0)} running={running.length>0} posted={Object.values(publishing?.posts??{}).some(post=>post.status==="published"||post.status==="scheduled"||post.status==="publishing")} canEdit={canEdit}/>
-
-      {workspace?.plan==="free"&&<TrialCampaign hideSteps credits={workspace.credits??0} hasAds={(generations??[]).some(g=>g.creatives.length>0)} published={Object.values(publishing?.posts??{}).some(post=>post.status==="published")} canEdit={canEdit}/>}
-      {brief && canEdit && <PersonalizationForm productId={product.id} initial={preferences} audience={brief.audience} focus={brief.benefits[0]??""} benefits={brief.benefits} required={needsPreferences}/>}
-
-      <section id="your-ads" tabIndex={-1} className="mt-10 flex scroll-mt-40 flex-col gap-10">
-        {campaign && <p className="text-sm text-muted">Showing ads from this campaign. <a className="text-accent underline" href={`/dashboard/products/${product.id}`}>View all product ads</a></p>}
-        <FailedBatches t={t} locale={locale} runs={emptyFailed} receipts={receipts} canRetry={canEdit} />
+        <div className="mt-4 flex flex-col gap-10">
         {shownRuns.length === 0 && (
           <EmptyState title={t.app.noAds}>
             {fmt(t.app.noAdsBody, {
@@ -271,11 +273,12 @@ async function Product({
             canRetry={canEdit}
           />
         ))}
+        </div>
       </section>
       {brief && (
-        <details className="edge mt-8 p-5 text-sm">
-          <summary className="min-h-11 cursor-pointer py-3 font-medium">{t.app.brief} · {t.onboard.advanced}</summary>
-          <div className="grid gap-6 pt-4 sm:grid-cols-2">
+        <details id="brand-brief" className="mt-10 scroll-mt-40 border-t border-line pt-2 text-sm">
+          <summary className="min-h-11 cursor-pointer content-center font-medium text-muted hover:text-fg">{t.app.brief}</summary>
+          <div className="grid gap-6 pt-3 pb-2 sm:grid-cols-2">
           <div>
             <h2 className="flex items-center gap-2 font-medium">
               {t.app.brief}

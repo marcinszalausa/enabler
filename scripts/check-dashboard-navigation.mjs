@@ -13,9 +13,8 @@ try{
  'import {AppBar} from "@/app/_landing/chrome";',
  'import {AppNav} from "@/app/[locale]/dashboard/app-nav";',
  'import {AccountMenu} from "@/app/[locale]/dashboard/account-menu";',
- 'import {ProductJourney} from "@/app/[locale]/dashboard/product-journey";',
  'import {getMessages} from "@/i18n/messages";import {isLocale} from "@/i18n/config";',
- 'export default function Preview(props:{params:Promise<{locale:string}>}){return <Suspense fallback={<p>Loading…</p>}><PreviewContent {...props}/></Suspense>}async function PreviewContent({params}:{params:Promise<{locale:string}>}){const {locale}=await params;if(!isLocale(locale))return null;const t=await getMessages(locale);return <div className="landing flex min-h-screen flex-col"><AppBar homeHref="/navigation-preview" tabs={<AppNav items={[{href:"/navigation-preview",label:t.app.products},{href:"/navigation-preview/ads",label:t.library.title},{href:"/navigation-preview/publishing",label:t.publish.title},{href:"/navigation-preview/brand",label:t.app.brandKit}]}/>}><AccountMenu/></AppBar><main className="mx-auto w-full max-w-5xl p-4"><h1 className="text-2xl font-semibold">Navigation preview</h1><div data-state="preferences"><ProductJourney t={t} needsPreferences/></div><div data-state="new"><ProductJourney t={t}/></div><div data-state="running"><ProductJourney t={t} running/></div><div data-state="ready"><ProductJourney t={t} hasAds/></div><div data-state="posted"><ProductJourney t={t} hasAds posted/></div><div data-state="viewer"><ProductJourney t={t} hasAds canEdit={false}/></div><div className="h-[800px]"/>{["ad-preferences","generate-ads","your-ads"].map(id=><section id={id} key={id} tabIndex={-1} className="min-h-[600px] scroll-mt-40 border p-4">{id}</section>)}</main></div>}'
+ 'export default function Preview(props:{params:Promise<{locale:string}>}){return <Suspense fallback={<p>Loading…</p>}><PreviewContent {...props}/></Suspense>}async function PreviewContent({params}:{params:Promise<{locale:string}>}){const {locale}=await params;if(!isLocale(locale))return null;const t=await getMessages(locale);return <div className="landing flex min-h-screen flex-col"><AppBar homeHref="/navigation-preview" tabs={<AppNav items={[{href:"/navigation-preview",label:t.app.products},{href:"/navigation-preview/ads",label:t.library.title},{href:"/navigation-preview/publishing",label:t.publish.title},{href:"/navigation-preview/brand",label:t.app.brandKit}]}/>}><AccountMenu/></AppBar><main className="mx-auto w-full max-w-5xl p-4"><h1 className="text-2xl font-semibold">Navigation preview</h1></main></div>}'
  ].join("\n"));
  server=spawn(process.execPath,["node_modules/next/dist/bin/next","dev","-p","3109"],{env:{...process.env,NEXT_PUBLIC_SUPABASE_URL:"https://example.supabase.co",NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:"sb_publishable_fixture"},detached:true,stdio:["ignore","pipe","pipe"]});
  const capture=b=>{log=(log+b).slice(-16000);};server.stdout.on("data",capture);server.stderr.on("data",capture);
@@ -48,24 +47,11 @@ try{
   // The expanded account menu may legitimately overlap the heading. Click the
   // outside page gutter below the menu, rather than an obscured element.
   await page.mouse.click(4,300);assert.equal(await menu.getAttribute("open"),null);
-  for(const [state,href,step] of [["preferences","#ad-preferences",1],["new","#generate-ads",2],["running","#your-ads",2],["ready","#your-ads",3],["posted","/dashboard/publishing",null],["viewer","#your-ads",3]]){
-   const group=page.locator('[data-state="'+state+'"]');
-   assert.equal(await group.locator("[data-next-step]").count(),1);
-   assert.equal(await group.locator("[data-next-step]").getAttribute("href"),href);
-   assert.equal(await group.locator('li[aria-current="step"]').count(),step===null?0:1);
-  }
-  await page.addStyleTag({content:"html{scroll-behavior:auto!important}"});
-  for(const [state,id] of [["preferences","ad-preferences"],["new","generate-ads"],["ready","your-ads"]]){
-   await page.locator('[data-state="'+state+'"] [data-next-step]').click();await pause(300);
-   const target=await page.locator("#"+id).boundingBox(),header=await page.locator("header").boundingBox();
-   assert.ok(target.y>=header.y+header.height-1,"Destination clears sticky navigation");
-   assert.ok(target.y<900,"Destination is visible");
-  }
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),"No horizontal page overflow");
   assert.equal(posts,0,"Navigation never starts generation, signs out, or publishes");
   assert.deepEqual(errors,[]);
   if(width===320){await page.evaluate(()=>scrollTo(0,0));const png=await page.screenshot();console.log("DASHBOARD_NAV_PREVIEW",png.toString("base64"));}
-  console.log("PASS dashboard tabs, active routes, account keyboard/dismissal, next steps, anchors and no side effects",width,locale,theme);
+  console.log("PASS dashboard tabs, active routes, account keyboard/dismissal and no side effects",width,locale,theme);
   await page.close();
  }
 }catch(error){console.error(log);throw error;}

@@ -54,28 +54,30 @@ export function GenerateControls({
   const [ideas, setIdeas] = useState<IdeaCount>(ADS_PER_GENERATION);
   const example = examples?.[kind][quality] ?? null;
 
-  const segment = "flex min-h-11 cursor-pointer flex-col justify-center border-line-strong px-3 py-1 text-center not-last:border-e has-checked:bg-accent-soft has-checked:text-accent has-focus-visible:ring-2 has-focus-visible:ring-accent";
-  const row = "flex flex-wrap items-center gap-x-3 gap-y-1.5 lg:justify-end";
-  const label = "w-full text-sm text-muted sm:w-auto";
+  const segment = "flex min-h-11 flex-1 cursor-pointer flex-col justify-center border-line-strong px-2 py-1.5 text-center not-last:border-e has-checked:bg-accent-soft has-checked:text-accent has-focus-visible:ring-2 has-focus-visible:ring-inset has-focus-visible:ring-accent";
+  const group = "flex w-full overflow-hidden rounded-xl border border-line-strong";
+  const label = "mb-1.5 block text-sm text-muted";
 
   return (
-    <div className="flex flex-col items-start gap-3 text-sm lg:items-end">
-      <div role="group" aria-label={t.app.kind} className="inline-flex overflow-hidden rounded-lg border border-line-strong">
+    <div className="flex w-full flex-col gap-4 text-sm lg:grid lg:grid-cols-2 lg:gap-x-8 lg:gap-y-5">
+      <div>
+      <p aria-hidden className={label + " hidden lg:block"}>{t.app.kind}</p>
+      <div role="group" aria-label={t.app.kind} className="flex w-full rounded-xl bg-surface p-1">
         {(["image", "video"] as const).map((value) => (
           <button key={value} type="button" aria-pressed={kind === value} onClick={() => setKind(value)}
-            className={"min-h-11 border-line-strong px-4 font-medium not-last:border-e " + (kind === value ? "bg-accent-soft text-accent" : "hover:text-accent")}>
+            className={"min-h-10 flex-1 rounded-lg px-3 font-medium transition " + (kind === value ? "bg-raised text-fg shadow-sm ring-1 ring-line" : "text-muted hover:text-fg")}>
             {value === "image" ? t.app.kindImages : t.app.kindVideos}
-            {value === "image" && freeTrial && <span className="ms-2 text-xs font-normal">{t.onboard.recommended}</span>}
+            {value === "image" && freeTrial && <span className="ms-1.5 hidden text-xs font-normal text-accent sm:inline">{t.onboard.recommended}</span>}
           </button>
         ))}
       </div>
+      </div>
       {kind === "image" && (
-        <fieldset data-ideas className={row}>
-          <legend className="sr-only">{t.app.howMany}</legend>
-          <span aria-hidden className={label} title={t.app.ideasHelp}>{t.app.howMany}</span>
-          <div className="inline-flex overflow-hidden rounded-lg border border-line-strong" title={t.app.ideasHelp}>
+        <fieldset data-ideas>
+          <legend className={label} title={t.app.ideasHelp}>{t.app.howMany}</legend>
+          <div className={group} title={t.app.ideasHelp}>
             {IDEA_COUNTS.map((count) => (
-              <label key={count} className={segment + " min-w-14 font-medium"}>
+              <label key={count} className={segment + " font-medium"}>
                 <input type="radio" name="ideas" value={count} checked={ideas === count} onChange={() => setIdeas(count)} className="sr-only" />
                 {count * ASPECTS.length}
               </label>
@@ -83,10 +85,9 @@ export function GenerateControls({
           </div>
         </fieldset>
       )}
-      <fieldset data-quality className={row}>
-        <legend className="sr-only">{t.app.quality}</legend>
-        <span aria-hidden className={label} title={t.app.qualityHelp}>{t.app.quality}</span>
-        <div className="inline-flex overflow-hidden rounded-lg border border-line-strong" title={t.app.qualityHelp}>
+      <fieldset data-quality>
+        <legend className={label} title={t.app.qualityHelp}>{t.app.quality}</legend>
+        <div className={group} title={t.app.qualityHelp}>
           {QUALITIES.map((tier) => (
             <label key={tier} className={segment}>
               <input
@@ -104,25 +105,25 @@ export function GenerateControls({
             </label>
           ))}
         </div>
+        {example && (
+          <a data-quality-example href={kind === "image" ? `/api/creatives/${example}/image?layout=face-aware-v2` : `/api/creatives/${example}/video`}
+            target="_blank" rel="noreferrer" className="mt-2 flex items-center gap-3 rounded-xl border border-line p-2 pe-3 text-xs text-muted transition hover:border-accent hover:text-accent">
+            {kind === "image"
+              // eslint-disable-next-line @next/next/no-img-element
+              ? <img key={example} src={`/api/creatives/${example}/image?layout=face-aware-v2&preview=1`} alt="" width={56} height={56} className="size-14 rounded-lg bg-surface object-cover" />
+              : <video key={example} src={`/api/creatives/${example}/video`} muted loop autoPlay playsInline preload="metadata" className="h-20 w-12 rounded-lg bg-surface object-cover" />}
+            <span>{t.app.qualityExample} · {t.app.qualities[quality]}</span>
+          </a>
+        )}
       </fieldset>
-      {example && (
-        <a data-quality-example href={kind === "image" ? `/api/creatives/${example}/image?layout=face-aware-v2` : `/api/creatives/${example}/video`}
-          target="_blank" rel="noreferrer" className="flex items-center gap-3 rounded-xl border border-line p-2 pe-3 text-xs text-muted transition hover:border-accent hover:text-accent lg:flex-row-reverse">
-          {kind === "image"
-            // eslint-disable-next-line @next/next/no-img-element
-            ? <img key={example} src={`/api/creatives/${example}/image?layout=face-aware-v2&preview=1`} alt="" width={72} height={72} className="size-18 rounded-lg bg-surface object-cover" />
-            : <video key={example} src={`/api/creatives/${example}/video`} muted loop autoPlay playsInline preload="metadata" className="h-24 w-14 rounded-lg bg-surface object-cover" />}
-          <span>{t.app.qualityExample} · {t.app.qualities[quality]}</span>
-        </a>
-      )}
-      <div className="flex flex-wrap items-start gap-2 lg:justify-end">
-        <label className="relative flex min-h-11 items-center" title={t.app.adLanguage}>
-          <span className="sr-only">{t.app.adLanguage}</span>
+      <label className="block">
+        <span className={label}>{t.app.adLanguage}</span>
+        <span className="relative flex items-center">
           <svg aria-hidden viewBox="0 0 20 20" className="pointer-events-none absolute start-3 size-4 text-muted" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="10" cy="10" r="7.5" /><path d="M2.5 10h15M10 2.5c2.2 2.4 2.2 12.6 0 15M10 2.5c-2.2 2.4-2.2 12.6 0 15" /></svg>
           <select
             value={language}
             onChange={(e) => setLanguage(e.target.value as LanguageKey)}
-            className="min-h-11 min-w-0 max-w-48 rounded-xl border border-line-strong bg-raised py-2 ps-9 pe-2.5 text-sm outline-none transition focus:border-accent focus:ring-4 focus:ring-accent/20"
+            className="min-h-11 w-full min-w-0 rounded-xl border border-line-strong bg-raised py-2 ps-9 pe-2.5 text-sm outline-none transition focus:border-accent focus:ring-4 focus:ring-accent/20"
           >
             {(Object.keys(LANGUAGES) as LanguageKey[]).map((key) => (
               <option key={key} value={key}>
@@ -130,27 +131,28 @@ export function GenerateControls({
               </option>
             ))}
           </select>
-        </label>
-        {kind === "image" && <GenerateButton
-          initialRequestId={imageRequestId}
-          productId={productId}
-          campaignId={campaignId}
-          cost={imageRunCost(quality, ideas)}
-          ideas={ideas}
-          credits={credits}
-          language={language}
-          quality={quality}
-        />}
-        {kind === "video" && <VideoAdForm
-          initiallyOpen
-          credits={credits}
-          initialRequestId={videoRequestId}
-          productId={productId}
-          campaignId={campaignId}
-          label={videoLabel}
-          language={language}
-          quality={quality}
-        />}
+        </span>
+      </label>
+      <div className="lg:col-span-2">
+      {kind === "image" && <GenerateButton
+        initialRequestId={imageRequestId}
+        productId={productId}
+        campaignId={campaignId}
+        cost={imageRunCost(quality, ideas)}
+        ideas={ideas}
+        credits={credits}
+        language={language}
+        quality={quality}
+      />}
+      {kind === "video" && <VideoAdForm
+        credits={credits}
+        initialRequestId={videoRequestId}
+        productId={productId}
+        campaignId={campaignId}
+        label={videoLabel}
+        language={language}
+        quality={quality}
+      />}
       </div>
     </div>
   );

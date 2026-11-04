@@ -501,6 +501,9 @@ export const pt: Messages = {
     tone: "Tom: ",
     pains: "Dores",
     benefits: "Benefícios",
+    yourAds: "Seus anúncios",
+    edit: "Editar",
+    planCampaign: "Planejar uma campanha coordenada",
     noAds: "Nenhum anúncio ainda",
     noAdsBody:
       "Gere seu primeiro conjunto: 5 abordagens, cada uma como imagem quadrada (feed) e vertical (stories/reels), ou {videos} vídeos verticais de {seconds} segundos com locução, legendas e música para Reels e TikTok.",

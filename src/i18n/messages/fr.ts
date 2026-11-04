@@ -505,6 +505,9 @@ export const fr: Messages = {
     tone: "Ton : ",
     pains: "Problèmes",
     benefits: "Bénéfices",
+    yourAds: "Vos pubs",
+    edit: "Modifier",
+    planCampaign: "Planifier une campagne coordonnée",
     noAds: "Aucune pub pour l'instant",
     noAdsBody:
       "Générez votre premier lot : 5 angles, chacun en image carrée (fil) et verticale (stories/reels), ou {videos} vidéos verticales de {seconds} secondes avec voix off, sous-titres et musique pour Reels et TikTok.",
