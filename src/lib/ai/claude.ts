@@ -18,6 +18,9 @@ import {
 import { type LanguageKey } from "@/lib/languages";
 
 const MODEL = "claude-opus-5-5";
+// The per-image quality check runs on every try of every image, so it uses
+// the cheaper Sonnet; writing copy stays on Opus.
+const REVIEW_MODEL = "claude-sonnet-5-5";
 // Server-side fallback: if a request is declined by a safety classifier,
 // the API retries it on Anthropic's recommended model for that category.
 const FALLBACK_BETA = "server-side-fallback-2026-07-01";
@@ -330,7 +333,7 @@ export async function reviewAdImage(opts: {
 
   const response = await callClaude(() =>
     client.beta.messages.parse({
-      model: MODEL,
+      model: REVIEW_MODEL,
       max_tokens: 4000,
       betas: [FALLBACK_BETA],
       fallbacks: "default",

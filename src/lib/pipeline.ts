@@ -9,7 +9,7 @@ import { userMessage } from "@/lib/errors";
 import { autopilotRun } from "@/lib/social/publish";
 import type { LanguageKey } from "@/lib/languages";
 
-import { ASPECTS, ADS_PER_GENERATION, CREDITS_PER_IMAGE, GENERATION_COST } from "@/lib/image-pricing";
+import { ASPECTS, ADS_PER_GENERATION, GENERATION_COST } from "@/lib/image-pricing";
 export { ASPECTS, ADS_PER_GENERATION, CREDITS_PER_IMAGE, GENERATION_COST } from "@/lib/image-pricing";
 
 // fal limits how many requests an account may run at once; stay under it.
@@ -124,11 +124,17 @@ export async function runGeneration({
   delivered = count;
   if (delivered === ADS_PER_GENERATION * ASPECTS.length) failure = null;
 
+  // Refund at the price the run was charged, even if prices changed since.
+  const { data: charged } = await db.from("generations")
+    .select("cost_credits").eq("id", generationId).single();
+  const cost = (charged?.cost_credits as number | undefined) ?? GENERATION_COST;
+  const perImage = cost / (ADS_PER_GENERATION * ASPECTS.length);
+
   // Keep settlement outside the generation catch. A lost RPC response must not
   // turn a successful partial delivery into a second, full refund.
   const closed = await finalizeGeneration(
     db, generationId, delivered > 0 ? "succeeded" : "failed",
-    GENERATION_COST - delivered * CREDITS_PER_IMAGE, failure, prompt,
+    cost - delivered * perImage, failure, prompt,
   );
   if (closed && delivered > 0) await autopilotRun(workspaceId, generationId);
 }

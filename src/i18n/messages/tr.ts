@@ -188,7 +188,7 @@ export const tr: Messages = {
       },
       {
         q: "Kredi nedir?",
-        a: "Bir kredi bir reklam görseli oluşturur. Her çalıştırma iki boyutta beş reklam oluşturur, yani 10 kredi kullanır.",
+        a: "Her reklam görseli 2 kredi kullanır. Her çalıştırma iki boyutta beş reklam oluşturur, yani 20 kredi kullanır.",
       },
       {
         q: "Tasarım deneyimi gerekir mi?",

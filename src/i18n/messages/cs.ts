@@ -190,7 +190,7 @@ export const cs: Messages = {
       },
       {
         q: "Co je kredit?",
-        a: "Jeden kredit vytvoří jeden reklamní obrázek. Každý běh vytvoří pět reklam ve dvou formátech, takže spotřebuje 10 kreditů.",
+        a: "Každý reklamní obrázek stojí 2 kredity. Každý běh vytvoří pět reklam ve dvou formátech, takže spotřebuje 20 kreditů.",
       },
       {
         q: "Potřebuji zkušenosti s grafikou?",
