@@ -1,8 +1,11 @@
 import "server-only";
-import { verifyPublicUrl } from "@/lib/public-fetch";
+import { fetchPublicUrl, verifyPublicUrl } from "@/lib/public-fetch";
 import { ApiError, fal } from "@fal-ai/client";
 import { UserError } from "@/lib/errors";
 import type { Quality } from "@/lib/quality";
+import { gatewayKey, getGatewaySeedance, submitGatewaySeedance } from "@/lib/ai/gateway-video";
+import { GOOGLE_IMAGE_MODELS, geminiKey, googleImageBody, googleImageResult, googleImageUrl } from "@/lib/ai/google-image";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 export type Aspect = "1:1" | "9:16";
 
@@ -39,6 +42,22 @@ export async function generateAdImage(opts: {
     ? `Show the same person, wearing exactly the same outfit, in the same setting and light as this image, from a new framing. The product keeps its color, fabric and design unchanged: ${prompt}`
     : `Place this exact product in a new scene, keeping its color, fabric and design unchanged. Keep natural pairs or sets intact, without duplicating the product or introducing a different color variant: ${prompt}`;
 
+  const google = opts.quality === "good" ? null : geminiKey();
+  if (google) {
+    // Nano Banana direct from Google costs less than fal; fal is the backup.
+    try {
+      return await generateGoogleImage({
+        prompt: referenceImageUrl ? editPrompt : prompt,
+        referenceImageUrl,
+        aspect: opts.aspect,
+        ...GOOGLE_IMAGE_MODELS[opts.quality as "better" | "best"],
+        key: google,
+      });
+    } catch (err) {
+      console.error("Gemini image failed, drawing on fal instead", err);
+    }
+  }
+
   const result = await callFal(() =>
     referenceImageUrl
       ? fal.subscribe(opts.retry ? models.retry : models.edit, {
@@ -58,6 +77,45 @@ export async function generateAdImage(opts: {
   return url;
 }
 
+// Gemini answers with the image itself, which is kept in storage briefly.
+async function generateGoogleImage(opts: {
+  prompt: string;
+  referenceImageUrl: string | null;
+  aspect: Aspect;
+  model: string;
+  size: string;
+  key: string;
+}): Promise<string> {
+  let image: { mimeType: string; data: string } | null = null;
+  if (opts.referenceImageUrl) {
+    const ref = await fetchPublicUrl(opts.referenceImageUrl, { maxBytes: 15 * 1024 * 1024, timeoutMs: 30000, accept: "image/*" });
+    if (ref.status < 200 || ref.status >= 300) throw new Error(`Reference image returned ${ref.status}.`);
+    image = { mimeType: ref.contentType.startsWith("image/") ? ref.contentType : "image/jpeg", data: ref.body.toString("base64") };
+  }
+  const res = await fetch(googleImageUrl(opts.model), {
+    method: "POST",
+    headers: { "x-goog-api-key": opts.key, "Content-Type": "application/json" },
+    body: JSON.stringify(googleImageBody({ prompt: opts.prompt, image, aspect: opts.aspect, size: opts.size })),
+    signal: AbortSignal.timeout(120_000),
+  });
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(`Gemini returned ${res.status}: ${JSON.stringify(body).slice(0, 500)}`);
+  const { mimeType, bytes } = googleImageResult(body);
+  return storeGenerated(bytes, mimeType, mimeType === "image/jpeg" ? "jpg" : "png");
+}
+
+// Keeps media a provider returned as bytes in storage for a few hours and
+// hands it on as a signed URL, like fal's hosted results.
+async function storeGenerated(bytes: Buffer, contentType: string, ext: string): Promise<string> {
+  const path = `provider-media/${crypto.randomUUID()}.${ext}`;
+  const storage = createAdminClient().storage.from("creatives");
+  const { error } = await storage.upload(path, bytes, { contentType });
+  if (error) throw error;
+  const { data, error: signError } = await storage.createSignedUrl(path, 6 * 3600);
+  if (signError || !data) throw signError ?? new Error("Could not sign the media URL.");
+  return data.signedUrl;
+}
+
 // The video models behind each quality tier. Good: Kling 3 Pro (1080p).
 // Better and Best: Seedance 2.0, top of the image-to-video arena, at 720p
 // and 1080p. Seedance films at least 4 s; shorter shots are trimmed in the edit.
@@ -65,9 +123,12 @@ const KLING = "fal-ai/kling-video/v3/pro/image-to-video";
 const SEEDANCE = "bytedance/seedance-2.0/image-to-video";
 const SEEDANCE_RESOLUTION: Partial<Record<Quality, string>> = { better: "720p", best: "1080p" };
 const SEEDANCE_MIN_SECONDS = 4;
-// A clip reference is "<model>::<request id>"; a bare id is from before
+// A clip reference is "<model>::<request id>" (or "gateway/seedance-2.0::<operation JSON>"); a bare id is from before
 // tiers existed, when every clip was filmed on Kling.
 const REF_SEPARATOR = "::";
+// Clips filmed through Vercel AI Gateway instead of fal; their reference
+// carries the gateway's operation as JSON.
+const GATEWAY = "gateway/seedance-2.0";
 
 // Video clips take minutes, longer than a request should wait, so they go
 // through fal's queue: submit now, collect the result on a later check.
@@ -81,6 +142,20 @@ export async function submitAdVideo(opts: {
   const prompt = `${opts.prompt} Vertical social video ad, photorealistic, steady and smooth. The product keeps exactly the color, fabric and design of the first frame. If people are present, keep natural anatomy and faces fully inside the frame throughout the motion. Do not introduce new people or extra product variants. Do not add on-screen text, captions or watermarks; preserve genuine product labels and branding from the first frame.`;
   const avoid = "blur, distortion, warped hands, extra fingers, morphing product, color change, added subtitles, garbled branding, watermark, low quality";
   const resolution = SEEDANCE_RESOLUTION[opts.quality];
+  if (resolution && gatewayKey()) {
+    // Seedance through Vercel AI Gateway costs about half of fal; fal is the backup.
+    try {
+      const operation = await submitGatewaySeedance({
+        prompt: `${prompt} One continuous shot. Avoid ${avoid}.`,
+        imageUrl: startImageUrl,
+        seconds: Math.max(SEEDANCE_MIN_SECONDS, Math.ceil(opts.seconds)),
+        resolution,
+      });
+      return `${GATEWAY}${REF_SEPARATOR}${operation}`;
+    } catch (err) {
+      console.error("AI Gateway Seedance failed, filming on fal instead", err);
+    }
+  }
   const model = resolution ? SEEDANCE : KLING;
   const { request_id } = await callFal(() =>
     fal.queue.submit(model, {
@@ -112,6 +187,11 @@ export async function getAdVideo(ref: string): Promise<string | null> {
   const split = ref.indexOf(REF_SEPARATOR);
   const model = split < 0 ? KLING : ref.slice(0, split);
   const requestId = split < 0 ? ref : ref.slice(split + REF_SEPARATOR.length);
+  if (model === GATEWAY) {
+    const result = await getGatewaySeedance(requestId);
+    if (!result || "url" in result) return result?.url ?? null;
+    return storeGenerated(result.bytes, result.mediaType, "mp4");
+  }
   const status = await callFal(() => fal.queue.status(model, { requestId }));
   if (status.status !== "COMPLETED") return null;
   const result = await callFal(() => fal.queue.result(model, { requestId }));
