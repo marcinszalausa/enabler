@@ -1,5 +1,5 @@
 {
-  "version": "2026-11-04-r2",
+  "version": "2026-11-04-r3",
   "updated": "November 4, 2026",
   "documents": {
     "terms": {
@@ -212,6 +212,7 @@
           "title": "Cancellation and refunds",
           "paragraphs": [
             "For cancellation or refund assistance, email hello@gooidy.com with the account email and relevant purchase reference. Signing out, disconnecting a social account and deleting an account are different actions and do not substitute for canceling recurring billing.",
+            "30-day money-back guarantee: if you are not satisfied, email hello@gooidy.com within 30 days of the first payment for a paid monthly subscription and we will refund that first payment in full to the original payment method. The guarantee applies once per customer to the first subscription payment; later renewals and one-time credit packs are covered by the cancellation and refund terms disclosed for that purchase and by applicable law.",
             "Refund eligibility and cancellation terms are those disclosed for the purchased plan, subject to applicable law. Contact support about incorrect or unauthorized charges. Nothing here limits mandatory consumer rights or remedies."
           ]
         },
