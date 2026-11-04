@@ -8,7 +8,7 @@ test("feature lists preserve common tools while describing actual upgrade entitl
  const free=rows("free"),starter=rows("starter"),growth=rows("growth");
  assert.match(free["Weekly planning preview"],/Not included/);assert.match(starter["Weekly planning preview"],/Included/);assert.match(starter["Download a results CSV"],/Not included/);assert.match(growth["Download a results CSV"],/Included/);
  assert.equal(free["Recent published posts in results"],"Up to 8");assert.equal(growth["Recent published posts in results"],"Up to 30");assert.equal(rows("plus")["Recent published posts in results"],"Up to 16");
- for(const p of plans){const groups=planFeatureGroups(p);const labels=groups.flatMap(g=>g.features.map(([label])=>label));assert.equal(labels.length,28);assert.equal(new Set(labels).size,28);assert.match(rows(p.id)["Image headline and button edits"],/no generation credits/);assert.match(rows(p.id)["Posting queue and opt-in autopilot"],/Included/);}
+ for(const p of plans){const groups=planFeatureGroups(p);const labels=groups.flatMap(g=>g.features.map(([label])=>label));assert.equal(labels.length,29);assert.equal(new Set(labels).size,29);assert.match(rows(p.id)["Image headline and button edits"],/no generation credits/);assert.match(rows(p.id)["Posting queue and opt-in autopilot"],/Included/);}
 });
 test("structured FAQ matches visible content and does not publish purchasable offers",()=>{
  const data=pricingStructuredData(PAID_PLANS);const faq=data["@graph"].find(x=>x["@type"]==="FAQPage") as {mainEntity:{name:string;acceptedAnswer:{text:string}}[]};

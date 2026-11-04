@@ -26,6 +26,7 @@ export function planFeatureGroups(plan:CatalogPlan){
    ["Image headline and button edits","Included; no generation credits"],
    ["Post-caption edits","Included; no generation credits"],
    ["Recreate one selected image or video","Uses the single-output price shown before creation"],
+   ["Free redo when an image doesn't match your product","Up to 3 per month"],
    ["Image and MP4 downloads","Included"],
    ["Campaign-copy download","Included"],
   ]},

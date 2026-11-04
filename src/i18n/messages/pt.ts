@@ -448,6 +448,7 @@ export const pt: Messages = {
     cost: "Custo do lote",
     used: "Créditos usados",
     returned: "Créditos devolvidos",
+    freeRedo: "Refação gratuita: os créditos desta imagem foram adicionados ao seu saldo antes, então não custou nada.",
     noReceipt: "Não há comprovante de créditos para este lote. Valores devolvidos não são exibidos.",
     retry: "Criar novo lote",
     retryHint: "Escolha as opções acima. Um novo lote usa créditos; os anúncios salvos são mantidos.",
