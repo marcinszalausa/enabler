@@ -1,4 +1,7 @@
 import "server-only";
+import {inspectAdImage} from "@/lib/media-quality";
+import {QualityError,QualityReviewUnavailableError,reviewedCandidate} from "@/lib/media-quality-policy";
+export {QualityError} from "@/lib/media-quality-policy";
 import { withCreativePreferences, type CreativePreferences } from "@/lib/creative-preferences";
 import { fetchPublicUrl } from "@/lib/public-fetch";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -14,8 +17,7 @@ export { ASPECTS, ADS_PER_GENERATION, CREDITS_PER_IMAGE, GENERATION_COST } from 
 
 // fal limits how many requests an account may run at once; stay under it.
 const IMAGE_CONCURRENCY = 3;
-// Tries per image before giving up on it (and refunding its credit).
-const IMAGE_ATTEMPTS = 3;
+
 
 type Job = {
   generationId: string;
@@ -133,40 +135,24 @@ export async function runGeneration({
   if (closed && delivered > 0) await autopilotRun(workspaceId, generationId);
 }
 
-// An image that kept failing the quality check; the message says why.
-export class QualityError extends Error {}
-
-// Generates an ad photo and has Claude check it for broken hands, faces or
-// a product that doesn't match; retries with the defects named. An image that
-// never passes fails, so its credit is refunded rather than shipping a flaw.
-export async function generateCheckedImage(opts: {
-  prompt: string;
-  aspect: Aspect;
-  referenceImageUrl: string | null;
-  sameScene?: boolean;
-  product: string;
-}): Promise<string> {
-  let avoid: string | undefined;
-  for (let attempt = 1; attempt <= IMAGE_ATTEMPTS; attempt++) {
-    // Retries use the more precise model.
-    const imageUrl = await generateAdImage({
-      ...opts,
-      avoid,
-      best: attempt > 1,
-    });
-    let review;
-    try {
-      review = await reviewAdImage({ ...opts, imageUrl });
-    } catch (err) {
-      // A checker outage shouldn't block ads; keep the image.
-      console.error("image review failed", err);
-      return imageUrl;
-    }
-    if (review.ok) return imageUrl;
-    console.warn("image rejected", attempt, review.issues);
-    avoid = review.issues;
-  }
-  throw new QualityError(avoid ?? "visible defects");
+// Both local decoding and a visual verdict are required before delivery.
+// Review outages retry the same candidate, never approve or regenerate it.
+export async function generateCheckedImage(opts:{
+ prompt:string;aspect:Aspect;referenceImageUrl:string|null;
+ productReferenceImageUrl?:string|null;sameScene?:boolean;product:string;
+}):Promise<string>{
+ return reviewedCandidate({
+  generate:(attempt,avoid)=>generateAdImage({...opts,avoid,best:attempt>1}),
+  validate:async imageUrl=>{
+   const image=await fetchPublicUrl(imageUrl,{maxBytes:8*1024*1024,timeoutMs:30000,accept:"image/*"});
+   if(image.status<200||image.status>=300)throw new QualityReviewUnavailableError("The generated photo could not be inspected.");
+   await inspectAdImage(image.body,opts.aspect);
+  },
+  review:imageUrl=>reviewAdImage({...opts,imageUrl,
+   referenceImageUrl:opts.productReferenceImageUrl!==undefined?opts.productReferenceImageUrl:opts.referenceImageUrl,
+   continuityImageUrl:opts.sameScene?opts.referenceImageUrl:null
+  })
+ });
 }
 
 // Says why images were dropped, so the owner can see what the checker caught.

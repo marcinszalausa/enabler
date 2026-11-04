@@ -1,10 +1,12 @@
 import "server-only";
+import {sampleVideoShots} from "@/lib/media-quality";
+import {requireReview} from "@/lib/media-quality-policy";
 import { withCreativePreferences, type CreativePreferences } from "@/lib/creative-preferences";
 import { transitionVideoJob } from "@/lib/video-job-state";
 import { fetchPublicUrl } from "@/lib/public-fetch";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { claimGeneration, finalizeGeneration } from "@/lib/generation-credits";
-import { writeVideoAds, type BrandBrief, type VideoAd } from "@/lib/ai/claude";
+import { reviewAdVideo, writeVideoAds, type BrandBrief, type VideoAd } from "@/lib/ai/claude";
 import {
   generateMusic,
   generateVoiceover,
@@ -176,6 +178,7 @@ async function filmShots(
       prompt,
       aspect: "9:16",
       referenceImageUrl: reference,
+      productReferenceImageUrl:referenceImageUrl,
       sameScene,
       product,
     });
@@ -246,7 +249,7 @@ export async function advanceVideoGeneration(generationId: string) {
   const db = createAdminClient();
   const { data: generation } = await db
     .from("generations")
-    .select("id, workspace_id, status, created_at")
+    .select("id, workspace_id, status, created_at, product_id")
     .eq("id", generationId)
     .eq("type", "video_ads")
     .maybeSingle();
@@ -297,12 +300,13 @@ export async function advanceVideoGeneration(generationId: string) {
         await saveVideo(
           generation.workspace_id,
           generationId,
+          generation.product_id,
           job,
           clipUrls as string[],
         );
       } catch (err) {
         console.error("video job failed", job.id, err);
-        await failJob(job, userMessage(err, "The video couldn't be made."));
+        await failJob(job, err instanceof QualityError ? "The video did not pass quality review: "+err.message : userMessage(err, "The video couldn't be made."));
       }
     }),
   );
@@ -359,6 +363,7 @@ async function finishGeneration(
 async function saveVideo(
   workspaceId: string,
   generationId: string,
+  productId:string,
   job: VideoJob,
   clipUrls: string[],
 ) {
@@ -374,6 +379,15 @@ async function saveVideo(
     loadFont(kit.font),
   ]);
 
+  const {data:product,error:productError}=await db.from("products").select("name,brand_brief,image_urls")
+   .eq("id",productId).eq("workspace_id",workspaceId).single().abortSignal(AbortSignal.timeout(5000));
+  if(productError||!product)throw productError??new Error("Original product is unavailable.");
+  const frames=await sampleVideoShots(clips,shotSecondsFor(clipUrls.length));
+  const verdict=await requireReview(()=>reviewAdVideo({
+   frames,referenceImageUrl:(product.image_urls as string[]|null)?.[0]??null,
+   product:(product.brand_brief as BrandBrief|null)?.product_name??product.name??"Product"
+  }));
+  if(!verdict.ok)throw new QualityError(verdict.issues||"The finished video did not pass visual review.");
   const video = await editVideoAd({
     clips,
     shotSeconds: [...shotSecondsFor(clipUrls.length)],

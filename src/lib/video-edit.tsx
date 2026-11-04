@@ -11,6 +11,7 @@ import { promisify } from "node:util";
 import type { ReactElement } from "react";
 import ffmpegPath from "ffmpeg-static";
 import { ImageResponse } from "next/og";
+import {voiceTempo} from "@/lib/media-quality-policy";
 import {chooseOverlays,chooseCaption,type Rect} from "@/lib/face-safe-layout";
 import {analyzeShotFaces,VIDEO_CROP} from "@/lib/video-face-analysis";
 import { AD_SIZES, adTextStyles } from "@/lib/ad-layout";
@@ -64,8 +65,7 @@ export async function editVideoAd(edit: VideoEdit): Promise<Buffer> {
   try {
     await writeFile(/*turbopackIgnore: true*/ file("voice.mp3"), edit.voice);
     const spoken = await mediaSeconds(file("voice.mp3"));
-    const room = total - VOICE_START - 0.2;
-    const tempo = Math.min(MAX_TEMPO, Math.max(1, spoken / room));
+    const tempo = voiceTempo(spoken,total,VOICE_START,MAX_TEMPO);
     const captions = timeCaptions(edit.voiceover, VOICE_START, spoken / tempo);
     await Promise.all(edit.clips.map((clip,i)=>writeFile(/*turbopackIgnore: true*/ file(`shot${i}.mp4`),clip)));
     const deadline=performance.now()+120000;
@@ -185,7 +185,9 @@ export async function editVideoAd(edit: VideoEdit): Promise<Buffer> {
     f.push(
       `[${voiceIn}:a]adelay=${delay}:all=1,atempo=${tempo.toFixed(3)}[vo]`,
       `[${musicIn}:a]volume=0.14,afade=t=in:d=0.3,afade=t=out:st=${total - 1}:d=1[mu]`,
-      `[vo][mu]amix=inputs=2:duration=longest:normalize=0,atrim=duration=${total},loudnorm=I=-14:TP=-1.5:LRA=11[aout]`,
+      `[vo]asplit=2[voice][sidechain]`,
+      `[mu][sidechain]sidechaincompress=threshold=0.025:ratio=8:attack=10:release=250[ducked]`,
+      `[voice][ducked]amix=inputs=2:duration=longest:normalize=0,atrim=duration=${total},loudnorm=I=-14:TP=-1.5:LRA=11[aout]`,
     );
 
     args.push(
