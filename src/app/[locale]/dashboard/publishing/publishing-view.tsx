@@ -11,6 +11,7 @@ import {
 } from "@/lib/social/schedule";
 import { cancelPost, connectAccount, disconnectAccount } from "./actions";
 import { ScheduleForm } from "./schedule-form";
+import { PostingCalendar } from "./posting-calendar";
 
 // The Publishing page itself: accounts, schedule and posts.
 
@@ -74,6 +75,8 @@ export function PublishingView({
 
   return (
     <div className="mt-8 flex flex-col gap-8">
+      <div className="flex flex-wrap gap-4"><Link href="/dashboard/campaigns" className="inline-flex min-h-11 items-center text-sm text-accent">Plan another campaign →</Link><Link href="/dashboard/insights" className="inline-flex min-h-11 items-center text-sm text-accent">See post results →</Link></div>
+      <PostingCalendar posts={posts} timeZone={timeZone??"UTC"} now={new Date().toISOString()}/>
       {connected && (
         <p
           role="status"
@@ -279,7 +282,7 @@ function PostList({
       <h3 className="mb-2 text-sm font-medium text-muted">{title}</h3>
       <ul className="flex flex-col divide-y divide-line">
         {posts.map((p) => (
-          <li key={p.id} className="flex gap-3 py-3">
+          <li id={`post-${p.id}`} key={p.id} className="flex scroll-mt-40 gap-3 py-3">
             {p.creative_id &&
               (p.creatives?.kind === "video" ? (
                 <video
@@ -356,3 +359,4 @@ function PostList({
     </div>
   );
 }
+

@@ -16,7 +16,7 @@ export type CampaignPlan = { id: string; name: string; goal: keyof typeof CAMPAI
 export function parseCampaign(value: unknown): CampaignPlan | null {
   if (!value || typeof value !== "object" || Array.isArray(value)) return null;
   const v = value as Record<string, unknown>;
-  if (typeof v.id !== "string" || !/^[\da-f-]{36}$/i.test(v.id) || !Object.hasOwn(CAMPAIGN_GOALS, String(v.goal))) return null;
+  if (typeof v.id !== "string" || !/^[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}$/i.test(v.id) || !Object.hasOwn(CAMPAIGN_GOALS, String(v.goal))) return null;
   for (const k of ["name", "message", "offer", "scene"]) if (typeof v[k] !== "string" || (v[k] as string).length > (k === "name" ? 80 : 240)) return null;
   if (!(v.name as string).trim() || !(v.message as string).trim() || (v.goal === "offer" && !(v.offer as string).trim())) return null;
   return { id: v.id, name: (v.name as string).trim(), goal: v.goal as CampaignPlan["goal"], message: (v.message as string).trim(), offer: v.goal === "offer" ? (v.offer as string).trim() : "", scene: (v.scene as string).trim() };

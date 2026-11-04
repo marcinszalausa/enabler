@@ -21,7 +21,7 @@ export async function createCampaign(_previous: CampaignState, form: FormData): 
   if (error) {
     // An interrupted response may be retried: only resume the same owned plan.
     const { data: existing } = await db.from("campaigns").select("id,product_id,name,goal,message,offer,scene").eq("id",plan.id).eq("workspace_id",ws.id).maybeSingle();
-    if (!existing || existing.product_id !== product.id || ["name","goal","message","offer","scene"].some(key => existing[key] !== plan[key as keyof typeof plan])) return { error: "We couldn’t save this campaign. Please try again." };
+    if (!existing || existing.product_id !== product.id || (["name","goal","message","offer","scene"] as const).some(key => existing[key] !== plan[key])) return { error: "We couldn’t save this campaign. Please try again." };
   }
   revalidatePath("/dashboard/campaigns");
   redirect(`/dashboard/products/${product.id}?campaign=${plan.id}#generate-ads`);

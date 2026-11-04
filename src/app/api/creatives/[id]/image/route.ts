@@ -40,7 +40,7 @@ export async function GET(
   const image = await renderAdImage(supabase, creative, {
     "cache-control": showcased
       ? "public, max-age=3600, s-maxage=86400, stale-while-revalidate=604800"
-      : "private, max-age=3600",
+      : "private, no-cache",
   });
   if (!image) return new Response("Not found", { status: 404 });
 
@@ -54,3 +54,4 @@ export async function GET(
   }
   return image;
 }
+

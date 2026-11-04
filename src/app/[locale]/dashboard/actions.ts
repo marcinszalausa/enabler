@@ -106,7 +106,7 @@ export async function startGeneration(
   }
 
   const brief = product.brand_brief as { creative_preferences?: unknown; requires_personalization?: boolean } | null;
-  const creativePreferences = parseCreativePreferences(brief?.creative_preferences);
+  let creativePreferences = parseCreativePreferences(brief?.creative_preferences);
   if (brief?.requires_personalization && !creativePreferences) {
     return { error: (await requestMessages()).personal.confirmFirst };
   }
@@ -123,6 +123,13 @@ export async function startGeneration(
     const { data, error: campaignError } = await supabase.from("campaigns").select("id,name,goal,message,offer,scene").eq("id", campaignId).eq("workspace_id", workspaceId).eq("product_id", productId).maybeSingle();
     campaign = parseCampaign(data);
     if (campaignError || !campaign) return { error: "This campaign could not be loaded. Choose it again before creating ads." };
+    // A previous product offer must not leak into a new campaign.
+    creativePreferences = {
+      promotion: campaign.goal === "offer" ? "offer" : "product",
+      audience: creativePreferences?.audience || brandMemory.audience || "Customers described by the product page",
+      focus: campaign.message,
+      offer: campaign.offer,
+    };
   }
   const { data: generationId, error } = await admin.rpc("reserve_generation", {
     ws: workspaceId,
