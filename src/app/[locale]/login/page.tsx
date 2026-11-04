@@ -58,6 +58,5 @@ async function AccountCard({locale,searchParams}:{locale:Locale;searchParams:Pag
     </div>}
     <LoginForm/>
     <div className="mt-5 flex flex-wrap gap-4 text-xs text-muted"><Link href={localePath(locale,"/privacy")} className="underline">{t.footer.privacy}</Link><Link href={localePath(locale,"/terms")} className="underline">{t.footer.terms}</Link><Link href={localePath(locale,"/policies")} className="underline">{t.legal.center}</Link></div>
-    <p data-checkout-unavailable className="mt-3 text-xs text-muted">{t.legal.checkoutClosed}</p>
   </div>;
 }

@@ -209,7 +209,7 @@ export const nl: Messages = {
       },
       {
         q: "Kan ik altijd opzeggen?",
-        a: "Betaalde abonnementen zijn nog niet beschikbaar.",
+        a: "Mail voor hulp bij opzeggingen of terugbetalingen naar hello@gooidy.com.",
       },
     ],
     finalTitle: "Je volgende campagne begint met een link",
@@ -308,7 +308,6 @@ export const nl: Messages = {
   legal: {
     center: "Beleid en privacy",
     billing: "Facturering en terugbetalingen",
-    checkoutClosed: "Betaalde abonnementen zijn nog niet beschikbaar.",
     updated: "Laatst bijgewerkt op {date}",
     englishOnly: "De beleidstekst is momenteel beschikbaar in het Engels.",
   },

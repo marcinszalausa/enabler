@@ -205,7 +205,7 @@ export const sv: Messages = {
       },
       {
         q: "Kan jag avsluta när som helst?",
-        a: "Betalda abonnemang är inte tillgängliga ännu.",
+        a: "Mejla hello@gooidy.com för hjälp med uppsägning eller återbetalning.",
       },
     ],
     finalTitle: "Din nästa kampanj börjar med en länk",
@@ -307,7 +307,6 @@ export const sv: Messages = {
   legal: {
     center: "Policyer och integritet",
     billing: "Betalning och återbetalning",
-    checkoutClosed: "Betalda abonnemang är inte tillgängliga ännu.",
     updated: "Senast uppdaterad {date}",
     englishOnly: "Policytexten finns för närvarande på engelska.",
   },

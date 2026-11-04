@@ -195,7 +195,7 @@ export const ko: Messages = {
       },
       {
         q: "언제든 해지할 수 있나요?",
-        a: "유료 플랜 결제는 아직 이용할 수 없어요.",
+        a: "취소 또는 환불 관련 도움은 hello@gooidy.com으로 문의해 주세요.",
       },
     ],
     finalTitle: "다음 캠페인은 링크 하나로 시작됩니다",
@@ -297,7 +297,6 @@ export const ko: Messages = {
   legal: {
     center: "정책 및 개인정보 보호",
     billing: "결제 및 환불",
-    checkoutClosed: "유료 플랜 결제는 아직 이용할 수 없어요.",
     updated: "최종 업데이트: {date}",
     englishOnly: "정책 본문은 현재 영어로 제공됩니다.",
   },

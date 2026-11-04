@@ -1,7 +1,7 @@
 name: Pre-launch legal and privacy
 on:
   push:
-    branches: [legal/us-prelaunch, main]
+    branches: [legal/us-prelaunch, copy/remove-launch-notices, main]
   pull_request:
 permissions:
   contents: read

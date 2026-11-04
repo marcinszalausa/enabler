@@ -210,7 +210,7 @@ export const ro: Messages = {
       },
       {
         q: "Pot anula oricând?",
-        a: "Planurile plătite nu sunt încă disponibile.",
+        a: "Pentru ajutor cu anularea sau rambursarea, scrie la hello@gooidy.com.",
       },
     ],
     finalTitle: "Următoarea ta campanie începe cu un link",
@@ -313,7 +313,6 @@ export const ro: Messages = {
   legal: {
     center: "Politici și confidențialitate",
     billing: "Facturare și rambursări",
-    checkoutClosed: "Planurile plătite nu sunt încă disponibile.",
     updated: "Ultima actualizare: {date}",
     englishOnly: "Textul politicilor este disponibil momentan în engleză.",
   },

@@ -195,7 +195,7 @@ export const ja: Messages = {
       },
       {
         q: "いつでも解約できますか？",
-        a: "有料プランのお支払いはまだご利用いただけません。",
+        a: "解約や返金については、hello@gooidy.com までお問い合わせください。",
       },
     ],
     finalTitle: "次のキャンペーンはリンクから",
@@ -294,7 +294,6 @@ export const ja: Messages = {
   legal: {
     center: "ポリシーとプライバシー",
     billing: "お支払いと返金",
-    checkoutClosed: "有料プランのお支払いはまだご利用いただけません。",
     updated: "最終更新日：{date}",
     englishOnly: "ポリシーの本文は現在英語で提供されています。",
   },

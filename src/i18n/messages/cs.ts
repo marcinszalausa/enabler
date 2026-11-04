@@ -206,7 +206,7 @@ export const cs: Messages = {
       },
       {
         q: "Mohu kdykoli zrušit?",
-        a: "Placené tarify zatím nejsou dostupné.",
+        a: "S žádostí o pomoc se zrušením nebo vrácením peněz napište na hello@gooidy.com.",
       },
     ],
     finalTitle: "Vaše příští kampaň začíná odkazem",
@@ -309,7 +309,6 @@ export const cs: Messages = {
   legal: {
     center: "Pravidla a soukromí",
     billing: "Platby a vrácení peněz",
-    checkoutClosed: "Placené tarify zatím nejsou dostupné.",
     updated: "Naposledy aktualizováno {date}",
     englishOnly: "Text pravidel je nyní dostupný v angličtině.",
   },
