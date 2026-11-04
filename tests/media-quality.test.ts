@@ -36,3 +36,7 @@ test("every shot contributes beginning, middle and ending review samples",()=>{
  }
  assert.throws(()=>sampleTimes(0),QualityError);
 });
+
+test("an approval with reported defects cannot pass review",async()=>{
+ await assert.rejects(requireReview(async()=>({ok:true,issues:"Product changed color"})),QualityReviewUnavailableError);
+});

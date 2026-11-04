@@ -44,13 +44,13 @@ try{
  };
  globalThis.__qualityMocks={
   generateAdImage:async opts=>{generated.push(opts);return "https://example.com/candidate-"+generated.length+".jpg";},
-  reviewAdImage:async opts=>{reviews.push(opts);if(mode==="outage")throw Error("review offline");return {ok:mode==="approve"||reviews.length>1,issues:reviews.length===1?"Product changed color":""};},
+  reviewAdImage:async opts=>{reviews.push(opts);if(mode==="outage")throw Error("review offline");const ok=mode==="approve"||reviews.length>1;return {ok,issues:ok?"":"Product changed color"};},
   fetchPublicUrl:async url=>({status:200,body:url.endsWith(".mp4")?clip:corrupt?Buffer.from("broken"):photo}),
   verifyPublicUrl:async url=>new URL(url),
   createAdminClient:()=>db,
   getBrandKit:async()=>({font:"inter",accent_color:"#7364ff",logo_path:null}),
   loadFont:async()=>Buffer.from("fixture font"),textColorOn:()=>"white",
-  reviewAdVideo:async opts=>{videoReviews++;assert.equal(opts.frames.length,6);assert.equal(opts.referenceImageUrl,"https://example.com/original.jpg");return {ok:mode==="approve",issues:"Product morphs"};},
+  reviewAdVideo:async opts=>{videoReviews++;assert.equal(opts.frames.length,6);assert.equal(opts.referenceImageUrl,"https://example.com/original.jpg");return {ok:mode==="approve",issues:mode==="approve"?"":"Product morphs"};},
   editVideoAd:async()=>{edits++;return Buffer.from("editor fixture");},
   transitionVideoJob:async()=>{done++;return true;},
   autopilotRun:async()=>{throw Error("Publishing forbidden");}

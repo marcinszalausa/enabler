@@ -48,7 +48,10 @@ export async function sampleVideoShots(clips:Buffer[],seconds:readonly number[])
     if(!result.stdout.length)throw new QualityError("A generated video shot is missing a required frame.");
     const stats=await sharp(result.stdout).resize(96).stats();
     if(stats.channels.slice(0,3).every(c=>c.stdev<1))throw new QualityError("A generated video shot contains a blank sampled frame.");
-    frames.push({shot,time,jpeg:result.stdout});
+    let jpeg=await sharp(result.stdout).jpeg({quality:78}).toBuffer();
+    if(jpeg.length>350000)jpeg=await sharp(jpeg).resize({width:512}).jpeg({quality:65}).toBuffer();
+    if(jpeg.length>350000)throw new QualityReviewUnavailableError("A video review sample exceeds the inspection budget.");
+    frames.push({shot,time,jpeg});
    }
   }
   return frames;

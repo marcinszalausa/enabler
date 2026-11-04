@@ -9,7 +9,9 @@ export async function requireReview(review:()=>Promise<QualityVerdict>):Promise<
   try{
    const verdict=await review();
    if(!verdict||typeof verdict.ok!=="boolean"||typeof verdict.issues!=="string")throw new Error("Invalid quality verdict");
-   return {ok:verdict.ok,issues:qualityIssues(verdict.issues)};
+   const issues=qualityIssues(verdict.issues);
+   if(verdict.ok&&issues)throw new Error("Contradictory quality verdict");
+   return {ok:verdict.ok,issues};
   }catch{
    if(attempt===REVIEW_ATTEMPTS)throw new QualityReviewUnavailableError("Quality review could not be completed. Please try again.");
   }
