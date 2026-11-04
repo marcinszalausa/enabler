@@ -192,7 +192,7 @@ export const zh: Messages = {
       },
       {
         q: "可以随时取消吗？",
-        a: "付费套餐暂未开放购买。",
+        a: "如需取消或退款方面的帮助，请发送邮件至 hello@gooidy.com。",
       },
     ],
     finalTitle: "下一次营销活动，从一个链接开始",
@@ -291,7 +291,6 @@ export const zh: Messages = {
   legal: {
     center: "政策与隐私",
     billing: "账单与退款",
-    checkoutClosed: "付费套餐暂未开放购买。",
     updated: "最后更新：{date}",
     englishOnly: "政策正文目前以英语提供。",
   },

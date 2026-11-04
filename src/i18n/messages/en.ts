@@ -203,7 +203,7 @@ export const en = {
       },
       {
         q: "Can I cancel anytime?",
-        a: "Paid checkout is not available yet.",
+        a: "For cancellation or refund assistance, email hello@gooidy.com.",
       },
     ],
     finalTitle: "Your next campaign starts with a link",
@@ -302,7 +302,6 @@ export const en = {
   legal: {
     center: "Policies & privacy",
     billing: "Billing and refunds",
-    checkoutClosed: "Paid checkout is not available yet.",
     updated: "Last updated {date}",
     englishOnly: "Policy text is currently available in English.",
   },

@@ -1,22 +1,22 @@
 {
-  "version": "2026-11-03-prelaunch",
-  "updated": "November 3, 2026",
+  "version": "2026-11-04",
+  "updated": "November 4, 2026",
   "documents": {
     "terms": {
       "title": "Terms of Service",
-      "summary": "Pre-launch rules for accounts, content and responsible use.",
+      "summary": "Rules for accounts, content and responsible use.",
       "sections": [
         {
-          "title": "Pre-launch status and operator",
+          "title": "About Gooidy",
           "paragraphs": [
-            "Gooidy is currently a pre-launch service. Paid checkout is disabled. These draft terms describe the proposed rules for the service; they are not an offer to sell a subscription or an authorization to charge you.",
-            "The legal operator name and business mailing address are not yet specified. They will be published, together with finalized terms, before paid checkout opens. No registered LLC is represented by this notice. For current service questions, contact hello@gooidy.com."
+            "Gooidy helps you create image and video ads from product information. These terms describe account responsibilities, content permissions and responsible use of the service.",
+            "For service questions, content complaints or questions about these terms, contact hello@gooidy.com."
           ]
         },
         {
           "title": "Who may use Gooidy",
           "paragraphs": [
-            "The proposed US launch is intended for adults aged 18 or older who can enter a binding agreement. Businesses must use the service through a person authorized to act for them. Do not create an account for a child or submit sensitive information about children."
+            "You must be at least 18 years old and able to enter a binding agreement to use Gooidy. Businesses must use the service through a person authorized to act for them. Do not create an account for a child or submit sensitive information about children."
           ]
         },
         {
@@ -58,7 +58,7 @@
           "title": "Credits, subscriptions and refunds",
           "paragraphs": [
             "Free credits are a limited service allowance, not cash or a deposit, and do not automatically enroll you in a paid subscription. Generation costs are shown before you start a run. Credits returned for failed outputs are different from a refund of money.",
-            "No paid subscription can be purchased during pre-launch. Proposed subscription and refund rules are set out on the billing policy page and must be finalized before checkout opens. You will not be treated as accepting future recurring charges merely by using a free account."
+            "Subscription and refund information is set out on the billing policy page. Creating a free account or using free credits does not authorize a purchase or recurring charges."
           ]
         },
         {
@@ -71,15 +71,15 @@
         {
           "title": "Availability and account restrictions",
           "paragraphs": [
-            "Pre-launch features may be incomplete, unavailable or changed. Keep copies of ads you need. We may restrict access to investigate abuse, protect users, comply with law, or address a material violation; you can contact support to ask for review.",
-            "These drafts do not remove rights or remedies that cannot legally be excluded. Any warranty limitations, liability allocation and dispute terms for the paid service must be finalized with the identified operator before paid launch. No mandatory arbitration or class-action waiver is introduced by this draft."
+            "Features may change or occasionally be unavailable. Keep copies of ads you need. We may restrict access to investigate abuse, protect users, comply with law, or address a material violation; you can contact support to ask for review.",
+            "Nothing in these terms removes rights or remedies that cannot legally be excluded. These terms do not require mandatory arbitration or waive your right to participate in a class action."
           ]
         },
         {
           "title": "Updates and contact",
           "paragraphs": [
-            "This version is identified by the date and version shown on the page. Material changes will be presented before they take effect where required. Final paid terms will require a separate acceptance process; browsing these draft pages does not create consent to recurring billing.",
-            "Contact hello@gooidy.com for support, content complaints or questions about these drafts. The privacy policy explains how service information is processed."
+            "The update date identifies the current version of these terms. Material changes will be presented before they take effect where required. Purchases require explicit authorization under the applicable billing terms; viewing these pages does not authorize a charge.",
+            "Contact hello@gooidy.com for support, content complaints or questions about these terms. The privacy policy explains how service information is processed."
           ]
         }
       ]
@@ -89,10 +89,10 @@
       "summary": "What information Gooidy handles, who receives it and how to request help.",
       "sections": [
         {
-          "title": "Scope and pre-launch identity",
+          "title": "Scope and contact",
           "paragraphs": [
-            "This notice describes information handled through Gooidy's website, account, ad-generation and connected publishing features. The initial paid launch is planned for the United States; paid checkout is currently disabled.",
-            "The legal operator name and business mailing address remain unspecified pending establishment of the entity. They will be published before paid checkout opens. Contact hello@gooidy.com for current privacy questions. This notice is not a claim of certification or compliance with every privacy law."
+            "This notice describes information handled through Gooidy's website, account, ad-generation and connected publishing features.",
+            "Contact hello@gooidy.com for privacy questions or requests about your information."
           ]
         },
         {
@@ -137,7 +137,7 @@
             "fal.ai and the model providers used for a selected feature: image, video, voice or music generation and processing of relevant inputs.",
             "Zernio and the social platforms you connect: account connection, media transfer, scheduling and publishing.",
             "Email delivery providers, including Resend when configured: account and service emails.",
-            "Stripe is planned for paid checkout. It is not enabled by this policy update. If enabled later, its billing data, fraud-prevention and payment processing will be disclosed before payment; Gooidy will not need your full card details in support messages."
+            "Stripe: payment details, billing and fraud prevention when a Stripe checkout is offered. Gooidy does not require your full card details in support messages."
           ]
         },
         {
@@ -159,7 +159,7 @@
           "paragraphs": [
             "Account, workspace, product and ad records are generally retained while needed to provide your account and requested features. Operational logs, temporary processing files, previews and provider-held copies may have different retention periods.",
             "You can request access, correction, export or deletion at hello@gooidy.com. Deletion is handled after appropriate verification, subject to applicable deadlines and exceptions for security, legal obligations and disputes. We will explain any lawful reason we cannot complete part of a request.",
-            "Deleting active records does not necessarily immediately remove backup copies or content already published to third-party platforms. Backups are subject to the provider's backup cycle, and retained copies must remain protected. A verified, provider-by-provider retention schedule is a requirement before paid launch; this update does not promise immediate removal or a universal 30-day purge."
+            "Deleting active records does not necessarily immediately remove backup copies or content already published to third-party platforms. Backups are subject to the provider's backup cycle, and retained copies must remain protected. Provider-by-provider retention periods can vary; contact support about the information relevant to your request."
           ]
         },
         {
@@ -182,13 +182,13 @@
     },
     "billing": {
       "title": "Subscriptions, Credits and Refunds",
-      "summary": "Checkout status, free credits and the terms that must be settled before payment.",
+      "summary": "Information about payments, credits, cancellations and refunds.",
       "sections": [
         {
-          "title": "Paid checkout is not available",
+          "title": "Plans and payment authorization",
           "paragraphs": [
-            "Gooidy is in pre-launch. No subscription purchase, recurring charge or automatic conversion from free use is enabled. Prices and paid tiers shown on the website are previews, not a payment authorization.",
-            "The initial paid offering is intended for US customers and prices will be stated in US dollars (USD). Taxes and the total payable must be shown before a customer confirms a charge."
+            "Creating a free account, viewing pricing or using free credits does not start a paid subscription or authorize a charge. A purchase requires a completed checkout with your explicit authorization.",
+            "Prices are stated in US dollars (USD). Review the plan, taxes and total payable before confirming a charge."
           ]
         },
         {
@@ -199,7 +199,7 @@
           ]
         },
         {
-          "title": "What will be shown before a subscription starts",
+          "title": "Review before paying",
           "items": [
             "Exact plan, USD price, applicable taxes, billing interval, first charge and any recurring renewal terms.",
             "Included credits and features, generation costs, whether credits expire or roll over, and how upgrades, downgrades and failed payments affect them.",
@@ -211,14 +211,14 @@
         {
           "title": "Cancellation and refunds",
           "paragraphs": [
-            "There is currently no paid subscription to cancel. Signing out, disconnecting a social account and deleting an account are different actions; none should be used as an undocumented substitute for canceling future billing.",
-            "The commercial refund and cancellation terms are not yet finalized and are not activated by this draft. Paid checkout must stay closed until those terms and the matching cancellation functionality are in place. Nothing here limits mandatory consumer rights or remedies for unauthorized charges."
+            "For cancellation or refund assistance, email hello@gooidy.com with the account email and relevant purchase reference. Signing out, disconnecting a social account and deleting an account are different actions and do not substitute for canceling recurring billing.",
+            "Refund eligibility and cancellation terms are those disclosed for the purchased plan, subject to applicable law. Contact support about incorrect or unauthorized charges. Nothing here limits mandatory consumer rights or remedies."
           ]
         },
         {
           "title": "Platform charges and advertising budgets",
           "paragraphs": [
-            "Social-platform advertising spend and third-party purchases are separate from Gooidy credits unless expressly included in a final offer. Generating or publishing content does not guarantee platform approval or results.",
+            "Social-platform advertising spend and third-party purchases are separate from Gooidy credits unless expressly included in your purchase. Generating or publishing content does not guarantee platform approval or results.",
             "For billing questions or unexpected charges using the Gooidy name, contact hello@gooidy.com. Never send a full card number or security code by email."
           ]
         }
@@ -241,14 +241,14 @@
           "title": "Tracking and payment services",
           "paragraphs": [
             "The current application does not use advertising pixels for cross-site behavioral tracking. This is not a promise that hosting providers perform no security logging. Network request information is described in the privacy policy.",
-            "Paid checkout is disabled. Any payment-provider cookies or optional analytics introduced later must be assessed, disclosed and subject to any legally required controls before activation. No optional tracker is enabled by this policy update."
+            "Payment providers may use cookies or similar technologies to support payments and prevent fraud when their checkout is used. Optional analytics or advertising storage is subject to the disclosures and choices required by applicable law."
           ]
         },
         {
           "title": "Your controls",
           "paragraphs": [
             "Use the site's language and appearance controls to change preferences. You can clear cookies and local storage in your browser, sign out, or block future storage. Blocking authentication or security storage may prevent sign-in or account connection.",
-            "A browser's Global Privacy Control or similar signal does not remove cookies needed for security or sign-in. There is currently no sale or cross-context advertising processing to disable. If new processing subject to opt-out signals is introduced, appropriate signal handling must be implemented before launch.",
+            "A browser's Global Privacy Control or similar signal does not remove cookies needed for security or sign-in. There is currently no sale or cross-context advertising processing to disable. If that processing changes, we will update the notice and provide the applicable opt-out controls.",
             "For questions about storage or a privacy request, contact hello@gooidy.com."
           ]
         }
@@ -299,7 +299,7 @@
           "title": "Verification and response",
           "paragraphs": [
             "Support will verify that you are entitled to make the request before disclosing information or making irreversible changes. An authorized agent may need proof of authority. We may ask you to sign in or confirm through the account email; verification must be proportionate.",
-            "Requests are handled manually during pre-launch, within applicable legal deadlines. We will explain a permitted extension or any part that cannot be completed. A denied request can be appealed by replying with the subject 'Privacy appeal'."
+            "Requests are handled by our support team within applicable legal deadlines. We will explain a permitted extension or any part that cannot be completed. A denied request can be appealed by replying with the subject 'Privacy appeal'."
           ]
         },
         {
@@ -307,7 +307,7 @@
           "paragraphs": [
             "A deletion request is not an instant-delete button. Before deletion, we review workspace ownership, shared records, scheduled posts, connected accounts, provider-held copies and any lawful retention obligations. If you need ads, request or download a copy first.",
             "Disconnect social accounts through Publishing and cancel pending posts separately when appropriate. Posts already published may remain on the destination platform; removing a Gooidy account does not automatically remove those posts. Backups and legally retained records may persist under restricted access.",
-            "This update does not claim that deletion or export has been fully automated. Contact support if your email application cannot open the request links."
+            "Deletion and export requests are handled through support. Contact us if your email application cannot open the request links."
           ]
         }
       ]

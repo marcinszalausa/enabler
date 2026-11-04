@@ -209,7 +209,7 @@ export const pl: Messages = {
       },
       {
         q: "Czy mogę zrezygnować w każdej chwili?",
-        a: "Płatne plany nie są jeszcze dostępne.",
+        a: "W sprawie anulowania lub zwrotu napisz na hello@gooidy.com.",
       },
     ],
     finalTitle: "Twoja kolejna kampania zaczyna się od linku",
@@ -309,7 +309,6 @@ export const pl: Messages = {
   legal: {
     center: "Zasady i prywatność",
     billing: "Płatności i zwroty",
-    checkoutClosed: "Płatne plany nie są jeszcze dostępne.",
     updated: "Ostatnia aktualizacja: {date}",
     englishOnly: "Treść zasad jest obecnie dostępna w języku angielskim.",
   },

@@ -210,7 +210,7 @@ export const it: Messages = {
       },
       {
         q: "Posso disdire quando voglio?",
-        a: "Il pagamento dei piani non è ancora disponibile.",
+        a: "Per assistenza con cancellazioni o rimborsi, scrivi a hello@gooidy.com.",
       },
     ],
     finalTitle: "La tua prossima campagna inizia con un link",
@@ -313,7 +313,6 @@ export const it: Messages = {
   legal: {
     center: "Politiche e privacy",
     billing: "Fatturazione e rimborsi",
-    checkoutClosed: "Il pagamento dei piani non è ancora disponibile.",
     updated: "Ultimo aggiornamento: {date}",
     englishOnly: "Il testo delle politiche è attualmente disponibile in inglese.",
   },

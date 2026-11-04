@@ -205,7 +205,7 @@ export const de: Messages = {
       },
       {
         q: "Kann ich jederzeit kündigen?",
-        a: "Kostenpflichtige Tarife sind noch nicht verfügbar.",
+        a: "Bei Fragen zur Kündigung oder Erstattung schreibe an hello@gooidy.com.",
       },
     ],
     finalTitle: "Deine nächste Kampagne beginnt mit einem Link",
@@ -305,7 +305,6 @@ export const de: Messages = {
   legal: {
     center: "Richtlinien und Datenschutz",
     billing: "Abrechnung und Erstattungen",
-    checkoutClosed: "Kostenpflichtige Tarife sind noch nicht verfügbar.",
     updated: "Zuletzt aktualisiert am {date}",
     englishOnly: "Die Richtlinien sind derzeit auf Englisch verfügbar.",
   },

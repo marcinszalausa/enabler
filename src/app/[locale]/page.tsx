@@ -477,7 +477,6 @@ function Pricing({ t, locale }: { t: Messages; locale: Locale }) {
     <section id="pricing" className="scroll-mt-16 bg-surface py-20">
       <div className="reveal mx-auto max-w-6xl px-4">
         <SectionHeading title={t.home.pricingTitle} sub={t.home.pricingSub} />
-        <p data-checkout-unavailable className="mx-auto mt-6 max-w-xl text-center text-sm text-muted">{t.legal.checkoutClosed} <Link href={localePath(locale,"/policies/billing")} className="font-medium text-accent underline">{t.legal.billing}</Link></p>
         <div className="stagger mt-12 grid gap-6 md:grid-cols-3">
           {t.home.plans.map((plan, i) => (
             <div

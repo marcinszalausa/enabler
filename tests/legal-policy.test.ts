@@ -10,9 +10,9 @@ test("pre-launch policies cannot represent a finalized operator or activate chec
  for(const id of POLICY_IDS){assert.ok(isPolicyId(id));assert.ok(policyPath(id).startsWith("/"));assert.ok(data.documents[id].sections.length>0);}
  for(const id of ["__proto__","constructor","https://evil.example","../terms",null])assert.equal(isPolicyId(id),false);
  const privacy=JSON.stringify(data.documents.privacy);
- assert.ok(privacy.includes("Zernio"));assert.ok(privacy.includes("face template"));assert.ok(privacy.includes("provider-by-provider"));
+ assert.ok(privacy.includes("Zernio"));assert.ok(privacy.includes("face template"));assert.ok(privacy.toLowerCase().includes("provider-by-provider"));
  assert.ok(JSON.stringify(data.documents.terms).includes("does not guarantee exclusivity"));
- assert.ok(JSON.stringify(data.documents.billing).includes("not yet finalized"));
+ assert.ok(JSON.stringify(data.documents.billing).includes("explicit authorization"));
 });
 test("privacy requests open email drafts without identifying or deleting an account",()=>{
  for(const kind of Object.keys(PRIVACY_REQUESTS) as (keyof typeof PRIVACY_REQUESTS)[]){

@@ -204,7 +204,7 @@ export const tr: Messages = {
       },
       {
         q: "İstediğim zaman iptal edebilir miyim?",
-        a: "Ücretli planlar henüz kullanıma açık değil.",
+        a: "İptal veya iade konusunda yardım için hello@gooidy.com adresine yazın.",
       },
     ],
     finalTitle: "Sonraki kampanyanız bir bağlantıyla başlar",
@@ -306,7 +306,6 @@ export const tr: Messages = {
   legal: {
     center: "Politikalar ve gizlilik",
     billing: "Faturalandırma ve iadeler",
-    checkoutClosed: "Ücretli planlar henüz kullanıma açık değil.",
     updated: "Son güncelleme: {date}",
     englishOnly: "Politika metinleri şu anda İngilizce olarak sunulmaktadır.",
   },

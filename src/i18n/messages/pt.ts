@@ -210,7 +210,7 @@ export const pt: Messages = {
       },
       {
         q: "Posso cancelar quando quiser?",
-        a: "O pagamento de planos ainda não está disponível.",
+        a: "Para obter ajuda com cancelamentos ou reembolsos, envie um email para hello@gooidy.com.",
       },
     ],
     finalTitle: "Sua próxima campanha começa com um link",
@@ -310,7 +310,6 @@ export const pt: Messages = {
   legal: {
     center: "Políticas e privacidade",
     billing: "Cobrança e reembolsos",
-    checkoutClosed: "O pagamento de planos ainda não está disponível.",
     updated: "Última atualização: {date}",
     englishOnly: "O texto das políticas está disponível atualmente em inglês.",
   },

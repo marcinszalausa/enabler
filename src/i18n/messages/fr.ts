@@ -210,7 +210,7 @@ export const fr: Messages = {
       },
       {
         q: "Puis-je résilier à tout moment ?",
-        a: "Le paiement des forfaits n’est pas encore disponible.",
+        a: "Pour toute aide concernant une résiliation ou un remboursement, écrivez à hello@gooidy.com.",
       },
     ],
     finalTitle: "Votre prochaine campagne commence par un lien",
@@ -313,7 +313,6 @@ export const fr: Messages = {
   legal: {
     center: "Politiques et confidentialité",
     billing: "Facturation et remboursements",
-    checkoutClosed: "Le paiement des forfaits n’est pas encore disponible.",
     updated: "Dernière mise à jour : {date}",
     englishOnly: "Le texte des politiques est actuellement disponible en anglais.",
   },
