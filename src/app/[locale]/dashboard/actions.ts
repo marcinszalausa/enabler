@@ -1,4 +1,5 @@
 "use server";
+import {paidPlan} from "@/lib/paid-plans";
 
 import { parseCreativePreferences, preferenceForm } from "@/lib/creative-preferences";
 import { redirect } from "next/navigation";
@@ -76,7 +77,10 @@ export async function createProduct(
   }
 
   const setup = formData.get("onboardingKind");
-  redirect(`/dashboard/products/${productId}${setup === "image" || setup === "video" ? "?setup=" + setup : ""}`);
+  // A URL preference only; never a paid entitlement or a credit grant.
+  const selectedPlan=formData.get("selectedPlan")?paidPlan(formData.get("selectedPlan")):null;
+  const query=new URLSearchParams({...(setup==="image"||setup==="video"?{setup}:{}),...(selectedPlan?{plan:selectedPlan}:{})});
+  redirect(`/dashboard/products/${productId}${query.size?"?"+query:""}`);
 }
 
 export async function startGeneration(
@@ -181,5 +185,3 @@ export async function saveCreativePreferences(_prev: PreferenceState, form: Form
   revalidatePath("/dashboard/products/"+productId);
   return {error:null,saved:true};
 }
-
-

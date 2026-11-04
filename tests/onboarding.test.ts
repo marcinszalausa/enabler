@@ -61,3 +61,5 @@ test("successful and failed magic-link callbacks preserve a safe setup destinati
  const failed=new URL((await callback(request)).redirect);
  assert.equal(failed.pathname,"/login");assert.equal(failed.searchParams.get("next"),target);assert.equal(failed.searchParams.get("error"),"link");
 });
+
+test("selected plan survives the login handoff without changing legacy destinations",()=>{const url="https://store.example/product";for(const plan of ["starter","plus","growth"] as const){const next=setupPath(url,"image",plan);assert.deepEqual(setupContext(safeNextPath(next)),{url,kind:"image",plan});}assert.deepEqual(setupContext(setupPath(url,"video")),{url,kind:"video"});assert.deepEqual(setupContext(setupPath(url,"image")+"&plan=admin"),{url,kind:"image"});});

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import {paidPlan,paidPlanName} from "@/lib/paid-plans";
 import { ProductJourney } from "../../product-journey";
 import { parseCampaign } from "@/lib/customer-workflow";
 import { CampaignBundle } from "../../campaigns/campaign-bundle";
@@ -81,6 +82,7 @@ async function Product({
   if (!isLocale(locale)) notFound();
   const t = await getMessages(locale);
   const query = await searchParams;
+  const selectedPlan=paidPlan(query.plan);
   const setup = query.setup;
   const initialKind = setup === "image" || setup === "video" ? setup : undefined;
   const user = await getCurrentUser();
@@ -165,6 +167,7 @@ async function Product({
           .filter((g) => g.type === "video_ads")
           .map((g) => g.id)}
       />
+      {selectedPlan&&<section data-selected-plan={selectedPlan} className="mt-6 rounded-xl border border-line bg-surface p-4 text-sm"><p className="font-medium">Selected plan: {paidPlanName(selectedPlan)}</p><p className="mt-2 text-xs text-muted">This is a preference only. Your current credits and access are unchanged. No subscription has been started.</p></section>}
       <header className="mt-6 flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
         <div className="flex min-w-0 items-center gap-4">
           {photo && (
@@ -383,4 +386,3 @@ async function publishingFor(
     posts: byCreative,
   };
 }
-
