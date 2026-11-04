@@ -12,7 +12,9 @@ export const GOOGLE_IMAGE_MODELS = {
 } as const;
 
 export function geminiKey(): string | null {
-  return process.env.GEMINI_API_KEY?.trim() || null;
+  // Accept the names Google's and Vercel's guides use for the same key.
+  const env = process.env;
+  return (env.GEMINI_API_KEY || env.GOOGLE_GENERATIVE_AI_API_KEY || env.GOOGLE_API_KEY)?.trim() || null;
 }
 
 export function googleImageUrl(model: string): string {
