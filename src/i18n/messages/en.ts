@@ -191,7 +191,7 @@ export const en = {
       },
       {
         q: "What is a credit?",
-        a: "Each ad image uses 2 to 5 credits, depending on the quality you pick. Each run makes five ads in two sizes, so it uses 20 to 50 credits.",
+        a: "Each ad image uses 2 to 5 credits, depending on the quality you pick. Each run makes 1, 3 or 5 ads (you choose), each in two sizes, so a run of five uses 20 to 50 credits.",
       },
       {
         q: "Do I need design experience?",
@@ -504,6 +504,9 @@ export const en = {
     qualities: { good: "Good", better: "Better", best: "Best" },
     qualityHelp: "Higher quality uses newer AI models and more credits. Best uses the top-ranked models for the sharpest, most lifelike ads.",
     qualityExample: "Example at this quality",
+    ideas: "Ad ideas",
+    ideaImages: "{count} images",
+    ideasHelp: "Each idea is a different angle, made as a feed post and a Story.",
     genders: { female: "Female", male: "Male" },
     energies: { calm: "Calm", upbeat: "Upbeat", high: "High energy" },
     people: {

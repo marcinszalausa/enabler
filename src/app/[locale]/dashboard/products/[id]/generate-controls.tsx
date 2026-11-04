@@ -6,7 +6,7 @@ import { useI18n } from "@/i18n/client";
 import { GenerateButton } from "./generate-button";
 import { VideoAdForm } from "./video-ad-form";
 import { fmt } from "@/i18n/format";
-import { imageRunCost } from "@/lib/image-pricing";
+import { ADS_PER_GENERATION, ASPECTS, IDEA_COUNTS, imageRunCost, type IdeaCount } from "@/lib/image-pricing";
 import { DEFAULT_VIDEO_OPTIONS, videoRunCost } from "@/lib/video-options";
 import { DEFAULT_IMAGE_QUALITY, DEFAULT_VIDEO_QUALITY, QUALITIES, type Quality } from "@/lib/quality";
 
@@ -49,11 +49,42 @@ export function GenerateControls({
     video: affordable(DEFAULT_VIDEO_QUALITY, (q) => videoRunCost(DEFAULT_VIDEO_OPTIONS.length, q), credits),
   }));
   const quality = qualities[kind];
+  const [ideas, setIdeas] = useState<IdeaCount>(ADS_PER_GENERATION);
   const example = examples?.[kind][quality] ?? null;
 
   return (
     <div className="flex flex-col items-start gap-2 lg:items-end">
-      {<div className="flex flex-wrap gap-2">{(["image","video"] as const).map(value => <button key={value} type="button" aria-pressed={kind === value} onClick={() => setKind(value)} className={"min-h-11 rounded-lg border px-3 text-sm " + (kind === value ? "border-accent bg-accent-soft text-accent" : "border-line")}>{value === "image" ? t.app.imageAds.replace("{count}", "10") : t.app.videoAds.replace("{count}", "2")}{value === "image" && freeTrial && <span className="ms-2 text-xs">{t.onboard.recommended}</span>}</button>)}</div>}
+      {<div className="flex flex-wrap gap-2">{(["image","video"] as const).map(value => <button key={value} type="button" aria-pressed={kind === value} onClick={() => setKind(value)} className={"min-h-11 rounded-lg border px-3 text-sm " + (kind === value ? "border-accent bg-accent-soft text-accent" : "border-line")}>{value === "image" ? t.app.imageAds.replace("{count}", String(ideas * ASPECTS.length)) : t.app.videoAds.replace("{count}", "2")}{value === "image" && freeTrial && <span className="ms-2 text-xs">{t.onboard.recommended}</span>}</button>)}</div>}
+      {kind === "image" && (
+        <fieldset data-ideas className="flex max-w-full flex-col gap-1.5 text-sm lg:items-end">
+          <legend className="sr-only">{t.app.ideas}</legend>
+          <div className="flex flex-wrap items-center gap-2 lg:justify-end">
+            <span aria-hidden className="text-muted">{t.app.ideas}</span>
+            <div className="inline-flex overflow-hidden rounded-lg border border-line-strong">
+              {IDEA_COUNTS.map((count) => (
+                <label
+                  key={count}
+                  className="flex min-h-11 min-w-16 cursor-pointer flex-col justify-center border-line-strong px-3 py-1 text-center not-last:border-e has-checked:bg-accent-soft has-checked:text-accent"
+                >
+                  <input
+                    type="radio"
+                    name="ideas"
+                    value={count}
+                    checked={ideas === count}
+                    onChange={() => setIdeas(count)}
+                    className="peer sr-only"
+                  />
+                  <span className="font-medium">{count}</span>
+                  <span className="text-[11px] leading-tight text-muted peer-checked:text-accent/80">
+                    {fmt(t.app.ideaImages, { count: count * ASPECTS.length })}
+                  </span>
+                </label>
+              ))}
+            </div>
+          </div>
+          <span className="max-w-sm text-xs text-muted lg:text-end">{t.app.ideasHelp}</span>
+        </fieldset>
+      )}
       <fieldset data-quality className="flex max-w-full flex-col gap-1.5 text-sm lg:items-end">
         <legend className="sr-only">{t.app.quality}</legend>
         <div className="flex flex-wrap items-center gap-2 lg:justify-end">
@@ -74,7 +105,7 @@ export function GenerateControls({
                 />
                 <span className="font-medium">{t.app.qualities[tier]}</span>
                 <span className="text-[11px] leading-tight text-muted peer-checked:text-accent/80">
-                  {fmt(t.app.credits, { count: kind === "image" ? imageRunCost(tier) : videoRunCost(DEFAULT_VIDEO_OPTIONS.length, tier) })}
+                  {fmt(t.app.credits, { count: kind === "image" ? imageRunCost(tier, ideas) : videoRunCost(DEFAULT_VIDEO_OPTIONS.length, tier) })}
                 </span>
               </label>
             ))}
@@ -110,7 +141,8 @@ export function GenerateControls({
         {kind === "image" && <GenerateButton
           initialRequestId={imageRequestId}
           productId={productId}
-          cost={imageRunCost(quality)}
+          cost={imageRunCost(quality, ideas)}
+          ideas={ideas}
           credits={credits}
           language={language}
           quality={quality}

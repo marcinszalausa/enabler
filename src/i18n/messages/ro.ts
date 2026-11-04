@@ -198,7 +198,7 @@ export const ro: Messages = {
       },
       {
         q: "Ce este un credit?",
-        a: "Fiecare imagine publicitară costă între 2 și 5 credite, după calitatea aleasă. Fiecare rulare creează cinci reclame în două formate, deci folosește între 20 și 50 de credite.",
+        a: "Fiecare imagine publicitară costă între 2 și 5 credite, după calitatea aleasă. Fiecare rulare creează 1, 3 sau 5 reclame (la alegere), fiecare în două formate, deci cinci reclame folosesc între 20 și 50 de credite.",
       },
       {
         q: "Am nevoie de experiență în design?",
@@ -515,6 +515,9 @@ export const ro: Messages = {
     quality: "Calitate",
     qualities: { good: "Bună", better: "Mai bună", best: "Cea mai bună" },
     qualityExample: "Exemplu la această calitate",
+    ideas: "Idei de reclame",
+    ideaImages: "{count} imagini",
+    ideasHelp: "Fiecare idee are alt unghi, ca postare în feed și ca story.",
     qualityHelp: "Calitatea mai mare folosește modele AI mai noi și mai multe credite. Cea mai bună folosește modelele cele mai bine clasate pentru cele mai clare și realiste reclame.",
     genders: { female: "Feminină", male: "Masculină" },
     energies: { calm: "Calmă", upbeat: "Veselă", high: "Multă energie" },

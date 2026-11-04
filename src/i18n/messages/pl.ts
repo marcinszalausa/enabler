@@ -197,7 +197,7 @@ export const pl: Messages = {
       },
       {
         q: "Czym jest kredyt?",
-        a: "Każda grafika reklamowa kosztuje od 2 do 5 kredytów, zależnie od wybranej jakości. Każda seria tworzy pięć reklam w dwóch formatach, więc zużywa od 20 do 50 kredytów.",
+        a: "Każda grafika reklamowa kosztuje od 2 do 5 kredytów, zależnie od wybranej jakości. Każda seria tworzy 1, 3 lub 5 reklam (do wyboru), każdą w dwóch formatach, więc pięć reklam zużywa od 20 do 50 kredytów.",
       },
       {
         q: "Czy muszę znać się na projektowaniu?",
@@ -509,6 +509,9 @@ export const pl: Messages = {
     quality: "Jakość",
     qualities: { good: "Dobra", better: "Lepsza", best: "Najlepsza" },
     qualityExample: "Przykład w tej jakości",
+    ideas: "Pomysły na reklamy",
+    ideaImages: "{count} obr.",
+    ideasHelp: "Każdy pomysł to inne podejście, jako post w feedzie i jako relacja.",
     qualityHelp: "Wyższa jakość to nowsze modele AI i więcej kredytów. Najlepsza korzysta z najwyżej ocenianych modeli, by reklamy były najostrzejsze i najbardziej realistyczne.",
     genders: { female: "Kobiecy", male: "Męski" },
     energies: { calm: "Spokojna", upbeat: "Pogodna", high: "Dużo energii" },

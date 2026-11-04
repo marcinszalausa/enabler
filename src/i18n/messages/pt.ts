@@ -198,7 +198,7 @@ export const pt: Messages = {
       },
       {
         q: "O que é um crédito?",
-        a: "Cada imagem de anúncio usa de 2 a 5 créditos, conforme a qualidade escolhida. Cada rodada cria cinco anúncios em dois tamanhos, então usa de 20 a 50 créditos.",
+        a: "Cada imagem de anúncio usa de 2 a 5 créditos, conforme a qualidade escolhida. Cada rodada cria 1, 3 ou 5 anúncios (você escolhe), cada um em dois tamanhos, então cinco anúncios usam de 20 a 50 créditos.",
       },
       {
         q: "Preciso saber design?",
@@ -512,6 +512,9 @@ export const pt: Messages = {
     qualities: { good: "Boa", better: "Melhor", best: "Máxima" },
     qualityHelp: "Mais qualidade usa modelos de IA mais novos e mais créditos. Máxima usa os modelos mais bem avaliados para os anúncios mais nítidos e realistas.",
     qualityExample: "Exemplo nesta qualidade",
+    ideas: "Ideias de anúncio",
+    ideaImages: "{count} imagens",
+    ideasHelp: "Cada ideia é um ângulo diferente, como post no feed e como story.",
     genders: { female: "Feminina", male: "Masculina" },
     energies: { calm: "Calma", upbeat: "Animada", high: "Muita energia" },
     people: {

@@ -197,7 +197,7 @@ export const es: Messages = {
       },
       {
         q: "¿Qué es un crédito?",
-        a: "Cada imagen de anuncio usa de 2 a 5 créditos, según la calidad que elijas. Cada tanda crea cinco anuncios en dos tamaños, así que usa de 20 a 50 créditos.",
+        a: "Cada imagen de anuncio usa de 2 a 5 créditos, según la calidad que elijas. Cada tanda crea 1, 3 o 5 anuncios (tú eliges), cada uno en dos tamaños, así que una de cinco usa de 20 a 50 créditos.",
       },
       {
         q: "¿Necesito experiencia en diseño?",
@@ -514,6 +514,9 @@ export const es: Messages = {
     qualities: { good: "Buena", better: "Mejor", best: "Máxima" },
     qualityHelp: "Más calidad usa modelos de IA más nuevos y más créditos. Máxima usa los modelos mejor valorados para los anuncios más nítidos y realistas.",
     qualityExample: "Ejemplo con esta calidad",
+    ideas: "Ideas de anuncio",
+    ideaImages: "{count} imágenes",
+    ideasHelp: "Cada idea es un enfoque distinto, como publicación y como historia.",
     genders: { female: "Femenina", male: "Masculina" },
     energies: { calm: "Tranquila", upbeat: "Alegre", high: "Mucha energía" },
     people: {

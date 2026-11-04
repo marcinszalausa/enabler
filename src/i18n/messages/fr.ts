@@ -198,7 +198,7 @@ export const fr: Messages = {
       },
       {
         q: "Qu'est-ce qu'un crédit ?",
-        a: "Chaque image publicitaire coûte de 2 à 5 crédits selon la qualité choisie. Chaque génération crée cinq pubs en deux formats, soit 20 à 50 crédits.",
+        a: "Chaque image publicitaire coûte de 2 à 5 crédits selon la qualité choisie. Chaque génération crée 1, 3 ou 5 pubs (au choix) en deux formats ; cinq pubs coûtent donc 20 à 50 crédits.",
       },
       {
         q: "Faut-il savoir faire du design ?",
@@ -515,6 +515,9 @@ export const fr: Messages = {
     quality: "Qualité",
     qualities: { good: "Bonne", better: "Meilleure", best: "Maximale" },
     qualityExample: "Exemple à cette qualité",
+    ideas: "Idées d’annonce",
+    ideaImages: "{count} images",
+    ideasHelp: "Chaque idée est un angle différent, en publication et en story.",
     qualityHelp: "Plus de qualité utilise des modèles d'IA plus récents et plus de crédits. Maximale utilise les modèles les mieux classés pour les pubs les plus nettes et réalistes.",
     genders: { female: "Féminine", male: "Masculine" },
     energies: { calm: "Calme", upbeat: "Enjouée", high: "Très dynamique" },

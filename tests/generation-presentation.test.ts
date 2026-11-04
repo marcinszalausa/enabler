@@ -30,3 +30,10 @@ test("refunds use receipts, not output-count arithmetic or error text", () => {
   assert.equal(settledCredits(run(),{charged_credits:40,returned_credits:20}),null);
   for (const returned_credits of [-1,41,NaN,0.5]) assert.equal(settledCredits(g,{charged_credits:40,returned_credits}),null);
 });
+test("image runs expect two sizes per chosen idea, five for older runs", () => {
+  const images = (n: number) => Array.from({length:n},()=>({kind:"image" as const}));
+  const image = (ideas: unknown, saved: number) => generationPresentation(run({type:"image_ads",status:"succeeded",creatives:images(saved),request_options:{ideas}}));
+  assert.equal(image(1, 2).total, 2);assert.equal(image(1, 2).phase, "ready");
+  assert.equal(image(3, 6).phase, "ready");assert.equal(image(3, 5).phase, "partial");
+  assert.equal(image(undefined, 10).total, 10);assert.equal(image(7, 10).total, 10);
+});

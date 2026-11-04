@@ -198,7 +198,7 @@ export const it: Messages = {
       },
       {
         q: "Cos'è un credito?",
-        a: "Ogni immagine pubblicitaria usa da 2 a 5 crediti, secondo la qualità scelta. Ogni giro crea cinque annunci in due formati, quindi usa da 20 a 50 crediti.",
+        a: "Ogni immagine pubblicitaria usa da 2 a 5 crediti, secondo la qualità scelta. Ogni giro crea 1, 3 o 5 annunci (a tua scelta), ognuno in due formati, quindi cinque annunci usano da 20 a 50 crediti.",
       },
       {
         q: "Serve esperienza di grafica?",
@@ -515,6 +515,9 @@ export const it: Messages = {
     quality: "Qualità",
     qualities: { good: "Buona", better: "Migliore", best: "Massima" },
     qualityExample: "Esempio con questa qualità",
+    ideas: "Idee per annunci",
+    ideaImages: "{count} immagini",
+    ideasHelp: "Ogni idea è un taglio diverso, come post nel feed e come storia.",
     qualityHelp: "Più qualità usa modelli di IA più recenti e più crediti. Massima usa i modelli meglio classificati per gli annunci più nitidi e realistici.",
     genders: { female: "Femminile", male: "Maschile" },
     energies: { calm: "Calma", upbeat: "Allegra", high: "Molto energica" },
