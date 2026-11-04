@@ -39,6 +39,7 @@ try{
   await page.goto("http://localhost:3115"+prefix+"/");
   await page.locator("#pricing").waitFor();
   assert.equal(await page.locator("[data-checkout-unavailable]").count(),0);
+  assert.equal(await page.locator("#pricing button[data-buy-plan]:disabled").count(),3);assert.equal(await page.locator("#pricing a[data-buy-plan]").count(),0);
   const paid=page.locator('#pricing a[data-try-plan]');assert.equal(await paid.count(),3);for(const link of await paid.all()){assert.equal(await link.innerText(),"Try for free");const target=new URL(await link.getAttribute("href"),"https://gooidy.com");assert.ok(target.pathname.endsWith("/start"));assert.ok(["starter","plus","growth"].includes(target.searchParams.get("plan")));}
   const offers=await page.locator('script[type="application/ld+json"]').evaluateAll(xs=>xs.map(x=>JSON.parse(x.textContent)));
   assert.ok(!JSON.stringify(offers).includes('"price":29'));assert.ok(!JSON.stringify(offers).includes('"price":79'));
