@@ -1,24 +1,26 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { SEEDANCE_MODEL_ID, seedanceTaskBody, seedanceTaskResult } from "../src/lib/ai/byteplus.ts";
+import { GATEWAY_SEEDANCE, gatewayVideoResult, seedanceStartOptions } from "../src/lib/ai/gateway-video.ts";
 
-test("Seedance task asks for a silent vertical clip from the first frame", () => {
-  const body = seedanceTaskBody({ prompt: "A walk", imageUrl: "https://x.test/a.jpg", seconds: 4, resolution: "720p" });
-  assert.equal(body.model, SEEDANCE_MODEL_ID);
-  assert.deepEqual(body.content[1], { type: "image_url", image_url: { url: "https://x.test/a.jpg" }, role: "first_frame" });
-  assert.equal(body.ratio, "9:16");
-  assert.equal(body.duration, 4);
-  assert.equal(body.generate_audio, false);
-  assert.equal(body.watermark, false);
+test("Seedance job asks for a silent vertical clip from the first frame", () => {
+  const options = seedanceStartOptions({ prompt: "A walk", imageUrl: "https://x.test/a.jpg", seconds: 4, resolution: "720p" });
+  assert.equal(options.model, GATEWAY_SEEDANCE);
+  assert.deepEqual(options.frameImages, [{ image: "https://x.test/a.jpg", frameType: "first_frame" }]);
+  assert.equal(options.aspectRatio, "9:16");
+  assert.equal(options.resolution, "1280x720");
+  assert.equal(seedanceStartOptions({ prompt: "", imageUrl: "", seconds: 4, resolution: "1080p" }).resolution, "1920x1080");
+  assert.equal(options.duration, 4);
+  assert.equal(options.generateAudio, false);
+  assert.throws(() => seedanceStartOptions({ prompt: "", imageUrl: "", seconds: 4, resolution: "4k" }), /resolution/);
 });
 
-test("Seedance task results: waiting, done and failed", () => {
-  assert.equal(seedanceTaskResult({ status: "queued" }), null);
-  assert.equal(seedanceTaskResult({ status: "running" }), null);
-  assert.equal(seedanceTaskResult({ status: "succeeded", content: { video_url: "https://v.test/c.mp4" } }), "https://v.test/c.mp4");
-  assert.throws(() => seedanceTaskResult({ status: "failed", error: { message: "bad image" } }), /bad image/);
-  assert.throws(() => seedanceTaskResult({ status: "expired" }), /expired/);
-  assert.throws(() => seedanceTaskResult({ status: "succeeded", content: {} }), /no video/);
+test("Seedance job results: waiting, hosted, inline and failed", () => {
+  assert.equal(gatewayVideoResult({ status: "pending" }), null);
+  assert.deepEqual(gatewayVideoResult({ status: "completed", videos: [{ type: "url", url: "https://v.test/c.mp4", mediaType: "video/mp4" }] }), { url: "https://v.test/c.mp4" });
+  const inline = gatewayVideoResult({ status: "completed", videos: [{ type: "base64", data: Buffer.from("mp4").toString("base64"), mediaType: "video/mp4" }] });
+  assert.ok(inline && "bytes" in inline && inline.bytes.toString() === "mp4");
+  assert.throws(() => gatewayVideoResult({ status: "error", error: "bad image" }), /bad image/);
+  assert.throws(() => gatewayVideoResult({ status: "completed", videos: [] }), /no video/);
 });
 
 import { GOOGLE_IMAGE_MODELS, googleImageBody, googleImageResult } from "../src/lib/ai/google-image.ts";
