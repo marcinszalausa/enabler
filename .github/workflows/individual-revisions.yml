@@ -48,3 +48,13 @@ jobs:
       - run: npm install --prefix /tmp/revision-browser --no-package-lock playwright@1.56.1
       - run: /tmp/revision-browser/node_modules/.bin/playwright install --with-deps chromium
       - run: PLAYWRIGHT_MODULE_PATH=/tmp/revision-browser/node_modules/playwright node scripts/check-customer-workflow.mjs
+      - name: Verify deployed discovery routes without account or generation requests
+        run: |
+          python3 - <<'PY'
+          import urllib.request
+          for path, text in [('/help','Find your next step'),('/templates','Start with an idea'),('/industries','Ads for the products'),('/platforms','Show up where'),('/blog','Practical ideas')]:
+              with urllib.request.urlopen('https://gooidy.com'+path,timeout=30) as response:
+                  body=response.read().decode()
+                  assert response.status==200 and text in body,path
+                  print('PASS live discovery',path)
+          PY
