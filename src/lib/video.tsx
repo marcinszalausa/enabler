@@ -183,19 +183,7 @@ async function filmShots(
       product,
     });
   const first = await check(ad.shots[0].image_prompt, referenceImageUrl);
-  let rest: string[];
-  try {
-    rest = await Promise.all(
-      ad.shots.slice(1).map((s) => check(s.image_prompt, first, true)),
-    );
-  } catch (err) {
-    if (!(err instanceof QualityError)) throw err;
-    // A later shot kept failing the check; start every shot from the first
-    // frame rather than drop the ad. The shot count stays, so the edit
-    // still knows the ad's length.
-    console.warn("later shot rejected, filming from the first", err.message);
-    rest = ad.shots.slice(1).map(() => first);
-  }
+  const rest=await Promise.all(ad.shots.slice(1).map(s=>check(s.image_prompt,first,true)));
   return Promise.all(
     [first, ...rest].map((frame, i) =>
       submitAdVideo({
