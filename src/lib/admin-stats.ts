@@ -151,6 +151,7 @@ export function overview(data: AdminData, now = Date.now()) {
 
   return {
     customers: data.workspaces.length,
+    creditsHeld: data.workspaces.reduce((s, w) => s + w.credits, 0),
     new7: signups.filter((t) => t >= since7).length,
     new30: signups.filter((t) => t >= since30).length,
     active30: new Set(runs30.map((g) => g.workspace_id)).size,
@@ -186,4 +187,16 @@ export function perDay(times: number[], now: number, days: number) {
     if (i >= 0 && i < days) out[i].count++;
   }
   return out;
+}
+
+// Checks the admin "Grant credits" form. Whole credits only, never zero.
+export function parseCreditGrant(workspaceId: unknown, amount: unknown, note: unknown):
+  | { workspaceId: string; amount: number; note: string }
+  | { error: string } {
+  if (typeof workspaceId !== "string" || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(workspaceId)) return { error: "Unknown customer." };
+  const text = typeof amount === "string" ? amount.trim() : "";
+  if (!/^-?\d{1,6}$/.test(text)) return { error: "Enter a whole number of credits." };
+  const n = Number(text);
+  if (n === 0 || Math.abs(n) > 100_000) return { error: "Enter between 1 and 100,000 credits (or a minus amount to remove)." };
+  return { workspaceId, amount: n, note: typeof note === "string" ? note.trim().slice(0, 200) : "" };
 }
