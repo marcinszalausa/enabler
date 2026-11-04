@@ -15,8 +15,9 @@ try{
  for(const [width,locale]of [[320,"en"],[390,"en"],[390,"ar"],[1440,"en"]]){
   const page=await browser.newPage({viewport:{width,height:950},reducedMotion:"reduce"});const errors=[];page.on("pageerror",e=>errors.push(e.message));await page.goto("http://localhost:3126"+(locale==="en"?"":"/"+locale)+"/pricing",{waitUntil:"networkidle"});
   assert.equal(await page.locator("button[data-buy-plan]:disabled").count(),3);assert.equal(await page.locator("a[data-buy-plan]").count(),0);assert.equal(await page.locator("[data-plan]").count(),3);assert.equal(await page.locator("[data-plan-details]").count(),3);for(const p of ["starter","plus","growth"])assert.equal(await page.locator(`[data-plan-details="${p}"] dt`).count(),29);
-  const starter=page.locator('[data-plan-included="starter"]');assert.ok(await starter.locator("li").count()>=12);
-  for(const feature of ["Product-page import and brand brief","Video narration, captions and music","Image and MP4 downloads","Posting calendar, queue and scheduled publishing","Weekly planner and calendar reminders"])assert.ok((await starter.innerText()).includes(feature));
+  const starter=page.locator('[data-plan-included="starter"]');assert.equal(await starter.locator("li").count(),5);
+  for(const feature of ["300 generation credits every month","Image and video ads in your brand","One social account included","Free text edits and ad downloads","Weekly planner and scheduled posts"])assert.ok((await starter.innerText()).includes(feature));
+  const heights=await page.locator("[data-plan]").evaluateAll(cards=>cards.map(card=>card.getBoundingClientRect().height));assert.ok(Math.max(...heights)-Math.min(...heights)<=2,"Cards have balanced heights at "+width+" "+locale);
   const plus=page.locator('[data-plan="plus"]'),growth=page.locator('[data-plan="growth"]');
   assert.match(await plus.innerText(),/Everything in Starter, plus/);assert.match(await growth.innerText(),/Everything in Plus, plus/);
   assert.equal(await plus.locator("[data-plan-included] li").count(),3);assert.equal(await growth.locator("[data-plan-included] li").count(),2);
@@ -49,7 +50,7 @@ try{
  }
  const home=await browser.newPage({viewport:{width:390,height:950},javaScriptEnabled:false});await home.goto("http://localhost:3126/",{waitUntil:"domcontentloaded"});
  assert.equal(await home.locator("#pricing [data-plan-included]").count(),3);assert.equal(await home.locator("#pricing button[data-buy-plan]:disabled").count(),3);assert.equal(await home.locator("#pricing a[data-try-plan]").count(),3);
- assert.ok(await home.locator('#pricing [data-plan-included="starter"] li').count()>=12);assert.equal(await home.locator('#pricing [data-plan-included="plus"] li').count(),3);assert.equal(await home.locator('#pricing [data-plan-included="growth"] li').count(),2);
+ assert.equal(await home.locator('#pricing [data-plan-included="starter"] li').count(),5);assert.equal(await home.locator('#pricing [data-plan-included="plus"] li').count(),3);assert.equal(await home.locator('#pricing [data-plan-included="growth"] li').count(),2);
  await home.close();console.log("PASS inherited plan lists on homepage without JavaScript; Buy remains disabled");
  console.log("PASS raw HTML content is readable without JavaScript");
 }catch(error){console.error(log);throw error;}finally{await browser?.close();if(server?.pid)try{process.kill(-server.pid,"SIGTERM");}catch{}}

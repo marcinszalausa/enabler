@@ -9,32 +9,19 @@ import {QUALITIES,IMAGE_CREDITS,type Quality} from "@/lib/quality";
 import {IDEA_COUNTS,imageRunCost,type IdeaCount} from "@/lib/image-pricing";
 import {LENGTHS,videoRunCost,type LengthKey} from "@/lib/video-options";
 
-const included=[
- "Product-page import and brand brief",
- "Image and video generation at your chosen quality",
- "Saved logo, colors, font and brand voice",
- "Campaign plans and creative starting points",
- "Free headline, button and post-caption edits",
- "Up to 3 free image redos per month for product mismatches",
- "Video narration, captions and music",
- "Image and MP4 downloads",
- "Posting calendar, queue and scheduled publishing",
- "Weekly planner and calendar reminders",
- "Network post results where analytics access is available",
-];
 export function PublicPricing(){
  const {locale}=useI18n();
- return <><div id="plans" data-public-plans className="scroll-mt-24 mt-10 grid items-start gap-5 md:grid-cols-3">{PUBLIC_PLANS.map(plan=><article id={"plan-"+plan.id} key={plan.id} data-plan={plan.id} className={"flex min-w-0 scroll-mt-24 flex-col rounded-2xl border bg-raised p-5 sm:p-6 "+(plan.recommended?"border-accent shadow-[0_20px_70px_-40px_var(--t-accent)]":"border-line")}>
+ return <><div id="plans" data-public-plans className="scroll-mt-24 mt-10 grid items-stretch gap-5 md:grid-cols-3">{PUBLIC_PLANS.map(plan=><article id={"plan-"+plan.id} key={plan.id} data-plan={plan.id} className={"flex min-w-0 scroll-mt-24 flex-col rounded-2xl border bg-raised p-5 sm:p-6 "+(plan.recommended?"border-accent shadow-[0_20px_70px_-40px_var(--t-accent)]":"border-line")}>
  <div className="flex min-h-8 flex-wrap items-center justify-between gap-2"><h3 className="text-xl font-semibold">{plan.name}</h3>{plan.recommended&&<span data-recommended-plan className="rounded-full bg-accent-soft px-3 py-1 text-xs font-medium text-accent">Recommended</span>}</div>
- <p className="mt-4 text-xl font-semibold leading-snug md:min-h-14">{plan.outcome}</p><p className="mt-2 text-sm text-muted md:min-h-12">{plan.forWhom}</p>
+ <p className="mt-4 text-xl font-semibold leading-snug min-h-14">{plan.outcome}</p><p className="mt-2 text-sm text-muted min-h-12">{plan.forWhom}</p>
  <p className="mt-5"><span className="text-5xl font-semibold tracking-tight">${plan.price}</span><span className="ms-2 text-sm text-muted">USD / month</span></p>
  <button type="button" data-buy-plan={plan.id} disabled aria-describedby="purchase-status" title="Purchases are currently unavailable" className="mt-6 inline-flex min-h-12 cursor-not-allowed items-center justify-center rounded-xl border border-line-strong bg-surface px-4 py-3 text-center font-medium text-muted opacity-60">Buy {plan.name}</button>
  <Link data-try-plan={plan.id} href={localePath(locale,"/start")+"?"+new URLSearchParams({plan:plan.id})} prefetch={false} className="mt-2 inline-flex min-h-11 items-center justify-center rounded-xl px-4 py-2 text-sm font-medium text-accent underline-offset-4 hover:underline">Try for free</Link>
  <p className="mt-1 text-center text-xs text-muted">No card needed to try</p>
- <div className="mt-6 flex-1 border-t border-line pt-5">
+ <div className="mt-6 min-h-72 flex-1 border-t border-line pt-5">
  <h4 id={"included-"+plan.id} className="font-semibold">What’s included</h4>
  <p className="mt-1 text-xs font-medium text-accent">{plan.upgrade}</p>
- <ul data-plan-included={plan.id} aria-labelledby={"included-"+plan.id} className="mt-4 space-y-3 text-sm">{[...new Set([...plan.highlights,...(plan.id==="starter"?included:[])])].map(feature=><li key={feature} className="flex gap-2"><span className="text-accent" aria-hidden>✓</span><span>{feature}</span></li>)}</ul>
+ <ul data-plan-included={plan.id} aria-labelledby={"included-"+plan.id} className="mt-4 space-y-3 text-sm">{plan.highlights.map(feature=><li key={feature} className="flex gap-2"><span className="text-accent" aria-hidden>✓</span><span>{feature}</span></li>)}</ul>
  </div>
  </article>)}</div><p id="purchase-status" className="mt-4 text-center text-xs text-muted">Purchases are currently unavailable. You can still try for free.</p><section id="plan-free" data-try-mode className="mt-6 scroll-mt-24 rounded-2xl border border-line bg-surface p-5 sm:p-6"><h3 className="font-semibold">Prefer to explore first?</h3><p className="mt-2 text-sm leading-relaxed text-muted">The free preview uses {TRY_MODE.credits} one-time starter credits shared across your account. Choosing another plan does not refill them. No subscription starts automatically.</p><details className="mt-3"><summary className="min-h-11 cursor-pointer py-3 text-sm font-medium">What is included for free?</summary><p className="pb-3 text-sm leading-relaxed text-muted">Try the core ad-creation workflow and download your results. Your selected plan is a preference, not paid access. Monthly credit allowances and paid planning or reporting tools begin only after paid activation. Existing accounts keep their current credits and access.</p></details><p className="mt-2 text-xs leading-relaxed text-muted">Each new paid plan includes one social account. Additional connections are optional and separately priced before activation. Paid advertising budgets are separate.</p></section><section data-shared-plan-features className="mt-6 rounded-2xl border border-line p-5 sm:p-6"><h3 className="font-semibold">Billing and plan details</h3><p data-money-back className="mt-3 text-sm text-muted">30-day money-back on your first monthly subscription payment. <Link href={localePath(locale,"/policies/billing")} prefetch={false} className="underline underline-offset-4">See refund terms</Link></p><Link href={localePath(locale,"/pricing#full-plan-comparison")} prefetch={false} className="mt-5 inline-flex min-h-11 items-center text-sm font-medium text-accent">See every feature and limit →</Link></section></>;
 }
