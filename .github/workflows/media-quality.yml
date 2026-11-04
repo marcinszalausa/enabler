@@ -1,0 +1,30 @@
+name: Generated media quality
+on:
+  push:
+    branches: [quality/media-checks]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  media-quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Installed image rendering and provider guidance
+        run: |
+          find node_modules/next/dist/docs/01-app -name image-response.md -o -name opengraph-image.md | xargs cat
+          curl --fail --silent --show-error https://supabase.com/changelog.md | head -c 20000
+      - run: npx next typegen && npx tsc --noEmit
+      - run: |
+          if test -f scripts/check-media-quality.ts; then
+            node --experimental-strip-types --test tests/media-quality.test.ts
+            npx eslint src/lib/ai/claude.ts src/lib/ai/fal.ts src/lib/pipeline.ts src/lib/video.tsx src/lib/video-edit.tsx src/lib/media-quality-policy.ts src/lib/media-quality.ts
+            npm install --prefix /tmp/media-quality --no-package-lock tsx@4.20.6
+            /tmp/media-quality/node_modules/.bin/tsx scripts/check-media-quality.ts
+          fi
