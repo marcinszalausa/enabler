@@ -1,3 +1,4 @@
+import Link from "next/link";
 import {ChosenAdResume} from "./chosen-ad-resume";
 import { Suspense } from "react";
 import type { Metadata } from "next";
@@ -100,6 +101,7 @@ async function Publishing({
 
   return (
     <>
+    <Link href="/dashboard/publishing/planner" className="mt-5 inline-flex min-h-11 items-center text-sm font-medium text-accent">Build a posting plan · Starter & Growth →</Link>
     <ChosenAdResume workspaceId={ws.id} connected={(accounts??[]).length>0}/>
     <PublishingView
       t={t}

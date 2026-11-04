@@ -26,3 +26,8 @@ jobs:
       - name: Supabase changelog
         run: curl --fail --silent --show-error https://supabase.com/changelog.md | head -c 20000
       - run: npx next typegen && npx tsc --noEmit
+      - run: node --experimental-strip-types --test tests/plan-value.test.ts
+      - run: npx eslint src/lib/plan-value.ts src/lib/public-information.ts src/app/_landing/public-pricing.tsx 'src/app/[locale]/dashboard/insights' 'src/app/[locale]/dashboard/publishing/planner' 'src/app/[locale]/dashboard/publishing/page.tsx' 'src/app/[locale]/pricing'
+      - run: npm install --prefix /tmp/plan-browser --no-package-lock playwright@1.56.1
+      - run: /tmp/plan-browser/node_modules/.bin/playwright install --with-deps chromium
+      - run: PLAYWRIGHT_MODULE_PATH=/tmp/plan-browser/node_modules/playwright node scripts/check-plan-value.mjs
