@@ -78,7 +78,7 @@ export function GenerationBlock({
 
   const video = g.type === "video_ads";
   // A run's length isn't stored; every length has its own price.
-  const seconds = Number(lengthForRunCost(g.cost_credits) ?? DEFAULT_VIDEO_OPTIONS.length);
+  const seconds = Number(lengthForRunCost(g.cost_credits, g.created_at) ?? DEFAULT_VIDEO_OPTIONS.length);
 
   const view = generationPresentation(g);
 

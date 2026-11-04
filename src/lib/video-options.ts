@@ -122,22 +122,31 @@ export const LENGTHS = {
 } as const satisfies Record<string, readonly number[]>;
 
 export const VIDEOS_PER_GENERATION = 2;
-// Credits scale with length, rounded to 5: 7 s is 20, 30 s is 90.
-export const CREDITS_PER_SECOND = 3;
+// Credits scale with length, rounded to 5: 7 s is 30, 30 s is 120.
+// 4 credits a second covers the video model, first frames, voice and music.
+export const CREDITS_PER_SECOND = 4;
+// Runs created before this time were priced at 3 credits a second.
+const PRICE_CHANGE_AT = Date.parse("2026-11-04T01:00:00Z");
+const LEGACY_CREDITS_PER_SECOND = 3;
 
-export function creditsPerVideo(length: LengthKey) {
-  return Math.round((Number(length) * CREDITS_PER_SECOND) / 5) * 5;
+export function creditsPerVideo(length: LengthKey, perSecond = CREDITS_PER_SECOND) {
+  return Math.round((Number(length) * perSecond) / 5) * 5;
 }
 
-export function videoRunCost(length: LengthKey) {
-  return VIDEOS_PER_GENERATION * creditsPerVideo(length);
+export function videoRunCost(length: LengthKey, perSecond = CREDITS_PER_SECOND) {
+  return VIDEOS_PER_GENERATION * creditsPerVideo(length, perSecond);
 }
 
-// The length of a run from what it cost; null if no length matches.
-export function lengthForRunCost(cost: number): LengthKey | null {
+// The length of a run from what it cost and when it was made (prices
+// changed once); null if no length matches.
+export function lengthForRunCost(cost: number, createdAt?: string): LengthKey | null {
+  const perSecond =
+    createdAt && Date.parse(createdAt) < PRICE_CHANGE_AT
+      ? LEGACY_CREDITS_PER_SECOND
+      : CREDITS_PER_SECOND;
   return (
     (Object.keys(LENGTHS) as LengthKey[]).find(
-      (l) => videoRunCost(l) === cost,
+      (l) => videoRunCost(l, perSecond) === cost,
     ) ?? null
   );
 }

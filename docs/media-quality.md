@@ -9,10 +9,10 @@ This release strengthens new image and video runs. Existing saved creatives are 
 - Later-shot failures no longer silently replace all later images with the opening image.
 - Copy prompts preserve genuine branding, pairs/sets and product details, avoid forced human models in product-only/pet scenes, and prohibit invented commercial claims.
 - Measured narration must fit at no more than 1.2× tempo. Otherwise the edit fails instead of cutting off words. Background music ducks under narration. Existing full-frame, face-aware overlays and 1080×1920 fast-start export remain.
-- Existing durable-output settlement returns credits for undelivered outputs. No credit prices, retry accounting, roles or schema are changed.
+- Existing durable-output settlement returns credits for undelivered outputs. The concurrently merged credit prices and stored-run-price refunds are preserved. This quality change adds no further credit-price, role or schema changes.
 
 ## Cost and timing
-The visual review of finished video frames adds Anthropic vision usage and processing time. A failed checker can cause a refundable failure instead of unchecked delivery. Image generation remains bounded to the prior three attempts; review outage retries do not regenerate media. Existing model IDs remain in use, with a roughly one-megapixel text-only fallback image size; no unsupported newer model is substituted without benchmarking.
+The visual review of finished video frames adds Anthropic vision usage and processing time. A failed checker can cause a refundable failure instead of unchecked delivery. Image generation remains bounded to the prior three attempts; review outage retries do not regenerate media. The concurrently merged Sonnet 5.5 review model is retained for image and video review; copy/script writing remains on Opus. Existing generation model IDs remain in use, with a roughly one-megapixel text-only fallback image size; no unsupported newer model is substituted without benchmarking.
 
 ## Verification
 Pure tests cover outage/invalid-verdict behavior, retry budgets, defect feedback, sample coverage and narration limits. Synthetic JPEG/MP4/audio fixtures cover corrupt/blank/short/low-resolution rejection and real FFmpeg export. Dependency-mocked integration runs verify actual pipeline behavior, original-reference retention, and rejection before final video storage/completion. Network calls, real generations, emails and publishing are forbidden in these tests.
