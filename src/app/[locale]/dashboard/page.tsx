@@ -127,7 +127,7 @@ async function Dashboard({
           </div>
         )}
         {shown.length > 0 ? (
-          <ul className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {shown.map((p) => (
               <li key={p.id}>
                 <ProductCard product={p} />

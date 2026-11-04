@@ -16,9 +16,11 @@ export default async function DashboardLayout({
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
   const t = await getMessages(locale);
-  // "landing" gives the app the site's cards and hover effects.
+  // "landing" gives the app the site's cards and hover effects. Grid items
+  // may shrink below their content (a long, truncated product name), so a
+  // phone never scrolls sideways.
   return (
-    <div className="landing flex flex-1 flex-col bg-bg text-fg">
+    <div className="landing flex flex-1 flex-col bg-bg text-fg [&_.grid>*]:min-w-0">
       <a href="#app-content" className="skip-link">{t.nav.skip}</a>
       <AppBar homeHref="/dashboard"
         tabs={
