@@ -29,7 +29,7 @@ try{
   await page.goto("http://localhost:3115"+(locale==="en"?"":"/"+locale)+"/workflow-preview",{waitUntil:"networkidle",timeout:90000});
   await page.evaluate(theme=>{document.documentElement.dataset.theme=theme;},theme);
   assert.equal(await page.locator("[data-app-tab]").count(),5);
-  await page.getByRole("button",{name:/Holiday gifting/}).click();assert.equal(await page.locator('input[name="name"]').first().inputValue(),"Holiday gifting");
+  await page.getByRole("button",{name:/Details that matter/}).click();assert.equal(await page.locator('input[name="name"]').first().inputValue(),"Details that matter");assert.match(await page.locator('input[name="scene"]').first().inputValue(),/close product detail/);await page.getByRole("button",{name:/Your current offer/}).click();assert.ok(await page.locator('textarea[name="offer"]').isVisible());assert.equal(await page.locator('textarea[name="offer"]').inputValue(),"");\n  await page.getByRole("button",{name:/Holiday gifting/}).click();assert.equal(await page.locator('input[name="name"]').first().inputValue(),"Holiday gifting");
   await page.locator('label:has(input[name="goal"][value="offer"])').click();assert.ok(await page.locator('textarea[name="offer"]').isVisible());assert.equal(await page.locator('textarea[name="offer"]').getAttribute("required"),"");
   await page.locator('label:has(input[name="goal"][value="introduce"])').click();assert.equal(await page.locator('textarea[name="offer"]').count(),0);
   await page.getByText("Choose a setting (optional)",{exact:true}).click();await page.locator('input[name="scene"]').first().fill("Bright studio, clear background");

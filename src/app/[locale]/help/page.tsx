@@ -1,5 +1,5 @@
 import {notFound} from "next/navigation";
-import {isLocale,localePath} from "@/i18n/config";
+import {isLocale} from "@/i18n/config";
 import {informationMetadata} from "@/lib/public-information-seo";
 import {InformationPage,InformationHero} from "@/app/_landing/information-page";
 import {HelpSearch} from "@/app/_landing/help-search";

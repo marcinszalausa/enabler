@@ -9,7 +9,7 @@ export const INDUSTRIES = [
 ] as const;
 export type Industry = typeof INDUSTRIES[number];
 export function industry(slug:string){return INDUSTRIES.find(item=>item.slug===slug);}
-export function matchesIndustry(slug:string,text:string){const item=industry(slug);if(!item)return false;const lower=text.toLowerCase();if(slug!=="pets"&&INDUSTRIES[1].keywords.some(word=>lower.includes(word)))return false;return item.keywords.some(word=>lower.includes(word));}
+export function matchesIndustry(slug:string,text:string){const item=industry(slug);if(!item)return false;const lower=" "+text.toLowerCase().replace(/[^a-z0-9]+/g," ")+" ";const matches=(word:string)=>lower.includes(" "+word+" ");if(slug!=="pets"&&INDUSTRIES[1].keywords.some(matches))return false;return item.keywords.some(matches);}
 export const PLATFORM_GUIDES = [
  {slug:"instagram",name:"Instagram",title:"Build a consistent product story on Instagram",formats:"Square feed images and vertical videos",steps:["Create an image or vertical video","Review the entire ad and caption","Connect Instagram and choose a posting time"],note:"Stories, Reels and feed placements have different publishing requirements. Available destinations depend on your connected account and the options shown during publishing."},
  {slug:"facebook",name:"Facebook",title:"Turn a clear product benefit into a Facebook post",formats:"Square feed images and vertical videos",steps:["Choose the benefit your customer should notice","Create and review the ad","Connect your Facebook account and post or schedule"],note:"Publishing a post does not buy a Facebook advertising campaign. Paid ad spend and advertising-account setup are separate."},
