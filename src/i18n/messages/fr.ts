@@ -157,6 +157,7 @@ export const fr: Messages = {
       "Commencez gratuitement. Passez à l'offre supérieure à mesure que votre activité grandit.",
     popular: "Populaire",
     perMonth: " / mois",
+    approx: "environ {price}",
     plans: [
       {
         name: "Free",
@@ -215,6 +216,10 @@ export const fr: Messages = {
       {
         q: "Puis-je résilier à tout moment ?",
         a: "Pour toute aide concernant une résiliation ou un remboursement, écrivez à hello@gooidy.com.",
+      },
+      {
+        q: "Puis-je payer dans ma devise ?",
+        a: "Oui. Les prix sont fixés en dollars américains, et la page de paiement affiche le montant dans votre devise, avec les moyens de paiement courants dans votre pays.",
       },
     ],
     finalTitle: "Votre prochaine campagne commence par un lien",
@@ -577,7 +582,8 @@ export const fr: Messages = {
     errors: {
       pasteLink: "Collez le lien d'un produit ou d'un site.",
       notFound: "Produit introuvable.",
-      noCredits: "Crédits insuffisants. Cette génération en utilise {cost}.",
+      noCredits:
+        "Crédits insuffisants. Cette génération en utilise {cost}. Obtenez-en plus sur la page Facturation.",
       couldntStart: "Impossible de lancer la génération.",
       color: "Choisissez une couleur de bouton.",
       font: "Choisissez une police.",
@@ -586,6 +592,72 @@ export const fr: Messages = {
       couldntSave: "Impossible d'enregistrer le kit de marque.",
     },
   },
+  billing: {
+    nav: "Facturation",
+    title: "Crédits et facturation",
+    currentPlan: "Offre actuelle",
+    walletTitle: "Vos crédits",
+    usedRecently: "{count} utilisés ces 30 derniers jours",
+    lowCredits: "Bientôt épuisés",
+    lowNote: "Vos crédits sont presque épuisés. Ajoutez un pack de crédits ou choisissez une offre avec de nouveaux crédits chaque mois.",
+    planLine: "Offre {plan}",
+    buyCredits: "Acheter plus de crédits",
+    paymentsSoon: "Le paiement en ligne arrive bientôt. D'ici là, écrivez à hello@gooidy.com si vous avez besoin de crédits.",
+    historyTitle: "Historique des crédits",
+    historyEmpty: "Rien pour l'instant. Les crédits ajoutés et utilisés apparaîtront ici.",
+    historyImages: "Annonces image",
+    historyVideo: "Annonce vidéo",
+    historyRedo: "Nouvel essai gratuit",
+    historyPlan: "Crédits mensuels de l'offre",
+    historyPack: "Pack de crédits",
+    historyFree: "Crédits offerts",
+    historyAdjust: "Crédits de Gooidy",
+    historyReturned: "Inachevé, crédits rendus",
+    historyRunning: "En cours",
+    renews: "Renouvellement le {date}. Les crédits sont rechargés chaque mois.",
+    pastDue:
+      "Le paiement a échoué. Mettez à jour votre carte pour garder votre offre.",
+    freeNote:
+      "{count} crédits gratuits pour commencer. Choisissez une offre mensuelle ou achetez un pack de crédits quand vous en voulez plus.",
+    manage: "Gérer l'abonnement",
+    opening: "Ouverture…",
+    openingCheckout: "Ouverture du paiement…",
+    plansTitle: "Offres mensuelles",
+    plansSub:
+      "Les crédits sont rechargés chaque mois. Résiliable à tout moment.",
+    monthly: "{count} crédits par mois, environ {ads} publicités",
+    choose: "Choisir {plan}",
+    rollover: "Les crédits de l'offre non utilisés sont reportés d'un mois.",
+    monthlyTab: "Mensuel",
+    yearlyTab: "Annuel",
+    yearlySave: "Économisez {percent} %",
+    billedYearly: "{price} facturés une fois par an",
+    moneyBack: "Satisfait ou remboursé pendant {days} jours sur votre premier paiement.",
+    packsTitle: "Packs de crédits",
+    packsSub: "Ajoutez des crédits quand vous en avez besoin, en plus de votre offre. Un seul paiement, ils n'expirent jamais.",
+    pack: "{count} crédits",
+    packAds: "Environ {ads} publicités",
+    buy: "Acheter pour {price}",
+    payTitle: "Payez dans votre devise",
+    payBody:
+      "Les prix sont en dollars américains. Au paiement, vous voyez le montant dans votre propre devise et les moyens de paiement courants dans votre pays.",
+    payPlans: "Offres : carte, Apple Pay, Google Pay ou Link.",
+    payPacks:
+      "Packs de crédits : aussi PayPal, Bancontact, iDEAL, Klarna, TWINT, Pix, Alipay, WeChat Pay et plus, selon votre pays.",
+    paid: "Paiement reçu, merci. Votre offre et vos crédits se mettent à jour en quelques secondes ; actualisez s'ils n'apparaissent pas encore.",
+    packPaid:
+      "Merci ! Vos crédits sont ajoutés dès que le paiement est confirmé. La plupart des paiements sont immédiats ; les prélèvements bancaires peuvent prendre quelques jours.",
+    footnote: "Les paiements sont traités en toute sécurité par Stripe. Les packs de crédits n'expirent jamais.",
+    errors: {
+      pickPlan: "Choisissez une offre.",
+      notSetUp: "Cette offre n'est pas encore configurée.",
+      noWorkspace: "Espace de travail introuvable.",
+      ownerOnly:
+        "Seul le propriétaire de l'espace de travail peut modifier la facturation.",
+      checkout: "Impossible d'ouvrir le paiement. Réessayez.",
+      portal: "Impossible d'ouvrir la facturation. Réessayez.",
+      },
+    },
   publish: {
     title: "Publication",
     metaTitle: "Publication · Gooidy",

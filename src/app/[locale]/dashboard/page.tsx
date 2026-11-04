@@ -1,4 +1,3 @@
-import { paidPlan, paidPlanName } from "@/lib/paid-plans";
 import Link from "next/link";
 import { Suspense } from "react";
 import type { Metadata } from "next";
@@ -11,6 +10,7 @@ import { createClient } from "@/lib/supabase/server";
 import { ProductUrlForm } from "./product-url-form";
 import { ProductCard, type ProductSummary } from "./product-card";
 import { CreditsBadge, EmptyState } from "./ui";
+import { planName } from "@/lib/pricing";
 
 // Server actions on this page scrape and call the AI; allow time for that.
 export const maxDuration = 120;
@@ -83,6 +83,7 @@ async function Dashboard({
         <CreditsBadge
           credits={fmt(t.app.credits, { count: workspace?.credits ?? 0 })}
           plan={fmt(t.app.plan, { plan: planName(t, workspace?.plan) })}
+          href="/dashboard/billing"
         />
       </header>
 
@@ -125,10 +126,3 @@ async function Dashboard({
     </>
   );
 }
-
-// Paid plan names come from the plan catalogue; the free plan uses the page's language.
-function planName(t: Messages, plan: string | null | undefined) {
-  const paid = paidPlan(plan);
-  return paid ? paidPlanName(paid) : t.home.plans[0]?.name ?? plan ?? "";
-}
-

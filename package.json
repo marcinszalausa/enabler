@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "stripe:setup": "node scripts/stripe-setup.mjs"
   },
   "dependencies": {
     "@ai-sdk/gateway": "^4.0.135",
@@ -23,6 +24,7 @@
     "react-dom": "19.3.0",
     "server-only": "^0.0.1",
     "sharp": "0.35.5",
+    "stripe": "^23.0.1",
     "zod": "^4.6.7"
   },
   "devDependencies": {

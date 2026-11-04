@@ -156,6 +156,7 @@ export const de: Messages = {
     pricingSub: "Starte kostenlos. Steig um, wenn dein Geschäft wächst.",
     popular: "Beliebt",
     perMonth: " / Monat",
+    approx: "etwa {price}",
     plans: [
       {
         name: "Free",
@@ -210,6 +211,10 @@ export const de: Messages = {
       {
         q: "Kann ich jederzeit kündigen?",
         a: "Bei Fragen zur Kündigung oder Erstattung schreibe an hello@gooidy.com.",
+      },
+      {
+        q: "Kann ich in meiner Währung bezahlen?",
+        a: "Ja. Die Preise sind in US-Dollar festgelegt, und beim Bezahlen siehst du den Betrag in deiner Währung, mit den Zahlungsarten, die in deinem Land üblich sind.",
       },
     ],
     finalTitle: "Deine nächste Kampagne beginnt mit einem Link",
@@ -571,7 +576,8 @@ export const de: Messages = {
     errors: {
       pasteLink: "Füge einen Link zu Produkt oder Website ein.",
       notFound: "Produkt nicht gefunden.",
-      noCredits: "Nicht genug Credits. Dieser Durchlauf braucht {cost}.",
+      noCredits:
+        "Nicht genug Credits. Dieser Durchlauf braucht {cost}. Mehr bekommst du auf der Seite Abrechnung.",
       couldntStart: "Die Erstellung konnte nicht gestartet werden.",
       color: "Wähle eine Button-Farbe.",
       font: "Wähle eine Schrift.",
@@ -580,6 +586,73 @@ export const de: Messages = {
       couldntSave: "Das Brand-Kit konnte nicht gespeichert werden.",
     },
   },
+  billing: {
+    nav: "Abrechnung",
+    title: "Credits und Abrechnung",
+    currentPlan: "Aktueller Tarif",
+    walletTitle: "Deine Credits",
+    usedRecently: "{count} in den letzten 30 Tagen genutzt",
+    lowCredits: "Fast aufgebraucht",
+    lowNote: "Deine Credits sind fast aufgebraucht. Kauf ein Credit-Paket oder wähle einen Tarif mit neuen Credits jeden Monat.",
+    planLine: "Tarif {plan}",
+    buyCredits: "Mehr Credits kaufen",
+    paymentsSoon: "Online-Zahlungen starten bald. Bis dahin schreib an hello@gooidy.com, wenn du mehr Credits brauchst.",
+    historyTitle: "Credit-Verlauf",
+    historyEmpty: "Noch nichts. Hier erscheinen Credits, die du hinzufügst und nutzt.",
+    historyImages: "Bildanzeigen",
+    historyVideo: "Videoanzeige",
+    historyRedo: "Kostenlose Neuerstellung",
+    historyPlan: "Monatliche Tarif-Credits",
+    historyPack: "Credit-Paket",
+    historyFree: "Kostenlose Credits",
+    historyAdjust: "Credits von Gooidy",
+    historyReturned: "Nicht fertig geworden, Credits erstattet",
+    historyRunning: "Läuft",
+    renews: "Verlängert sich am {date}. Credits werden jeden Monat aufgefüllt.",
+    pastDue:
+      "Die Zahlung ist fehlgeschlagen. Aktualisiere deine Karte, um deinen Tarif zu behalten.",
+    freeNote:
+      "{count} kostenlose Credits zum Start. Wähle einen Monatstarif oder kaufe ein Credit-Paket, wenn du mehr brauchst.",
+    manage: "Abo verwalten",
+    opening: "Wird geöffnet…",
+    openingCheckout: "Bezahlseite wird geöffnet…",
+    plansTitle: "Monatstarife",
+    plansSub: "Credits werden jeden Monat aufgefüllt. Jederzeit kündbar.",
+    monthly: "{count} Credits pro Monat, etwa {ads} Anzeigen",
+    choose: "{plan} wählen",
+    rollover: "Nicht genutzte Tarif-Credits werden einen Monat übertragen.",
+    monthlyTab: "Monatlich",
+    yearlyTab: "Jährlich",
+    yearlySave: "{percent} % sparen",
+    billedYearly: "{price} einmal im Jahr abgerechnet",
+    moneyBack: "{days} Tage Geld-zurück-Garantie auf deine erste Zahlung.",
+    packsTitle: "Credit-Pakete",
+    packsSub: "Kauf Credits, wann immer du mehr brauchst, zusätzlich zu deinem Tarif. Einmal zahlen, sie verfallen nie.",
+    pack: "{count} Credits",
+    packAds: "Etwa {ads} Anzeigen",
+    buy: "Für {price} kaufen",
+    payTitle: "Zahle in deiner Währung",
+    payBody:
+      "Die Preise sind in US-Dollar. Beim Bezahlen siehst du den Betrag in deiner eigenen Währung und die Zahlungsarten, die in deinem Land üblich sind.",
+    payPlans: "Tarife: Karte, Apple Pay, Google Pay oder Link.",
+    payPacks:
+      "Credit-Pakete: außerdem PayPal, Klarna, SEPA-Lastschrift, EPS, iDEAL, TWINT, Pix, Alipay, WeChat Pay und mehr, je nach Land.",
+    paid: "Zahlung erhalten, danke. Dein Tarif und deine Credits werden in wenigen Sekunden aktualisiert; lade neu, falls sie noch nicht erscheinen.",
+    packPaid:
+      "Danke! Deine Credits werden gutgeschrieben, sobald die Zahlung bestätigt ist. Die meisten Zahlungen sind sofort da; Lastschriften können ein paar Tage dauern.",
+    footnote: "Zahlungen werden sicher über Stripe abgewickelt. Credit-Pakete verfallen nie.",
+    errors: {
+      pickPlan: "Wähle einen Tarif.",
+      notSetUp: "Dieser Tarif ist noch nicht eingerichtet.",
+      noWorkspace: "Kein Arbeitsbereich gefunden.",
+      ownerOnly:
+        "Nur der Inhaber des Arbeitsbereichs kann die Abrechnung ändern.",
+      checkout:
+        "Die Bezahlseite konnte nicht geöffnet werden. Bitte versuche es erneut.",
+      portal:
+        "Die Abrechnung konnte nicht geöffnet werden. Bitte versuche es erneut.",
+      },
+    },
   publish: {
     title: "Veröffentlichen",
     metaTitle: "Veröffentlichen · Gooidy",

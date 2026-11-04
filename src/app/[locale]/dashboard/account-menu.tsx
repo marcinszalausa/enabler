@@ -17,6 +17,7 @@ export function AccountMenu({admin}:{admin?:ReactNode}={}){
   </summary>
   <div className="absolute end-0 top-full z-40 mt-2 w-48 rounded-xl border border-line bg-bg p-2 shadow-xl">
    {admin}
+   <Link href="/dashboard/billing" prefetch={false} className="flex min-h-11 items-center rounded-lg px-3 text-sm hover:bg-surface">{t.billing.nav}</Link>
    <Link href={localePath(locale,"/policies")} className="flex min-h-11 items-center rounded-lg px-3 text-sm hover:bg-surface">{t.legal.center}</Link>
    <form action="/auth/signout" method="post"><button type="submit" className="flex min-h-11 w-full items-center rounded-lg px-3 text-start text-sm hover:bg-surface">{t.app.signOut}</button></form>
   </div>
