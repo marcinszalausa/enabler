@@ -1,3 +1,4 @@
+import {IMAGE_CREDITS,VIDEO_CREDITS_PER_SECOND} from "./quality.ts";
 import {planTools} from "./plan-value.ts";
 export type CatalogPlan={id:string;price:number;credits:number;accounts:number};
 export function planFeatureGroups(plan:CatalogPlan){
@@ -44,7 +45,7 @@ export function planFeatureGroups(plan:CatalogPlan){
  ] as const;
 }
 export const PRICING_QUESTIONS=[
- ["What does a credit pay for?","Credits pay for creating ads. Images use 2, 3 or 5 credits per image, depending on quality. Each image idea is produced in two sizes. Video cost depends on quality and length. Standard video batches contain two videos; single-ad revisions have their own one-output price. The full cost is shown before creation."],
+ ["What does a credit pay for?",`Credits pay for creating ads. Images use ${IMAGE_CREDITS.good}, ${IMAGE_CREDITS.better} or ${IMAGE_CREDITS.best} credits per image for Good, Better or Best quality. Each image idea is produced in two sizes. Videos use ${VIDEO_CREDITS_PER_SECOND.good}, ${VIDEO_CREDITS_PER_SECOND.better} or ${VIDEO_CREDITS_PER_SECOND.best} credits per second for Good, Better or Best, rounded to the nearest five credits per video. Standard video batches contain two videos; single-ad revisions have their own one-output price. The full cost is shown before creation.`],
  ["What is included in Free?","Free includes 100 one-time credits, one connected social account, product import, a saved brand kit, campaign planning, image and video generation using credits, text editing, downloads, manual scheduling and basic post results where available. The credit allowance does not automatically refill. No card is needed to start."],
  ["Why choose Starter instead of Free?","Starter includes 300 credits every month and three connected accounts. It adds a weekly planning preview for up to seven selected ads and downloadable calendar reminders, helping you keep a regular posting routine. Existing creation and publishing tools remain included."],
  ["Why choose Growth instead of Starter?","Growth includes 1,000 monthly credits and ten connected accounts. It adds comparisons for up to 30 recent published posts within matching networks and a downloadable results CSV. At the listed prices, its cost per included credit is about 18% lower than Starter. Network data availability still applies."],
