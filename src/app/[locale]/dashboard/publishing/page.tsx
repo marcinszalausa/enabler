@@ -101,7 +101,7 @@ async function Publishing({
 
   return (
     <>
-    <Link href="/dashboard/publishing/planner" className="mt-5 inline-flex min-h-11 items-center text-sm font-medium text-accent">Build a posting plan · Starter & Growth →</Link>
+    <Link href="/dashboard/publishing/planner" className="mt-5 inline-flex min-h-11 items-center text-sm font-medium text-accent">Build a posting plan · Launch & Scale →</Link>
     <ChosenAdResume workspaceId={ws.id} connected={(accounts??[]).length>0}/>
     <PublishingView
       t={t}

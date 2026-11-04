@@ -11,7 +11,7 @@ export async function buildWeekPlan(_previous:WeekPlanState,form:FormData):Promi
  const db=await createClient();const {data:auth}=await db.auth.getUser();if(!auth.user)return fail("Sign in again before planning posts.");
  const {data:ws,error:wsError}=await db.from("workspaces").select("id,plan").order("created_at").limit(1).single();
  if(wsError||!ws)return fail("Your workspace could not be loaded.");
- if(!planTools(ws.plan).weekPlanner)return fail("The weekly planner is included with Starter and Growth. Your existing publishing tools are still available.");
+ if(!planTools(ws.plan).weekPlanner)return fail("The weekly planner is included with Launch and Scale. Your existing publishing tools are still available.");
  if(!(await canEditWorkspace(db,ws.id)))return fail(WORKSPACE_WRITE_DENIED);
  const [{data:ads,error:adError},{data:schedule,error:scheduleError},{data:upcoming,error:postError}]=await Promise.all([
   db.from("creatives").select("id,headline,primary_text,generations!inner(product_id,status)").eq("workspace_id",ws.id).in("id",ids),

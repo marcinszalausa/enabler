@@ -1,3 +1,4 @@
+import { paidPlan, paidPlanName } from "@/lib/paid-plans";
 import Link from "next/link";
 import { Suspense } from "react";
 import type { Metadata } from "next";
@@ -125,9 +126,9 @@ async function Dashboard({
   );
 }
 
-// Plan names are the pricing table's, in the page's language.
+// Paid plan names come from the plan catalogue; the free plan uses the page's language.
 function planName(t: Messages, plan: string | null | undefined) {
-  const i = ["free", "starter", "growth"].indexOf(plan ?? "free");
-  return t.home.plans[i]?.name ?? plan ?? "";
+  const paid = paidPlan(plan);
+  return paid ? paidPlanName(paid) : t.home.plans[0]?.name ?? plan ?? "";
 }
 

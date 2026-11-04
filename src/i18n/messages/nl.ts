@@ -167,7 +167,7 @@ export const nl: Messages = {
         ],
       },
       {
-        name: "Starter",
+        name: "Launch",
         credits: "300 credits per maand",
         perks: [
           "Ongeveer 150 advertenties per maand",
@@ -176,11 +176,11 @@ export const nl: Messages = {
         ],
       },
       {
-        name: "Growth",
+        name: "Scale",
         credits: "1.000 credits per maand",
         perks: [
           "Ongeveer 500 advertenties per maand",
-          "Alles uit Starter",
+          "Alles uit Launch",
           "Voorrang bij support",
         ],
       },
