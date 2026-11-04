@@ -138,7 +138,7 @@ export function Nav() {
                 {[
                   [href("/features/image-ads"),"Image ads"], [href("/features/video-ads"),"Video ads"],
                   [href("/features/social-publishing"),"Plan & publish"], [href("/features"),"Campaigns & brand kit"],
-                  [href("/industries"),"For your business"], [href("/platforms"),"Social platforms"], [href("/use-cases"),t.nav.examples],
+                  [href("/industries"),"For your business"], [href("/platforms"),"Social platforms"], [href("/templates"),"Creative starting points"], [href("/use-cases"),t.nav.examples],
                   [href("/about"),"About Gooidy"], [href("/pricing"),t.nav.pricing], [href("/resources"),"Guides & resources"], [href("/help"),"Help center"], [href("/blog"),"Ideas & articles"],
                 ].map(([to,label])=><Link key={to} href={to} prefetch={false} className="flex min-h-14 items-center justify-between gap-3 border-b border-line py-3 text-lg font-medium">{label}<span aria-hidden className="text-muted">→</span></Link>)}
                 <div className="flex flex-wrap gap-5 py-3 text-sm text-muted"><Link href={href("/")+"#how"} prefetch={false}>{t.nav.how}</Link><Link href={href("/")+"#faq"} prefetch={false}>{t.nav.faq}</Link></div>
@@ -225,6 +225,7 @@ export function Footer() {
         { href: href("/pricing"), label: t.nav.pricing },
         { href: href("/features"), label: "Features" },
         { href: href("/resources"), label: "Guides & resources" },
+        { href: href("/templates"), label: "Creative starting points" },
         { href: href("/industries"), label: "For your business" },
         { href: href("/platforms"), label: "Social platforms" },
         { href: href("/help"), label: "Help center" },

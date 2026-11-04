@@ -13,7 +13,7 @@ try{
   const page=await browser.newPage({viewport:{width,height:900},reducedMotion:"reduce"});const errors=[];page.on("pageerror",e=>errors.push(e.message));
   await page.goto("http://localhost:3121/help",{waitUntil:"networkidle"});await page.getByLabel("What do you need help with?").fill("caption edit");await page.waitForFunction(()=>document.querySelector('[role="status"]')?.textContent==="1 guide found");
   await page.getByRole("link",{name:/Change an ad’s wording/}).click();await page.locator("h1:visible").filter({hasText:"Change an ad’s wording"}).waitFor();
-  for(const path of ["/industries","/industries/clothing","/industries/beauty","/platforms","/platforms/youtube","/blog","/blog/review-before-publishing"]){
+  for(const path of ["/templates","/industries","/industries/clothing","/industries/beauty","/platforms","/platforms/youtube","/blog","/blog/review-before-publishing"]){
    const response=await page.goto("http://localhost:3121"+path,{waitUntil:"networkidle"});assert.equal(response.status(),200,path);assert.equal(await page.locator("h1:visible").count(),1,path);assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),"No horizontal overflow: "+path);
    assert.equal(await page.locator('link[rel="canonical"]').getAttribute("href"),"https://gooidy.com"+path);
    if(path==="/industries/beauty")assert.ok(await page.getByText("Illustrative concept",{exact:false}).isVisible());

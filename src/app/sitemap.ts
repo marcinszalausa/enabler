@@ -21,7 +21,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       alternates: { languages },
     }));
   });
-  const informationPages = ["/industries","/platforms","/help","/blog",...INDUSTRIES.map(p=>"/industries/"+p.slug),...PLATFORM_GUIDES.map(p=>"/platforms/"+p.slug),...HELP_ARTICLES.map(p=>"/help/"+p.slug),...BLOG_POSTS.map(p=>"/blog/"+p.slug),"/pricing", "/features", "/resources", "/about", ...PUBLIC_FEATURES.map(feature => "/features/" + feature.slug)];
+  const informationPages = ["/templates","/industries","/platforms","/help","/blog",...INDUSTRIES.map(p=>"/industries/"+p.slug),...PLATFORM_GUIDES.map(p=>"/platforms/"+p.slug),...HELP_ARTICLES.map(p=>"/help/"+p.slug),...BLOG_POSTS.map(p=>"/blog/"+p.slug),"/pricing", "/features", "/resources", "/about", ...PUBLIC_FEATURES.map(feature => "/features/" + feature.slug)];
   return [...translatedPages, ...informationPages.map(path => ({url: SITE + path,lastModified}))];
 }
 
