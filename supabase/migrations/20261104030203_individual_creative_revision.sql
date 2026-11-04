@@ -36,36 +36,16 @@ begin
     raise exception 'Product does not belong to workspace' using errcode = '22023';
   end if;
 
-  -- Single-output revisions may only refer to a saved ad of this exact product.
+  -- A revision must use a saved ad from the same workspace and product.
   if options ? 'revision' then
     if jsonb_typeof(options->'revision') is distinct from 'object'
       or options->'revision'->>'version' is distinct from '1'
-      or coalesce(options->'revision'->>'source_id','') !~* '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}
-  -- The workspace row is already locked. Limits cannot race between requests.
-  -- Existing request retries return above before any limit, preserving idempotency.
-  if exists(select 1 from public.workspaces where id=ws and plan='free') then
-    if exists(select 1 from public.generations where workspace_id=ws and status in ('queued','running')) then
-      raise exception 'TRIAL_BATCH_ACTIVE' using errcode='P0001';
-    end if;
-    if (select count(*) from public.generations where workspace_id=ws and created_at>now()-interval '1 hour') >= 10 then
-      raise exception 'TRIAL_BATCH_RATE' using errcode='P0001';
-    end if;
-  end if;
-
-  insert into public.generations(id, workspace_id, product_id, type, model, cost_credits, request_options)
-    values(request_id, ws, product, generation_type, generation_model, amount, options);
-  update public.workspaces set credits = credits - amount where id = ws;
-  insert into private.generation_credit_ledger(generation_id, workspace_id, kind, amount)
-    values(request_id, ws, 'charge', amount);
-  return request_id;
-end;
-$function$
-
+      or coalesce(options->'revision'->>'source_id','') !~* '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
       or jsonb_typeof(options->'revision'->'direction') is distinct from 'string'
       or length(btrim(options->'revision'->>'direction')) not between 1 and 240 then
       raise exception 'Invalid revision source' using errcode='22023';
     end if;
-    if not exists(
+    if not exists (
       select 1 from public.creatives c join public.generations g on g.id=c.generation_id
       where c.id=(options->'revision'->>'source_id')::uuid
         and c.workspace_id=ws and g.workspace_id=ws and g.product_id=product
