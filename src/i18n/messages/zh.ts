@@ -428,6 +428,7 @@ export const zh: Messages = {
     cost: "本批费用",
     used: "已用积分",
     returned: "已退回积分",
+    freeRedo: "免费重做：此图片的积分已先返还到您的余额，因此没有产生任何费用。",
     noReceipt: "此批广告没有积分凭据，因此不显示退款金额。",
     retry: "创建新一批",
     retryHint: "请在上方选择设置。新的一批会使用积分；已保存的广告会保留。",

@@ -446,6 +446,7 @@ export const nl: Messages = {
     cost: "Kosten van de reeks",
     used: "Gebruikte credits",
     returned: "Teruggegeven credits",
+    freeRedo: "Gratis opnieuw maken: de credits voor deze afbeelding zijn eerst aan je saldo toegevoegd, dus het kostte je niets.",
     noReceipt: "Er is geen creditbewijs voor deze reeks beschikbaar. Teruggegeven bedragen worden niet getoond.",
     retry: "Nieuwe reeks maken",
     retryHint: "Kies hierboven je instellingen. Een nieuwe reeks gebruikt credits; opgeslagen advertenties blijven bewaard.",

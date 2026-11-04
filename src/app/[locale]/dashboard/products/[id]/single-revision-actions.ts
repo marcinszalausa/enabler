@@ -33,9 +33,13 @@ export async function startSingleRevision(_previous:SingleRevisionState,form:For
  if(form.get("quotedCost")!==String(cost))return no("The price changed. Refresh and review the credit cost before continuing.");
  const creativePreferences=parseCreativePreferences(original.creative_preferences);
  const campaign=parseCampaign(original.campaign);
- const snapshot={...(campaign?{campaign}:{}),...(options??{quality,language}),...(creativePreferences?{creative_preferences:creativePreferences}:{}),brand_memory:parseBrandMemory(original.brand_memory),revision};
- const {data:generationId,error}=await createAdminClient().rpc("reserve_generation",{ws:source.workspace_id,request_id:requestId,product:run.product_id,generation_type:video?"video_ads":"image_ads",generation_model:`single revision ${revision.kind} ${quality}`,amount:cost,options:snapshot});
- if(error){console.error("reserve single revision failed",error.code);return no(error.message==="TRIAL_BATCH_ACTIVE"?"Let your current batch finish before creating a revision.":error.message==="TRIAL_BATCH_RATE"?"You have reached the hourly generation limit. Try again later.":"We couldn’t start this revision. Refresh and try again.");}
+ const freeRedo=!video&&form.get("freeRedo")==="yes";
+ const snapshot={...(freeRedo?{free_redo:true}:{}),...(campaign?{campaign}:{}),...(options??{quality,language}),...(creativePreferences?{creative_preferences:creativePreferences}:{}),brand_memory:parseBrandMemory(original.brand_memory),revision};
+ const model=`single revision ${revision.kind} ${quality}`,admin=createAdminClient();
+ const {data:generationId,error}=freeRedo
+  ?await admin.rpc("reserve_free_redo",{ws:source.workspace_id,request_id:requestId,product:run.product_id,generation_model:model,amount:cost,options:snapshot})
+  :await admin.rpc("reserve_generation",{ws:source.workspace_id,request_id:requestId,product:run.product_id,generation_type:video?"video_ads":"image_ads",generation_model:model,amount:cost,options:snapshot});
+ if(error){console.error("reserve single revision failed",error.code);return no(error.message==="FREE_REDO_LIMIT"?"You’ve used this month’s 3 free redos. Untick the box to recreate it with credits.":error.message==="TRIAL_BATCH_ACTIVE"?"Let your current batch finish before creating a revision.":error.message==="TRIAL_BATCH_RATE"?"You have reached the hourly generation limit. Try again later.":"We couldn’t start this revision. Refresh and try again.");}
  if(!generationId)return no(`This revision needs ${cost} credits. Check your balance before trying again.`);
  const job={generationId:String(generationId),workspaceId:source.workspace_id,productId:run.product_id,creativePreferences};
  after(()=>options?runVideoGeneration({...job,options}):runGeneration({...job,language,quality}));

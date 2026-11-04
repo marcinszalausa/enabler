@@ -37,6 +37,7 @@ export function GenerationStatus({ t, generation: g, receipt, canRetry = false }
         {credits?.used !== null && credits?.used !== undefined && <div data-credits-used><dt className="text-muted">{t.run.used}</dt><dd className="mt-0.5 font-medium">{fmt(t.app.credits, { count: credits.used })}</dd></div>}
         {credits && <div data-credits-returned><dt className="text-muted">{t.run.returned}</dt><dd className="mt-0.5 font-medium">{fmt(t.app.credits, { count: credits.returned })}</dd></div>}
       </dl>
+      {(g.request_options as { free_redo?: unknown } | null | undefined)?.free_redo === true && <p data-free-redo className="mt-3 text-xs leading-relaxed text-muted">{t.run.freeRedo}</p>}
       {!view.active && !credits && <p className="mt-3 text-xs leading-relaxed text-muted">{t.run.noReceipt}</p>}
       {(phase === "partial" || phase === "failed") && <>
         {canRetry && <div className="mt-5 flex flex-wrap items-center gap-3">

@@ -1,5 +1,5 @@
 {
-  "version": "2026-11-04-r3",
+  "version": "2026-11-04-r4",
   "updated": "November 4, 2026",
   "documents": {
     "terms": {
@@ -195,6 +195,7 @@
           "title": "Free credits and generation returns",
           "paragraphs": [
             "Free credits are a limited allowance for trying the service and have no cash value. Do not create duplicate accounts or use automated signups to evade trial limits. The available balance and run cost are shown in the product.",
+            "Free redo: when a generated image does not match your real product, you can recreate that single image without using credits, up to three times per calendar month (UTC) per workspace. The credits for the redo are added to your balance and charged in the same step. If a free redo fails, its credits are returned like any other run. Unused free redos do not carry over and have no cash value.",
             "Credits attributable to outputs that fail are returned through the generation accounting process. A credit return does not constitute a money refund. If the balance appears incorrect, contact hello@gooidy.com with the run or product reference, without payment credentials."
           ]
         },

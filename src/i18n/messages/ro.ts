@@ -451,6 +451,7 @@ export const ro: Messages = {
     cost: "Costul setului",
     used: "Credite folosite",
     returned: "Credite returnate",
+    freeRedo: "Refacere gratuită: creditele pentru această imagine au fost adăugate mai întâi în soldul tău, deci nu te-a costat nimic.",
     noReceipt: "Nu există o chitanță de credite pentru acest set. Sumele returnate nu sunt afișate.",
     retry: "Creează un set nou",
     retryHint: "Alege setările de mai sus. Un set nou folosește credite; reclamele salvate sunt păstrate.",
