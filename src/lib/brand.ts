@@ -65,4 +65,3 @@ export function loadFont(font: FontKey): Promise<Buffer> {
   }
   return data;
 }
-

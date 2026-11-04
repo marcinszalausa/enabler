@@ -463,4 +463,3 @@ function CreativePreview({creative}:{creative:PublishCreative}){
  <img src={`/api/creatives/${creative.id}/image?preview=1&layout=face-aware-v2`} alt={t.choose.review} className="max-h-[45vh] max-w-full rounded-lg object-contain"/>}
  </figure>;
 }
-

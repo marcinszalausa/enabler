@@ -112,4 +112,3 @@ export function formatLocal(local: string, locale: string) {
     minute: "2-digit",
   });
 }
-

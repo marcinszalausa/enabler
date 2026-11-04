@@ -66,4 +66,3 @@ create policy "members read publishing schedule" on public.publishing_schedules
   for select to authenticated using (public.is_workspace_member(workspace_id));
 create policy "members read posts" on public.posts
   for select to authenticated using (public.is_workspace_member(workspace_id));
-

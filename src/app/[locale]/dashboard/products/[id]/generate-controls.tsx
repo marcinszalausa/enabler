@@ -17,6 +17,7 @@ export type TierExampleIds = Record<"image" | "video", Record<Quality, string | 
 // product page is written in.
 export function GenerateControls({
   productId,
+  campaignId,
   imageRequestId,
   videoRequestId,
   videoLabel,
@@ -27,6 +28,7 @@ export function GenerateControls({
   examples,
 }: {
   productId: string;
+  campaignId?: string;
   imageRequestId: string;
   videoRequestId: string;
   // Prices now follow the chosen quality; kept for older callers.
@@ -110,6 +112,7 @@ export function GenerateControls({
         {kind === "image" && <GenerateButton
           initialRequestId={imageRequestId}
           productId={productId}
+          campaignId={campaignId}
           cost={imageRunCost(quality)}
           credits={credits}
           language={language}
@@ -120,6 +123,7 @@ export function GenerateControls({
           credits={credits}
           initialRequestId={videoRequestId}
           productId={productId}
+          campaignId={campaignId}
           label={videoLabel}
           language={language}
           quality={quality}

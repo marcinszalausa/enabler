@@ -33,4 +33,3 @@ export function settledCredits(g: RunSnapshot, receipt: CreditReceipt | null | u
   const used = amount(charged) && returned <= charged ? charged - returned : null;
   return { returned, used };
 }
-

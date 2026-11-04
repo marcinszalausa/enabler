@@ -80,4 +80,3 @@ finally {
   if (server) { try { process.kill(-server.pid, "SIGTERM"); } catch {} }
   await rm(folder, { recursive: true, force: true });
 }
-

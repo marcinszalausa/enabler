@@ -218,4 +218,3 @@ async function callFal<T>(request: () => Promise<T>, attempt = 1): Promise<T> {
     throw err;
   }
 }
-

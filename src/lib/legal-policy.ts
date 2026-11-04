@@ -21,4 +21,3 @@ export const PRIVACY_REQUESTS = {
 export function privacyRequestHref(kind:keyof typeof PRIVACY_REQUESTS){
  return "mailto:hello@gooidy.com?subject="+encodeURIComponent("Gooidy privacy request: "+kind)+"&body="+encodeURIComponent("Hello, I would like help with a privacy "+kind+" request. Please tell me the appropriate verification steps. I will not include passwords, one-time codes or payment details in this email.");
 }
-

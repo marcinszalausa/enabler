@@ -231,4 +231,3 @@ function PostLine({ t, post }: { t: Messages; post: AdPost }) {
     </p>
   );
 }
-

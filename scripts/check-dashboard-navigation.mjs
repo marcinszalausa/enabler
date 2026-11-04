@@ -70,4 +70,3 @@ try{
  }
 }catch(error){console.error(log);throw error;}
 finally{if(browser)await browser.close();if(server){try{process.kill(-server.pid,"SIGTERM");}catch{}}await rm("src/app/[locale]/navigation-preview",{recursive:true,force:true});}
-

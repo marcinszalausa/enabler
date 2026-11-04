@@ -241,4 +241,3 @@ export function voiceFor(options: VideoOptions) {
 export function isEnglish(options: Pick<VideoOptions, "language">) {
   return options.language === "english";
 }
-

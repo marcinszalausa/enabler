@@ -7,6 +7,7 @@ import type { Quality } from "@/lib/quality";
 
 export function GenerateButton({
   productId,
+  campaignId,
   initialRequestId,
   cost,
   language,
@@ -14,6 +15,7 @@ export function GenerateButton({
   credits,
 }: {
   productId: string;
+  campaignId?: string;
   initialRequestId: string;
   cost: number;
   language: string;
@@ -27,6 +29,7 @@ export function GenerateButton({
     <form action={action} className="flex flex-col items-start gap-2">
       <input type="hidden" name="requestId" value={requestId} />
       <input type="hidden" name="productId" value={productId} />
+      {campaignId && <input type="hidden" name="campaignId" value={campaignId}/>}
       <input type="hidden" name="language" value={language} />
       <input type="hidden" name="quality" value={quality} />
       <button

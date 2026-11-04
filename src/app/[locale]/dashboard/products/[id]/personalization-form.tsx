@@ -75,4 +75,3 @@ function PromotionPicture({kind}:{kind:CreativePreferences["promotion"]}){
 function PeoplePicture(){
  return <svg viewBox="0 0 24 24" className="h-5 w-5 shrink-0 text-accent" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true"><circle cx="9" cy="7" r="3"/><path d="M3 21v-3a6 6 0 0 1 12 0v3M16 4a3 3 0 0 1 0 6m2 5a5 5 0 0 1 3 5"/></svg>;
 }
-
