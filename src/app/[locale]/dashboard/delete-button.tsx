@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useRef } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import { useI18n } from "@/i18n/client";
 import { deleteAdAction, deleteProductAction, type DeleteState } from "./delete-actions";
 
@@ -27,6 +27,12 @@ export function DeleteButton({
   const { t } = useI18n();
   const r = t.remove;
   const dialog = useRef<HTMLDialogElement>(null);
+  // The dialog is only in the page while it is asked for: a grid of ads
+  // stays light, and other dialogs on the page stay the only ones.
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    if (open && !dialog.current?.open) dialog.current?.showModal();
+  }, [open]);
   const [state, action, pending] = useActionState<DeleteState, FormData>(
     target === "ad" ? deleteAdAction : deleteProductAction,
     { error: null, done: false },
@@ -46,14 +52,15 @@ export function DeleteButton({
       <button
         type="button"
         data-delete={target}
-        onClick={() => dialog.current?.showModal()}
+        onClick={() => setOpen(true)}
         className={className ?? "inline-flex min-h-11 items-center gap-1.5 rounded-xl px-3 text-sm text-muted transition hover:text-danger"}
       >
         <TrashIcon />
         {label}
       </button>
-      <dialog
+      {open && <dialog
         ref={dialog}
+        onClose={() => setOpen(false)}
         aria-labelledby={`delete-${id}`}
         onClick={(e) => { if (e.target === dialog.current && !pending) dialog.current.close(); }}
         className="m-auto w-[min(28rem,calc(100vw-2rem))] rounded-2xl border border-line bg-bg p-5 text-fg backdrop:bg-black/60 sm:p-6"
@@ -78,7 +85,7 @@ export function DeleteButton({
             </button>
           </div>
         </form>
-      </dialog>
+      </dialog>}
     </>
   );
 }
