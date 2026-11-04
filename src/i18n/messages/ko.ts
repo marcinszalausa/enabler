@@ -183,7 +183,7 @@ export const ko: Messages = {
       },
       {
         q: "크레딧이 무엇인가요?",
-        a: "광고 이미지 1장에 선택한 품질에 따라 크레딧 2~5개가 듭니다. 한 번 생성할 때 광고 5개를 2가지 사이즈로 만들므로 20~50 크레딧을 사용합니다.",
+        a: "광고 이미지 1장에 선택한 품질에 따라 크레딧 2~5개가 듭니다. 한 번 생성할 때 광고 1, 3, 5개 중 선택해 각각 2가지 사이즈로 만들며, 5개면 20~50 크레딧을 사용합니다.",
       },
       {
         q: "디자인 경험이 필요한가요?",
@@ -497,6 +497,12 @@ export const ko: Messages = {
     quality: "품질",
     qualities: { good: "기본", better: "고급", best: "최고" },
     qualityExample: "이 품질의 예시",
+    kind: "광고 유형",
+    kindImages: "이미지",
+    kindVideos: "동영상",
+    howMany: "이미지 수",
+    createImages: "이미지 {count}개 만들기",
+    ideasHelp: "아이디어마다 다른 관점으로, 피드 게시물과 스토리로 만들어집니다.",
     qualityHelp: "품질이 높을수록 최신 AI 모델을 쓰고 크레딧을 더 사용합니다. 최고 품질은 최상위 모델로 가장 선명하고 사실적인 광고를 만듭니다.",
     genders: { female: "여성", male: "남성" },
     energies: { calm: "차분하게", upbeat: "밝게", high: "에너지 넘치게" },

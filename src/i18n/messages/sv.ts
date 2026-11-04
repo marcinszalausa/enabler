@@ -193,7 +193,7 @@ export const sv: Messages = {
       },
       {
         q: "Vad är en kredit?",
-        a: "Varje annonsbild kostar 2 till 5 krediter beroende på vald kvalitet. Varje körning skapar fem annonser i två storlekar och använder alltså 20 till 50 krediter.",
+        a: "Varje annonsbild kostar 2 till 5 krediter beroende på vald kvalitet. Varje körning skapar 1, 3 eller 5 annonser (du väljer), var och en i två storlekar, så fem annonser använder 20 till 50 krediter.",
       },
       {
         q: "Behöver jag kunna design?",
@@ -508,6 +508,12 @@ export const sv: Messages = {
     quality: "Kvalitet",
     qualities: { good: "Bra", better: "Bättre", best: "Bäst" },
     qualityExample: "Exempel i den här kvaliteten",
+    kind: "Annonstyp",
+    kindImages: "Bilder",
+    kindVideos: "Videor",
+    howMany: "Hur många bilder",
+    createImages: "Skapa {count} bilder",
+    ideasHelp: "Varje idé har en egen vinkel, som flödesinlägg och som story.",
     qualityHelp: "Högre kvalitet använder nyare AI-modeller och fler krediter. Bäst använder de högst rankade modellerna för de skarpaste och mest verklighetstrogna annonserna.",
     genders: { female: "Kvinna", male: "Man" },
     energies: { calm: "Lugn", upbeat: "Glad", high: "Mycket energi" },
