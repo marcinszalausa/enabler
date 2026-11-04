@@ -50,7 +50,7 @@ async function Dashboard({
 }) {
   const user = await getCurrentUser();
   // A link pasted on the landing page arrives as ?url=...
-  const { url, deleted } = await searchParams;
+  const { url, deleted, favorites: favoritesOnly } = await searchParams;
   const supabase = await createClient();
 
   const { data: workspace } = await supabase
@@ -68,6 +68,18 @@ async function Dashboard({
         .order("created_at", { ascending: false })
         .returns<ProductSummary[]>()
     : { data: [] as ProductSummary[] };
+  // Missing table (before its migration) simply means no favorites yet.
+  const { data: favoriteRows } = await supabase
+    .from("product_favorites")
+    .select("product_id")
+    .eq("user_id", user.id);
+  const favoriteIds = new Set((favoriteRows ?? []).map((f) => f.product_id as string));
+  // Favorites first, newest first within each group.
+  const allProducts = (products ?? [])
+    .map((p) => ({ ...p, favorite: favoriteIds.has(p.id) }))
+    .sort((a, b) => Number(b.favorite) - Number(a.favorite));
+  const showFavorites = favoritesOnly === "1" && favoriteIds.size > 0;
+  const shown = showFavorites ? allProducts.filter((p) => p.favorite) : allProducts;
 
   return (
     <>
@@ -108,9 +120,15 @@ async function Dashboard({
             </span>
           )}
         </h2>
-        {products && products.length > 0 ? (
+        {favoriteIds.size > 0 && (
+          <div className="mt-4 flex flex-wrap gap-2" data-product-filters>
+            <Link href="/dashboard" aria-current={!showFavorites ? "page" : undefined} className={"inline-flex min-h-11 items-center rounded-xl border px-4 text-sm font-medium " + (!showFavorites ? "border-accent bg-accent-soft text-accent" : "border-line")}>{t.app.allProducts}</Link>
+            <Link href="/dashboard?favorites=1" aria-current={showFavorites ? "page" : undefined} className={"inline-flex min-h-11 items-center rounded-xl border px-4 text-sm font-medium " + (showFavorites ? "border-accent bg-accent-soft text-accent" : "border-line")}>{t.library.favorites} {favoriteIds.size}</Link>
+          </div>
+        )}
+        {shown.length > 0 ? (
           <ul className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {products.map((p) => (
+            {shown.map((p) => (
               <li key={p.id}>
                 <ProductCard product={p} />
               </li>

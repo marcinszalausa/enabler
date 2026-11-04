@@ -18,11 +18,14 @@ export function DeleteButton({
   id,
   onDeleted,
   className,
+  iconOnly = false,
 }: {
   target: "ad" | "product";
   id: string;
   onDeleted?: () => void;
   className?: string;
+  // Just the bin icon, named for screen readers (used on product cards).
+  iconOnly?: boolean;
 }) {
   const { t } = useI18n();
   const r = t.remove;
@@ -53,10 +56,12 @@ export function DeleteButton({
         type="button"
         data-delete={target}
         onClick={() => setOpen(true)}
+        aria-label={iconOnly ? label : undefined}
+        title={iconOnly ? label : undefined}
         className={className ?? "inline-flex min-h-11 items-center gap-1.5 rounded-xl px-3 text-sm text-muted transition hover:text-danger"}
       >
         <TrashIcon />
-        {label}
+        {!iconOnly && label}
       </button>
       {open && <dialog
         ref={dialog}
