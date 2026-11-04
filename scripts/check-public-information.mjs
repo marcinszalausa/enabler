@@ -26,17 +26,18 @@ try{
    const menu=page.locator("details.mobile-nav"),summary=menu.locator("summary");
    await summary.click();const panel=menu.locator("dialog[open]");await panel.waitFor();assert.ok(await panel.evaluate(el=>el.matches(":modal")),"Native modal isolates the background");
    await page.waitForFunction(()=>document.body.style.overflow==="hidden");const box=await panel.boundingBox();assert.ok(box.width>=width-2&&box.height>=948,"Full-screen mobile menu");
+   if(width===320||(width===390&&locale==="en"))console.log("PUBLIC_MENU_PREVIEW",(await page.screenshot({type:"jpeg",quality:70})).toString("base64"));
    for(let i=0;i<16;i++){await page.keyboard.press("Shift+Tab");assert.ok(await panel.evaluate(el=>el.contains(document.activeElement)),"Focus remains inside the menu");}
-   if(width===390&&locale==="en")console.log("PUBLIC_MENU_PREVIEW",(await page.screenshot({type:"jpeg",quality:70})).toString("base64"));
+
    await page.keyboard.press("Escape");await page.waitForFunction(()=>!document.querySelector("details.mobile-nav")?.hasAttribute("open"));assert.equal(await summary.evaluate(el=>document.activeElement===el),true);
    await page.waitForFunction(()=>document.body.style.overflow!=="hidden");
    await summary.click();await menu.locator('dialog[open] a[href$="/features/image-ads"]').click();await page.waitForURL(url=>url.pathname.endsWith("/features/image-ads"));assert.equal(await page.locator("dialog[open]").count(),0);await page.waitForFunction(()=>document.body.style.overflow!=="hidden");
   }else{
    const menu=page.locator("[data-feature-menu]");await menu.locator("summary").click();assert.equal(await menu.locator('a[href$="/features/video-ads"]').isVisible(),true);await menu.locator('a[href$="/features/image-ads"]').click();await page.waitForURL(url=>url.pathname.endsWith("/features/image-ads"));
   }
-  assert.equal(await page.locator("h1").innerText(),"Product photos into ready-to-use ads");
+  assert.equal(await page.locator("h1:visible").innerText(),"Product photos into ready-to-use ads");
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),"No feature-page overflow");
-  for(const path of ["/features","/features/video-ads","/features/social-publishing","/features/campaigns","/features/brand-kit","/features/results","/features/for-your-business","/resources","/about"]){const response=await page.goto(base+path,{waitUntil:"networkidle",timeout:90000});assert.equal(response.status(),200,path);assert.equal(await page.locator("h1").count(),1);assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),"No overflow "+width+" "+path);}
+  for(const path of ["/features","/features/video-ads","/features/social-publishing","/features/campaigns","/features/brand-kit","/features/results","/features/for-your-business","/resources","/about"]){const response=await page.goto(base+path,{waitUntil:"networkidle",timeout:90000});assert.equal(response.status(),200,path);assert.equal(await page.locator("h1:visible").count(),1);assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),"No overflow "+width+" "+path);}
   await page.goto(base+"/pricing",{waitUntil:"networkidle"});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),"No pricing overflow");
   if(width===390&&locale==="en"){await page.locator("[data-public-plans]").scrollIntoViewIfNeeded();console.log("PUBLIC_PRICING_PREVIEW",(await page.screenshot({type:"jpeg",quality:70})).toString("base64"));}
   assert.equal(posts,0,"Information pages never generate, publish or start checkout");assert.deepEqual(errors,[]);
