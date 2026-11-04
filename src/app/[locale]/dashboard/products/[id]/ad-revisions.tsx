@@ -1,4 +1,5 @@
 "use client";
+import {SingleRevisionForm} from "./single-revision-form";
 import {useActionState,useState} from "react";
 import type {Creative} from "./generation-block";
 import {saveAdCopy} from "./revision-actions";
@@ -9,6 +10,7 @@ export function AdRevisions({creative,productId}:{creative:Creative;productId:st
  const [sceneState,sceneAction,scenePending]=useActionState(createCampaign,{error:null});
  const [revisionId,setRevisionId]=useState("");
  return <div className="mt-5 grid gap-3">
+  <SingleRevisionForm creativeId={creative.id} kind={creative.kind}/>
   <details className="rounded-xl border border-line p-3"><summary className="min-h-11 cursor-pointer text-sm font-medium">Edit {creative.kind==="video"?"post caption":"headline and caption"} · no credits</summary><form action={action} className="mt-3 grid gap-3">
    <input type="hidden" name="creativeId" value={creative.id}/><input type="hidden" name="version" value={JSON.stringify([creative.headline,creative.primary_text,creative.cta])}/>
    {creative.kind==="image"&&<><label className="grid gap-1 text-sm">Headline<input className={input} name="headline" required maxLength={100} defaultValue={creative.headline??""}/></label><label className="grid gap-1 text-sm">Button label<input className={input} name="cta" required maxLength={24} defaultValue={creative.cta??""}/></label></>}

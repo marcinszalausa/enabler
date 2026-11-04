@@ -1,4 +1,5 @@
 import "server-only";
+import {revisionFromOptions} from "@/lib/creative-revision";
 import { generationDirection } from "@/lib/generation-direction";
 import {sampleVideoShots} from "@/lib/media-quality";
 import {requireReview} from "@/lib/media-quality-policy";
@@ -80,17 +81,21 @@ export async function runVideoGeneration({
     if (error || !product?.brand_brief) throw new Error("Product not found.");
 
     const direction = await generationDirection(db, generationId, workspaceId);
+    if(direction.revision&&direction.revision.kind!=="video")throw new Error("Revision media type mismatch.");
     const brief = { ...withCreativePreferences(product.brand_brief as BrandBrief, creativePreferences), ...direction };
     if (direction.brand_memory?.tone) brief.tone = direction.brand_memory.tone;
     if (!brief.creative_preferences && direction.brand_memory?.audience) brief.audience = direction.brand_memory.audience;
     const referenceImageUrl = (product.image_urls as string[])[0] ?? null;
     const shotSeconds = LENGTHS[options.length];
-    const ads = await writeVideoAds(
+    const written = await writeVideoAds(
       brief,
-      VIDEOS_PER_GENERATION,
+      direction.revision?1:VIDEOS_PER_GENERATION,
       shotSeconds,
       options,
     );
+
+    const ads=direction.revision?written.slice(0,1):written;
+    if(direction.revision&&ads.length!==1)throw new Error("No revision script was created.");
 
     const { data: jobs, error: insertError } = await db
       .from("video_jobs")
@@ -337,7 +342,7 @@ async function finishGeneration(
 ) {
   const db = createAdminClient();
   const { data: generation, error: readError } = await db
-    .from("generations").select("cost_credits")
+    .from("generations").select("cost_credits,request_options")
     .eq("id", generationId).eq("workspace_id", workspaceId).single();
   if (readError || !generation) throw readError ?? new Error("Generation not found.");
   const { count, error: countError } = await db.from("creatives")
@@ -346,14 +351,16 @@ async function finishGeneration(
   if (countError || count === null) throw countError ?? new Error("Missing video output count.");
   // A creative insert may commit even when its response is lost.
   done = count;
-  if (done === VIDEOS_PER_GENERATION) error = null;
+  const revision=revisionFromOptions(generation.request_options);
+  const expected=revision?1:VIDEOS_PER_GENERATION;
+  if (done === expected) error = null;
   else if (done > 0) error = "Some videos could not be completed. Undelivered videos were refunded.";
   const cost = generation.cost_credits as number;
-  const refund = cost - done * (cost / VIDEOS_PER_GENERATION);
+  const refund = cost - done * (cost / expected);
   const closed = await finalizeGeneration(
     db, generationId, done > 0 ? "succeeded" : "failed", refund, error,
   );
-  if (closed && done > 0) await autopilotRun(workspaceId, generationId);
+  if (closed && done > 0 && !revision) await autopilotRun(workspaceId, generationId);
 }
 
 async function saveVideo(
@@ -457,4 +464,3 @@ async function updateJob(id: string, fields: Partial<VideoJob>) {
 function age(timestamp: string) {
   return Date.now() - Date.parse(timestamp);
 }
-

@@ -40,3 +40,11 @@ jobs:
           npx --yes supabase migration --help
           npx --yes supabase migration new individual_creative_revision
       - run: npx next typegen && npx tsc --noEmit
+      - run: node --experimental-strip-types --test tests/*.test.ts
+      - run: npx eslint src/lib/creative-revision.ts src/lib/generation-direction.ts src/lib/generation-presentation.ts src/lib/pipeline.ts src/lib/video.tsx 'src/app/[locale]/dashboard/products/[id]/single-revision-actions.ts' 'src/app/[locale]/dashboard/products/[id]/single-revision-form.tsx'
+      - run: bash scripts/test-credits.sh && bash scripts/test-generation-ledger.sh && bash scripts/test-generation-recovery.sh && psql "$CREDIT_TEST_DATABASE_URL" -X -v ON_ERROR_STOP=1 -f supabase/tests/individual-revisions.sql
+        env:
+          CREDIT_TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/workflow_tests
+      - run: npm install --prefix /tmp/revision-browser --no-package-lock playwright@1.56.1
+      - run: /tmp/revision-browser/node_modules/.bin/playwright install --with-deps chromium
+      - run: PLAYWRIGHT_MODULE_PATH=/tmp/revision-browser/node_modules/playwright node scripts/check-customer-workflow.mjs

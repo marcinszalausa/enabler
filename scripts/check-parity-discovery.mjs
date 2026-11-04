@@ -14,12 +14,12 @@ try{
   await page.goto("http://localhost:3121/help",{waitUntil:"networkidle"});await page.getByLabel("What do you need help with?").fill("caption edit");await page.waitForFunction(()=>document.querySelector('[role="status"]')?.textContent==="1 guide found");
   await page.getByRole("link",{name:/Change an ad’s wording/}).click();await page.locator("h1:visible").filter({hasText:"Change an ad’s wording"}).waitFor();
   for(const path of ["/templates","/industries","/industries/clothing","/industries/beauty","/platforms","/platforms/youtube","/blog","/blog/review-before-publishing"]){
-   const response=await page.goto("http://localhost:3121"+path,{waitUntil:"networkidle"});assert.equal(response.status(),200,path);assert.equal(await page.locator("h1:visible").count(),1,path);assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),"No horizontal overflow: "+path);
+   const response=await page.goto("http://localhost:3121"+path,{waitUntil:"networkidle"});assert.equal(response.status(),200,path);assert.equal(await page.locator("h1:visible").count(),1,path);if(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1))console.log("OVERFLOW",await page.evaluate(()=>Array.from(document.querySelectorAll("main *")).filter(e=>e.getBoundingClientRect().right>innerWidth+1).slice(0,15).map(e=>({tag:e.tagName,cls:e.className,width:e.getBoundingClientRect().width,text:e.textContent.slice(0,80)}))));assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),"No horizontal overflow: "+path);
    assert.equal(await page.locator('link[rel="canonical"]').getAttribute("href"),"https://gooidy.com"+path);
    if(path==="/industries/beauty")assert.ok(await page.getByText("Illustrative concept",{exact:false}).isVisible());
   }
   assert.deepEqual(errors,[]);console.log("PASS discovery routes and search",width);await page.close();
  }
- const missing=await fetch("http://localhost:3121/industries/not-real");assert.equal(missing.status,404);
+ const missing=await fetch("http://localhost:3121/industries/not-real");const missingHtml=await missing.text();assert.ok(missing.status===404||(missing.status===200&&/<meta name="robots" content="noindex"/.test(missingHtml)),"Unknown guides return a 404 or streamed noindex not-found page");
  const sitemap=await(await fetch("http://localhost:3121/sitemap.xml")).text();for(const path of ["/industries/clothing","/help/first-campaign","/platforms/youtube","/blog/choose-an-ad-angle"])assert.ok(sitemap.includes("https://gooidy.com"+path));console.log("PASS missing route and sitemap");
 }catch(error){console.error(log);throw error;}finally{await browser?.close();if(server?.pid)try{process.kill(-server.pid,"SIGTERM");}catch{}}
