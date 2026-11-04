@@ -37,7 +37,7 @@ export function GenerateButton({
         disabled={pending || (credits!==undefined&&credits<cost)}
         className="btn-primary min-h-11 rounded-xl px-4 py-2.5 font-medium"
       >
-        {pending ? t.app.starting : fmt(t.app.withCost, { label: ideas === undefined || ideas === 5 ? t.trial.create : t.demo.create, cost })}
+        {pending ? t.app.starting : fmt(t.app.withCost, { label: ideas === undefined ? t.trial.create : fmt(t.app.createImages, { count: ideas * 2 }), cost })}
       </button>
       {credits!==undefined&&credits<cost&&<p className="text-sm text-muted">{fmt(t.app.errors.noCredits,{cost})}</p>}
       {state.error && (
