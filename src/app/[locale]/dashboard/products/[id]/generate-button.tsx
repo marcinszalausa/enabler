@@ -29,7 +29,7 @@ export function GenerateButton({
   const { t } = useI18n();
 
   return (
-    <form action={action} className="flex flex-col items-start gap-2">
+    <form action={action} className="flex w-full flex-col gap-2">
       <input type="hidden" name="requestId" value={requestId} />
       <input type="hidden" name="productId" value={productId} />
       {campaignId && <input type="hidden" name="campaignId" value={campaignId}/>}
@@ -39,7 +39,7 @@ export function GenerateButton({
       <button
         type="submit"
         disabled={pending || (credits!==undefined&&credits<cost)}
-        className="btn-primary min-h-11 rounded-xl px-4 py-2.5 font-medium"
+        className="btn-primary min-h-12 w-full rounded-xl px-6 py-3 font-semibold lg:w-auto lg:min-w-80 lg:self-start"
       >
         {pending ? t.app.starting : fmt(t.app.withCost, { label: ideas === undefined ? t.trial.create : fmt(t.app.createImages, { count: ideas * 2 }), cost })}
       </button>

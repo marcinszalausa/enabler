@@ -497,6 +497,9 @@ export const de: Messages = {
     tone: "Tonalität: ",
     pains: "Probleme",
     benefits: "Vorteile",
+    yourAds: "Deine Anzeigen",
+    edit: "Bearbeiten",
+    planCampaign: "Koordinierte Kampagne planen",
     noAds: "Noch keine Anzeigen",
     noAdsBody:
       "Erstelle dein erstes Set: 5 Anzeigen-Ansätze, jeweils als quadratisches (Feed) und hochformatiges (Stories/Reels) Bild, oder {videos} Videos im Hochformat mit {seconds} Sekunden, Sprecher, Untertiteln und Musik für Reels und TikTok.",

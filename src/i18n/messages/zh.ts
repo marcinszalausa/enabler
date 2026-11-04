@@ -480,6 +480,9 @@ export const zh: Messages = {
     tone: "语气：",
     pains: "痛点",
     benefits: "利益点",
+    yourAds: "你的广告",
+    edit: "编辑",
+    planCampaign: "规划协同营销活动",
     noAds: "还没有广告",
     noAdsBody:
       "生成你的第一批广告：5 种卖点，每种都有方形（信息流）和竖版（快拍/Reels）图片；或者生成 {videos} 条 {seconds} 秒竖版视频，带配音、字幕和音乐，适用于 Reels 和 TikTok。",

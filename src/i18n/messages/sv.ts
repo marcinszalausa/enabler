@@ -498,6 +498,9 @@ export const sv: Messages = {
     tone: "Ton: ",
     pains: "Problem",
     benefits: "Fördelar",
+    yourAds: "Dina annonser",
+    edit: "Redigera",
+    planCampaign: "Planera en samordnad kampanj",
     noAds: "Inga annonser än",
     noAdsBody:
       "Skapa din första omgång: 5 annonsvinklar, var och en som kvadratisk (flöde) och stående (stories/reels) bild, eller {videos} stående videor på {seconds} sekunder med speakerröst, textning och musik för Reels och TikTok.",

@@ -503,6 +503,9 @@ export const es: Messages = {
     tone: "Tono: ",
     pains: "Problemas",
     benefits: "Beneficios",
+    yourAds: "Tus anuncios",
+    edit: "Editar",
+    planCampaign: "Planificar una campaña coordinada",
     noAds: "Aún no hay anuncios",
     noAdsBody:
       "Genera tu primer lote: 5 enfoques, cada uno como imagen cuadrada (feed) y vertical (stories/reels), o {videos} vídeos verticales de {seconds} segundos con locución, subtítulos y música para Reels y TikTok.",

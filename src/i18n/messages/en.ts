@@ -493,6 +493,9 @@ export const en = {
     tone: "Tone: ",
     pains: "Pain points",
     benefits: "Benefits",
+    yourAds: "Your ads",
+    edit: "Edit",
+    planCampaign: "Plan a coordinated campaign",
     noAds: "No ads yet",
     noAdsBody:
       "Generate your first set: 5 ad angles, each as a square (feed) and a vertical (stories/reels) image, or {videos} vertical {seconds}-second videos with voiceover, captions and music for Reels and TikTok.",

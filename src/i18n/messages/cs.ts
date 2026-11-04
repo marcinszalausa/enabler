@@ -499,6 +499,9 @@ export const cs: Messages = {
     tone: "Tón: ",
     pains: "Problémy",
     benefits: "Přínosy",
+    yourAds: "Vaše reklamy",
+    edit: "Upravit",
+    planCampaign: "Naplánovat koordinovanou kampaň",
     noAds: "Zatím žádné reklamy",
     noAdsBody:
       "Vytvořte první sadu: 5 reklamních přístupů, každý jako čtvercový (feed) a svislý (stories/reels) obrázek, nebo {videos} videa na výšku po {seconds} sekundách s dabingem, titulky a hudbou pro Reels a TikTok.",

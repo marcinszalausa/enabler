@@ -499,6 +499,9 @@ export const nl: Messages = {
     tone: "Toon: ",
     pains: "Problemen",
     benefits: "Voordelen",
+    yourAds: "Je advertenties",
+    edit: "Bewerken",
+    planCampaign: "Plan een gecoördineerde campagne",
     noAds: "Nog geen advertenties",
     noAdsBody:
       "Maak je eerste set: 5 invalshoeken, elk als vierkant (feed) en staand (stories/reels) beeld, of {videos} staande video's van {seconds} seconden met voice-over, ondertitels en muziek voor Reels en TikTok.",

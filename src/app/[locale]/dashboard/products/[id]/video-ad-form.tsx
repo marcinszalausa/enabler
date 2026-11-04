@@ -18,9 +18,9 @@ import {
 import type { Quality } from "@/lib/quality";
 
 const field =
-  "w-full rounded-md border border-line-strong bg-raised px-3 py-2 text-sm outline-none transition focus:border-accent focus:ring-4 focus:ring-accent/20";
+  "w-full rounded-xl border border-line-strong bg-raised px-3 py-2 text-sm outline-none transition focus:border-accent focus:ring-4 focus:ring-accent/20";
 
-// The video button opens a short form for what the ad says and who says it.
+// Video choices: length, what the ad says and who says it, inside the create card.
 export function VideoAdForm({
   productId,
   campaignId,
@@ -28,7 +28,6 @@ export function VideoAdForm({
   label,
   language,
   quality,
-  initiallyOpen = false,
   credits,
 }: {
   productId: string;
@@ -39,30 +38,16 @@ export function VideoAdForm({
   quality: Quality;
   // Chosen next to the buttons; shared with image runs.
   language: string;
-  initiallyOpen?: boolean;
   credits?: number;
 }) {
-  const [open, setOpen] = useState(initiallyOpen);
   const [length, setLength] = useState<LengthKey>(DEFAULT_VIDEO_OPTIONS.length);
   const { t } = useI18n();
-  const { state, action, pending, requestId } = useGenerationAction(initialRequestId, () => setOpen(false));
-
-  if (!open) {
-    return (
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        className="rounded-xl border border-line-strong bg-raised px-4 py-2.5 font-medium transition hover:border-accent hover:text-accent"
-      >
-        {fmt(t.app.withCost, { label, cost: videoRunCost(length, quality) })}
-      </button>
-    );
-  }
+  const { state, action, pending, requestId } = useGenerationAction(initialRequestId);
 
   return (
     <form
       action={action}
-      className="flex w-full flex-col gap-4 rounded-xl border border-line bg-raised p-4 text-left text-sm sm:w-96"
+      className="flex w-full flex-col gap-3 text-start text-sm"
     >
       <input type="hidden" name="requestId" value={requestId} />
       <input type="hidden" name="productId" value={productId} />
@@ -71,7 +56,7 @@ export function VideoAdForm({
       <input type="hidden" name="quality" value={quality} />
 
       <p className="text-sm leading-relaxed text-muted">{fmt(t.onboard.videoChoice, { count: 2, seconds: length })}</p>
-      <details><summary className="min-h-11 cursor-pointer py-3 font-medium text-accent">{t.onboard.advanced}</summary><div className="flex flex-col gap-4 pt-2">
+      <details><summary className="min-h-11 cursor-pointer content-center font-medium text-accent">{t.onboard.advanced}</summary><div className="flex flex-col gap-4 pt-2">
       <label className="flex flex-col gap-1.5">
         <span className="font-medium">{t.app.message}</span>
         <textarea
@@ -88,7 +73,7 @@ export function VideoAdForm({
 
       <fieldset className="flex flex-col gap-1.5">
         <legend className="mb-1.5 font-medium">{t.app.length}</legend>
-        <div className="grid grid-cols-5 overflow-hidden rounded-md border border-line-strong">
+        <div className="grid grid-cols-5 overflow-hidden rounded-xl border border-line-strong">
           {(Object.keys(LENGTHS) as LengthKey[]).map((key) => (
             <label
               key={key}
@@ -151,7 +136,7 @@ export function VideoAdForm({
 
       <fieldset className="flex flex-col gap-1.5">
         <legend className="mb-1.5 font-medium">{t.app.energy}</legend>
-        <div className="grid grid-cols-3 overflow-hidden rounded-md border border-line-strong">
+        <div className="grid grid-cols-3 overflow-hidden rounded-xl border border-line-strong">
           {(Object.keys(ENERGIES) as (keyof typeof ENERGIES)[]).map((key) => (
             <label
               key={key}
@@ -187,24 +172,15 @@ export function VideoAdForm({
 
       </div></details>
       {credits !== undefined && <p data-video-balance role="status" className="rounded-lg bg-surface p-3 text-sm">{fmt(videoRunCost(length, quality)>credits?t.trial.notEnough:t.trial.afterVideo,{cost:videoRunCost(length, quality),remaining:Math.max(0,credits-videoRunCost(length, quality))})}</p>}
-      <div className="flex flex-wrap items-center gap-3">
-        <button
-          type="submit"
-          disabled={pending || (credits !== undefined && videoRunCost(length, quality)>credits)}
-          className="btn-primary rounded-lg px-4 py-2 font-medium"
-        >
-          {pending
-            ? t.app.starting
-            : fmt(t.app.withCost, { label, cost: videoRunCost(length, quality) })}
-        </button>
-        <button
-          type="button"
-          onClick={() => setOpen(false)}
-          className="text-muted underline underline-offset-4"
-        >
-          {t.app.cancel}
-        </button>
-      </div>
+      <button
+        type="submit"
+        disabled={pending || (credits !== undefined && videoRunCost(length, quality)>credits)}
+        className="btn-primary min-h-12 w-full rounded-xl px-6 py-3 font-semibold lg:w-auto lg:min-w-80 lg:self-start"
+      >
+        {pending
+          ? t.app.starting
+          : fmt(t.app.withCost, { label, cost: videoRunCost(length, quality) })}
+      </button>
       {state.error && (
         <p role="alert" className="text-danger">
           {state.error}

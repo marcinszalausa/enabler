@@ -497,6 +497,9 @@ export const tr: Messages = {
     tone: "Ton: ",
     pains: "Sorunlar",
     benefits: "Faydalar",
+    yourAds: "Reklamların",
+    edit: "Düzenle",
+    planCampaign: "Koordineli bir kampanya planla",
     noAds: "Henüz reklam yok",
     noAdsBody:
       "İlk setinizi oluşturun: her biri kare (akış) ve dikey (hikaye/reels) görsel olarak 5 reklam yaklaşımı ya da Reels ve TikTok için seslendirme, altyazı ve müzikli {videos} adet {seconds} saniyelik dikey video.",

@@ -504,6 +504,9 @@ export const ro: Messages = {
     tone: "Ton: ",
     pains: "Probleme",
     benefits: "Beneficii",
+    yourAds: "Reclamele tale",
+    edit: "Editează",
+    planCampaign: "Planifică o campanie coordonată",
     noAds: "Încă nu ai reclame",
     noAdsBody:
       "Generează primul set: 5 abordări, fiecare ca imagine pătrată (feed) și verticală (stories/reels), sau {videos} clipuri verticale de {seconds} secunde cu voce, subtitrări și muzică pentru Reels și TikTok.",

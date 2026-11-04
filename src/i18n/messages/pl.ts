@@ -499,6 +499,9 @@ export const pl: Messages = {
     tone: "Ton: ",
     pains: "Problemy",
     benefits: "Korzyści",
+    yourAds: "Twoje reklamy",
+    edit: "Edytuj",
+    planCampaign: "Zaplanuj spójną kampanię",
     noAds: "Nie masz jeszcze reklam",
     noAdsBody:
       "Wygeneruj pierwszy zestaw: 5 pomysłów na reklamy, każdy jako grafika kwadratowa (feed) i pionowa (stories/reels), albo {videos} pionowe filmy po {seconds} sekund z lektorem, napisami i muzyką na Reels i TikToka.",

@@ -488,6 +488,9 @@ export const ko: Messages = {
     tone: "톤: ",
     pains: "고민",
     benefits: "혜택",
+    yourAds: "내 광고",
+    edit: "수정",
+    planCampaign: "통합 캠페인 계획하기",
     noAds: "아직 광고가 없습니다",
     noAdsBody:
       "첫 세트를 만들어 보세요. 5가지 소구점을 각각 정사각형(피드)과 세로형(스토리/릴스) 이미지로, 또는 Reels와 TikTok용으로 내레이션·자막·음악이 들어간 {seconds}초 세로 영상 {videos}개를 만들 수 있습니다.",
