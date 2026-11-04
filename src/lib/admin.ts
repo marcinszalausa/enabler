@@ -89,6 +89,7 @@ export async function loadCustomer(workspaceId: string) {
     db.rpc("admin_credit_totals", { since: null }),
   ]);
   for (const r of [members, products, generations, posts, accounts, total]) if (r.error) throw r.error;
+  const grants = await creditGrants(workspaceId);
   const user = owner.data?.user;
   return {
     workspace,
@@ -99,5 +100,14 @@ export async function loadCustomer(workspaceId: string) {
     posts: posts.data ?? [],
     accounts: accounts.data ?? [],
     credits: credits(total.data).find((c) => c.workspace_id === workspaceId),
+    grants,
   };
+}
+
+export type CreditGrant = { id: string; workspace_id: string; admin_email: string | null; amount: number; note: string; balance_after: number; created_at: string };
+
+// Credits admins added or removed by hand. Empty until the grants SQL has run.
+export async function creditGrants(workspaceId: string | null): Promise<CreditGrant[]> {
+  const { data, error } = await createAdminClient().rpc("admin_credit_grant_history", { ws: workspaceId });
+  return error ? [] : ((data as CreditGrant[] | null) ?? []);
 }
