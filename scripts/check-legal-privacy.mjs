@@ -39,9 +39,10 @@ try{
   await page.goto("http://localhost:3115"+prefix+"/");
   await page.locator("#pricing").waitFor();
   assert.equal(await page.locator("[data-checkout-unavailable]").count(),0);
-  const paid=await page.locator('#pricing a[href$="/policies/billing"]').count();assert.equal(paid,2);
+  const paid=page.locator('#pricing a[href$="/pricing#compare-plan-features"]');assert.equal(await paid.count(),2);for(const link of await paid.all())assert.match(await link.innerText(),/^Explore /);
   const offers=await page.locator('script[type="application/ld+json"]').evaluateAll(xs=>xs.map(x=>JSON.parse(x.textContent)));
   assert.ok(!JSON.stringify(offers).includes('"price":29'));assert.ok(!JSON.stringify(offers).includes('"price":79'));
+  await page.goto("http://localhost:3115"+prefix+"/pricing");assert.ok(await page.locator('main a[href$="/policies/billing"]').count()>0,"Billing terms remain accessible from plan details");
   await page.goto("http://localhost:3115/login");
   await page.locator("[data-account-form]").waitFor();
   assert.equal(await page.locator("[data-checkout-unavailable]").count(),0);
