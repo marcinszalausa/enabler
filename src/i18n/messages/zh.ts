@@ -582,6 +582,7 @@ export const zh: Messages = {
     historyPlan: "套餐每月积分",
     historyPack: "积分包",
     historyFree: "免费积分",
+    historyAdjust: "Gooidy 发放的积分",
     historyReturned: "未完成，积分已退回",
     historyRunning: "进行中",
     renews: "将于 {date} 续订。积分每月补满。",

@@ -592,6 +592,7 @@ export const ja: Messages = {
     historyPlan: "プランの月間クレジット",
     historyPack: "クレジットパック",
     historyFree: "無料クレジット",
+    historyAdjust: "Gooidyからのクレジット",
     historyReturned: "完了しなかったため、クレジットを返却",
     historyRunning: "処理中",
     renews: "{date}に更新されます。クレジットは毎月補充されます。",

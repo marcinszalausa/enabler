@@ -603,6 +603,7 @@ export const tr: Messages = {
     historyPlan: "Aylık plan kredileri",
     historyPack: "Kredi paketi",
     historyFree: "Ücretsiz krediler",
+    historyAdjust: "Gooidy'den krediler",
     historyReturned: "Tamamlanmadı, krediler iade edildi",
     historyRunning: "Devam ediyor",
     renews: "{date} tarihinde yenilenir. Krediler her ay yenilenir.",

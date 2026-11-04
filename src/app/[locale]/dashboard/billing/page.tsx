@@ -378,6 +378,8 @@ function activityLabel(b: Messages["billing"], kind: string) {
       return b.historyPlan;
     case "pack":
       return b.historyPack;
+    case "adjust":
+      return b.historyAdjust;
     default:
       return b.historyFree;
   }

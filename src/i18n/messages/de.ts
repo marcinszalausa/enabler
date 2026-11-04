@@ -605,6 +605,7 @@ export const de: Messages = {
     historyPlan: "Monatliche Tarif-Credits",
     historyPack: "Credit-Paket",
     historyFree: "Kostenlose Credits",
+    historyAdjust: "Credits von Gooidy",
     historyReturned: "Nicht fertig geworden, Credits erstattet",
     historyRunning: "Läuft",
     renews: "Verlängert sich am {date}. Credits werden jeden Monat aufgefüllt.",

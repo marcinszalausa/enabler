@@ -594,6 +594,7 @@ export const ko: Messages = {
     historyPlan: "월간 요금제 크레딧",
     historyPack: "크레딧 팩",
     historyFree: "무료 크레딧",
+    historyAdjust: "Gooidy 크레딧",
     historyReturned: "완료되지 않아 크레딧 반환됨",
     historyRunning: "진행 중",
     renews: "{date}에 갱신됩니다. 크레딧은 매달 충전됩니다.",

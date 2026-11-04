@@ -599,6 +599,7 @@ export const en = {
     historyPlan: "Monthly plan credits",
     historyPack: "Credit pack",
     historyFree: "Free credits",
+    historyAdjust: "Credits from Gooidy",
     historyReturned: "Didn't finish, credits returned",
     historyRunning: "In progress",
     renews: "Renews on {date}. Credits top up each month.",

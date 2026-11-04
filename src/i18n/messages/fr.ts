@@ -611,6 +611,7 @@ export const fr: Messages = {
     historyPlan: "Crédits mensuels de l'offre",
     historyPack: "Pack de crédits",
     historyFree: "Crédits offerts",
+    historyAdjust: "Crédits de Gooidy",
     historyReturned: "Inachevé, crédits rendus",
     historyRunning: "En cours",
     renews: "Renouvellement le {date}. Les crédits sont rechargés chaque mois.",

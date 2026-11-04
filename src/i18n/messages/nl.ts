@@ -606,6 +606,7 @@ export const nl: Messages = {
     historyPlan: "Maandelijkse abonnementscredits",
     historyPack: "Creditpakket",
     historyFree: "Gratis credits",
+    historyAdjust: "Credits van Gooidy",
     historyReturned: "Niet afgerond, credits teruggegeven",
     historyRunning: "Bezig",
     renews: "Wordt verlengd op {date}. Credits worden elke maand aangevuld.",

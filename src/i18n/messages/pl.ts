@@ -606,6 +606,7 @@ export const pl: Messages = {
     historyPlan: "Miesięczne kredyty z planu",
     historyPack: "Pakiet kredytów",
     historyFree: "Darmowe kredyty",
+    historyAdjust: "Kredyty od Gooidy",
     historyReturned: "Nie ukończono, kredyty zwrócone",
     historyRunning: "W toku",
     renews: "Odnawia się {date}. Kredyty uzupełniają się co miesiąc.",

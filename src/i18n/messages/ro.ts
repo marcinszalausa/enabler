@@ -611,6 +611,7 @@ export const ro: Messages = {
     historyPlan: "Credite lunare din plan",
     historyPack: "Pachet de credite",
     historyFree: "Credite gratuite",
+    historyAdjust: "Credite de la Gooidy",
     historyReturned: "Nu s-a terminat, credite returnate",
     historyRunning: "În lucru",
     renews: "Se reînnoiește pe {date}. Creditele se reîncarcă în fiecare lună.",

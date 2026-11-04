@@ -588,6 +588,7 @@ export const ar: Messages = {
     historyPlan: "رصيد الخطة الشهري",
     historyPack: "حزمة رصيد",
     historyFree: "رصيد مجاني",
+    historyAdjust: "رصيد من Gooidy",
     historyReturned: "لم يكتمل، وتمت إعادة الرصيد",
     historyRunning: "قيد التنفيذ",
     renews: "تتجدد في {date}. يُعاد شحن الرصيد كل شهر.",

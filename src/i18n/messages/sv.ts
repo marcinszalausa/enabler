@@ -604,6 +604,7 @@ export const sv: Messages = {
     historyPlan: "Månadskrediter från planen",
     historyPack: "Kreditpaket",
     historyFree: "Gratiskrediter",
+    historyAdjust: "Krediter från Gooidy",
     historyReturned: "Blev inte klar, krediterna återförda",
     historyRunning: "Pågår",
     renews: "Förnyas {date}. Krediterna fylls på varje månad.",

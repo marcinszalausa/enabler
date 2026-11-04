@@ -602,6 +602,7 @@ export const hi: Messages = {
     historyPlan: "मासिक प्लान क्रेडिट",
     historyPack: "क्रेडिट पैक",
     historyFree: "मुफ़्त क्रेडिट",
+    historyAdjust: "Gooidy से क्रेडिट",
     historyReturned: "पूरा नहीं हुआ, क्रेडिट लौटा दिए गए",
     historyRunning: "जारी है",
     renews: "{date} को रिन्यू होगा। क्रेडिट हर महीने भर जाते हैं।",

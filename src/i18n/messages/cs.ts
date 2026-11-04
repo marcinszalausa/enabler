@@ -605,6 +605,7 @@ export const cs: Messages = {
     historyPlan: "Měsíční kredity z tarifu",
     historyPack: "Balíček kreditů",
     historyFree: "Kredity zdarma",
+    historyAdjust: "Kredity od Gooidy",
     historyReturned: "Nedokončeno, kredity vráceny",
     historyRunning: "Probíhá",
     renews: "Obnoví se {date}. Kredity se každý měsíc doplní.",
