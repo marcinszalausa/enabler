@@ -34,11 +34,17 @@ export default async function DashboardLayout({
         }
       >
         <Suspense fallback={null}>
-          <CreditsLink locale={locale} />
+          <CreditsLink locale={locale} className="hidden sm:inline-flex" />
         </Suspense>
         <AccountMenu admin={<Suspense fallback={null}><AdminLink /></Suspense>} />
       </AppBar>
-      <div id="app-content" tabIndex={-1} className="flex flex-1 flex-col focus:outline-none">{children}</div>
+      <div id="app-content" tabIndex={-1} className="flex flex-1 flex-col focus:outline-none">
+        {/* Phones: the top bar has no room, so the balance sits just below it. */}
+        <div className="mx-auto -mb-2 flex w-full max-w-5xl justify-end px-3 pt-1 sm:hidden">
+          <Suspense fallback={null}>
+            <CreditsLink locale={locale} className="inline-flex [&_.credits-word]:inline" />
+          </Suspense>
+        </div>{children}</div>
       <Spotlight />
     </div>
   );
