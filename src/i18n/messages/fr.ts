@@ -679,4 +679,19 @@ export const fr: Messages = {
       couldnt: "Publication impossible. Veuillez réessayer.",
     },
   },
+  why: {
+    title: "Conçu pour les entreprises qui soignent leur image",
+    sub: "Gooidy transforme la page de votre produit en publicités dignes de votre marque, puis vous aide à être présent chaque semaine, dans les langues de vos clients.",
+    cards: [
+      { title: "Choisissez votre qualité", body: "Bonne, Meilleure ou Maximale pour chaque publicité, avec les meilleurs modèles d'image et de vidéo. Vous voyez le coût exact en crédits avant toute création." },
+      { title: "Votre produit, tel qu'il est", body: "Nous partons de la vraie page de votre produit et conservons sa couleur, sa forme et ses détails. Chaque image et chaque vidéo finale sont vérifiées automatiquement avant de vous parvenir." },
+      { title: "Parlez la langue de vos clients", body: "Publicités, légendes et voix off en 17 langues, de l'espagnol et du polonais au japonais, à l'hindi et à l'arabe." },
+      { title: "Votre marque, mémorisée", body: "Enregistrez une fois votre logo, vos couleurs, votre police et votre ton. Chaque nouvelle campagne démarre aux couleurs de votre marque." },
+      { title: "Soyez présent chaque semaine", body: "Planifiez des campagnes, programmez vos publications sur 10 réseaux ou activez le pilote automatique, puis voyez quelles publications ont généré des clics. Les liens produit sont balisés pour que les statistiques de votre boutique montrent les visites de chaque publication." },
+      { title: "Honnête dès le premier clic", body: "Des prix clairs, des crédits rendus quand une publicité ne peut pas être livrée, et aucun avis, remise ou argument inventé dans vos publicités." },
+    ],
+    soon: "Bientôt disponible",
+    soonTitle: "Boost",
+    soonBody: "Montrez votre meilleure publicité à de nouveaux acheteurs sur Facebook et Instagram, en un geste.",
+  },
 };

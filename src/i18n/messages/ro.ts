@@ -669,4 +669,19 @@ export const ro: Messages = {
       couldnt: "Publicarea a eșuat. Încearcă din nou.",
     },
   },
+  why: {
+    title: "Creat pentru afacerile cărora le pasă cum arată",
+    sub: "Gooidy transformă pagina produsului tău în reclame demne de brandul tău și te ajută să fii prezent în fiecare săptămână, în limbile clienților tăi.",
+    cards: [
+      { title: "Alege calitatea", body: "Bună, Mai bună sau Cea mai bună pentru fiecare reclamă, realizată cu modele de top pentru imagine și video. Vezi costul exact în credite înainte de a se crea ceva." },
+      { title: "Produsul tău, așa cum este", body: "Pornim de la pagina reală a produsului și îi păstrăm culoarea, forma și detaliile. Fiecare imagine și fiecare video finalizat sunt verificate automat înainte să ajungă la tine." },
+      { title: "Vorbește limba clienților tăi", body: "Reclame, descrieri și voce din off în 17 limbi, de la spaniolă și poloneză la japoneză, hindi și arabă." },
+      { title: "Brandul tău, memorat", body: "Salvează o singură dată logo-ul, culorile, fontul și tonul brandului. Fiecare campanie nouă pornește în stilul tău." },
+      { title: "Fii prezent în fiecare săptămână", body: "Planifică campanii, programează postări pe 10 rețele sau pornește pilotul automat, apoi vezi ce postări au adus clicuri. Linkurile de produs sunt etichetate, astfel încât statisticile magazinului arată vizitele din fiecare postare." },
+      { title: "Onest de la primul clic", body: "Prețuri clare, credite returnate când o reclamă nu poate fi livrată și fără recenzii, reduceri sau afirmații inventate în reclamele tale." },
+    ],
+    soon: "În curând",
+    soonTitle: "Boost",
+    soonBody: "Arată cea mai bună reclamă a ta noilor cumpărători pe Facebook și Instagram, cu o singură atingere.",
+  },
 };

@@ -677,4 +677,19 @@ export const it: Messages = {
       couldnt: "Pubblicazione non riuscita. Riprova.",
     },
   },
+  why: {
+    title: "Pensato per le aziende che curano la propria immagine",
+    sub: "Gooidy trasforma la pagina del tuo prodotto in annunci all'altezza del tuo brand e ti aiuta a farti vedere ogni settimana, nelle lingue dei tuoi clienti.",
+    cards: [
+      { title: "Scegli la qualità", body: "Buona, Migliore o Massima per ogni annuncio, con i migliori modelli per immagini e video. Vedi il costo esatto in crediti prima di creare qualsiasi cosa." },
+      { title: "Il tuo prodotto, com'è davvero", body: "Partiamo dalla vera pagina del tuo prodotto e ne manteniamo colore, forma e dettagli. Ogni immagine e ogni video finito vengono controllati automaticamente prima di arrivare a te." },
+      { title: "Parla la lingua dei tuoi clienti", body: "Annunci, didascalie e voci fuori campo in 17 lingue, dallo spagnolo e polacco al giapponese, hindi e arabo." },
+      { title: "Il tuo brand, ricordato", body: "Salva una volta logo, colori, font e tono di voce. Ogni nuova campagna parte già in linea con il tuo brand." },
+      { title: "Fatti vedere ogni settimana", body: "Pianifica campagne, programma post su 10 social o attiva il pilota automatico, poi scopri quali post hanno ottenuto clic. I link ai prodotti sono tracciati, così le statistiche del tuo negozio mostrano le visite da ogni post." },
+      { title: "Onesti fin dal primo clic", body: "Prezzi chiari, crediti restituiti quando un annuncio non può essere consegnato e nessuna recensione, sconto o promessa inventata nei tuoi annunci." },
+    ],
+    soon: "In arrivo",
+    soonTitle: "Boost",
+    soonBody: "Mostra il tuo annuncio migliore a nuovi clienti su Facebook e Instagram, con un tocco.",
+  },
 };

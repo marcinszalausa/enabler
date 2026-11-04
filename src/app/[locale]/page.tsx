@@ -66,6 +66,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
         {runs.length > 0 && <WhereItRuns t={t} runs={runs} />}
         {runs.length > 0 && <Examples t={t} locale={locale} runs={runs} />}
         <Features t={t} run={run} />
+        <WhyGooidy t={t} />
         <Pricing t={t} locale={locale} />
         <Faq t={t} />
         <FinalCta t={t} locale={locale} />
@@ -469,6 +470,38 @@ function Features({ t, run }: { t: Messages; run?: ShowcaseRun }) {
             ))}
           </ul>
         </div>
+      </div>
+    </section>
+  );
+}
+
+// Why businesses pick Gooidy: only what is live, plus one card marked soon.
+function WhyGooidy({ t }: { t: Messages }) {
+  return (
+    <section id="why" className="reveal mx-auto max-w-6xl scroll-mt-16 px-4 pb-24">
+      <SectionHeading title={t.why.title} sub={t.why.sub} />
+      <ol className="stagger mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {t.why.cards.map((card, i) => (
+          <li key={card.title} className="edge spot lift p-7">
+            <span
+              aria-hidden
+              className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-accent-soft font-mono text-sm text-accent"
+            >
+              {i + 1}
+            </span>
+            <h3 className="mt-4 text-lg font-medium">{card.title}</h3>
+            <p className="mt-1.5 text-sm leading-relaxed text-muted">{card.body}</p>
+          </li>
+        ))}
+      </ol>
+      <div className="mt-5 flex flex-col gap-2 rounded-2xl border border-dashed border-line p-6 sm:flex-row sm:items-center sm:gap-4">
+        <span className="w-fit rounded-full border border-line bg-surface px-3 py-1 text-xs font-medium text-muted">
+          {t.why.soon}
+        </span>
+        <p className="text-sm">
+          <span className="font-medium">{t.why.soonTitle}</span>
+          <span className="text-muted"> · {t.why.soonBody}</span>
+        </p>
       </div>
     </section>
   );

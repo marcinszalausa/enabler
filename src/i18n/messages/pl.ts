@@ -672,4 +672,19 @@ export const pl: Messages = {
       couldnt: "Nie udało się opublikować. Spróbuj ponownie.",
     },
   },
+  why: {
+    title: "Dla firm, którym zależy na wizerunku",
+    sub: "Gooidy zamienia stronę Twojego produktu w reklamy godne Twojej marki i pomaga Ci być obecnym co tydzień, w językach Twoich klientów.",
+    cards: [
+      { title: "Wybierz jakość", body: "Dobra, Lepsza lub Najlepsza dla każdej reklamy, z czołowymi modelami obrazu i wideo. Dokładny koszt w kredytach widzisz, zanim cokolwiek powstanie." },
+      { title: "Twój produkt taki, jaki jest", body: "Zaczynamy od prawdziwej strony produktu i zachowujemy jego kolor, kształt i detale. Każdy obraz i gotowy film jest automatycznie sprawdzany, zanim do Ciebie trafi." },
+      { title: "Mów językiem swoich klientów", body: "Reklamy, opisy i lektor w filmach w 17 językach, od hiszpańskiego i polskiego po japoński, hindi i arabski." },
+      { title: "Twoja marka zapamiętana", body: "Zapisz raz logo, kolory, czcionkę i ton marki. Każda nowa kampania od razu jest w Twoim stylu." },
+      { title: "Bądź widoczny co tydzień", body: "Planuj kampanie, planuj posty w 10 sieciach lub włącz autopilota, a potem zobacz, które posty przyniosły kliknięcia. Linki do produktów są oznaczane, więc analityka Twojego sklepu pokazuje wizyty z każdego posta." },
+      { title: "Uczciwie od pierwszego kliknięcia", body: "Jasne ceny, zwrot kredytów, gdy reklamy nie da się dostarczyć, i żadnych zmyślonych opinii, rabatów ani obietnic w Twoich reklamach." },
+    ],
+    soon: "Wkrótce",
+    soonTitle: "Boost",
+    soonBody: "Pokaż swoją najlepszą reklamę nowym klientom na Facebooku i Instagramie jednym dotknięciem.",
+  },
 };

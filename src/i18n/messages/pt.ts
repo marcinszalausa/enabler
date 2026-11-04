@@ -674,4 +674,19 @@ export const pt: Messages = {
       couldnt: "Não foi possível publicar. Tente novamente.",
     },
   },
+  why: {
+    title: "Feito para negócios que se importam com a sua imagem",
+    sub: "O Gooidy transforma a página do seu produto em anúncios à altura da sua marca e ajuda você a aparecer toda semana, nos idiomas dos seus clientes.",
+    cards: [
+      { title: "Escolha a sua qualidade", body: "Boa, Melhor ou Máxima em cada anúncio, com os principais modelos de imagem e vídeo. Você vê o custo exato em créditos antes de qualquer criação." },
+      { title: "Seu produto, como ele é", body: "Partimos da página real do seu produto e mantemos cor, formato e detalhes. Cada imagem e cada vídeo finalizado são verificados automaticamente antes de chegar até você." },
+      { title: "Fale a língua dos seus clientes", body: "Anúncios, legendas e narrações em 17 idiomas, do espanhol e polonês ao japonês, hindi e árabe." },
+      { title: "Sua marca, lembrada", body: "Salve seu logotipo, cores, fonte e tom de voz uma vez. Cada nova campanha já começa com a sua marca." },
+      { title: "Apareça toda semana", body: "Planeje campanhas, agende posts em 10 redes ou ative o piloto automático e veja quais posts geraram cliques. Os links de produto são marcados para que a análise da sua loja mostre as visitas de cada post." },
+      { title: "Honestidade desde o primeiro clique", body: "Preços claros, créditos devolvidos quando um anúncio não pode ser entregue e nenhuma avaliação, desconto ou promessa inventada nos seus anúncios." },
+    ],
+    soon: "Em breve",
+    soonTitle: "Boost",
+    soonBody: "Mostre seu melhor anúncio a novos compradores no Facebook e no Instagram com um toque.",
+  },
 };

@@ -663,4 +663,19 @@ export const en = {
       couldnt: "Couldn't publish. Please try again.",
     },
   },
+  why: {
+    title: "Built for businesses that care how they look",
+    sub: "Gooidy turns your product page into ads worthy of your brand, then helps you show up every week, in the languages your customers speak.",
+    cards: [
+      { title: "Choose your quality", body: "Good, Better or Best on every ad, made with leading image and video models. You see the exact credit cost before anything is made." },
+      { title: "Your product, as it really is", body: "We start from your real product page and keep its color, shape and details. Every image and finished video is checked automatically before it reaches you." },
+      { title: "Speak your customers' language", body: "Ads, captions and video voiceovers in 17 languages, from Spanish and Polish to Japanese, Hindi and Arabic." },
+      { title: "Your brand, remembered", body: "Save your logo, colors, font and brand voice once. Every new campaign starts on brand." },
+      { title: "Show up every week", body: "Plan campaigns, schedule posts on 10 networks or turn on autopilot, then see which posts earned clicks. Product links are tagged so your store analytics show visits from each post." },
+      { title: "Honest from the first click", body: "Clear prices, credits returned when an ad can't be delivered, and no invented reviews, discounts or claims in your ads." },
+    ],
+    soon: "Coming soon",
+    soonTitle: "Boost",
+    soonBody: "Put your best ad in front of new buyers on Facebook and Instagram, with one tap.",
+  },
 };
