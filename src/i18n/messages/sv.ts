@@ -757,6 +757,8 @@ export const sv: Messages = {
     soonBody: "Visa din bästa annons för nya köpare på Facebook och Instagram med ett tryck.",
   },
   remove: {
+    more: "Fler åtgärder",
+    openProduct: "Öppna produkt",
     deleteAd: "Radera annons",
     deleteProduct: "Radera produkt",
     adTitle: "Radera den här annonsen?",

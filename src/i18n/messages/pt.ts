@@ -760,6 +760,8 @@ export const pt: Messages = {
     soonBody: "Mostre seu melhor anúncio a novos compradores no Facebook e no Instagram com um toque.",
   },
   remove: {
+    more: "Mais ações",
+    openProduct: "Abrir produto",
     deleteAd: "Excluir anúncio",
     deleteProduct: "Excluir produto",
     adTitle: "Excluir este anúncio?",

@@ -756,6 +756,8 @@ export const tr: Messages = {
     soonBody: "En iyi reklamınızı tek dokunuşla Facebook ve Instagram'da yeni alıcılara gösterin.",
   },
   remove: {
+    more: "Diğer işlemler",
+    openProduct: "Ürünü aç",
     deleteAd: "Reklamı sil",
     deleteProduct: "Ürünü sil",
     adTitle: "Bu reklam silinsin mi?",

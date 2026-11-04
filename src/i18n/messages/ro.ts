@@ -756,6 +756,8 @@ export const ro: Messages = {
     soonBody: "Arată cea mai bună reclamă a ta noilor cumpărători pe Facebook și Instagram, cu o singură atingere.",
   },
   remove: {
+    more: "Mai multe acțiuni",
+    openProduct: "Deschide produsul",
     deleteAd: "Șterge reclama",
     deleteProduct: "Șterge produsul",
     adTitle: "Ștergi această reclamă?",

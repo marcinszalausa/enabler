@@ -744,6 +744,8 @@ export const ja: Messages = {
     soonBody: "ワンタップで、最高の広告をFacebookとInstagramの新しいお客様に届けます。",
   },
   remove: {
+    more: "その他の操作",
+    openProduct: "商品を開く",
     deleteAd: "広告を削除",
     deleteProduct: "商品を削除",
     adTitle: "この広告を削除しますか？",

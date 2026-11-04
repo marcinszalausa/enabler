@@ -749,6 +749,8 @@ export const en = {
     soonBody: "Put your best ad in front of new buyers on Facebook and Instagram, with one tap.",
   },
   remove: {
+    more: "More actions",
+    openProduct: "Open product",
     deleteAd: "Delete ad",
     deleteProduct: "Delete product",
     adTitle: "Delete this ad?",

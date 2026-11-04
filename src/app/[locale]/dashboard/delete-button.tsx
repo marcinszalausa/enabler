@@ -18,24 +18,49 @@ export function DeleteButton({
   id,
   onDeleted,
   className,
-  iconOnly = false,
 }: {
   target: "ad" | "product";
   id: string;
   onDeleted?: () => void;
   className?: string;
-  // Just the bin icon, named for screen readers (used on product cards).
-  iconOnly?: boolean;
+}) {
+  const { t } = useI18n();
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <button
+        type="button"
+        data-delete={target}
+        onClick={() => setOpen(true)}
+        className={className ?? "inline-flex min-h-11 items-center gap-1.5 rounded-xl px-3 text-sm text-muted transition hover:text-danger"}
+      >
+        <TrashIcon />
+        {target === "ad" ? t.remove.deleteAd : t.remove.deleteProduct}
+      </button>
+      {open && <DeleteDialog target={target} id={id} onClose={() => setOpen(false)} onDeleted={onDeleted} />}
+    </>
+  );
+}
+
+// The confirm step. Mounted only while asked for: a grid of cards stays
+// light, and other dialogs on the page stay the only ones.
+export function DeleteDialog({
+  target,
+  id,
+  onClose,
+  onDeleted,
+}: {
+  target: "ad" | "product";
+  id: string;
+  onClose: () => void;
+  onDeleted?: () => void;
 }) {
   const { t } = useI18n();
   const r = t.remove;
   const dialog = useRef<HTMLDialogElement>(null);
-  // The dialog is only in the page while it is asked for: a grid of ads
-  // stays light, and other dialogs on the page stay the only ones.
-  const [open, setOpen] = useState(false);
   useEffect(() => {
-    if (open && !dialog.current?.open) dialog.current?.showModal();
-  }, [open]);
+    if (!dialog.current?.open) dialog.current?.showModal();
+  }, []);
   const [state, action, pending] = useActionState<DeleteState, FormData>(
     target === "ad" ? deleteAdAction : deleteProductAction,
     { error: null, done: false },
@@ -49,48 +74,36 @@ export function DeleteButton({
       after.current?.();
     }
   }, [state]);
-  const label = target === "ad" ? r.deleteAd : r.deleteProduct;
   return (
-    <>
-      <button
-        type="button"
-        data-delete={target}
-        onClick={() => setOpen(true)}
-        aria-label={iconOnly ? label : undefined}
-        title={iconOnly ? label : undefined}
-        className={className ?? "inline-flex min-h-11 items-center gap-1.5 rounded-xl px-3 text-sm text-muted transition hover:text-danger"}
-      >
-        <TrashIcon />
-        {!iconOnly && label}
-      </button>
-      {open && <dialog
-        ref={dialog}
-        onClose={() => setOpen(false)}
-        aria-labelledby={`delete-${id}`}
-        onClick={(e) => { if (e.target === dialog.current && !pending) dialog.current.close(); }}
-        className="m-auto w-[min(28rem,calc(100vw-2rem))] rounded-2xl border border-line bg-bg p-5 text-fg backdrop:bg-black/60 sm:p-6"
-      >
-        <form action={action}>
-          <input type="hidden" name={target === "ad" ? "creativeId" : "productId"} value={id} />
-          <h2 id={`delete-${id}`} className="text-lg font-semibold">
-            {target === "ad" ? r.adTitle : r.productTitle}
-          </h2>
-          <p className="mt-2 text-sm leading-relaxed text-muted">
-            {target === "ad" ? r.adBody : r.productBody}
-          </p>
-          <p className="mt-2 text-sm leading-relaxed text-muted">{r.history}</p>
-          {state.error && <p role="alert" className="mt-3 text-sm text-danger">{state.error}</p>}
-          <div className="mt-5 flex flex-wrap justify-end gap-3">
-            <button type="button" autoFocus disabled={pending} onClick={() => dialog.current?.close()} className="inline-flex min-h-11 items-center rounded-xl border border-line px-4 text-sm font-medium">
-              {r.keep}
-            </button>
-            <button type="submit" data-delete-confirm disabled={pending} className="inline-flex min-h-11 items-center gap-1.5 rounded-xl bg-danger px-4 text-sm font-medium text-bg disabled:opacity-60">
-              <TrashIcon />
-              {pending ? r.deleting : r.confirm}
-            </button>
-          </div>
-        </form>
-      </dialog>}
-    </>
+    <dialog
+      ref={dialog}
+      onClose={onClose}
+      aria-labelledby={`delete-${id}`}
+      onClick={(e) => { if (e.target === dialog.current && !pending) dialog.current.close(); }}
+      className="m-auto w-[min(28rem,calc(100vw-2rem))] rounded-2xl border border-line bg-bg p-5 text-fg shadow-2xl backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:p-6"
+    >
+      <form action={action}>
+        <input type="hidden" name={target === "ad" ? "creativeId" : "productId"} value={id} />
+        <span className="flex h-11 w-11 items-center justify-center rounded-full bg-danger-bg text-danger" aria-hidden>
+          <TrashIcon />
+        </span>
+        <h2 id={`delete-${id}`} className="mt-4 text-lg font-semibold">
+          {target === "ad" ? r.adTitle : r.productTitle}
+        </h2>
+        <p className="mt-2 text-sm leading-relaxed text-muted">
+          {target === "ad" ? r.adBody : r.productBody}
+        </p>
+        <p className="mt-2 text-sm leading-relaxed text-muted">{r.history}</p>
+        {state.error && <p role="alert" className="mt-3 text-sm text-danger">{state.error}</p>}
+        <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+          <button type="button" autoFocus disabled={pending} onClick={() => dialog.current?.close()} className="inline-flex min-h-11 items-center justify-center rounded-xl border border-line px-4 text-sm font-medium hover:bg-surface">
+            {r.keep}
+          </button>
+          <button type="submit" data-delete-confirm disabled={pending} className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-xl bg-danger px-4 text-sm font-medium text-bg disabled:opacity-60">
+            {pending ? r.deleting : r.confirm}
+          </button>
+        </div>
+      </form>
+    </dialog>
   );
 }

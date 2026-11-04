@@ -755,6 +755,8 @@ export const hi: Messages = {
     soonBody: "एक टैप में अपना सबसे अच्छा विज्ञापन Facebook और Instagram पर नए खरीदारों को दिखाएँ।",
   },
   remove: {
+    more: "और विकल्प",
+    openProduct: "प्रोडक्ट खोलें",
     deleteAd: "विज्ञापन हटाएँ",
     deleteProduct: "प्रोडक्ट हटाएँ",
     adTitle: "यह विज्ञापन हटाएँ?",
