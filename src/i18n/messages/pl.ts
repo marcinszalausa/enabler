@@ -148,6 +148,10 @@ export const pl: Messages = {
     languagesTitle: "Sprzedawaj w języku swoich klientów",
     languagesBody:
       "Każda reklama jest pisana w wybranym języku, tak jak napisałby ją ktoś stamtąd, więc możesz sprzedawać poza swoim rynkiem. Reklamy wideo też mówią w tym języku, z pasującymi napisami.",
+    tierTitle: "Wybierz jakość każdej reklamy",
+    tierSub: "Ten sam produkt na każdym poziomie, zrobiony przez Gooidy i pokazany bez poprawek. Wyższe poziomy korzystają z najwyżej ocenianych modeli AI.",
+    tierPerImage: "{count} kredytów za grafikę",
+    tierPerSecond: "{count} kredytów za sekundę wideo",
     pricingTitle: "Proste ceny, które rosną razem z Tobą",
     pricingSub: "Zacznij za darmo. Zmień plan, gdy Twój biznes rośnie.",
     popular: "Popularny",
@@ -504,6 +508,7 @@ export const pl: Messages = {
     lengthHelp: "7–15 s pasuje do Reels i Stories, 20–30 s do TikToka.",
     quality: "Jakość",
     qualities: { good: "Dobra", better: "Lepsza", best: "Najlepsza" },
+    qualityExample: "Przykład w tej jakości",
     qualityHelp: "Wyższa jakość to nowsze modele AI i więcej kredytów. Najlepsza korzysta z najwyżej ocenianych modeli, by reklamy były najostrzejsze i najbardziej realistyczne.",
     genders: { female: "Kobiecy", male: "Męski" },
     energies: { calm: "Spokojna", upbeat: "Pogodna", high: "Dużo energii" },

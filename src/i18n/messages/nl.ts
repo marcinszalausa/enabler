@@ -148,6 +148,10 @@ export const nl: Messages = {
     languagesTitle: "Verkoop in de taal van je koper",
     languagesBody:
       "Elke advertentie wordt geschreven in de taal die je kiest, zoals een local het zou schrijven, zodat je buiten je eigen markt kunt verkopen. Videoadvertenties spreken die taal ook, met bijpassende ondertitels.",
+    tierTitle: "Kies de kwaliteit van elke advertentie",
+    tierSub: "Hetzelfde product op elk niveau, gemaakt door Gooidy en onbewerkt getoond. Hogere niveaus gebruiken de hoogst gewaardeerde AI-modellen.",
+    tierPerImage: "{count} credits per beeld",
+    tierPerSecond: "{count} credits per videoseconde",
     pricingTitle: "Eenvoudige prijzen die met je meegroeien",
     pricingSub: "Begin gratis. Upgrade wanneer je bedrijf groeit.",
     popular: "Populair",
@@ -504,6 +508,7 @@ export const nl: Messages = {
     lengthHelp: "7–15 s past bij Reels en Stories, 20–30 s bij TikTok.",
     quality: "Kwaliteit",
     qualities: { good: "Goed", better: "Beter", best: "Best" },
+    qualityExample: "Voorbeeld in deze kwaliteit",
     qualityHelp: "Hogere kwaliteit gebruikt nieuwere AI-modellen en meer credits. Best gebruikt de hoogst gewaardeerde modellen voor de scherpste, meest levensechte advertenties.",
     genders: { female: "Vrouw", male: "Man" },
     energies: { calm: "Rustig", upbeat: "Vrolijk", high: "Veel energie" },

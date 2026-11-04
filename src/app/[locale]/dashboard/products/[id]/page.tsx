@@ -19,7 +19,7 @@ import {
 } from "@/lib/video-options";
 import { getBrandKit } from "@/lib/brand-kit";
 import { DEFAULT_LANGUAGE, isLanguageKey } from "@/lib/languages";
-import { GenerateControls } from "./generate-controls";
+import { GenerateControls, type TierExampleIds } from "./generate-controls";
 import { AutoRefresh } from "./auto-refresh";
 import { BackLink, EmptyState } from "../../ui";
 import {
@@ -36,7 +36,8 @@ import {
   parseSlots,
   toLocal,
 } from "@/lib/social/schedule";
-import { isShowcaseAdmin } from "@/lib/showcase";
+import { getTierExamples, isShowcaseAdmin } from "@/lib/showcase";
+import { QUALITIES } from "@/lib/quality";
 import { isLocale } from "@/i18n/config";
 import { getMessages } from "@/i18n/messages";
 import { AppText } from "../../i18n-text";
@@ -136,6 +137,13 @@ async function Product({
     (g) => g.status === "queued" || g.status === "running",
   );
 
+  // One real showcased ad per quality tier, shown beside the tier picker.
+  const [imageTiers, videoTiers] = await Promise.all([getTierExamples("image_ads"), getTierExamples("video_ads")]);
+  const tierExamples = {
+    image: Object.fromEntries(QUALITIES.map((q) => [q, (imageTiers[q]?.ads.find((a) => a.aspect === "1:1") ?? imageTiers[q]?.ads[0])?.id ?? null])),
+    video: Object.fromEntries(QUALITIES.map((q) => [q, videoTiers[q]?.ads[0]?.id ?? null])),
+  } as TierExampleIds;
+
   return (
     <>
       <AutoRefresh
@@ -177,6 +185,7 @@ async function Product({
             imageRequestId={randomUUID()}
             videoRequestId={randomUUID()}
             productId={product.id}
+            examples={tierExamples}
             imageCost={GENERATION_COST}
             videoCost={videoRunCost(DEFAULT_VIDEO_OPTIONS.length)}
             videoLabel={fmt(t.app.generateVideos, {

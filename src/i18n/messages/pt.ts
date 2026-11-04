@@ -151,6 +151,10 @@ export const pt: Messages = {
       "Cada anúncio é escrito no idioma que você escolher, do jeito que um nativo escreveria, para você vender além do seu mercado. Os anúncios em vídeo também falam esse idioma, com legendas combinando.",
     pricingTitle: "Preços simples que crescem com você",
     pricingSub: "Comece grátis. Faça upgrade conforme seu negócio cresce.",
+    tierTitle: "Escolha a qualidade de cada anúncio",
+    tierSub: "O mesmo produto em cada nível, feito pelo Gooidy e sem edição. Os níveis mais altos usam os modelos de IA mais bem avaliados.",
+    tierPerImage: "{count} créditos por imagem",
+    tierPerSecond: "{count} créditos por segundo de vídeo",
     popular: "Popular",
     perMonth: " / mês",
     plans: [
@@ -507,6 +511,7 @@ export const pt: Messages = {
     quality: "Qualidade",
     qualities: { good: "Boa", better: "Melhor", best: "Máxima" },
     qualityHelp: "Mais qualidade usa modelos de IA mais novos e mais créditos. Máxima usa os modelos mais bem avaliados para os anúncios mais nítidos e realistas.",
+    qualityExample: "Exemplo nesta qualidade",
     genders: { female: "Feminina", male: "Masculina" },
     energies: { calm: "Calma", upbeat: "Animada", high: "Muita energia" },
     people: {

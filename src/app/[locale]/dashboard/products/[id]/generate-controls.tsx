@@ -10,6 +10,9 @@ import { imageRunCost } from "@/lib/image-pricing";
 import { DEFAULT_VIDEO_OPTIONS, videoRunCost } from "@/lib/video-options";
 import { DEFAULT_IMAGE_QUALITY, DEFAULT_VIDEO_QUALITY, QUALITIES, type Quality } from "@/lib/quality";
 
+// A real showcased ad per tier: creative ids, null where none is shown yet.
+export type TierExampleIds = Record<"image" | "video", Record<Quality, string | null>>;
+
 // One language for the next run, image or video. Starts at the language the
 // product page is written in.
 export function GenerateControls({
@@ -21,6 +24,7 @@ export function GenerateControls({
   initialKind,
   credits,
   freeTrial = false,
+  examples,
 }: {
   productId: string;
   imageRequestId: string;
@@ -33,6 +37,7 @@ export function GenerateControls({
   initialKind?: "image" | "video";
   credits?: number;
   freeTrial?: boolean;
+  examples?: TierExampleIds;
 }) {
   const [language, setLanguage] = useState<LanguageKey>(defaultLanguage);
   const { t } = useI18n();
@@ -44,6 +49,7 @@ export function GenerateControls({
     video: affordable(DEFAULT_VIDEO_QUALITY, (q) => videoRunCost(DEFAULT_VIDEO_OPTIONS.length, q), credits),
   }));
   const quality = qualities[kind];
+  const example = examples?.[kind][quality] ?? null;
 
   return (
     <div className="flex flex-col items-start gap-2 lg:items-end">
@@ -75,6 +81,16 @@ export function GenerateControls({
           </div>
         </div>
         <span className="max-w-sm text-xs text-muted lg:text-end">{t.app.qualityHelp}</span>
+        {example && (
+          <a data-quality-example href={kind === "image" ? `/api/creatives/${example}/image?layout=face-aware-v2` : `/api/creatives/${example}/video`}
+            target="_blank" rel="noreferrer" className="flex items-center gap-3 rounded-xl border border-line p-2 pe-3 text-xs text-muted transition hover:border-accent hover:text-accent lg:flex-row-reverse">
+            {kind === "image"
+              // eslint-disable-next-line @next/next/no-img-element
+              ? <img key={example} src={`/api/creatives/${example}/image?layout=face-aware-v2&preview=1`} alt="" width={72} height={72} className="size-18 rounded-lg bg-surface object-cover" />
+              : <video key={example} src={`/api/creatives/${example}/video`} muted loop autoPlay playsInline preload="metadata" className="h-24 w-14 rounded-lg bg-surface object-cover" />}
+            <span>{t.app.qualityExample} · {t.app.qualities[quality]}</span>
+          </a>
+        )}
       </fieldset>
       <label className="flex max-w-full flex-wrap items-center gap-2 text-sm">
         <span className="text-muted">{t.app.adLanguage}</span>

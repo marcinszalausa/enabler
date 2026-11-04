@@ -148,6 +148,10 @@ export const ro: Messages = {
     languagesTitle: "Vinde în limba cumpărătorului",
     languagesBody:
       "Fiecare reclamă este scrisă în limba aleasă, așa cum ar scrie-o un localnic, ca să poți vinde dincolo de piața ta. Reclamele video o vorbesc și ele, cu subtitrări pe măsură.",
+    tierTitle: "Alege calitatea fiecărei reclame",
+    tierSub: "Același produs la fiecare nivel, realizat de Gooidy și arătat needitat. Nivelurile mai înalte folosesc modelele AI cele mai bine clasate.",
+    tierPerImage: "{count} credite pe imagine",
+    tierPerSecond: "{count} credite pe secundă de video",
     pricingTitle: "Prețuri simple care cresc odată cu tine",
     pricingSub:
       "Începe gratuit. Treci la un plan mai mare pe măsură ce afacerea crește.",
@@ -510,6 +514,7 @@ export const ro: Messages = {
       "7–15 s se potrivesc pentru Reels și Stories, 20–30 s pentru TikTok.",
     quality: "Calitate",
     qualities: { good: "Bună", better: "Mai bună", best: "Cea mai bună" },
+    qualityExample: "Exemplu la această calitate",
     qualityHelp: "Calitatea mai mare folosește modele AI mai noi și mai multe credite. Cea mai bună folosește modelele cele mai bine clasate pentru cele mai clare și realiste reclame.",
     genders: { female: "Feminină", male: "Masculină" },
     energies: { calm: "Calmă", upbeat: "Veselă", high: "Multă energie" },

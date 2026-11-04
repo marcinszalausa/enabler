@@ -148,6 +148,10 @@ export const de: Messages = {
     languagesTitle: "Verkaufe in der Sprache deiner Käufer",
     languagesBody:
       "Jede Anzeige wird in der Sprache geschrieben, die du wählst, so wie ein Einheimischer schreiben würde, damit du über deinen Heimatmarkt hinaus verkaufen kannst. Videoanzeigen sprechen sie auch, mit passenden Untertiteln.",
+    tierTitle: "Wählen Sie die Qualität jeder Anzeige",
+    tierSub: "Dasselbe Produkt in jeder Stufe, von Gooidy erstellt und unbearbeitet gezeigt. Höhere Stufen nutzen die bestbewerteten KI-Modelle.",
+    tierPerImage: "{count} Credits pro Bild",
+    tierPerSecond: "{count} Credits pro Videosekunde",
     pricingTitle: "Einfache Preise, die mit dir wachsen",
     pricingSub: "Starte kostenlos. Steig um, wenn dein Geschäft wächst.",
     popular: "Beliebt",
@@ -502,6 +506,7 @@ export const de: Messages = {
     lengthHelp: "7–15 s passen zu Reels und Stories, 20–30 s zu TikTok.",
     quality: "Qualität",
     qualities: { good: "Gut", better: "Besser", best: "Beste" },
+    qualityExample: "Beispiel in dieser Qualität",
     qualityHelp: "Höhere Qualität nutzt neuere KI-Modelle und mehr Credits. Beste nutzt die bestbewerteten Modelle für die schärfsten, realistischsten Anzeigen.",
     genders: { female: "Weiblich", male: "Männlich" },
     energies: { calm: "Ruhig", upbeat: "Fröhlich", high: "Energiegeladen" },
