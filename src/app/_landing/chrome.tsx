@@ -87,7 +87,10 @@ export function Nav() {
     if (!mobileOpen) return;
     const before = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    if (dialog.current && !dialog.current.open) dialog.current.showModal();
+    if (dialog.current && !dialog.current.open) {
+      dialog.current.showModal();
+      dialog.current.querySelector("button")?.focus();
+    }
     const desktop = matchMedia("(min-width: 1024px)");
     const resize = () => { if (desktop.matches && mobile.current) mobile.current.open = false; };
     desktop.addEventListener("change", resize);
@@ -123,7 +126,13 @@ export function Nav() {
             <summary className="flex min-h-11 cursor-pointer list-none items-center gap-1 rounded-lg px-2 text-sm font-medium">
               <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={1.8} aria-hidden><path d="M4 6h16M4 12h16M4 18h16" /></svg><span className="sr-only sm:not-sr-only">{t.nav.menu}</span>
             </summary>
-            <dialog ref={dialog} aria-label={t.nav.menu} onClose={closeMenu} onCancel={event=>{event.preventDefault();closeMenu();}} className="fixed inset-0 m-0 h-dvh max-h-none w-screen max-w-none border-0 bg-bg p-0 text-fg backdrop:bg-bg open:flex open:flex-col" data-public-menu>
+            <dialog ref={dialog} aria-label={t.nav.menu} aria-modal="true" onClose={closeMenu} onCancel={event=>{event.preventDefault();closeMenu();}} onKeyDown={event=>{
+              if(event.key!=="Tab")return;
+              const controls=Array.from(event.currentTarget.querySelectorAll<HTMLElement>('a[href],button:not([disabled]),select,input:not([disabled]),textarea,[tabindex="0"]')).filter(element=>element.getClientRects().length>0);
+              const first=controls[0],last=controls.at(-1);
+              if(event.shiftKey&&document.activeElement===first){event.preventDefault();last?.focus();}
+              else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first?.focus();}
+            }} className="fixed inset-0 m-0 h-dvh max-h-none w-screen max-w-none border-0 bg-bg p-0 text-fg backdrop:bg-bg open:flex open:flex-col" data-public-menu>
               <div className="flex shrink-0 items-center justify-between border-b border-line px-5 py-4"><div onClick={closeMenu}><Logo/></div><button type="button" onClick={closeMenu} aria-label="Close menu" className="flex size-11 items-center justify-center rounded-full border border-line hover:bg-surface"><svg viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
               <nav aria-label="Explore Gooidy" className="min-h-0 flex-1 overflow-y-auto px-5" onClick={event=>{if((event.target as HTMLElement).closest("a"))closeMenu();}}>
                 {[

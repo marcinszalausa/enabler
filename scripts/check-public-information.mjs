@@ -26,7 +26,7 @@ try{
    const menu=page.locator("details.mobile-nav"),summary=menu.locator("summary");
    await summary.click();const panel=menu.locator("dialog[open]");await panel.waitFor();assert.ok(await panel.evaluate(el=>el.matches(":modal")),"Native modal isolates the background");
    await page.waitForFunction(()=>document.body.style.overflow==="hidden");const box=await panel.boundingBox();assert.ok(box.width>=width-2&&box.height>=948,"Full-screen mobile menu");
-   await page.keyboard.press("Shift+Tab");assert.ok(await panel.evaluate(el=>el.contains(document.activeElement)),"Focus remains inside the menu");
+   for(let i=0;i<16;i++){await page.keyboard.press("Shift+Tab");assert.ok(await panel.evaluate(el=>el.contains(document.activeElement)),"Focus remains inside the menu");}
    if(width===390&&locale==="en")console.log("PUBLIC_MENU_PREVIEW",(await page.screenshot({type:"jpeg",quality:70})).toString("base64"));
    await page.keyboard.press("Escape");await page.waitForFunction(()=>!document.querySelector("details.mobile-nav")?.hasAttribute("open"));assert.equal(await summary.evaluate(el=>document.activeElement===el),true);
    await page.waitForFunction(()=>document.body.style.overflow!=="hidden");
