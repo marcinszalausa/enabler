@@ -43,7 +43,8 @@ export async function runGeneration({
   ideas = ADS_PER_GENERATION,
   creativePreferences,
 }: Job) {
-  const expected = ideas * ASPECTS.length;
+  let expected = ideas * ASPECTS.length;
+  let isRevision=false;
   const db = createAdminClient();
   if (!(await claimGeneration(db, generationId))) return;
   let delivered = 0;
@@ -59,19 +60,32 @@ export async function runGeneration({
     if (error || !product?.brand_brief) throw new Error("Product not found.");
 
     const direction = await generationDirection(db, generationId, workspaceId);
+    const revision=direction.revision;isRevision=!!revision;
+    if(revision?.kind==="video")throw new Error("Revision media type mismatch.");
+    if(revision)expected=1;
     const brief = { ...withCreativePreferences(product.brand_brief as BrandBrief, creativePreferences), ...direction };
     if (direction.brand_memory?.tone) brief.tone = direction.brand_memory.tone;
     if (!brief.creative_preferences && direction.brand_memory?.audience) brief.audience = direction.brand_memory.audience;
-    const referenceImageUrl = (product.image_urls as string[])[0] ?? null;
-    const angles = await writeAdAngles(brief, ideas, language);
+    const productReferenceImageUrl = (product.image_urls as string[])[0] ?? null;
+    let referenceImageUrl=productReferenceImageUrl;
+    if(revision){
+      if(!revision.storage_path.startsWith(workspaceId+"/"))throw new Error("Revision source is unavailable.");
+      const {data:signed,error:signError}=await db.storage.from("creatives").createSignedUrl(revision.storage_path,3600);
+      if(signError||!signed?.signedUrl)throw signError??new Error("Revision source is unavailable.");
+      referenceImageUrl=signed.signedUrl;
+    }
+    const written = await writeAdAngles(brief, revision?1:ideas, language);
+    const angles = revision?written.slice(0,1).map(ad=>({...ad,headline:revision.headline,primary_text:revision.primary_text,cta:revision.cta,angle:revision.angle})):written;
+    if(revision&&angles.length!==1)throw new Error("No revision direction was created.");
 
     const tasks = angles.flatMap((ad, i) =>
-      ASPECTS.map((aspect) => async () => {
+      (revision?[revision.aspect]:ASPECTS).map((aspect) => async () => {
         const imageUrl = await generateCheckedImage({
           prompt: ad.image_prompt,
           aspect,
           quality,
           referenceImageUrl,
+          productReferenceImageUrl,
           product: brief.product_name,
         });
         const image = await fetchPublicUrl(imageUrl, { maxBytes: 8*1024*1024, timeoutMs: 30000, accept: "image/*" });
@@ -150,7 +164,7 @@ export async function runGeneration({
     db, generationId, delivered > 0 ? "succeeded" : "failed",
     cost - delivered * perImage, failure, prompt,
   );
-  if (closed && delivered > 0) await autopilotRun(workspaceId, generationId);
+  if (closed && delivered > 0 && !isRevision) await autopilotRun(workspaceId, generationId);
 }
 
 // Both local decoding and a visual verdict are required before delivery.
@@ -209,5 +223,3 @@ export async function settleWithLimit<T>(
   );
   return results;
 }
-
-

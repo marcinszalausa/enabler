@@ -1,0 +1,60 @@
+name: Individual creative revisions
+on:
+  push:
+    branches: [parity/individual-revisions]
+  pull_request:
+permissions:
+  contents: read
+concurrency:
+  group: single-revision-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  single-revision:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: workflow_tests
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Installed framework guidance
+        run: |
+          find node_modules/next/dist/docs -name server-actions-and-mutations.md -o -name updating-data.md -o -name route-handlers.md -o -name forms.md | xargs cat
+          curl --fail --silent --show-error https://supabase.com/changelog.md | head -c 20000
+          npx --yes supabase --version
+          npx --yes supabase migration --help
+          npx --yes supabase migration new individual_creative_revision
+      - run: npx next typegen && npx tsc --noEmit
+      - run: node --experimental-strip-types --test tests/*.test.ts
+      - run: npx eslint src/lib/creative-revision.ts src/lib/generation-direction.ts src/lib/generation-presentation.ts src/lib/pipeline.ts src/lib/video.tsx 'src/app/[locale]/dashboard/products/[id]/single-revision-actions.ts' 'src/app/[locale]/dashboard/products/[id]/single-revision-form.tsx'
+      - run: bash scripts/test-credits.sh && bash scripts/test-generation-ledger.sh && bash scripts/test-generation-recovery.sh && psql "$CREDIT_TEST_DATABASE_URL" -X -v ON_ERROR_STOP=1 -f supabase/tests/individual-revisions.sql
+        env:
+          CREDIT_TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/workflow_tests
+      - run: npm install --prefix /tmp/revision-browser --no-package-lock playwright@1.56.1
+      - run: /tmp/revision-browser/node_modules/.bin/playwright install --with-deps chromium
+      - run: PLAYWRIGHT_MODULE_PATH=/tmp/revision-browser/node_modules/playwright node scripts/check-customer-workflow.mjs
+      - name: Verify deployed discovery routes without account or generation requests
+        run: |
+          python3 - <<'PY'
+          import urllib.request
+          for path, text in [('/help','Find your next step'),('/templates','Start with an idea'),('/industries','Ads for the products'),('/platforms','Show up where'),('/blog','Practical ideas')]:
+              with urllib.request.urlopen('https://gooidy.com'+path,timeout=30) as response:
+                  body=response.read().decode()
+                  assert response.status==200 and text in body,path
+                  print('PASS live discovery',path)
+          PY
