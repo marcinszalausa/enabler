@@ -212,7 +212,7 @@ export const cs: Messages = {
       },
       {
         q: "Mohu kdykoli zrušit?",
-        a: "Ano. Tarify jsou měsíční a přístup vám zůstane do konce zaplaceného období.",
+        a: "S žádostí o pomoc se zrušením nebo vrácením peněz napište na hello@gooidy.com.",
       },
       {
         q: "Mohu platit ve své měně?",
@@ -307,15 +307,20 @@ export const cs: Messages = {
     story: "Stories · 9:16",
     adText: "Text reklamy",
   },
+  recovery: {
+      "title": "Tuto stránku se nepodařilo načíst",
+      "body": "Zkus to znovu, nebo nás kontaktuj, pokud potřebuješ pomoc."
+  },
   notFound: {
     title: "Tato stránka neexistuje",
     body: "Odkaz může být starý nebo překlepnutý.",
     home: "Přejít na úvodní stránku",
   },
   legal: {
+    center: "Pravidla a soukromí",
+    billing: "Platby a vrácení peněz",
     updated: "Naposledy aktualizováno {date}",
-    englishOnly:
-      "Tato stránka je k dispozici v angličtině a platí anglické znění.",
+    englishOnly: "Text pravidel je nyní dostupný v angličtině.",
   },
   library: {
   "title": "Moje reklamy",

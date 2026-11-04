@@ -216,7 +216,7 @@ export const es: Messages = {
       },
       {
         q: "¿Puedo cancelar cuando quiera?",
-        a: "Sí. Los planes son mensuales y mantienes el acceso hasta el final del periodo que pagaste.",
+        a: "Para obtener ayuda con cancelaciones o reembolsos, escribe a hello@gooidy.com.",
       },
       {
         q: "¿Puedo pagar en mi propia moneda?",
@@ -311,15 +311,20 @@ export const es: Messages = {
     story: "Story · 9:16",
     adText: "Texto del anuncio",
   },
+  recovery: {
+      "title": "No se pudo cargar esta página",
+      "body": "Inténtalo de nuevo o contáctanos si necesitas ayuda."
+  },
   notFound: {
     title: "Esta página no existe",
     body: "Puede que el enlace sea antiguo o esté mal escrito.",
     home: "Ir a la página de inicio",
   },
   legal: {
+    center: "Políticas y privacidad",
+    billing: "Facturación y reembolsos",
     updated: "Última actualización: {date}",
-    englishOnly:
-      "Esta página está disponible en inglés, que es la versión que se aplica.",
+    englishOnly: "El texto de las políticas está disponible actualmente en inglés.",
   },
   library: {
   "title": "Mis anuncios",

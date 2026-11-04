@@ -217,7 +217,7 @@ export const fr: Messages = {
       },
       {
         q: "Puis-je résilier à tout moment ?",
-        a: "Oui. Les abonnements sont mensuels et vous gardez l'accès jusqu'à la fin de la période payée.",
+        a: "Pour toute aide concernant une résiliation ou un remboursement, écrivez à hello@gooidy.com.",
       },
       {
         q: "Puis-je payer dans ma devise ?",
@@ -312,14 +312,20 @@ export const fr: Messages = {
     story: "Story · 9:16",
     adText: "Texte de la pub",
   },
+  recovery: {
+      "title": "Cette page n’a pas pu se charger",
+      "body": "Réessayez ou contactez-nous si vous avez besoin d’aide."
+  },
   notFound: {
     title: "Cette page n'existe pas",
     body: "Le lien est peut-être ancien ou mal saisi.",
     home: "Aller à l'accueil",
   },
   legal: {
+    center: "Politiques et confidentialité",
+    billing: "Facturation et remboursements",
     updated: "Dernière mise à jour : {date}",
-    englishOnly: "Cette page est disponible en anglais, version qui fait foi.",
+    englishOnly: "Le texte des politiques est actuellement disponible en anglais.",
   },
   library: {
   "title": "Mes annonces",

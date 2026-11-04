@@ -209,7 +209,7 @@ export const en = {
       },
       {
         q: "Can I cancel anytime?",
-        a: "Yes. Plans are month to month, and you keep access until the end of the period you paid for.",
+        a: "For cancellation or refund assistance, email hello@gooidy.com.",
       },
       {
         q: "Can I pay in my own currency?",
@@ -300,15 +300,20 @@ export const en = {
     story: "Story · 9:16",
     adText: "Ad text",
   },
+  recovery: {
+      "title": "This page couldn’t load",
+      "body": "Try again, or contact us if you need a hand."
+  },
   notFound: {
     title: "This page doesn't exist",
     body: "The link may be old or mistyped.",
     home: "Go to the home page",
   },
   legal: {
+    center: "Policies & privacy",
+    billing: "Billing and refunds",
     updated: "Last updated {date}",
-    englishOnly:
-      "This page is available in English, which is the version that applies.",
+    englishOnly: "Policy text is currently available in English.",
   },
   library: {
   "title": "My ads",

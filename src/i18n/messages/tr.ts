@@ -211,7 +211,7 @@ export const tr: Messages = {
       },
       {
         q: "İstediğim zaman iptal edebilir miyim?",
-        a: "Evet. Planlar aylıktır ve ödediğiniz dönemin sonuna kadar erişiminiz devam eder.",
+        a: "İptal veya iade konusunda yardım için hello@gooidy.com adresine yazın.",
       },
       {
         q: "Kendi para birimimle ödeyebilir miyim?",
@@ -305,15 +305,20 @@ export const tr: Messages = {
     story: "Hikaye · 9:16",
     adText: "Reklam metni",
   },
+  recovery: {
+      "title": "Bu sayfa yüklenemedi",
+      "body": "Tekrar deneyin veya yardıma ihtiyacınız varsa bizimle iletişime geçin."
+  },
   notFound: {
     title: "Bu sayfa mevcut değil",
     body: "Link eski olabilir ya da yanlış yazılmış olabilir.",
     home: "Ana sayfaya git",
   },
   legal: {
+    center: "Politikalar ve gizlilik",
+    billing: "Faturalandırma ve iadeler",
     updated: "Son güncelleme: {date}",
-    englishOnly:
-      "Bu sayfa İngilizce olarak sunulmaktadır ve geçerli olan İngilizce sürümdür.",
+    englishOnly: "Politika metinleri şu anda İngilizce olarak sunulmaktadır.",
   },
   library: {
   "title": "Reklamlarım",

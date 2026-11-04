@@ -216,7 +216,7 @@ export const nl: Messages = {
       },
       {
         q: "Kan ik altijd opzeggen?",
-        a: "Ja. Abonnementen lopen per maand en je houdt toegang tot het einde van de betaalde periode.",
+        a: "Mail voor hulp bij opzeggingen of terugbetalingen naar hello@gooidy.com.",
       },
       {
         q: "Kan ik in mijn eigen valuta betalen?",
@@ -307,15 +307,20 @@ export const nl: Messages = {
     story: "Story · 9:16",
     adText: "Advertentietekst",
   },
+  recovery: {
+      "title": "Deze pagina kon niet worden geladen",
+      "body": "Probeer het opnieuw of neem contact met ons op als je hulp nodig hebt."
+  },
   notFound: {
     title: "Deze pagina bestaat niet",
     body: "De link is misschien oud of verkeerd getypt.",
     home: "Naar de homepage",
   },
   legal: {
+    center: "Beleid en privacy",
+    billing: "Facturering en terugbetalingen",
     updated: "Laatst bijgewerkt op {date}",
-    englishOnly:
-      "Deze pagina is beschikbaar in het Engels; de Engelse versie is leidend.",
+    englishOnly: "De beleidstekst is momenteel beschikbaar in het Engels.",
   },
   library: {
   "title": "Mijn advertenties",

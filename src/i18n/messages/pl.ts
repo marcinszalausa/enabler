@@ -216,7 +216,7 @@ export const pl: Messages = {
       },
       {
         q: "Czy mogę zrezygnować w każdej chwili?",
-        a: "Tak. Plany są miesięczne, a dostęp zachowujesz do końca opłaconego okresu.",
+        a: "W sprawie anulowania lub zwrotu napisz na hello@gooidy.com.",
       },
       {
         q: "Czy mogę zapłacić we własnej walucie?",
@@ -308,15 +308,20 @@ export const pl: Messages = {
     story: "Stories · 9:16",
     adText: "Tekst reklamy",
   },
+  recovery: {
+      "title": "Nie udało się wczytać tej strony",
+      "body": "Spróbuj ponownie lub skontaktuj się z nami, jeśli potrzebujesz pomocy."
+  },
   notFound: {
     title: "Ta strona nie istnieje",
     body: "Link może być stary lub zawierać literówkę.",
     home: "Przejdź na stronę główną",
   },
   legal: {
+    center: "Zasady i prywatność",
+    billing: "Płatności i zwroty",
     updated: "Ostatnia aktualizacja: {date}",
-    englishOnly:
-      "Ta strona jest dostępna po angielsku i to wersja angielska obowiązuje.",
+    englishOnly: "Treść zasad jest obecnie dostępna w języku angielskim.",
   },
   library: {
   "title": "Moje reklamy",

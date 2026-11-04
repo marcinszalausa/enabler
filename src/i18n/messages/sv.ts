@@ -212,7 +212,7 @@ export const sv: Messages = {
       },
       {
         q: "Kan jag avsluta när som helst?",
-        a: "Ja. Abonnemangen löper månadsvis och du behåller tillgången till slutet av perioden du betalat för.",
+        a: "Mejla hello@gooidy.com för hjälp med uppsägning eller återbetalning.",
       },
       {
         q: "Kan jag betala i min egen valuta?",
@@ -306,15 +306,20 @@ export const sv: Messages = {
     story: "Story · 9:16",
     adText: "Annonstext",
   },
+  recovery: {
+      "title": "Sidan kunde inte laddas",
+      "body": "Försök igen eller kontakta oss om du behöver hjälp."
+  },
   notFound: {
     title: "Den här sidan finns inte",
     body: "Länken kan vara gammal eller felskriven.",
     home: "Till startsidan",
   },
   legal: {
+    center: "Policyer och integritet",
+    billing: "Betalning och återbetalning",
     updated: "Senast uppdaterad {date}",
-    englishOnly:
-      "Den här sidan finns på engelska, och det är den engelska versionen som gäller.",
+    englishOnly: "Policytexten finns för närvarande på engelska.",
   },
   library: {
   "title": "Mina annonser",

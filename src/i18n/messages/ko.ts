@@ -206,7 +206,7 @@ export const ko: Messages = {
       },
       {
         q: "언제든 해지할 수 있나요?",
-        a: "네. 요금제는 월 단위이며, 결제한 기간이 끝날 때까지 계속 이용할 수 있습니다.",
+        a: "취소 또는 환불 관련 도움은 hello@gooidy.com으로 문의해 주세요.",
       },
       {
         q: "현지 통화로 결제할 수 있나요?",
@@ -300,14 +300,20 @@ export const ko: Messages = {
     story: "스토리 · 9:16",
     adText: "광고 문구",
   },
+  recovery: {
+      "title": "페이지를 불러오지 못했어요",
+      "body": "다시 시도하거나 도움이 필요하면 문의해 주세요."
+  },
   notFound: {
     title: "존재하지 않는 페이지입니다",
     body: "링크가 오래되었거나 잘못 입력되었을 수 있습니다.",
     home: "홈으로 가기",
   },
   legal: {
+    center: "정책 및 개인정보 보호",
+    billing: "결제 및 환불",
     updated: "최종 업데이트: {date}",
-    englishOnly: "이 페이지는 영어로 제공되며, 영어 원문이 우선합니다.",
+    englishOnly: "정책 본문은 현재 영어로 제공됩니다.",
   },
   library: {
   "title": "내 광고",

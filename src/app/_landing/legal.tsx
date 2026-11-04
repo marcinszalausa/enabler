@@ -3,6 +3,9 @@ import { Nav, Footer } from "./chrome";
 import type { Locale } from "@/i18n/config";
 import { getMessages } from "@/i18n/messages";
 import { fmt } from "@/i18n/format";
+import Link from "next/link";
+import {localePath} from "@/i18n/config";
+import {LEGAL_POLICY_VERSION} from "@/lib/legal-policy";
 
 // Where people reach us about their data or these terms.
 export { CONTACT_EMAIL } from "@/lib/contact";
@@ -27,6 +30,7 @@ export async function LegalPage({
       <main id="main-content" tabIndex={-1} className="flex-1">
         <article
           lang="en"
+          dir="ltr"
           className="legal mx-auto max-w-2xl px-4 pb-24 pt-14 sm:pt-20"
         >
           <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
@@ -40,6 +44,7 @@ export async function LegalPage({
               {t.legal.englishOnly}
             </p>
           )}
+          <p data-policy-version className="mt-4 text-sm text-muted">Version {LEGAL_POLICY_VERSION} · <Link href={localePath(locale,"/policies")} className="underline">All policies and privacy requests</Link></p>
           <div className="mt-10">{children}</div>
         </article>
       </main>

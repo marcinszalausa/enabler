@@ -1,0 +1,316 @@
+{
+  "version": "2026-11-04",
+  "updated": "November 4, 2026",
+  "documents": {
+    "terms": {
+      "title": "Terms of Service",
+      "summary": "Rules for accounts, content and responsible use.",
+      "sections": [
+        {
+          "title": "About Gooidy",
+          "paragraphs": [
+            "Gooidy helps you create image and video ads from product information. These terms describe account responsibilities, content permissions and responsible use of the service.",
+            "For service questions, content complaints or questions about these terms, contact hello@gooidy.com."
+          ]
+        },
+        {
+          "title": "Who may use Gooidy",
+          "paragraphs": [
+            "You must be at least 18 years old and able to enter a binding agreement to use Gooidy. Businesses must use the service through a person authorized to act for them. Do not create an account for a child or submit sensitive information about children."
+          ]
+        },
+        {
+          "title": "Your account and workspace",
+          "paragraphs": [
+            "Keep access to your sign-in email secure. Do not share sign-in links or codes, impersonate another person, or use someone else's workspace without permission. Report suspected unauthorized access to hello@gooidy.com.",
+            "Workspace members may be able to view content in their shared workspace. Use the roles and access permissions available in the service. Account deletion and privacy requests are handled through the privacy-request process; they are not completed merely by signing out."
+          ]
+        },
+        {
+          "title": "Your content and permissions",
+          "paragraphs": [
+            "Keep the rights you already have in your product descriptions, photos, logos and other materials. Submit only content and product links you have permission to use and process. This includes any necessary permissions for a person's image, voice, trademark, music or other protected material.",
+            "You allow Gooidy and the providers needed for the requested feature to retrieve, process, transform, store and deliver that content to provide the service. This permission does not authorize public promotion of your brand or ads without your separate permission."
+          ]
+        },
+        {
+          "title": "Generated ads and commercial use",
+          "paragraphs": [
+            "You may use, edit and publish generated results to the extent you have the necessary rights and applicable provider or asset licenses permit that use. Any rights Gooidy can grant do not include rights owned by other people.",
+            "Generated results may resemble other content, contain errors, or be ineligible for copyright protection. Gooidy does not guarantee exclusivity, copyright registration, absence of third-party rights, or that a result is cleared for every commercial use. Review the selected model, music and other asset restrictions before publishing."
+          ]
+        },
+        {
+          "title": "Review before publishing",
+          "paragraphs": [
+            "Review product appearance, prices, offers, claims, captions, translations, images and audio before use. Do not present generated people as real customers or fabricate reviews, endorsements, before-and-after results or product claims.",
+            "You are responsible for the advertisements you approve, including required disclosures and permissions, applicable advertising law and social-platform rules. Gooidy does not promise sales, profitability, platform approval or any particular advertising performance."
+          ]
+        },
+        {
+          "title": "Social connections and third parties",
+          "paragraphs": [
+            "When you connect a social account, you authorize the permissions shown in that connection flow. Publishing and scheduling depend on the platform and our publishing provider, Zernio. Review destinations, content and timing before submitting a post.",
+            "Disconnecting an account does not necessarily remove content already published on a social platform. Scheduled posts may require separate cancellation. Third-party services have their own terms and privacy practices; this does not remove Gooidy's own responsibilities."
+          ]
+        },
+        {
+          "title": "Credits, subscriptions and refunds",
+          "paragraphs": [
+            "Free credits are a limited service allowance, not cash or a deposit, and do not automatically enroll you in a paid subscription. Generation costs are shown before you start a run. Credits returned for failed outputs are different from a refund of money.",
+            "Subscription and refund information is set out on the billing policy page. Creating a free account or using free credits does not authorize a purchase or recurring charges."
+          ]
+        },
+        {
+          "title": "Acceptable use and restrictions",
+          "paragraphs": [
+            "Follow the acceptable-use policy. Do not submit unlawful or infringing content, non-consensual sexual material, deceptive impersonation, or material that exploits children. Do not bypass credit limits, attack the service, or create accounts to evade restrictions.",
+            "Do not submit passwords, payment-card details, government identification numbers, private medical records or other sensitive personal information as generation content. Report suspected rights violations through the contact address with the relevant content link and an explanation."
+          ]
+        },
+        {
+          "title": "Availability and account restrictions",
+          "paragraphs": [
+            "Features may change or occasionally be unavailable. Keep copies of ads you need. We may restrict access to investigate abuse, protect users, comply with law, or address a material violation; you can contact support to ask for review.",
+            "Nothing in these terms removes rights or remedies that cannot legally be excluded. These terms do not require mandatory arbitration or waive your right to participate in a class action."
+          ]
+        },
+        {
+          "title": "Updates and contact",
+          "paragraphs": [
+            "The update date identifies the current version of these terms. Material changes will be presented before they take effect where required. Purchases require explicit authorization under the applicable billing terms; viewing these pages does not authorize a charge.",
+            "Contact hello@gooidy.com for support, content complaints or questions about these terms. The privacy policy explains how service information is processed."
+          ]
+        }
+      ]
+    },
+    "privacy": {
+      "title": "Privacy Policy",
+      "summary": "What information Gooidy handles, who receives it and how to request help.",
+      "sections": [
+        {
+          "title": "Scope and contact",
+          "paragraphs": [
+            "This notice describes information handled through Gooidy's website, account, ad-generation and connected publishing features.",
+            "Contact hello@gooidy.com for privacy questions or requests about your information."
+          ]
+        },
+        {
+          "title": "Information you provide",
+          "items": [
+            "Account and workspace information: email address, workspace details, membership and saved preferences.",
+            "Product and brand information: links, public page text and images retrieved from them, audience and benefit selections, logos, colors and fonts.",
+            "Generated content: image and video ads, ad copy, prompts or settings used for the run, and associated generation status and credit records.",
+            "Support communications and the information needed to verify and respond to privacy requests. Do not email passwords, sign-in codes, full card numbers or government ID unless a secure, necessary verification process is specifically arranged."
+          ]
+        },
+        {
+          "title": "Information from visits and connected services",
+          "paragraphs": [
+            "Hosting and security systems may process IP addresses, request times, browser or device information, errors and abuse-prevention records. Language selection may use browser language, a saved preference and approximate country information provided by hosting infrastructure. We do not request precise device location for these features.",
+            "A product preview can retrieve public product information before sign-in and briefly cache preview data. The preview endpoint uses network-address information to limit abuse. A store whose page is retrieved also processes requests under its own privacy practices.",
+            "If you connect social accounts, Gooidy and its publishing provider process account identifiers, platform names, profile details, connection permissions, post content, destinations, schedules, publishing status and errors. Authorization credentials may be handled by the provider and platform."
+          ]
+        },
+        {
+          "title": "How information is used",
+          "items": [
+            "Provide sign-in, workspace access, product preparation, generation, storage, downloads and user-requested publishing.",
+            "Track credits and generation outcomes, prevent duplicate or abusive activity, secure accounts and troubleshoot failures.",
+            "Respond to support and privacy requests, comply with applicable obligations and maintain records needed for legal claims.",
+            "Operate and improve service reliability. Optional marketing communications are separate from essential account messages and will include the choices required by applicable law."
+          ]
+        },
+        {
+          "title": "Face placement and generated media",
+          "paragraphs": [
+            "For text placement, Gooidy can analyze where faces appear in an image or video frame so text avoids covering them. This placement analysis runs locally on the server and does not identify the person or create an identity-matching face template.",
+            "The content itself can be sent to generation providers when needed for a requested generation feature. This notice does not promise that every provider has the same retention or model-training practices. Do not submit sensitive or confidential material unless the applicable provider terms and safeguards are suitable for it."
+          ]
+        },
+        {
+          "title": "Service providers and disclosures",
+          "items": [
+            "Vercel: website hosting, delivery and related operational/security information.",
+            "Supabase: authentication, account and workspace records, database and file storage.",
+            "Anthropic: product analysis and ad-copy generation using relevant product and prompt information.",
+            "fal.ai and the model providers used for a selected feature: image, video, voice or music generation and processing of relevant inputs.",
+            "Zernio and the social platforms you connect: account connection, media transfer, scheduling and publishing.",
+            "Email delivery providers, including Resend when configured: account and service emails.",
+            "Stripe: payment details, billing and fraud prevention when a Stripe checkout is offered. Gooidy does not require your full card details in support messages."
+          ]
+        },
+        {
+          "title": "Other sharing and public examples",
+          "paragraphs": [
+            "We may disclose information when reasonably necessary to comply with law, respond to valid legal process, protect rights and safety, or complete a business transfer subject to applicable safeguards and notice obligations.",
+            "We do not sell personal information or use it for cross-context behavioral advertising. We do not publish your brand or ads as promotional examples without separate permission. Public examples may be downloaded and cached by visitors or delivery networks; withdrawing permission can stop future display but cannot retrieve copies already made by others."
+          ]
+        },
+        {
+          "title": "Cookies, storage and preferences",
+          "paragraphs": [
+            "Authentication and security cookies support sign-in and safe account connections. A language cookie and local browser storage remember language and appearance choices. See the cookie policy for names, purposes and controls.",
+            "The application does not currently use advertising pixels for cross-site behavioral tracking. Optional tracking, if introduced, will be described and subject to choices or consent where required. Clearing storage may sign you out or reset preferences."
+          ]
+        },
+        {
+          "title": "Retention and deletion",
+          "paragraphs": [
+            "Account, workspace, product and ad records are generally retained while needed to provide your account and requested features. Operational logs, temporary processing files, previews and provider-held copies may have different retention periods.",
+            "You can request access, correction, export or deletion at hello@gooidy.com. Deletion is handled after appropriate verification, subject to applicable deadlines and exceptions for security, legal obligations and disputes. We will explain any lawful reason we cannot complete part of a request.",
+            "Deleting active records does not necessarily immediately remove backup copies or content already published to third-party platforms. Backups are subject to the provider's backup cycle, and retained copies must remain protected. Provider-by-provider retention periods can vary; contact support about the information relevant to your request."
+          ]
+        },
+        {
+          "title": "Your choices and US privacy rights",
+          "paragraphs": [
+            "Depending on applicable law, you may have rights to access, correct, delete or obtain a portable copy of personal information, opt out of certain processing, appeal a denied request, or act through an authorized agent. We will not unlawfully discriminate against you for exercising a right.",
+            "Send requests to hello@gooidy.com from the email associated with your account when possible. We verify requests proportionately and respond within applicable legal deadlines. If a request is denied, you may ask for an appeal by replying with the subject 'Privacy appeal'. You may also contact the relevant regulator where applicable.",
+            "We do not use personal information for sale or targeted advertising, so there is no such processing to opt out of at present. If that changes, this notice and the applicable preference controls must be updated first."
+          ]
+        },
+        {
+          "title": "Locations, security and children",
+          "paragraphs": [
+            "Gooidy and its providers may process information in the United States and other countries where they operate. Data is not promised to remain only in Texas or only in the United States. Where applicable, required contractual and transfer safeguards must be used.",
+            "We use technical and organizational safeguards appropriate to the service, but no online service can guarantee absolute security. Send suspected security issues to hello@gooidy.com without including credentials.",
+            "Gooidy is intended for adults aged 18 or older and is not directed to children. If you believe a child has provided personal information, contact us so it can be investigated."
+          ]
+        }
+      ]
+    },
+    "billing": {
+      "title": "Subscriptions, Credits and Refunds",
+      "summary": "Information about payments, credits, cancellations and refunds.",
+      "sections": [
+        {
+          "title": "Plans and payment authorization",
+          "paragraphs": [
+            "Creating a free account, viewing pricing or using free credits does not start a paid subscription or authorize a charge. A purchase requires a completed checkout with your explicit authorization.",
+            "Prices are stated in US dollars (USD). Review the plan, taxes and total payable before confirming a charge."
+          ]
+        },
+        {
+          "title": "Free credits and generation returns",
+          "paragraphs": [
+            "Free credits are a limited allowance for trying the service and have no cash value. Do not create duplicate accounts or use automated signups to evade trial limits. The available balance and run cost are shown in the product.",
+            "Credits attributable to outputs that fail are returned through the generation accounting process. A credit return does not constitute a money refund. If the balance appears incorrect, contact hello@gooidy.com with the run or product reference, without payment credentials."
+          ]
+        },
+        {
+          "title": "Review before paying",
+          "items": [
+            "Exact plan, USD price, applicable taxes, billing interval, first charge and any recurring renewal terms.",
+            "Included credits and features, generation costs, whether credits expire or roll over, and how upgrades, downgrades and failed payments affect them.",
+            "A clear cancellation mechanism, its effective date, access after cancellation, and treatment of unused credits.",
+            "Refund eligibility, request instructions, any exclusions allowed by law, and how approved refunds are processed.",
+            "Any trial or promotional conditions, and separate affirmative authorization for recurring charges. A free account will not become a paid subscription without that authorization."
+          ]
+        },
+        {
+          "title": "Cancellation and refunds",
+          "paragraphs": [
+            "For cancellation or refund assistance, email hello@gooidy.com with the account email and relevant purchase reference. Signing out, disconnecting a social account and deleting an account are different actions and do not substitute for canceling recurring billing.",
+            "Refund eligibility and cancellation terms are those disclosed for the purchased plan, subject to applicable law. Contact support about incorrect or unauthorized charges. Nothing here limits mandatory consumer rights or remedies."
+          ]
+        },
+        {
+          "title": "Platform charges and advertising budgets",
+          "paragraphs": [
+            "Social-platform advertising spend and third-party purchases are separate from Gooidy credits unless expressly included in your purchase. Generating or publishing content does not guarantee platform approval or results.",
+            "For billing questions or unexpected charges using the Gooidy name, contact hello@gooidy.com. Never send a full card number or security code by email."
+          ]
+        }
+      ]
+    },
+    "cookies": {
+      "title": "Cookies and Browser Storage",
+      "summary": "Authentication, security and preference storage used by the service.",
+      "sections": [
+        {
+          "title": "Current storage inventory",
+          "items": [
+            "Supabase authentication cookies, generally named sb-…: maintain the sign-in session. Expiry and renewal are managed by the authentication service; sign-out and browser controls affect stored sessions.",
+            "gooidy-locale: remembers the selected language for up to one year, renewed when the language preference is saved.",
+            "gooidy-theme in localStorage: remembers the light/dark choice on that browser until changed or cleared.",
+            "__Host-gooidy-social-state in production (gooidy-social-state in local development): protects social-account connection requests. It expires after 10 minutes and may be removed earlier when the connection is completed."
+          ]
+        },
+        {
+          "title": "Tracking and payment services",
+          "paragraphs": [
+            "The current application does not use advertising pixels for cross-site behavioral tracking. This is not a promise that hosting providers perform no security logging. Network request information is described in the privacy policy.",
+            "Payment providers may use cookies or similar technologies to support payments and prevent fraud when their checkout is used. Optional analytics or advertising storage is subject to the disclosures and choices required by applicable law."
+          ]
+        },
+        {
+          "title": "Your controls",
+          "paragraphs": [
+            "Use the site's language and appearance controls to change preferences. You can clear cookies and local storage in your browser, sign out, or block future storage. Blocking authentication or security storage may prevent sign-in or account connection.",
+            "A browser's Global Privacy Control or similar signal does not remove cookies needed for security or sign-in. There is currently no sale or cross-context advertising processing to disable. If that processing changes, we will update the notice and provide the applicable opt-out controls.",
+            "For questions about storage or a privacy request, contact hello@gooidy.com."
+          ]
+        }
+      ]
+    },
+    "acceptable-use": {
+      "title": "Acceptable Use",
+      "summary": "Rules for content, identities, advertising and service access.",
+      "sections": [
+        {
+          "title": "Content and permissions",
+          "items": [
+            "Use content, product links, brands, music, faces and voices only with the necessary rights and permissions.",
+            "Do not infringe copyright, trademarks, privacy or publicity rights; do not falsely imply endorsement or association.",
+            "Do not create fake testimonials, deceptive impersonations, fabricated product claims or misleading representations of real events.",
+            "Do not submit non-consensual intimate content, child sexual exploitation material, threats, unlawful hate, fraud, scams or other illegal content.",
+            "Do not submit confidential account credentials, payment details, government IDs or sensitive medical information for generation."
+          ]
+        },
+        {
+          "title": "Advertising and publication",
+          "paragraphs": [
+            "Review every ad before use. Follow applicable advertising laws, disclosure requirements and the rules of each destination platform. Use required labels for synthetic or manipulated content where applicable. Do not claim a generated person is a real customer.",
+            "Do not use Gooidy to promote unlawful goods or services. Restricted categories such as political, health, financial or age-restricted advertising require independent legal and platform eligibility review before use; the service does not provide that clearance."
+          ]
+        },
+        {
+          "title": "Service access and enforcement",
+          "paragraphs": [
+            "Do not attack or overload the service, access someone else's data, bypass credit controls, evade account restrictions or create repeated accounts to obtain additional trial allowances.",
+            "Suspected misuse may lead to restricted content or access while it is investigated. You can request review by contacting hello@gooidy.com. Report a rights complaint with the affected URL, your contact information and a description of the rights at issue; do not include unrelated sensitive documents."
+          ]
+        }
+      ]
+    },
+    "privacy-requests": {
+      "title": "Privacy Requests",
+      "summary": "Ask for a copy, correction, deletion or review of your information.",
+      "sections": [
+        {
+          "title": "How to make a request",
+          "paragraphs": [
+            "Contact hello@gooidy.com from the email associated with your account when possible. State whether you want access/export, correction, deletion or an appeal, and identify the relevant workspace if you have more than one.",
+            "The email links below open your own email application. Nothing is sent automatically. Do not include passwords, one-time codes, card numbers or government identification documents."
+          ]
+        },
+        {
+          "title": "Verification and response",
+          "paragraphs": [
+            "Support will verify that you are entitled to make the request before disclosing information or making irreversible changes. An authorized agent may need proof of authority. We may ask you to sign in or confirm through the account email; verification must be proportionate.",
+            "Requests are handled by our support team within applicable legal deadlines. We will explain a permitted extension or any part that cannot be completed. A denied request can be appealed by replying with the subject 'Privacy appeal'."
+          ]
+        },
+        {
+          "title": "Deletion and connected services",
+          "paragraphs": [
+            "A deletion request is not an instant-delete button. Before deletion, we review workspace ownership, shared records, scheduled posts, connected accounts, provider-held copies and any lawful retention obligations. If you need ads, request or download a copy first.",
+            "Disconnect social accounts through Publishing and cancel pending posts separately when appropriate. Posts already published may remain on the destination platform; removing a Gooidy account does not automatically remove those posts. Backups and legally retained records may persist under restricted access.",
+            "Deletion and export requests are handled through support. Contact us if your email application cannot open the request links."
+          ]
+        }
+      ]
+    }
+  }
+}

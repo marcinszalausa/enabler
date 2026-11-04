@@ -52,6 +52,7 @@ if(process.env.VERIFY_DEPLOYMENT==="true"){
   const html=await (await fetch("https://gooidy.com")).text();
   const normalized=html.replaceAll("%2F","/").replaceAll("%2f","/");
   const ids=[...new Set([...normalized.matchAll(/\/api\/creatives\/([0-9a-f-]{36})\/image/g)].map(match=>match[1]))];
+  if(!ids.length){const media=JSON.parse(await readFile("src/lib/homepage-media.json","utf8"));ids.push(...media.selection);}
   let faceRuntimeVerified=false;
   for(const id of ids.slice(0,3)){
     const base="https://gooidy.com/api/creatives/"+id+"/image";

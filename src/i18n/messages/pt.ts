@@ -217,7 +217,7 @@ export const pt: Messages = {
       },
       {
         q: "Posso cancelar quando quiser?",
-        a: "Sim. Os planos são mensais, e você mantém o acesso até o fim do período pago.",
+        a: "Para obter ajuda com cancelamentos ou reembolsos, envie um email para hello@gooidy.com.",
       },
       {
         q: "Posso pagar na minha moeda?",
@@ -309,15 +309,20 @@ export const pt: Messages = {
     story: "Story · 9:16",
     adText: "Texto do anúncio",
   },
+  recovery: {
+      "title": "Não foi possível carregar esta página",
+      "body": "Tente novamente ou fale conosco se precisar de ajuda."
+  },
   notFound: {
     title: "Esta página não existe",
     body: "O link pode estar desatualizado ou digitado errado.",
     home: "Ir para a página inicial",
   },
   legal: {
+    center: "Políticas e privacidade",
+    billing: "Cobrança e reembolsos",
     updated: "Última atualização: {date}",
-    englishOnly:
-      "Esta página está disponível em inglês, que é a versão que vale.",
+    englishOnly: "O texto das políticas está disponível atualmente em inglês.",
   },
   library: {
   "title": "Meus anúncios",

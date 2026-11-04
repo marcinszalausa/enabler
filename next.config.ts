@@ -18,6 +18,7 @@ const nextConfig: NextConfig = {
   // (ffmpeg; Skia, which draws Hindi and Arabic ad copy).
   serverExternalPackages: ["ffmpeg-static", "@napi-rs/canvas", "onnxruntime-web", "onnxruntime-common"],
   cacheComponents: true,
+  async headers(){return [{source:"/showcase/:path*",headers:[{key:"Cache-Control",value:"public, max-age=31536000, immutable"}]}];},
   // Ads are rendered as full-size PNGs (1080 px wide, 1.5–2.5 MB). Pages show
   // them through the image optimizer, which serves WebP at the size shown.
   images: {
@@ -26,6 +27,7 @@ const nextConfig: NextConfig = {
       { pathname: "/api/creatives/*/image", search: "?layout=face-aware-v2" },
       { pathname: "/api/creatives/*/image", search: "?layout=face-aware-v2&preview=1" },
       { pathname: "/reels/**", search: "" },
+      { pathname: "/showcase/**", search: "" },
     ],
     minimumCacheTTL: 86400,
     imageSizes: [16, 32, 48, 64, 96, 128, 160, 192, 256, 320, 384, 480],

@@ -212,7 +212,7 @@ export const de: Messages = {
       },
       {
         q: "Kann ich jederzeit kündigen?",
-        a: "Ja. Die Pläne laufen monatlich, und du behältst den Zugang bis zum Ende des bezahlten Zeitraums.",
+        a: "Bei Fragen zur Kündigung oder Erstattung schreibe an hello@gooidy.com.",
       },
       {
         q: "Kann ich in meiner Währung bezahlen?",
@@ -304,15 +304,20 @@ export const de: Messages = {
     story: "Story · 9:16",
     adText: "Anzeigentext",
   },
+  recovery: {
+      "title": "Diese Seite konnte nicht geladen werden",
+      "body": "Versuche es erneut oder kontaktiere uns, wenn du Hilfe brauchst."
+  },
   notFound: {
     title: "Diese Seite gibt es nicht",
     body: "Der Link ist vielleicht veraltet oder falsch geschrieben.",
     home: "Zur Startseite",
   },
   legal: {
+    center: "Richtlinien und Datenschutz",
+    billing: "Abrechnung und Erstattungen",
     updated: "Zuletzt aktualisiert am {date}",
-    englishOnly:
-      "Diese Seite ist auf Englisch verfügbar; maßgeblich ist die englische Fassung.",
+    englishOnly: "Die Richtlinien sind derzeit auf Englisch verfügbar.",
   },
   library: {
   "title": "Meine Anzeigen",

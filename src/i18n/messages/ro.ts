@@ -216,7 +216,7 @@ export const ro: Messages = {
       },
       {
         q: "Pot anula oricând?",
-        a: "Da. Planurile sunt lunare și păstrezi accesul până la sfârșitul perioadei plătite.",
+        a: "Pentru ajutor cu anularea sau rambursarea, scrie la hello@gooidy.com.",
       },
       {
         q: "Pot plăti în moneda mea?",
@@ -311,15 +311,20 @@ export const ro: Messages = {
     story: "Story · 9:16",
     adText: "Textul reclamei",
   },
+  recovery: {
+      "title": "Pagina nu a putut fi încărcată",
+      "body": "Încearcă din nou sau contactează-ne dacă ai nevoie de ajutor."
+  },
   notFound: {
     title: "Această pagină nu există",
     body: "Linkul poate fi vechi sau scris greșit.",
     home: "Mergi la pagina principală",
   },
   legal: {
+    center: "Politici și confidențialitate",
+    billing: "Facturare și rambursări",
     updated: "Ultima actualizare: {date}",
-    englishOnly:
-      "Această pagină este disponibilă în engleză, iar versiunea în engleză este cea valabilă.",
+    englishOnly: "Textul politicilor este disponibil momentan în engleză.",
   },
   library: {
   "title": "Reclamele mele",

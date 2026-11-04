@@ -217,7 +217,7 @@ export const it: Messages = {
       },
       {
         q: "Posso disdire quando voglio?",
-        a: "Sì. I piani sono mensili e mantieni l'accesso fino alla fine del periodo già pagato.",
+        a: "Per assistenza con cancellazioni o rimborsi, scrivi a hello@gooidy.com.",
       },
       {
         q: "Posso pagare nella mia valuta?",
@@ -312,15 +312,20 @@ export const it: Messages = {
     story: "Storia · 9:16",
     adText: "Testo dell'annuncio",
   },
+  recovery: {
+      "title": "Impossibile caricare questa pagina",
+      "body": "Riprova o contattaci se hai bisogno di aiuto."
+  },
   notFound: {
     title: "Questa pagina non esiste",
     body: "Il link potrebbe essere vecchio o scritto male.",
     home: "Vai alla home",
   },
   legal: {
+    center: "Politiche e privacy",
+    billing: "Fatturazione e rimborsi",
     updated: "Ultimo aggiornamento: {date}",
-    englishOnly:
-      "Questa pagina è disponibile in inglese, che è la versione valida.",
+    englishOnly: "Il testo delle politiche è attualmente disponibile in inglese.",
   },
   library: {
   "title": "I miei annunci",
