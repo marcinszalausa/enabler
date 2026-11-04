@@ -1,0 +1,31 @@
+name: Public information pages
+on:
+  push:
+    branches: [enhance/public-information]
+  pull_request:
+permissions:
+  contents: read
+concurrency:
+  group: public-information-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  public-information:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Read installed navigation and metadata guides
+        run: find node_modules/next/dist/docs/01-app -name link.md -o -iname '*metadata*' -o -name generate-static-params.md | xargs cat
+      - run: npx next typegen && npx tsc --noEmit
+      - run: |
+          if test -f scripts/check-public-information.mjs; then
+            npx eslint src/lib/public-information.ts src/app/_landing/public-pricing.tsx src/app/_landing/chrome.tsx 'src/app/[locale]/features' 'src/app/[locale]/pricing' 'src/app/[locale]/resources' 'src/app/[locale]/about'
+            npm install --prefix /tmp/information-browser --no-package-lock playwright@1.56.1
+            /tmp/information-browser/node_modules/.bin/playwright install --with-deps chromium
+            PLAYWRIGHT_MODULE_PATH=/tmp/information-browser/node_modules/playwright node scripts/check-public-information.mjs
+          fi
