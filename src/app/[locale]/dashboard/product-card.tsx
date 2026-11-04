@@ -1,8 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useI18n } from "@/i18n/client";
-import { DeleteButton } from "./delete-button";
+import { DeleteDialog, TrashIcon } from "./delete-button";
+import { MoreMenu } from "./more-menu";
 import { ProductFavoriteButton } from "./product-favorite";
 
 export type ProductSummary = {
@@ -18,7 +21,9 @@ export type ProductSummary = {
 export function ProductCard({ product: p }: { product: ProductSummary }) {
   const photo = p.image_urls?.[0];
   const site = hostname(p.url);
-  const { locale } = useI18n();
+  const { locale, t } = useI18n();
+  const router = useRouter();
+  const [confirm, setConfirm] = useState(false);
   return (
     <div className="relative">
     <Link
@@ -40,7 +45,7 @@ export function ProductCard({ product: p }: { product: ProductSummary }) {
           </span>
         )}
       </div>
-      <div className="p-4 pe-24">
+      <div className="p-4 pe-14">
         <p className="truncate font-medium transition group-hover:text-accent">
           {p.name ?? site}
         </p>
@@ -53,16 +58,16 @@ export function ProductCard({ product: p }: { product: ProductSummary }) {
         </p>
       </div>
     </Link>
-    {/* Outside the link, so it never opens the product. */}
-    <div className="absolute bottom-3 end-2 flex items-center">
-      <ProductFavoriteButton productId={p.id} favorite={p.favorite ?? false} />
-      <DeleteButton
-        target="product"
-        id={p.id}
-        iconOnly
-        className="flex h-11 w-11 items-center justify-center rounded-xl text-muted transition hover:bg-danger-bg hover:text-danger"
-      />
-    </div>
+    {/* Outside the link, so these never open the product. */}
+    <ProductFavoriteButton productId={p.id} favorite={p.favorite ?? false} className="absolute end-3 top-3" />
+    <MoreMenu
+      className="absolute bottom-3 end-2"
+      items={[
+        { label: t.remove.openProduct, onSelect: () => router.push(`/dashboard/products/${p.id}`) },
+        { label: t.remove.deleteProduct, onSelect: () => setConfirm(true), danger: true, icon: <TrashIcon />, testId: "delete-product" },
+      ]}
+    />
+    {confirm && <DeleteDialog target="product" id={p.id} onClose={() => setConfirm(false)} />}
     </div>
   );
 }

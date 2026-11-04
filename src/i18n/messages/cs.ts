@@ -757,6 +757,8 @@ export const cs: Messages = {
     soonBody: "Ukažte svou nejlepší reklamu novým zákazníkům na Facebooku a Instagramu jedním klepnutím.",
   },
   remove: {
+    more: "Další akce",
+    openProduct: "Otevřít produkt",
     deleteAd: "Smazat reklamu",
     deleteProduct: "Smazat produkt",
     adTitle: "Smazat tuto reklamu?",

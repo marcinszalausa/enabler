@@ -761,6 +761,8 @@ export const nl: Messages = {
     soonBody: "Laat je beste advertentie met één tik zien aan nieuwe kopers op Facebook en Instagram.",
   },
   remove: {
+    more: "Meer acties",
+    openProduct: "Product openen",
     deleteAd: "Advertentie verwijderen",
     deleteProduct: "Product verwijderen",
     adTitle: "Deze advertentie verwijderen?",

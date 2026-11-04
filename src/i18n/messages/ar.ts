@@ -737,6 +737,8 @@ export const ar: Messages = {
     soonBody: "اعرض أفضل إعلاناتك على مشترين جدد في فيسبوك وإنستغرام بلمسة واحدة.",
   },
   remove: {
+    more: "مزيد من الإجراءات",
+    openProduct: "فتح المنتج",
     deleteAd: "حذف الإعلان",
     deleteProduct: "حذف المنتج",
     adTitle: "هل تريد حذف هذا الإعلان؟",

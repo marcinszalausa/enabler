@@ -746,6 +746,8 @@ export const ko: Messages = {
     soonBody: "한 번의 탭으로 최고의 광고를 Facebook과 Instagram의 새로운 고객에게 보여주세요.",
   },
   remove: {
+    more: "더 보기",
+    openProduct: "제품 열기",
     deleteAd: "광고 삭제",
     deleteProduct: "제품 삭제",
     adTitle: "이 광고를 삭제할까요?",

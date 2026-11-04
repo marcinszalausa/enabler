@@ -761,6 +761,8 @@ export const de: Messages = {
     soonBody: "Zeige deine beste Anzeige mit einem Tipp neuen Käufern auf Facebook und Instagram.",
   },
   remove: {
+    more: "Weitere Aktionen",
+    openProduct: "Produkt öffnen",
     deleteAd: "Anzeige löschen",
     deleteProduct: "Produkt löschen",
     adTitle: "Diese Anzeige löschen?",

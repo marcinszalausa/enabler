@@ -728,6 +728,8 @@ export const zh: Messages = {
     soonBody: "一键将您最好的广告展示给 Facebook 和 Instagram 上的新买家。",
   },
   remove: {
+    more: "更多操作",
+    openProduct: "打开产品",
     deleteAd: "删除广告",
     deleteProduct: "删除产品",
     adTitle: "删除这条广告？",
