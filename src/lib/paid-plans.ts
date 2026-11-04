@@ -1,6 +1,6 @@
 // Commercial descriptions and signup preferences, never proof of paid access.
 export const PAID_PLANS=[
- {id:"starter",name:"Starter",price:39,credits:300,accounts:1,maxAccounts:3,recommended:false,outcome:"Keep fresh ads ready",forWhom:"For a regular posting routine",allowance:"Credits per month",upgrade:"Create and plan",highlights:["300 generation credits every month","One social account included","Weekly planner and calendar reminders"]},
+ {id:"starter",name:"Starter",price:39,credits:300,accounts:1,maxAccounts:3,recommended:false,outcome:"Keep fresh ads ready",forWhom:"For a regular posting routine",allowance:"Credits per month",upgrade:"Create and plan",highlights:["300 generation credits every month","Image and video ads in your brand","One social account included","Free text edits and ad downloads","Weekly planner and scheduled posts"]},
  {id:"plus",name:"Plus",price:69,credits:600,accounts:1,maxAccounts:5,recommended:true,outcome:"Create, test and improve",forWhom:"For businesses ready to compare results",allowance:"Credits per month",upgrade:"Everything in Starter, plus",highlights:["600 generation credits every month","Compare up to 16 recent posts","Download your results as a CSV report"]},
  {id:"growth",name:"Growth",price:99,credits:1000,accounts:1,maxAccounts:10,recommended:false,outcome:"Make more campaigns",forWhom:"For a busier content calendar",allowance:"Credits per month",upgrade:"Everything in Plus, plus",highlights:["1,000 generation credits every month","Compare up to 30 recent posts"]},
 ] as const;
