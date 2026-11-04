@@ -189,7 +189,7 @@ export const sv: Messages = {
       },
       {
         q: "Vad är en kredit?",
-        a: "Varje annonsbild kostar 2 krediter. Varje körning skapar fem annonser i två storlekar och använder alltså 20 krediter.",
+        a: "Varje annonsbild kostar 2 till 5 krediter beroende på vald kvalitet. Varje körning skapar fem annonser i två storlekar och använder alltså 20 till 50 krediter.",
       },
       {
         q: "Behöver jag kunna design?",
@@ -501,6 +501,9 @@ export const sv: Messages = {
     person: "Person i bild",
     length: "Längd",
     lengthHelp: "7–15 s passar Reels och Stories, 20–30 s passar TikTok.",
+    quality: "Kvalitet",
+    qualities: { good: "Bra", better: "Bättre", best: "Bäst" },
+    qualityHelp: "Högre kvalitet använder nyare AI-modeller och fler krediter. Bäst använder de högst rankade modellerna för de skarpaste och mest verklighetstrogna annonserna.",
     genders: { female: "Kvinna", male: "Man" },
     energies: { calm: "Lugn", upbeat: "Glad", high: "Mycket energi" },
     people: {

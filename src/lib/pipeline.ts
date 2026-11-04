@@ -8,6 +8,7 @@ import { generateAdImage, type Aspect } from "@/lib/ai/fal";
 import { userMessage } from "@/lib/errors";
 import { autopilotRun } from "@/lib/social/publish";
 import type { LanguageKey } from "@/lib/languages";
+import type { Quality } from "@/lib/quality";
 
 import { ASPECTS, ADS_PER_GENERATION, GENERATION_COST } from "@/lib/image-pricing";
 export { ASPECTS, ADS_PER_GENERATION, CREDITS_PER_IMAGE, GENERATION_COST } from "@/lib/image-pricing";
@@ -22,6 +23,7 @@ type Job = {
   workspaceId: string;
   productId: string;
   language: LanguageKey;
+  quality: Quality;
   creativePreferences?: CreativePreferences | null;
 };
 
@@ -32,6 +34,7 @@ export async function runGeneration({
   workspaceId,
   productId,
   language,
+  quality,
   creativePreferences,
 }: Job) {
   const db = createAdminClient();
@@ -57,6 +60,7 @@ export async function runGeneration({
         const imageUrl = await generateCheckedImage({
           prompt: ad.image_prompt,
           aspect,
+          quality,
           referenceImageUrl,
           product: brief.product_name,
         });
@@ -148,18 +152,15 @@ export class QualityError extends Error {}
 export async function generateCheckedImage(opts: {
   prompt: string;
   aspect: Aspect;
+  quality: Quality;
   referenceImageUrl: string | null;
   sameScene?: boolean;
   product: string;
 }): Promise<string> {
   let avoid: string | undefined;
   for (let attempt = 1; attempt <= IMAGE_ATTEMPTS; attempt++) {
-    // Retries use the more precise model.
-    const imageUrl = await generateAdImage({
-      ...opts,
-      avoid,
-      best: attempt > 1,
-    });
+    // Retries name the defects the reviewer found.
+    const imageUrl = await generateAdImage({ ...opts, avoid });
     let review;
     try {
       review = await reviewAdImage({ ...opts, imageUrl });

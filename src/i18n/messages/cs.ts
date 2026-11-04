@@ -190,7 +190,7 @@ export const cs: Messages = {
       },
       {
         q: "Co je kredit?",
-        a: "Každý reklamní obrázek stojí 2 kredity. Každý běh vytvoří pět reklam ve dvou formátech, takže spotřebuje 20 kreditů.",
+        a: "Každý reklamní obrázek stojí 2 až 5 kreditů podle zvolené kvality. Každý běh vytvoří pět reklam ve dvou formátech, takže spotřebuje 20 až 50 kreditů.",
       },
       {
         q: "Potřebuji zkušenosti s grafikou?",
@@ -502,6 +502,9 @@ export const cs: Messages = {
     person: "Osoba v záběru",
     length: "Délka",
     lengthHelp: "7–15 s se hodí na Reels a Stories, 20–30 s na TikTok.",
+    quality: "Kvalita",
+    qualities: { good: "Dobrá", better: "Lepší", best: "Nejlepší" },
+    qualityHelp: "Vyšší kvalita používá novější modely AI a více kreditů. Nejlepší používá nejlépe hodnocené modely pro nejostřejší a nejvěrnější reklamy.",
     genders: { female: "Ženský", male: "Mužský" },
     energies: { calm: "Klidná", upbeat: "Veselá", high: "Hodně energie" },
     people: {

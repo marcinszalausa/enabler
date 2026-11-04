@@ -194,7 +194,7 @@ export const it: Messages = {
       },
       {
         q: "Cos'è un credito?",
-        a: "Ogni immagine pubblicitaria usa 2 crediti. Ogni giro crea cinque annunci in due formati, quindi usa 20 crediti.",
+        a: "Ogni immagine pubblicitaria usa da 2 a 5 crediti, secondo la qualità scelta. Ogni giro crea cinque annunci in due formati, quindi usa da 20 a 50 crediti.",
       },
       {
         q: "Serve esperienza di grafica?",
@@ -508,6 +508,9 @@ export const it: Messages = {
     person: "Persona in video",
     length: "Durata",
     lengthHelp: "7–15 s per Reels e Stories, 20–30 s per TikTok.",
+    quality: "Qualità",
+    qualities: { good: "Buona", better: "Migliore", best: "Massima" },
+    qualityHelp: "Più qualità usa modelli di IA più recenti e più crediti. Massima usa i modelli meglio classificati per gli annunci più nitidi e realistici.",
     genders: { female: "Femminile", male: "Maschile" },
     energies: { calm: "Calma", upbeat: "Allegra", high: "Molto energica" },
     people: {

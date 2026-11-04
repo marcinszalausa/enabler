@@ -176,7 +176,7 @@ export const zh: Messages = {
       },
       {
         q: "什么是积分？",
-        a: "每张广告图片使用 2 个积分。每次生成会做出 5 条广告、每条 2 种尺寸，所以使用 20 个积分。",
+        a: "每张广告图片根据所选质量使用 2 到 5 个积分。每次生成会做出 5 条广告、每条 2 种尺寸，所以使用 20 到 50 个积分。",
       },
       {
         q: "需要设计经验吗？",
@@ -481,6 +481,9 @@ export const zh: Messages = {
     person: "出镜人物",
     length: "时长",
     lengthHelp: "7–15 秒适合 Reels 和快拍，20–30 秒适合 TikTok。",
+    quality: "质量",
+    qualities: { good: "标准", better: "优质", best: "最佳" },
+    qualityHelp: "质量越高，使用的 AI 模型越新，消耗的积分也越多。最佳质量使用排名最高的模型，生成最清晰、最逼真的广告。",
     genders: { female: "女声", male: "男声" },
     energies: { calm: "平静", upbeat: "轻快", high: "活力满满" },
     people: {

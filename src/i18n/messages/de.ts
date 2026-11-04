@@ -189,7 +189,7 @@ export const de: Messages = {
       },
       {
         q: "Was ist ein Credit?",
-        a: "Jedes Anzeigenbild kostet 2 Credits. Jeder Durchlauf erstellt fünf Anzeigen in zwei Formaten und verbraucht daher 20 Credits.",
+        a: "Jedes Anzeigenbild kostet je nach gewählter Qualität 2 bis 5 Credits. Jeder Durchlauf erstellt fünf Anzeigen in zwei Formaten und verbraucht daher 20 bis 50 Credits.",
       },
       {
         q: "Brauche ich Design-Erfahrung?",
@@ -500,6 +500,9 @@ export const de: Messages = {
     person: "Person im Bild",
     length: "Länge",
     lengthHelp: "7–15 s passen zu Reels und Stories, 20–30 s zu TikTok.",
+    quality: "Qualität",
+    qualities: { good: "Gut", better: "Besser", best: "Beste" },
+    qualityHelp: "Höhere Qualität nutzt neuere KI-Modelle und mehr Credits. Beste nutzt die bestbewerteten Modelle für die schärfsten, realistischsten Anzeigen.",
     genders: { female: "Weiblich", male: "Männlich" },
     energies: { calm: "Ruhig", upbeat: "Fröhlich", high: "Energiegeladen" },
     people: {

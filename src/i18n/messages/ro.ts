@@ -194,7 +194,7 @@ export const ro: Messages = {
       },
       {
         q: "Ce este un credit?",
-        a: "Fiecare imagine publicitară costă 2 credite. Fiecare rulare creează cinci reclame în două formate, deci folosește 20 de credite.",
+        a: "Fiecare imagine publicitară costă între 2 și 5 credite, după calitatea aleasă. Fiecare rulare creează cinci reclame în două formate, deci folosește între 20 și 50 de credite.",
       },
       {
         q: "Am nevoie de experiență în design?",
@@ -508,6 +508,9 @@ export const ro: Messages = {
     length: "Durată",
     lengthHelp:
       "7–15 s se potrivesc pentru Reels și Stories, 20–30 s pentru TikTok.",
+    quality: "Calitate",
+    qualities: { good: "Bună", better: "Mai bună", best: "Cea mai bună" },
+    qualityHelp: "Calitatea mai mare folosește modele AI mai noi și mai multe credite. Cea mai bună folosește modelele cele mai bine clasate pentru cele mai clare și realiste reclame.",
     genders: { female: "Feminină", male: "Masculină" },
     energies: { calm: "Calmă", upbeat: "Veselă", high: "Multă energie" },
     people: {

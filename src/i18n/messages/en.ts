@@ -187,7 +187,7 @@ export const en = {
       },
       {
         q: "What is a credit?",
-        a: "Each ad image uses 2 credits. Each run makes five ads in two sizes, so it uses 20 credits.",
+        a: "Each ad image uses 2 to 5 credits, depending on the quality you pick. Each run makes five ads in two sizes, so it uses 20 to 50 credits.",
       },
       {
         q: "Do I need design experience?",
@@ -496,6 +496,9 @@ export const en = {
     person: "Person on screen",
     length: "Length",
     lengthHelp: "7–15 s suits Reels and Stories; 20–30 s suits TikTok.",
+    quality: "Quality",
+    qualities: { good: "Good", better: "Better", best: "Best" },
+    qualityHelp: "Higher quality uses newer AI models and more credits. Best uses the top-ranked models for the sharpest, most lifelike ads.",
     genders: { female: "Female", male: "Male" },
     energies: { calm: "Calm", upbeat: "Upbeat", high: "High energy" },
     people: {

@@ -8,7 +8,9 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { scrapePage } from "@/lib/scrape";
 import { extractBrandBrief } from "@/lib/ai/claude";
-import { GENERATION_COST, runGeneration } from "@/lib/pipeline";
+import { runGeneration } from "@/lib/pipeline";
+import { imageRunCost } from "@/lib/image-pricing";
+import { DEFAULT_IMAGE_QUALITY, parseQuality } from "@/lib/quality";
 import { runVideoGeneration } from "@/lib/video";
 import { parseVideoOptions, videoRunCost } from "@/lib/video-options";
 import { DEFAULT_LANGUAGE, isLanguageKey } from "@/lib/languages";
@@ -83,7 +85,8 @@ export async function startGeneration(
   const productId = String(formData.get("productId") ?? "");
   const video = formData.get("kind") === "video";
   const options = video ? parseVideoOptions(formData) : null;
-  const cost = options ? videoRunCost(options.length) : GENERATION_COST;
+  const quality = options?.quality ?? parseQuality(formData.get("quality"), DEFAULT_IMAGE_QUALITY);
+  const cost = options ? videoRunCost(options.length, quality) : imageRunCost(quality);
   const requested = formData.get("language");
   const language =
     options?.language ??
@@ -117,11 +120,9 @@ export async function startGeneration(
     request_id: requestId,
     product: productId,
     generation_type: video ? "video_ads" : "image_ads",
-    generation_model: video
-      ? "claude-opus-5-5 + fal flux + kling 2.6"
-      : "claude-opus-5-5 + fal flux",
+    generation_model: `claude + fal ${video ? "video" : "image"} ${quality}`,
     amount: cost,
-    options: { ...(options ?? { language }), ...(creativePreferences ? { creative_preferences: creativePreferences } : {}) },
+    options: { ...(options ?? { language, quality }), ...(creativePreferences ? { creative_preferences: creativePreferences } : {}) },
   });
   if (error) {
     if(error.code==="P0001"&&error.message==="TRIAL_BATCH_ACTIVE")return {error:(await requestMessages()).trial.busy};
@@ -137,7 +138,7 @@ export async function startGeneration(
   after(() =>
     options
       ? runVideoGeneration({ ...job, options })
-      : runGeneration({ ...job, language }),
+      : runGeneration({ ...job, language, quality }),
   );
 
   revalidatePath(`/dashboard/products/${productId}`);

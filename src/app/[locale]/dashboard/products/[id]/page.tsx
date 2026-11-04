@@ -93,7 +93,7 @@ async function Product({
     supabase
       .from("generations")
       .select(
-        "id, type, status, error, created_at, showcased_at, cost_credits, creatives(id, kind, aspect, angle, headline, primary_text, cta), video_jobs(status)",
+        "id, type, status, error, created_at, showcased_at, cost_credits, request_options, creatives(id, kind, aspect, angle, headline, primary_text, cta), video_jobs(status)",
       )
       .eq("product_id", id)
       .order("created_at", { ascending: false })

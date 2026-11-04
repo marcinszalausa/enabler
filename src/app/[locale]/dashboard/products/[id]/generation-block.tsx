@@ -1,6 +1,6 @@
 import {AdGallery} from "./ad-gallery";
 import { setShowcase } from "./showcase-actions";
-import { DEFAULT_VIDEO_OPTIONS, lengthForRunCost } from "@/lib/video-options";
+import { DEFAULT_VIDEO_OPTIONS, runLength } from "@/lib/video-options";
 import { Chip, DownloadIcon, smallButton } from "../../ui";
 import {
   PublishDialog,
@@ -38,6 +38,8 @@ export type Generation = {
   created_at: string;
   showcased_at: string | null;
   cost_credits: number;
+  // The run's choices (length, quality); missing on fixtures.
+  request_options?: unknown;
   creatives: Creative[];
   video_jobs?: { status: string }[];
 };
@@ -78,7 +80,7 @@ export function GenerationBlock({
 
   const video = g.type === "video_ads";
   // A run's length isn't stored; every length has its own price.
-  const seconds = Number(lengthForRunCost(g.cost_credits, g.created_at) ?? DEFAULT_VIDEO_OPTIONS.length);
+  const seconds = Number(runLength(g) ?? DEFAULT_VIDEO_OPTIONS.length);
 
   const view = generationPresentation(g);
 

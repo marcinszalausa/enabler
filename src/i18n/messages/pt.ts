@@ -194,7 +194,7 @@ export const pt: Messages = {
       },
       {
         q: "O que é um crédito?",
-        a: "Cada imagem de anúncio usa 2 créditos. Cada rodada cria cinco anúncios em dois tamanhos, então usa 20 créditos.",
+        a: "Cada imagem de anúncio usa de 2 a 5 créditos, conforme a qualidade escolhida. Cada rodada cria cinco anúncios em dois tamanhos, então usa de 20 a 50 créditos.",
       },
       {
         q: "Preciso saber design?",
@@ -504,6 +504,9 @@ export const pt: Messages = {
     person: "Pessoa no vídeo",
     length: "Duração",
     lengthHelp: "7–15 s combina com Reels e Stories; 20–30 s com TikTok.",
+    quality: "Qualidade",
+    qualities: { good: "Boa", better: "Melhor", best: "Máxima" },
+    qualityHelp: "Mais qualidade usa modelos de IA mais novos e mais créditos. Máxima usa os modelos mais bem avaliados para os anúncios mais nítidos e realistas.",
     genders: { female: "Feminina", male: "Masculina" },
     energies: { calm: "Calma", upbeat: "Animada", high: "Muita energia" },
     people: {

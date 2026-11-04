@@ -12,6 +12,7 @@ import {
   submitAdVideo,
 } from "@/lib/ai/fal";
 import { QualityError, generateCheckedImage } from "@/lib/pipeline";
+import type { Quality } from "@/lib/quality";
 import { getBrandKit } from "@/lib/brand-kit";
 import { FONTS, loadFont, textColorOn } from "@/lib/brand";
 import { editVideoAd } from "@/lib/video-edit";
@@ -125,7 +126,7 @@ export async function runVideoGeneration({
         const jobId = jobs[i].id;
         try {
           const [requestIds, sound] = await Promise.all([
-            filmShots(ad, shotSeconds, referenceImageUrl, brief.product_name),
+            filmShots(ad, shotSeconds, referenceImageUrl, brief.product_name, options.quality),
             recordSound(
               options,
               ad,
@@ -170,11 +171,13 @@ async function filmShots(
   shotSeconds: readonly number[],
   referenceImageUrl: string | null,
   product: string,
+  quality: Quality,
 ): Promise<string[]> {
   const check = (prompt: string, reference: string | null, sameScene = false) =>
     generateCheckedImage({
       prompt,
       aspect: "9:16",
+      quality,
       referenceImageUrl: reference,
       sameScene,
       product,
@@ -199,6 +202,7 @@ async function filmShots(
         startImageUrl: frame,
         prompt: ad.shots[i].motion_prompt,
         seconds: shotSeconds[i],
+        quality,
       }),
     ),
   );
