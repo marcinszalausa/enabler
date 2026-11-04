@@ -15,10 +15,12 @@ try{
  for(const [width,locale]of [[320,"en"],[390,"en"],[390,"ar"],[1440,"en"]]){
   const page=await browser.newPage({viewport:{width,height:950},reducedMotion:"reduce"});const errors=[];page.on("pageerror",e=>errors.push(e.message));await page.goto("http://localhost:3126"+(locale==="en"?"":"/"+locale)+"/pricing",{waitUntil:"networkidle"});
   assert.equal(await page.locator("button[data-buy-plan]:disabled").count(),3);assert.equal(await page.locator("a[data-buy-plan]").count(),0);assert.equal(await page.locator("[data-plan]").count(),3);assert.equal(await page.locator("[data-plan-details]").count(),3);for(const p of ["starter","plus","growth"])assert.equal(await page.locator(`[data-plan-details="${p}"] dt`).count(),29);
-  for(const id of ["starter","plus","growth"]){
-   const list=page.locator('[data-plan-included="'+id+'"]');assert.ok(await list.locator("li").count()>=12,"Full inclusion list inside "+id+" card");
-   const text=await list.innerText();for(const feature of ["Product-page import and brand brief","Video narration, captions and music","Image and MP4 downloads","Posting calendar, queue and scheduled publishing","Weekly planner and calendar reminders"])assert.ok(text.includes(feature),id+": "+feature);
-  }
+  const starter=page.locator('[data-plan-included="starter"]');assert.ok(await starter.locator("li").count()>=12);
+  for(const feature of ["Product-page import and brand brief","Video narration, captions and music","Image and MP4 downloads","Posting calendar, queue and scheduled publishing","Weekly planner and calendar reminders"])assert.ok((await starter.innerText()).includes(feature));
+  const plus=page.locator('[data-plan="plus"]'),growth=page.locator('[data-plan="growth"]');
+  assert.match(await plus.innerText(),/Everything in Starter, plus/);assert.match(await growth.innerText(),/Everything in Plus, plus/);
+  assert.equal(await plus.locator("[data-plan-included] li").count(),3);assert.equal(await growth.locator("[data-plan-included] li").count(),2);
+  for(const card of [plus,growth])for(const repeated of ["Product-page import and brand brief","Saved logo, colors, font and brand voice","One social account included","Weekly planner and calendar reminders"])assert.ok(!(await card.innerText()).includes(repeated),"Inherited features are not repeated");
   assert.match(await page.locator('[data-plan-details="starter"]').innerText(),/Not included — Plus and Growth/);assert.match(await page.locator('[data-plan-details="growth"]').innerText(),/Up to 30/);
   const questions=await page.locator("[data-pricing-faq] summary").allTextContents();const answers=await page.locator("[data-pricing-faq] details p").allTextContents();const faq=JSON.parse(await page.locator("script[data-pricing-structured]").textContent())["@graph"].find(n=>n["@type"]==="FAQPage");assert.deepEqual(faq.mainEntity.map(q=>q.name),questions);assert.deepEqual(faq.mainEntity.map(q=>q.acceptedAnswer.text),answers);
   await page.getByRole("navigation",{name:"Jump to full plan details"}).getByRole("link",{name:"growth details ↓"}).click();const box=await page.locator("#details-growth").boundingBox(),header=await page.locator("header").first().boundingBox();assert.ok(box.y>=header.y+header.height-1,"Jump clears sticky navigation");assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),"No page overflow");
@@ -47,7 +49,7 @@ try{
  }
  const home=await browser.newPage({viewport:{width:390,height:950},javaScriptEnabled:false});await home.goto("http://localhost:3126/",{waitUntil:"domcontentloaded"});
  assert.equal(await home.locator("#pricing [data-plan-included]").count(),3);assert.equal(await home.locator("#pricing button[data-buy-plan]:disabled").count(),3);assert.equal(await home.locator("#pricing a[data-try-plan]").count(),3);
- for(const list of await home.locator("#pricing [data-plan-included]").all())assert.ok(await list.locator("li").count()>=12);
- await home.close();console.log("PASS full inclusion lists on homepage without JavaScript; Buy remains disabled");
+ assert.ok(await home.locator('#pricing [data-plan-included="starter"] li').count()>=12);assert.equal(await home.locator('#pricing [data-plan-included="plus"] li').count(),3);assert.equal(await home.locator('#pricing [data-plan-included="growth"] li').count(),2);
+ await home.close();console.log("PASS inherited plan lists on homepage without JavaScript; Buy remains disabled");
  console.log("PASS raw HTML content is readable without JavaScript");
 }catch(error){console.error(log);throw error;}finally{await browser?.close();if(server?.pid)try{process.kill(-server.pid,"SIGTERM");}catch{}}
