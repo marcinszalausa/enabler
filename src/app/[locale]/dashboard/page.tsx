@@ -50,7 +50,7 @@ async function Dashboard({
 }) {
   const user = await getCurrentUser();
   // A link pasted on the landing page arrives as ?url=...
-  const { url } = await searchParams;
+  const { url, deleted } = await searchParams;
   const supabase = await createClient();
 
   const { data: workspace } = await supabase
@@ -86,6 +86,7 @@ async function Dashboard({
         />
       </header>
 
+      {deleted === "1" && <p role="status" data-product-deleted className="mt-4 rounded-xl border border-line bg-surface px-4 py-3 text-sm">{t.remove.productDeleted}</p>}
       <p className="mt-4 max-w-2xl text-sm text-muted">{t.journey.addHint}</p>
       <div className="mt-5 flex flex-wrap gap-3"><Link href="/dashboard/campaigns" className="inline-flex min-h-11 items-center rounded-xl border border-line-strong px-4 text-sm font-medium text-accent">Plan my next campaign →</Link><Link href="/dashboard/brand" className="inline-flex min-h-11 items-center px-2 text-sm text-muted">Save my brand preferences</Link></div>
 

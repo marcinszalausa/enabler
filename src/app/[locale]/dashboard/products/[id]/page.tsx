@@ -45,6 +45,7 @@ import { QUALITIES } from "@/lib/quality";
 import { isLocale } from "@/i18n/config";
 import { getMessages } from "@/i18n/messages";
 import { AppText } from "../../i18n-text";
+import { DeleteButton } from "../../delete-button";
 import { fmt } from "@/i18n/format";
 
 export const maxDuration = 300;
@@ -122,7 +123,9 @@ async function Product({
     canEditWorkspace(supabase, product.workspace_id),
   ]);
   if (generationsError) throw generationsError;
-  const campaignRuns = campaign ? (generations ?? []).filter(g => parseCampaign((g.request_options as {campaign?:unknown}|null)?.campaign)?.id === campaign.id) : (generations ?? []);
+  // A finished run whose ads were all deleted has nothing left to show.
+  const visibleRuns = (generations ?? []).filter((g) => !(g.status === "succeeded" && g.creatives.length === 0));
+  const campaignRuns = campaign ? visibleRuns.filter(g => parseCampaign((g.request_options as {campaign?:unknown}|null)?.campaign)?.id === campaign.id) : visibleRuns;
   // Read receipts after the run snapshot: a terminal state must not race an
   // earlier receipt query and briefly look like an unconfirmed refund.
   const receiptResult = await supabase.rpc("generation_receipts", { product: id });
@@ -135,11 +138,17 @@ async function Product({
     `${kit.accent_color}${kit.font}${kit.logo_path ?? ""}`,
   );
 
+  const creativeIds = (generations ?? []).flatMap((g) => g.creatives.map((c) => c.id));
+  const { data: favoriteRows } = creativeIds.length
+    ? await supabase.from("creative_favorites").select("creative_id").eq("user_id", user.id).in("creative_id", creativeIds)
+    : { data: [] as { creative_id: string }[] };
+  const favorites = (favoriteRows ?? []).map((f) => f.creative_id as string);
+
   const publishing = zernioConfigured()
     ? await publishingFor(
         supabase,
         locale,
-        (generations ?? []).flatMap((g) => g.creatives.map((c) => c.id)),
+        creativeIds,
         workspace?.plan,
       )
     : null;
@@ -190,6 +199,7 @@ async function Product({
             >
               {product.url}
             </a>
+            {canEdit && <DeleteButton target="product" id={product.id} className="-ms-3 mt-1 inline-flex min-h-11 items-center gap-1.5 rounded-xl px-3 text-sm text-muted transition hover:text-danger" />}
           </div>
         </div>
         <div id="generate-ads" tabIndex={-1} className="flex scroll-mt-40 flex-col items-start gap-2 rounded-2xl border border-line bg-raised p-4 focus:outline-2 focus:outline-accent lg:items-end">
@@ -252,6 +262,7 @@ async function Product({
             nextSlot={publishing?.nextSlot ?? null}
             posts={publishing?.posts ?? {}}
             receipt={receipts.get(g.id)}
+            favorites={favorites}
             canRetry={canEdit}
           />
         ))}
