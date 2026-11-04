@@ -45,6 +45,10 @@ async function main(){
   const output=await editVideoAd(edit);await writeFile(join(dir,"out.mp4"),output);
   const probe=await exec(ffmpegPath,["-hide_banner","-i",join(dir,"out.mp4"),"-f","null","-"],{timeout:30000,maxBuffer:2e6});
   assert.ok(probe.stderr.includes("1080x1920"));assert.ok(probe.stderr.includes("Audio: aac"));assert.ok(output.indexOf("moov")<output.indexOf("mdat"));
+  const tail=await exec(ffmpegPath,["-v","error","-ss","5","-i",join(dir,"out.mp4"),"-t","0.4","-map","0:a:0","-ac","1","-ar","16000","-f","s16le","pipe:1"],{encoding:"buffer",timeout:30000,maxBuffer:2e6});
+  assert.ok(tail.stdout.length>1000,"Music bed continues after narration ends");
+  let energy=0;for(let i=0;i<tail.stdout.length;i+=2)energy+=tail.stdout.readInt16LE(i)**2;
+  assert.ok(energy>100000,"Closing audio is not truncated or silent");
   assert.ok(voiceTempo(4,6)<=1.2);
   await assert.rejects(editVideoAd({...edit,shotSeconds:[1,1]}),QualityError);
   console.log("PASS real full-frame MP4 edit, voice/music ducking, export codecs and uncut-voice guard");

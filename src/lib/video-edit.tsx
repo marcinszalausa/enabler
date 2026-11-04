@@ -185,7 +185,8 @@ export async function editVideoAd(edit: VideoEdit): Promise<Buffer> {
     f.push(
       `[${voiceIn}:a]adelay=${delay}:all=1,atempo=${tempo.toFixed(3)}[vo]`,
       `[${musicIn}:a]volume=0.14,afade=t=in:d=0.3,afade=t=out:st=${total - 1}:d=1[mu]`,
-      `[vo]asplit=2[voice][sidechain]`,
+      `[vo]asplit=2[voice][sidechainRaw]`,
+      `[sidechainRaw]apad=whole_dur=${total},atrim=duration=${total}[sidechain]`,
       `[mu][sidechain]sidechaincompress=threshold=0.025:ratio=8:attack=10:release=250[ducked]`,
       `[voice][ducked]amix=inputs=2:duration=longest:normalize=0,atrim=duration=${total},loudnorm=I=-14:TP=-1.5:LRA=11[aout]`,
     );
