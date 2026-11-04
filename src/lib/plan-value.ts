@@ -1,7 +1,7 @@
 // Additional paid tools; existing creation, editing and publishing stay shared.
 export function planTools(plan:unknown){
  const paid=plan==="starter"||plan==="plus"||plan==="growth";
- return {weekPlanner:paid,resultsComparison:plan==="plus"||plan==="growth",resultsLimit:plan==="growth"?30:plan==="plus"?16:8};
+ return {growthActionPlan:plan==="growth",weekPlanner:paid,resultsComparison:plan==="plus"||plan==="growth",resultsLimit:plan==="growth"?30:plan==="plus"?16:8};
 }
 export type ReportRow={id:string;network:string;caption:string;date:string;state:string;impressions:number|null;clicks:number|null;views:number|null};
 export function sameNetworkComparison(rows:readonly ReportRow[]){

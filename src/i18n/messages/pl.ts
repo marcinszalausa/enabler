@@ -168,7 +168,7 @@ export const pl: Messages = {
         ],
       },
       {
-        name: "Starter",
+        name: "Launch",
         credits: "300 kredytów co miesiąc",
         perks: [
           "Około 150 reklam miesięcznie",
@@ -177,11 +177,11 @@ export const pl: Messages = {
         ],
       },
       {
-        name: "Growth",
+        name: "Scale",
         credits: "1000 kredytów co miesiąc",
         perks: [
           "Około 500 reklam miesięcznie",
-          "Wszystko z planu Starter",
+          "Wszystko z planu Launch",
           "Priorytetowe wsparcie",
         ],
       },

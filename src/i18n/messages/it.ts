@@ -169,7 +169,7 @@ export const it: Messages = {
         ],
       },
       {
-        name: "Starter",
+        name: "Launch",
         credits: "300 crediti ogni mese",
         perks: [
           "Circa 150 annunci al mese",
@@ -178,11 +178,11 @@ export const it: Messages = {
         ],
       },
       {
-        name: "Growth",
+        name: "Scale",
         credits: "1.000 crediti ogni mese",
         perks: [
           "Circa 500 annunci al mese",
-          "Tutto ciò che c'è in Starter",
+          "Tutto ciò che c'è in Launch",
           "Assistenza prioritaria",
         ],
       },

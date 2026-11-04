@@ -8,11 +8,13 @@ test("feature lists preserve common tools while describing actual upgrade entitl
  const free=rows("free"),starter=rows("starter"),growth=rows("growth");
  assert.match(free["Weekly planning preview"],/Not included/);assert.match(starter["Weekly planning preview"],/Included/);assert.match(starter["Download a results CSV"],/Not included/);assert.match(growth["Download a results CSV"],/Included/);
  assert.equal(free["Recent published posts in results"],"Up to 8");assert.equal(growth["Recent published posts in results"],"Up to 30");assert.equal(rows("plus")["Recent published posts in results"],"Up to 16");
- for(const p of plans){const groups=planFeatureGroups(p);const labels=groups.flatMap(g=>g.features.map(([label])=>label));assert.equal(labels.length,29);assert.equal(new Set(labels).size,29);assert.match(rows(p.id)["Image headline and button edits"],/no generation credits/);assert.match(rows(p.id)["Posting queue and opt-in autopilot"],/Included/);}
+ for(const p of plans){const groups=planFeatureGroups(p);const labels=groups.flatMap(g=>g.features.map(([label])=>label));assert.equal(labels.length,32);assert.equal(new Set(labels).size,32);assert.match(rows(p.id)["Image headline and button edits"],/no generation credits/);assert.match(rows(p.id)["Posting queue and opt-in autopilot"],/Included/);}
 });
 test("structured FAQ matches visible content and does not publish purchasable offers",()=>{
  const data=pricingStructuredData(PAID_PLANS);const faq=data["@graph"].find(x=>x["@type"]==="FAQPage") as {mainEntity:{name:string;acceptedAnswer:{text:string}}[]};
  assert.deepEqual(faq.mainEntity.map(q=>[q.name,q.acceptedAnswer.text]),PRICING_QUESTIONS);
- const text=JSON.stringify(data);assert.ok(!text.includes('"offers"'));assert.ok(!text.includes('"aggregateRating"'));assert.ok(!text.includes('"price":29'));assert.equal(JSON.parse(pricingStructuredJson(PAID_PLANS))["@graph"].length,3);
+ const text=JSON.stringify(data);assert.ok(!text.includes('"offers"'));assert.ok(!text.includes('"aggregateRating"'));assert.ok(!text.includes('"price":39'));assert.equal(JSON.parse(pricingStructuredJson(PAID_PLANS))["@graph"].length,3);
 });
 test("JSON-LD cannot end its containing script when future content includes HTML",()=>{const hostile=[{...plans[0],id:'</script><script>alert("x")</script>'}];const encoded=pricingStructuredJson(hostile);assert.ok(!encoded.includes("<"));assert.deepEqual(JSON.parse(encoded),pricingStructuredData(hostile));});
+
+test("Scale action plans remain exclusive while Grow keeps comparison and CSV",()=>{const rows=(id:string)=>Object.fromEntries(planFeatureGroups(PAID_PLANS.find(p=>p.id===id)!).flatMap(g=>g.features.map(([label,value])=>[label,value] as [string,string])));assert.match(String(rows("plus")["Results-based next-test action plan"]),/Not included/);assert.match(String(rows("growth")["Results-based next-test action plan"]),/Included/);assert.match(String(rows("plus")["Filter comparisons by social network"]),/Included/);});

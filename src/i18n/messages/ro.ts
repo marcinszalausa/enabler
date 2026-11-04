@@ -169,7 +169,7 @@ export const ro: Messages = {
         ],
       },
       {
-        name: "Starter",
+        name: "Launch",
         credits: "300 de credite în fiecare lună",
         perks: [
           "Aproximativ 150 de reclame pe lună",
@@ -178,11 +178,11 @@ export const ro: Messages = {
         ],
       },
       {
-        name: "Growth",
+        name: "Scale",
         credits: "1.000 de credite în fiecare lună",
         perks: [
           "Aproximativ 500 de reclame pe lună",
-          "Tot ce include Starter",
+          "Tot ce include Launch",
           "Suport prioritar",
         ],
       },

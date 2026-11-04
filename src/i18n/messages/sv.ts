@@ -164,7 +164,7 @@ export const sv: Messages = {
         perks: ["Cirka 50 annonser", "Varumärkeskit", "Ladda ner varje annons"],
       },
       {
-        name: "Starter",
+        name: "Launch",
         credits: "300 krediter varje månad",
         perks: [
           "Cirka 150 annonser i månaden",
@@ -173,11 +173,11 @@ export const sv: Messages = {
         ],
       },
       {
-        name: "Growth",
+        name: "Scale",
         credits: "1 000 krediter varje månad",
         perks: [
           "Cirka 500 annonser i månaden",
-          "Allt i Starter",
+          "Allt i Launch",
           "Prioriterad support",
         ],
       },

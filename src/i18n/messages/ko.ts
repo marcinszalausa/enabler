@@ -162,14 +162,14 @@ export const ko: Messages = {
         perks: ["광고 약 50개", "브랜드 키트", "모든 광고 다운로드"],
       },
       {
-        name: "Starter",
+        name: "Launch",
         credits: "매달 300 크레딧",
         perks: ["월 광고 약 150개", "Free의 모든 기능", "언제든 해지 가능"],
       },
       {
-        name: "Growth",
+        name: "Scale",
         credits: "매달 1,000 크레딧",
-        perks: ["월 광고 약 500개", "Starter의 모든 기능", "우선 지원"],
+        perks: ["월 광고 약 500개", "Launch의 모든 기능", "우선 지원"],
       },
     ],
     faqTitle: "자주 묻는 질문",

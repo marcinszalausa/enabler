@@ -164,7 +164,7 @@ export const de: Messages = {
         perks: ["Etwa 50 Anzeigen", "Brand-Kit", "Jede Anzeige herunterladen"],
       },
       {
-        name: "Starter",
+        name: "Launch",
         credits: "300 Credits pro Monat",
         perks: [
           "Etwa 150 Anzeigen pro Monat",
@@ -173,11 +173,11 @@ export const de: Messages = {
         ],
       },
       {
-        name: "Growth",
+        name: "Scale",
         credits: "1.000 Credits pro Monat",
         perks: [
           "Etwa 500 Anzeigen pro Monat",
-          "Alles aus Starter",
+          "Alles aus Launch",
           "Bevorzugter Support",
         ],
       },

@@ -165,7 +165,7 @@ export const cs: Messages = {
         perks: ["Asi 50 reklam", "Firemní styl", "Stažení každé reklamy"],
       },
       {
-        name: "Starter",
+        name: "Launch",
         credits: "300 kreditů každý měsíc",
         perks: [
           "Asi 150 reklam měsíčně",
@@ -174,11 +174,11 @@ export const cs: Messages = {
         ],
       },
       {
-        name: "Growth",
+        name: "Scale",
         credits: "1 000 kreditů každý měsíc",
         perks: [
           "Asi 500 reklam měsíčně",
-          "Vše z tarifu Starter",
+          "Vše z tarifu Launch",
           "Přednostní podpora",
         ],
       },
