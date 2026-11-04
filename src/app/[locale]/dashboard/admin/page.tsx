@@ -3,7 +3,8 @@ import { Suspense } from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { isLocale } from "@/i18n/config";
-import { loadAdminData, requireAdmin } from "@/lib/admin";
+import { creditGrants, loadAdminData, requireAdmin } from "@/lib/admin";
+import { providerBalances } from "@/lib/admin-balances";
 import { USD_PER_CREDIT_ESTIMATE, customerRows, overview, planLabel, planPrice, searchCustomers } from "@/lib/admin-stats";
 import { platformName } from "@/lib/social/platforms";
 import { DayBars, PlanChip, Section, Stat, Table, cell, day, firstCell, num, usd } from "./admin-ui";
@@ -27,7 +28,8 @@ async function Admin({ searchParams }: { searchParams: PageProps<"/[locale]/dash
   const sp = await searchParams;
   const q = typeof sp.q === "string" ? sp.q.slice(0, 200) : "";
   const plan = typeof sp.plan === "string" ? sp.plan : "";
-  const data = await loadAdminData();
+  const [data, grants] = await Promise.all([loadAdminData(), creditGrants(null)]);
+  const granted = grants.reduce((s, g) => s + g.amount, 0);
   const o = overview(data);
   const all = customerRows(data);
   const rows = searchCustomers(all, q, plan);
@@ -38,6 +40,16 @@ async function Admin({ searchParams }: { searchParams: PageProps<"/[locale]/dash
       <p className="text-xs font-semibold uppercase tracking-wider text-accent">Admin</p>
       <h1 className="mt-2 text-3xl font-semibold tracking-tight">Gooidy at a glance</h1>
       <p className="mt-2 max-w-2xl text-sm text-muted">Customers, usage and cost across every workspace. Only Gooidy admins can open this page.</p>
+
+      <Section title="Your balances" note="Money left on the accounts that pay for Gooidy's AI and publishing, read live from each provider.">
+        <Suspense fallback={<p className="text-sm text-muted">Checking balances…</p>}>
+          <Balances />
+        </Suspense>
+        <dl className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-4">
+          <Stat label="Credits customers hold" value={num(o.creditsHeld)} note={`Up to ${usd(o.creditsHeld * USD_PER_CREDIT_ESTIMATE)} AI cost if all used`} />
+          <Stat label="Credits granted by admins" value={num(granted)} note={`${num(grants.length)} changes logged`} />
+        </dl>
+      </Section>
 
       <dl className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-4">
         <Stat label="Customers" value={num(o.customers)} note={`+${num(o.new7)} this week · +${num(o.new30)} in 30 days`} />
@@ -131,5 +143,28 @@ async function Admin({ searchParams }: { searchParams: PageProps<"/[locale]/dash
         </div>
       </Section>
     </>
+  );
+}
+
+const balanceTone = { ok: "text-fg", off: "text-muted", error: "text-danger", manual: "text-muted" } as const;
+
+async function Balances() {
+  const balances = await providerBalances();
+  return (
+    <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      {balances.map((b) => (
+        <li key={b.name} className="flex flex-col rounded-2xl border border-line bg-raised p-4">
+          <div className="flex items-baseline justify-between gap-2">
+            <p className="font-medium">{b.name}</p>
+            <a href={b.link} target="_blank" rel="noopener noreferrer" className="text-xs font-medium text-accent hover:underline">Billing ↗</a>
+          </div>
+          <p className="text-xs text-muted">{b.use}</p>
+          <p className={`mt-2 text-2xl font-semibold tabular-nums tracking-tight ${balanceTone[b.state]}`}>
+            {b.value ?? (b.state === "off" ? "Not connected" : b.state === "manual" ? "See billing page" : "Unavailable")}
+          </p>
+          {b.detail && <p className={`mt-1 text-xs ${b.state === "error" ? "text-danger" : "text-muted"}`}>{b.detail}</p>}
+        </li>
+      ))}
+    </ul>
   );
 }

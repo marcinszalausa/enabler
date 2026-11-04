@@ -29,7 +29,22 @@ test("customer rows join owners and search by email, name, id and plan",()=>{
 });
 test("labels",()=>{assert.equal(planLabel("plus"),"Grow");assert.equal(planLabel(null),"Free");assert.equal(runQuality({quality:"x"}),"not set");assert.equal(perDay([now],now,3)[2].count,1);});
 test("admin pages check access on the server before reading data",async()=>{
- for(const f of ["src/app/[locale]/dashboard/admin/page.tsx","src/app/[locale]/dashboard/admin/customers/[id]/page.tsx"]){const s=await readFile(f,"utf8");assert.ok(s.indexOf("await requireAdmin()")>0&&s.indexOf("await requireAdmin()")<s.indexOf("await load"),f);assert.ok(!s.includes('"use client"'));}
+ for(const f of ["src/app/[locale]/dashboard/admin/page.tsx","src/app/[locale]/dashboard/admin/customers/[id]/page.tsx"]){const s=await readFile(f,"utf8");const load=Math.min(...["loadAdminData(","loadCustomer("].map(x=>s.indexOf(x)).filter(i=>i>0));assert.ok(s.indexOf("await requireAdmin()")>0&&s.indexOf("await requireAdmin()")<load,f);assert.ok(!s.includes('"use client"'));}
  const lib=await readFile("src/lib/admin.ts","utf8");assert.ok(lib.startsWith('import "server-only"'));assert.match(lib,/is_platform_admin/);
  const sql=await readFile("supabase/migrations/20261104170000_platform_admins.sql","utf8");assert.match(sql,/revoke all on function public\.is_platform_admin\(uuid\) from public, anon, authenticated/);assert.match(sql,/revoke all on function public\.admin_credit_totals\(timestamptz\) from public, anon, authenticated/);
+});
+import {parseCreditGrant} from "../src/lib/admin-stats.ts";
+test("credit grants accept whole non-zero amounts for a real workspace id",()=>{
+ const ws="00000000-0000-4000-8000-000000000000";
+ assert.deepEqual(parseCreditGrant(ws,"100"," Refund "),{workspaceId:ws,amount:100,note:"Refund"});
+ assert.equal((parseCreditGrant(ws,"-50",null) as {amount:number}).amount,-50);
+ for(const bad of ["0","1.5","abc","","1e3","200000"])assert.ok("error" in parseCreditGrant(ws,bad,""),bad);
+ assert.ok("error" in parseCreditGrant("w1","10",""));
+});
+test("grant SQL checks the admin inside the database and is service-role only",async()=>{
+ const sql=await readFile("supabase/migrations/20261104180000_admin_credit_grants.sql","utf8");
+ assert.match(sql,/if not public\.is_platform_admin\(admin\)/);
+ assert.match(sql,/revoke all on function public\.admin_grant_credits\(uuid, uuid, integer, text\) from public, anon, authenticated/);
+ const action=await readFile("src/app/[locale]/dashboard/admin/customers/[id]/actions.ts","utf8");
+ assert.ok(action.indexOf("isPlatformAdmin(admin.id)")<action.indexOf('rpc("admin_grant_credits"'));
 });
