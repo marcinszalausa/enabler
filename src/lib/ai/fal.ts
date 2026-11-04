@@ -67,11 +67,11 @@ export async function submitAdVideo(opts: {
   const { request_id } = await callFal(() =>
     fal.queue.submit(VIDEO_MODEL, {
       input: {
-        prompt: `${opts.prompt} Vertical social video ad, photorealistic, steady and smooth. The product keeps exactly the color, fabric and design of the first frame. Natural hands and faces. Keep faces fully inside the frame throughout the motion. No text or captions in the footage.`,
+        prompt: `${opts.prompt} Vertical social video ad, photorealistic, steady and smooth. The product keeps exactly the color, fabric and design of the first frame. If people are present, keep natural anatomy and faces fully inside the frame throughout the motion. Do not introduce new people or extra product variants. Do not add on-screen text, captions or watermarks; preserve genuine product labels and branding from the first frame.`,
         start_image_url: startImageUrl,
         duration: String(opts.seconds) as "5",
         negative_prompt:
-          "blur, distortion, warped hands, extra fingers, morphing product, color change, text, subtitles, watermark, low quality",
+          "blur, distortion, warped hands, extra fingers, morphing product, color change, added subtitles, garbled branding, watermark, low quality",
         // Sound is added later: a voiceover and a music bed.
         generate_audio: false,
       },
