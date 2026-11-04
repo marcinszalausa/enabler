@@ -1,0 +1,28 @@
+name: Restore plan inclusion cards
+on:
+  push:
+    branches: [enhance/restore-plan-inclusions]
+permissions:
+  contents: read
+concurrency:
+  group: restore-plan-inclusions-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  plan-inclusions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Installed navigation guidance
+        run: find node_modules/next/dist/docs/01-app -type f -name link.md | xargs cat
+      - run: npx next typegen && npx tsc --noEmit
+      - run: npx eslint src/app/_landing/public-pricing.tsx
+      - run: npm install --prefix /tmp/plan-inclusions --no-package-lock playwright@1.56.1
+      - run: /tmp/plan-inclusions/node_modules/.bin/playwright install --with-deps chromium
+      - name: Full inclusion lists, disabled purchases and optional free preview
+        run: PLAYWRIGHT_MODULE_PATH=/tmp/plan-inclusions/node_modules/playwright node scripts/check-pricing-catalog.mjs
