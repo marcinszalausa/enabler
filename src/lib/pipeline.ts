@@ -11,6 +11,7 @@ import { generateAdImage, type Aspect } from "@/lib/ai/fal";
 import { userMessage } from "@/lib/errors";
 import { autopilotRun } from "@/lib/social/publish";
 import type { LanguageKey } from "@/lib/languages";
+import type { Quality } from "@/lib/quality";
 
 import { ASPECTS, ADS_PER_GENERATION, GENERATION_COST } from "@/lib/image-pricing";
 export { ASPECTS, ADS_PER_GENERATION, CREDITS_PER_IMAGE, GENERATION_COST } from "@/lib/image-pricing";
@@ -24,6 +25,7 @@ type Job = {
   workspaceId: string;
   productId: string;
   language: LanguageKey;
+  quality: Quality;
   creativePreferences?: CreativePreferences | null;
 };
 
@@ -34,6 +36,7 @@ export async function runGeneration({
   workspaceId,
   productId,
   language,
+  quality,
   creativePreferences,
 }: Job) {
   const db = createAdminClient();
@@ -59,6 +62,7 @@ export async function runGeneration({
         const imageUrl = await generateCheckedImage({
           prompt: ad.image_prompt,
           aspect,
+          quality,
           referenceImageUrl,
           product: brief.product_name,
         });
@@ -144,11 +148,11 @@ export async function runGeneration({
 // Both local decoding and a visual verdict are required before delivery.
 // Review outages retry the same candidate, never approve or regenerate it.
 export async function generateCheckedImage(opts:{
- prompt:string;aspect:Aspect;referenceImageUrl:string|null;
+ prompt:string;aspect:Aspect;quality:Quality;referenceImageUrl:string|null;
  productReferenceImageUrl?:string|null;sameScene?:boolean;product:string;
 }):Promise<string>{
  return reviewedCandidate({
-  generate:(attempt,avoid)=>generateAdImage({...opts,avoid,best:attempt>1}),
+  generate:(attempt,avoid)=>generateAdImage({...opts,avoid,retry:attempt>1}),
   validate:async imageUrl=>{
    const image=await fetchPublicUrl(imageUrl,{maxBytes:8*1024*1024,timeoutMs:30000,accept:"image/*"});
    if(image.status<200||image.status>=300)throw new QualityReviewUnavailableError("The generated photo could not be inspected.");

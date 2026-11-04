@@ -146,6 +146,10 @@ export const ko: Messages = {
     languagesTitle: "구매자의 언어로 판매하세요",
     languagesBody:
       "모든 광고는 선택한 언어로 현지인이 쓴 것처럼 작성되어 국내 시장 너머로 판매를 넓힐 수 있습니다. 영상 광고도 그 언어로 말하고 자막도 맞춰 드립니다.",
+    tierTitle: "광고마다 품질을 고르세요",
+    tierSub: "같은 상품을 품질별로, Gooidy가 만든 그대로 보정 없이 보여 드립니다. 높은 품질은 최상위 AI 모델을 사용합니다.",
+    tierPerImage: "이미지당 {count} 크레딧",
+    tierPerSecond: "동영상 1초당 {count} 크레딧",
     pricingTitle: "함께 성장하는 간단한 요금제",
     pricingSub: "무료로 시작하고, 비즈니스가 성장하면 업그레이드하세요.",
     popular: "인기",
@@ -179,7 +183,7 @@ export const ko: Messages = {
       },
       {
         q: "크레딧이 무엇인가요?",
-        a: "광고 이미지 1장에 크레딧 2개가 듭니다. 한 번 생성할 때 광고 5개를 2가지 사이즈로 만들므로 20 크레딧을 사용합니다.",
+        a: "광고 이미지 1장에 선택한 품질에 따라 크레딧 2~5개가 듭니다. 한 번 생성할 때 광고 5개를 2가지 사이즈로 만들므로 20~50 크레딧을 사용합니다.",
       },
       {
         q: "디자인 경험이 필요한가요?",
@@ -490,6 +494,10 @@ export const ko: Messages = {
     person: "출연자",
     length: "길이",
     lengthHelp: "릴스·스토리에는 7~15초, 틱톡에는 20~30초가 잘 맞습니다.",
+    quality: "품질",
+    qualities: { good: "기본", better: "고급", best: "최고" },
+    qualityExample: "이 품질의 예시",
+    qualityHelp: "품질이 높을수록 최신 AI 모델을 쓰고 크레딧을 더 사용합니다. 최고 품질은 최상위 모델로 가장 선명하고 사실적인 광고를 만듭니다.",
     genders: { female: "여성", male: "남성" },
     energies: { calm: "차분하게", upbeat: "밝게", high: "에너지 넘치게" },
     people: {

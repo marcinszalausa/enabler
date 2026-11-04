@@ -148,6 +148,10 @@ export const it: Messages = {
     languagesTitle: "Vendi nella lingua di chi compra",
     languagesBody:
       "Ogni annuncio è scritto nella lingua che scegli, come lo scriverebbe una persona del posto, così puoi vendere oltre il tuo mercato. Anche gli annunci video la parlano, con sottotitoli abbinati.",
+    tierTitle: "Scegli la qualità di ogni annuncio",
+    tierSub: "Lo stesso prodotto a ogni livello, creato da Gooidy e mostrato senza ritocchi. I livelli più alti usano i modelli di IA meglio classificati.",
+    tierPerImage: "{count} crediti per immagine",
+    tierPerSecond: "{count} crediti per secondo di video",
     pricingTitle: "Prezzi semplici che crescono con te",
     pricingSub:
       "Inizia gratis. Passa a un piano superiore man mano che la tua attività cresce.",
@@ -194,7 +198,7 @@ export const it: Messages = {
       },
       {
         q: "Cos'è un credito?",
-        a: "Ogni immagine pubblicitaria usa 2 crediti. Ogni giro crea cinque annunci in due formati, quindi usa 20 crediti.",
+        a: "Ogni immagine pubblicitaria usa da 2 a 5 crediti, secondo la qualità scelta. Ogni giro crea cinque annunci in due formati, quindi usa da 20 a 50 crediti.",
       },
       {
         q: "Serve esperienza di grafica?",
@@ -508,6 +512,10 @@ export const it: Messages = {
     person: "Persona in video",
     length: "Durata",
     lengthHelp: "7–15 s per Reels e Stories, 20–30 s per TikTok.",
+    quality: "Qualità",
+    qualities: { good: "Buona", better: "Migliore", best: "Massima" },
+    qualityExample: "Esempio con questa qualità",
+    qualityHelp: "Più qualità usa modelli di IA più recenti e più crediti. Massima usa i modelli meglio classificati per gli annunci più nitidi e realistici.",
     genders: { female: "Femminile", male: "Maschile" },
     energies: { calm: "Calma", upbeat: "Allegra", high: "Molto energica" },
     people: {

@@ -147,6 +147,10 @@ export const tr: Messages = {
     languagesTitle: "Alıcınızın dilinde satın",
     languagesBody:
       "Her reklam seçtiğiniz dilde, oralı birinin yazacağı gibi yazılır; böylece kendi pazarınızın ötesinde satış yapabilirsiniz. Video reklamlar da bu dili konuşur, uyumlu altyazılarla.",
+    tierTitle: "Her reklamın kalitesini seçin",
+    tierSub: "Aynı ürün her seviyede, Gooidy tarafından yapıldı ve düzenlenmeden gösteriliyor. Üst seviyeler en üst sıradaki yapay zekâ modellerini kullanır.",
+    tierPerImage: "Görsel başına {count} kredi",
+    tierPerSecond: "Video saniyesi başına {count} kredi",
     pricingTitle: "Sizinle birlikte büyüyen basit fiyatlar",
     pricingSub: "Ücretsiz başlayın. İşiniz büyüdükçe planınızı yükseltin.",
     popular: "Popüler",
@@ -188,7 +192,7 @@ export const tr: Messages = {
       },
       {
         q: "Kredi nedir?",
-        a: "Her reklam görseli 2 kredi kullanır. Her çalıştırma iki boyutta beş reklam oluşturur, yani 20 kredi kullanır.",
+        a: "Her reklam görseli seçtiğiniz kaliteye göre 2 ile 5 kredi kullanır. Her çalıştırma iki boyutta beş reklam oluşturur, yani 20 ile 50 kredi kullanır.",
       },
       {
         q: "Tasarım deneyimi gerekir mi?",
@@ -500,6 +504,10 @@ export const tr: Messages = {
     person: "Ekrandaki kişi",
     length: "Süre",
     lengthHelp: "7–15 sn Reels ve Stories için, 20–30 sn TikTok için uygundur.",
+    quality: "Kalite",
+    qualities: { good: "İyi", better: "Daha iyi", best: "En iyi" },
+    qualityExample: "Bu kalitede örnek",
+    qualityHelp: "Daha yüksek kalite daha yeni yapay zekâ modelleri ve daha fazla kredi kullanır. En iyi, en net ve en gerçekçi reklamlar için en üst sıradaki modelleri kullanır.",
     genders: { female: "Kadın", male: "Erkek" },
     energies: { calm: "Sakin", upbeat: "Neşeli", high: "Yüksek enerji" },
     people: {

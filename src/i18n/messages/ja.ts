@@ -146,6 +146,10 @@ export const ja: Messages = {
     languagesTitle: "買い手の言語で売る",
     languagesBody:
       "どの広告も、選んだ言語で現地の人が書くように作られるので、国内市場の外にも販売を広げられます。動画広告もその言語で話し、字幕も合わせます。",
+    tierTitle: "広告ごとに品質を選べます",
+    tierSub: "同じ商品を各品質で、Gooidyが作ったまま無修正でお見せします。上位の品質では最上位のAIモデルを使います。",
+    tierPerImage: "画像1枚あたり{count}クレジット",
+    tierPerSecond: "動画1秒あたり{count}クレジット",
     pricingTitle: "成長に合わせたシンプルな料金",
     pricingSub: "無料で始めて、ビジネスの成長に合わせてアップグレード。",
     popular: "人気",
@@ -179,7 +183,7 @@ export const ja: Messages = {
       },
       {
         q: "クレジットとは何ですか？",
-        a: "広告画像1枚につき2クレジットを使います。1回の生成で5つの広告を2サイズずつ作るので、20クレジットを使います。",
+        a: "広告画像1枚につき、選んだ品質に応じて2〜5クレジットを使います。1回の生成で5つの広告を2サイズずつ作るので、20〜50クレジットを使います。",
       },
       {
         q: "デザインの経験は必要ですか？",
@@ -489,6 +493,10 @@ export const ja: Messages = {
     length: "長さ",
     lengthHelp:
       "リール・ストーリーズには7〜15秒、TikTokには20〜30秒がおすすめです。",
+    quality: "品質",
+    qualities: { good: "標準", better: "高品質", best: "最高品質" },
+    qualityExample: "この品質の例",
+    qualityHelp: "品質を上げると、新しいAIモデルを使い、クレジットも多く使います。最高品質は最上位のモデルで、最も鮮明でリアルな広告を作ります。",
     genders: { female: "女性", male: "男性" },
     energies: { calm: "落ち着いた", upbeat: "明るい", high: "ハイテンション" },
     people: {

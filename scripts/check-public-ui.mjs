@@ -61,7 +61,7 @@ try {
     const guide = page.locator("[data-credit-guide]");
     assert.equal(await guide.locator("tbody tr").count(), 5);
     const costs = await guide.locator("tbody tr td:last-child").allTextContents();
-    assert.deepEqual(costs.map(x => Number(x.match(/\d+/)[0])), [60,80,120,160,240], "Video run costs match application choices");
+    assert.deepEqual(costs.map(x => Number(x.match(/\d+/)[0])), [130,180,270,360,540], "Video run costs match application choices (default Better tier)");
     assert.equal(await page.locator('footer a[href="mailto:hello@gooidy.com"]').count(), 1);
     assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), "No horizontal overflow: " + width + " " + locale);
     assert.deepEqual(errors, []);

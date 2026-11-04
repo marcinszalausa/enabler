@@ -6,7 +6,9 @@ import Link from "next/link";
 import Image from "@/app/_landing/ad-image";
 import { type FeedAd } from "@/app/_landing/reel";
 import { PhoneFeed } from "@/app/_landing/phone-feed";
-import { getShowcase, type ShowcaseRun } from "@/lib/showcase";
+import { getShowcase, getTierExamples, type ShowcaseRun } from "@/lib/showcase";
+import { QUALITIES, type Quality } from "@/lib/quality";
+import { TierCompare, type TierExample } from "@/app/_landing/tier-compare";
 import { LANGUAGES } from "@/lib/video-options";
 import { DEFAULT_VIDEO_OPTIONS } from "@/lib/video-options";
 import { Nav, UrlForm, SectionHeading, Footer } from "@/app/_landing/chrome";
@@ -523,10 +525,21 @@ function Pricing({ t, locale }: { t: Messages; locale: Locale }) {
             </div>
           ))}
         </div>
+        <TierExamples />
         <CreditGuide imageCost={GENERATION_COST} imagesPerRun={ADS_PER_GENERATION * ASPECTS.length} />
       </div>
     </section>
   );
+}
+
+// Real showcased runs at each quality tier, side by side.
+async function TierExamples() {
+  const [images, videos] = await Promise.all([getTierExamples("image_ads"), getTierExamples("video_ads")]);
+  const examples = Object.fromEntries(QUALITIES.map((q) => {
+    const square = images[q]?.ads.find((ad) => ad.aspect === "1:1") ?? images[q]?.ads[0];
+    return [q, { imageId: square?.id ?? null, headline: square?.headline ?? "", videoId: videos[q]?.ads[0]?.id ?? null }];
+  })) as Record<Quality, TierExample>;
+  return <TierCompare examples={examples} />;
 }
 
 function Faq({ t }: { t: Messages }) {

@@ -148,6 +148,10 @@ export const en = {
       "Every ad is written in the language you pick, the way a local would write it, so you can sell beyond your home market. Video ads speak it too, with captions to match.",
     pricingTitle: "Simple pricing that grows with you",
     pricingSub: "Start free. Upgrade as your business grows.",
+    tierTitle: "Pick the quality for every ad",
+    tierSub: "The same product at each tier, made by Gooidy and shown unedited. Higher tiers use the top-ranked AI models.",
+    tierPerImage: "{count} credits per image",
+    tierPerSecond: "{count} credits per video second",
     popular: "Popular",
     perMonth: " / month",
     plans: [
@@ -187,7 +191,7 @@ export const en = {
       },
       {
         q: "What is a credit?",
-        a: "Each ad image uses 2 credits. Each run makes five ads in two sizes, so it uses 20 credits.",
+        a: "Each ad image uses 2 to 5 credits, depending on the quality you pick. Each run makes five ads in two sizes, so it uses 20 to 50 credits.",
       },
       {
         q: "Do I need design experience?",
@@ -496,6 +500,10 @@ export const en = {
     person: "Person on screen",
     length: "Length",
     lengthHelp: "7–15 s suits Reels and Stories; 20–30 s suits TikTok.",
+    quality: "Quality",
+    qualities: { good: "Good", better: "Better", best: "Best" },
+    qualityHelp: "Higher quality uses newer AI models and more credits. Best uses the top-ranked models for the sharpest, most lifelike ads.",
+    qualityExample: "Example at this quality",
     genders: { female: "Female", male: "Male" },
     energies: { calm: "Calm", upbeat: "Upbeat", high: "High energy" },
     people: {

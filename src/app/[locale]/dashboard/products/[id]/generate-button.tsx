@@ -3,18 +3,21 @@
 import { useGenerationAction } from "./use-generation-action";
 import { useI18n } from "@/i18n/client";
 import { fmt } from "@/i18n/format";
+import type { Quality } from "@/lib/quality";
 
 export function GenerateButton({
   productId,
   initialRequestId,
   cost,
   language,
+  quality,
   credits,
 }: {
   productId: string;
   initialRequestId: string;
   cost: number;
   language: string;
+  quality: Quality;
   credits?: number;
 }) {
   const { state, action, pending, requestId } = useGenerationAction(initialRequestId);
@@ -25,6 +28,7 @@ export function GenerateButton({
       <input type="hidden" name="requestId" value={requestId} />
       <input type="hidden" name="productId" value={productId} />
       <input type="hidden" name="language" value={language} />
+      <input type="hidden" name="quality" value={quality} />
       <button
         type="submit"
         disabled={pending || (credits!==undefined&&credits<cost)}

@@ -143,6 +143,10 @@ export const zh: Messages = {
     languagesTitle: "用买家的语言销售",
     languagesBody:
       "每条广告都用你选择的语言，像当地人一样撰写，让你把生意做到本地市场之外。视频广告也会说这种语言，并配上相应字幕。",
+    tierTitle: "为每条广告选择质量",
+    tierSub: "同一商品在各个质量档位的效果，由 Gooidy 生成，未经修改。更高档位使用排名最高的 AI 模型。",
+    tierPerImage: "每张图片 {count} 积分",
+    tierPerSecond: "每秒视频 {count} 积分",
     pricingTitle: "简单的价格，随你一起成长",
     pricingSub: "免费开始，生意增长时再升级。",
     popular: "热门",
@@ -176,7 +180,7 @@ export const zh: Messages = {
       },
       {
         q: "什么是积分？",
-        a: "每张广告图片使用 2 个积分。每次生成会做出 5 条广告、每条 2 种尺寸，所以使用 20 个积分。",
+        a: "每张广告图片根据所选质量使用 2 到 5 个积分。每次生成会做出 5 条广告、每条 2 种尺寸，所以使用 20 到 50 个积分。",
       },
       {
         q: "需要设计经验吗？",
@@ -481,6 +485,10 @@ export const zh: Messages = {
     person: "出镜人物",
     length: "时长",
     lengthHelp: "7–15 秒适合 Reels 和快拍，20–30 秒适合 TikTok。",
+    quality: "质量",
+    qualities: { good: "标准", better: "优质", best: "最佳" },
+    qualityExample: "此质量的示例",
+    qualityHelp: "质量越高，使用的 AI 模型越新，消耗的积分也越多。最佳质量使用排名最高的模型，生成最清晰、最逼真的广告。",
     genders: { female: "女声", male: "男声" },
     energies: { calm: "平静", upbeat: "轻快", high: "活力满满" },
     people: {

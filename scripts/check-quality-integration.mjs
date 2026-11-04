@@ -56,12 +56,12 @@ try{
   autopilotRun:async()=>{throw Error("Publishing forbidden");}
  };
  const pipeline=await bundle("src/lib/pipeline.ts");
- const input={prompt:"Full product photo",aspect:"1:1",referenceImageUrl:"https://example.com/scene.jpg",productReferenceImageUrl:"https://example.com/original.jpg",sameScene:true,product:"Fixture product"};
+ const input={prompt:"Full product photo",aspect:"1:1",quality:"best",referenceImageUrl:"https://example.com/scene.jpg",productReferenceImageUrl:"https://example.com/original.jpg",sameScene:true,product:"Fixture product"};
  await assert.rejects(pipeline.generateCheckedImage(input),e=>e.constructor.name==="QualityReviewUnavailableError");
  assert.equal(generated.length,1);assert.equal(reviews.length,2);assert.equal(uploads,0);
  generated=[];reviews=[];mode="retry";
  assert.equal(await pipeline.generateCheckedImage(input),"https://example.com/candidate-2.jpg");
- assert.equal(generated[1].best,true);assert.equal(generated[1].avoid,"Product changed color");
+ assert.equal(generated[1].retry,true);assert.equal(generated[1].avoid,"Product changed color");
  assert.equal(reviews[0].referenceImageUrl,input.productReferenceImageUrl);assert.equal(reviews[0].continuityImageUrl,input.referenceImageUrl);
  generated=[];reviews=[];mode="approve";
  await pipeline.generateCheckedImage({...input,productReferenceImageUrl:null});assert.equal(reviews[0].referenceImageUrl,null);

@@ -148,6 +148,10 @@ export const fr: Messages = {
     languagesTitle: "Vendez dans la langue de vos acheteurs",
     languagesBody:
       "Chaque pub est écrite dans la langue choisie, comme l'écrirait quelqu'un du pays, pour vendre au-delà de votre marché. Les pubs vidéo la parlent aussi, avec des sous-titres assortis.",
+    tierTitle: "Choisissez la qualité de chaque pub",
+    tierSub: "Le même produit à chaque niveau, créé par Gooidy et montré sans retouche. Les niveaux supérieurs utilisent les modèles d'IA les mieux classés.",
+    tierPerImage: "{count} crédits par image",
+    tierPerSecond: "{count} crédits par seconde de vidéo",
     pricingTitle: "Des tarifs simples qui grandissent avec vous",
     pricingSub:
       "Commencez gratuitement. Passez à l'offre supérieure à mesure que votre activité grandit.",
@@ -194,7 +198,7 @@ export const fr: Messages = {
       },
       {
         q: "Qu'est-ce qu'un crédit ?",
-        a: "Chaque image publicitaire coûte 2 crédits. Chaque génération crée cinq pubs en deux formats, soit 20 crédits.",
+        a: "Chaque image publicitaire coûte de 2 à 5 crédits selon la qualité choisie. Chaque génération crée cinq pubs en deux formats, soit 20 à 50 crédits.",
       },
       {
         q: "Faut-il savoir faire du design ?",
@@ -508,6 +512,10 @@ export const fr: Messages = {
     person: "Personne à l'écran",
     length: "Durée",
     lengthHelp: "7–15 s pour les Reels et Stories, 20–30 s pour TikTok.",
+    quality: "Qualité",
+    qualities: { good: "Bonne", better: "Meilleure", best: "Maximale" },
+    qualityExample: "Exemple à cette qualité",
+    qualityHelp: "Plus de qualité utilise des modèles d'IA plus récents et plus de crédits. Maximale utilise les modèles les mieux classés pour les pubs les plus nettes et réalistes.",
     genders: { female: "Féminine", male: "Masculine" },
     energies: { calm: "Calme", upbeat: "Enjouée", high: "Très dynamique" },
     people: {
