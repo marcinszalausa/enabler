@@ -1,4 +1,4 @@
-// Sets up Stripe for Gooidy in one go: Starter, Plus and Growth with a monthly and
+// Sets up Stripe for Gooidy in one go: Launch, Grow and Scale with a monthly and
 // a yearly USD price each, the webhook endpoint and the customer portal. Safe
 // to run again; it reuses what is already there.
 //
@@ -13,19 +13,19 @@ const YEARLY_DISCOUNT = 0.2;
 const PLANS = [
   {
     key: "starter",
-    name: "Gooidy Starter",
+    name: "Gooidy Launch",
     usd: 39,
     description: "300 credits every month; unused credits carry over one month",
   },
   {
     key: "plus",
-    name: "Gooidy Plus",
+    name: "Gooidy Grow",
     usd: 69,
     description: "600 credits every month; unused credits carry over one month",
   },
   {
     key: "growth",
-    name: "Gooidy Growth",
+    name: "Gooidy Scale",
     usd: 99,
     description:
       "1,000 credits every month; unused credits carry over one month",
