@@ -23,7 +23,7 @@ export async function generateAdImage(opts: {
 }): Promise<string> {
   const referenceImageUrl = opts.referenceImageUrl
     ? (await verifyPublicUrl(opts.referenceImageUrl)).toString() : null;
-  const prompt = `${opts.prompt}. Professional advertising photograph, clean composition, keep every person's entire face visible within the image; headline and captions will be placed outside the photograph. Anatomically correct hands with five fingers each, relaxed and natural. No text, letters, logos or watermarks.${opts.avoid ? ` Avoid these problems: ${opts.avoid}.` : ""}`;
+  const prompt = `${opts.prompt}. Professional advertising photograph with sharp product detail, believable material texture, natural skin and coherent lighting. Keep every visible face fully inside the image with comfortable headroom. Compose a full-frame photograph with quiet negative space around the subject for separately rendered ad copy; do not shrink the subject into a framed inset. Preserve the product silhouette, color, material, construction and genuine branding from the reference. Keep natural pairs and sets intact, with no duplicated extra variants. Hands should look natural; fingers may be naturally occluded. No added headlines, captions, invented lettering or watermarks.${opts.avoid ? ` Avoid these problems: ${opts.avoid}.` : ""}`;
 
   const result = await callFal(() =>
     referenceImageUrl
@@ -33,7 +33,7 @@ export async function generateAdImage(opts: {
             input: {
               prompt: opts.sameScene
                 ? `Show the same person, wearing exactly the same outfit, in the same setting and light as this image, from a new framing. The product keeps its color, fabric and design unchanged: ${prompt}`
-                : `Place this exact product in a new scene, keeping its color, fabric and design unchanged. Show it only once; nobody else in the scene wears or holds a similar item in another color: ${prompt}`,
+                : `Place this exact product in a new scene, keeping its color, fabric and design unchanged. Keep natural pairs or sets intact, without duplicating the product or introducing a different color variant: ${prompt}`,
               image_url: referenceImageUrl,
               aspect_ratio: opts.aspect,
               output_format: "jpeg",
@@ -43,7 +43,8 @@ export async function generateAdImage(opts: {
       : fal.subscribe("fal-ai/flux/dev", {
           input: {
             prompt,
-            image_size: opts.aspect === "1:1" ? "square_hd" : "portrait_16_9",
+            image_size: opts.aspect === "1:1" ? {width:1024,height:1024} : {width:768,height:1344},
+            output_format:"jpeg",
           },
         }),
   );
@@ -66,11 +67,11 @@ export async function submitAdVideo(opts: {
   const { request_id } = await callFal(() =>
     fal.queue.submit(VIDEO_MODEL, {
       input: {
-        prompt: `${opts.prompt} Vertical social video ad, photorealistic, steady and smooth. The product keeps exactly the color, fabric and design of the first frame. Natural hands and faces. Keep faces fully inside the frame throughout the motion. No text or captions in the footage.`,
+        prompt: `${opts.prompt} Vertical social video ad, photorealistic, steady and smooth. The product keeps exactly the color, fabric and design of the first frame. If people are present, keep natural anatomy and faces fully inside the frame throughout the motion. Do not introduce new people or extra product variants. Do not add on-screen text, captions or watermarks; preserve genuine product labels and branding from the first frame.`,
         start_image_url: startImageUrl,
         duration: String(opts.seconds) as "5",
         negative_prompt:
-          "blur, distortion, warped hands, extra fingers, morphing product, color change, text, subtitles, watermark, low quality",
+          "blur, distortion, warped hands, extra fingers, morphing product, color change, added subtitles, garbled branding, watermark, low quality",
         // Sound is added later: a voiceover and a music bed.
         generate_audio: false,
       },

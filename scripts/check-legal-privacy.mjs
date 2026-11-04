@@ -22,7 +22,7 @@ try{
    await page.locator("[data-policy-document]").waitFor();
    assert.equal(await page.locator("article").getAttribute("lang"),"en");
    assert.equal(await page.locator("[data-prelaunch-legal]").count(),0);
-   assert.ok((await page.locator("[data-policy-version]").innerText()).includes("2026-11-04"));
+   assert.ok((await page.locator("[data-policy-version]").innerText()).includes("2026-11-04-r2"));
    assert.ok(!/pre[-\s]?launch|unspecified|pending entity formation|not (?:yet )?finalized|draft (?:terms|policies)/i.test(await page.locator("main").innerText()));
    const anchors=await page.locator('nav[aria-label="On this page"] a').evaluateAll(xs=>xs.map(x=>x.getAttribute("href")));
    for(const anchor of anchors)assert.equal(await page.locator(anchor).count(),1);

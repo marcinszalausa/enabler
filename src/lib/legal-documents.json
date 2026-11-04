@@ -1,5 +1,5 @@
 {
-  "version": "2026-11-04",
+  "version": "2026-11-04-r2",
   "updated": "November 4, 2026",
   "documents": {
     "terms": {
@@ -133,7 +133,7 @@
           "items": [
             "Vercel: website hosting, delivery and related operational/security information.",
             "Supabase: authentication, account and workspace records, database and file storage.",
-            "Anthropic: product analysis and ad-copy generation using relevant product and prompt information.",
+            "Anthropic: product analysis, ad-copy generation and visual quality review of generated images and sampled video frames using relevant product, prompt and media information.",
             "fal.ai and the model providers used for a selected feature: image, video, voice or music generation and processing of relevant inputs.",
             "Zernio and the social platforms you connect: account connection, media transfer, scheduling and publishing.",
             "Email delivery providers, including Resend when configured: account and service emails.",

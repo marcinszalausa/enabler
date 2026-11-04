@@ -12,8 +12,8 @@ assert.ok(ready,"Deployment ready");
 const paths=["/policies","/terms","/privacy","/policies/billing","/policies/cookies","/policies/acceptable-use","/policies/privacy-requests"];
 for(const path of paths){
  const r=await fetch("https://gooidy.com"+path,{headers:{"user-agent":"GooidyLegalVerificationBot/1.0"}});assert.equal(r.status,200,path);
- const html=await r.text();assert.ok(html.includes("2026-11-04"),path);assert.ok(!html.includes("data-prelaunch-legal"),path);assert.ok(html.includes("data-policy-version"),path);assert.ok(!html.includes("Zeely, Inc."),path);
+ const html=await r.text();assert.ok(html.includes("2026-11-04-r2"),path);assert.ok(!html.includes("data-prelaunch-legal"),path);assert.ok(html.includes("data-policy-version"),path);assert.ok(!html.includes("Zeely, Inc."),path);
 }
 const r=await fetch("https://gooidy.com/api/billing/checkout",{method:"POST",headers:{"content-type":"application/json"},body:"{}"});
 assert.equal(r.status,503);assert.equal((await r.json()).code,"CHECKOUT_NOT_AVAILABLE");assert.equal(r.headers.get("location"),null);
-console.log("LIVE_LEGAL_VERIFIED",JSON.stringify({pages:paths.length,checkout:503,version:"2026-11-04"}));
+console.log("LIVE_LEGAL_VERIFIED",JSON.stringify({pages:paths.length,checkout:503,version:"2026-11-04-r2"}));
