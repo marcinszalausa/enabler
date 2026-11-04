@@ -9,5 +9,6 @@ export async function generationDirection(db: SupabaseClient, generationId: stri
   if (error || !data) throw error ?? new Error("Generation settings unavailable.");
   const options = data.request_options as Record<string, unknown> | null;
   const revision=revisionFromOptions(options);
+  if(options&&Object.hasOwn(options,"revision")&&!revision)throw new Error("Revision settings are invalid.");
   return { revision, brand_memory: parseBrandMemory(options?.brand_memory), campaign: revision?revisionCampaign(revision):parseCampaign(options?.campaign) };
 }
