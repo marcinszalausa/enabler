@@ -6,7 +6,7 @@ import { getMessages, type Messages } from "@/i18n/messages";
 import { BackLink, EmptyState } from "../ui";
 import { getCurrentUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
-import { getBrandKit } from "@/lib/brand-kit";
+import { getBrandKit, getBrandMemory } from "@/lib/brand-kit";
 import { FONTS } from "@/lib/brand";
 import { BrandForm } from "./brand-form";
 
@@ -52,7 +52,7 @@ async function Brand({ t }: { t: Messages }) {
     .single();
   if (!ws) return null;
 
-  const [kit, { data: latest }] = await Promise.all([
+  const [kit, { data: latest }, memory] = await Promise.all([
     getBrandKit(supabase, ws.id),
     supabase
       .from("creatives")
@@ -62,6 +62,7 @@ async function Brand({ t }: { t: Messages }) {
       .order("created_at", { ascending: false })
       .limit(1)
       .maybeSingle(),
+    getBrandMemory(supabase, ws.id),
   ]);
 
   const logoUrl = kit.logo_path
@@ -76,7 +77,8 @@ async function Brand({ t }: { t: Messages }) {
     <div className="mt-8 grid gap-10 md:grid-cols-2">
       <BrandForm
         // Remount after a save so the form shows the stored values.
-        key={`${kit.accent_color}-${kit.font}-${kit.logo_path}`}
+        key={`${kit.accent_color}-${kit.font}-${kit.logo_path}-${JSON.stringify(memory)}`}
+        memory={memory}
         accentColor={kit.accent_color}
         font={kit.font}
         fonts={(Object.keys(FONTS) as (keyof typeof FONTS)[]).map((key) => ({
@@ -107,3 +109,4 @@ async function Brand({ t }: { t: Messages }) {
     </div>
   );
 }
+

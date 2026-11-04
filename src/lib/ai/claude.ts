@@ -3,6 +3,7 @@ import sharp from "sharp";
 import {fetchPublicUrl} from "@/lib/public-fetch";
 import type {VideoQualityFrame} from "@/lib/media-quality";
 import { creativeDirection, type CreativePreferences } from "@/lib/creative-preferences";
+import { workflowDirection, type BrandMemory, type CampaignPlan } from "@/lib/customer-workflow";
 import { verifyPublicUrl } from "@/lib/public-fetch";
 import { UserError } from "@/lib/errors";
 import Anthropic from "@anthropic-ai/sdk";
@@ -49,7 +50,7 @@ export const BrandBriefSchema = z.object({
     .describe("The language the page is written in")
     .optional(),
 });
-export type BrandBrief = z.infer<typeof BrandBriefSchema> & { creative_preferences?: CreativePreferences; requires_personalization?: boolean; preferences_confirmed_at?: string };
+export type BrandBrief = z.infer<typeof BrandBriefSchema> & { brand_memory?: BrandMemory | null; campaign?: CampaignPlan | null; creative_preferences?: CreativePreferences; requires_personalization?: boolean; preferences_confirmed_at?: string };
 
 export const AdAngleSchema = z.object({
   angle: z.enum(["pain", "benefit", "social_proof", "offer", "curiosity"]),
@@ -187,6 +188,7 @@ export async function writeAdAngles(
           content: [
             `Write ${count} ads, one per angle (pain, benefit, social_proof, offer, curiosity), for this brand brief:\n\n${JSON.stringify(brief, null, 2)}`,
             creativeDirection(brief.creative_preferences),
+            workflowDirection(brief.brand_memory, brief.campaign),
             language !== "english" &&
               languageDirection(
                 language,
@@ -256,6 +258,7 @@ export async function writeVideoAds(
   const person = PEOPLE[options.person].direction;
   const direction = [
     creativeDirection(brief.creative_preferences),
+    workflowDirection(brief.brand_memory, brief.campaign),
     `Energy: ${ENERGIES[options.energy].direction}. Let it shape the words, the pace of the motion and the music.`,
     isEnglish(options)
       ? `Narrator: ${GENDERS[options.gender].label.toLowerCase()}, speaking English with a${/^[AEIOU]/.test(ACCENTS[options.accent].label) ? "n" : ""} ${ACCENTS[options.accent].label} accent. Write the voiceover in English.`
@@ -388,3 +391,4 @@ export async function reviewAdVideo(opts:{
  if(!response.parsed_output)throw new Error("Video review returned no verdict.");
  return response.parsed_output;
 }
+

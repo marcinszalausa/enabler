@@ -194,3 +194,4 @@ export async function deletePost(postId: string) {
 export function validSignature(rawBody: string, header: string | null) {
   return validWebhookSignature(rawBody, header, process.env.ZERNIO_WEBHOOK_SECRET);
 }
+

@@ -22,3 +22,4 @@ export function isQuality(value: unknown): value is Quality {
 export function parseQuality(value: unknown, fallback: Quality): Quality {
   return isQuality(value) ? value : fallback;
 }
+

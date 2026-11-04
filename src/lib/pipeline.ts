@@ -1,4 +1,5 @@
 import "server-only";
+import { generationDirection } from "@/lib/generation-direction";
 import {inspectAdImage} from "@/lib/media-quality";
 import {QualityError,QualityReviewUnavailableError,reviewedCandidate} from "@/lib/media-quality-policy";
 export {QualityError} from "@/lib/media-quality-policy";
@@ -53,7 +54,10 @@ export async function runGeneration({
       .single();
     if (error || !product?.brand_brief) throw new Error("Product not found.");
 
-    const brief = withCreativePreferences(product.brand_brief as BrandBrief, creativePreferences);
+    const direction = await generationDirection(db, generationId, workspaceId);
+    const brief = { ...withCreativePreferences(product.brand_brief as BrandBrief, creativePreferences), ...direction };
+    if (direction.brand_memory?.tone) brief.tone = direction.brand_memory.tone;
+    if (!brief.creative_preferences && direction.brand_memory?.audience) brief.audience = direction.brand_memory.audience;
     const referenceImageUrl = (product.image_urls as string[])[0] ?? null;
     const angles = await writeAdAngles(brief, ADS_PER_GENERATION, language);
 
@@ -201,3 +205,4 @@ export async function settleWithLimit<T>(
   );
   return results;
 }
+

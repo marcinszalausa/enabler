@@ -19,3 +19,4 @@ create policy "editors write brand kit" on public.brand_kits
   for all to authenticated
   using (public.is_workspace_member(workspace_id, 'editor'))
   with check (public.is_workspace_member(workspace_id, 'editor'));
+

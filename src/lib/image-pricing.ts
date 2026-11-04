@@ -12,3 +12,4 @@ export function imageRunCost(quality: Quality = DEFAULT_IMAGE_QUALITY) {
 // The default tier's prices, used where no tier has been picked yet.
 export const CREDITS_PER_IMAGE = IMAGE_CREDITS[DEFAULT_IMAGE_QUALITY];
 export const GENERATION_COST = imageRunCost();
+

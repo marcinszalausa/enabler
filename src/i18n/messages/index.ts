@@ -32,3 +32,4 @@ const loaders: Record<Locale, () => Promise<Messages>> = {
 export function getMessages(locale: Locale): Promise<Messages> {
   return loaders[locale]();
 }
+

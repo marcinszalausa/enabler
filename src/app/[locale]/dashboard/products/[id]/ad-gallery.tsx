@@ -47,3 +47,4 @@ export function AdGallery({creatives,generationId,imageVersion,seconds,canPublis
   </div>
  </div></div>;
 }
+

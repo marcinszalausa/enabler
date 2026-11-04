@@ -28,3 +28,4 @@ export async function finalizeGeneration(
   if (typeof data !== "boolean") throw new Error("Missing settlement receipt.");
   return data;
 }
+

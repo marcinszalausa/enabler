@@ -135,3 +135,4 @@ function affordable(preferred: Quality, cost: (q: Quality) => number, credits?: 
   const cheaper = QUALITIES.slice(0, QUALITIES.indexOf(preferred)).reverse();
   return cheaper.find((q) => cost(q) <= credits) ?? preferred;
 }
+

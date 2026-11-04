@@ -15,7 +15,8 @@ import { runVideoGeneration } from "@/lib/video";
 import { parseVideoOptions, videoRunCost } from "@/lib/video-options";
 import { DEFAULT_LANGUAGE, isLanguageKey } from "@/lib/languages";
 import { userMessage } from "@/lib/errors";
-import { seedBrandKit } from "@/lib/brand-kit";
+import { seedBrandKit, getBrandMemory } from "@/lib/brand-kit";
+import { parseCampaign } from "@/lib/customer-workflow";
 import { requestMessages } from "@/i18n/server";
 import { fmt } from "@/i18n/format";
 import { canEditWorkspace, WORKSPACE_WRITE_DENIED } from "@/lib/workspace-access";
@@ -115,6 +116,14 @@ export async function startGeneration(
     return { error: (await requestMessages()).app.errors.couldntStart };
   }
   const admin = createAdminClient();
+  const brandMemory = await getBrandMemory(supabase, workspaceId);
+  const campaignId = String(formData.get("campaignId") ?? "");
+  let campaign = null;
+  if (campaignId) {
+    const { data, error: campaignError } = await supabase.from("campaigns").select("id,name,goal,message,offer,scene").eq("id", campaignId).eq("workspace_id", workspaceId).eq("product_id", productId).maybeSingle();
+    campaign = parseCampaign(data);
+    if (campaignError || !campaign) return { error: "This campaign could not be loaded. Choose it again before creating ads." };
+  }
   const { data: generationId, error } = await admin.rpc("reserve_generation", {
     ws: workspaceId,
     request_id: requestId,
@@ -122,7 +131,7 @@ export async function startGeneration(
     generation_type: video ? "video_ads" : "image_ads",
     generation_model: `claude + fal ${video ? "video" : "image"} ${quality}`,
     amount: cost,
-    options: { ...(options ?? { language, quality }), ...(creativePreferences ? { creative_preferences: creativePreferences } : {}) },
+    options: { ...(options ?? { language, quality }), ...(creativePreferences ? { creative_preferences: creativePreferences } : {}), brand_memory: brandMemory, ...(campaign ? { campaign } : {}) },
   });
   if (error) {
     if(error.code==="P0001"&&error.message==="TRIAL_BATCH_ACTIVE")return {error:(await requestMessages()).trial.busy};
@@ -164,3 +173,4 @@ export async function saveCreativePreferences(_prev: PreferenceState, form: Form
   revalidatePath("/dashboard/products/"+productId);
   return {error:null,saved:true};
 }
+

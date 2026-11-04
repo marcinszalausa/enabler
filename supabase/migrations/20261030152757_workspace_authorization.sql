@@ -10,3 +10,4 @@ grant update(headline,primary_text,cta,status) on public.creatives to authentica
 alter table public.brand_kits add constraint brand_kits_logo_workspace_path
   check (logo_path is null or logo_path ~
     ('^' || workspace_id::text || '/brand/[A-Za-z0-9][A-Za-z0-9._-]*$'));
+

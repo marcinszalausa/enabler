@@ -128,3 +128,4 @@ function planName(t: Messages, plan: string | null | undefined) {
   const i = ["free", "starter", "growth"].indexOf(plan ?? "free");
   return t.home.plans[i]?.name ?? plan ?? "";
 }
+

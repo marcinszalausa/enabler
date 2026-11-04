@@ -252,3 +252,4 @@ export async function cancelPost(formData: FormData) {
     .eq("id", post.id).eq("workspace_id", ws.id);
   revalidatePath("/dashboard", "layout");
 }
+
