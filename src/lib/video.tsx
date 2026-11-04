@@ -368,7 +368,7 @@ async function saveVideo(
   ]);
 
   const {data:product,error:productError}=await db.from("products").select("name,brand_brief,image_urls")
-   .eq("id",productId).eq("workspace_id",workspaceId).single().abortSignal(AbortSignal.timeout(5000));
+   .eq("id",productId).eq("workspace_id",workspaceId).abortSignal(AbortSignal.timeout(5000)).single();
   if(productError||!product)throw productError??new Error("Original product is unavailable.");
   const frames=await sampleVideoShots(clips,shotSecondsFor(clipUrls.length));
   const verdict=await requireReview(()=>reviewAdVideo({
