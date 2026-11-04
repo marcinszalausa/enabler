@@ -26,12 +26,17 @@ try{
   await page.goto("http://localhost:3126/pricing",{waitUntil:"networkidle"});
   assert.equal(await page.locator('[data-recommended-plan]').count(),1);assert.equal(await page.locator('[data-plan="plus"] [data-recommended-plan]').innerText(),"Recommended");
   assert.equal(await page.locator('[data-plan] del,[data-plan] s').count(),0);
+  const buys=page.locator('[data-buy-plan="'+plan+'"]');assert.match(await buys.innerText(),/^Buy /);
+  await buys.click();await page.waitForURL(u=>u.pathname==="/checkout"&&u.searchParams.get("plan")===plan);
+  await page.locator('[data-purchase-plan="'+plan+'"]').waitFor();assert.match(await page.locator("h1").innerText(),new RegExp(plan,"i"));assert.equal(await page.locator("[data-purchase-unavailable]").count(),1);assert.equal(await page.locator("[data-onboarding-step]").count(),0);
+  assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),"Purchase summary fits mobile");
+  await page.goto("http://localhost:3126/pricing",{waitUntil:"networkidle"});assert.equal(await page.locator('[data-try-plan="'+plan+'"]').innerText(),"Try for free");
   await page.locator('[data-try-plan="'+plan+'"]').click();await page.waitForURL(u=>u.pathname==="/start"&&u.searchParams.get("plan")===plan);
   await page.locator('[data-selected-plan="'+plan+'"]').waitFor();await page.locator('input[name="url"]').fill("https://example.invalid/product");await page.locator('form button[type="submit"]').click();
   await page.locator('[data-onboarding-step="2"]').waitFor();await page.locator('input[value="video"]').check();assert.equal(new URL(page.url()).searchParams.get("plan"),plan);
   await page.locator('[data-continue-account]').click();await page.waitForURL(u=>u.pathname==="/login");
   const next=new URL(new URL(page.url()).searchParams.get("next"),"https://gooidy.com");assert.equal(next.pathname,"/dashboard/setup");assert.equal(next.searchParams.get("plan"),plan);assert.equal(next.searchParams.get("kind"),"video");assert.equal(next.searchParams.get("url"),"https://example.invalid/product");
-  console.log("PASS selected plan survives limited Try mode to login",plan);await page.close();
+  console.log("PASS selected plan survives optional free preview to login",plan);await page.close();
  }
  console.log("PASS raw HTML content is readable without JavaScript");
 }catch(error){console.error(log);throw error;}finally{await browser?.close();if(server?.pid)try{process.kill(-server.pid,"SIGTERM");}catch{}}

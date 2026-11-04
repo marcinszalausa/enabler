@@ -22,7 +22,7 @@ async function Setup({params,searchParams}:PageProps<"/[locale]/dashboard/setup"
   const url=productLink(query.url),kind=adKind(query.kind);
   if(!url)redirect(localePath(locale,"/start"));
   return <section className="rounded-2xl border border-line bg-raised p-6 sm:p-8">
-    {selectedPlan&&<p data-selected-plan={selectedPlan} className="mb-4 text-sm font-medium text-accent">{paidPlanName(selectedPlan)} · Try mode · no automatic subscription</p>}
+    {selectedPlan&&<p data-selected-plan={selectedPlan} className="mb-4 text-sm font-medium text-accent">{paidPlanName(selectedPlan)} · Free preview · no automatic subscription</p>}
     <p className="text-sm font-medium text-ok">✓ {t.footer.account}</p>
     <h1 className="mt-3 text-2xl font-semibold">{t.onboard.prepareTitle}</h1>
     <p className="mt-3 text-sm leading-relaxed text-muted">{t.personal.setupNote}</p>

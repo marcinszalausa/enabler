@@ -8,4 +8,4 @@ export type PaidPlanId=typeof PAID_PLANS[number]["id"];
 export function paidPlan(value:unknown):PaidPlanId|null{return typeof value==="string"&&PAID_PLANS.some(p=>p.id===value)?value as PaidPlanId:null;}
 export function paidPlanName(id:PaidPlanId){return PAID_PLANS.find(p=>p.id===id)!.name;}
 // Existing verified-signup allowance: changing the selected plan never grants credits.
-export const TRY_MODE={id:"free",name:"Try mode",price:0,credits:100,accounts:1} as const;
+export const TRY_MODE={id:"free",name:"Free preview",price:0,credits:100,accounts:1} as const;
