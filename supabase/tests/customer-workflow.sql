@@ -43,5 +43,7 @@ begin
  if (select credits from public.workspaces where id=ws)<>100 then raise exception 'Planning spent credits'; end if;
  if (select count(*) from public.generations where workspace_id=ws)<>0 then raise exception 'Planning created a generation'; end if;
  if has_table_privilege('anon','public.campaigns','SELECT') then raise exception 'Anonymous campaign access'; end if;
+ if has_table_privilege('authenticated','public.campaigns','TRUNCATE')
+ or has_table_privilege('authenticated','public.campaigns','UPDATE') then raise exception 'Campaign plans are mutable or truncatable'; end if;
 end;
 $$;

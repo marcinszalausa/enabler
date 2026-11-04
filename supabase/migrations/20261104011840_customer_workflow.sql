@@ -17,7 +17,10 @@ create table public.campaigns (
 create index campaigns_workspace_created on public.campaigns(workspace_id,created_at desc);
 create index campaigns_product on public.campaigns(product_id);
 alter table public.campaigns enable row level security;
-grant select,insert,update,delete on public.campaigns to authenticated;
+-- Supabase projects may have broad default table grants. RLS does not protect
+-- TRUNCATE, so replace those defaults explicitly for this new table.
+revoke all on public.campaigns from public, anon, authenticated;
+grant select,insert,delete on public.campaigns to authenticated;
 grant all on public.campaigns to service_role;
 create policy "members read campaigns" on public.campaigns for select to authenticated
   using (public.is_workspace_member(workspace_id));
