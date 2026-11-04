@@ -1,0 +1,12 @@
+import {notFound} from "next/navigation";
+import Link from "next/link";
+import {isLocale,localePath} from "@/i18n/config";
+import {PUBLIC_FEATURES,publicFeature} from "@/lib/public-information";
+import {informationMetadata} from "@/lib/public-information-seo";
+import {InformationPage,InformationHero,WorkflowIllustration} from "@/app/_landing/information-page";
+export function generateStaticParams(){return PUBLIC_FEATURES.map(feature=>({feature:feature.slug}));}
+export async function generateMetadata({params}:PageProps<"/[locale]/features/[feature]">){const {feature}=await params;const page=publicFeature(feature);return page?informationMetadata("/features/"+page.slug,page.label+" · Gooidy",page.description):{};}
+export default async function FeaturePage({params}:PageProps<"/[locale]/features/[feature]">){
+ const {locale,feature}=await params;if(!isLocale(locale))notFound();const page=publicFeature(feature);if(!page)notFound();
+ return <InformationPage><div lang="en"><InformationHero eyebrow={page.label} title={page.title} description={page.description} locale={locale}/><section className="mx-auto max-w-5xl px-4 py-12"><h2 className="text-2xl font-semibold">A simple way to get there</h2><WorkflowIllustration steps={page.steps}/><div className="mt-8 grid gap-5 md:grid-cols-2"><div className="rounded-2xl border border-line bg-surface p-6"><h2 className="text-xl font-semibold">What you get</h2><ul className="mt-4 space-y-4">{page.benefits.map(benefit=><li key={benefit} className="flex gap-3 text-sm"><span aria-hidden className="text-accent">✓</span>{benefit}</li>)}</ul></div><div className="edge p-6"><p className="text-sm font-medium text-accent">An example</p><p className="mt-3 text-lg leading-relaxed">{page.example}</p><Link href={localePath(locale,"/use-cases")} prefetch={false} className="mt-5 inline-flex min-h-11 items-center text-sm font-medium text-accent">See actual generated ads →</Link></div></div><p className="mt-6 max-w-3xl text-sm leading-relaxed text-muted">{page.note}</p><div className="mt-10 flex flex-wrap gap-4"><Link href={localePath(locale,"/pricing")} className="inline-flex min-h-11 items-center rounded-xl border border-line-strong px-4 text-sm font-medium">Compare plans</Link><Link href={localePath(locale,"/resources")} className="inline-flex min-h-11 items-center px-2 text-sm text-accent">Read the getting-started guide →</Link></div></section></div></InformationPage>;
+}

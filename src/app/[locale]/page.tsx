@@ -19,8 +19,10 @@ import { Reveal } from "@/app/_landing/reveal";
 import { Placements, type PlacementAd } from "@/app/_landing/placements";
 import { StickyCta } from "@/app/_landing/sticky-cta";
 import { Spotlight } from "@/app/_landing/spotlight";
+import { PublicPricing } from "@/app/_landing/public-pricing";
+import { PUBLIC_PLANS } from "@/lib/public-information";
 import { CreditGuide } from "@/app/_landing/credit-guide";
-import { ASPECTS, ADS_PER_GENERATION, GENERATION_COST, CREDITS_PER_IMAGE } from "@/lib/image-pricing";
+import { ASPECTS, ADS_PER_GENERATION, GENERATION_COST } from "@/lib/image-pricing";
 import { BeforeAfter } from "@/app/_landing/before-after";
 import { isLocale, localePath, type Locale } from "@/i18n/config";
 import { homeJsonLd, pageMetadata } from "@/lib/seo";
@@ -38,8 +40,7 @@ export async function generateMetadata({
 
 // Prices stay in dollars in every language; the names and perks are in the
 // messages.
-const PRICES = ["$0", "$29", "$79"];
-const FEATURED = 1;
+const PRICES = PUBLIC_PLANS.map(plan => "$" + plan.price);
 
 // Placeholders shared by several strings.
 const COUNTS = { count: Object.keys(LANGUAGES).length, seconds: Number(DEFAULT_VIDEO_OPTIONS.length) };
@@ -474,57 +475,12 @@ function Features({ t, run }: { t: Messages; run?: ShowcaseRun }) {
 }
 
 function Pricing({ t, locale }: { t: Messages; locale: Locale }) {
-  const planCredits = [100, 300, 1000];
   return (
     <section id="pricing" className="scroll-mt-16 bg-surface py-20">
       <div className="reveal mx-auto max-w-6xl px-4">
         <SectionHeading title={t.home.pricingTitle} sub={t.home.pricingSub} />
-        <div className="stagger mt-12 grid gap-6 md:grid-cols-3">
-          {t.home.plans.map((plan, i) => (
-            <div
-              key={plan.name}
-              className={`spot lift flex flex-col p-7 ${
-                i === FEATURED
-                  ? "edge shadow-[0_30px_80px_-30px_var(--t-accent)] md:-my-3 md:py-10"
-                  : "rounded-2xl border border-line bg-raised"
-              }`}
-            >
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-medium">{plan.name}</h3>
-                {i === FEATURED && (
-                  <span className="rounded-full bg-accent-soft px-2.5 py-0.5 text-xs font-medium text-accent">
-                    {t.home.popular}
-                  </span>
-                )}
-              </div>
-              <p className="mt-4">
-                <span className="text-5xl font-semibold tracking-tight">
-                  {PRICES[i]}
-                </span><span className="ms-1 text-sm text-muted">USD</span>
-                {i > 0 && <span className="text-muted">{t.home.perMonth}</span>}
-              </p>
-              <p className="mt-1 text-sm text-muted">{plan.credits}</p>
-              <ul className="mt-6 flex-1 space-y-2.5 text-sm">
-                {plan.perks.map((perk, index) => (
-                  <li key={perk} className="flex gap-2">
-                    <span className="text-accent">✓</span>
-                    {index === 0 ? fmt(t.app.imageAds, { count: planCredits[i] / CREDITS_PER_IMAGE }) : perk}
-                  </li>
-                ))}
-              </ul>
-              <Link
-                href={localePath(locale,i>0?"/policies/billing":"/start")} prefetch={false}
-                className={`mt-8 rounded-xl px-5 py-2.5 text-center text-sm font-medium transition ${
-                  i === FEATURED
-                    ? "btn-primary"
-                    : "border border-line text-fg hover:bg-surface"
-                }`}
-              >
-                {i>0?t.legal.billing:t.nav.getStarted}
-              </Link>
-            </div>
-          ))}
-        </div>
+        <PublicPricing />
+        <p className="mt-6 text-center"><Link href={localePath(locale,"/pricing")} className="inline-flex min-h-11 items-center text-sm font-medium text-accent">Compare plans and calculate your credits →</Link></p>
         <TierExamples />
         <CreditGuide imageCost={GENERATION_COST} imagesPerRun={ADS_PER_GENERATION * ASPECTS.length} />
       </div>
@@ -611,3 +567,4 @@ function FinalCta({ t, locale }: { t: Messages; locale: Locale }) {
     </section>
   );
 }
+

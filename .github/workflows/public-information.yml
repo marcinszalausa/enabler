@@ -20,7 +20,7 @@ jobs:
           cache: npm
       - run: npm ci
       - name: Read installed navigation and metadata guides
-        run: find node_modules/next/dist/docs/01-app -name link.md -o -iname '*metadata*' -o -name generate-static-params.md | xargs cat
+        run: find node_modules/next/dist/docs/01-app -type f \( -name link.md -o -iname '*metadata*' -o -name generate-static-params.md \) | xargs cat
       - run: npx next typegen && npx tsc --noEmit
       - run: |
           if test -f scripts/check-public-information.mjs; then
