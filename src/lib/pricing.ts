@@ -6,7 +6,7 @@ import type { Messages } from "@/i18n/messages";
 export const PLAN_PRICES = { free: 0, pro: 79 } as const;
 // A first Pro subscription: this much for this many days, then the monthly
 // price.
-export const PRO_INTRO = { usd: 29, days: 28 } as const;
+export const PRO_INTRO = { usd: 29, days: 28, credits: 200 } as const;
 export const BOOST_PRICE = 39;
 export const PACK_PRICES = { small: 35, large: 95 } as const;
 

@@ -149,6 +149,7 @@ export const ar: Messages = {
     popular: "الأكثر طلبًا",
     perMonth: " / شهريًا",
     introPeriod: "لأول {days} يومًا",
+    introCredits: "{count} رصيدًا في أول {days} يومًا، ثم {full} كل شهر",
     then: "ثم {price} / شهر",
     boost: {
       name: "Boost",

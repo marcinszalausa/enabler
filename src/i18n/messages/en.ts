@@ -151,6 +151,7 @@ export const en = {
     popular: "Popular",
     perMonth: " / month",
     introPeriod: "for your first {days} days",
+    introCredits: "{count} credits in your first {days} days, then {full} every month",
     then: "then {price} / month",
     boost: {
       name: "Boost",

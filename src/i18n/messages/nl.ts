@@ -153,6 +153,7 @@ export const nl: Messages = {
     popular: "Populair",
     perMonth: " / maand",
     introPeriod: "voor je eerste {days} dagen",
+    introCredits: "{count} credits in je eerste {days} dagen, daarna {full} per maand",
     then: "daarna {price} / maand",
     boost: {
       name: "Boost",

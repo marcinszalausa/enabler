@@ -531,6 +531,11 @@ function Pricing({ t, locale }: { t: Messages; locale: Locale }) {
       usd: PRO_INTRO.usd,
       period: ` ${fmt(t.home.introPeriod, { days: PRO_INTRO.days })}`,
       note: fmt(t.home.then, { price: usd(PLAN_PRICES.pro, locale) }),
+      credits: fmt(t.home.introCredits, {
+        count: PRO_INTRO.credits.toLocaleString(locale),
+        days: PRO_INTRO.days,
+        full: (1000).toLocaleString(locale),
+      }),
       creditCount: 1000,
     },
     {

@@ -88,15 +88,21 @@ export async function handleInvoicePaid(invoice: Stripe.Invoice) {
   const admin = createAdminClient();
   const { data: ws, error } = await admin
     .from("workspaces")
-    .select("id, plan, boost_subscription_id")
+    .select("id, plan, subscription_status, boost_subscription_id")
     .eq("stripe_customer_id", customerId(invoice.customer))
     .maybeSingle();
   if (error) throw error;
   if (!ws) return;
 
+  // The intro period (a trial in Stripe) gets a smaller allowance; the full
+  // monthly credits arrive with the first full-price invoice.
+  const planCredits = isPlanKey(ws.plan)
+    ? ws.subscription_status === "trialing"
+      ? PLANS[ws.plan].intro.credits
+      : PLANS[ws.plan].credits
+    : 0;
   const allowance =
-    (isPlanKey(ws.plan) ? PLANS[ws.plan].credits : 0) +
-    (ws.boost_subscription_id ? BOOST.monthlyCredits : 0);
+    planCredits + (ws.boost_subscription_id ? BOOST.monthlyCredits : 0);
   if (!allowance) return;
 
   const { error: grantError } = await admin.rpc("grant_plan_credits", {

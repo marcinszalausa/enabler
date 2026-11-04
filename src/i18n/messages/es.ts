@@ -153,6 +153,7 @@ export const es: Messages = {
     popular: "Popular",
     perMonth: " / mes",
     introPeriod: "durante tus primeros {days} días",
+    introCredits: "{count} créditos en tus primeros {days} días, luego {full} cada mes",
     then: "después {price} / mes",
     boost: {
       name: "Boost",

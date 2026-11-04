@@ -151,6 +151,7 @@ export const ko: Messages = {
     popular: "인기",
     perMonth: " / 월",
     introPeriod: "처음 {days}일",
+    introCredits: "처음 {days}일 동안 {count}크레딧, 이후 매월 {full}",
     then: "이후 {price} / 월",
     boost: {
       name: "Boost",

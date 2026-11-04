@@ -153,6 +153,7 @@ export const hi: Messages = {
     popular: "लोकप्रिय",
     perMonth: " / महीना",
     introPeriod: "पहले {days} दिनों के लिए",
+    introCredits: "पहले {days} दिनों में {count} क्रेडिट, फिर हर महीने {full}",
     then: "फिर {price} / महीना",
     boost: {
       name: "Boost",

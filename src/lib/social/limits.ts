@@ -3,7 +3,7 @@
 // predictable. Unknown plans get the free cap.
 export const ACCOUNT_LIMITS: Record<string, number> = {
   free: 1,
-  pro: 10,
+  pro: 5,
 };
 
 export function accountLimit(plan: string | null | undefined) {

@@ -151,6 +151,7 @@ export const ja: Messages = {
     popular: "人気",
     perMonth: " / 月",
     introPeriod: "最初の{days}日間",
+    introCredits: "最初の{days}日間は{count}クレジット、その後は毎月{full}",
     then: "その後 {price} / 月",
     boost: {
       name: "Boost",

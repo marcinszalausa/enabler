@@ -153,6 +153,7 @@ export const sv: Messages = {
     popular: "Populär",
     perMonth: " / mån",
     introPeriod: "för dina första {days} dagar",
+    introCredits: "{count} krediter under dina första {days} dagar, sedan {full} varje månad",
     then: "sedan {price} / månad",
     boost: {
       name: "Boost",

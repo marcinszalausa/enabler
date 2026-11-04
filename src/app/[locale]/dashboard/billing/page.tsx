@@ -153,10 +153,16 @@ async function Billing({
                   className="text-sm text-muted"
                 />
                 <p className="mt-2 flex-1 text-sm text-muted">
-                  {fmt(b.monthly, {
-                    count: n(plan.credits),
-                    ads: n(adsFor(plan.credits)),
-                  })}
+                  {intro
+                    ? fmt(t.home.introCredits, {
+                        count: n(plan.intro.credits),
+                        days: plan.intro.days,
+                        full: n(plan.credits),
+                      })
+                    : fmt(b.monthly, {
+                        count: n(plan.credits),
+                        ads: n(adsFor(plan.credits)),
+                      })}
                 </p>
                 <div className="mt-6">
                   <CheckoutButton

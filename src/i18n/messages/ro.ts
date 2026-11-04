@@ -154,6 +154,7 @@ export const ro: Messages = {
     popular: "Popular",
     perMonth: " / lună",
     introPeriod: "pentru primele {days} zile",
+    introCredits: "{count} credite în primele {days} zile, apoi {full} în fiecare lună",
     then: "apoi {price} / lună",
     boost: {
       name: "Boost",

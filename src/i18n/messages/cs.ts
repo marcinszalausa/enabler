@@ -154,6 +154,7 @@ export const cs: Messages = {
     popular: "Oblíbený",
     perMonth: " / měsíc",
     introPeriod: "za prvních {days} dní",
+    introCredits: "{count} kreditů za prvních {days} dní, pak {full} každý měsíc",
     then: "potom {price} / měsíc",
     boost: {
       name: "Boost",

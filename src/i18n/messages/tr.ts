@@ -152,6 +152,7 @@ export const tr: Messages = {
     popular: "Popüler",
     perMonth: " / ay",
     introPeriod: "ilk {days} gün için",
+    introCredits: "İlk {days} günde {count} kredi, sonra her ay {full}",
     then: "sonra {price} / ay",
     boost: {
       name: "Boost",

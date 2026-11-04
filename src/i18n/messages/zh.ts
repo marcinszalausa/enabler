@@ -148,6 +148,7 @@ export const zh: Messages = {
     popular: "热门",
     perMonth: " / 月",
     introPeriod: "前 {days} 天",
+    introCredits: "前 {days} 天 {count} 积分，之后每月 {full}",
     then: "之后 {price} / 月",
     boost: {
       name: "Boost",
