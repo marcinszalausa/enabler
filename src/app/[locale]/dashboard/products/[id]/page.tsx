@@ -46,6 +46,7 @@ import { isLocale } from "@/i18n/config";
 import { getMessages } from "@/i18n/messages";
 import { AppText } from "../../i18n-text";
 import { DeleteButton } from "../../delete-button";
+import { FailedBatches } from "./failed-batches";
 import { fmt } from "@/i18n/format";
 
 export const maxDuration = 300;
@@ -126,6 +127,9 @@ async function Product({
   // A finished run whose ads were all deleted has nothing left to show.
   const visibleRuns = (generations ?? []).filter((g) => !(g.status === "succeeded" && g.creatives.length === 0));
   const campaignRuns = campaign ? visibleRuns.filter(g => parseCampaign((g.request_options as {campaign?:unknown}|null)?.campaign)?.id === campaign.id) : visibleRuns;
+  // Failed batches with no saved ads fold into one quiet row.
+  const emptyFailed = campaignRuns.filter(g => g.status === "failed" && g.creatives.length === 0);
+  const shownRuns = campaignRuns.filter(g => !emptyFailed.includes(g));
   // Read receipts after the run snapshot: a terminal state must not race an
   // earlier receipt query and briefly look like an unconfirmed refund.
   const receiptResult = await supabase.rpc("generation_receipts", { product: id });
@@ -238,7 +242,8 @@ async function Product({
 
       <section id="your-ads" tabIndex={-1} className="mt-10 flex scroll-mt-40 flex-col gap-10">
         {campaign && <p className="text-sm text-muted">Showing ads from this campaign. <a className="text-accent underline" href={`/dashboard/products/${product.id}`}>View all product ads</a></p>}
-        {campaignRuns.length === 0 && (
+        <FailedBatches t={t} locale={locale} runs={emptyFailed} receipts={receipts} canRetry={canEdit} />
+        {shownRuns.length === 0 && (
           <EmptyState title={t.app.noAds}>
             {fmt(t.app.noAdsBody, {
               videos: VIDEOS_PER_GENERATION,
@@ -247,7 +252,7 @@ async function Product({
             })}
           </EmptyState>
         )}
-        {campaignRuns.map((g) => (
+        {shownRuns.map((g) => (
           <GenerationBlock
             key={g.id}
             t={t}

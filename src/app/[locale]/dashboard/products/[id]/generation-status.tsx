@@ -1,5 +1,6 @@
 import type { Messages } from "@/i18n/messages";
 import { fmt } from "@/i18n/format";
+import { NoteIcon } from "./failed-batches";
 import { generationPresentation, settledCredits, type CreditReceipt, type RunSnapshot } from "@/lib/generation-presentation";
 
 export function GenerationStatus({ t, generation: g, receipt, canRetry = false }: {
@@ -11,7 +12,22 @@ export function GenerationStatus({ t, generation: g, receipt, canRetry = false }
   const view = generationPresentation(g);
   const credits = settledCredits(g, receipt);
   const phase = view.phase;
-  const tone = phase === "failed" ? "border-danger/30 bg-danger-bg" : phase === "partial" ? "border-warn/30 bg-warn-bg" : view.active ? "border-accent/30 bg-accent-soft" : "border-ok/30 bg-ok-bg";
+  // A batch that saved only some ads gets one quiet line, not a coloured box.
+  if (phase === "partial" || phase === "failed") {
+    const quality = g.error && /quality|opening frame|visible defects/i.test(g.error);
+    return (
+      <div role="status" data-generation-status={phase} className="mb-4 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-xl border border-line px-3 py-2 text-sm">
+        <NoteIcon />
+        <p className="min-w-0 flex-1 py-1 text-muted">
+          <span className="font-medium text-fg">{t.run.someMissing}</span>
+          {credits && credits.returned > 0 && <> · {fmt(t.run.returnedN, { count: credits.returned })}</>}
+          {quality && <span className="block text-xs">{t.run.quality}</span>}
+        </p>
+        {canRetry && <a href="#generate-ads" className="inline-flex min-h-11 items-center text-sm font-medium text-accent hover:underline">{t.run.tryAgain}</a>}
+      </div>
+    );
+  }
+  const tone = view.active ? "border-accent/30 bg-accent-soft" : "border-ok/30 bg-ok-bg";
   const steps = view.video ? ["preparing", "creating", "finishing", "ready"] as const : ["creating", "finishing", "ready"] as const;
   const current = steps.findIndex(step => step === phase);
   return (
@@ -24,7 +40,7 @@ export function GenerationStatus({ t, generation: g, receipt, canRetry = false }
           </h2>
           <p className="rounded-full border border-current/10 px-3 py-1 text-sm font-medium">{fmt(t.run.saved, { done: view.saved, total: view.total })}</p>
         </div>
-        <p className="mt-2 text-sm leading-relaxed text-muted">{view.active ? t.run.working : phase === "partial" ? t.run.partialBody : phase === "failed" ? t.run.failedBody : t.run.readyBody}</p>
+        <p className="mt-2 text-sm leading-relaxed text-muted">{view.active ? t.run.working : t.run.readyBody}</p>
       </div>
       {view.active && <ol aria-label={t.run.stages} className="mt-5 grid grid-cols-2 gap-2 text-xs sm:flex sm:flex-wrap">
         {steps.map((step, i) => <li key={step} aria-current={i === current ? "step" : undefined}
@@ -39,17 +55,6 @@ export function GenerationStatus({ t, generation: g, receipt, canRetry = false }
       </dl>
       {(g.request_options as { free_redo?: unknown } | null | undefined)?.free_redo === true && <p data-free-redo className="mt-3 text-xs leading-relaxed text-muted">{t.run.freeRedo}</p>}
       {!view.active && !credits && <p className="mt-3 text-xs leading-relaxed text-muted">{t.run.noReceipt}</p>}
-      {(phase === "partial" || phase === "failed") && <>
-        {canRetry && <div className="mt-5 flex flex-wrap items-center gap-3">
-          <a href="#generate-ads" className="inline-flex min-h-11 items-center rounded-xl border border-line-strong bg-raised px-4 text-sm font-medium hover:border-accent hover:text-accent">{t.run.retry}</a>
-          <p className="max-w-lg text-xs leading-relaxed text-muted">{t.run.retryHint}</p>
-        </div>}
-        <details className="mt-4 text-xs text-muted">
-          <summary className="inline-flex min-h-11 cursor-pointer items-center font-medium underline underline-offset-4">{t.run.details}</summary>
-          <p className="mt-2 leading-relaxed">{g.error && /quality|opening frame|visible defects/i.test(g.error) ? t.run.quality : t.run.failedBody}</p>
-          <p className="mt-2 break-all font-mono">{g.id}</p>
-        </details>
-      </>}
     </section>
   );
 }
