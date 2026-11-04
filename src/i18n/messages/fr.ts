@@ -452,6 +452,7 @@ export const fr: Messages = {
     cost: "Coût du lot",
     used: "Crédits utilisés",
     returned: "Crédits rendus",
+    freeRedo: "Reprise gratuite : les crédits de cette image ont d'abord été ajoutés à votre solde, elle ne vous a donc rien coûté.",
     noReceipt: "Aucun reçu de crédits n’est disponible pour ce lot. Les montants rendus ne sont pas affichés.",
     retry: "Créer un nouveau lot",
     retryHint: "Choisissez vos réglages ci-dessus. Un nouveau lot utilise des crédits ; les publicités enregistrées sont conservées.",

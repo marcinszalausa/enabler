@@ -450,6 +450,7 @@ export const es: Messages = {
     cost: "Coste del lote",
     used: "Créditos usados",
     returned: "Créditos devueltos",
+    freeRedo: "Repetición gratuita: los créditos de esta imagen se añadieron antes a tu saldo, así que no te costó nada.",
     noReceipt: "No hay un recibo de créditos para este lote. No se muestran importes devueltos.",
     retry: "Crear otro lote",
     retryHint: "Elige los ajustes arriba. Un nuevo lote usa créditos; los anuncios guardados se conservan.",
