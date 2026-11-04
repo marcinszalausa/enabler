@@ -4,6 +4,7 @@ import {readFile} from "node:fs/promises";
 import {POLICY_IDS,LEGAL_POLICY_VERSION,LEGAL_OPERATOR_NAME,LEGAL_BUSINESS_ADDRESS,LEGAL_DOCUMENT_STATUS,PAID_CHECKOUT_STATUS,isPolicyId,policyPath,PRIVACY_REQUESTS,privacyRequestHref} from "../src/lib/legal-policy.ts";
 test("pre-launch policies cannot represent a finalized operator or activate checkout",async()=>{
  const data=JSON.parse(await readFile(new URL("../src/lib/legal-documents.json",import.meta.url),"utf8"));
+ assert.ok(!/pre[-\s]?launch|unspecified|pending entity formation|not (?:yet )?finalized|draft (?:terms|policies)/i.test(JSON.stringify(data.documents)));
  assert.equal(data.version,LEGAL_POLICY_VERSION);assert.equal(LEGAL_DOCUMENT_STATUS,"prelaunch-review");
  assert.equal(LEGAL_OPERATOR_NAME,null);assert.equal(LEGAL_BUSINESS_ADDRESS,null);assert.equal(PAID_CHECKOUT_STATUS,"unavailable");
  assert.deepEqual(Object.keys(data.documents).sort(),[...POLICY_IDS].sort());
