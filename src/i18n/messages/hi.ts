@@ -163,7 +163,7 @@ export const hi: Messages = {
         perks: ["लगभग 50 विज्ञापन", "ब्रांड किट", "हर विज्ञापन डाउनलोड करें"],
       },
       {
-        name: "Starter",
+        name: "Launch",
         credits: "हर महीने 300 क्रेडिट",
         perks: [
           "हर महीने लगभग 150 विज्ञापन",
@@ -172,11 +172,11 @@ export const hi: Messages = {
         ],
       },
       {
-        name: "Growth",
+        name: "Scale",
         credits: "हर महीने 1,000 क्रेडिट",
         perks: [
           "हर महीने लगभग 500 विज्ञापन",
-          "Starter की सारी सुविधाएँ",
+          "Launch की सारी सुविधाएँ",
           "प्राथमिकता वाली सहायता",
         ],
       },

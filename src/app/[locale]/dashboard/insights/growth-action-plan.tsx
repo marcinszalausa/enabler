@@ -9,7 +9,7 @@ export function GrowthActionPlan({rows}:{rows:ReportRow[]}){
   const a=document.createElement("a");a.href=url;a.download="gooidy-growth-testing-plan.txt";a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
  }
  return <section data-growth-action-plan className="edge mt-6 min-w-0 border-accent p-5 sm:p-6">
-  <p className="text-xs font-medium text-accent">Only in Growth</p>
+  <p className="text-xs font-medium text-accent">Only in Scale</p>
   <h2 className="mt-2 text-xl font-semibold">Your next tests, guided by results</h2>
   <p className="mt-3 text-sm leading-relaxed text-muted">Turn observed post results into a practical brief for your next creative. Planning and downloading use no generation credits.</p>
   {!tests.length?<div className="mt-4 rounded-xl bg-surface p-4 text-sm">

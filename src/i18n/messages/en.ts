@@ -161,7 +161,7 @@ export const en = {
         perks: ["About 50 ads", "Brand kit", "Download every ad"],
       },
       {
-        name: "Starter",
+        name: "Launch",
         credits: "300 credits every month",
         perks: [
           "About 150 ads a month",
@@ -170,11 +170,11 @@ export const en = {
         ],
       },
       {
-        name: "Growth",
+        name: "Scale",
         credits: "1,000 credits every month",
         perks: [
           "About 500 ads a month",
-          "Everything in Starter",
+          "Everything in Launch",
           "Priority support",
         ],
       },

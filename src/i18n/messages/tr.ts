@@ -162,7 +162,7 @@ export const tr: Messages = {
         perks: ["Yaklaşık 50 reklam", "Marka kiti", "Her reklamı indirme"],
       },
       {
-        name: "Starter",
+        name: "Launch",
         credits: "Her ay 300 kredi",
         perks: [
           "Ayda yaklaşık 150 reklam",
@@ -171,11 +171,11 @@ export const tr: Messages = {
         ],
       },
       {
-        name: "Growth",
+        name: "Scale",
         credits: "Her ay 1.000 kredi",
         perks: [
           "Ayda yaklaşık 500 reklam",
-          "Starter'daki her şey",
+          "Launch'daki her şey",
           "Öncelikli destek",
         ],
       },

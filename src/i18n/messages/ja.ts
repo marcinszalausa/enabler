@@ -161,14 +161,14 @@ export const ja: Messages = {
         perks: ["広告 約50本", "ブランドキット", "すべての広告をダウンロード"],
       },
       {
-        name: "Starter",
+        name: "Launch",
         credits: "毎月300クレジット",
         perks: ["月に広告 約150本", "Free のすべての機能", "いつでも解約可能"],
       },
       {
-        name: "Growth",
+        name: "Scale",
         credits: "毎月1,000クレジット",
-        perks: ["月に広告 約500本", "Starter のすべての機能", "優先サポート"],
+        perks: ["月に広告 約500本", "Launch のすべての機能", "優先サポート"],
       },
     ],
     faqTitle: "よくある質問",

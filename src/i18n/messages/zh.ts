@@ -158,14 +158,14 @@ export const zh: Messages = {
         perks: ["约 50 条广告", "品牌套件", "下载所有广告"],
       },
       {
-        name: "Starter",
+        name: "Launch",
         credits: "每月 300 积分",
         perks: ["每月约 150 条广告", "包含 Free 的全部功能", "随时取消"],
       },
       {
-        name: "Growth",
+        name: "Scale",
         credits: "每月 1,000 积分",
-        perks: ["每月约 500 条广告", "包含 Starter 的全部功能", "优先支持"],
+        perks: ["每月约 500 条广告", "包含 Launch 的全部功能", "优先支持"],
       },
     ],
     faqTitle: "常见问题",
