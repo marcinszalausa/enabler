@@ -194,7 +194,7 @@ export const ro: Messages = {
       },
       {
         q: "Ce este un credit?",
-        a: "Un credit creează o imagine publicitară. Fiecare rulare creează cinci reclame în două formate, deci folosește 10 credite.",
+        a: "Fiecare imagine publicitară costă 2 credite. Fiecare rulare creează cinci reclame în două formate, deci folosește 20 de credite.",
       },
       {
         q: "Am nevoie de experiență în design?",

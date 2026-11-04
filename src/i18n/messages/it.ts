@@ -194,7 +194,7 @@ export const it: Messages = {
       },
       {
         q: "Cos'è un credito?",
-        a: "Un credito crea un'immagine pubblicitaria. Ogni giro crea cinque annunci in due formati, quindi usa 10 crediti.",
+        a: "Ogni immagine pubblicitaria usa 2 crediti. Ogni giro crea cinque annunci in due formati, quindi usa 20 crediti.",
       },
       {
         q: "Serve esperienza di grafica?",

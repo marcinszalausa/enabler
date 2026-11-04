@@ -193,7 +193,7 @@ export const es: Messages = {
       },
       {
         q: "¿Qué es un crédito?",
-        a: "Un crédito crea una imagen de anuncio. Cada tanda crea cinco anuncios en dos tamaños, así que usa 10 créditos.",
+        a: "Cada imagen de anuncio usa 2 créditos. Cada tanda crea cinco anuncios en dos tamaños, así que usa 20 créditos.",
       },
       {
         q: "¿Necesito experiencia en diseño?",

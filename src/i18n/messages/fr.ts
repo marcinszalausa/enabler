@@ -194,7 +194,7 @@ export const fr: Messages = {
       },
       {
         q: "Qu'est-ce qu'un crédit ?",
-        a: "Un crédit crée une image publicitaire. Chaque génération crée cinq pubs en deux formats, soit 10 crédits.",
+        a: "Chaque image publicitaire coûte 2 crédits. Chaque génération crée cinq pubs en deux formats, soit 20 crédits.",
       },
       {
         q: "Faut-il savoir faire du design ?",

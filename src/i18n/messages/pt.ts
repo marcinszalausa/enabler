@@ -194,7 +194,7 @@ export const pt: Messages = {
       },
       {
         q: "O que é um crédito?",
-        a: "Um crédito cria uma imagem de anúncio. Cada rodada cria cinco anúncios em dois tamanhos, então usa 10 créditos.",
+        a: "Cada imagem de anúncio usa 2 créditos. Cada rodada cria cinco anúncios em dois tamanhos, então usa 20 créditos.",
       },
       {
         q: "Preciso saber design?",

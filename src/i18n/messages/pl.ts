@@ -193,7 +193,7 @@ export const pl: Messages = {
       },
       {
         q: "Czym jest kredyt?",
-        a: "Jeden kredyt to jedna grafika reklamowa. Każda seria tworzy pięć reklam w dwóch formatach, więc zużywa 10 kredytów.",
+        a: "Każda grafika reklamowa kosztuje 2 kredyty. Każda seria tworzy pięć reklam w dwóch formatach, więc zużywa 20 kredytów.",
       },
       {
         q: "Czy muszę znać się na projektowaniu?",
