@@ -671,4 +671,19 @@ export const de: Messages = {
       couldnt: "Veröffentlichen fehlgeschlagen. Bitte versuche es erneut.",
     },
   },
+  why: {
+    title: "Für Unternehmen, denen ihr Auftritt wichtig ist",
+    sub: "Gooidy macht aus deiner Produktseite Anzeigen, die deiner Marke gerecht werden, und hilft dir, jede Woche präsent zu sein – in den Sprachen deiner Kunden.",
+    cards: [
+      { title: "Wähle deine Qualität", body: "Gut, Besser oder Beste für jede Anzeige, erstellt mit führenden Bild- und Videomodellen. Du siehst die genauen Credit-Kosten, bevor etwas erstellt wird." },
+      { title: "Dein Produkt, wie es wirklich ist", body: "Wir starten mit deiner echten Produktseite und bewahren Farbe, Form und Details. Jedes Bild und jedes fertige Video wird automatisch geprüft, bevor es bei dir ankommt." },
+      { title: "Sprich die Sprache deiner Kunden", body: "Anzeigen, Texte und Video-Sprecher in 17 Sprachen, von Spanisch und Polnisch bis Japanisch, Hindi und Arabisch." },
+      { title: "Deine Marke, gespeichert", body: "Speichere Logo, Farben, Schrift und Markenstimme einmal. Jede neue Kampagne startet im Stil deiner Marke." },
+      { title: "Jede Woche präsent", body: "Plane Kampagnen, plane Beiträge auf 10 Netzwerken oder schalte den Autopiloten ein und sieh, welche Beiträge Klicks gebracht haben. Produktlinks werden markiert, damit die Analyse deines Shops die Besuche aus jedem Beitrag zeigt." },
+      { title: "Ehrlich ab dem ersten Klick", body: "Klare Preise, Credits zurück, wenn eine Anzeige nicht geliefert werden kann, und keine erfundenen Bewertungen, Rabatte oder Versprechen in deinen Anzeigen." },
+    ],
+    soon: "Demnächst",
+    soonTitle: "Boost",
+    soonBody: "Zeige deine beste Anzeige mit einem Tipp neuen Käufern auf Facebook und Instagram.",
+  },
 };

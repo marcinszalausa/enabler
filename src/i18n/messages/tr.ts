@@ -668,4 +668,19 @@ export const tr: Messages = {
       couldnt: "Yayınlanamadı. Lütfen tekrar dene.",
     },
   },
+  why: {
+    title: "Görünüşüne önem veren işletmeler için",
+    sub: "Gooidy ürün sayfanızı markanıza yakışan reklamlara dönüştürür ve müşterilerinizin konuştuğu dillerde her hafta görünür olmanıza yardım eder.",
+    cards: [
+      { title: "Kaliteyi siz seçin", body: "Her reklam için İyi, Daha İyi veya En İyi; önde gelen görsel ve video modelleriyle. Hiçbir şey üretilmeden önce kesin kredi maliyetini görürsünüz." },
+      { title: "Ürününüz, olduğu gibi", body: "Gerçek ürün sayfanızdan başlar, rengini, biçimini ve ayrıntılarını koruruz. Her görsel ve tamamlanan her video size ulaşmadan önce otomatik olarak kontrol edilir." },
+      { title: "Müşterilerinizin dilini konuşun", body: "İspanyolca ve Lehçeden Japonca, Hintçe ve Arapçaya kadar 17 dilde reklam, açıklama ve video seslendirme." },
+      { title: "Markanız hatırlanır", body: "Logonuzu, renklerinizi, yazı tipinizi ve marka dilinizi bir kez kaydedin. Her yeni kampanya markanıza uygun başlar." },
+      { title: "Her hafta görünür olun", body: "Kampanya planlayın, 10 ağda gönderi zamanlayın ya da otomatik pilotu açın, sonra hangi gönderilerin tıklama aldığını görün. Ürün bağlantıları etiketlenir, böylece mağaza analitiğiniz her gönderiden gelen ziyaretleri gösterir." },
+      { title: "İlk tıklamadan itibaren dürüst", body: "Net fiyatlar, teslim edilemeyen reklamlar için iade edilen krediler ve reklamlarınızda uydurma yorum, indirim veya iddia yok." },
+    ],
+    soon: "Yakında",
+    soonTitle: "Boost",
+    soonBody: "En iyi reklamınızı tek dokunuşla Facebook ve Instagram'da yeni alıcılara gösterin.",
+  },
 };

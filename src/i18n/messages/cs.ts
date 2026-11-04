@@ -670,4 +670,19 @@ export const cs: Messages = {
       couldnt: "Publikování se nezdařilo. Zkuste to znovu.",
     },
   },
+  why: {
+    title: "Pro firmy, kterým záleží na tom, jak vypadají",
+    sub: "Gooidy promění stránku vašeho produktu v reklamy hodné vaší značky a pomůže vám být vidět každý týden, v jazycích vašich zákazníků.",
+    cards: [
+      { title: "Vyberte si kvalitu", body: "Dobrá, Lepší nebo Nejlepší u každé reklamy, s předními modely pro obraz a video. Přesnou cenu v kreditech vidíte dřív, než cokoli vznikne." },
+      { title: "Váš produkt takový, jaký je", body: "Vycházíme ze skutečné stránky produktu a zachováme jeho barvu, tvar i detaily. Každý obrázek i hotové video se automaticky zkontroluje, než se k vám dostane." },
+      { title: "Mluvte jazykem svých zákazníků", body: "Reklamy, popisky a hlas ve videích v 17 jazycích, od španělštiny a polštiny po japonštinu, hindštinu a arabštinu." },
+      { title: "Vaše značka, zapamatovaná", body: "Uložte jednou logo, barvy, písmo a tón značky. Každá nová kampaň začne ve vašem stylu." },
+      { title: "Buďte vidět každý týden", body: "Plánujte kampaně, naplánujte příspěvky na 10 sítích nebo zapněte autopilota a pak uvidíte, které příspěvky přinesly kliknutí. Odkazy na produkty jsou označené, takže analytika vašeho obchodu ukáže návštěvy z každého příspěvku." },
+      { title: "Poctivě od prvního kliknutí", body: "Jasné ceny, vrácené kredity, když reklamu nelze doručit, a žádné vymyšlené recenze, slevy ani tvrzení ve vašich reklamách." },
+    ],
+    soon: "Již brzy",
+    soonTitle: "Boost",
+    soonBody: "Ukažte svou nejlepší reklamu novým zákazníkům na Facebooku a Instagramu jedním klepnutím.",
+  },
 };

@@ -671,4 +671,19 @@ export const sv: Messages = {
       couldnt: "Det gick inte att publicera. Försök igen.",
     },
   },
+  why: {
+    title: "Byggt för företag som bryr sig om hur de ser ut",
+    sub: "Gooidy gör din produktsida till annonser som är värdiga ditt varumärke och hjälper dig att synas varje vecka, på dina kunders språk.",
+    cards: [
+      { title: "Välj din kvalitet", body: "Bra, Bättre eller Bäst för varje annons, skapad med ledande bild- och videomodeller. Du ser den exakta kreditkostnaden innan något skapas." },
+      { title: "Din produkt som den verkligen är", body: "Vi utgår från din riktiga produktsida och behåller färg, form och detaljer. Varje bild och färdig video kontrolleras automatiskt innan den når dig." },
+      { title: "Tala dina kunders språk", body: "Annonser, bildtexter och speakerröst i 17 språk, från spanska och polska till japanska, hindi och arabiska." },
+      { title: "Ditt varumärke, ihågkommet", body: "Spara logotyp, färger, typsnitt och tonläge en gång. Varje ny kampanj börjar i din stil." },
+      { title: "Synas varje vecka", body: "Planera kampanjer, schemalägg inlägg i 10 nätverk eller slå på autopiloten och se vilka inlägg som gav klick. Produktlänkar märks så att din butiks statistik visar besöken från varje inlägg." },
+      { title: "Ärligt från första klicket", body: "Tydliga priser, krediter tillbaka när en annons inte kan levereras och inga påhittade omdömen, rabatter eller påståenden i dina annonser." },
+    ],
+    soon: "Kommer snart",
+    soonTitle: "Boost",
+    soonBody: "Visa din bästa annons för nya köpare på Facebook och Instagram med ett tryck.",
+  },
 };
