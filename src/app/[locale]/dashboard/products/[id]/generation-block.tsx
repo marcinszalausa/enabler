@@ -59,6 +59,7 @@ export function GenerationBlock({
   canRetry = false,
   productId,
   workspaceId,
+  favorites = [],
 }: {
   t: Messages;
   locale: string;
@@ -73,6 +74,7 @@ export function GenerationBlock({
   canRetry?: boolean;
   productId?: string;
   workspaceId?: string;
+  favorites?: string[];
 }) {
   const when = new Date(g.created_at).toLocaleString(locale, {
     dateStyle: "medium",
@@ -149,7 +151,7 @@ export function GenerationBlock({
           )}
         </div>
       </div>
-      {!view.active&&creatives.length>0?<AdGallery creatives={creatives} generationId={g.id} imageVersion={imageVersion} seconds={seconds} canPublish={canRetry&&accounts!==null&&g.status==="succeeded"} canEdit={canRetry&&g.status==="succeeded"&&!g.showcased_at} productId={productId} workspaceId={workspaceId} posts={posts}/>:<ul
+      {!view.active&&creatives.length>0?<AdGallery creatives={creatives} generationId={g.id} imageVersion={imageVersion} seconds={seconds} canPublish={canRetry&&accounts!==null&&g.status==="succeeded"} canEdit={canRetry&&g.status==="succeeded"&&!g.showcased_at} productId={productId} workspaceId={workspaceId} posts={posts} canDelete={canRetry&&!g.showcased_at} favorites={favorites}/>:<ul
         className={`mt-4 grid grid-cols-2 items-start gap-4 ${video ? "md:grid-cols-3" : "md:grid-cols-4"}`}
       >
         {creatives.map((c) => (

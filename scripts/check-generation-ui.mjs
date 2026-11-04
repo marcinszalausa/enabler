@@ -37,7 +37,7 @@ try {
   assert.equal(await page.locator('[data-case="legacy"] [data-credits-returned]').count(),0,"No invented legacy refund");
   assert.equal(await page.locator('[data-case="creating"] [data-credits-returned]').count(),0,"No premature refund");
   const retry=partial.locator('a[href="#generate-ads"]');
-  assert.equal(await partial.locator("form").count(),0,"Retry does not submit a paid action");
+  assert.equal(await partial.locator("form:not([data-favorite-form])").count(),0,"Retry does not submit a paid action (saving a favorite is free)");
   const before=calls;await retry.click();await pause(100);
   assert.ok(calls-before<=1,"Retry only navigates to settings; background polling may tick");
   assert.equal(await page.locator("#generate-ads").evaluate(el=>el===document.activeElement),true);
