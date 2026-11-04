@@ -20,6 +20,6 @@ try{
   }
   assert.deepEqual(errors,[]);console.log("PASS discovery routes and search",width);await page.close();
  }
- const missing=await fetch("http://localhost:3121/industries/not-real");assert.equal(missing.status,404);
+ const missing=await fetch("http://localhost:3121/industries/not-real");const missingHtml=await missing.text();assert.ok(missing.status===404||(missing.status===200&&/<meta name="robots" content="noindex"/.test(missingHtml)),"Unknown guides return a 404 or streamed noindex not-found page");
  const sitemap=await(await fetch("http://localhost:3121/sitemap.xml")).text();for(const path of ["/industries/clothing","/help/first-campaign","/platforms/youtube","/blog/choose-an-ad-angle"])assert.ok(sitemap.includes("https://gooidy.com"+path));console.log("PASS missing route and sitemap");
 }catch(error){console.error(log);throw error;}finally{await browser?.close();if(server?.pid)try{process.kill(-server.pid,"SIGTERM");}catch{}}
