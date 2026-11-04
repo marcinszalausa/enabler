@@ -5,7 +5,7 @@ import {createClient} from "@/lib/supabase/server";
 import {createAdminClient} from "@/lib/supabase/admin";
 import {canEditWorkspace,WORKSPACE_WRITE_DENIED} from "@/lib/workspace-access";
 import {parseCreativeRevision,REVISION_UUID} from "@/lib/creative-revision";
-import {parseBrandMemory} from "@/lib/customer-workflow";
+import {parseBrandMemory,parseCampaign} from "@/lib/customer-workflow";
 import {parseCreativePreferences} from "@/lib/creative-preferences";
 import {isQuality,IMAGE_CREDITS} from "@/lib/quality";
 import {parseVideoOptions,creditsPerVideo} from "@/lib/video-options";
@@ -32,7 +32,8 @@ export async function startSingleRevision(_previous:SingleRevisionState,form:For
  const cost=options?creditsPerVideo(options.length,quality):IMAGE_CREDITS[quality];
  if(form.get("quotedCost")!==String(cost))return no("The price changed. Refresh and review the credit cost before continuing.");
  const creativePreferences=parseCreativePreferences(original.creative_preferences);
- const snapshot={...(options??{quality,language}),...(creativePreferences?{creative_preferences:creativePreferences}:{}),brand_memory:parseBrandMemory(original.brand_memory),revision};
+ const campaign=parseCampaign(original.campaign);
+ const snapshot={...(campaign?{campaign}:{}),...(options??{quality,language}),...(creativePreferences?{creative_preferences:creativePreferences}:{}),brand_memory:parseBrandMemory(original.brand_memory),revision};
  const {data:generationId,error}=await createAdminClient().rpc("reserve_generation",{ws:source.workspace_id,request_id:requestId,product:run.product_id,generation_type:video?"video_ads":"image_ads",generation_model:`single revision ${revision.kind} ${quality}`,amount:cost,options:snapshot});
  if(error){console.error("reserve single revision failed",error.code);return no(error.message==="TRIAL_BATCH_ACTIVE"?"Let your current batch finish before creating a revision.":error.message==="TRIAL_BATCH_RATE"?"You have reached the hourly generation limit. Try again later.":"We couldn’t start this revision. Refresh and try again.");}
  if(!generationId)return no(`This revision needs ${cost} credits. Check your balance before trying again.`);
