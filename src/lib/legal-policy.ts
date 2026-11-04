@@ -1,5 +1,5 @@
 // Pre-launch only. Publishing draft policies never enables payments.
-export const LEGAL_POLICY_VERSION = "2026-11-03-prelaunch";
+export const LEGAL_POLICY_VERSION = "2026-11-04-prelaunch";
 export const PAID_CHECKOUT_STATUS = "unavailable" as const;
 export const LEGAL_DOCUMENT_STATUS = "prelaunch-review" as const;
 export const LEGAL_OPERATOR_NAME: string|null = null;

@@ -1,6 +1,6 @@
 {
-  "version": "2026-11-03-prelaunch",
-  "updated": "November 3, 2026",
+  "version": "2026-11-04-prelaunch",
+  "updated": "November 4, 2026",
   "documents": {
     "terms": {
       "title": "Terms of Service",
@@ -168,6 +168,24 @@
             "Depending on applicable law, you may have rights to access, correct, delete or obtain a portable copy of personal information, opt out of certain processing, appeal a denied request, or act through an authorized agent. We will not unlawfully discriminate against you for exercising a right.",
             "Send requests to hello@gooidy.com from the email associated with your account when possible. We verify requests proportionately and respond within applicable legal deadlines. If a request is denied, you may ask for an appeal by replying with the subject 'Privacy appeal'. You may also contact the relevant regulator where applicable.",
             "We do not use personal information for sale or targeted advertising, so there is no such processing to opt out of at present. If that changes, this notice and the applicable preference controls must be updated first."
+          ]
+        },
+        {
+          "title": "Visitors and users in the EU, EEA and UK",
+          "paragraphs": [
+            "This section applies when the EU or UK General Data Protection Regulation (GDPR) applies to our processing, for example because we offer the service to people in the European Economic Area or the United Kingdom. The controller is the operator of Gooidy. Its legal name and address will be published here once the entity is established; until then, contact hello@gooidy.com. An EU and UK representative will be appointed and listed here before we offer paid services in those regions.",
+            "If a business uses Gooidy to process personal information about its own customers or staff, that business decides how that information is used, and we process it on its behalf."
+          ],
+          "items": [
+            "Contract (Art. 6(1)(b)): your account, workspace, product preparation, ad generation, storage, downloads, publishing you request and support.",
+            "Legitimate interests (Art. 6(1)(f)): security, abuse and fraud prevention, preview rate limits, troubleshooting, service reliability, keeping records needed for legal claims, and placing ad text so it avoids covering faces. You can object to processing based on legitimate interests.",
+            "Legal obligation (Art. 6(1)(c)): tax, accounting and responding to lawful requests.",
+            "Consent (Art. 6(1)(a)): only where we ask for it, such as optional marketing emails or showing your ads as public examples. You can withdraw consent at any time without affecting earlier processing.",
+            "Your rights: access, correction, deletion, restriction, portability, objection, and not being subject to decisions based solely on automated processing that significantly affect you. Gooidy does not make such decisions about people. Send requests to hello@gooidy.com; we respond within one month, extendable by two further months for complex requests, and tell you if we extend.",
+            "Complaints: you can complain to the data protection authority where you live or work (in Poland, the UODO; in the UK, the ICO). We would appreciate the chance to resolve your concern first.",
+            "International transfers: our providers process information in the United States and other countries. Where information leaves the EEA or UK, we rely on the EU-US Data Privacy Framework and UK Extension where a provider is certified, or on the European Commission's Standard Contractual Clauses and the UK Addendum, with supplementary safeguards where needed. Contact us for more information about these safeguards.",
+            "Retention: account, workspace, product and ad records are kept while your account is active and deleted or anonymized after a verified deletion request, subject to backup cycles and legal holds described above. Billing records, once billing exists, are kept for as long as tax law requires.",
+            "Providing information: an email address is needed to create an account. Product links and content are needed for generation. Other information is optional."
           ]
         },
         {
