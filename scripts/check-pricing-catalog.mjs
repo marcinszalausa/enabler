@@ -17,6 +17,7 @@ try{
   assert.equal(await page.locator("button[data-buy-plan]:disabled").count(),3);assert.equal(await page.locator("a[data-buy-plan]").count(),0);assert.equal(await page.locator("[data-plan]").count(),3);assert.equal(await page.locator("[data-plan-details]").count(),3);for(const p of ["starter","plus","growth"])assert.equal(await page.locator(`[data-plan-details="${p}"] dt`).count(),29);
   const starter=page.locator('[data-plan-included="starter"]');assert.equal(await starter.locator("li").count(),5);
   for(const feature of ["300 generation credits every month","Image and video ads in your brand","One social account included","Free text edits and ad downloads","Weekly planner and scheduled posts"])assert.ok((await starter.innerText()).includes(feature));
+  const shared=page.locator("[data-shared-plan-features]");assert.equal(await shared.count(),1);assert.equal(await shared.getByRole("heading",{name:"Included in every paid plan"}).count(),1);assert.equal(await shared.locator("li").count(),6);assert.ok(await shared.evaluate(el=>!el.closest("[data-plan]")),"Common panel is outside the cards");assert.ok(await shared.evaluate(el=>!!(el.compareDocumentPosition(document.querySelector("#plan-free"))&Node.DOCUMENT_POSITION_FOLLOWING)),"Shared benefits appear before optional preview details");
   const heights=await page.locator("[data-plan]").evaluateAll(cards=>cards.map(card=>card.getBoundingClientRect().height));assert.ok(Math.max(...heights)-Math.min(...heights)<=2,"Cards have balanced heights at "+width+" "+locale);
   const plus=page.locator('[data-plan="plus"]'),growth=page.locator('[data-plan="growth"]');
   assert.match(await plus.innerText(),/Everything in Starter, plus/);assert.match(await growth.innerText(),/Everything in Plus, plus/);
@@ -51,6 +52,6 @@ try{
  const home=await browser.newPage({viewport:{width:390,height:950},javaScriptEnabled:false});await home.goto("http://localhost:3126/",{waitUntil:"domcontentloaded"});
  assert.equal(await home.locator("#pricing [data-plan-included]").count(),3);assert.equal(await home.locator("#pricing button[data-buy-plan]:disabled").count(),3);assert.equal(await home.locator("#pricing a[data-try-plan]").count(),3);
  assert.equal(await home.locator('#pricing [data-plan-included="starter"] li').count(),5);assert.equal(await home.locator('#pricing [data-plan-included="plus"] li').count(),3);assert.equal(await home.locator('#pricing [data-plan-included="growth"] li').count(),2);
- await home.close();console.log("PASS inherited plan lists on homepage without JavaScript; Buy remains disabled");
+ assert.equal(await home.locator("#pricing [data-shared-plan-features] li").count(),6);await home.close();console.log("PASS inherited plan lists on homepage without JavaScript; Buy remains disabled");
  console.log("PASS raw HTML content is readable without JavaScript");
 }catch(error){console.error(log);throw error;}finally{await browser?.close();if(server?.pid)try{process.kill(-server.pid,"SIGTERM");}catch{}}
