@@ -449,6 +449,7 @@ export const tr: Messages = {
     cost: "Grup maliyeti",
     used: "Kullanılan krediler",
     returned: "İade edilen krediler",
+    freeRedo: "Ücretsiz yeniden yapım: Bu görselin kredileri önce bakiyenize eklendi, yani size hiçbir maliyeti olmadı.",
     noReceipt: "Bu grup için kredi makbuzu yok. İade tutarları gösterilmiyor.",
     retry: "Yeni grup oluştur",
     retryHint: "Yukarıdan ayarlarınızı seçin. Yeni grup kredi kullanır; kaydedilen reklamlar korunur.",

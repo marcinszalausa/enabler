@@ -449,6 +449,7 @@ export const de: Messages = {
     cost: "Kosten des Durchlaufs",
     used: "Verwendete Credits",
     returned: "Zurückgegebene Credits",
+    freeRedo: "Kostenlose Neuerstellung: Die Credits für dieses Bild wurden vorher deinem Guthaben gutgeschrieben, es hat dich also nichts gekostet.",
     noReceipt: "Für diesen Durchlauf liegt kein Credit-Beleg vor. Rückerstattungsbeträge werden nicht angezeigt.",
     retry: "Neuen Durchlauf erstellen",
     retryHint: "Wähle oben deine Einstellungen. Ein neuer Durchlauf kostet Credits; gespeicherte Anzeigen bleiben erhalten.",

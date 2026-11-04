@@ -450,6 +450,7 @@ export const sv: Messages = {
     cost: "Omgångens kostnad",
     used: "Använda krediter",
     returned: "Återbetalda krediter",
+    freeRedo: "Gratis omgörning: krediterna för bilden lades först till ditt saldo, så den kostade dig ingenting.",
     noReceipt: "Det finns inget kreditkvitto för den här omgången. Återbetalda belopp visas inte.",
     retry: "Skapa en ny omgång",
     retryHint: "Välj inställningar ovan. En ny omgång använder krediter; sparade annonser behålls.",

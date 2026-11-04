@@ -445,6 +445,7 @@ export const en = {
     cost: "Batch cost",
     used: "Credits used",
     returned: "Credits returned",
+    freeRedo: "Free redo: the credits for this image were added to your balance first, so it cost you nothing.",
     noReceipt: "No credit receipt is available for this batch. Refund amounts are not shown.",
     retry: "Create a new batch",
     retryHint: "Choose your settings above. A new batch uses credits; saved ads are kept.",

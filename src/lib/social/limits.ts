@@ -4,7 +4,8 @@
 export const ACCOUNT_LIMITS: Record<string, number> = {
   free: 1,
   starter: 3,
-  growth: 5,
+  plus: 5,
+  growth: 10,
 };
 
 export function accountLimit(plan: string | null | undefined) {

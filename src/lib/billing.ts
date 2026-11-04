@@ -1,30 +1,35 @@
 import "server-only";
-import { PACK_PRICES, PLAN_PRICES, type Interval } from "@/lib/pricing";
+import { PACK_PRICES, type Interval } from "@/lib/pricing";
+import { PAID_PLANS, type PaidPlanId } from "@/lib/paid-plans";
 
-// Paid plans. Prices live in Stripe (a monthly and a yearly USD price per
-// plan, their ids in env vars); credits are granted here: each month, with
-// unused plan credits carried over for one more month.
-export const PLANS = {
-  starter: {
-    name: "Starter",
-    usd: PLAN_PRICES.starter,
-    credits: 300,
-    priceEnv: {
-      month: "STRIPE_PRICE_STARTER",
-      year: "STRIPE_PRICE_STARTER_YEARLY",
+// Paid plans: Starter, Plus and Growth, with prices and monthly credits from
+// the public catalogue (src/lib/paid-plans.ts). Stripe holds a monthly and a
+// yearly USD price per plan, their ids in env vars; credits are granted here
+// each month, with unused plan credits carried over for one more month.
+const PLAN_DETAILS = Object.fromEntries(
+  PAID_PLANS.map((plan) => [
+    plan.id,
+    {
+      name: plan.name,
+      usd: plan.price,
+      credits: plan.credits,
+      priceEnv: {
+        month: `STRIPE_PRICE_${plan.id.toUpperCase()}`,
+        year: `STRIPE_PRICE_${plan.id.toUpperCase()}_YEARLY`,
+      },
     },
-  },
-  growth: {
-    name: "Growth",
-    usd: PLAN_PRICES.growth,
-    credits: 1000,
-    priceEnv: {
-      month: "STRIPE_PRICE_GROWTH",
-      year: "STRIPE_PRICE_GROWTH_YEARLY",
-    },
-  },
-} as const;
-export type PlanKey = keyof typeof PLANS;
+  ]),
+) as Record<
+  PaidPlanId,
+  {
+    name: string;
+    usd: number;
+    credits: number;
+    priceEnv: Record<Interval, string>;
+  }
+>;
+export const PLANS = PLAN_DETAILS;
+export type PlanKey = PaidPlanId;
 
 // One-time credit packs. Charged in USD with an inline price, so they need
 // no setup in Stripe. Unlike subscriptions abroad, one-time payments can use

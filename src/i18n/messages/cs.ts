@@ -452,6 +452,7 @@ export const cs: Messages = {
     cost: "Cena sady",
     used: "Použité kredity",
     returned: "Vrácené kredity",
+    freeRedo: "Oprava zdarma: kredity za tento obrázek byly nejprve připsány na váš zůstatek, takže vás nic nestál.",
     noReceipt: "Pro tuto sadu není k dispozici potvrzení o kreditech. Vrácené částky se nezobrazují.",
     retry: "Vytvořit novou sadu",
     retryHint: "Vyberte nastavení výše. Nová sada používá kredity; uložené reklamy zůstanou zachovány.",

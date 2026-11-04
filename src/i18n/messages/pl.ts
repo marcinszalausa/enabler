@@ -452,6 +452,7 @@ export const pl: Messages = {
     cost: "Koszt zestawu",
     used: "Wykorzystane kredyty",
     returned: "Zwrócone kredyty",
+    freeRedo: "Darmowa poprawka: kredyty za ten obraz zostały najpierw dodane do Twojego salda, więc nic Cię to nie kosztowało.",
     noReceipt: "Brak potwierdzenia rozliczenia kredytów dla tego zestawu. Kwoty zwrotu nie są wyświetlane.",
     retry: "Utwórz nowy zestaw",
     retryHint: "Wybierz ustawienia powyżej. Nowy zestaw zużywa kredyty; zapisane reklamy pozostają dostępne.",

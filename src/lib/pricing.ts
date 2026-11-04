@@ -1,9 +1,13 @@
 import type { Messages } from "@/i18n/messages";
+import { PAID_PLANS, type PaidPlanId } from "@/lib/paid-plans";
 
 // Prices in US dollars, shared by the pricing table and billing. Stripe's
 // Adaptive Pricing shows each buyer the amount in their own currency at
 // checkout, and payouts stay in dollars.
-export const PLAN_PRICES = { free: 0, starter: 39, growth: 99 } as const;
+export const PLAN_PRICES = {
+  free: 0,
+  ...Object.fromEntries(PAID_PLANS.map((plan) => [plan.id, plan.price])),
+} as Record<"free" | PaidPlanId, number>;
 // Paying for a year at once costs this much less than twelve months.
 export const YEARLY_DISCOUNT = 0.2;
 export const PACK_PRICES = { small: 35, large: 95 } as const;
@@ -28,11 +32,9 @@ export function usd(amount: number, locale = "en") {
   }).format(amount);
 }
 
-// Plans in pricing-table order: Free, Starter, Growth.
-export const PLAN_KEYS = Object.keys(PLAN_PRICES);
-
-// A plan's name as the pricing table shows it, in the page's language.
+// A plan's name: the free plan's as the pricing table shows it in the page's
+// language; paid plans keep their product names (Starter, Plus, Growth).
 export function planName(t: Messages, plan: string | null | undefined) {
-  const i = PLAN_KEYS.indexOf(plan ?? "free");
-  return t.home.plans[i]?.name ?? plan ?? "";
+  const paid = PAID_PLANS.find((p) => p.id === plan);
+  return paid ? paid.name : (t.home.plans[0]?.name ?? "Free");
 }

@@ -1,11 +1,11 @@
-// Sets up Stripe for Gooidy in one go: Starter and Growth with a monthly and
+// Sets up Stripe for Gooidy in one go: Starter, Plus and Growth with a monthly and
 // a yearly USD price each, the webhook endpoint and the customer portal. Safe
 // to run again; it reuses what is already there.
 //
 //   STRIPE_SECRET_KEY=sk_test_... node scripts/stripe-setup.mjs https://gooidy.com
 //
 // Prints the environment variables to add in Vercel. Prices must match
-// src/lib/pricing.ts (yearly = 12 months less 20%). Credit packs are charged
+// src/lib/paid-plans.ts (yearly = 12 months less 20%). Credit packs are charged
 // with inline prices, so they need nothing here.
 import Stripe from "stripe";
 
@@ -16,6 +16,12 @@ const PLANS = [
     name: "Gooidy Starter",
     usd: 39,
     description: "300 credits every month; unused credits carry over one month",
+  },
+  {
+    key: "plus",
+    name: "Gooidy Plus",
+    usd: 69,
+    description: "600 credits every month; unused credits carry over one month",
   },
   {
     key: "growth",

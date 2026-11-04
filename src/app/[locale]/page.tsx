@@ -20,7 +20,7 @@ import { Placements, type PlacementAd } from "@/app/_landing/placements";
 import { StickyCta } from "@/app/_landing/sticky-cta";
 import { Spotlight } from "@/app/_landing/spotlight";
 import { PublicPricing } from "@/app/_landing/public-pricing";
-import { PUBLIC_PLANS } from "@/lib/public-information";
+import { TRY_MODE } from "@/lib/paid-plans";
 import { CreditGuide } from "@/app/_landing/credit-guide";
 import { ASPECTS, ADS_PER_GENERATION, GENERATION_COST } from "@/lib/image-pricing";
 import { BeforeAfter } from "@/app/_landing/before-after";
@@ -40,7 +40,7 @@ export async function generateMetadata({
 
 // Prices stay in dollars in every language; the names and perks are in the
 // messages.
-const PRICES = PUBLIC_PLANS.map(plan => "$" + plan.price);
+
 
 // Placeholders shared by several strings.
 const COUNTS = { count: Object.keys(LANGUAGES).length, seconds: Number(DEFAULT_VIDEO_OPTIONS.length) };
@@ -82,10 +82,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
             homeJsonLd(
               locale,
               t.meta.description,
-              t.home.plans.slice(0,1).map((p, i) => ({
-                name: p.name,
-                price: Number(PRICES[i].slice(1)),
-              })),
+              [{name: TRY_MODE.name, price: TRY_MODE.price}],
             ),
           ).replace(/</g, "\\u003c"),
         }}

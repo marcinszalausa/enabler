@@ -149,7 +149,7 @@ async function Billing({
               {fmt(b.yearlySave, { percent: YEARLY_DISCOUNT * 100 })}
             </span>
           </div>
-          <div className="mt-5 grid gap-5 md:grid-cols-2">
+          <div className="mt-5 grid gap-5 md:grid-cols-3">
             {(Object.keys(PLANS) as PlanKey[]).map((key, i) => {
               const plan = PLANS[key];
               const name = planName(t, key);

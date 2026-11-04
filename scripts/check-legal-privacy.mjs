@@ -22,7 +22,7 @@ try{
    await page.locator("[data-policy-document]").waitFor();
    assert.equal(await page.locator("article").getAttribute("lang"),"en");
    assert.equal(await page.locator("[data-prelaunch-legal]").count(),0);
-   assert.ok((await page.locator("[data-policy-version]").innerText()).includes("2026-11-04-r2"));
+   assert.ok((await page.locator("[data-policy-version]").innerText()).includes("2026-11-04-r4"));
    assert.ok(!/pre[-\s]?launch|unspecified|pending entity formation|not (?:yet )?finalized|draft (?:terms|policies)/i.test(await page.locator("main").innerText()));
    const anchors=await page.locator('nav[aria-label="On this page"] a').evaluateAll(xs=>xs.map(x=>x.getAttribute("href")));
    for(const anchor of anchors)assert.equal(await page.locator(anchor).count(),1);
@@ -39,7 +39,7 @@ try{
   await page.goto("http://localhost:3115"+prefix+"/");
   await page.locator("#pricing").waitFor();
   assert.equal(await page.locator("[data-checkout-unavailable]").count(),0);
-  const paid=page.locator('#pricing a[href$="/pricing#compare-plan-features"]');assert.equal(await paid.count(),2);for(const link of await paid.all())assert.match(await link.innerText(),/^Explore /);
+  const paid=page.locator('#pricing a[data-try-plan]');assert.equal(await paid.count(),3);for(const link of await paid.all()){assert.equal(await link.innerText(),"Try mode");const target=new URL(await link.getAttribute("href"),"https://gooidy.com");assert.ok(target.pathname.endsWith("/start"));assert.ok(["starter","plus","growth"].includes(target.searchParams.get("plan")));}
   const offers=await page.locator('script[type="application/ld+json"]').evaluateAll(xs=>xs.map(x=>JSON.parse(x.textContent)));
   assert.ok(!JSON.stringify(offers).includes('"price":29'));assert.ok(!JSON.stringify(offers).includes('"price":79'));
   await page.goto("http://localhost:3115"+prefix+"/pricing");assert.ok(await page.locator('main a[href$="/policies/billing"]').count()>0,"Billing terms remain accessible from plan details");

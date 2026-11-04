@@ -457,6 +457,7 @@ export const it: Messages = {
     cost: "Costo del gruppo",
     used: "Crediti usati",
     returned: "Crediti restituiti",
+    freeRedo: "Rifacimento gratuito: i crediti di questa immagine sono stati prima aggiunti al tuo saldo, quindi non ti è costato nulla.",
     noReceipt: "Non è disponibile una ricevuta crediti per questo gruppo. Gli importi restituiti non vengono mostrati.",
     retry: "Crea un nuovo gruppo",
     retryHint: "Scegli le impostazioni sopra. Un nuovo gruppo usa crediti; gli annunci salvati vengono conservati.",
