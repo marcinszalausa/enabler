@@ -193,7 +193,7 @@ export const en = {
       },
       {
         q: "What is a credit?",
-        a: "One credit makes one ad image. Each run makes five ads in two sizes, so it uses 10 credits.",
+        a: "Each ad image uses 2 credits. Each run makes five ads in two sizes, so it uses 20 credits.",
       },
       {
         q: "Do I need design experience?",

@@ -196,7 +196,7 @@ export const sv: Messages = {
       },
       {
         q: "Vad är en kredit?",
-        a: "En kredit skapar en annonsbild. Varje körning skapar fem annonser i två storlekar och använder alltså 10 krediter.",
+        a: "Varje annonsbild kostar 2 krediter. Varje körning skapar fem annonser i två storlekar och använder alltså 20 krediter.",
       },
       {
         q: "Behöver jag kunna design?",

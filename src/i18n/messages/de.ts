@@ -196,7 +196,7 @@ export const de: Messages = {
       },
       {
         q: "Was ist ein Credit?",
-        a: "Ein Credit erstellt ein Anzeigenbild. Jeder Durchlauf erstellt fünf Anzeigen in zwei Formaten und verbraucht daher 10 Credits.",
+        a: "Jedes Anzeigenbild kostet 2 Credits. Jeder Durchlauf erstellt fünf Anzeigen in zwei Formaten und verbraucht daher 20 Credits.",
       },
       {
         q: "Brauche ich Design-Erfahrung?",

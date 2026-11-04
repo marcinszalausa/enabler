@@ -200,7 +200,7 @@ export const nl: Messages = {
       },
       {
         q: "Wat is een credit?",
-        a: "Eén credit maakt één advertentiebeeld. Elke ronde maakt vijf advertenties in twee formaten en gebruikt dus 10 credits.",
+        a: "Elk advertentiebeeld kost 2 credits. Elke ronde maakt vijf advertenties in twee formaten en gebruikt dus 20 credits.",
       },
       {
         q: "Heb ik ontwerpervaring nodig?",
