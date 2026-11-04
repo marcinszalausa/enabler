@@ -193,7 +193,7 @@ export const de: Messages = {
       },
       {
         q: "Was ist ein Credit?",
-        a: "Jedes Anzeigenbild kostet je nach gewählter Qualität 2 bis 5 Credits. Jeder Durchlauf erstellt fünf Anzeigen in zwei Formaten und verbraucht daher 20 bis 50 Credits.",
+        a: "Jedes Anzeigenbild kostet je nach gewählter Qualität 2 bis 5 Credits. Jeder Durchlauf erstellt 1, 3 oder 5 Anzeigen (Ihre Wahl) in je zwei Formaten; fünf Anzeigen verbrauchen also 20 bis 50 Credits.",
       },
       {
         q: "Brauche ich Design-Erfahrung?",
@@ -507,6 +507,12 @@ export const de: Messages = {
     quality: "Qualität",
     qualities: { good: "Gut", better: "Besser", best: "Beste" },
     qualityExample: "Beispiel in dieser Qualität",
+    kind: "Anzeigentyp",
+    kindImages: "Bilder",
+    kindVideos: "Videos",
+    howMany: "Wie viele Bilder",
+    createImages: "{count} Bilder erstellen",
+    ideasHelp: "Jede Idee ist ein anderer Ansatz, als Feed-Post und als Story.",
     qualityHelp: "Höhere Qualität nutzt neuere KI-Modelle und mehr Credits. Beste nutzt die bestbewerteten Modelle für die schärfsten, realistischsten Anzeigen.",
     genders: { female: "Weiblich", male: "Männlich" },
     energies: { calm: "Ruhig", upbeat: "Fröhlich", high: "Energiegeladen" },

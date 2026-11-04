@@ -84,6 +84,21 @@ begin
  if private.recover_stale_generations() <> 1 then raise exception 'Full delivery not settled'; end if;
  if (select amount from private.generation_credit_ledger where generation_id=g and kind='refund') <> 0 then raise exception 'Delivered run refunded'; end if;
 
+ -- A one-idea run makes 2 images: both saved means no refund, one saved half.
+ g := public.reserve_generation(ws,gen_random_uuid(),p,'image_ads','test',10,'{"ideas":1}');
+ update public.generations set status='running' where id=g;
+ insert into public.creatives(workspace_id,generation_id,kind,aspect,storage_path)
+ select ws,g,'image','1:1','one-idea-'||g||'-'||i from generate_series(1,2) i;
+ update public.generations set started_at=now()-interval '16 minutes' where id=g;
+ if private.recover_stale_generations() <> 1 then raise exception 'One-idea run not settled'; end if;
+ if (select amount from private.generation_credit_ledger where generation_id=g and kind='refund') <> 0 then raise exception 'One-idea delivered run refunded'; end if;
+ g := public.reserve_generation(ws,gen_random_uuid(),p,'image_ads','test',18,'{"ideas":3}');
+ update public.generations set status='running' where id=g;
+ insert into public.creatives(workspace_id,generation_id,kind,aspect,storage_path) values(ws,g,'image','1:1','three-idea-'||g);
+ update public.generations set started_at=now()-interval '16 minutes' where id=g;
+ if private.recover_stale_generations() <> 1 then raise exception 'Three-idea run not settled'; end if;
+ if (select amount from private.generation_credit_ledger where generation_id=g and kind='refund') <> 15 then raise exception 'Three-idea refund wrong'; end if;
+
  -- Legacy workers have no started_at. Old reservations are the fallback.
  g := public.reserve_generation(ws,gen_random_uuid(),p,'image_ads','test',10,'{}');
  update public.generations set status='running' where id=g;

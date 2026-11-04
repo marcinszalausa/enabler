@@ -192,7 +192,7 @@ export const tr: Messages = {
       },
       {
         q: "Kredi nedir?",
-        a: "Her reklam görseli seçtiğiniz kaliteye göre 2 ile 5 kredi kullanır. Her çalıştırma iki boyutta beş reklam oluşturur, yani 20 ile 50 kredi kullanır.",
+        a: "Her reklam görseli seçtiğiniz kaliteye göre 2 ile 5 kredi kullanır. Her çalıştırma seçiminize göre 1, 3 veya 5 reklamı iki boyutta oluşturur; beş reklam 20 ile 50 kredi kullanır.",
       },
       {
         q: "Tasarım deneyimi gerekir mi?",
@@ -507,6 +507,12 @@ export const tr: Messages = {
     quality: "Kalite",
     qualities: { good: "İyi", better: "Daha iyi", best: "En iyi" },
     qualityExample: "Bu kalitede örnek",
+    kind: "Reklam türü",
+    kindImages: "Görseller",
+    kindVideos: "Videolar",
+    howMany: "Kaç görsel",
+    createImages: "{count} görsel oluştur",
+    ideasHelp: "Her fikir farklı bir açı; akış gönderisi ve hikâye olarak hazırlanır.",
     qualityHelp: "Daha yüksek kalite daha yeni yapay zekâ modelleri ve daha fazla kredi kullanır. En iyi, en net ve en gerçekçi reklamlar için en üst sıradaki modelleri kullanır.",
     genders: { female: "Kadın", male: "Erkek" },
     energies: { calm: "Sakin", upbeat: "Neşeli", high: "Yüksek enerji" },

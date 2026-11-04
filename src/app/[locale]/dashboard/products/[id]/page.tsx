@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ProductJourney } from "../../product-journey";
 import { parseCampaign } from "@/lib/customer-workflow";
 import { CampaignBundle } from "../../campaigns/campaign-bundle";
@@ -215,7 +216,7 @@ async function Product({
           </p>
         </div>
       </header>
-      {campaign ? <CampaignBundle campaign={campaign} copy={campaignRuns.flatMap(g=>g.creatives)}/> : <a href="/dashboard/campaigns" className="mt-5 inline-flex min-h-11 items-center text-sm font-medium text-accent">Plan a coordinated campaign →</a>}
+      {campaign ? <CampaignBundle campaign={campaign} copy={campaignRuns.flatMap(g=>g.creatives)}/> : <Link href="/dashboard/campaigns" className="mt-5 inline-flex min-h-11 items-center text-sm font-medium text-accent">Plan a coordinated campaign →</Link>}
 
       <ProductJourney t={t} needsPreferences={needsPreferences} hasAds={(generations??[]).some(g=>g.creatives.length>0)} running={running.length>0} posted={Object.values(publishing?.posts??{}).some(post=>post.status==="published"||post.status==="scheduled"||post.status==="publishing")} canEdit={canEdit}/>
 

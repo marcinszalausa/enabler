@@ -14,7 +14,7 @@ import { autopilotRun } from "@/lib/social/publish";
 import type { LanguageKey } from "@/lib/languages";
 import type { Quality } from "@/lib/quality";
 
-import { ASPECTS, ADS_PER_GENERATION, GENERATION_COST } from "@/lib/image-pricing";
+import { ASPECTS, ADS_PER_GENERATION, GENERATION_COST, type IdeaCount } from "@/lib/image-pricing";
 export { ASPECTS, ADS_PER_GENERATION, CREDITS_PER_IMAGE, GENERATION_COST } from "@/lib/image-pricing";
 
 // fal limits how many requests an account may run at once; stay under it.
@@ -27,6 +27,8 @@ type Job = {
   productId: string;
   language: LanguageKey;
   quality: Quality;
+  // Ad ideas to write; each is made in every size.
+  ideas?: IdeaCount;
   creativePreferences?: CreativePreferences | null;
 };
 
@@ -38,8 +40,10 @@ export async function runGeneration({
   productId,
   language,
   quality,
+  ideas = ADS_PER_GENERATION,
   creativePreferences,
 }: Job) {
+  const expected = ideas * ASPECTS.length;
   const db = createAdminClient();
   if (!(await claimGeneration(db, generationId))) return;
   let delivered = 0;
@@ -59,7 +63,7 @@ export async function runGeneration({
     if (direction.brand_memory?.tone) brief.tone = direction.brand_memory.tone;
     if (!brief.creative_preferences && direction.brand_memory?.audience) brief.audience = direction.brand_memory.audience;
     const referenceImageUrl = (product.image_urls as string[])[0] ?? null;
-    const angles = await writeAdAngles(brief, ADS_PER_GENERATION, language);
+    const angles = await writeAdAngles(brief, ideas, language);
 
     const tasks = angles.flatMap((ad, i) =>
       ASPECTS.map((aspect) => async () => {
@@ -117,7 +121,7 @@ export async function runGeneration({
     }
 
     delivered = creatives.length;
-    const failed = ADS_PER_GENERATION * ASPECTS.length - delivered;
+    const failed = expected - delivered;
     prompt = angles.map((a) => a.image_prompt).join("\n");
     failure = failed > 0 ? failureNote(results, failed) : null;
   } catch (err) {
@@ -132,13 +136,13 @@ export async function runGeneration({
     .eq("generation_id", generationId).eq("workspace_id", workspaceId).eq("kind", "image");
   if (countError || count === null) throw countError ?? new Error("Missing output count.");
   delivered = count;
-  if (delivered === ADS_PER_GENERATION * ASPECTS.length) failure = null;
+  if (delivered === expected) failure = null;
 
   // Refund at the price the run was charged, even if prices changed since.
   const { data: charged } = await db.from("generations")
     .select("cost_credits").eq("id", generationId).single();
   const cost = (charged?.cost_credits as number | undefined) ?? GENERATION_COST;
-  const perImage = cost / (ADS_PER_GENERATION * ASPECTS.length);
+  const perImage = cost / expected;
 
   // Keep settlement outside the generation catch. A lost RPC response must not
   // turn a successful partial delivery into a second, full refund.
@@ -205,4 +209,5 @@ export async function settleWithLimit<T>(
   );
   return results;
 }
+
 

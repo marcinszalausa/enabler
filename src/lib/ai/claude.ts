@@ -186,7 +186,7 @@ export async function writeAdAngles(
         {
           role: "user",
           content: [
-            `Write ${count} ads, one per angle (pain, benefit, social_proof, offer, curiosity), for this brand brief:\n\n${JSON.stringify(brief, null, 2)}`,
+            `Write ${count} ${count === 1 ? "ad" : "ads"}, ${count >= 5 ? "one per angle (pain, benefit, social_proof, offer, curiosity)" : "each on a different angle, choosing the strongest for this product from pain, benefit, social_proof, offer and curiosity"}, for this brand brief:\n\n${JSON.stringify(brief, null, 2)}`,
             creativeDirection(brief.creative_preferences),
             workflowDirection(brief.brand_memory, brief.campaign),
             language !== "english" &&
@@ -391,4 +391,5 @@ export async function reviewAdVideo(opts:{
  if(!response.parsed_output)throw new Error("Video review returned no verdict.");
  return response.parsed_output;
 }
+
 

@@ -180,7 +180,7 @@ export const zh: Messages = {
       },
       {
         q: "什么是积分？",
-        a: "每张广告图片根据所选质量使用 2 到 5 个积分。每次生成会做出 5 条广告、每条 2 种尺寸，所以使用 20 到 50 个积分。",
+        a: "每张广告图片根据所选质量使用 2 到 5 个积分。每次生成可选 1、3 或 5 条广告，每条 2 种尺寸，所以 5 条广告使用 20 到 50 个积分。",
       },
       {
         q: "需要设计经验吗？",
@@ -488,6 +488,12 @@ export const zh: Messages = {
     quality: "质量",
     qualities: { good: "标准", better: "优质", best: "最佳" },
     qualityExample: "此质量的示例",
+    kind: "广告类型",
+    kindImages: "图片",
+    kindVideos: "视频",
+    howMany: "图片数量",
+    createImages: "生成 {count} 张图片",
+    ideasHelp: "每个创意角度不同，同时生成信息流帖子和快拍两种尺寸。",
     qualityHelp: "质量越高，使用的 AI 模型越新，消耗的积分也越多。最佳质量使用排名最高的模型，生成最清晰、最逼真的广告。",
     genders: { female: "女声", male: "男声" },
     energies: { calm: "平静", upbeat: "轻快", high: "活力满满" },

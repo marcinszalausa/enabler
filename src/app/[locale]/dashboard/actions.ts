@@ -9,7 +9,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { scrapePage } from "@/lib/scrape";
 import { extractBrandBrief } from "@/lib/ai/claude";
 import { runGeneration } from "@/lib/pipeline";
-import { imageRunCost } from "@/lib/image-pricing";
+import { imageRunCost, parseIdeas } from "@/lib/image-pricing";
 import { DEFAULT_IMAGE_QUALITY, parseQuality } from "@/lib/quality";
 import { runVideoGeneration } from "@/lib/video";
 import { parseVideoOptions, videoRunCost } from "@/lib/video-options";
@@ -87,7 +87,8 @@ export async function startGeneration(
   const video = formData.get("kind") === "video";
   const options = video ? parseVideoOptions(formData) : null;
   const quality = options?.quality ?? parseQuality(formData.get("quality"), DEFAULT_IMAGE_QUALITY);
-  const cost = options ? videoRunCost(options.length, quality) : imageRunCost(quality);
+  const ideas = parseIdeas(formData.get("ideas"));
+  const cost = options ? videoRunCost(options.length, quality) : imageRunCost(quality, ideas);
   const requested = formData.get("language");
   const language =
     options?.language ??
@@ -138,7 +139,7 @@ export async function startGeneration(
     generation_type: video ? "video_ads" : "image_ads",
     generation_model: `claude + fal ${video ? "video" : "image"} ${quality}`,
     amount: cost,
-    options: { ...(options ?? { language, quality }), ...(creativePreferences ? { creative_preferences: creativePreferences } : {}), brand_memory: brandMemory, ...(campaign ? { campaign } : {}) },
+    options: { ...(options ?? { language, quality, ideas }), ...(creativePreferences ? { creative_preferences: creativePreferences } : {}), brand_memory: brandMemory, ...(campaign ? { campaign } : {}) },
   });
   if (error) {
     if(error.code==="P0001"&&error.message==="TRIAL_BATCH_ACTIVE")return {error:(await requestMessages()).trial.busy};
@@ -154,7 +155,7 @@ export async function startGeneration(
   after(() =>
     options
       ? runVideoGeneration({ ...job, options })
-      : runGeneration({ ...job, language, quality }),
+      : runGeneration({ ...job, language, quality, ideas }),
   );
 
   revalidatePath(`/dashboard/products/${productId}`);
@@ -180,4 +181,5 @@ export async function saveCreativePreferences(_prev: PreferenceState, form: Form
   revalidatePath("/dashboard/products/"+productId);
   return {error:null,saved:true};
 }
+
 

@@ -13,6 +13,7 @@ export function GenerateButton({
   language,
   quality,
   credits,
+  ideas,
 }: {
   productId: string;
   campaignId?: string;
@@ -21,6 +22,7 @@ export function GenerateButton({
   language: string;
   quality: Quality;
   credits?: number;
+  ideas?: number;
 }) {
   const { state, action, pending, requestId } = useGenerationAction(initialRequestId);
   const { t } = useI18n();
@@ -32,12 +34,13 @@ export function GenerateButton({
       {campaignId && <input type="hidden" name="campaignId" value={campaignId}/>}
       <input type="hidden" name="language" value={language} />
       <input type="hidden" name="quality" value={quality} />
+      {ideas !== undefined && <input type="hidden" name="ideas" value={ideas} />}
       <button
         type="submit"
         disabled={pending || (credits!==undefined&&credits<cost)}
         className="btn-primary min-h-11 rounded-xl px-4 py-2.5 font-medium"
       >
-        {pending ? t.app.starting : fmt(t.app.withCost, { label:t.trial.create, cost })}
+        {pending ? t.app.starting : fmt(t.app.withCost, { label: ideas === undefined ? t.trial.create : fmt(t.app.createImages, { count: ideas * 2 }), cost })}
       </button>
       {credits!==undefined&&credits<cost&&<p className="text-sm text-muted">{fmt(t.app.errors.noCredits,{cost})}</p>}
       {state.error && (
@@ -48,4 +51,5 @@ export function GenerateButton({
     </form>
   );
 }
+
 
