@@ -156,7 +156,7 @@ export const en = {
     boost: {
       name: "Boost",
       period: " / year",
-      credits: "300 extra credits every month",
+      credits: "300 extra credits every year",
       perks: [
         "Adds to your Pro plan",
         "Billed once a year",
@@ -602,7 +602,7 @@ export const en = {
     footnote:
       "One credit makes one ad image. Payments are handled securely by Stripe.",
     boostBody:
-      "{count} extra credits every month on top of your plan, for {price} a year. One-tap ad promotion comes to Boost when publishing launches.",
+      "{count} extra credits every year on top of your plan, for {price} a year. One-tap ad promotion comes to Boost when publishing launches.",
     addBoost: "Add Boost",
     boostOn: "Boost is on until {date}.",
     boostPaid:

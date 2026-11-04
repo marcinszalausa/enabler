@@ -73,9 +73,9 @@ async function syncBoost(
   if (error) throw error;
 }
 
-// A paid subscription invoice (the intro payment, a renewal, or Boost):
-// refresh the plan and top credits up to the monthly allowance, which is the
-// plan's credits plus Boost's while it is on.
+// A paid subscription invoice (the intro payment, a renewal, or Boost).
+// Plan invoices top credits up to the plan's allowance; a Boost invoice adds
+// Boost's credits once per yearly payment.
 export async function handleInvoicePaid(invoice: Stripe.Invoice) {
   const ref = invoice.parent?.subscription_details?.subscription;
   if (!ref || !invoice.customer) return;
@@ -88,11 +88,23 @@ export async function handleInvoicePaid(invoice: Stripe.Invoice) {
   const admin = createAdminClient();
   const { data: ws, error } = await admin
     .from("workspaces")
-    .select("id, plan, subscription_status, boost_subscription_id")
+    .select("id, plan, subscription_status")
     .eq("stripe_customer_id", customerId(invoice.customer))
     .maybeSingle();
   if (error) throw error;
   if (!ws) return;
+
+  if (sub.items.data[0]?.price.id === boostPriceId()) {
+    if (invoice.amount_paid <= 0) return;
+    // Keyed by invoice, so a repeated webhook can't add the credits twice.
+    const { error: boostError } = await admin.rpc("grant_pack_credits", {
+      ws: ws.id,
+      session_id: invoice.id,
+      amount: BOOST.credits,
+    });
+    if (boostError) throw boostError;
+    return;
+  }
 
   // The intro period (a trial in Stripe) gets a smaller allowance; the full
   // monthly credits arrive with the first full-price invoice.
@@ -101,8 +113,7 @@ export async function handleInvoicePaid(invoice: Stripe.Invoice) {
       ? PLANS[ws.plan].intro.credits
       : PLANS[ws.plan].credits
     : 0;
-  const allowance =
-    planCredits + (ws.boost_subscription_id ? BOOST.monthlyCredits : 0);
+  const allowance = planCredits;
   if (!allowance) return;
 
   const { error: grantError } = await admin.rpc("grant_plan_credits", {

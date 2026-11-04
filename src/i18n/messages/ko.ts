@@ -156,7 +156,7 @@ export const ko: Messages = {
     boost: {
       name: "Boost",
       period: " / 년",
-      credits: "매달 300크레딧 추가",
+      credits: "매년 300크레딧 추가",
       perks: [
         "Pro 요금제에 추가",
         "1년에 한 번 결제",
@@ -603,7 +603,7 @@ export const ko: Messages = {
     footnote:
       "1크레딧으로 광고 이미지 1개를 만듭니다. 결제는 Stripe가 안전하게 처리합니다.",
     boostBody:
-      "요금제에 더해 매달 {count}크레딧 추가, 연 {price}. 게시 기능이 출시되면 원탭 광고 홍보도 Boost에 포함됩니다.",
+      "요금제에 더해 매년 {count}크레딧 추가, 연 {price}. 게시 기능이 출시되면 원탭 광고 홍보도 Boost에 포함됩니다.",
     addBoost: "Boost 추가",
     boostOn: "Boost는 {date}까지 켜져 있습니다.",
     boostPaid:

@@ -158,7 +158,7 @@ export const pl: Messages = {
     boost: {
       name: "Boost",
       period: " / rok",
-      credits: "300 dodatkowych kredytów co miesiąc",
+      credits: "300 dodatkowych kredytów co rok",
       perks: [
         "Dodatek do planu Pro",
         "Płatność raz w roku",
@@ -611,7 +611,7 @@ export const pl: Messages = {
     footnote:
       "Jeden kredyt to jedna grafika reklamowa. Płatności bezpiecznie obsługuje Stripe.",
     boostBody:
-      "{count} dodatkowych kredytów co miesiąc ponad Twój plan, za {price} rocznie. Promowanie reklam jednym kliknięciem trafi do Boost, gdy wystartuje publikowanie.",
+      "{count} dodatkowych kredytów co rok ponad Twój plan, za {price} rocznie. Promowanie reklam jednym kliknięciem trafi do Boost, gdy wystartuje publikowanie.",
     addBoost: "Dodaj Boost",
     boostOn: "Boost jest aktywny do {date}.",
     boostPaid:

@@ -20,12 +20,12 @@ export const PLANS = {
 } as const;
 export type PlanKey = keyof typeof PLANS;
 
-// A yearly add-on to a paid plan: extra credits every month on top of the
-// plan's. Its own subscription, since Stripe can't mix yearly and monthly
-// prices in one.
+// A yearly add-on to a paid plan: extra credits once a year, with each
+// yearly payment. Its own subscription, since Stripe can't mix yearly and
+// monthly prices in one.
 export const BOOST = {
   usd: BOOST_PRICE,
-  monthlyCredits: 300,
+  credits: 300,
   priceEnv: "STRIPE_PRICE_BOOST",
 } as const;
 

@@ -158,7 +158,7 @@ export const sv: Messages = {
     boost: {
       name: "Boost",
       period: " / år",
-      credits: "300 extra krediter varje månad",
+      credits: "300 extra krediter varje år",
       perks: [
         "Läggs till din Pro-plan",
         "Faktureras en gång om året",
@@ -609,7 +609,7 @@ export const sv: Messages = {
     footnote:
       "En kredit skapar en annonsbild. Betalningar hanteras säkert av Stripe.",
     boostBody:
-      "{count} extra krediter varje månad utöver din plan, för {price} om året. Marknadsföring med ett tryck kommer till Boost när publicering lanseras.",
+      "{count} extra krediter varje år utöver din plan, för {price} om året. Marknadsföring med ett tryck kommer till Boost när publicering lanseras.",
     addBoost: "Lägg till Boost",
     boostOn: "Boost är på till {date}.",
     boostPaid:

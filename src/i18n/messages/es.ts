@@ -158,7 +158,7 @@ export const es: Messages = {
     boost: {
       name: "Boost",
       period: " / año",
-      credits: "300 créditos extra cada mes",
+      credits: "300 créditos extra cada año",
       perks: [
         "Se suma a tu plan Pro",
         "Se cobra una vez al año",
@@ -613,7 +613,7 @@ export const es: Messages = {
     footnote:
       "Un crédito crea una imagen de anuncio. Stripe procesa los pagos de forma segura.",
     boostBody:
-      "{count} créditos extra cada mes además de tu plan, por {price} al año. La promoción de anuncios con un toque llegará a Boost cuando se lance la publicación.",
+      "{count} créditos extra cada año además de tu plan, por {price} al año. La promoción de anuncios con un toque llegará a Boost cuando se lance la publicación.",
     addBoost: "Añadir Boost",
     boostOn: "Boost está activo hasta el {date}.",
     boostPaid:

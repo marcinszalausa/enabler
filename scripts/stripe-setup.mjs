@@ -24,7 +24,7 @@ const PRICES = [
     name: "Gooidy Boost",
     usd: 39,
     interval: "year",
-    description: "300 extra credits every month on top of Pro",
+    description: "300 extra credits a year on top of Pro",
   },
 ];
 

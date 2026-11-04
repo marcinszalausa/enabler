@@ -159,7 +159,7 @@ export const fr: Messages = {
     boost: {
       name: "Boost",
       period: " / an",
-      credits: "300 crédits en plus chaque mois",
+      credits: "300 crédits en plus chaque année",
       perks: [
         "S'ajoute à votre offre Pro",
         "Facturé une fois par an",
@@ -617,7 +617,7 @@ export const fr: Messages = {
     footnote:
       "Un crédit crée une image publicitaire. Les paiements sont traités en toute sécurité par Stripe.",
     boostBody:
-      "{count} crédits en plus chaque mois en plus de votre offre, pour {price} par an. La promotion des publicités en un geste arrivera dans Boost avec la publication.",
+      "{count} crédits supplémentaires chaque année en plus de votre offre, pour {price} par an. La promotion des publicités en un geste arrivera dans Boost avec la publication.",
     addBoost: "Ajouter Boost",
     boostOn: "Boost est actif jusqu'au {date}.",
     boostPaid:

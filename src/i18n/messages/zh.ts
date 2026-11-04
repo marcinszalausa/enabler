@@ -153,7 +153,7 @@ export const zh: Messages = {
     boost: {
       name: "Boost",
       period: " / 年",
-      credits: "每月额外 300 积分",
+      credits: "每年额外 300 积分",
       perks: ["叠加在 Pro 套餐上", "每年付款一次", "上线后一键推广广告"],
     },
     payNote: "价格以美元计。结账时可用你所在国家的货币付款。",
@@ -583,7 +583,7 @@ export const zh: Messages = {
       "谢谢！付款确认后积分会立即到账。大多数付款即时完成；银行扣款可能需要几天。",
     footnote: "1 积分生成 1 张广告图片。付款由 Stripe 安全处理。",
     boostBody:
-      "在套餐之外每月额外 {count} 积分，每年 {price}。发布功能上线后，Boost 还会加入一键推广广告。",
+      "在套餐之外每年额外 {count} 积分，每年 {price}。发布功能上线后，Boost 还会加入一键推广广告。",
     addBoost: "添加 Boost",
     boostOn: "Boost 有效期至 {date}。",
     boostPaid: "Boost 已开启，谢谢。额外积分会在几秒内到账。",

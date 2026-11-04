@@ -193,7 +193,7 @@ async function Billing({
           />
           <p className="mt-2 flex-1 text-sm text-muted">
             {fmt(b.boostBody, {
-              count: n(BOOST.monthlyCredits),
+              count: n(BOOST.credits),
               price: usd(BOOST.usd, locale),
             })}
           </p>

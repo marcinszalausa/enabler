@@ -158,7 +158,7 @@ export const nl: Messages = {
     boost: {
       name: "Boost",
       period: " / jaar",
-      credits: "300 extra credits per maand",
+      credits: "300 extra credits per jaar",
       perks: [
         "Bovenop je Pro-abonnement",
         "Eén keer per jaar gefactureerd",
@@ -611,7 +611,7 @@ export const nl: Messages = {
     footnote:
       "Eén credit maakt één advertentieafbeelding. Betalingen worden veilig verwerkt door Stripe.",
     boostBody:
-      "{count} extra credits per maand bovenop je abonnement, voor {price} per jaar. Advertenties met één tik promoten komt naar Boost zodra publiceren live is.",
+      "{count} extra credits per jaar bovenop je abonnement, voor {price} per jaar. Advertenties met één tik promoten komt naar Boost zodra publiceren live is.",
     addBoost: "Boost toevoegen",
     boostOn: "Boost staat aan tot {date}.",
     boostPaid:

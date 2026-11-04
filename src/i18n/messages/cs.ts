@@ -159,7 +159,7 @@ export const cs: Messages = {
     boost: {
       name: "Boost",
       period: " / rok",
-      credits: "300 kreditů navíc každý měsíc",
+      credits: "300 kreditů navíc každý rok",
       perks: [
         "Doplněk k tarifu Pro",
         "Účtuje se jednou ročně",
@@ -609,7 +609,7 @@ export const cs: Messages = {
     footnote:
       "Jeden kredit vytvoří jeden reklamní obrázek. Platby bezpečně zpracovává Stripe.",
     boostBody:
-      "{count} kreditů navíc každý měsíc k vašemu tarifu, za {price} ročně. Propagace reklam jedním klepnutím přibude do Boost se spuštěním publikování.",
+      "{count} kreditů navíc každý rok k vašemu tarifu, za {price} ročně. Propagace reklam jedním klepnutím přibude do Boost se spuštěním publikování.",
     addBoost: "Přidat Boost",
     boostOn: "Boost je aktivní do {date}.",
     boostPaid:

@@ -156,7 +156,7 @@ export const ja: Messages = {
     boost: {
       name: "Boost",
       period: " / 年",
-      credits: "毎月300クレジットを追加",
+      credits: "毎年300クレジットを追加",
       perks: [
         "Pro プランに追加",
         "年に1回のお支払い",
@@ -600,7 +600,7 @@ export const ja: Messages = {
     footnote:
       "1クレジットで広告画像を1枚作成します。お支払いは Stripe が安全に処理します。",
     boostBody:
-      "プランに加えて毎月{count}クレジットを追加、年額{price}。広告の公開機能が始まると、ワンタップの広告宣伝も Boost に加わります。",
+      "プランに加えて毎年{count}クレジットを追加、年額{price}。広告の公開機能が始まると、ワンタップの広告宣伝も Boost に加わります。",
     addBoost: "Boost を追加",
     boostOn: "Boost は{date}まで有効です。",
     boostPaid: "Boost が有効になりました。追加クレジットは数秒で反映されます。",

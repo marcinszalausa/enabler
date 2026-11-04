@@ -157,7 +157,7 @@ export const tr: Messages = {
     boost: {
       name: "Boost",
       period: " / yıl",
-      credits: "Her ay 300 ek kredi",
+      credits: "Her yıl 300 ek kredi",
       perks: [
         "Pro planınıza eklenir",
         "Yılda bir kez faturalandırılır",
@@ -608,7 +608,7 @@ export const tr: Messages = {
     footnote:
       "Bir kredi bir reklam görseli oluşturur. Ödemeler Stripe tarafından güvenle işlenir.",
     boostBody:
-      "Planınıza ek olarak her ay {count} ek kredi, yıllık {price}. Tek dokunuşla reklam tanıtımı, yayınlama başladığında Boost'a gelecek.",
+      "Planınıza ek olarak her yıl {count} ek kredi, yıllık {price}. Tek dokunuşla reklam tanıtımı, yayınlama başladığında Boost'a gelecek.",
     addBoost: "Boost ekle",
     boostOn: "Boost {date} tarihine kadar açık.",
     boostPaid:
