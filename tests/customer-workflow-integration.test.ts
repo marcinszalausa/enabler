@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {readFile} from "node:fs/promises";
 import ts from "typescript";
+import {createHash} from "node:crypto";
 import {copyEdits,parseMetrics} from "../src/lib/customer-workflow.ts";
 function compile(source:string,dependencies:Record<string,unknown>,result:string){
  const clean=source.replace(/^import[\s\S]*?;\r?$/gm,"").replace(/\bexport /g,"");
@@ -39,4 +40,16 @@ test("actual analytics client handles pending, denied and mismatched results wit
  body.syncStatus="partial";assert.equal((await getPostAnalytics("owned-post")).metrics,null);
  assert.equal(calls,5);
  }finally{if(previous===undefined)delete process.env.ZERNIO_API_KEY;else process.env.ZERNIO_API_KEY=previous;}
+});
+test("private image revalidation skips rendering unchanged ads and never bypasses ownership",async()=>{
+ let visible=true,renders=0;
+ let creative:any={workspace_id:"workspace",storage_path:"workspace/photo.jpg",aspect:"1:1",headline:"Original headline",cta:"Shop now"};
+ const db={from:()=>{const q:any={select:()=>q,eq:()=>q,not:()=>q,maybeSingle:async()=>({data:visible?creative:null})};return q;}};
+ const {GET}=compile(await readFile("src/app/api/creatives/[id]/image/route.ts","utf8"),{createHash,createClient:async()=>db,createAdminClient:()=>db,getBrandKit:async()=>({accent_color:"#ffffff",font:"inter",logo_path:null}),FACE_SAFE_LAYOUT_VERSION:"fixture",renderAdImage:async()=>{renders++;return new Response("image",{headers:{"content-type":"image/png"}});},wantsImagePreview:()=>true,makeImagePreview:async(image:Response)=>image},"{GET}");
+ const request=(etag?:string)=>({headers:new Headers(etag?{"if-none-match":etag}:{}),nextUrl:new URL("https://example.invalid/api/creatives/ad/image?preview=1")});
+ const context={params:Promise.resolve({id:"ad"})};
+ const first=await GET(request(),context);assert.equal(first.status,200);const tag=first.headers.get("etag");assert.ok(tag);assert.equal(renders,1);
+ assert.equal((await GET(request(tag),context)).status,304);assert.equal(renders,1,"Unchanged photos do not rerender");
+ creative={...creative,headline:"Revised headline"};const changed=await GET(request(tag),context);assert.equal(changed.status,200);assert.notEqual(changed.headers.get("etag"),tag);assert.equal(renders,2);
+ visible=false;assert.equal((await GET(request(changed.headers.get("etag")),context)).status,404);assert.equal(renders,2,"Cached validators cannot bypass access checks");
 });
