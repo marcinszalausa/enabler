@@ -6,10 +6,10 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: public-information-${{ github.ref }}
+  group: plan-value-${{ github.ref }}
   cancel-in-progress: true
 jobs:
-  public-information:
+  plan-value:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
