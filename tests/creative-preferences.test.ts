@@ -48,12 +48,14 @@ test("both real model request builders receive the saved creative direction",asy
 });
 test("saving preferences is editor/workspace checked and generation uses an immutable snapshot",async()=>{
  let canEdit=true;let product:any={id:"product",workspace_id:"workspace",brand_brief:{audience:"Page audience",benefits:["Real benefit"],requires_personalization:true}};
+ let campaign:any=null;
  const writes:any[]=[],reservations:any[]=[],pending:(()=>unknown)[]=[],workers:any[]=[];
  const db={auth:{getUser:async()=>({data:{user:{id:"owner"}}})},from:(table:string)=>{
   const filters:Record<string,unknown>={};let update:any;
   const query:any={select:()=>query,order:()=>query,limit:()=>query,eq:(key:string,value:unknown)=>{filters[key]=value;return query;},
    single:async()=>({data:table==="workspaces"?{id:"workspace"}:product}),
    maybeSingle:async()=>{
+    if(table==="campaigns")return {data:campaign&&filters.id===campaign.id&&filters.workspace_id==="workspace"&&filters.product_id===product.id?campaign:null};
     if(table!=="products"||filters.id!==product.id||filters.workspace_id!==product.workspace_id)return {data:null};
     if(update){product={...product,...update};writes.push(update);return {data:{id:product.id}};}
     return {data:product};
@@ -77,6 +79,14 @@ test("saving preferences is editor/workspace checked and generation uses an immu
  await pending[0]();
  assert.equal(workers[0].creativePreferences.audience,prefs.audience);
  assert.equal(reservations[0].options.creative_preferences.audience,prefs.audience);
+ run.set("campaignId","20000000-0000-4000-8000-000000000001");
+ assert.match((await actions.startGeneration({error:null},run)).error,/could not be loaded/);assert.equal(reservations.length,1);
+ campaign={id:run.get("campaignId"),name:"Fresh campaign",goal:"introduce",message:"A new factual benefit",offer:"",scene:"Bright room"};
+ assert.equal((await actions.startGeneration({error:null},run)).error,null);
+ assert.equal(reservations[1].options.campaign.id,campaign.id);
+ assert.equal(reservations[1].options.creative_preferences.offer,"");
+ assert.equal(reservations[1].options.creative_preferences.promotion,"product");
+ assert.equal(reservations[1].options.creative_preferences.focus,campaign.message);
 });
 
 

@@ -41,7 +41,7 @@ try{
   const base="http://localhost:3111"+(locale==="en"?"":"/"+locale)+"/library-preview";
   const visit=async(query="")=>{await page.goto(base+query,{waitUntil:"networkidle",timeout:90000});await page.evaluate(theme=>{document.documentElement.dataset.theme=theme;},theme);};
   await visit();
-  assert.equal(await page.locator("[data-app-tab]:visible").count(),4);
+  assert.equal(await page.locator("[data-app-tab]:visible").count(),5);
   assert.equal(await page.locator("[data-library-ad]").count(),24);
   assert.equal(await page.locator("video").count(),0);
   const next=page.locator('a[href="/dashboard/ads?page=2"]');assert.equal(await next.count(),1);
@@ -82,3 +82,4 @@ try{
  assert.equal(sql("select sum(credits) from public.workspaces"),balances,"Browsing and saving do not spend credits");
 }catch(error){console.error(log);throw error;}
 finally{sql("grant insert on public.creative_favorites to authenticated");if(browser)await browser.close();if(server){try{process.kill(-server.pid,"SIGTERM");}catch{}}await writeFile(stubPath,originalClient);await rm(folder,{recursive:true,force:true});}
+

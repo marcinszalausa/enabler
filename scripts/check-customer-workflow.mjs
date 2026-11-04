@@ -30,8 +30,8 @@ try{
   await page.evaluate(theme=>{document.documentElement.dataset.theme=theme;},theme);
   assert.equal(await page.locator("[data-app-tab]").count(),5);
   await page.getByRole("button",{name:/Holiday gifting/}).click();assert.equal(await page.locator('input[name="name"]').first().inputValue(),"Holiday gifting");
-  await page.getByText("Promote my offer",{exact:true}).click();assert.ok(await page.locator('textarea[name="offer"]').isVisible());assert.equal(await page.locator('textarea[name="offer"]').getAttribute("required"),"");
-  await page.getByText("Introduce my product",{exact:true}).click();assert.equal(await page.locator('textarea[name="offer"]').count(),0);
+  await page.locator('label:has(input[name="goal"][value="offer"])').click();assert.ok(await page.locator('textarea[name="offer"]').isVisible());assert.equal(await page.locator('textarea[name="offer"]').getAttribute("required"),"");
+  await page.locator('label:has(input[name="goal"][value="introduce"])').click();assert.equal(await page.locator('textarea[name="offer"]').count(),0);
   await page.getByText("Choose a setting (optional)",{exact:true}).click();await page.locator('input[name="scene"]').first().fill("Bright studio, clear background");
   const download=page.waitForEvent("download");await page.getByRole("button",{name:"Download campaign copy"}).click();assert.equal((await download).suggestedFilename(),"gooidy-campaign-copy.txt");
   await page.getByText("Edit headline and caption · no credits",{exact:true}).click();await page.locator('#revisions input[name="headline"]').fill("A better morning");
