@@ -1,3 +1,4 @@
+import {paidPlan,type PaidPlanId} from "./paid-plans.ts";
 export type AdKind = "image" | "video";
 export function adKind(value: unknown): AdKind { return value === "video" ? "video" : "image"; }
 export function productLink(value: unknown): string | null {
@@ -18,11 +19,11 @@ export function safeNextPath(value: string | null | undefined): string {
     return u.pathname + u.search + u.hash;
   } catch { return "/dashboard"; }
 }
-export function setupPath(url: string, kind: AdKind): string {
-  return "/dashboard/setup?" + new URLSearchParams({ url, kind }).toString();
+export function setupPath(url: string, kind: AdKind, selectedPlan?:PaidPlanId|null): string {
+  return "/dashboard/setup?" + new URLSearchParams({ url, kind, ...(selectedPlan?{plan:selectedPlan}:{}) }).toString();
 }
-export function setupContext(next: string | null | undefined): { url: string; kind: AdKind } | null {
+export function setupContext(next: string | null | undefined): { url: string; kind: AdKind;plan?:PaidPlanId } | null {
   const u = new URL(safeNextPath(next), "https://gooidy.invalid");
   const url = productLink(u.searchParams.get("url"));
-  return u.pathname === "/dashboard/setup" && url ? { url, kind: adKind(u.searchParams.get("kind")) } : null;
+  return u.pathname === "/dashboard/setup" && url ? { url, kind: adKind(u.searchParams.get("kind")),...(paidPlan(u.searchParams.get("plan"))?{plan:paidPlan(u.searchParams.get("plan"))!}:{}) } : null;
 }
