@@ -1,6 +1,16 @@
 import "server-only";
 import { PACK_PRICES, type Interval } from "@/lib/pricing";
 import { PAID_PLANS, type PaidPlanId } from "@/lib/paid-plans";
+import { PAID_CHECKOUT_STATUS } from "@/lib/legal-policy";
+
+// Whether customers can pay online now: Stripe is set up, and live payments
+// are allowed (src/lib/legal-policy.ts). Stripe test mode always works, for
+// testing.
+export function paymentsOpen() {
+  const key = process.env.STRIPE_SECRET_KEY;
+  if (!key) return false;
+  return PAID_CHECKOUT_STATUS !== "unavailable" || key.startsWith("sk_test_");
+}
 
 // Paid plans: Starter, Plus and Growth, with prices and monthly credits from
 // the public catalogue (src/lib/paid-plans.ts). Stripe holds a monthly and a

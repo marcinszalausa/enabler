@@ -10,6 +10,7 @@ import {
   FREE_PLAN,
   PACKS,
   PLANS,
+  paymentsOpen,
   type PackKey,
   type PlanKey,
 } from "@/lib/billing";
@@ -25,6 +26,15 @@ import Link from "next/link";
 import { BackLink } from "../ui";
 import { LocalPrice } from "@/app/_landing/local-price";
 import { CheckoutButton, ManageButton } from "./billing-buttons";
+import { LOW_CREDITS } from "../credits-link";
+
+type Activity = {
+  happened_at: string;
+  kind: string;
+  credits: number;
+  product: string | null;
+  status: string | null;
+};
 
 export async function generateMetadata({
   params,
@@ -74,12 +84,18 @@ async function Billing({
   const { data: ws } = await supabase
     .from("workspaces")
     .select(
-      "plan, credits, stripe_subscription_id, subscription_status, current_period_end",
+      "id, plan, credits, stripe_subscription_id, subscription_status, current_period_end",
     )
     .order("created_at")
     .limit(1)
     .single();
   if (!ws) return null;
+  const [{ data: activity }, { data: used }] = await Promise.all([
+    supabase.rpc("credit_activity", { ws: ws.id, max_rows: 30 }),
+    supabase.rpc("credits_used_recently", { ws: ws.id, days: 30 }),
+  ]);
+  const history = (activity ?? []) as Activity[];
+  const open = paymentsOpen();
 
   const b = t.billing;
   const n = (value: number) => value.toLocaleString(locale);
@@ -104,25 +120,61 @@ async function Billing({
         </p>
       )}
 
-      <section className="edge mt-6 flex flex-col gap-4 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
+      <section
+        data-credit-wallet
+        className="edge mt-6 grid gap-6 p-6 sm:grid-cols-[1fr_auto] sm:items-end sm:p-8"
+      >
         <div>
-          <p className="text-sm text-muted">{b.currentPlan}</p>
-          <p className="mt-1 text-xl font-semibold">
-            {planName(t, ws.plan)} ·{" "}
-            {fmt(t.app.credits, { count: n(ws.credits) })}
+          <p className="text-sm text-muted">{b.walletTitle}</p>
+          <p
+            className={`mt-1 text-4xl font-semibold tracking-tight tabular-nums ${
+              ws.credits < LOW_CREDITS ? "text-warn" : ""
+            }`}
+          >
+            {n(ws.credits)}
           </p>
           <p className="mt-1 text-sm text-muted">
-            {subscribed && renews
-              ? ws.subscription_status === "past_due"
-                ? b.pastDue
-                : `${fmt(b.renews, { date: renews })} ${b.rollover}`
-              : fmt(b.freeNote, { count: n(FREE_PLAN.credits) })}
+            {fmt(b.packAds, { ads: n(adsFor(ws.credits)) })} ·{" "}
+            {fmt(b.usedRecently, { count: n(Number(used ?? 0)) })}
+          </p>
+          {ws.credits < LOW_CREDITS && (
+            <p className="mt-3 text-sm font-medium text-warn">{b.lowNote}</p>
+          )}
+          <p className="mt-4 text-sm">
+            <span className="font-medium">
+              {fmt(b.planLine, { plan: planName(t, ws.plan) })}
+            </span>{" "}
+            <span className="text-muted">
+              {subscribed && renews
+                ? ws.subscription_status === "past_due"
+                  ? b.pastDue
+                  : `${fmt(b.renews, { date: renews })} ${b.rollover}`
+                : fmt(b.freeNote, { count: n(FREE_PLAN.credits) })}
+            </span>
           </p>
         </div>
-        {subscribed && (
-          <ManageButton label={b.manage} pendingLabel={b.opening} />
-        )}
+        <div className="flex flex-col gap-2 sm:items-end">
+          <a
+            href="#packs"
+            className="btn-primary inline-flex min-h-11 items-center justify-center rounded-xl px-5 py-2.5 text-sm font-medium"
+          >
+            {b.buyCredits}
+          </a>
+          {subscribed && (
+            <ManageButton label={b.manage} pendingLabel={b.opening} secondary />
+          )}
+        </div>
       </section>
+
+      {!open && (
+        <p
+          role="status"
+          data-payments-soon
+          className="mt-4 rounded-xl border border-line bg-surface p-4 text-sm text-muted"
+        >
+          {b.paymentsSoon}
+        </p>
+      )}
 
       {!subscribed && (
         <section className="mt-10">
@@ -199,6 +251,7 @@ async function Billing({
                       label={fmt(b.choose, { plan: name })}
                       pendingLabel={b.openingCheckout}
                       primary={i === 1}
+                      disabled={!open}
                     />
                   </div>
                 </div>
@@ -211,7 +264,7 @@ async function Billing({
         </section>
       )}
 
-      <section className="mt-10">
+      <section id="packs" className="mt-10 scroll-mt-24">
         <h2 className="text-lg font-medium">{b.packsTitle}</h2>
         <p className="mt-1 text-sm text-muted">{b.packsSub}</p>
         <div className="mt-4 grid gap-5 sm:grid-cols-2">
@@ -241,11 +294,56 @@ async function Billing({
                   value={key}
                   label={fmt(b.buy, { price: usd(pack.usd, locale) })}
                   pendingLabel={b.openingCheckout}
+                  disabled={!open}
                 />
               </div>
             );
           })}
         </div>
+      </section>
+
+      <section className="mt-10" data-credit-history>
+        <h2 className="text-lg font-medium">{b.historyTitle}</h2>
+        {history.length === 0 ? (
+          <p className="mt-2 text-sm text-muted">{b.historyEmpty}</p>
+        ) : (
+          <ul className="mt-4 divide-y divide-line rounded-2xl border border-line bg-raised">
+            {history.map((row, i) => (
+              <li
+                key={`${row.happened_at}-${i}`}
+                className="flex items-center justify-between gap-4 px-5 py-3.5 text-sm"
+              >
+                <div className="min-w-0">
+                  <p className="font-medium">{activityLabel(b, row.kind)}</p>
+                  <p className="truncate text-muted">
+                    {[
+                      new Date(row.happened_at).toLocaleDateString(locale, {
+                        month: "short",
+                        day: "numeric",
+                      }),
+                      row.product,
+                      row.status === "failed"
+                        ? b.historyReturned
+                        : row.status === "queued" || row.status === "running"
+                          ? b.historyRunning
+                          : null,
+                    ]
+                      .filter(Boolean)
+                      .join(" · ")}
+                  </p>
+                </div>
+                <span
+                  className={`shrink-0 font-medium tabular-nums ${
+                    row.credits > 0 ? "text-accent" : "text-muted"
+                  }`}
+                >
+                  {row.credits > 0 ? "+" : row.credits < 0 ? "−" : ""}
+                  {n(Math.abs(row.credits))}
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
       </section>
 
       <section className="mt-10 rounded-2xl border border-line bg-surface/60 p-6">
@@ -266,4 +364,21 @@ async function Billing({
       <p className="mt-8 text-sm text-muted">{b.footnote}</p>
     </>
   );
+}
+
+function activityLabel(b: Messages["billing"], kind: string) {
+  switch (kind) {
+    case "image_ads":
+      return b.historyImages;
+    case "video_ads":
+      return b.historyVideo;
+    case "redo":
+      return b.historyRedo;
+    case "plan":
+      return b.historyPlan;
+    case "pack":
+      return b.historyPack;
+    default:
+      return b.historyFree;
+  }
 }

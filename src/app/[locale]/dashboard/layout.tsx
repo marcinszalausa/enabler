@@ -7,6 +7,7 @@ import { notFound } from "next/navigation";
 import { AppNav } from "./app-nav";
 import { AdminLink } from "./admin/admin-link";
 import { Suspense } from "react";
+import { CreditsLink } from "./credits-link";
 
 export default async function DashboardLayout({
   children,
@@ -32,6 +33,9 @@ export default async function DashboardLayout({
           />
         }
       >
+        <Suspense fallback={null}>
+          <CreditsLink locale={locale} />
+        </Suspense>
         <AccountMenu admin={<Suspense fallback={null}><AdminLink /></Suspense>} />
       </AppBar>
       <div id="app-content" tabIndex={-1} className="flex flex-1 flex-col focus:outline-none">{children}</div>

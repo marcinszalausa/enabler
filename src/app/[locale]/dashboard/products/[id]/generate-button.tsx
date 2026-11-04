@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useGenerationAction } from "./use-generation-action";
 import { useI18n } from "@/i18n/client";
 import { fmt } from "@/i18n/format";
@@ -42,7 +43,7 @@ export function GenerateButton({
       >
         {pending ? t.app.starting : fmt(t.app.withCost, { label: ideas === undefined ? t.trial.create : fmt(t.app.createImages, { count: ideas * 2 }), cost })}
       </button>
-      {credits!==undefined&&credits<cost&&<p className="text-sm text-muted">{fmt(t.app.errors.noCredits,{cost})}</p>}
+      {credits!==undefined&&credits<cost&&<p className="text-sm text-muted">{fmt(t.app.errors.noCredits,{cost})} <Link href="/dashboard/billing#packs" prefetch={false} className="inline-flex min-h-11 items-center font-medium text-accent underline-offset-4 hover:underline">{t.billing.buyCredits}</Link></p>}
       {state.error && (
         <p role="alert" className="text-sm text-danger">
           {state.error}

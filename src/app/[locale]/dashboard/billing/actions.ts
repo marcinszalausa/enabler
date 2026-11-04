@@ -11,9 +11,9 @@ import {
   isInterval,
   isPackKey,
   isPlanKey,
+  paymentsOpen,
   priceIdFor,
 } from "@/lib/billing";
-import { PAID_CHECKOUT_STATUS } from "@/lib/legal-policy";
 import { UserError, userMessage } from "@/lib/errors";
 import { requestLocale, requestMessages } from "@/i18n/server";
 import type { Locale } from "@/i18n/config";
@@ -71,15 +71,6 @@ const STRIPE_LOCALES: Partial<
   ko: "ko",
   zh: "zh",
 };
-
-// Live payments stay off until the legal pages are final
-// (src/lib/legal-policy.ts); Stripe test mode keeps working for testing.
-function paymentsLocked() {
-  return (
-    PAID_CHECKOUT_STATUS === "unavailable" &&
-    !process.env.STRIPE_SECRET_KEY?.startsWith("sk_test_")
-  );
-}
 
 async function stripeLocale() {
   return STRIPE_LOCALES[await requestLocale()] ?? "auto";
@@ -150,7 +141,7 @@ export async function startCheckout(
     const plan = formData.get("plan");
     const interval = formData.get("interval") ?? "month";
     if (!isPlanKey(plan) || !isInterval(interval)) return { error: t.pickPlan };
-    if (paymentsLocked()) throw new UserError(t.notSetUp);
+    if (!paymentsOpen()) throw new UserError(t.notSetUp);
     const price = priceIdFor(plan, interval);
     if (!price) throw new UserError(t.notSetUp);
 
@@ -190,7 +181,7 @@ export async function buyPack(
     const key = formData.get("pack");
     if (!isPackKey(key)) return { error: t.pickPlan };
     const pack = PACKS[key];
-    if (paymentsLocked()) throw new UserError(t.notSetUp);
+    if (!paymentsOpen()) throw new UserError(t.notSetUp);
 
     const { ws, email } = await ownerWorkspace();
     const metadata = { workspace_id: ws.id, pack: key };

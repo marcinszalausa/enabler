@@ -21,6 +21,7 @@ export function CheckoutButton({
   pendingLabel,
   interval,
   primary = false,
+  disabled = false,
 }: {
   kind: keyof typeof ACTIONS;
   value: string;
@@ -29,6 +30,8 @@ export function CheckoutButton({
   label: string;
   pendingLabel: string;
   primary?: boolean;
+  // Online payments aren't open yet; the page says so once.
+  disabled?: boolean;
 }) {
   const [state, action, pending] = useActionState(ACTIONS[kind], initialState);
   return (
@@ -37,8 +40,8 @@ export function CheckoutButton({
       {interval && <input type="hidden" name="interval" value={interval} />}
       <button
         type="submit"
-        disabled={pending}
-        className={`rounded-xl px-5 py-2.5 text-sm font-medium transition disabled:opacity-60 ${
+        disabled={pending || disabled}
+        className={`min-h-11 rounded-xl px-5 py-2.5 text-sm font-medium transition disabled:opacity-60 ${
           primary
             ? "btn-primary"
             : "border border-line text-fg hover:bg-surface"
@@ -58,9 +61,11 @@ export function CheckoutButton({
 export function ManageButton({
   label,
   pendingLabel,
+  secondary = false,
 }: {
   label: string;
   pendingLabel: string;
+  secondary?: boolean;
 }) {
   const [state, action, pending] = useActionState(openPortal, initialState);
   return (
@@ -68,7 +73,11 @@ export function ManageButton({
       <button
         type="submit"
         disabled={pending}
-        className="btn-primary rounded-xl px-5 py-2.5 text-sm font-medium disabled:opacity-60"
+        className={`min-h-11 rounded-xl px-5 py-2.5 text-sm font-medium disabled:opacity-60 ${
+          secondary
+            ? "border border-line text-fg hover:bg-surface"
+            : "btn-primary"
+        }`}
       >
         {pending ? pendingLabel : label}
       </button>
