@@ -1,5 +1,4 @@
 import { AccountMenu } from "./account-menu";
-import { AppBar } from "@/app/_landing/chrome";
 import { Spotlight } from "@/app/_landing/spotlight";
 import { isLocale } from "@/i18n/config";
 import { getMessages } from "@/i18n/messages";
@@ -8,6 +7,8 @@ import { AppNav } from "./app-nav";
 import { AdminLink } from "./admin/admin-link";
 import { Suspense } from "react";
 import { CreditsLink } from "./credits-link";
+import { BoostCard, BoostTeaser, CreateNew, MobileMenu, SidebarBody } from "./app-shell";
+import { createClient } from "@/lib/supabase/server";
 
 export default async function DashboardLayout({
   children,
@@ -16,39 +17,61 @@ export default async function DashboardLayout({
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
   const t = await getMessages(locale);
+  const nav = (
+    <AppNav
+      items={[
+        { href: "/dashboard", label: t.app.products },
+        { href: "/dashboard/ads", label: t.library.title },
+        { href: "/dashboard/campaigns", label: t.app.campaigns },
+        { href: "/dashboard/publishing", label: t.publish.title },
+        { href: "/dashboard/brand", label: t.app.brandKit },
+      ]}
+    />
+  );
+  const admin = <Suspense fallback={null}><AdminLink /></Suspense>;
+  const account = (
+    <Suspense fallback={<AccountMenu admin={admin} />}>
+      <Account admin={admin} />
+    </Suspense>
+  );
   // "landing" gives the app the site's cards and hover effects. Grid items
   // may shrink below their content (a long, truncated product name), so a
   // phone never scrolls sideways.
   return (
-    <div className="landing flex flex-1 flex-col bg-bg text-fg [&_.grid>*]:min-w-0">
+    <div className="landing flex flex-1 bg-bg text-fg [&_.grid>*]:min-w-0">
       <a href="#app-content" className="skip-link">{t.nav.skip}</a>
-      <AppBar homeHref="/dashboard"
-        tabs={
-          <AppNav
-            items={[
-              { href: "/dashboard", label: t.app.products },
-              { href: "/dashboard/ads", label: t.library.title },
-              { href: "/dashboard/campaigns", label: "Campaigns" },
-              { href: "/dashboard/publishing", label: t.publish.title },
-              { href: "/dashboard/brand", label: t.app.brandKit },
-            ]}
-          />
-        }
-      >
-        <Suspense fallback={null}>
-          <CreditsLink locale={locale} className="hidden sm:inline-flex" />
-        </Suspense>
-        <AccountMenu admin={<Suspense fallback={null}><AdminLink /></Suspense>} />
-      </AppBar>
-      <div id="app-content" tabIndex={-1} className="flex flex-1 flex-col focus:outline-none">
-        {/* Phones: the top bar has no room, so the balance sits just below it. */}
-        <div className="mx-auto -mb-2 flex w-full max-w-5xl justify-end px-3 pt-1 sm:hidden">
-          <Suspense fallback={null}>
-            <CreditsLink locale={locale} className="inline-flex [&_.credits-word]:inline" />
-          </Suspense>
-        </div>{children}</div>
+      {/* Desktop: the sections live in a sidebar on the start side. */}
+      <aside className="sticky top-0 hidden h-dvh w-60 shrink-0 border-e border-line bg-bg lg:block" data-app-sidebar>
+        <SidebarBody nav={nav} account={account} />
+      </aside>
+      <div className="flex min-w-0 flex-1 flex-col">
+        <header className="sticky top-0 z-30 border-b border-line bg-bg/85 backdrop-blur">
+          <div className="flex h-16 items-center gap-2 px-2 sm:px-6">
+            {/* Phones and tablets: the sidebar opens as a drawer. */}
+            <MobileMenu>
+              <SidebarBody nav={nav} account={account} extra={<BoostCard />} />
+            </MobileMenu>
+            <div className="ms-auto flex min-w-0 items-center gap-1 sm:gap-2">
+              <CreateNew />
+              <BoostTeaser className="hidden sm:block" />
+              <Suspense fallback={null}>
+                <CreditsLink locale={locale} className="inline-flex" />
+              </Suspense>
+            </div>
+          </div>
+        </header>
+        <div id="app-content" tabIndex={-1} className="flex flex-1 flex-col focus:outline-none">
+          {children}
+        </div>
+      </div>
       <Spotlight />
     </div>
   );
 }
 
+// The signed-in person's email, shown on the account card.
+async function Account({ admin }: { admin: React.ReactNode }) {
+  const { data } = await (await createClient()).auth.getClaims();
+  const email = typeof data?.claims?.email === "string" ? data.claims.email : "";
+  return <AccountMenu admin={admin} email={email} />;
+}

@@ -469,6 +469,9 @@ export const tr: Messages = {
     check: "İlerlemeyi kontrol et",
   },
   app: {
+    campaigns: "Kampanyalar",
+    createNew: "Yeni oluştur",
+    closeMenu: "Menüyü kapat",
     products: "Ürünler",
     brandKit: "Marka kiti",
     signOut: "Çıkış yap",

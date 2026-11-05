@@ -471,6 +471,9 @@ export const nl: Messages = {
     check: "Voortgang bekijken",
   },
   app: {
+    campaigns: "Campagnes",
+    createNew: "Nieuw maken",
+    closeMenu: "Menu sluiten",
     products: "Producten",
     brandKit: "Merkkit",
     signOut: "Uitloggen",

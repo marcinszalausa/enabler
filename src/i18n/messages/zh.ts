@@ -453,6 +453,9 @@ export const zh: Messages = {
     check: "查看进度",
   },
   app: {
+    campaigns: "营销活动",
+    createNew: "新建",
+    closeMenu: "关闭菜单",
     products: "商品",
     brandKit: "品牌套件",
     signOut: "退出登录",
