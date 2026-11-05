@@ -7,6 +7,7 @@ import { GenerateButton } from "./generate-button";
 import { VideoAdForm } from "./video-ad-form";
 import { PhotoRow, type PickedPhoto } from "./image-picker";
 import { StyleRow, type PickedStyle } from "./style-picker";
+import { AvatarRow, type PickedAvatar } from "./avatar-picker";
 import { fmt } from "@/i18n/format";
 import { ADS_PER_GENERATION, ASPECTS, IDEA_COUNTS, imageRunCost, type IdeaCount } from "@/lib/image-pricing";
 import { DEFAULT_VIDEO_OPTIONS, videoRunCost } from "@/lib/video-options";
@@ -47,6 +48,7 @@ export function GenerateControls({
   defaultPhoto?: string | null;
 }) {
   const [style, setStyle] = useState<PickedStyle | null>(null);
+  const [avatar, setAvatar] = useState<PickedAvatar | null>(null);
   const [photo, setPhoto] = useState<PickedPhoto | null>(defaultPhoto ? { value: `product:${defaultPhoto}`, src: defaultPhoto, uploaded: false } : null);
   const [language, setLanguage] = useState<LanguageKey>(defaultLanguage);
   const { t } = useI18n();
@@ -70,6 +72,7 @@ export function GenerateControls({
       <div className="lg:col-span-2">
         <div className="flex flex-col gap-2">
           <PhotoRow productId={productId} photo={photo} onPick={setPhoto} />
+          {kind === "image" && <AvatarRow avatar={avatar} onPick={setAvatar} credits={credits} />}
           {kind === "image" && <StyleRow style={style} onPick={setStyle} />}
         </div>
       </div>
@@ -158,6 +161,7 @@ export function GenerateControls({
         quality={quality}
         source={photo?.value}
         style={style?.id}
+        avatar={avatar?.id}
       />}
       {kind === "video" && <VideoAdForm
         credits={credits}
