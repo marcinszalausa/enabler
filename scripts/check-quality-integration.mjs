@@ -9,7 +9,7 @@ const require=createRequire(import.meta.url),{build}=createRequire("/tmp/media-q
 const names={
  "server-only":[],
  "@/lib/ai/claude":["reviewAdImage","reviewAdVideo","writeAdAngles","writeVideoAds"],
- "@/lib/ai/fal":["generateAdImage","generateMusic","generateVoiceover","getAdVideo","submitAdVideo"],
+ "@/lib/ai/fal":["generateAdImage","generateLibraryImage","generateMusic","generateVoiceover","getAdVideo","submitAdVideo"],
  "@/lib/public-fetch":["fetchPublicUrl","verifyPublicUrl"],
  "@/lib/supabase/admin":["createAdminClient"],
  "@/lib/social/publish":["autopilotRun"],

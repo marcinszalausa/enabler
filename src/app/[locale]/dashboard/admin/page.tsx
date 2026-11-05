@@ -7,7 +7,12 @@ import { creditGrants, loadAdminData, requireAdmin } from "@/lib/admin";
 import { providerBalances } from "@/lib/admin-balances";
 import { USD_PER_CREDIT_ESTIMATE, customerRows, overview, planLabel, planPrice, searchCustomers } from "@/lib/admin-stats";
 import { platformName } from "@/lib/social/platforms";
+import { libraryStatus } from "@/lib/style-references";
+import { StyleLibraryButton } from "./style-library-button";
 import { DayBars, PlanChip, Section, Stat, Table, cell, day, firstCell, num, usd } from "./admin-ui";
+
+// The style library button draws up to 15 images in one request.
+export const maxDuration = 300;
 
 export const metadata: Metadata = { title: "Admin · Gooidy", robots: { index: false, follow: false } };
 
@@ -28,7 +33,7 @@ async function Admin({ searchParams }: { searchParams: PageProps<"/[locale]/dash
   const sp = await searchParams;
   const q = typeof sp.q === "string" ? sp.q.slice(0, 200) : "";
   const plan = typeof sp.plan === "string" ? sp.plan : "";
-  const [data, grants] = await Promise.all([loadAdminData(), creditGrants(null)]);
+  const [data, grants, library] = await Promise.all([loadAdminData(), creditGrants(null), libraryStatus()]);
   const granted = grants.reduce((s, g) => s + g.amount, 0);
   const o = overview(data);
   const all = customerRows(data);
@@ -49,6 +54,10 @@ async function Admin({ searchParams }: { searchParams: PageProps<"/[locale]/dash
           <Stat label="Credits customers hold" value={num(o.creditsHeld)} note={`Up to ${usd(o.creditsHeld * USD_PER_CREDIT_ESTIMATE)} AI cost if all used`} />
           <Stat label="Credits granted by admins" value={num(granted)} note={`${num(grants.length)} changes logged`} />
         </dl>
+      </Section>
+
+      <Section title="Style library" note="Original AI reference images customers pick in Create ads. Drawn once on your Google or fal key, about $0.03 to $0.08 each.">
+        <StyleLibraryButton made={library.made} total={library.total} />
       </Section>
 
       <dl className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-4">

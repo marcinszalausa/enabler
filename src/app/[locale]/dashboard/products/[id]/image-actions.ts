@@ -1,11 +1,11 @@
 "use server";
 
-import sharp from "sharp";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { canEditWorkspace } from "@/lib/workspace-access";
 import { requestMessages } from "@/i18n/server";
-import { UPLOAD_MAX_BYTES, UPLOAD_MAX_SIDE, uploadFolder } from "@/lib/source-image";
+import { UPLOAD_MAX_BYTES, uploadFolder } from "@/lib/source-image";
+import { normalizeUpload } from "@/lib/upload-image";
 
 export type PickerImage = {
   // The picker's form value: "product:<url>" or "upload:<path>".
@@ -79,14 +79,9 @@ export async function uploadProductImage(form: FormData): Promise<UploadResult> 
   let jpeg: Buffer;
   let size: { width?: number; height?: number };
   try {
-    const out = await sharp(Buffer.from(await file.arrayBuffer()), { limitInputPixels: 80_000_000 })
-      .rotate()
-      .resize({ width: UPLOAD_MAX_SIDE, height: UPLOAD_MAX_SIDE, fit: "inside", withoutEnlargement: true })
-      .flatten({ background: "#ffffff" })
-      .jpeg({ quality: 90, mozjpeg: true })
-      .toBuffer({ resolveWithObject: true });
-    jpeg = out.data;
-    size = out.info;
+    const out = await normalizeUpload(file);
+    jpeg = out.jpeg;
+    size = out;
   } catch {
     return { error: t.badType };
   }

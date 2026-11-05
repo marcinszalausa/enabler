@@ -32,23 +32,39 @@ export async function generateAdImage(opts: {
   sameScene?: boolean;
   aspect: Aspect;
   referenceImageUrl: string | null;
+  // A style reference the owner picked: its look is followed, never its
+  // product, people or text. `style` describes it in words, for models that
+  // take a single image and for uploads, which have no description.
+  styleImageUrl?: string | null;
+  style?: string | null;
 }): Promise<string> {
   const referenceImageUrl = opts.referenceImageUrl
     ? (await verifyPublicUrl(opts.referenceImageUrl)).toString() : null;
+  // Only the product shot takes the style; a new framing of an earlier shot
+  // already carries it.
+  const styleImageUrl = opts.styleImageUrl && !opts.sameScene
+    ? (await verifyPublicUrl(opts.styleImageUrl)).toString() : null;
+  const styleText = opts.sameScene ? null : opts.style?.trim() || null;
   const prompt = `${opts.prompt}. Professional advertising photograph with sharp product detail, believable material texture, natural skin and coherent lighting. Keep every visible face fully inside the image with comfortable headroom. Compose a full-frame photograph with quiet negative space around the subject for separately rendered ad copy; do not shrink the subject into a framed inset. Preserve the product silhouette, color, material, construction and genuine branding from the reference. Keep natural pairs and sets intact, with no duplicated extra variants. Hands should look natural; fingers may be naturally occluded. No added headlines, captions, invented lettering or watermarks.${opts.avoid ? ` Avoid these problems: ${opts.avoid}.` : ""}`;
   const models = IMAGE_MODELS[opts.quality];
   const flux = opts.quality === "good";
-  const editPrompt = opts.sameScene
+  // Flux Kontext takes one image, so it gets the style in words only.
+  const styleImages = styleImageUrl && !flux ? [styleImageUrl] : [];
+  const styleGuide = styleImages.length
+    ? ` Use the second image only as a style reference: match its composition, camera angle, kind of setting, lighting and mood. Do not copy its product, its people's faces, or any text or logo from it.${styleText ? ` Style: ${styleText}.` : ""}`
+    : styleText ? ` Visual style to follow: ${styleText}.` : "";
+  const editBase = opts.sameScene
     ? `Show the same person, wearing exactly the same outfit, in the same setting and light as this image, from a new framing. The product keeps its color, fabric and design unchanged: ${prompt}`
     : `Place this exact product in a new scene, keeping its color, fabric and design unchanged. Keep natural pairs or sets intact, without duplicating the product or introducing a different color variant: ${prompt}`;
+  const editPrompt = editBase + styleGuide;
 
   const google = opts.quality === "good" ? null : geminiKey();
   if (google) {
     // Nano Banana direct from Google costs less than fal; fal is the backup.
     try {
       return await generateGoogleImage({
-        prompt: referenceImageUrl ? editPrompt : prompt,
-        referenceImageUrl,
+        prompt: referenceImageUrl ? editPrompt : prompt + styleGuide,
+        referenceImageUrls: referenceImageUrl ? [referenceImageUrl, ...styleImages] : [],
         aspect: opts.aspect,
         ...GOOGLE_IMAGE_MODELS[opts.quality as "better" | "best"],
         key: google,
@@ -63,12 +79,12 @@ export async function generateAdImage(opts: {
       ? fal.subscribe(opts.retry ? models.retry : models.edit, {
           input: flux
             ? { prompt: editPrompt, image_url: referenceImageUrl, aspect_ratio: opts.aspect, output_format: "jpeg" }
-            : { prompt: editPrompt, image_urls: [referenceImageUrl], aspect_ratio: opts.aspect, output_format: "jpeg", num_images: 1, ...models.input },
+            : { prompt: editPrompt, image_urls: [referenceImageUrl, ...styleImages], aspect_ratio: opts.aspect, output_format: "jpeg", num_images: 1, ...models.input },
         })
       : fal.subscribe(models.text, {
           input: flux
-            ? { prompt, image_size: opts.aspect === "1:1" ? { width: 1024, height: 1024 } : { width: 768, height: 1344 }, output_format: "jpeg" }
-            : { prompt, aspect_ratio: opts.aspect, output_format: "jpeg", num_images: 1, ...models.input },
+            ? { prompt: prompt + styleGuide, image_size: opts.aspect === "1:1" ? { width: 1024, height: 1024 } : { width: 768, height: 1344 }, output_format: "jpeg" }
+            : { prompt: prompt + styleGuide, aspect_ratio: opts.aspect, output_format: "jpeg", num_images: 1, ...models.input },
         }),
   );
 
@@ -77,25 +93,43 @@ export async function generateAdImage(opts: {
   return url;
 }
 
+// One image for Gooidy's style library, drawn from text alone at 3:4.
+// Nano Banana 2 (Google direct when set up, else fal): a few cents each.
+export async function generateLibraryImage(prompt: string): Promise<string> {
+  const google = geminiKey();
+  if (google) {
+    try {
+      return await generateGoogleImage({ prompt, referenceImageUrls: [], aspect: "3:4", ...GOOGLE_IMAGE_MODELS.better, key: google });
+    } catch (err) {
+      console.error("Gemini library image failed, drawing on fal instead", err);
+    }
+  }
+  const result = await callFal(() => fal.subscribe("fal-ai/nano-banana-2", {
+    input: { prompt, aspect_ratio: "3:4", output_format: "jpeg", num_images: 1, resolution: "1K" },
+  }));
+  const url = (result.data as FalImageOutput).images?.[0]?.url;
+  if (!url) throw new Error("Image generation returned no image.");
+  return url;
+}
+
 // Gemini answers with the image itself, which is kept in storage briefly.
 async function generateGoogleImage(opts: {
   prompt: string;
-  referenceImageUrl: string | null;
-  aspect: Aspect;
+  referenceImageUrls: string[];
+  aspect: Aspect | "3:4";
   model: string;
   size: string;
   key: string;
 }): Promise<string> {
-  let image: { mimeType: string; data: string } | null = null;
-  if (opts.referenceImageUrl) {
-    const ref = await fetchPublicUrl(opts.referenceImageUrl, { maxBytes: 15 * 1024 * 1024, timeoutMs: 30000, accept: "image/*" });
+  const images = await Promise.all(opts.referenceImageUrls.map(async (url) => {
+    const ref = await fetchPublicUrl(url, { maxBytes: 15 * 1024 * 1024, timeoutMs: 30000, accept: "image/*" });
     if (ref.status < 200 || ref.status >= 300) throw new Error(`Reference image returned ${ref.status}.`);
-    image = { mimeType: ref.contentType.startsWith("image/") ? ref.contentType : "image/jpeg", data: ref.body.toString("base64") };
-  }
+    return { mimeType: ref.contentType.startsWith("image/") ? ref.contentType : "image/jpeg", data: ref.body.toString("base64") };
+  }));
   const res = await fetch(googleImageUrl(opts.model), {
     method: "POST",
     headers: { "x-goog-api-key": opts.key, "Content-Type": "application/json" },
-    body: JSON.stringify(googleImageBody({ prompt: opts.prompt, image, aspect: opts.aspect, size: opts.size })),
+    body: JSON.stringify(googleImageBody({ prompt: opts.prompt, images, aspect: opts.aspect, size: opts.size })),
     signal: AbortSignal.timeout(120_000),
   });
   const body = await res.json().catch(() => ({}));

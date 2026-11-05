@@ -23,7 +23,7 @@ export function googleImageUrl(model: string): string {
 
 export function googleImageBody(opts: {
   prompt: string;
-  image: { mimeType: string; data: string } | null;
+  images: { mimeType: string; data: string }[];
   aspect: string;
   size: string;
 }) {
@@ -31,7 +31,7 @@ export function googleImageBody(opts: {
     contents: [{
       role: "user",
       parts: [
-        ...(opts.image ? [{ inline_data: { mime_type: opts.image.mimeType, data: opts.image.data } }] : []),
+        ...opts.images.map((image) => ({ inline_data: { mime_type: image.mimeType, data: image.data } })),
         { text: opts.prompt },
       ],
     }],

@@ -6,6 +6,7 @@ import { useI18n } from "@/i18n/client";
 import { GenerateButton } from "./generate-button";
 import { VideoAdForm } from "./video-ad-form";
 import { PhotoRow, type PickedPhoto } from "./image-picker";
+import { StyleRow, type PickedStyle } from "./style-picker";
 import { fmt } from "@/i18n/format";
 import { ADS_PER_GENERATION, ASPECTS, IDEA_COUNTS, imageRunCost, type IdeaCount } from "@/lib/image-pricing";
 import { DEFAULT_VIDEO_OPTIONS, videoRunCost } from "@/lib/video-options";
@@ -45,6 +46,7 @@ export function GenerateControls({
   // The product's first store photo, the default starting photo.
   defaultPhoto?: string | null;
 }) {
+  const [style, setStyle] = useState<PickedStyle | null>(null);
   const [photo, setPhoto] = useState<PickedPhoto | null>(defaultPhoto ? { value: `product:${defaultPhoto}`, src: defaultPhoto, uploaded: false } : null);
   const [language, setLanguage] = useState<LanguageKey>(defaultLanguage);
   const { t } = useI18n();
@@ -66,7 +68,10 @@ export function GenerateControls({
   return (
     <div className="flex w-full flex-col gap-4 text-sm lg:grid lg:grid-cols-2 lg:gap-x-8 lg:gap-y-5">
       <div className="lg:col-span-2">
-        <PhotoRow productId={productId} photo={photo} onPick={setPhoto} />
+        <div className="flex flex-col gap-2">
+          <PhotoRow productId={productId} photo={photo} onPick={setPhoto} />
+          {kind === "image" && <StyleRow style={style} onPick={setStyle} />}
+        </div>
       </div>
       <div>
       <p aria-hidden className={label + " hidden lg:block"}>{t.app.kind}</p>
@@ -152,6 +157,7 @@ export function GenerateControls({
         language={language}
         quality={quality}
         source={photo?.value}
+        style={style?.id}
       />}
       {kind === "video" && <VideoAdForm
         credits={credits}
