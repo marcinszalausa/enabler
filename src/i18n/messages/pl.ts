@@ -472,6 +472,9 @@ export const pl: Messages = {
     check: "Sprawdź postęp",
   },
   app: {
+    campaigns: "Kampanie",
+    createNew: "Utwórz nowy",
+    closeMenu: "Zamknij menu",
     products: "Produkty",
     brandKit: "Identyfikacja marki",
     signOut: "Wyloguj się",

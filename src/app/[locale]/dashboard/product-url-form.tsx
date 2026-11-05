@@ -1,7 +1,7 @@
 "use client";
 
 import type {PaidPlanId} from "@/lib/paid-plans";
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import { createProduct, type FormState } from "./actions";
 import Link from "next/link";
 import { useI18n } from "@/i18n/client";
@@ -12,6 +12,10 @@ const initialState: FormState = { error: null };
 export function ProductUrlForm({ defaultUrl, onboardingKind, selectedPlan }: { defaultUrl: string; onboardingKind?: "image" | "video";selectedPlan?:PaidPlanId|null }) {
   const [state, action, pending] = useActionState(createProduct, initialState);
   const { t, locale } = useI18n();
+  // "Create new" in the top bar opens Products at #add: have the box ready.
+  useEffect(() => {
+    if (window.location.hash === "#add") document.getElementById("url")?.focus();
+  }, []);
 
   return (
     <form action={action} className="flex flex-col gap-2">

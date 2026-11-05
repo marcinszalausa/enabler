@@ -465,6 +465,9 @@ export const en = {
     check: "Check progress",
   },
   app: {
+    campaigns: "Campaigns",
+    createNew: "Create new",
+    closeMenu: "Close menu",
     products: "Products",
     brandKit: "Brand kit",
     signOut: "Sign out",

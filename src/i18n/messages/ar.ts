@@ -455,6 +455,9 @@ export const ar: Messages = {
     check: "تحقق من التقدم",
   },
   app: {
+    campaigns: "الحملات",
+    createNew: "إنشاء جديد",
+    closeMenu: "إغلاق القائمة",
     products: "المنتجات",
     brandKit: "هوية العلامة",
     signOut: "تسجيل الخروج",

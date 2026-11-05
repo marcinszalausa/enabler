@@ -469,6 +469,9 @@ export const de: Messages = {
     check: "Fortschritt prüfen",
   },
   app: {
+    campaigns: "Kampagnen",
+    createNew: "Neu erstellen",
+    closeMenu: "Menü schließen",
     products: "Produkte",
     brandKit: "Brand-Kit",
     signOut: "Abmelden",

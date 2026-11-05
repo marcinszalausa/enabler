@@ -21,7 +21,7 @@ test("technical defects and visual defects have a bounded regeneration budget",a
 });
 test("malformed verdicts never approve a result",async()=>{
  await assert.rejects(requireReview(async()=>({ok:"yes",issues:null}) as never),QualityReviewUnavailableError);
- assert.deepEqual(await requireReview(async()=>({ok:false,issues:"  Color\nchanged  "})),{ok:false,issues:"Color changed"});
+ assert.deepEqual(await requireReview(async()=>({ok:false,issues:"  Color\nchanged  "})),{ok:false,issues:"Color changed",minor:false});
 });
 test("voiceover must fit without cutting words or excessive acceleration",()=>{
  assert.equal(voiceTempo(5,7),1);
@@ -39,4 +39,11 @@ test("every shot contributes beginning, middle and ending review samples",()=>{
 
 test("an approval with reported defects cannot pass review",async()=>{
  await assert.rejects(requireReview(async()=>({ok:true,issues:"Product changed color"})),QualityReviewUnavailableError);
+});
+test("delivers a candidate with only minor flaws when no try is perfect",async()=>{
+ const result=await reviewedCandidate({generate:async attempt=>attempt,validate:async()=>{},
+  review:async candidate=>({ok:false,issues:"Logo slightly small",minor:candidate===2})});
+ assert.equal(result,2);
+ await assert.rejects(reviewedCandidate({generate:async attempt=>attempt,validate:async()=>{},
+  review:async()=>({ok:false,issues:"Extra finger",minor:false})}),QualityError);
 });

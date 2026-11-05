@@ -1,7 +1,7 @@
 import "server-only";
 import { generationDirection } from "@/lib/generation-direction";
 import {inspectAdImage} from "@/lib/media-quality";
-import {QualityError,QualityReviewUnavailableError,reviewedCandidate} from "@/lib/media-quality-policy";
+import {IMAGE_QUALITY_ATTEMPTS,QualityError,QualityReviewUnavailableError,reviewedCandidate} from "@/lib/media-quality-policy";
 export {QualityError} from "@/lib/media-quality-policy";
 import { withCreativePreferences, type CreativePreferences } from "@/lib/creative-preferences";
 import { fetchPublicUrl } from "@/lib/public-fetch";
@@ -139,7 +139,12 @@ export async function runGeneration({
     prompt = angles.map((a) => a.image_prompt).join("\n");
     failure = failed > 0 ? failureNote(results, failed) : null;
   } catch (err) {
-    failure = userMessage(err, "Generation failed. Please try again.");
+    // Say why, so a run that the quality check stopped does not look broken.
+    failure = err instanceof QualityError
+      ? `The quality check rejected every image: ${err.message}`
+      : err instanceof QualityReviewUnavailableError
+        ? err.message
+        : userMessage(err, "Generation failed. Please try again.");
     console.error("generation failed", generationId, err);
   }
 
@@ -174,7 +179,10 @@ export async function generateCheckedImage(opts:{
  productReferenceImageUrl?:string|null;sameScene?:boolean;product:string;
 }):Promise<string>{
  return reviewedCandidate({
-  generate:(attempt,avoid)=>generateAdImage({...opts,avoid,retry:attempt>1}),
+  // The last try steps up one quality tier, at our cost, so a hard product
+  // still gets a strong final attempt.
+  generate:(attempt,avoid)=>generateAdImage({...opts,avoid,retry:attempt>1,
+   quality:attempt===IMAGE_QUALITY_ATTEMPTS?stepUp(opts.quality):opts.quality}),
   validate:async imageUrl=>{
    const image=await fetchPublicUrl(imageUrl,{maxBytes:8*1024*1024,timeoutMs:30000,accept:"image/*"});
    if(image.status<200||image.status>=300)throw new QualityReviewUnavailableError("The generated photo could not be inspected.");
@@ -186,6 +194,8 @@ export async function generateCheckedImage(opts:{
   })
  });
 }
+
+function stepUp(quality:Quality):Quality{return quality==="good"?"better":"best";}
 
 // Says why images were dropped, so the owner can see what the checker caught.
 function failureNote(

@@ -460,6 +460,9 @@ export const ko: Messages = {
     check: "진행 상황 확인",
   },
   app: {
+    campaigns: "캠페인",
+    createNew: "새로 만들기",
+    closeMenu: "메뉴 닫기",
     products: "상품",
     brandKit: "브랜드 키트",
     signOut: "로그아웃",

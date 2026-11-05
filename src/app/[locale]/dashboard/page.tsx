@@ -4,13 +4,11 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { isLocale } from "@/i18n/config";
 import { getMessages, type Messages } from "@/i18n/messages";
-import { fmt } from "@/i18n/format";
 import { getCurrentUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { ProductUrlForm } from "./product-url-form";
 import { ProductCard, type ProductSummary } from "./product-card";
-import { CreditsBadge, EmptyState } from "./ui";
-import { planName } from "@/lib/pricing";
+import { EmptyState } from "./ui";
 
 // Server actions on this page scrape and call the AI; allow time for that.
 export const maxDuration = 120;
@@ -92,18 +90,13 @@ async function Dashboard({
             {t.app.yourProducts}
           </h1>
         </div>
-        <CreditsBadge
-          credits={fmt(t.app.credits, { count: workspace?.credits ?? 0 })}
-          plan={fmt(t.app.plan, { plan: planName(t, workspace?.plan) })}
-          href="/dashboard/billing"
-        />
       </header>
 
       {deleted === "1" && <p role="status" data-product-deleted className="mt-4 rounded-xl border border-line bg-surface px-4 py-3 text-sm">{t.remove.productDeleted}</p>}
       <p className="mt-4 max-w-2xl text-sm text-muted">{t.journey.addHint}</p>
       <div className="mt-5 flex flex-wrap gap-3"><Link href="/dashboard/campaigns" className="inline-flex min-h-11 items-center rounded-xl border border-line-strong px-4 text-sm font-medium text-accent">Plan my next campaign →</Link><Link href="/dashboard/brand" className="inline-flex min-h-11 items-center px-2 text-sm text-muted">Save my brand preferences</Link></div>
 
-      <section className="edge mt-8 p-6 sm:p-8">
+      <section id="add" className="edge mt-8 scroll-mt-24 p-6 sm:p-8">
         <h2 className="text-lg font-medium">{t.app.addTitle}</h2>
         <p className="mt-1 text-sm text-muted">{t.app.addBody}</p>
         <div className="mt-5">
