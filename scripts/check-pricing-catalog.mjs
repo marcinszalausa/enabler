@@ -14,13 +14,12 @@ try{
  browser=await chromium.launch({headless:true});
  for(const [width,locale]of [[320,"en"],[390,"en"],[390,"ja"],[1440,"en"]]){
   const page=await browser.newPage({viewport:{width,height:950},reducedMotion:"reduce"});const errors=[];page.on("pageerror",e=>errors.push(e.message));await page.goto("http://localhost:3126"+(locale==="en"?"":"/"+locale)+"/pricing",{waitUntil:"networkidle"});
-  assert.equal(await page.locator("[data-buy-plan]").count(),0);assert.equal(await page.locator("[data-plan]").count(),4);
-  for(const [id,count] of [["free",7],["starter",6],["plus",6],["growth",6]])assert.equal(await page.locator(`[data-plan-included="${id}"] li`).count(),count,id);
-  if(locale==="en"){const plus=page.locator('[data-plan="plus"]'),growth=page.locator('[data-plan="growth"]');assert.match(await plus.innerText(),/Everything in Launch, plus/);assert.match(await growth.innerText(),/Everything in Grow, plus/);assert.match(await growth.innerText(),/30 recent posts/);assert.match(await page.locator('[data-plan="starter"]').innerText(),/Soon/);}
+  assert.equal(await page.locator("[data-buy-plan]").count(),0);assert.equal(await page.locator("[data-plan]").count(),3);assert.equal(await page.locator("[data-free-start]").count(),1);
+  for(const [id,count] of [["starter",10],["plus",6],["growth",6]])assert.equal(await page.locator(`[data-plan-included="${id}"] li`).count(),count,id);
+  if(locale==="en"){const plus=page.locator('[data-plan="plus"]'),growth=page.locator('[data-plan="growth"]');assert.match(await plus.innerText(),/Everything in Launch, plus/);assert.ok(!(await page.locator('[data-plan="starter"]').innerText()).includes("Everything in"));assert.match(await page.locator("[data-free-start]").innerText(),/100 credits to start/);assert.match(await growth.innerText(),/Everything in Grow, plus/);assert.match(await growth.innerText(),/30 recent posts/);assert.match(await page.locator('[data-plan="starter"]').innerText(),/Soon/);}
   for(const [id,month,year] of [["starter","39","31.2"],["plus","69","55.2"],["growth","99","79.2"]]){assert.equal(await page.locator(`[data-plan="${id}"] [data-price]`).getAttribute("data-price"),month);}
   await page.locator("[data-billing-toggle] button").nth(1).click();
   for(const [id,year] of [["starter","31.2"],["plus","55.2"],["growth","79.2"]])assert.equal(await page.locator(`[data-plan="${id}"] [data-price]`).getAttribute("data-price"),year);
-  assert.equal(await page.locator('[data-plan="free"] [data-price]').getAttribute("data-price"),"0");
   if(width>=1440){const tops=await page.locator("[data-plan]").evaluateAll(cards=>cards.map(card=>Math.round(card.getBoundingClientRect().top)));assert.equal(new Set(tops).size,1,"Plans sit in one row on desktop");}
   const questions=await page.locator("[data-pricing-faq] summary").allTextContents();const answers=await page.locator("[data-pricing-faq] details p").allTextContents();const faq=JSON.parse(await page.locator("script[data-pricing-structured]").textContent());assert.deepEqual(faq.mainEntity.map(q=>q.name),questions);assert.deepEqual(faq.mainEntity.map(q=>q.acceptedAnswer.text),answers);
   assert.equal(await page.locator("[data-pack]").count(),2);assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),"No page overflow");
@@ -44,7 +43,7 @@ try{
   console.log("PASS selected plan survives optional free preview to login",plan);await page.close();
  }
  const home=await browser.newPage({viewport:{width:390,height:950},javaScriptEnabled:false});await home.goto("http://localhost:3126/",{waitUntil:"domcontentloaded"});
- assert.equal(await home.locator("#pricing [data-plan-included]").count(),4);assert.equal(await home.locator("#pricing [data-buy-plan]").count(),0);assert.equal(await home.locator("#pricing a[data-try-plan]").count(),3);
- assert.equal(await home.locator('#pricing [data-plan-included="starter"] li').count(),6);assert.equal(await home.locator('#pricing [data-plan-included="growth"] li').count(),6);await home.close();console.log("PASS plan cards on homepage without JavaScript");
+ assert.equal(await home.locator("#pricing [data-plan-included]").count(),3);assert.equal(await home.locator("#pricing [data-buy-plan]").count(),0);assert.equal(await home.locator("#pricing a[data-try-plan]").count(),3);
+ assert.equal(await home.locator('#pricing [data-plan-included="starter"] li').count(),10);assert.equal(await home.locator('#pricing [data-plan-included="growth"] li').count(),6);await home.close();console.log("PASS plan cards on homepage without JavaScript");
  console.log("PASS raw HTML content is readable without JavaScript");
 }catch(error){console.error(log);throw error;}finally{await browser?.close();if(server?.pid)try{process.kill(-server.pid,"SIGTERM");}catch{}}
