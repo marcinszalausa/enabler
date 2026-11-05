@@ -17,6 +17,7 @@ export function GenerateButton({
   ideas,
   source,
   style,
+  avatar,
 }: {
   productId: string;
   campaignId?: string;
@@ -30,6 +31,8 @@ export function GenerateButton({
   source?: string;
   // A style reference to follow, by id.
   style?: string;
+  // An AI avatar to feature, by id.
+  avatar?: string;
 }) {
   const { state, action, pending, requestId } = useGenerationAction(initialRequestId);
   const { t } = useI18n();
@@ -43,6 +46,7 @@ export function GenerateButton({
       <input type="hidden" name="quality" value={quality} />
       {source && <input type="hidden" name="source" value={source} />}
       {style && <input type="hidden" name="style" value={style} />}
+      {avatar && <input type="hidden" name="avatar" value={avatar} />}
       {ideas !== undefined && <input type="hidden" name="ideas" value={ideas} />}
       <button
         type="submit"

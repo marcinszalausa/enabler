@@ -23,6 +23,7 @@ import { fmt } from "@/i18n/format";
 import { canEditWorkspace, WORKSPACE_WRITE_DENIED } from "@/lib/workspace-access";
 import { ownsSourceImage, parseSourceField } from "@/lib/source-image";
 import { canUseStyle, parseStyleField } from "@/lib/style-references";
+import { canUseAvatar, parseAvatarField } from "@/lib/avatars";
 
 export type FormState = { error: string | null };
 
@@ -135,6 +136,11 @@ export async function startGeneration(
   if (styleId && !(await canUseStyle(supabase, workspaceId, styleId))) {
     return { error: (await requestMessages()).picker.gone };
   }
+  // An AI avatar to feature (image ads only).
+  const avatarId = video ? null : parseAvatarField(formData.get("avatar"));
+  if (avatarId && !(await canUseAvatar(supabase, workspaceId, avatarId))) {
+    return { error: (await requestMessages()).picker.gone };
+  }
 
   const requestId = String(formData.get("requestId") ?? "");
   if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(requestId)) {
@@ -163,7 +169,7 @@ export async function startGeneration(
     generation_type: video ? "video_ads" : "image_ads",
     generation_model: `claude + fal ${video ? "video" : "image"} ${quality}`,
     amount: cost,
-    options: { ...(options ?? { language, quality, ideas }), ...(creativePreferences ? { creative_preferences: creativePreferences } : {}), brand_memory: brandMemory, ...(campaign ? { campaign } : {}), ...(sourceImage ? { source_image: sourceImage } : {}), ...(styleId ? { style_reference: { id: styleId } } : {}) },
+    options: { ...(options ?? { language, quality, ideas }), ...(creativePreferences ? { creative_preferences: creativePreferences } : {}), brand_memory: brandMemory, ...(campaign ? { campaign } : {}), ...(sourceImage ? { source_image: sourceImage } : {}), ...(styleId ? { style_reference: { id: styleId } } : {}), ...(avatarId ? { avatar: { id: avatarId } } : {}) },
   });
   if (error) {
     if(error.code==="P0001"&&error.message==="TRIAL_BATCH_ACTIVE")return {error:(await requestMessages()).trial.busy};
