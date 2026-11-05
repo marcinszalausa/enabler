@@ -45,7 +45,6 @@ export const LANGUAGES = {
     script: "chinese",
   },
   hindi: { label: "Hindi", native: "हिन्दी", code: "hi", script: "devanagari" },
-  arabic: { label: "Arabic", native: "العربية", code: "ar", script: "arabic" },
 } as const;
 
 export type LanguageKey = keyof typeof LANGUAGES;

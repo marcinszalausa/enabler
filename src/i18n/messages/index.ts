@@ -26,7 +26,6 @@ const loaders: Record<Locale, () => Promise<Messages>> = {
   ko: () => import("./ko").then((m) => m.ko),
   zh: () => import("./zh").then((m) => m.zh),
   hi: () => import("./hi").then((m) => m.hi),
-  ar: () => import("./ar").then((m) => m.ar),
 };
 
 export function getMessages(locale: Locale): Promise<Messages> {

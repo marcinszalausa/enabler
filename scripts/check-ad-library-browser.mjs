@@ -26,7 +26,7 @@ try{
  const capture=b=>{log=(log+b).slice(-18000);};server.stdout.on("data",capture);server.stderr.on("data",capture);
  let ready=false;for(let i=0;i<100;i++){try{if((await fetch("http://localhost:3111/library-preview",{signal:AbortSignal.timeout(2000)})).ok){ready=true;break;}}catch{}await pause(1000);}assert.ok(ready,"Library fixture ready");
  browser=await chromium.launch({headless:true});
- for(const [width,locale,theme] of [[320,"en","light"],[390,"pl","dark"],[390,"ar","light"],[1440,"en","dark"]]){
+ for(const [width,locale,theme] of [[320,"en","light"],[390,"pl","dark"],[390,"ja","light"],[1440,"en","dark"]]){
   sql("delete from public.creative_favorites where user_id='81000000-0000-4000-8000-000000000001' and creative_id='"+favoriteId+"'");
   const context=await browser.newContext({viewport:{width,height:1000},reducedMotion:"reduce"});
   const page=await context.newPage(),errors=[],videoRequests=[];

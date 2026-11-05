@@ -126,7 +126,7 @@ export const en = {
       },
       {
         title: "A voice that speaks your buyer's language",
-        body: "Voiceover in {count} languages, from Spanish and Polish to Japanese and Arabic, with captions people can read on mute.",
+        body: "Voiceover in {count} languages, from Spanish and Polish to Japanese and Hindi, with captions people can read on mute.",
       },
       {
         title: "Music and an end card",
@@ -200,7 +200,7 @@ export const en = {
       },
       {
         q: "Which languages can my ads be in?",
-        a: "{count} languages, including English, Spanish, Portuguese, French, German, Polish, Japanese, Korean, Chinese, Hindi and Arabic. Pick one for each run.",
+        a: "{count} languages, including English, Spanish, Portuguese, French, German, Polish, Japanese, Korean, Chinese and Hindi. Pick one for each run.",
       },
       {
         q: "Where can I use the ads?",
@@ -833,7 +833,7 @@ export const en = {
     cards: [
       { title: "Choose your quality", body: "Good, Better or Best on every ad, made with leading image and video models. You see the exact credit cost before anything is made." },
       { title: "Your product, as it really is", body: "We start from your real product page and keep its color, shape and details. Every image and finished video is checked automatically before it reaches you." },
-      { title: "Speak your customers' language", body: "Ads, captions and video voiceovers in 17 languages, from Spanish and Polish to Japanese, Hindi and Arabic." },
+      { title: "Speak your customers' language", body: "Ads, captions and video voiceovers in 16 languages, from Spanish and Polish to Japanese and Hindi." },
       { title: "Your brand, remembered", body: "Save your logo, colors, font and brand voice once. Every new campaign starts on brand." },
       { title: "Show up every week", body: "Plan campaigns, schedule posts on 10 networks or turn on autopilot, then see which posts earned clicks. Product links are tagged so your store analytics show visits from each post." },
       { title: "Honest from the first click", body: "Clear prices, credits returned when an ad can't be delivered, and no invented reviews, discounts or claims in your ads." },
@@ -908,6 +908,128 @@ export const en = {
       beforeafter: "Before & after",
       studio: "Studio",
     },
+  },
+  pricingPage: {
+    metaTitle: "Pricing · Gooidy",
+    metaDescription:
+      "Start free with 100 credits. Launch, Grow and Scale plans for image and video ads, publishing and results, from $39 a month.",
+    title: "Pricing",
+    sub: "Start free. Pick a plan when your business is ready for more.",
+    monthly: "Monthly",
+    yearly: "Yearly",
+    save: "Save {percent}%",
+    popular: "Popular",
+    soon: "Soon",
+    cta: "Start free",
+    freeNote: "Free for everyone, no card needed",
+    perMonth: "Per month",
+    perMonthYearly:
+      "Per month, billed yearly ({total} up front). {monthly} if billed monthly.",
+    everythingIn: "Everything in {plan}, plus:",
+    free: {
+      name: "Free",
+      tagline: "Try Gooidy",
+      features: [
+        "{credits} credits to start",
+        "Image and video ads from one link",
+        "Your logo, colors, font and voice",
+        "Ads in {languages} languages",
+        "Good, Better or Best quality",
+        "Post to {accounts} social account",
+        "Download every ad",
+      ],
+    },
+    starter: {
+      tagline: "For a steady posting routine",
+      features: [
+        "{credits} credits every month",
+        "Unused credits carry over a month",
+        "Connect up to {accounts} social accounts",
+        "Weekly posting planner",
+      ],
+      soonFeature: "Boost your best posts",
+    },
+    plus: {
+      tagline: "For learning what works",
+      features: [
+        "{credits} credits every month",
+        "Connect up to {accounts} social accounts",
+        "Compare up to {posts} recent posts",
+        "Filter results by network",
+        "Download a results report",
+      ],
+    },
+    growth: {
+      tagline: "For running more tests",
+      features: [
+        "{credits} credits every month",
+        "Connect up to {accounts} social accounts",
+        "Compare up to {posts} recent posts",
+        "A next-test plan from your results",
+        "Lowest price per credit",
+      ],
+    },
+    footnotes: [
+      "Credits work for images and videos. An image uses {imageMin}–{imageMax} credits and a second of video {videoMin}–{videoMax}, depending on the quality you pick. You see the cost before you create.",
+      "{days}-day money-back guarantee on your first payment. Cancel anytime.",
+      "Prices are in US dollars and don't include applicable taxes. Checkout shows the amount in your currency. Paid plans open soon; until then every account starts free.",
+      "Results depend on your products, ads and audience, and aren't guaranteed.",
+    ],
+    packsTitle: "Need more credits?",
+    packsSub:
+      "Add a credit pack any time, on any plan. Pay once; pack credits never expire.",
+    pack: "{count} credits",
+    journeyTitle: "Every plan covers the whole journey",
+    journey: [
+      {
+        name: "Create",
+        body: "Paste a product link. Get images and videos in your brand, in {languages} languages.",
+      },
+      {
+        name: "Edit",
+        body: "Change headlines and captions for free, redo a scene, download what you like.",
+      },
+      {
+        name: "Publish",
+        body: "Post now or schedule on 10 social networks, in your time zone.",
+      },
+      {
+        name: "Analyze",
+        body: "See impressions, clicks and views for each post. Make more of what works.",
+      },
+    ],
+    faqTitle: "Questions about pricing",
+    faq: [
+      {
+        q: "What is a credit?",
+        a: "Credits pay for making ads. An image uses {imageMin} to {imageMax} credits and a second of video {videoMin} to {videoMax}, depending on quality. Images and videos share one balance, and the cost is shown before you create.",
+      },
+      {
+        q: "What if I run out of credits?",
+        a: "Buy a credit pack any time, or move to a bigger plan. Pack credits never expire. Plan credits refill every month, and unused ones carry over for one month.",
+      },
+      {
+        q: "Do higher plans make better ads?",
+        a: "Every plan has the same quality choices. Higher plans add more credits, more social accounts and deeper results tools.",
+      },
+      {
+        q: "Can I pay yearly?",
+        a: "Yes. Paying for a year at once costs {percent}% less, and you still get your credits every month.",
+      },
+      {
+        q: "Can I get my money back?",
+        a: "Yes. Email hello@gooidy.com within {days} days of your first payment for a full refund of it.",
+      },
+      {
+        q: "Can I pay in my own currency?",
+        a: "Yes. Prices are set in US dollars, and checkout shows the amount in your currency with the ways to pay that are common where you live.",
+      },
+    ],
+    billingLink: "Billing, cancellation and refund terms",
+    packOff: "{percent}% off credit packs",
+    packsDiscount: "Up to {percent}% off packs on a paid plan.",
+    packsAuto: "Turn on auto-reload and a pack is added when you run low.",
+    seeAll: "See full pricing",
   },
   avatars: {
     title: "Avatar",

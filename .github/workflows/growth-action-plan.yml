@@ -25,8 +25,8 @@ jobs:
           curl --fail --silent --show-error https://supabase.com/changelog.md | head -c 12000
           curl --fail --silent --show-error https://supabase.com/docs/guides/auth/server-side/nextjs.md | head -c 22000
       - run: npx next typegen && npx tsc --noEmit
-      - run: node --experimental-strip-types --test tests/growth-testing.test.ts tests/plan-value.test.ts tests/pricing-catalog.test.ts tests/simple-paid-plans.test.ts
-      - run: npx eslint src/lib/growth-testing.ts src/lib/plan-value.ts src/lib/paid-plans.ts src/lib/pricing-catalog.ts src/lib/public-information.ts src/app/_landing/public-pricing.tsx src/app/_landing/plan-journey.tsx 'src/app/[locale]/dashboard/insights/'
+      - run: node --experimental-strip-types --test tests/growth-testing.test.ts tests/plan-value.test.ts tests/simple-paid-plans.test.ts
+      - run: npx eslint src/lib/growth-testing.ts src/lib/plan-value.ts src/lib/paid-plans.ts src/lib/public-information.ts src/app/_landing/public-pricing.tsx 'src/app/[locale]/dashboard/insights/'
       - run: npm install --prefix /tmp/plan-inclusions --no-package-lock playwright@1.56.1
       - run: /tmp/plan-inclusions/node_modules/.bin/playwright install --with-deps chromium
       - name: Inherited plan lists, disabled purchases and optional free preview

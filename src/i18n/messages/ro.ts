@@ -127,7 +127,7 @@ export const ro: Messages = {
       },
       {
         title: "O voce care vorbește limba clientului tău",
-        body: "Voce în {count} limbi, de la spaniolă și poloneză la japoneză și arabă, cu subtitrări de citit fără sonor.",
+        body: "Voce în {count} limbi, de la spaniolă și poloneză la japoneză și hindi, cu subtitrări de citit fără sonor.",
       },
       {
         title: "Muzică și cadru final",
@@ -207,7 +207,7 @@ export const ro: Messages = {
       },
       {
         q: "În ce limbi pot fi reclamele mele?",
-        a: "În {count} limbi, printre care engleză, spaniolă, portugheză, franceză, germană, poloneză, japoneză, coreeană, chineză, hindi și arabă. Alegi una la fiecare rulare.",
+        a: "În {count} limbi, printre care engleză, spaniolă, portugheză, franceză, germană, poloneză, japoneză, coreeană, chineză și hindi. Alegi una la fiecare rulare.",
       },
       {
         q: "Unde pot folosi reclamele?",
@@ -840,7 +840,7 @@ export const ro: Messages = {
     cards: [
       { title: "Alege calitatea", body: "Bună, Mai bună sau Cea mai bună pentru fiecare reclamă, realizată cu modele de top pentru imagine și video. Vezi costul exact în credite înainte de a se crea ceva." },
       { title: "Produsul tău, așa cum este", body: "Pornim de la pagina reală a produsului și îi păstrăm culoarea, forma și detaliile. Fiecare imagine și fiecare video finalizat sunt verificate automat înainte să ajungă la tine." },
-      { title: "Vorbește limba clienților tăi", body: "Reclame, descrieri și voce din off în 17 limbi, de la spaniolă și poloneză la japoneză, hindi și arabă." },
+      { title: "Vorbește limba clienților tăi", body: "Reclame, descrieri și voce din off în 16 limbi, de la spaniolă și poloneză la japoneză și hindi." },
       { title: "Brandul tău, memorat", body: "Salvează o singură dată logo-ul, culorile, fontul și tonul brandului. Fiecare campanie nouă pornește în stilul tău." },
       { title: "Fii prezent în fiecare săptămână", body: "Planifică campanii, programează postări pe 10 rețele sau pornește pilotul automat, apoi vezi ce postări au adus clicuri. Linkurile de produs sunt etichetate, astfel încât statisticile magazinului arată vizitele din fiecare postare." },
       { title: "Onest de la primul clic", body: "Prețuri clare, credite returnate când o reclamă nu poate fi livrată și fără recenzii, reduceri sau afirmații inventate în reclamele tale." },
@@ -915,6 +915,125 @@ export const ro: Messages = {
       beforeafter: "Înainte și după",
       studio: "Studio",
     },
+  },
+  pricingPage: {
+    metaTitle: "Prețuri · Gooidy",
+    metaDescription: "Începe gratuit cu 100 de credite. Planurile Launch, Grow și Scale pentru reclame cu imagini și video, publicare și rezultate, de la 39 $ pe lună.",
+    title: "Prețuri",
+    sub: "Începe gratuit. Alege un plan când afacerea ta e pregătită pentru mai mult.",
+    monthly: "Lunar",
+    yearly: "Anual",
+    save: "Economisești {percent}%",
+    popular: "Popular",
+    soon: "În curând",
+    cta: "Începe gratuit",
+    freeNote: "Gratuit pentru toți, fără card",
+    perMonth: "Pe lună",
+    perMonthYearly: "Pe lună, facturat anual ({total} în avans). {monthly} la plata lunară.",
+    everythingIn: "Tot din {plan}, plus:",
+    free: {
+      name: "Gratuit",
+      tagline: "Încearcă Gooidy",
+      features: [
+        "{credits} de credite pentru început",
+        "Reclame cu imagini și video dintr-un link",
+        "Logo-ul, culorile, fontul și tonul tău",
+        "Reclame în {languages} limbi",
+        "Calitate Bună, Mai bună sau Cea mai bună",
+        "Publicare pe {accounts} cont social",
+        "Descarci fiecare reclamă",
+      ],
+    },
+    starter: {
+      tagline: "Pentru postări regulate",
+      features: [
+        "{credits} de credite în fiecare lună",
+        "Creditele nefolosite se reportează o lună",
+        "Conectezi până la {accounts} conturi sociale",
+        "Planificator săptămânal de postări",
+      ],
+      soonFeature: "Promovează cele mai bune postări",
+    },
+    plus: {
+      tagline: "Pentru a afla ce funcționează",
+      features: [
+        "{credits} de credite în fiecare lună",
+        "Conectezi până la {accounts} conturi sociale",
+        "Compari până la {posts} postări recente",
+        "Filtrezi rezultatele pe rețea",
+        "Descarci un raport de rezultate",
+      ],
+    },
+    growth: {
+      tagline: "Pentru mai multe teste",
+      features: [
+        "{credits} de credite în fiecare lună",
+        "Conectezi până la {accounts} conturi sociale",
+        "Compari până la {posts} postări recente",
+        "Un plan pentru următorul test din rezultatele tale",
+        "Cel mai mic preț pe credit",
+      ],
+    },
+    footnotes: [
+      "Creditele merg pentru imagini și video. O imagine folosește {imageMin}–{imageMax} credite, iar o secundă de video {videoMin}–{videoMax}, în funcție de calitatea aleasă. Vezi costul înainte să creezi.",
+      "Garanție de returnare a banilor de {days} de zile pentru prima plată. Anulezi oricând.",
+      "Prețurile sunt în dolari americani și nu includ taxele aplicabile. La plată vezi suma în moneda ta. Planurile plătite se deschid în curând; până atunci, fiecare cont începe gratuit.",
+      "Rezultatele depind de produse, reclame și public și nu sunt garantate.",
+    ],
+    packsTitle: "Ai nevoie de mai multe credite?",
+    packsSub: "Adaugă oricând un pachet de credite, cu orice plan. Plătești o dată; creditele din pachet nu expiră niciodată.",
+    pack: "{count} de credite",
+    journeyTitle: "Fiecare plan acoperă tot drumul",
+    journey: [
+      {
+        name: "Creează",
+        body: "Lipește linkul unui produs. Primești imagini și video în stilul mărcii tale, în {languages} limbi.",
+      },
+      {
+        name: "Editează",
+        body: "Schimbă gratuit titlurile și textele, refă o scenă, descarcă ce-ți place.",
+      },
+      {
+        name: "Publică",
+        body: "Postează acum sau programează pe 10 rețele sociale, în fusul tău orar.",
+      },
+      {
+        name: "Analizează",
+        body: "Vezi afișările, clicurile și vizualizările fiecărei postări. Fă mai mult din ce funcționează.",
+      },
+    ],
+    faqTitle: "Întrebări despre prețuri",
+    faq: [
+      {
+        q: "Ce este un credit?",
+        a: "Creditele plătesc crearea reclamelor. O imagine folosește între {imageMin} și {imageMax} credite, iar o secundă de video între {videoMin} și {videoMax}, în funcție de calitate. Imaginile și video-urile împart același sold, iar costul apare înainte să creezi.",
+      },
+      {
+        q: "Ce fac dacă rămân fără credite?",
+        a: "Cumpără oricând un pachet de credite sau treci la un plan mai mare. Creditele din pachete nu expiră. Creditele planului se reîncarcă lunar, iar cele nefolosite se reportează o lună.",
+      },
+      {
+        q: "Planurile mai mari fac reclame mai bune?",
+        a: "Fiecare plan are aceleași opțiuni de calitate. Planurile mai mari adaugă mai multe credite, mai multe conturi sociale și instrumente de rezultate mai complete.",
+      },
+      {
+        q: "Pot plăti anual?",
+        a: "Da. Plata pe un an întreg costă cu {percent}% mai puțin, iar creditele le primești în continuare lunar.",
+      },
+      {
+        q: "Îmi pot primi banii înapoi?",
+        a: "Da. Scrie la hello@gooidy.com în {days} de zile de la prima plată și o primești înapoi integral.",
+      },
+      {
+        q: "Pot plăti în moneda mea?",
+        a: "Da. Prețurile sunt stabilite în dolari americani, iar la plată vezi suma în moneda ta, cu metodele de plată obișnuite unde locuiești.",
+      },
+    ],
+    billingLink: "Condiții de facturare, anulare și rambursare",
+    packOff: "{percent}% reducere la pachetele de credite",
+    packsDiscount: "Până la {percent}% reducere la pachete cu un plan plătit.",
+    packsAuto: "Activează reîncărcarea automată și se adaugă un pachet când rămâi cu puține credite.",
+    seeAll: "Vezi toate prețurile",
   },
   avatars: {
     title: "Avatar",

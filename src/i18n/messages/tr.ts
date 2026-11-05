@@ -126,7 +126,7 @@ export const tr: Messages = {
       },
       {
         title: "Müşterinizin dilini konuşan bir ses",
-        body: "İspanyolca ve Lehçeden Japonca ve Arapçaya {count} dilde seslendirme, sessizde okunabilen altyazılarla.",
+        body: "İspanyolca ve Lehçeden Japonca ve Hintçeye {count} dilde seslendirme, sessizde okunabilen altyazılarla.",
       },
       {
         title: "Müzik ve kapanış ekranı",
@@ -201,7 +201,7 @@ export const tr: Messages = {
       },
       {
         q: "Reklamlarım hangi dillerde olabilir?",
-        a: "İngilizce, İspanyolca, Portekizce, Fransızca, Almanca, Lehçe, Japonca, Korece, Çince, Hintçe ve Arapça dahil {count} dilde. Her çalıştırma için bir dil seçersiniz.",
+        a: "İngilizce, İspanyolca, Portekizce, Fransızca, Almanca, Lehçe, Japonca, Korece, Çince ve Hintçe dahil {count} dilde. Her çalıştırma için bir dil seçersiniz.",
       },
       {
         q: "Reklamları nerede kullanabilirim?",
@@ -840,7 +840,7 @@ export const tr: Messages = {
     cards: [
       { title: "Kaliteyi siz seçin", body: "Her reklam için İyi, Daha İyi veya En İyi; önde gelen görsel ve video modelleriyle. Hiçbir şey üretilmeden önce kesin kredi maliyetini görürsünüz." },
       { title: "Ürününüz, olduğu gibi", body: "Gerçek ürün sayfanızdan başlar, rengini, biçimini ve ayrıntılarını koruruz. Her görsel ve tamamlanan her video size ulaşmadan önce otomatik olarak kontrol edilir." },
-      { title: "Müşterilerinizin dilini konuşun", body: "İspanyolca ve Lehçeden Japonca, Hintçe ve Arapçaya kadar 17 dilde reklam, açıklama ve video seslendirme." },
+      { title: "Müşterilerinizin dilini konuşun", body: "İspanyolca ve Lehçeden Japonca ve Hintçeye kadar 16 dilde reklam, açıklama ve video seslendirme." },
       { title: "Markanız hatırlanır", body: "Logonuzu, renklerinizi, yazı tipinizi ve marka dilinizi bir kez kaydedin. Her yeni kampanya markanıza uygun başlar." },
       { title: "Her hafta görünür olun", body: "Kampanya planlayın, 10 ağda gönderi zamanlayın ya da otomatik pilotu açın, sonra hangi gönderilerin tıklama aldığını görün. Ürün bağlantıları etiketlenir, böylece mağaza analitiğiniz her gönderiden gelen ziyaretleri gösterir." },
       { title: "İlk tıklamadan itibaren dürüst", body: "Net fiyatlar, teslim edilemeyen reklamlar için iade edilen krediler ve reklamlarınızda uydurma yorum, indirim veya iddia yok." },
@@ -915,6 +915,125 @@ export const tr: Messages = {
       beforeafter: "Önce ve sonra",
       studio: "Stüdyo",
     },
+  },
+  pricingPage: {
+    metaTitle: "Fiyatlar · Gooidy",
+    metaDescription: "100 krediyle ücretsiz başlayın. Görsel ve video reklamlar, yayınlama ve sonuçlar için Launch, Grow ve Scale planları, aylık 39 $'dan başlayan fiyatlarla.",
+    title: "Fiyatlar",
+    sub: "Ücretsiz başlayın. İşletmeniz daha fazlasına hazır olduğunda bir plan seçin.",
+    monthly: "Aylık",
+    yearly: "Yıllık",
+    save: "%{percent} tasarruf",
+    popular: "Popüler",
+    soon: "Yakında",
+    cta: "Ücretsiz başla",
+    freeNote: "Herkese ücretsiz, kart gerekmez",
+    perMonth: "Aylık",
+    perMonthYearly: "Aylık, yıllık faturalandırılır (peşin {total}). Aylık faturalandırmada {monthly}.",
+    everythingIn: "{plan} planındaki her şey, artı:",
+    free: {
+      name: "Ücretsiz",
+      tagline: "Gooidy'yi deneyin",
+      features: [
+        "Başlangıç için {credits} kredi",
+        "Tek bağlantıdan görsel ve video reklamlar",
+        "Logonuz, renkleriniz, yazı tipiniz ve üslubunuz",
+        "{languages} dilde reklamlar",
+        "İyi, Daha İyi veya En İyi kalite",
+        "{accounts} sosyal hesapta paylaşım",
+        "Tüm reklamları indirme",
+      ],
+    },
+    starter: {
+      tagline: "Düzenli paylaşım için",
+      features: [
+        "Her ay {credits} kredi",
+        "Kullanılmayan krediler bir ay devreder",
+        "{accounts} sosyal hesaba kadar bağlantı",
+        "Haftalık paylaşım planlayıcısı",
+      ],
+      soonFeature: "En iyi gönderilerinizi öne çıkarın",
+    },
+    plus: {
+      tagline: "Neyin işe yaradığını öğrenmek için",
+      features: [
+        "Her ay {credits} kredi",
+        "{accounts} sosyal hesaba kadar bağlantı",
+        "Son {posts} gönderiye kadar karşılaştırma",
+        "Sonuçları ağa göre filtreleme",
+        "Sonuç raporu indirme",
+      ],
+    },
+    growth: {
+      tagline: "Daha fazla test için",
+      features: [
+        "Her ay {credits} kredi",
+        "{accounts} sosyal hesaba kadar bağlantı",
+        "Son {posts} gönderiye kadar karşılaştırma",
+        "Sonuçlarınızdan bir sonraki test planı",
+        "Kredi başına en düşük fiyat",
+      ],
+    },
+    footnotes: [
+      "Krediler görsel ve videolar için geçerlidir. Bir görsel {imageMin}–{imageMax} kredi, bir saniyelik video {videoMin}–{videoMax} kredi kullanır; seçtiğiniz kaliteye bağlıdır. Maliyeti oluşturmadan önce görürsünüz.",
+      "İlk ödemenizde {days} gün para iade garantisi. İstediğiniz zaman iptal edin.",
+      "Fiyatlar ABD doları cinsindendir ve geçerli vergiler dahil değildir. Ödeme sayfası tutarı kendi para biriminizde gösterir. Ücretli planlar yakında açılıyor; o zamana kadar her hesap ücretsiz başlar.",
+      "Sonuçlar ürünlerinize, reklamlarınıza ve kitlenize bağlıdır ve garanti edilmez.",
+    ],
+    packsTitle: "Daha fazla krediye mi ihtiyacınız var?",
+    packsSub: "Her planda, istediğiniz zaman kredi paketi ekleyin. Bir kez ödeyin; paket kredilerinin süresi dolmaz.",
+    pack: "{count} kredi",
+    journeyTitle: "Her plan tüm yolculuğu kapsar",
+    journey: [
+      {
+        name: "Oluştur",
+        body: "Bir ürün bağlantısı yapıştırın. Markanıza uygun görsel ve videoları {languages} dilde alın.",
+      },
+      {
+        name: "Düzenle",
+        body: "Başlıkları ve metinleri ücretsiz değiştirin, bir sahneyi yeniden yapın, beğendiğinizi indirin.",
+      },
+      {
+        name: "Yayınla",
+        body: "Hemen paylaşın veya 10 sosyal ağda kendi saat diliminizde planlayın.",
+      },
+      {
+        name: "Analiz et",
+        body: "Her gönderinin gösterim, tıklama ve izlenmelerini görün. İşe yarayandan daha fazla yapın.",
+      },
+    ],
+    faqTitle: "Fiyatlarla ilgili sorular",
+    faq: [
+      {
+        q: "Kredi nedir?",
+        a: "Krediler reklam oluşturmanın bedelidir. Bir görsel kaliteye göre {imageMin} ile {imageMax} arası, bir saniyelik video {videoMin} ile {videoMax} arası kredi kullanır. Görsel ve videolar tek bakiyeyi paylaşır; maliyet oluşturmadan önce gösterilir.",
+      },
+      {
+        q: "Kredim biterse ne olur?",
+        a: "İstediğiniz zaman kredi paketi alın veya daha büyük bir plana geçin. Paket kredilerinin süresi dolmaz. Plan kredileri her ay yenilenir, kullanılmayanlar bir ay devreder.",
+      },
+      {
+        q: "Üst planlar daha iyi reklam mı yapar?",
+        a: "Her planda aynı kalite seçenekleri vardır. Üst planlar daha fazla kredi, daha fazla sosyal hesap ve daha kapsamlı sonuç araçları ekler.",
+      },
+      {
+        q: "Yıllık ödeyebilir miyim?",
+        a: "Evet. Bir yılı tek seferde ödemek %{percent} daha ucuzdur ve kredileriniz yine her ay gelir.",
+      },
+      {
+        q: "Paramı geri alabilir miyim?",
+        a: "Evet. İlk ödemenizden sonraki {days} gün içinde hello@gooidy.com adresine yazın, tamamı iade edilsin.",
+      },
+      {
+        q: "Kendi para birimimle ödeyebilir miyim?",
+        a: "Evet. Fiyatlar ABD doları cinsindendir; ödeme sayfası tutarı kendi para biriminizde ve bölgenizde yaygın ödeme yöntemleriyle gösterir.",
+      },
+    ],
+    billingLink: "Faturalandırma, iptal ve iade koşulları",
+    packOff: "Kredi paketlerinde %{percent} indirim",
+    packsDiscount: "Ücretli planda paketlerde %{percent}'a varan indirim.",
+    packsAuto: "Otomatik yüklemeyi açın; krediniz azaldığında bir paket eklenir.",
+    seeAll: "Tüm fiyatları gör",
   },
   avatars: {
     title: "Avatar",

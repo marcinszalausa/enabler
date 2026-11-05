@@ -127,7 +127,7 @@ export const de: Messages = {
       },
       {
         title: "Eine Stimme, die die Sprache deiner Kunden spricht",
-        body: "Sprecher in {count} Sprachen, von Spanisch und Polnisch bis Japanisch und Arabisch, mit Untertiteln für Ton aus.",
+        body: "Sprecher in {count} Sprachen, von Spanisch und Polnisch bis Japanisch und Hindi, mit Untertiteln für Ton aus.",
       },
       {
         title: "Musik und Abspann",
@@ -202,7 +202,7 @@ export const de: Messages = {
       },
       {
         q: "In welchen Sprachen können meine Anzeigen sein?",
-        a: "In {count} Sprachen, darunter Englisch, Spanisch, Portugiesisch, Französisch, Deutsch, Polnisch, Japanisch, Koreanisch, Chinesisch, Hindi und Arabisch. Du wählst eine pro Durchlauf.",
+        a: "In {count} Sprachen, darunter Englisch, Spanisch, Portugiesisch, Französisch, Deutsch, Polnisch, Japanisch, Koreanisch, Chinesisch und Hindi. Du wählst eine pro Durchlauf.",
       },
       {
         q: "Wo kann ich die Anzeigen nutzen?",
@@ -845,7 +845,7 @@ export const de: Messages = {
     cards: [
       { title: "Wähle deine Qualität", body: "Gut, Besser oder Beste für jede Anzeige, erstellt mit führenden Bild- und Videomodellen. Du siehst die genauen Credit-Kosten, bevor etwas erstellt wird." },
       { title: "Dein Produkt, wie es wirklich ist", body: "Wir starten mit deiner echten Produktseite und bewahren Farbe, Form und Details. Jedes Bild und jedes fertige Video wird automatisch geprüft, bevor es bei dir ankommt." },
-      { title: "Sprich die Sprache deiner Kunden", body: "Anzeigen, Texte und Video-Sprecher in 17 Sprachen, von Spanisch und Polnisch bis Japanisch, Hindi und Arabisch." },
+      { title: "Sprich die Sprache deiner Kunden", body: "Anzeigen, Texte und Video-Sprecher in 16 Sprachen, von Spanisch und Polnisch bis Japanisch und Hindi." },
       { title: "Deine Marke, gespeichert", body: "Speichere Logo, Farben, Schrift und Markenstimme einmal. Jede neue Kampagne startet im Stil deiner Marke." },
       { title: "Jede Woche präsent", body: "Plane Kampagnen, plane Beiträge auf 10 Netzwerken oder schalte den Autopiloten ein und sieh, welche Beiträge Klicks gebracht haben. Produktlinks werden markiert, damit die Analyse deines Shops die Besuche aus jedem Beitrag zeigt." },
       { title: "Ehrlich ab dem ersten Klick", body: "Klare Preise, Credits zurück, wenn eine Anzeige nicht geliefert werden kann, und keine erfundenen Bewertungen, Rabatte oder Versprechen in deinen Anzeigen." },
@@ -920,6 +920,125 @@ export const de: Messages = {
       beforeafter: "Vorher & nachher",
       studio: "Studio",
     },
+  },
+  pricingPage: {
+    metaTitle: "Preise · Gooidy",
+    metaDescription: "Kostenlos starten mit 100 Credits. Die Tarife Launch, Grow und Scale für Bild- und Videoanzeigen, Veröffentlichung und Ergebnisse, ab 39 $ im Monat.",
+    title: "Preise",
+    sub: "Kostenlos starten. Wähle einen Tarif, wenn dein Unternehmen bereit für mehr ist.",
+    monthly: "Monatlich",
+    yearly: "Jährlich",
+    save: "{percent} % sparen",
+    popular: "Beliebt",
+    soon: "Bald",
+    cta: "Kostenlos starten",
+    freeNote: "Kostenlos für alle, ohne Karte",
+    perMonth: "Pro Monat",
+    perMonthYearly: "Pro Monat bei jährlicher Zahlung ({total} im Voraus). {monthly} bei monatlicher Zahlung.",
+    everythingIn: "Alles aus {plan}, plus:",
+    free: {
+      name: "Kostenlos",
+      tagline: "Gooidy ausprobieren",
+      features: [
+        "{credits} Credits zum Start",
+        "Bild- und Videoanzeigen aus einem Link",
+        "Dein Logo, deine Farben, Schrift und Tonalität",
+        "Anzeigen in {languages} Sprachen",
+        "Qualität Gut, Besser oder Beste",
+        "Auf {accounts} Social-Konto posten",
+        "Jede Anzeige herunterladen",
+      ],
+    },
+    starter: {
+      tagline: "Für regelmäßiges Posten",
+      features: [
+        "{credits} Credits jeden Monat",
+        "Ungenutzte Credits gelten einen Monat weiter",
+        "Bis zu {accounts} Social-Konten verbinden",
+        "Wöchentlicher Posting-Planer",
+      ],
+      soonFeature: "Deine besten Posts bewerben",
+    },
+    plus: {
+      tagline: "Um zu lernen, was wirkt",
+      features: [
+        "{credits} Credits jeden Monat",
+        "Bis zu {accounts} Social-Konten verbinden",
+        "Bis zu {posts} aktuelle Posts vergleichen",
+        "Ergebnisse nach Netzwerk filtern",
+        "Ergebnisbericht herunterladen",
+      ],
+    },
+    growth: {
+      tagline: "Für mehr Tests",
+      features: [
+        "{credits} Credits jeden Monat",
+        "Bis zu {accounts} Social-Konten verbinden",
+        "Bis zu {posts} aktuelle Posts vergleichen",
+        "Ein Plan für den nächsten Test aus deinen Ergebnissen",
+        "Niedrigster Preis pro Credit",
+      ],
+    },
+    footnotes: [
+      "Credits gelten für Bilder und Videos. Ein Bild kostet {imageMin}–{imageMax} Credits, eine Sekunde Video {videoMin}–{videoMax}, je nach gewählter Qualität. Du siehst die Kosten vor dem Erstellen.",
+      "{days} Tage Geld-zurück-Garantie auf deine erste Zahlung. Jederzeit kündbar.",
+      "Preise in US-Dollar, zuzüglich anfallender Steuern. Beim Bezahlen siehst du den Betrag in deiner Währung. Bezahlte Tarife starten bald; bis dahin beginnt jedes Konto kostenlos.",
+      "Ergebnisse hängen von deinen Produkten, Anzeigen und deiner Zielgruppe ab und sind nicht garantiert.",
+    ],
+    packsTitle: "Mehr Credits nötig?",
+    packsSub: "Kaufe jederzeit ein Credit-Paket dazu, in jedem Tarif. Einmal zahlen; Paket-Credits verfallen nie.",
+    pack: "{count} Credits",
+    journeyTitle: "Jeder Tarif deckt den ganzen Weg ab",
+    journey: [
+      {
+        name: "Erstellen",
+        body: "Füge einen Produktlink ein. Erhalte Bilder und Videos in deiner Marke, in {languages} Sprachen.",
+      },
+      {
+        name: "Bearbeiten",
+        body: "Überschriften und Texte kostenlos ändern, eine Szene neu machen, Passendes herunterladen.",
+      },
+      {
+        name: "Veröffentlichen",
+        body: "Sofort posten oder auf 10 sozialen Netzwerken planen, in deiner Zeitzone.",
+      },
+      {
+        name: "Auswerten",
+        body: "Impressionen, Klicks und Aufrufe pro Post sehen. Mehr von dem machen, was wirkt.",
+      },
+    ],
+    faqTitle: "Fragen zu den Preisen",
+    faq: [
+      {
+        q: "Was ist ein Credit?",
+        a: "Mit Credits bezahlst du das Erstellen von Anzeigen. Ein Bild kostet {imageMin} bis {imageMax} Credits, eine Sekunde Video {videoMin} bis {videoMax}, je nach Qualität. Bilder und Videos teilen sich ein Guthaben, und die Kosten werden vor dem Erstellen angezeigt.",
+      },
+      {
+        q: "Was, wenn mir die Credits ausgehen?",
+        a: "Kaufe jederzeit ein Credit-Paket oder wechsle in einen größeren Tarif. Paket-Credits verfallen nie. Tarif-Credits werden jeden Monat aufgefüllt, ungenutzte gelten einen Monat weiter.",
+      },
+      {
+        q: "Machen höhere Tarife bessere Anzeigen?",
+        a: "Jeder Tarif hat dieselben Qualitätsstufen. Höhere Tarife bringen mehr Credits, mehr Social-Konten und tiefere Auswertungen.",
+      },
+      {
+        q: "Kann ich jährlich zahlen?",
+        a: "Ja. Ein Jahr auf einmal kostet {percent} % weniger, und deine Credits kommen weiterhin jeden Monat.",
+      },
+      {
+        q: "Bekomme ich mein Geld zurück?",
+        a: "Ja. Schreib innerhalb von {days} Tagen nach deiner ersten Zahlung an hello@gooidy.com, und du bekommst sie vollständig erstattet.",
+      },
+      {
+        q: "Kann ich in meiner Währung zahlen?",
+        a: "Ja. Die Preise sind in US-Dollar festgelegt, und beim Bezahlen siehst du den Betrag in deiner Währung mit den Zahlarten, die bei dir üblich sind.",
+      },
+    ],
+    billingLink: "Bedingungen zu Abrechnung, Kündigung und Erstattung",
+    packOff: "{percent} % Rabatt auf Credit-Pakete",
+    packsDiscount: "Bis zu {percent} % Rabatt auf Pakete mit einem bezahlten Tarif.",
+    packsAuto: "Schalte die automatische Aufladung ein, dann kommt ein Paket dazu, wenn dein Guthaben knapp wird.",
+    seeAll: "Alle Preise ansehen",
   },
   avatars: {
     title: "Avatar",

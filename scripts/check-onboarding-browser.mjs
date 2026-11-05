@@ -24,7 +24,7 @@ try{
  else console.log("LIVE_PRODUCT_PREVIEW store blocked metadata; optional preview fallback applies");
  browser=await chromium.launch({headless:true});
  const jpeg=await readFile("public/reels/softmila-cardigan.jpg"),photo="data:image/jpeg;base64,"+jpeg.toString("base64");
- for(const [width,locale,theme] of [[390,"en","light"],[1440,"en","dark"],[390,"ar","light"]]){
+ for(const [width,locale,theme] of [[390,"en","light"],[1440,"en","dark"],[390,"ja","light"]]){
   const context=await browser.newContext({viewport:{width,height:1000},locale:"en-US",reducedMotion:"reduce"});
   const page=await context.newPage(),errors=[];page.on("pageerror",e=>errors.push(e.message));
   let previewFails=false,paidPosts=0,otpNext=null;

@@ -127,7 +127,7 @@ export const fr: Messages = {
       },
       {
         title: "Une voix qui parle la langue de vos clients",
-        body: "Voix off en {count} langues, de l'espagnol et du polonais au japonais et à l'arabe, avec des sous-titres lisibles sans le son.",
+        body: "Voix off en {count} langues, de l'espagnol et du polonais au japonais et à l'hindi, avec des sous-titres lisibles sans le son.",
       },
       {
         title: "Musique et écran de fin",
@@ -207,7 +207,7 @@ export const fr: Messages = {
       },
       {
         q: "Dans quelles langues mes pubs peuvent-elles être ?",
-        a: "En {count} langues, dont l'anglais, l'espagnol, le portugais, le français, l'allemand, le polonais, le japonais, le coréen, le chinois, l'hindi et l'arabe. Vous en choisissez une à chaque génération.",
+        a: "En {count} langues, dont l'anglais, l'espagnol, le portugais, le français, l'allemand, le polonais, le japonais, le coréen, le chinois et l'hindi. Vous en choisissez une à chaque génération.",
       },
       {
         q: "Où puis-je utiliser les pubs ?",
@@ -852,7 +852,7 @@ export const fr: Messages = {
     cards: [
       { title: "Choisissez votre qualité", body: "Bonne, Meilleure ou Maximale pour chaque publicité, avec les meilleurs modèles d'image et de vidéo. Vous voyez le coût exact en crédits avant toute création." },
       { title: "Votre produit, tel qu'il est", body: "Nous partons de la vraie page de votre produit et conservons sa couleur, sa forme et ses détails. Chaque image et chaque vidéo finale sont vérifiées automatiquement avant de vous parvenir." },
-      { title: "Parlez la langue de vos clients", body: "Publicités, légendes et voix off en 17 langues, de l'espagnol et du polonais au japonais, à l'hindi et à l'arabe." },
+      { title: "Parlez la langue de vos clients", body: "Publicités, légendes et voix off en 16 langues, de l'espagnol et du polonais au japonais et à l'hindi." },
       { title: "Votre marque, mémorisée", body: "Enregistrez une fois votre logo, vos couleurs, votre police et votre ton. Chaque nouvelle campagne démarre aux couleurs de votre marque." },
       { title: "Soyez présent chaque semaine", body: "Planifiez des campagnes, programmez vos publications sur 10 réseaux ou activez le pilote automatique, puis voyez quelles publications ont généré des clics. Les liens produit sont balisés pour que les statistiques de votre boutique montrent les visites de chaque publication." },
       { title: "Honnête dès le premier clic", body: "Des prix clairs, des crédits rendus quand une publicité ne peut pas être livrée, et aucun avis, remise ou argument inventé dans vos publicités." },
@@ -927,6 +927,125 @@ export const fr: Messages = {
       beforeafter: "Avant / après",
       studio: "Studio",
     },
+  },
+  pricingPage: {
+    metaTitle: "Tarifs · Gooidy",
+    metaDescription: "Commencez gratuitement avec 100 crédits. Formules Launch, Grow et Scale pour vos publicités image et vidéo, la publication et les résultats, dès 39 $ par mois.",
+    title: "Tarifs",
+    sub: "Commencez gratuitement. Choisissez une formule quand votre entreprise est prête pour plus.",
+    monthly: "Mensuel",
+    yearly: "Annuel",
+    save: "−{percent} %",
+    popular: "Populaire",
+    soon: "Bientôt",
+    cta: "Commencer gratuitement",
+    freeNote: "Gratuit pour tous, sans carte",
+    perMonth: "Par mois",
+    perMonthYearly: "Par mois, facturé annuellement ({total} d’avance). {monthly} en mensuel.",
+    everythingIn: "Tout {plan}, plus :",
+    free: {
+      name: "Gratuit",
+      tagline: "Essayez Gooidy",
+      features: [
+        "{credits} crédits pour commencer",
+        "Publicités image et vidéo depuis un lien",
+        "Votre logo, vos couleurs, police et ton",
+        "Publicités en {languages} langues",
+        "Qualité Bonne, Meilleure ou Optimale",
+        "Publiez sur {accounts} compte social",
+        "Téléchargez toutes vos publicités",
+      ],
+    },
+    starter: {
+      tagline: "Pour publier régulièrement",
+      features: [
+        "{credits} crédits chaque mois",
+        "Les crédits non utilisés sont reportés d’un mois",
+        "Connectez jusqu’à {accounts} comptes sociaux",
+        "Planning de publication hebdomadaire",
+      ],
+      soonFeature: "Boostez vos meilleures publications",
+    },
+    plus: {
+      tagline: "Pour apprendre ce qui marche",
+      features: [
+        "{credits} crédits chaque mois",
+        "Connectez jusqu’à {accounts} comptes sociaux",
+        "Comparez jusqu’à {posts} publications récentes",
+        "Filtrez les résultats par réseau",
+        "Téléchargez un rapport de résultats",
+      ],
+    },
+    growth: {
+      tagline: "Pour tester davantage",
+      features: [
+        "{credits} crédits chaque mois",
+        "Connectez jusqu’à {accounts} comptes sociaux",
+        "Comparez jusqu’à {posts} publications récentes",
+        "Un plan du prochain test d’après vos résultats",
+        "Le prix le plus bas par crédit",
+      ],
+    },
+    footnotes: [
+      "Les crédits servent aux images et aux vidéos. Une image utilise {imageMin} à {imageMax} crédits et une seconde de vidéo {videoMin} à {videoMax}, selon la qualité choisie. Vous voyez le coût avant de créer.",
+      "Garantie satisfait ou remboursé de {days} jours sur votre premier paiement. Résiliable à tout moment.",
+      "Prix en dollars américains, hors taxes applicables. Le paiement affiche le montant dans votre devise. Les formules payantes ouvrent bientôt ; d’ici là, chaque compte démarre gratuitement.",
+      "Les résultats dépendent de vos produits, publicités et audience, et ne sont pas garantis.",
+    ],
+    packsTitle: "Besoin de plus de crédits ?",
+    packsSub: "Ajoutez un pack de crédits à tout moment, avec n’importe quelle formule. Vous payez une fois ; les crédits du pack n’expirent jamais.",
+    pack: "{count} crédits",
+    journeyTitle: "Chaque formule couvre tout le parcours",
+    journey: [
+      {
+        name: "Créer",
+        body: "Collez le lien d’un produit. Recevez des images et vidéos à votre image, en {languages} langues.",
+      },
+      {
+        name: "Modifier",
+        body: "Changez titres et légendes gratuitement, refaites une scène, téléchargez ce qui vous plaît.",
+      },
+      {
+        name: "Publier",
+        body: "Publiez tout de suite ou programmez sur 10 réseaux sociaux, dans votre fuseau horaire.",
+      },
+      {
+        name: "Analyser",
+        body: "Voyez impressions, clics et vues de chaque publication. Faites plus de ce qui marche.",
+      },
+    ],
+    faqTitle: "Questions sur les tarifs",
+    faq: [
+      {
+        q: "Qu’est-ce qu’un crédit ?",
+        a: "Les crédits paient la création des publicités. Une image utilise {imageMin} à {imageMax} crédits et une seconde de vidéo {videoMin} à {videoMax}, selon la qualité. Images et vidéos partagent un même solde, et le coût s’affiche avant de créer.",
+      },
+      {
+        q: "Et si je n’ai plus de crédits ?",
+        a: "Achetez un pack de crédits à tout moment ou passez à une formule supérieure. Les crédits des packs n’expirent jamais. Ceux de la formule se rechargent chaque mois, et ceux non utilisés sont reportés d’un mois.",
+      },
+      {
+        q: "Les formules supérieures font-elles de meilleures publicités ?",
+        a: "Toutes les formules ont les mêmes choix de qualité. Les formules supérieures ajoutent plus de crédits, plus de comptes sociaux et des outils de résultats plus poussés.",
+      },
+      {
+        q: "Puis-je payer à l’année ?",
+        a: "Oui. Payer un an d’un coup coûte {percent} % de moins, et vous recevez toujours vos crédits chaque mois.",
+      },
+      {
+        q: "Puis-je être remboursé ?",
+        a: "Oui. Écrivez à hello@gooidy.com dans les {days} jours suivant votre premier paiement pour en obtenir le remboursement intégral.",
+      },
+      {
+        q: "Puis-je payer dans ma devise ?",
+        a: "Oui. Les prix sont fixés en dollars américains, et le paiement affiche le montant dans votre devise avec les moyens de paiement courants dans votre pays.",
+      },
+    ],
+    billingLink: "Conditions de facturation, de résiliation et de remboursement",
+    packOff: "−{percent} % sur les packs de crédits",
+    packsDiscount: "Jusqu’à −{percent} % sur les packs avec une formule payante.",
+    packsAuto: "Activez le rechargement automatique : un pack est ajouté quand votre solde baisse.",
+    seeAll: "Voir tous les tarifs",
   },
   avatars: {
     title: "Avatar",

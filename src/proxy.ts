@@ -5,6 +5,7 @@ import {
   LOCALE_COOKIE,
   isAppPath,
   isLocale,
+  RETIRED_LOCALES,
   localePath,
   countryLocale,
   matchLocale,
@@ -18,6 +19,10 @@ export async function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
   const first = pathname.split("/")[1];
   if (first === "api" || first === "auth") return updateSession(request);
+  // A language taken off the site: send old links to the English page.
+  if (RETIRED_LOCALES.includes(first)) {
+    return redirect(request, (pathname.slice(first.length + 1) || "/") + search, 308);
+  }
 
   // An address with a language in it: remember the language.
   if (isLocale(first)) {

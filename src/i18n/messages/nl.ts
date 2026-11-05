@@ -127,7 +127,7 @@ export const nl: Messages = {
       },
       {
         title: "Een stem die de taal van je klant spreekt",
-        body: "Voice-over in {count} talen, van Spaans en Pools tot Japans en Arabisch, met ondertitels om zonder geluid te kijken.",
+        body: "Voice-over in {count} talen, van Spaans en Pools tot Japans en Hindi, met ondertitels om zonder geluid te kijken.",
       },
       {
         title: "Muziek en eindbeeld",
@@ -206,7 +206,7 @@ export const nl: Messages = {
       },
       {
         q: "In welke talen kunnen mijn advertenties zijn?",
-        a: "In {count} talen, waaronder Engels, Spaans, Portugees, Frans, Duits, Pools, Japans, Koreaans, Chinees, Hindi en Arabisch. Je kiest er één per ronde.",
+        a: "In {count} talen, waaronder Engels, Spaans, Portugees, Frans, Duits, Pools, Japans, Koreaans, Chinees en Hindi. Je kiest er één per ronde.",
       },
       {
         q: "Waar kan ik de advertenties gebruiken?",
@@ -845,7 +845,7 @@ export const nl: Messages = {
     cards: [
       { title: "Kies je kwaliteit", body: "Goed, Beter of Best voor elke advertentie, gemaakt met toonaangevende beeld- en videomodellen. Je ziet de exacte creditkosten voordat er iets wordt gemaakt." },
       { title: "Je product zoals het echt is", body: "We beginnen bij je echte productpagina en behouden kleur, vorm en details. Elke afbeelding en elke afgeronde video wordt automatisch gecontroleerd voordat je die krijgt." },
-      { title: "Spreek de taal van je klanten", body: "Advertenties, bijschriften en voice-overs in 17 talen, van Spaans en Pools tot Japans, Hindi en Arabisch." },
+      { title: "Spreek de taal van je klanten", body: "Advertenties, bijschriften en voice-overs in 16 talen, van Spaans en Pools tot Japans en Hindi." },
       { title: "Je merk, onthouden", body: "Sla je logo, kleuren, lettertype en merkstem één keer op. Elke nieuwe campagne begint in jouw stijl." },
       { title: "Elke week zichtbaar", body: "Plan campagnes, plan berichten op 10 netwerken of zet de automatische piloot aan en zie welke berichten klikken opleverden. Productlinks worden gemarkeerd, zodat de statistieken van je winkel de bezoeken per bericht tonen." },
       { title: "Eerlijk vanaf de eerste klik", body: "Duidelijke prijzen, credits terug als een advertentie niet geleverd kan worden, en geen verzonnen reviews, kortingen of beweringen in je advertenties." },
@@ -920,6 +920,125 @@ export const nl: Messages = {
       beforeafter: "Voor & na",
       studio: "Studio",
     },
+  },
+  pricingPage: {
+    metaTitle: "Prijzen · Gooidy",
+    metaDescription: "Begin gratis met 100 credits. Launch-, Grow- en Scale-abonnementen voor beeld- en videoadvertenties, publiceren en resultaten, vanaf $ 39 per maand.",
+    title: "Prijzen",
+    sub: "Begin gratis. Kies een abonnement als je bedrijf klaar is voor meer.",
+    monthly: "Maandelijks",
+    yearly: "Jaarlijks",
+    save: "Bespaar {percent}%",
+    popular: "Populair",
+    soon: "Binnenkort",
+    cta: "Begin gratis",
+    freeNote: "Gratis voor iedereen, geen kaart nodig",
+    perMonth: "Per maand",
+    perMonthYearly: "Per maand, jaarlijks gefactureerd ({total} vooraf). {monthly} bij maandelijkse betaling.",
+    everythingIn: "Alles van {plan}, plus:",
+    free: {
+      name: "Gratis",
+      tagline: "Probeer Gooidy",
+      features: [
+        "{credits} credits om te beginnen",
+        "Beeld- en videoadvertenties uit één link",
+        "Je logo, kleuren, lettertype en toon",
+        "Advertenties in {languages} talen",
+        "Kwaliteit Goed, Beter of Best",
+        "Post op {accounts} social account",
+        "Download elke advertentie",
+      ],
+    },
+    starter: {
+      tagline: "Voor regelmatig posten",
+      features: [
+        "{credits} credits per maand",
+        "Ongebruikte credits schuiven een maand door",
+        "Koppel tot {accounts} social accounts",
+        "Wekelijkse postplanner",
+      ],
+      soonFeature: "Promoot je beste posts",
+    },
+    plus: {
+      tagline: "Om te leren wat werkt",
+      features: [
+        "{credits} credits per maand",
+        "Koppel tot {accounts} social accounts",
+        "Vergelijk tot {posts} recente posts",
+        "Filter resultaten per netwerk",
+        "Download een resultatenrapport",
+      ],
+    },
+    growth: {
+      tagline: "Voor meer tests",
+      features: [
+        "{credits} credits per maand",
+        "Koppel tot {accounts} social accounts",
+        "Vergelijk tot {posts} recente posts",
+        "Een plan voor de volgende test uit je resultaten",
+        "Laagste prijs per credit",
+      ],
+    },
+    footnotes: [
+      "Credits werken voor beelden en video's. Een beeld kost {imageMin}–{imageMax} credits en een seconde video {videoMin}–{videoMax}, afhankelijk van de gekozen kwaliteit. Je ziet de kosten vóór het maken.",
+      "{days} dagen geld-terug-garantie op je eerste betaling. Altijd opzegbaar.",
+      "Prijzen zijn in Amerikaanse dollars, exclusief toepasselijke belastingen. Bij het afrekenen zie je het bedrag in je eigen valuta. Betaalde abonnementen openen binnenkort; tot dan begint elk account gratis.",
+      "Resultaten hangen af van je producten, advertenties en publiek, en zijn niet gegarandeerd.",
+    ],
+    packsTitle: "Meer credits nodig?",
+    packsSub: "Voeg op elk moment een creditpakket toe, bij elk abonnement. Eenmalig betalen; pakketcredits verlopen nooit.",
+    pack: "{count} credits",
+    journeyTitle: "Elk abonnement dekt de hele route",
+    journey: [
+      {
+        name: "Maken",
+        body: "Plak een productlink. Krijg beelden en video's in je merkstijl, in {languages} talen.",
+      },
+      {
+        name: "Bewerken",
+        body: "Pas koppen en teksten gratis aan, doe een scène opnieuw, download wat je mooi vindt.",
+      },
+      {
+        name: "Publiceren",
+        body: "Post meteen of plan in op 10 sociale netwerken, in je eigen tijdzone.",
+      },
+      {
+        name: "Analyseren",
+        body: "Zie vertoningen, klikken en weergaven per post. Doe meer van wat werkt.",
+      },
+    ],
+    faqTitle: "Vragen over prijzen",
+    faq: [
+      {
+        q: "Wat is een credit?",
+        a: "Met credits betaal je het maken van advertenties. Een beeld kost {imageMin} tot {imageMax} credits en een seconde video {videoMin} tot {videoMax}, afhankelijk van de kwaliteit. Beelden en video's delen één saldo, en de kosten zie je vóór het maken.",
+      },
+      {
+        q: "Wat als mijn credits op zijn?",
+        a: "Koop op elk moment een creditpakket of stap over op een groter abonnement. Pakketcredits verlopen nooit. Abonnementscredits vullen elke maand aan, en ongebruikte schuiven een maand door.",
+      },
+      {
+        q: "Maken hogere abonnementen betere advertenties?",
+        a: "Elk abonnement heeft dezelfde kwaliteitskeuzes. Hogere abonnementen geven meer credits, meer social accounts en uitgebreidere resultaattools.",
+      },
+      {
+        q: "Kan ik per jaar betalen?",
+        a: "Ja. Een jaar in één keer betalen kost {percent}% minder, en je krijgt je credits nog steeds elke maand.",
+      },
+      {
+        q: "Kan ik mijn geld terugkrijgen?",
+        a: "Ja. Mail binnen {days} dagen na je eerste betaling naar hello@gooidy.com en je krijgt die volledig terug.",
+      },
+      {
+        q: "Kan ik in mijn eigen valuta betalen?",
+        a: "Ja. Prijzen staan in Amerikaanse dollars, en bij het afrekenen zie je het bedrag in je valuta met de betaalmethoden die bij jou gebruikelijk zijn.",
+      },
+    ],
+    billingLink: "Voorwaarden voor facturering, opzeggen en terugbetaling",
+    packOff: "{percent}% korting op creditpakketten",
+    packsDiscount: "Tot {percent}% korting op pakketten met een betaald abonnement.",
+    packsAuto: "Zet automatisch bijvullen aan en er komt een pakket bij als je saldo laag wordt.",
+    seeAll: "Bekijk alle prijzen",
   },
   avatars: {
     title: "Avatar",

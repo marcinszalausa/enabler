@@ -11,6 +11,7 @@ export const PLAN_PRICES = {
 // Paying for a year at once costs this much less than twelve months.
 export const YEARLY_DISCOUNT = 0.2;
 export const PACK_PRICES = { small: 35, large: 95 } as const;
+export const PACK_CREDITS = { small: 300, large: 1000 } as const;
 // Credit packs cost less on a paid plan: Launch 10%, Grow 20%, Scale 30% off.
 // Even at 30% off, a pack credit ($0.0665) stays above the worst-case cost of
 // a credit (about $0.05, see the unit-economics notes).

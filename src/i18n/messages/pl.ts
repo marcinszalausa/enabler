@@ -127,7 +127,7 @@ export const pl: Messages = {
       },
       {
         title: "Głos, który mówi językiem klienta",
-        body: "Lektor w {count} językach, od hiszpańskiego i polskiego po japoński i arabski, z napisami do oglądania bez dźwięku.",
+        body: "Lektor w {count} językach, od hiszpańskiego i polskiego po japoński i hindi, z napisami do oglądania bez dźwięku.",
       },
       {
         title: "Muzyka i plansza końcowa",
@@ -206,7 +206,7 @@ export const pl: Messages = {
       },
       {
         q: "W jakich językach mogą być moje reklamy?",
-        a: "W {count} językach, m.in. angielskim, hiszpańskim, portugalskim, francuskim, niemieckim, polskim, japońskim, koreańskim, chińskim, hindi i arabskim. Wybierasz język dla każdej serii.",
+        a: "W {count} językach, m.in. angielskim, hiszpańskim, portugalskim, francuskim, niemieckim, polskim, japońskim, koreańskim, chińskim i hindi. Wybierasz język dla każdej serii.",
       },
       {
         q: "Gdzie mogę używać tych reklam?",
@@ -844,7 +844,7 @@ export const pl: Messages = {
     cards: [
       { title: "Wybierz jakość", body: "Dobra, Lepsza lub Najlepsza dla każdej reklamy, z czołowymi modelami obrazu i wideo. Dokładny koszt w kredytach widzisz, zanim cokolwiek powstanie." },
       { title: "Twój produkt taki, jaki jest", body: "Zaczynamy od prawdziwej strony produktu i zachowujemy jego kolor, kształt i detale. Każdy obraz i gotowy film jest automatycznie sprawdzany, zanim do Ciebie trafi." },
-      { title: "Mów językiem swoich klientów", body: "Reklamy, opisy i lektor w filmach w 17 językach, od hiszpańskiego i polskiego po japoński, hindi i arabski." },
+      { title: "Mów językiem swoich klientów", body: "Reklamy, opisy i lektor w filmach w 16 językach, od hiszpańskiego i polskiego po japoński i hindi." },
       { title: "Twoja marka zapamiętana", body: "Zapisz raz logo, kolory, czcionkę i ton marki. Każda nowa kampania od razu jest w Twoim stylu." },
       { title: "Bądź widoczny co tydzień", body: "Planuj kampanie, planuj posty w 10 sieciach lub włącz autopilota, a potem zobacz, które posty przyniosły kliknięcia. Linki do produktów są oznaczane, więc analityka Twojego sklepu pokazuje wizyty z każdego posta." },
       { title: "Uczciwie od pierwszego kliknięcia", body: "Jasne ceny, zwrot kredytów, gdy reklamy nie da się dostarczyć, i żadnych zmyślonych opinii, rabatów ani obietnic w Twoich reklamach." },
@@ -919,6 +919,125 @@ export const pl: Messages = {
       beforeafter: "Przed i po",
       studio: "Studio",
     },
+  },
+  pricingPage: {
+    metaTitle: "Cennik · Gooidy",
+    metaDescription: "Zacznij za darmo ze 100 kredytami. Plany Launch, Grow i Scale do reklam graficznych i wideo, publikacji i wyników, od 39 $ miesięcznie.",
+    title: "Cennik",
+    sub: "Zacznij za darmo. Wybierz plan, gdy Twoja firma będzie gotowa na więcej.",
+    monthly: "Miesięcznie",
+    yearly: "Rocznie",
+    save: "Oszczędzasz {percent}%",
+    popular: "Popularny",
+    soon: "Wkrótce",
+    cta: "Zacznij za darmo",
+    freeNote: "Za darmo dla każdego, bez karty",
+    perMonth: "Miesięcznie",
+    perMonthYearly: "Miesięcznie przy płatności rocznej ({total} z góry). {monthly} przy płatności miesięcznej.",
+    everythingIn: "Wszystko z {plan}, a do tego:",
+    free: {
+      name: "Darmowy",
+      tagline: "Wypróbuj Gooidy",
+      features: [
+        "{credits} kredytów na start",
+        "Reklamy graficzne i wideo z jednego linku",
+        "Twoje logo, kolory, czcionka i ton",
+        "Reklamy w {languages} językach",
+        "Jakość Dobra, Lepsza lub Najlepsza",
+        "Publikacja na {accounts} koncie społecznościowym",
+        "Pobieranie każdej reklamy",
+      ],
+    },
+    starter: {
+      tagline: "Do regularnego publikowania",
+      features: [
+        "{credits} kredytów co miesiąc",
+        "Niewykorzystane kredyty przechodzą na kolejny miesiąc",
+        "Do {accounts} kont społecznościowych",
+        "Tygodniowy planer publikacji",
+      ],
+      soonFeature: "Promowanie najlepszych postów",
+    },
+    plus: {
+      tagline: "Żeby sprawdzić, co działa",
+      features: [
+        "{credits} kredytów co miesiąc",
+        "Do {accounts} kont społecznościowych",
+        "Porównanie do {posts} ostatnich postów",
+        "Filtrowanie wyników według sieci",
+        "Pobieranie raportu wyników",
+      ],
+    },
+    growth: {
+      tagline: "Do większej liczby testów",
+      features: [
+        "{credits} kredytów co miesiąc",
+        "Do {accounts} kont społecznościowych",
+        "Porównanie do {posts} ostatnich postów",
+        "Plan kolejnego testu na podstawie wyników",
+        "Najniższa cena za kredyt",
+      ],
+    },
+    footnotes: [
+      "Kredyty działają dla grafik i filmów. Grafika zużywa {imageMin}–{imageMax} kredytów, a sekunda wideo {videoMin}–{videoMax}, zależnie od wybranej jakości. Koszt widzisz przed utworzeniem.",
+      "{days}-dniowa gwarancja zwrotu pieniędzy za pierwszą płatność. Rezygnujesz kiedy chcesz.",
+      "Ceny są w dolarach amerykańskich i nie zawierają należnych podatków. Przy płatności zobaczysz kwotę w swojej walucie. Płatne plany ruszą wkrótce; do tego czasu każde konto zaczyna za darmo.",
+      "Wyniki zależą od Twoich produktów, reklam i odbiorców i nie są gwarantowane.",
+    ],
+    packsTitle: "Potrzebujesz więcej kredytów?",
+    packsSub: "Dokup pakiet kredytów w dowolnej chwili, w każdym planie. Płacisz raz; kredyty z pakietu nigdy nie wygasają.",
+    pack: "{count} kredytów",
+    journeyTitle: "Każdy plan obejmuje całą drogę",
+    journey: [
+      {
+        name: "Twórz",
+        body: "Wklej link do produktu. Otrzymaj grafiki i filmy w stylu Twojej marki, w {languages} językach.",
+      },
+      {
+        name: "Edytuj",
+        body: "Zmieniaj nagłówki i opisy za darmo, popraw scenę, pobierz to, co Ci się podoba.",
+      },
+      {
+        name: "Publikuj",
+        body: "Publikuj od razu lub planuj w 10 sieciach społecznościowych, w Twojej strefie czasowej.",
+      },
+      {
+        name: "Analizuj",
+        body: "Zobacz wyświetlenia, kliknięcia i odtworzenia każdego posta. Rób więcej tego, co działa.",
+      },
+    ],
+    faqTitle: "Pytania o cennik",
+    faq: [
+      {
+        q: "Czym jest kredyt?",
+        a: "Kredytami płacisz za tworzenie reklam. Grafika zużywa od {imageMin} do {imageMax} kredytów, a sekunda wideo od {videoMin} do {videoMax}, zależnie od jakości. Grafiki i filmy korzystają z jednego salda, a koszt widać przed utworzeniem.",
+      },
+      {
+        q: "Co, jeśli skończą mi się kredyty?",
+        a: "Kup pakiet kredytów w dowolnej chwili albo przejdź na większy plan. Kredyty z pakietów nigdy nie wygasają. Kredyty z planu odnawiają się co miesiąc, a niewykorzystane przechodzą na kolejny miesiąc.",
+      },
+      {
+        q: "Czy wyższe plany tworzą lepsze reklamy?",
+        a: "Każdy plan ma te same poziomy jakości. Wyższe plany dają więcej kredytów, więcej kont społecznościowych i bogatsze narzędzia do wyników.",
+      },
+      {
+        q: "Czy mogę płacić rocznie?",
+        a: "Tak. Płatność za rok z góry kosztuje {percent}% mniej, a kredyty nadal dostajesz co miesiąc.",
+      },
+      {
+        q: "Czy mogę odzyskać pieniądze?",
+        a: "Tak. Napisz na hello@gooidy.com w ciągu {days} dni od pierwszej płatności, a zwrócimy ją w całości.",
+      },
+      {
+        q: "Czy mogę płacić w swojej walucie?",
+        a: "Tak. Ceny są ustalone w dolarach amerykańskich, a przy płatności widzisz kwotę w swojej walucie i metody płatności popularne w Twoim kraju.",
+      },
+    ],
+    billingLink: "Zasady płatności, rezygnacji i zwrotów",
+    packOff: "{percent}% taniej na pakiety kredytów",
+    packsDiscount: "Do {percent}% taniej na pakiety w płatnym planie.",
+    packsAuto: "Włącz automatyczne doładowanie, a pakiet doda się, gdy kredytów będzie mało.",
+    seeAll: "Zobacz pełny cennik",
   },
   avatars: {
     title: "Awatar",

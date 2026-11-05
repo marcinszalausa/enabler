@@ -13,7 +13,7 @@ try{
  const capture=b=>{log=(log+b).slice(-12000);};server.stdout.on("data",capture);server.stderr.on("data",capture);
  let ready=false;for(let i=0;i<100;i++){try{if((await fetch("http://localhost:3100/trial-preview",{signal:AbortSignal.timeout(2000)})).ok){ready=true;break;}}catch{}await pause(1000);}assert.ok(ready);
  browser=await chromium.launch({headless:true});
- for(const [width,locale,theme] of [[320,"en","light"],[390,"en","light"],[1440,"en","dark"],[390,"ar","light"]]){
+ for(const [width,locale,theme] of [[320,"en","light"],[390,"en","light"],[1440,"en","dark"],[390,"ja","light"]]){
   const context=await browser.newContext({viewport:{width,height:1100},reducedMotion:"reduce"});
   const page=await context.newPage(),errors=[];let posts=0;
   page.on("pageerror",e=>errors.push(e.message));page.on("request",r=>{if(r.method()==="POST")posts++;});

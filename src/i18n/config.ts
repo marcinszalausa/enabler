@@ -20,7 +20,6 @@ export const LOCALES = [
   "ko",
   "zh",
   "hi",
-  "ar",
 ] as const;
 export type Locale = (typeof LOCALES)[number];
 
@@ -46,7 +45,6 @@ export const LOCALE_NAMES: Record<Locale, string> = {
   ko: "한국어",
   zh: "简体中文",
   hi: "हिन्दी",
-  ar: "العربية",
 };
 
 // The tag for <html lang> and hreflang, where it differs from the code.
@@ -58,8 +56,14 @@ export function isLocale(value: unknown): value is Locale {
   );
 }
 
+// Arabic (right to left) is switched off for now; its translation stays in
+// messages/ar.ts. Re-adding "ar" to LOCALES brings it back.
+const RTL_LOCALES: readonly string[] = ["ar"];
+// Languages taken off the site: old links to them go to English.
+export const RETIRED_LOCALES: readonly string[] = ["ar"];
+
 export function dirOf(locale: Locale) {
-  return locale === "ar" ? "rtl" : "ltr";
+  return RTL_LOCALES.includes(locale) ? "rtl" : "ltr";
 }
 
 // Pages whose address is the same in every language.
@@ -114,7 +118,6 @@ const COUNTRY_LOCALE: Record<string, Locale> = {
   ...spread("ja", "JP"),
   ...spread("ko", "KR"),
   ...spread("zh", "CN"),
-  ...spread("ar", "SA AE EG QA KW BH OM JO IQ LB SY YE LY DZ MA TN SD"),
 };
 
 function spread(locale: Locale, countries: string) {
