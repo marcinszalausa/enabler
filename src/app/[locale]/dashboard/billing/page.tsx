@@ -10,13 +10,17 @@ import {
   FREE_PLAN,
   PACKS,
   PLANS,
+  discountPlan,
   paymentsOpen,
   type PackKey,
   type PlanKey,
 } from "@/lib/billing";
 import {
+  MAX_PACK_DISCOUNT,
   MONEY_BACK_DAYS,
+  PACK_DISCOUNTS,
   YEARLY_DISCOUNT,
+  packPrice,
   planName,
   usd,
   yearlyPrice,
@@ -27,6 +31,14 @@ import { BackLink } from "../ui";
 import { LocalPrice } from "@/app/_landing/local-price";
 import { CheckoutButton, ManageButton } from "./billing-buttons";
 import { LOW_CREDITS } from "../credits-link";
+import {
+  AutoReloadForm,
+  CancelPlanButton,
+  Modal,
+  TurnOffButton,
+} from "./billing-dialogs";
+import { MAX_RELOADS_PER_MONTH, RELOAD_THRESHOLDS } from "@/lib/auto-reload";
+import { formatAmount, listInvoices } from "@/lib/invoices";
 
 type Activity = {
   happened_at: string;
@@ -84,15 +96,16 @@ async function Billing({
   const { data: ws } = await supabase
     .from("workspaces")
     .select(
-      "id, plan, credits, stripe_subscription_id, subscription_status, current_period_end",
+      "id, plan, credits, stripe_customer_id, stripe_subscription_id, subscription_status, current_period_end, auto_reload_enabled, auto_reload_threshold, auto_reload_pack, auto_reload_error",
     )
     .order("created_at")
     .limit(1)
     .single();
   if (!ws) return null;
-  const [{ data: activity }, { data: used }] = await Promise.all([
+  const [{ data: activity }, { data: used }, invoices] = await Promise.all([
     supabase.rpc("credit_activity", { ws: ws.id, max_rows: 30 }),
     supabase.rpc("credits_used_recently", { ws: ws.id, days: 30 }),
+    listInvoices(ws.stripe_customer_id),
   ]);
   const history = (activity ?? []) as Activity[];
   const open = paymentsOpen();
@@ -100,6 +113,27 @@ async function Billing({
   const b = t.billing;
   const n = (value: number) => value.toLocaleString(locale);
   const subscribed = Boolean(ws.stripe_subscription_id);
+  // Packs cost less on a paid plan (src/lib/pricing.ts).
+  const pricePlan = discountPlan(ws);
+  const discount = PACK_DISCOUNTS[pricePlan];
+  const packFor = (key: PackKey) => packPrice(PACKS[key].usd, pricePlan);
+  const reloadPack = (
+    ws.auto_reload_pack in PACKS ? ws.auto_reload_pack : "small"
+  ) as PackKey;
+  const day = (seconds: number) =>
+    new Date(seconds * 1000).toLocaleDateString(locale, {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+  const status: Record<string, string> = {
+    paid: b.statusPaid,
+    open: b.statusOpen,
+    void: b.statusVoid,
+    uncollectible: b.statusUnpaid,
+  };
+  const row =
+    "flex flex-col gap-3 px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-6";
   const renews = ws.current_period_end
     ? new Date(ws.current_period_end).toLocaleDateString(locale, {
         month: "long",
@@ -114,56 +148,33 @@ async function Billing({
 
   return (
     <>
-      {(checkout === "success" || checkout === "pack") && (
+      {(checkout === "success" ||
+        checkout === "pack" ||
+        checkout === "reload") && (
         <p className="mt-6 rounded-xl border border-green-600/30 bg-green-600/10 p-4 text-sm">
-          {checkout === "pack" ? b.packPaid : b.paid}
+          {checkout === "pack"
+            ? b.packPaid
+            : checkout === "reload"
+              ? b.reloadSaved
+              : b.paid}
         </p>
       )}
 
-      <section
-        data-credit-wallet
-        className="edge mt-6 grid gap-6 p-6 sm:grid-cols-[1fr_auto] sm:items-end sm:p-8"
-      >
+      <section className="edge mt-6 flex flex-col gap-4 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
         <div>
-          <p className="text-sm text-muted">{b.walletTitle}</p>
-          <p
-            className={`mt-1 text-4xl font-semibold tracking-tight tabular-nums ${
-              ws.credits < LOW_CREDITS ? "text-warn" : ""
-            }`}
-          >
-            {n(ws.credits)}
-          </p>
+          <p className="text-sm text-muted">{b.currentPlan}</p>
+          <p className="mt-1 text-xl font-semibold">{planName(t, ws.plan)}</p>
           <p className="mt-1 text-sm text-muted">
-            {fmt(b.packAds, { ads: n(adsFor(ws.credits)) })} ·{" "}
-            {fmt(b.usedRecently, { count: n(Number(used ?? 0)) })}
-          </p>
-          {ws.credits < LOW_CREDITS && (
-            <p className="mt-3 text-sm font-medium text-warn">{b.lowNote}</p>
-          )}
-          <p className="mt-4 text-sm">
-            <span className="font-medium">
-              {fmt(b.planLine, { plan: planName(t, ws.plan) })}
-            </span>{" "}
-            <span className="text-muted">
-              {subscribed && renews
-                ? ws.subscription_status === "past_due"
-                  ? b.pastDue
-                  : `${fmt(b.renews, { date: renews })} ${b.rollover}`
-                : fmt(b.freeNote, { count: n(FREE_PLAN.credits) })}
-            </span>
+            {subscribed && renews
+              ? ws.subscription_status === "past_due"
+                ? b.pastDue
+                : `${fmt(b.renews, { date: renews })} ${b.rollover}`
+              : fmt(b.freeNote, { count: n(FREE_PLAN.credits) })}
           </p>
         </div>
-        <div className="flex flex-col gap-2 sm:items-end">
-          <a
-            href="#packs"
-            className="btn-primary inline-flex min-h-11 items-center justify-center rounded-xl px-5 py-2.5 text-sm font-medium"
-          >
-            {b.buyCredits}
-          </a>
-          {subscribed && (
-            <ManageButton label={b.manage} pendingLabel={b.opening} secondary />
-          )}
-        </div>
+        {subscribed && (
+          <ManageButton label={b.manage} pendingLabel={b.opening} secondary />
+        )}
       </section>
 
       {!open && (
@@ -264,42 +275,195 @@ async function Billing({
         </section>
       )}
 
-      <section id="packs" className="mt-10 scroll-mt-24">
-        <h2 className="text-lg font-medium">{b.packsTitle}</h2>
-        <p className="mt-1 text-sm text-muted">{b.packsSub}</p>
-        <div className="mt-4 grid gap-5 sm:grid-cols-2">
-          {(Object.keys(PACKS) as PackKey[]).map((key) => {
-            const pack = PACKS[key];
-            return (
-              <div
-                key={key}
-                className="flex flex-col gap-4 rounded-2xl border border-line bg-raised p-6 sm:flex-row sm:items-center sm:justify-between"
-              >
-                <div>
-                  <h3 className="font-medium">
-                    {fmt(b.pack, { count: n(pack.credits) })}
-                  </h3>
-                  <p className="mt-1 text-sm text-muted">
-                    {fmt(b.packAds, { ads: n(adsFor(pack.credits)) })}
-                  </p>
-                  <LocalPrice
-                    usd={pack.usd}
-                    locale={locale}
-                    template={t.home.approx}
-                    className="mt-0.5 block text-xs text-muted"
-                  />
-                </div>
-                <CheckoutButton
-                  kind="pack"
-                  value={key}
-                  label={fmt(b.buy, { price: usd(pack.usd, locale) })}
-                  pendingLabel={b.openingCheckout}
-                  disabled={!open}
-                />
-              </div>
-            );
-          })}
+      <section
+        data-credit-wallet
+        className="mt-10 divide-y divide-line rounded-2xl border border-line bg-raised"
+      >
+        <div className={row}>
+          <div>
+            <p
+              className={`text-3xl font-semibold tracking-tight tabular-nums ${
+                ws.credits < LOW_CREDITS ? "text-warn" : ""
+              }`}
+            >
+              {fmt(t.app.credits, { count: n(ws.credits) })}
+            </p>
+            <p className="mt-1 text-sm text-muted">
+              {b.balanceLabel} ·{" "}
+              {fmt(b.packAds, { ads: n(adsFor(ws.credits)) })} ·{" "}
+              {fmt(b.usedRecently, { count: n(Number(used ?? 0)) })}
+            </p>
+            {ws.credits < LOW_CREDITS && !subscribed && (
+              <p className="mt-2 text-sm font-medium text-warn">{b.lowNote}</p>
+            )}
+          </div>
+          <Modal
+            label={b.buyCredits}
+            badge={
+              discount > 0
+                ? fmt(b.planDiscount, {
+                    percent: Math.round(discount * 100),
+                    plan: planName(t, pricePlan),
+                  })
+                : fmt(b.upTo, { percent: Math.round(MAX_PACK_DISCOUNT * 100) })
+            }
+            title={b.packsTitle}
+            closeLabel={b.close}
+            hash="packs"
+            variant="primary"
+          >
+            <p className="mt-1 text-sm text-muted">{b.packsSub}</p>
+            <div className="mt-5 flex flex-col gap-3">
+              {(Object.keys(PACKS) as PackKey[]).map((key) => {
+                const pack = PACKS[key];
+                return (
+                  <div
+                    key={key}
+                    className="flex items-center justify-between gap-4 rounded-xl border border-line bg-raised p-4"
+                  >
+                    <div>
+                      <h3 className="font-medium">
+                        {fmt(b.pack, { count: n(pack.credits) })}
+                      </h3>
+                      <p className="mt-0.5 text-sm text-muted">
+                        {fmt(b.packAds, { ads: n(adsFor(pack.credits)) })}
+                      </p>
+                      <LocalPrice
+                        usd={packFor(key)}
+                        locale={locale}
+                        template={t.home.approx}
+                        className="mt-0.5 block text-xs text-muted"
+                      />
+                    </div>
+                    <CheckoutButton
+                      kind="pack"
+                      value={key}
+                      label={fmt(b.buy, { price: usd(packFor(key), locale) })}
+                      pendingLabel={b.openingCheckout}
+                      primary
+                      disabled={!open}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+            <p className="mt-4 text-sm text-muted">
+              {discount > 0
+                ? fmt(b.planDiscountNote, {
+                    percent: Math.round(discount * 100),
+                    plan: planName(t, pricePlan),
+                  })
+                : fmt(b.discountTeaser, {
+                    percent: Math.round(MAX_PACK_DISCOUNT * 100),
+                  })}
+            </p>
+          </Modal>
         </div>
+
+        <div
+          className={row}
+          data-auto-reload={ws.auto_reload_enabled ? "on" : "off"}
+        >
+          <div className="max-w-xl">
+            <p className="font-medium">{b.autoTitle}</p>
+            <p className="mt-1 text-sm text-muted">
+              {ws.auto_reload_enabled
+                ? fmt(b.autoOn, {
+                    threshold: n(ws.auto_reload_threshold),
+                    count: n(PACKS[reloadPack].credits),
+                    price: usd(packFor(reloadPack), locale),
+                  })
+                : b.autoOff}
+            </p>
+            {!ws.auto_reload_enabled && ws.auto_reload_error && (
+              <p className="mt-2 text-sm font-medium text-warn">
+                {b.autoFailed}
+              </p>
+            )}
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            {ws.auto_reload_enabled && (
+              <TurnOffButton label={b.turnOff} pendingLabel={b.opening} />
+            )}
+            <Modal
+              label={ws.auto_reload_enabled ? b.change : b.turnOn}
+              title={b.autoTitle}
+              closeLabel={b.close}
+            >
+              <AutoReloadForm
+                thresholds={RELOAD_THRESHOLDS.map((value) => ({
+                  value,
+                  label: fmt(t.app.credits, { count: n(value) }),
+                }))}
+                packs={(Object.keys(PACKS) as PackKey[]).map((key) => ({
+                  value: key,
+                  label: `${fmt(b.pack, { count: n(PACKS[key].credits) })} · ${usd(packFor(key), locale)}`,
+                }))}
+                defaultThreshold={ws.auto_reload_threshold}
+                defaultPack={reloadPack}
+                thresholdLabel={b.autoThreshold}
+                packLabel={b.autoPack}
+                note={fmt(b.autoNote, { max: MAX_RELOADS_PER_MONTH })}
+                saveLabel={b.autoSave}
+                pendingLabel={b.opening}
+                disabled={!open}
+              />
+            </Modal>
+          </div>
+        </div>
+      </section>
+
+      <section className="mt-10" data-invoices>
+        <h2 className="text-lg font-medium">{b.invoicesTitle}</h2>
+        {invoices.length === 0 ? (
+          <p className="mt-2 text-sm text-muted">{b.invoicesEmpty}</p>
+        ) : (
+          <div className="mt-4 overflow-x-auto rounded-2xl border border-line bg-raised">
+            <table className="w-full min-w-[28rem] text-start text-sm">
+              <thead className="text-muted">
+                <tr className="border-b border-line">
+                  <th className="px-5 py-3 text-start font-medium">
+                    {b.colDate}
+                  </th>
+                  <th className="px-5 py-3 text-start font-medium">
+                    {b.colTotal}
+                  </th>
+                  <th className="px-5 py-3 text-start font-medium">
+                    {b.colStatus}
+                  </th>
+                  <th className="px-5 py-3 text-start font-medium">
+                    {b.colActions}
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-line">
+                {invoices.map((invoice) => (
+                  <tr key={invoice.id}>
+                    <td className="px-5 py-3">{day(invoice.created)}</td>
+                    <td className="px-5 py-3 tabular-nums">
+                      {formatAmount(invoice.total, invoice.currency, locale)}
+                    </td>
+                    <td className="px-5 py-3">
+                      {status[invoice.status] ?? invoice.status}
+                    </td>
+                    <td className="px-5 py-3">
+                      {invoice.pdf && (
+                        <a
+                          href={invoice.pdf}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex min-h-11 items-center font-medium text-accent underline underline-offset-4"
+                        >
+                          {b.downloadPdf}
+                        </a>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </section>
 
       <section className="mt-10" data-credit-history>
@@ -361,6 +525,19 @@ async function Billing({
         </ul>
       </section>
 
+      {subscribed && (
+        <section className="mt-10" data-cancellation>
+          <h2 className="text-lg font-medium">{b.cancelTitle}</h2>
+          <div className="mt-4 flex flex-col gap-3 rounded-2xl border border-line bg-raised px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+            <div>
+              <p className="font-medium">{b.cancelPlan}</p>
+              <p className="mt-1 text-sm text-muted">{b.cancelNote}</p>
+            </div>
+            <CancelPlanButton label={b.cancelButton} pendingLabel={b.opening} />
+          </div>
+        </section>
+      )}
+
       <p className="mt-8 text-sm text-muted">{b.footnote}</p>
     </>
   );
@@ -378,6 +555,8 @@ function activityLabel(b: Messages["billing"], kind: string) {
       return b.historyPlan;
     case "pack":
       return b.historyPack;
+    case "reload":
+      return b.historyReload;
     case "adjust":
       return b.historyAdjust;
     case "avatar":

@@ -31,7 +31,7 @@ export function AvatarRow({ avatar, onPick, credits }: { avatar: PickedAvatar | 
           ? <img src={avatar.src} alt="" className="size-full object-cover object-top" />
           : <PersonIcon />}
       </button>
-      <div className="min-w-0 flex-1">
+      <div className="min-w-0 flex-1 contain-inline-size">
         <p className="text-sm font-medium">{a.title}</p>
         <p className="truncate text-sm text-muted">{avatar ? avatar.name : a.auto}</p>
       </div>
