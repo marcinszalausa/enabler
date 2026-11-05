@@ -1,5 +1,5 @@
 import "server-only";
-import { PACK_PRICES, type Interval } from "@/lib/pricing";
+import { PACK_CREDITS, PACK_PRICES, type Interval } from "@/lib/pricing";
 import { PAID_PLANS, type PaidPlanId } from "@/lib/paid-plans";
 import { PAID_CHECKOUT_STATUS } from "@/lib/legal-policy";
 
@@ -46,8 +46,8 @@ export type PlanKey = PaidPlanId;
 // local methods such as BLIK, iDEAL, PayPal or Pix. Pack credits never
 // expire.
 export const PACKS = {
-  small: { credits: 300, usd: PACK_PRICES.small },
-  large: { credits: 1000, usd: PACK_PRICES.large },
+  small: { credits: PACK_CREDITS.small, usd: PACK_PRICES.small },
+  large: { credits: PACK_CREDITS.large, usd: PACK_PRICES.large },
 } as const;
 export type PackKey = keyof typeof PACKS;
 

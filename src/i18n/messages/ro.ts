@@ -879,4 +879,120 @@ export const ro: Messages = {
       studio: "Studio",
     },
   },
+  pricingPage: {
+    metaTitle: "Prețuri · Gooidy",
+    metaDescription: "Începe gratuit cu 100 de credite. Planurile Launch, Grow și Scale pentru reclame cu imagini și video, publicare și rezultate, de la 39 $ pe lună.",
+    title: "Prețuri",
+    sub: "Începe gratuit. Alege un plan când afacerea ta e pregătită pentru mai mult.",
+    monthly: "Lunar",
+    yearly: "Anual",
+    save: "Economisești {percent}%",
+    popular: "Popular",
+    soon: "În curând",
+    cta: "Începe gratuit",
+    freeNote: "Gratuit pentru toți, fără card",
+    perMonth: "Pe lună",
+    perMonthYearly: "Pe lună, facturat anual ({total} în avans). {monthly} la plata lunară.",
+    everythingIn: "Tot din {plan}, plus:",
+    free: {
+      name: "Gratuit",
+      tagline: "Încearcă Gooidy",
+      features: [
+        "{credits} de credite pentru început",
+        "Reclame cu imagini și video dintr-un link",
+        "Logo-ul, culorile, fontul și tonul tău",
+        "Reclame în {languages} limbi",
+        "Calitate Bună, Mai bună sau Cea mai bună",
+        "Publicare pe {accounts} cont social",
+        "Descarci fiecare reclamă",
+      ],
+    },
+    starter: {
+      tagline: "Pentru postări regulate",
+      features: [
+        "{credits} de credite în fiecare lună",
+        "Creditele nefolosite se reportează o lună",
+        "Conectezi până la {accounts} conturi sociale",
+        "Planificator săptămânal de postări",
+      ],
+      soonFeature: "Promovează cele mai bune postări",
+    },
+    plus: {
+      tagline: "Pentru a afla ce funcționează",
+      features: [
+        "{credits} de credite în fiecare lună",
+        "Conectezi până la {accounts} conturi sociale",
+        "Compari până la {posts} postări recente",
+        "Filtrezi rezultatele pe rețea",
+        "Descarci un raport de rezultate",
+      ],
+    },
+    growth: {
+      tagline: "Pentru mai multe teste",
+      features: [
+        "{credits} de credite în fiecare lună",
+        "Conectezi până la {accounts} conturi sociale",
+        "Compari până la {posts} postări recente",
+        "Un plan pentru următorul test din rezultatele tale",
+        "Cel mai mic preț pe credit",
+      ],
+    },
+    footnotes: [
+      "Creditele merg pentru imagini și video. O imagine folosește {imageMin}–{imageMax} credite, iar o secundă de video {videoMin}–{videoMax}, în funcție de calitatea aleasă. Vezi costul înainte să creezi.",
+      "Garanție de returnare a banilor de {days} de zile pentru prima plată. Anulezi oricând.",
+      "Prețurile sunt în dolari americani și nu includ taxele aplicabile. La plată vezi suma în moneda ta. Planurile plătite se deschid în curând; până atunci, fiecare cont începe gratuit.",
+      "Rezultatele depind de produse, reclame și public și nu sunt garantate.",
+    ],
+    packsTitle: "Ai nevoie de mai multe credite?",
+    packsSub: "Adaugă oricând un pachet de credite, cu orice plan. Plătești o dată; creditele din pachet nu expiră niciodată.",
+    pack: "{count} de credite",
+    journeyTitle: "Fiecare plan acoperă tot drumul",
+    journey: [
+      {
+        name: "Creează",
+        body: "Lipește linkul unui produs. Primești imagini și video în stilul mărcii tale, în {languages} limbi.",
+      },
+      {
+        name: "Editează",
+        body: "Schimbă gratuit titlurile și textele, refă o scenă, descarcă ce-ți place.",
+      },
+      {
+        name: "Publică",
+        body: "Postează acum sau programează pe 10 rețele sociale, în fusul tău orar.",
+      },
+      {
+        name: "Analizează",
+        body: "Vezi afișările, clicurile și vizualizările fiecărei postări. Fă mai mult din ce funcționează.",
+      },
+    ],
+    faqTitle: "Întrebări despre prețuri",
+    faq: [
+      {
+        q: "Ce este un credit?",
+        a: "Creditele plătesc crearea reclamelor. O imagine folosește între {imageMin} și {imageMax} credite, iar o secundă de video între {videoMin} și {videoMax}, în funcție de calitate. Imaginile și video-urile împart același sold, iar costul apare înainte să creezi.",
+      },
+      {
+        q: "Ce fac dacă rămân fără credite?",
+        a: "Cumpără oricând un pachet de credite sau treci la un plan mai mare. Creditele din pachete nu expiră. Creditele planului se reîncarcă lunar, iar cele nefolosite se reportează o lună.",
+      },
+      {
+        q: "Planurile mai mari fac reclame mai bune?",
+        a: "Fiecare plan are aceleași opțiuni de calitate. Planurile mai mari adaugă mai multe credite, mai multe conturi sociale și instrumente de rezultate mai complete.",
+      },
+      {
+        q: "Pot plăti anual?",
+        a: "Da. Plata pe un an întreg costă cu {percent}% mai puțin, iar creditele le primești în continuare lunar.",
+      },
+      {
+        q: "Îmi pot primi banii înapoi?",
+        a: "Da. Scrie la hello@gooidy.com în {days} de zile de la prima plată și o primești înapoi integral.",
+      },
+      {
+        q: "Pot plăti în moneda mea?",
+        a: "Da. Prețurile sunt stabilite în dolari americani, iar la plată vezi suma în moneda ta, cu metodele de plată obișnuite unde locuiești.",
+      },
+    ],
+    billingLink: "Condiții de facturare, anulare și rambursare",
+    seeAll: "Vezi toate prețurile",
+  },
 };

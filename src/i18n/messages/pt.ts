@@ -883,4 +883,120 @@ export const pt: Messages = {
       studio: "Estúdio",
     },
   },
+  pricingPage: {
+    metaTitle: "Preços · Gooidy",
+    metaDescription: "Comece grátis com 100 créditos. Planos Launch, Grow e Scale para anúncios de imagem e vídeo, publicação e resultados, a partir de US$ 39 por mês.",
+    title: "Preços",
+    sub: "Comece grátis. Escolha um plano quando o seu negócio estiver pronto para mais.",
+    monthly: "Mensal",
+    yearly: "Anual",
+    save: "Economize {percent}%",
+    popular: "Popular",
+    soon: "Em breve",
+    cta: "Comece grátis",
+    freeNote: "Grátis para todos, sem cartão",
+    perMonth: "Por mês",
+    perMonthYearly: "Por mês, cobrado anualmente ({total} adiantado). {monthly} no plano mensal.",
+    everythingIn: "Tudo do {plan}, e mais:",
+    free: {
+      name: "Grátis",
+      tagline: "Experimente o Gooidy",
+      features: [
+        "{credits} créditos para começar",
+        "Anúncios de imagem e vídeo a partir de um link",
+        "Seu logo, cores, fonte e tom de voz",
+        "Anúncios em {languages} idiomas",
+        "Qualidade Boa, Melhor ou Máxima",
+        "Publique em {accounts} conta social",
+        "Baixe todos os anúncios",
+      ],
+    },
+    starter: {
+      tagline: "Para uma rotina de publicações",
+      features: [
+        "{credits} créditos por mês",
+        "Créditos não usados passam para o mês seguinte",
+        "Conecte até {accounts} contas sociais",
+        "Planejador semanal de publicações",
+      ],
+      soonFeature: "Impulsione suas melhores publicações",
+    },
+    plus: {
+      tagline: "Para descobrir o que funciona",
+      features: [
+        "{credits} créditos por mês",
+        "Conecte até {accounts} contas sociais",
+        "Compare até {posts} publicações recentes",
+        "Filtre resultados por rede",
+        "Baixe um relatório de resultados",
+      ],
+    },
+    growth: {
+      tagline: "Para fazer mais testes",
+      features: [
+        "{credits} créditos por mês",
+        "Conecte até {accounts} contas sociais",
+        "Compare até {posts} publicações recentes",
+        "Um plano do próximo teste a partir dos resultados",
+        "Menor preço por crédito",
+      ],
+    },
+    footnotes: [
+      "Os créditos servem para imagens e vídeos. Uma imagem usa {imageMin}–{imageMax} créditos e um segundo de vídeo {videoMin}–{videoMax}, conforme a qualidade escolhida. Você vê o custo antes de criar.",
+      "Garantia de reembolso de {days} dias no primeiro pagamento. Cancele quando quiser.",
+      "Os preços estão em dólares americanos e não incluem impostos aplicáveis. O checkout mostra o valor na sua moeda. Os planos pagos abrem em breve; até lá, toda conta começa grátis.",
+      "Os resultados dependem dos seus produtos, anúncios e público, e não são garantidos.",
+    ],
+    packsTitle: "Precisa de mais créditos?",
+    packsSub: "Adicione um pacote de créditos quando quiser, em qualquer plano. Pague uma vez; os créditos do pacote não expiram.",
+    pack: "{count} créditos",
+    journeyTitle: "Todo plano cobre a jornada inteira",
+    journey: [
+      {
+        name: "Criar",
+        body: "Cole o link de um produto. Receba imagens e vídeos com a sua marca, em {languages} idiomas.",
+      },
+      {
+        name: "Editar",
+        body: "Mude títulos e legendas de graça, refaça uma cena e baixe o que gostar.",
+      },
+      {
+        name: "Publicar",
+        body: "Publique agora ou agende em 10 redes sociais, no seu fuso horário.",
+      },
+      {
+        name: "Analisar",
+        body: "Veja impressões, cliques e visualizações de cada publicação. Faça mais do que funciona.",
+      },
+    ],
+    faqTitle: "Dúvidas sobre preços",
+    faq: [
+      {
+        q: "O que é um crédito?",
+        a: "Os créditos pagam a criação de anúncios. Uma imagem usa de {imageMin} a {imageMax} créditos e um segundo de vídeo de {videoMin} a {videoMax}, conforme a qualidade. Imagens e vídeos dividem o mesmo saldo, e o custo aparece antes de criar.",
+      },
+      {
+        q: "E se meus créditos acabarem?",
+        a: "Compre um pacote de créditos a qualquer momento ou mude para um plano maior. Créditos de pacote não expiram. Os créditos do plano renovam todo mês, e os não usados passam para o mês seguinte.",
+      },
+      {
+        q: "Planos maiores fazem anúncios melhores?",
+        a: "Todos os planos têm as mesmas opções de qualidade. Planos maiores trazem mais créditos, mais contas sociais e ferramentas de resultados mais completas.",
+      },
+      {
+        q: "Posso pagar por ano?",
+        a: "Sim. Pagar um ano de uma vez custa {percent}% menos, e você continua recebendo seus créditos todo mês.",
+      },
+      {
+        q: "Posso pedir reembolso?",
+        a: "Sim. Escreva para hello@gooidy.com em até {days} dias após o primeiro pagamento para receber o valor integral de volta.",
+      },
+      {
+        q: "Posso pagar na minha moeda?",
+        a: "Sim. Os preços são definidos em dólares americanos, e o checkout mostra o valor na sua moeda com as formas de pagamento comuns onde você mora.",
+      },
+    ],
+    billingLink: "Termos de cobrança, cancelamento e reembolso",
+    seeAll: "Ver todos os preços",
+  },
 };

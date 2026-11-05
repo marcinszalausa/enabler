@@ -11,6 +11,7 @@ export const PLAN_PRICES = {
 // Paying for a year at once costs this much less than twelve months.
 export const YEARLY_DISCOUNT = 0.2;
 export const PACK_PRICES = { small: 35, large: 95 } as const;
+export const PACK_CREDITS = { small: 300, large: 1000 } as const;
 // The first payment for a plan can be refunded in full within this many days.
 export const MONEY_BACK_DAYS = 30;
 

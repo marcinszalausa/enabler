@@ -14,13 +14,9 @@ try{
   page.on("pageerror",e=>errors.push(e.message));page.on("request",r=>{if(r.method()==="POST"&&!/^\/(_next|__nextjs)/.test(new URL(r.url()).pathname))posts++;});
   const base="http://localhost:3118"+(locale==="en"?"":"/"+locale);
   await page.goto(base+"/pricing",{waitUntil:"networkidle",timeout:90000});await page.evaluate(theme=>document.documentElement.dataset.theme=theme,theme);
-  assert.equal(await page.locator("[data-plan]").count(),3);assert.match(await page.locator('[data-plan="starter"]').innerText(),/\$39/);assert.match(await page.locator('[data-plan="growth"]').innerText(),/\$99/);
-  assert.equal(await page.locator('link[rel="canonical"]').getAttribute("href"),"https://gooidy.com/pricing");
-  const calculator=page.locator("[data-credit-calculator]");
-  await calculator.getByLabel("Quality",{exact:true}).selectOption("best");await calculator.getByLabel("Images in a batch").selectOption("3");
-  await page.waitForFunction(()=>document.querySelector("[data-batch-price]")?.textContent.includes("30 credits"));assert.match(await calculator.locator('[data-credit-capacity="free"]').innerText(),/18 images/);
-  await calculator.getByLabel("Ad type").selectOption("video");await calculator.getByLabel("Length per video").selectOption("30");await page.waitForFunction(()=>document.querySelector("[data-batch-price]")?.textContent.includes("1080 credits"));assert.match(await calculator.locator('[data-credit-capacity="growth"]').innerText(),/0 videos/);
-  await calculator.getByLabel("Quality",{exact:true}).selectOption("good");await calculator.getByLabel("Length per video").selectOption("7");await page.waitForFunction(()=>document.querySelector("[data-batch-price]")?.textContent.includes("60 credits"));assert.match(await calculator.locator('[data-credit-capacity="free"]').innerText(),/2 videos/);
+  assert.equal(await page.locator("[data-plan]").count(),4);assert.equal(await page.locator('[data-plan="starter"] [data-price]').getAttribute("data-price"),"39");assert.equal(await page.locator('[data-plan="plus"] [data-recommended-plan]').count(),1);assert.equal(await page.locator('[data-plan="growth"] [data-price]').getAttribute("data-price"),"99");
+  await page.locator("[data-billing-toggle] button").nth(1).click();await page.waitForFunction(()=>document.querySelector('[data-plan="growth"] [data-price]')?.getAttribute("data-price")==="79.2");await page.locator("[data-billing-toggle] button").nth(0).click();
+  assert.equal(await page.locator('link[rel="canonical"]').getAttribute("href"),locale==="en"?"https://gooidy.com/pricing":"https://gooidy.com/"+locale+"/pricing");
   await page.evaluate(()=>scrollTo(0,0));
   if(width<1024){
    const menu=page.locator("details.mobile-nav"),summary=menu.locator("summary");
@@ -38,10 +34,10 @@ try{
   assert.equal(await page.locator("h1:visible").innerText(),"Product photos into ready-to-use ads");
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),"No feature-page overflow");
   for(const path of ["/features","/features/video-ads","/features/social-publishing","/features/campaigns","/features/brand-kit","/features/results","/features/for-your-business","/resources","/about"]){const response=await page.goto(base+path,{waitUntil:"networkidle",timeout:90000});assert.equal(response.status(),200,path);assert.equal(await page.locator("h1:visible").count(),1);assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),"No overflow "+width+" "+path);}
-  await page.goto(base+"/pricing#credit-calculator",{waitUntil:"networkidle"});const targetBox=await calculator.boundingBox(),headerBox=await page.locator("header").first().boundingBox();assert.ok(targetBox.y>=headerBox.y+headerBox.height-1,"Calculator anchor clears the sticky header");assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),"No pricing overflow");
+  await page.goto(base+"/pricing#packs",{waitUntil:"networkidle"});const targetBox=await page.locator("#packs").boundingBox(),headerBox=await page.locator("header").first().boundingBox();assert.ok(targetBox.y>=headerBox.y+headerBox.height-1,"Packs anchor clears the sticky header");assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),"No pricing overflow");
   if(width===390&&locale==="en"){await page.locator("[data-public-plans]").scrollIntoViewIfNeeded();console.log("PUBLIC_PRICING_PREVIEW",(await page.screenshot({type:"jpeg",quality:70})).toString("base64"));}
   assert.equal(posts,0,"Information pages never generate, publish or start checkout");assert.deepEqual(errors,[]);
-  console.log("PASS feature routes, truthful plan prices, credit calculations, modal focus/dismissal and responsive layout",width,locale,theme);await page.close();
+  console.log("PASS feature routes, truthful plan prices, plan toggle, modal focus/dismissal and responsive layout",width,locale,theme);await page.close();
  }
  const invalid=await fetch("http://localhost:3118/features/not-a-real-feature");assert.equal(invalid.status,404);
  const sitemap=await (await fetch("http://localhost:3118/sitemap.xml")).text();for(const path of ["/pricing","/features/image-ads","/resources","/about"])assert.ok(sitemap.includes("https://gooidy.com"+path));

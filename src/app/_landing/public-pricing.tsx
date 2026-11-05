@@ -3,36 +3,70 @@ import {useState} from "react";
 import Link from "next/link";
 import {useI18n} from "@/i18n/client";
 import {localePath} from "@/i18n/config";
-import {TRY_MODE} from "@/lib/paid-plans";
-import {PUBLIC_PLANS} from "@/lib/public-information";
-import {QUALITIES,IMAGE_CREDITS,type Quality} from "@/lib/quality";
-import {IDEA_COUNTS,imageRunCost,type IdeaCount} from "@/lib/image-pricing";
-import {LENGTHS,videoRunCost,type LengthKey} from "@/lib/video-options";
+import {fmt} from "@/i18n/format";
+import {PAID_PLANS,TRY_MODE} from "@/lib/paid-plans";
+import {planTools} from "@/lib/plan-value";
+import {ACCOUNT_LIMITS} from "@/lib/social/limits";
+import {LANGUAGES} from "@/lib/video-options";
+import {YEARLY_DISCOUNT,yearlyPrice,usd,type Interval} from "@/lib/pricing";
+import {LocalPrice} from "./local-price";
+
+// The plan cards: Free plus the paid plans in a row, a monthly/yearly switch
+// above them, and "Everything in X, plus:" lists that only name what each
+// step up adds. Prices and allowances come from the plan catalogue.
+const LANGUAGE_COUNT=Object.keys(LANGUAGES).length;
+
+// Rising bars, one more per plan: a small sign of growth, not a product claim.
+function PlanIcon({level}:{level:number}){
+ return <svg viewBox="0 0 32 32" aria-hidden className="h-9 w-9 text-accent" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
+  {[0,1,2,3].map(i=><path key={i} d={`M${7+i*6} 26V${22-i*5}`} opacity={i<=level?1:.22}/>)}
+  <path d="M4 28h24" opacity=".5"/>
+ </svg>;
+}
+
+function Check(){return <svg viewBox="0 0 20 20" aria-hidden className="mt-0.5 h-4 w-4 shrink-0 text-accent" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m4.5 10.5 3.5 3.5 7.5-8"/></svg>;}
 
 export function PublicPricing(){
- const {locale}=useI18n();
- return <><div id="plans" data-public-plans className="scroll-mt-24 mt-10 grid items-stretch gap-5 md:grid-cols-3">{PUBLIC_PLANS.map(plan=><article id={"plan-"+plan.id} key={plan.id} data-plan={plan.id} className={"flex min-w-0 scroll-mt-24 flex-col rounded-2xl border bg-raised p-5 sm:p-6 "+(plan.recommended?"border-accent shadow-[0_20px_70px_-40px_var(--t-accent)]":"border-line")}>
- <div className="flex min-h-8 flex-wrap items-center justify-between gap-2"><h3 className="text-xl font-semibold">{plan.name}</h3>{plan.recommended&&<span data-recommended-plan className="rounded-full bg-accent-soft px-3 py-1 text-xs font-medium text-accent">Recommended</span>}</div>
- <p className="mt-4 text-xl font-semibold leading-snug min-h-14">{plan.outcome}</p><p className="mt-2 text-sm text-muted min-h-12">{plan.forWhom}</p>
- <p className="mt-5"><span className="text-5xl font-semibold tracking-tight">${plan.price}</span><span className="ms-2 text-sm text-muted">USD / month</span></p>
- <button type="button" data-buy-plan={plan.id} disabled aria-describedby="purchase-status" title="Purchases are currently unavailable" className="mt-6 inline-flex min-h-12 cursor-not-allowed items-center justify-center rounded-xl border border-line-strong bg-surface px-4 py-3 text-center font-medium text-muted opacity-60">Buy {plan.name}</button>
- <Link data-try-plan={plan.id} href={localePath(locale,"/start")+"?"+new URLSearchParams({plan:plan.id})} prefetch={false} className="mt-2 inline-flex min-h-11 items-center justify-center rounded-xl px-4 py-2 text-sm font-medium text-accent underline-offset-4 hover:underline">Try for free</Link>
- <p className="mt-1 text-center text-xs text-muted">No card needed to try</p>
- <div className="mt-6 min-h-72 flex-1 border-t border-line pt-5">
- <h4 id={"included-"+plan.id} className="font-semibold">What’s included</h4>
- <p className="mt-1 text-xs font-medium text-accent">{plan.upgrade}</p>
- <ul data-plan-included={plan.id} aria-labelledby={"included-"+plan.id} className="mt-4 space-y-3 text-sm">{plan.highlights.map(feature=><li key={feature} className="flex gap-2"><span className="text-accent" aria-hidden>✓</span><span>{feature}</span></li>)}</ul>
- </div>
- </article>)}</div><p id="purchase-status" className="mt-4 text-center text-xs text-muted">Purchases are currently unavailable. You can still try for free.</p><section data-shared-plan-features aria-labelledby="shared-plan-title" className="mt-6 rounded-2xl border border-line bg-raised p-5 sm:p-6"><h3 id="shared-plan-title" className="font-semibold">Included in every paid plan</h3><p className="mt-2 text-sm text-muted">The essentials for creating, editing and publishing your ads.</p><ul className="mt-5 grid gap-4 text-sm sm:grid-cols-2 lg:grid-cols-3">{["Your logo, colors, font and brand voice","Campaign ideas and ad copy","Videos with voice, captions and music","Free text edits and image/video downloads","Posting calendar, queue and scheduling","Post results where network data is available"].map(feature=><li key={feature} className="flex gap-2"><span aria-hidden className="text-accent">✓</span><span>{feature}</span></li>)}</ul><div className="mt-5 border-t border-line pt-4"><p data-money-back className="text-xs leading-relaxed text-muted">30-day money-back on your first monthly subscription payment. <Link href={localePath(locale,"/policies/billing")} prefetch={false} className="underline underline-offset-4">See refund terms</Link></p><Link href={localePath(locale,"/pricing#full-plan-comparison")} prefetch={false} className="mt-3 inline-flex min-h-11 items-center text-sm font-medium text-accent">See every feature and limit →</Link></div></section><section id="plan-free" data-try-mode className="mt-6 scroll-mt-24 rounded-2xl border border-line bg-surface p-5 sm:p-6"><h3 className="font-semibold">Prefer to explore first?</h3><p className="mt-2 text-sm leading-relaxed text-muted">The free preview uses {TRY_MODE.credits} one-time starter credits shared across your account. Choosing another plan does not refill them. No subscription starts automatically.</p><details className="mt-3"><summary className="min-h-11 cursor-pointer py-3 text-sm font-medium">What is included for free?</summary><p className="pb-3 text-sm leading-relaxed text-muted">Try the core ad-creation workflow and download your results. Your selected plan is a preference, not paid access. Monthly credit allowances and paid planning or reporting tools begin only after paid activation. Existing accounts keep their current credits and access.</p></details><p className="mt-2 text-xs leading-relaxed text-muted">Each new paid plan includes one social account. Additional connections are optional and separately priced before activation. Paid advertising budgets are separate.</p></section></>;
-}
-export function PlanComparison(){return <section id="compare-plan-features" className="mt-12 scroll-mt-24"><h2 className="text-2xl font-semibold">Choose how you want to grow</h2><div className="mt-6 grid gap-4 sm:grid-cols-3">{[["Launch","Keep a posting routine","Create ads in your saved brand style and plan what to post next."],["Grow","Learn from the response","Add more generation allowance, post comparisons and downloadable reports."],["Scale","Run more creative tests","Use more generation credits and turn observed post results into a practical brief for your next creative test."]].map(([name,title,body])=><article key={name} className="edge min-w-0 p-5"><p className="text-xs font-medium text-accent">{name}</p><h3 className="mt-2 font-semibold">{title}</h3><p className="mt-3 text-sm leading-relaxed text-muted">{body}</p></article>)}</div></section>;}
-export function CreditCalculator(){
- const {t}=useI18n();const [kind,setKind]=useState("image");const [quality,setQuality]=useState<Quality>("good");const [ideas,setIdeas]=useState<IdeaCount>(1);const [length,setLength]=useState<LengthKey>("7");
- const cost=kind==="image"?imageRunCost(quality,ideas):videoRunCost(length,quality),outputs=kind==="image"?ideas*2:2;
- const select="min-h-11 w-full rounded-lg border border-line-strong bg-bg px-3 py-2";
- return <section id="credit-calculator" data-credit-calculator className="edge mt-12 scroll-mt-24 p-5 sm:p-7"><div className="max-w-2xl"><h2 className="text-2xl font-semibold">What can my credits make?</h2><p className="mt-3 text-sm leading-relaxed text-muted">Choose an example batch. The cost comes from the same pricing rules used when you create ads. This calculator does not spend credits.</p></div><div className="mt-6 grid gap-4 sm:grid-cols-3"><label className="grid gap-2 text-sm font-medium">Ad type<select aria-label="Ad type" className={select} value={kind} onChange={e=>setKind(e.target.value)}><option value="image">Image ads</option><option value="video">Video ads</option></select></label><label className="grid gap-2 text-sm font-medium">Quality<select aria-label="Quality" className={select} value={quality} onChange={e=>setQuality(e.target.value as Quality)}>{QUALITIES.map(q=><option key={q} value={q}>{t.app.qualities[q]}</option>)}</select></label>{kind==="image"?<label className="grid gap-2 text-sm font-medium">Images in a batch<select aria-label="Images in a batch" className={select} value={ideas} onChange={e=>setIdeas(Number(e.target.value) as IdeaCount)}>{IDEA_COUNTS.map(n=><option key={n} value={n}>{n*2} images · {n} {n===1?"idea":"ideas"}, two sizes each</option>)}</select></label>:<label className="grid gap-2 text-sm font-medium">Length per video<select aria-label="Length per video" className={select} value={length} onChange={e=>setLength(e.target.value as LengthKey)}>{(Object.keys(LENGTHS) as LengthKey[]).map(l=><option key={l} value={l}>{l} seconds</option>)}</select></label>}</div>
- <p className="mt-6 rounded-xl bg-accent-soft p-4 text-lg font-semibold text-accent" role="status" data-batch-price>{outputs} {kind==="image"?"images":"videos"} = {cost} credits per batch</p>
- <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">{[TRY_MODE,...PUBLIC_PLANS].map(p=>{const batches=Math.floor(p.credits/cost);return <div key={p.id} data-credit-capacity={p.id} className="rounded-xl border border-line p-4"><h3 className="font-medium">{p.name} · {p.credits} credits</h3><p className="mt-2 text-xl font-semibold">{batches*outputs} {kind==="image"?"images":"videos"}</p><p className="mt-1 text-xs text-muted">{batches} complete {batches===1?"batch":"batches"}; {p.credits-batches*cost} credits left</p></div>;})}</div>
- <p className="mt-5 text-xs leading-relaxed text-muted">These examples use the entire allowance for the selected type and quality. You can mix images and videos. Credits pay for generation; advertising spend on social networks is separate. Failed or undelivered outputs are settled through the credit refund system.</p>
- </section>;
+ const {locale,t}=useI18n();const p=t.pricingPage;
+ const [interval,setBilling]=useState<Interval>("month");
+ const percent=Math.round(YEARLY_DISCOUNT*100);
+ const cards=[
+  {id:"free",name:p.free.name,tagline:p.free.tagline,price:0,credits:TRY_MODE.credits,recommended:false,features:p.free.features,soon:null as string|null},
+  ...PAID_PLANS.map(plan=>({id:plan.id,name:plan.name,tagline:p[plan.id].tagline,price:plan.price,credits:plan.credits,recommended:plan.recommended,features:p[plan.id].features,soon:"soonFeature" in p[plan.id]?(p[plan.id] as {soonFeature:string}).soonFeature:null})),
+ ];
+ return <div data-pricing-cards>
+  <div className="flex justify-center">
+   <div role="group" aria-label={p.monthly+" / "+p.yearly} data-billing-toggle className="inline-flex rounded-full border border-line bg-raised p-1 text-sm">
+    {(["month","year"] as const).map(value=><button key={value} type="button" aria-pressed={interval===value} onClick={()=>setBilling(value)} className={"min-h-10 rounded-full px-4 font-medium transition "+(interval===value?"bg-accent text-accent-fg shadow-sm":"text-muted hover:text-fg")}>
+     {value==="month"?p.monthly:<>{p.yearly}<span className={"ms-2 rounded-full px-2 py-0.5 text-xs "+(interval===value?"bg-white/20":"bg-accent-soft text-accent")}>{fmt(p.save,{percent})}</span></>}
+    </button>)}
+   </div>
+  </div>
+  <div id="plans" data-public-plans className="mt-8 grid scroll-mt-24 items-stretch gap-4 sm:grid-cols-2 xl:grid-cols-4">
+   {cards.map((card,level)=>{
+    const tools=planTools(card.id),yearly=interval==="year"&&card.price>0;
+    const shown=yearly?Math.round(yearlyPrice(card.price)/12*100)/100:card.price;
+    const values={credits:card.credits.toLocaleString(locale),accounts:ACCOUNT_LIMITS[card.id]??1,posts:tools.resultsLimit,languages:LANGUAGE_COUNT};
+    const previous=level>0?cards[level-1].name:null;
+    return <article key={card.id} id={"plan-"+card.id} data-plan={card.id} className={"relative flex min-w-0 scroll-mt-24 flex-col rounded-2xl border bg-raised p-6 "+(card.recommended?"border-accent shadow-[0_24px_70px_-42px_var(--t-accent)]":"border-line")}>
+     <div className="flex items-start justify-between gap-2"><PlanIcon level={level}/>{card.recommended&&<span data-recommended-plan className="rounded-full bg-accent-soft px-3 py-1 text-xs font-medium text-accent">{p.popular}</span>}</div>
+     <h3 className="mt-5 text-2xl font-semibold tracking-tight">{card.name}</h3>
+     <p className="mt-1 text-sm text-muted">{card.tagline}</p>
+     <p className="mt-5 text-3xl font-semibold tracking-tight" data-price={shown}>{usd(shown,locale)}</p>
+     <p className="mt-1 min-h-10 text-xs leading-relaxed text-muted">
+      {card.price===0?p.freeNote:yearly?fmt(p.perMonthYearly,{total:usd(yearlyPrice(card.price),locale),monthly:usd(card.price,locale)}):p.perMonth}
+      {card.price>0&&<LocalPrice usd={shown} locale={locale} template={" · "+t.home.approx} />}
+     </p>
+     <Link data-try-plan={card.price>0?card.id:undefined} href={localePath(locale,"/start")+(card.price>0?"?"+new URLSearchParams({plan:card.id}):"")} prefetch={false} className={"mt-5 inline-flex min-h-11 items-center justify-center rounded-xl px-4 py-2.5 text-sm font-medium transition "+(card.recommended?"btn-primary":"border border-line-strong bg-surface hover:border-accent")}>{p.cta}</Link>
+     <div className="mt-6 flex-1 border-t border-line pt-5">
+      {previous&&<p className="mb-3 text-sm font-semibold">{fmt(p.everythingIn,{plan:previous})}</p>}
+      <ul data-plan-included={card.id} className="space-y-2.5 text-sm">
+       {card.features.map((feature,i)=><li key={feature} className="flex gap-2.5"><Check/><span className={i===0?"font-semibold":""}>{fmt(feature,values)}</span></li>)}
+       {card.soon&&<li className="flex gap-2.5"><Check/><span>{card.soon} <span className="ms-1 whitespace-nowrap rounded-md border border-line px-1.5 py-0.5 text-[11px] font-medium text-muted">{p.soon}</span></span></li>}
+      </ul>
+     </div>
+    </article>;
+   })}
+  </div>
+ </div>;
 }

@@ -880,4 +880,120 @@ export const sv: Messages = {
       studio: "Studio",
     },
   },
+  pricingPage: {
+    metaTitle: "Priser · Gooidy",
+    metaDescription: "Börja gratis med 100 krediter. Planerna Launch, Grow och Scale för bild- och videoannonser, publicering och resultat, från 39 $ i månaden.",
+    title: "Priser",
+    sub: "Börja gratis. Välj en plan när ditt företag är redo för mer.",
+    monthly: "Månadsvis",
+    yearly: "Årsvis",
+    save: "Spara {percent} %",
+    popular: "Populär",
+    soon: "Snart",
+    cta: "Börja gratis",
+    freeNote: "Gratis för alla, inget kort behövs",
+    perMonth: "Per månad",
+    perMonthYearly: "Per månad vid årsbetalning ({total} i förskott). {monthly} vid månadsbetalning.",
+    everythingIn: "Allt i {plan}, plus:",
+    free: {
+      name: "Gratis",
+      tagline: "Prova Gooidy",
+      features: [
+        "{credits} krediter att börja med",
+        "Bild- och videoannonser från en länk",
+        "Din logotyp, färger, typsnitt och ton",
+        "Annonser på {languages} språk",
+        "Kvalitet Bra, Bättre eller Bäst",
+        "Publicera på {accounts} socialt konto",
+        "Ladda ner alla annonser",
+      ],
+    },
+    starter: {
+      tagline: "För regelbundna inlägg",
+      features: [
+        "{credits} krediter varje månad",
+        "Oanvända krediter följer med en månad",
+        "Anslut upp till {accounts} sociala konton",
+        "Veckoplanerare för inlägg",
+      ],
+      soonFeature: "Marknadsför dina bästa inlägg",
+    },
+    plus: {
+      tagline: "För att lära dig vad som fungerar",
+      features: [
+        "{credits} krediter varje månad",
+        "Anslut upp till {accounts} sociala konton",
+        "Jämför upp till {posts} senaste inlägg",
+        "Filtrera resultat per nätverk",
+        "Ladda ner en resultatrapport",
+      ],
+    },
+    growth: {
+      tagline: "För fler tester",
+      features: [
+        "{credits} krediter varje månad",
+        "Anslut upp till {accounts} sociala konton",
+        "Jämför upp till {posts} senaste inlägg",
+        "En plan för nästa test utifrån dina resultat",
+        "Lägsta pris per kredit",
+      ],
+    },
+    footnotes: [
+      "Krediter fungerar för bilder och videor. En bild kostar {imageMin}–{imageMax} krediter och en sekund video {videoMin}–{videoMax}, beroende på vald kvalitet. Du ser kostnaden innan du skapar.",
+      "{days} dagars pengarna-tillbaka-garanti på din första betalning. Avsluta när du vill.",
+      "Priserna är i amerikanska dollar och exklusive tillämpliga skatter. I kassan ser du beloppet i din valuta. Betalda planer öppnar snart; tills dess börjar alla konton gratis.",
+      "Resultat beror på dina produkter, annonser och målgrupp och är inte garanterade.",
+    ],
+    packsTitle: "Behöver du fler krediter?",
+    packsSub: "Lägg till ett kreditpaket när som helst, med vilken plan som helst. Betala en gång; paketkrediter går aldrig ut.",
+    pack: "{count} krediter",
+    journeyTitle: "Varje plan täcker hela vägen",
+    journey: [
+      {
+        name: "Skapa",
+        body: "Klistra in en produktlänk. Få bilder och videor i ditt varumärke, på {languages} språk.",
+      },
+      {
+        name: "Redigera",
+        body: "Ändra rubriker och texter gratis, gör om en scen, ladda ner det du gillar.",
+      },
+      {
+        name: "Publicera",
+        body: "Publicera direkt eller schemalägg på 10 sociala nätverk, i din tidszon.",
+      },
+      {
+        name: "Analysera",
+        body: "Se visningar, klick och uppspelningar för varje inlägg. Gör mer av det som fungerar.",
+      },
+    ],
+    faqTitle: "Frågor om priser",
+    faq: [
+      {
+        q: "Vad är en kredit?",
+        a: "Krediter betalar för att skapa annonser. En bild kostar {imageMin} till {imageMax} krediter och en sekund video {videoMin} till {videoMax}, beroende på kvalitet. Bilder och videor delar ett saldo, och kostnaden visas innan du skapar.",
+      },
+      {
+        q: "Vad händer om krediterna tar slut?",
+        a: "Köp ett kreditpaket när som helst eller byt till en större plan. Paketkrediter går aldrig ut. Plankrediter fylls på varje månad, och oanvända följer med en månad.",
+      },
+      {
+        q: "Gör högre planer bättre annonser?",
+        a: "Alla planer har samma kvalitetsval. Högre planer ger fler krediter, fler sociala konton och djupare resultatverktyg.",
+      },
+      {
+        q: "Kan jag betala årsvis?",
+        a: "Ja. Att betala ett år i taget kostar {percent} % mindre, och du får fortfarande dina krediter varje månad.",
+      },
+      {
+        q: "Kan jag få pengarna tillbaka?",
+        a: "Ja. Mejla hello@gooidy.com inom {days} dagar från din första betalning så får du tillbaka hela beloppet.",
+      },
+      {
+        q: "Kan jag betala i min egen valuta?",
+        a: "Ja. Priserna sätts i amerikanska dollar, och kassan visar beloppet i din valuta med de betalsätt som är vanliga där du bor.",
+      },
+    ],
+    billingLink: "Villkor för betalning, uppsägning och återbetalning",
+    seeAll: "Se alla priser",
+  },
 };

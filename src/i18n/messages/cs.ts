@@ -880,4 +880,120 @@ export const cs: Messages = {
       studio: "Studio",
     },
   },
+  pricingPage: {
+    metaTitle: "Ceník · Gooidy",
+    metaDescription: "Začněte zdarma se 100 kredity. Tarify Launch, Grow a Scale pro obrázkové a video reklamy, publikování a výsledky, od 39 $ měsíčně.",
+    title: "Ceník",
+    sub: "Začněte zdarma. Tarif si vyberte, až bude vaše firma připravená na víc.",
+    monthly: "Měsíčně",
+    yearly: "Ročně",
+    save: "Ušetříte {percent} %",
+    popular: "Oblíbený",
+    soon: "Brzy",
+    cta: "Začít zdarma",
+    freeNote: "Zdarma pro všechny, bez karty",
+    perMonth: "Měsíčně",
+    perMonthYearly: "Měsíčně při roční platbě ({total} předem). {monthly} při měsíční platbě.",
+    everythingIn: "Vše z {plan}, navíc:",
+    free: {
+      name: "Zdarma",
+      tagline: "Vyzkoušejte Gooidy",
+      features: [
+        "{credits} kreditů na začátek",
+        "Obrázkové a video reklamy z jednoho odkazu",
+        "Vaše logo, barvy, písmo a tón",
+        "Reklamy v {languages} jazycích",
+        "Kvalita Dobrá, Lepší nebo Nejlepší",
+        "Publikace na {accounts} sociální účet",
+        "Stažení každé reklamy",
+      ],
+    },
+    starter: {
+      tagline: "Pro pravidelné příspěvky",
+      features: [
+        "{credits} kreditů každý měsíc",
+        "Nevyužité kredity se převádějí o měsíc",
+        "Až {accounts} propojené sociální účty",
+        "Týdenní plánovač příspěvků",
+      ],
+      soonFeature: "Propagace vašich nejlepších příspěvků",
+    },
+    plus: {
+      tagline: "Abyste zjistili, co funguje",
+      features: [
+        "{credits} kreditů každý měsíc",
+        "Až {accounts} propojených sociálních účtů",
+        "Porovnání až {posts} nedávných příspěvků",
+        "Filtrování výsledků podle sítě",
+        "Stažení přehledu výsledků",
+      ],
+    },
+    growth: {
+      tagline: "Pro více testů",
+      features: [
+        "{credits} kreditů každý měsíc",
+        "Až {accounts} propojených sociálních účtů",
+        "Porovnání až {posts} nedávných příspěvků",
+        "Plán dalšího testu z vašich výsledků",
+        "Nejnižší cena za kredit",
+      ],
+    },
+    footnotes: [
+      "Kredity platí pro obrázky i videa. Obrázek stojí {imageMin}–{imageMax} kreditů a sekunda videa {videoMin}–{videoMax}, podle zvolené kvality. Cenu vidíte před vytvořením.",
+      "{days}denní záruka vrácení peněz za první platbu. Zrušit můžete kdykoli.",
+      "Ceny jsou v amerických dolarech bez příslušných daní. Při platbě uvidíte částku ve své měně. Placené tarify se brzy otevřou; do té doby začíná každý účet zdarma.",
+      "Výsledky závisí na vašich produktech, reklamách a publiku a nejsou zaručené.",
+    ],
+    packsTitle: "Potřebujete víc kreditů?",
+    packsSub: "Kdykoli si přikupte balíček kreditů, u jakéhokoli tarifu. Zaplatíte jednou; kredity z balíčku nikdy nepropadnou.",
+    pack: "{count} kreditů",
+    journeyTitle: "Každý tarif pokrývá celou cestu",
+    journey: [
+      {
+        name: "Tvořte",
+        body: "Vložte odkaz na produkt. Získejte obrázky a videa ve stylu vaší značky, v {languages} jazycích.",
+      },
+      {
+        name: "Upravujte",
+        body: "Nadpisy a texty měňte zdarma, předělejte scénu, stáhněte, co se vám líbí.",
+      },
+      {
+        name: "Publikujte",
+        body: "Publikujte hned nebo naplánujte na 10 sociálních sítích, ve vašem časovém pásmu.",
+      },
+      {
+        name: "Vyhodnocujte",
+        body: "Sledujte zobrazení, kliknutí a přehrání každého příspěvku. Dělejte víc toho, co funguje.",
+      },
+    ],
+    faqTitle: "Otázky k ceníku",
+    faq: [
+      {
+        q: "Co je kredit?",
+        a: "Kredity platí tvorbu reklam. Obrázek stojí {imageMin} až {imageMax} kreditů a sekunda videa {videoMin} až {videoMax}, podle kvality. Obrázky a videa sdílejí jeden zůstatek a cenu uvidíte před vytvořením.",
+      },
+      {
+        q: "Co když mi dojdou kredity?",
+        a: "Kdykoli si kupte balíček kreditů nebo přejděte na vyšší tarif. Kredity z balíčků nikdy nepropadnou. Kredity tarifu se každý měsíc doplní a nevyužité se převádějí o měsíc.",
+      },
+      {
+        q: "Dělají vyšší tarify lepší reklamy?",
+        a: "Každý tarif má stejné volby kvality. Vyšší tarify přidávají víc kreditů, víc sociálních účtů a podrobnější nástroje pro výsledky.",
+      },
+      {
+        q: "Můžu platit ročně?",
+        a: "Ano. Platba za celý rok najednou je o {percent} % levnější a kredity dostáváte dál každý měsíc.",
+      },
+      {
+        q: "Můžu dostat peníze zpět?",
+        a: "Ano. Napište na hello@gooidy.com do {days} dnů od první platby a vrátíme ji celou.",
+      },
+      {
+        q: "Můžu platit ve své měně?",
+        a: "Ano. Ceny jsou stanovené v amerických dolarech a při platbě uvidíte částku ve své měně se způsoby platby obvyklými ve vaší zemi.",
+      },
+    ],
+    billingLink: "Podmínky plateb, zrušení a vrácení peněz",
+    seeAll: "Zobrazit celý ceník",
+  },
 };

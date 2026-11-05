@@ -879,4 +879,120 @@ export const tr: Messages = {
       studio: "Stüdyo",
     },
   },
+  pricingPage: {
+    metaTitle: "Fiyatlar · Gooidy",
+    metaDescription: "100 krediyle ücretsiz başlayın. Görsel ve video reklamlar, yayınlama ve sonuçlar için Launch, Grow ve Scale planları, aylık 39 $'dan başlayan fiyatlarla.",
+    title: "Fiyatlar",
+    sub: "Ücretsiz başlayın. İşletmeniz daha fazlasına hazır olduğunda bir plan seçin.",
+    monthly: "Aylık",
+    yearly: "Yıllık",
+    save: "%{percent} tasarruf",
+    popular: "Popüler",
+    soon: "Yakında",
+    cta: "Ücretsiz başla",
+    freeNote: "Herkese ücretsiz, kart gerekmez",
+    perMonth: "Aylık",
+    perMonthYearly: "Aylık, yıllık faturalandırılır (peşin {total}). Aylık faturalandırmada {monthly}.",
+    everythingIn: "{plan} planındaki her şey, artı:",
+    free: {
+      name: "Ücretsiz",
+      tagline: "Gooidy'yi deneyin",
+      features: [
+        "Başlangıç için {credits} kredi",
+        "Tek bağlantıdan görsel ve video reklamlar",
+        "Logonuz, renkleriniz, yazı tipiniz ve üslubunuz",
+        "{languages} dilde reklamlar",
+        "İyi, Daha İyi veya En İyi kalite",
+        "{accounts} sosyal hesapta paylaşım",
+        "Tüm reklamları indirme",
+      ],
+    },
+    starter: {
+      tagline: "Düzenli paylaşım için",
+      features: [
+        "Her ay {credits} kredi",
+        "Kullanılmayan krediler bir ay devreder",
+        "{accounts} sosyal hesaba kadar bağlantı",
+        "Haftalık paylaşım planlayıcısı",
+      ],
+      soonFeature: "En iyi gönderilerinizi öne çıkarın",
+    },
+    plus: {
+      tagline: "Neyin işe yaradığını öğrenmek için",
+      features: [
+        "Her ay {credits} kredi",
+        "{accounts} sosyal hesaba kadar bağlantı",
+        "Son {posts} gönderiye kadar karşılaştırma",
+        "Sonuçları ağa göre filtreleme",
+        "Sonuç raporu indirme",
+      ],
+    },
+    growth: {
+      tagline: "Daha fazla test için",
+      features: [
+        "Her ay {credits} kredi",
+        "{accounts} sosyal hesaba kadar bağlantı",
+        "Son {posts} gönderiye kadar karşılaştırma",
+        "Sonuçlarınızdan bir sonraki test planı",
+        "Kredi başına en düşük fiyat",
+      ],
+    },
+    footnotes: [
+      "Krediler görsel ve videolar için geçerlidir. Bir görsel {imageMin}–{imageMax} kredi, bir saniyelik video {videoMin}–{videoMax} kredi kullanır; seçtiğiniz kaliteye bağlıdır. Maliyeti oluşturmadan önce görürsünüz.",
+      "İlk ödemenizde {days} gün para iade garantisi. İstediğiniz zaman iptal edin.",
+      "Fiyatlar ABD doları cinsindendir ve geçerli vergiler dahil değildir. Ödeme sayfası tutarı kendi para biriminizde gösterir. Ücretli planlar yakında açılıyor; o zamana kadar her hesap ücretsiz başlar.",
+      "Sonuçlar ürünlerinize, reklamlarınıza ve kitlenize bağlıdır ve garanti edilmez.",
+    ],
+    packsTitle: "Daha fazla krediye mi ihtiyacınız var?",
+    packsSub: "Her planda, istediğiniz zaman kredi paketi ekleyin. Bir kez ödeyin; paket kredilerinin süresi dolmaz.",
+    pack: "{count} kredi",
+    journeyTitle: "Her plan tüm yolculuğu kapsar",
+    journey: [
+      {
+        name: "Oluştur",
+        body: "Bir ürün bağlantısı yapıştırın. Markanıza uygun görsel ve videoları {languages} dilde alın.",
+      },
+      {
+        name: "Düzenle",
+        body: "Başlıkları ve metinleri ücretsiz değiştirin, bir sahneyi yeniden yapın, beğendiğinizi indirin.",
+      },
+      {
+        name: "Yayınla",
+        body: "Hemen paylaşın veya 10 sosyal ağda kendi saat diliminizde planlayın.",
+      },
+      {
+        name: "Analiz et",
+        body: "Her gönderinin gösterim, tıklama ve izlenmelerini görün. İşe yarayandan daha fazla yapın.",
+      },
+    ],
+    faqTitle: "Fiyatlarla ilgili sorular",
+    faq: [
+      {
+        q: "Kredi nedir?",
+        a: "Krediler reklam oluşturmanın bedelidir. Bir görsel kaliteye göre {imageMin} ile {imageMax} arası, bir saniyelik video {videoMin} ile {videoMax} arası kredi kullanır. Görsel ve videolar tek bakiyeyi paylaşır; maliyet oluşturmadan önce gösterilir.",
+      },
+      {
+        q: "Kredim biterse ne olur?",
+        a: "İstediğiniz zaman kredi paketi alın veya daha büyük bir plana geçin. Paket kredilerinin süresi dolmaz. Plan kredileri her ay yenilenir, kullanılmayanlar bir ay devreder.",
+      },
+      {
+        q: "Üst planlar daha iyi reklam mı yapar?",
+        a: "Her planda aynı kalite seçenekleri vardır. Üst planlar daha fazla kredi, daha fazla sosyal hesap ve daha kapsamlı sonuç araçları ekler.",
+      },
+      {
+        q: "Yıllık ödeyebilir miyim?",
+        a: "Evet. Bir yılı tek seferde ödemek %{percent} daha ucuzdur ve kredileriniz yine her ay gelir.",
+      },
+      {
+        q: "Paramı geri alabilir miyim?",
+        a: "Evet. İlk ödemenizden sonraki {days} gün içinde hello@gooidy.com adresine yazın, tamamı iade edilsin.",
+      },
+      {
+        q: "Kendi para birimimle ödeyebilir miyim?",
+        a: "Evet. Fiyatlar ABD doları cinsindendir; ödeme sayfası tutarı kendi para biriminizde ve bölgenizde yaygın ödeme yöntemleriyle gösterir.",
+      },
+    ],
+    billingLink: "Faturalandırma, iptal ve iade koşulları",
+    seeAll: "Tüm fiyatları gör",
+  },
 };

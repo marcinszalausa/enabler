@@ -510,7 +510,7 @@ function Pricing({ t, locale }: { t: Messages; locale: Locale }) {
       <div className="reveal mx-auto max-w-6xl px-4">
         <SectionHeading title={t.home.pricingTitle} sub={t.home.pricingSub} />
         <PublicPricing />
-        <p className="mt-6 text-center"><Link href={localePath(locale,"/pricing")} className="inline-flex min-h-11 items-center text-sm font-medium text-accent">Compare plans and calculate your credits →</Link></p>
+        <p className="mt-6 text-center"><Link href={localePath(locale,"/pricing")} className="inline-flex min-h-11 items-center text-sm font-medium text-accent">{t.pricingPage.seeAll} →</Link></p>
         <TierExamples />
         <CreditGuide imageCost={GENERATION_COST} imagesPerRun={ADS_PER_GENERATION * ASPECTS.length} />
       </div>
