@@ -6,6 +6,11 @@ import {
   handlePackCheckout,
   syncSubscription,
 } from "@/lib/subscriptions";
+import {
+  handleAutoReloadFailed,
+  handleAutoReloadPaid,
+  handleAutoReloadSetup,
+} from "@/lib/auto-reload";
 
 // Stripe calls this for subscription, invoice and checkout events. The
 // signature check proves the request came from Stripe, so it can't be used
@@ -45,9 +50,17 @@ export async function POST(request: Request) {
         await syncSubscription(event.data.object);
         break;
       case "invoice.paid":
-        await handleInvoicePaid(event.data.object);
+        if (!(await handleAutoReloadPaid(event.data.object))) {
+          await handleInvoicePaid(event.data.object);
+        }
+        break;
+      case "invoice.payment_failed":
+        await handleAutoReloadFailed(event.data.object);
         break;
       case "checkout.session.completed":
+        await handleAutoReloadSetup(event.data.object);
+        await handlePackCheckout(event.data.object);
+        break;
       case "checkout.session.async_payment_succeeded":
         await handlePackCheckout(event.data.object);
         break;

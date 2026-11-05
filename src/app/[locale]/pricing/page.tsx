@@ -9,7 +9,7 @@ import {InformationPage} from "@/app/_landing/information-page";
 import {PublicPricing} from "@/app/_landing/public-pricing";
 import {IMAGE_CREDITS,VIDEO_CREDITS_PER_SECOND} from "@/lib/quality";
 import {LANGUAGES} from "@/lib/video-options";
-import {MONEY_BACK_DAYS,PACK_CREDITS,PACK_PRICES,YEARLY_DISCOUNT,usd} from "@/lib/pricing";
+import {MAX_PACK_DISCOUNT,MONEY_BACK_DAYS,PACK_CREDITS,PACK_PRICES,YEARLY_DISCOUNT,usd} from "@/lib/pricing";
 
 // Pricing laid out like a plan picker: the plan cards first, short footnotes
 // under them, then credit packs, what every plan covers and a short FAQ.
@@ -46,7 +46,7 @@ export default async function Pricing({params}:PageProps<"/[locale]/pricing">){
   </section>
   <section id="packs" data-credit-packs className="mx-auto max-w-5xl scroll-mt-24 px-4 pt-16">
    <div className="grid items-center gap-6 rounded-2xl border border-line bg-raised p-6 md:grid-cols-[1.2fr_1fr] sm:p-8">
-    <div><h2 className="text-2xl font-semibold tracking-tight">{p.packsTitle}</h2><p className="mt-2 text-sm leading-relaxed text-muted">{p.packsSub}</p></div>
+    <div><h2 className="text-2xl font-semibold tracking-tight">{p.packsTitle}</h2><p className="mt-2 text-sm leading-relaxed text-muted">{p.packsSub}</p><ul className="mt-3 space-y-1 text-sm text-muted"><li data-pack-discount className="font-medium text-accent">{fmt(p.packsDiscount,{percent:Math.round(MAX_PACK_DISCOUNT*100)})}</li><li>{p.packsAuto}</li></ul></div>
     <div className="grid gap-3 sm:grid-cols-2">
      {(["small","large"] as const).map(key=><div key={key} data-pack={key} className="rounded-xl border border-line bg-surface p-4">
       <p className="text-sm font-medium">{fmt(p.pack,{count:PACK_CREDITS[key].toLocaleString(locale)})}</p>

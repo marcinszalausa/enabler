@@ -15,7 +15,7 @@ try{
  for(const [width,locale]of [[320,"en"],[390,"en"],[390,"ja"],[1440,"en"]]){
   const page=await browser.newPage({viewport:{width,height:950},reducedMotion:"reduce"});const errors=[];page.on("pageerror",e=>errors.push(e.message));await page.goto("http://localhost:3126"+(locale==="en"?"":"/"+locale)+"/pricing",{waitUntil:"networkidle"});
   assert.equal(await page.locator("[data-buy-plan]").count(),0);assert.equal(await page.locator("[data-plan]").count(),4);
-  for(const [id,count] of [["free",7],["starter",5],["plus",5],["growth",5]])assert.equal(await page.locator(`[data-plan-included="${id}"] li`).count(),count,id);
+  for(const [id,count] of [["free",7],["starter",6],["plus",6],["growth",6]])assert.equal(await page.locator(`[data-plan-included="${id}"] li`).count(),count,id);
   if(locale==="en"){const plus=page.locator('[data-plan="plus"]'),growth=page.locator('[data-plan="growth"]');assert.match(await plus.innerText(),/Everything in Launch, plus/);assert.match(await growth.innerText(),/Everything in Grow, plus/);assert.match(await growth.innerText(),/30 recent posts/);assert.match(await page.locator('[data-plan="starter"]').innerText(),/Soon/);}
   for(const [id,month,year] of [["starter","39","31.2"],["plus","69","55.2"],["growth","99","79.2"]]){assert.equal(await page.locator(`[data-plan="${id}"] [data-price]`).getAttribute("data-price"),month);}
   await page.locator("[data-billing-toggle] button").nth(1).click();
@@ -45,6 +45,6 @@ try{
  }
  const home=await browser.newPage({viewport:{width:390,height:950},javaScriptEnabled:false});await home.goto("http://localhost:3126/",{waitUntil:"domcontentloaded"});
  assert.equal(await home.locator("#pricing [data-plan-included]").count(),4);assert.equal(await home.locator("#pricing [data-buy-plan]").count(),0);assert.equal(await home.locator("#pricing a[data-try-plan]").count(),3);
- assert.equal(await home.locator('#pricing [data-plan-included="starter"] li').count(),5);assert.equal(await home.locator('#pricing [data-plan-included="growth"] li').count(),5);await home.close();console.log("PASS plan cards on homepage without JavaScript");
+ assert.equal(await home.locator('#pricing [data-plan-included="starter"] li').count(),6);assert.equal(await home.locator('#pricing [data-plan-included="growth"] li').count(),6);await home.close();console.log("PASS plan cards on homepage without JavaScript");
  console.log("PASS raw HTML content is readable without JavaScript");
 }catch(error){console.error(log);throw error;}finally{await browser?.close();if(server?.pid)try{process.kill(-server.pid,"SIGTERM");}catch{}}

@@ -53,6 +53,21 @@ export type PackKey = keyof typeof PACKS;
 
 export const FREE_PLAN = { name: "Free", credits: 100 } as const;
 
+// The plan whose pack discount applies: a paid plan only while its
+// subscription is live.
+export function discountPlan(ws: {
+  plan: string | null;
+  stripe_subscription_id: string | null;
+  subscription_status: string | null;
+}) {
+  const live = ["active", "trialing", "past_due"].includes(
+    ws.subscription_status ?? "",
+  );
+  return ws.stripe_subscription_id && live && isPlanKey(ws.plan)
+    ? ws.plan
+    : "free";
+}
+
 export function isPlanKey(value: unknown): value is PlanKey {
   return typeof value === "string" && value in PLANS;
 }

@@ -11,14 +11,22 @@ import {
   isInterval,
   isPackKey,
   isPlanKey,
+  discountPlan,
   paymentsOpen,
   priceIdFor,
 } from "@/lib/billing";
+import { packPrice } from "@/lib/pricing";
+import {
+  RELOAD_THRESHOLDS,
+  maybeAutoReload,
+  savedCard,
+} from "@/lib/auto-reload";
+import { revalidatePath } from "next/cache";
 import { UserError, userMessage } from "@/lib/errors";
 import { requestLocale, requestMessages } from "@/i18n/server";
 import type { Locale } from "@/i18n/config";
 
-export type BillingState = { error: string | null };
+export type BillingState = { error: string | null; saved?: boolean };
 
 // Billing changes are for the workspace owner only.
 async function ownerWorkspace() {
@@ -29,7 +37,9 @@ async function ownerWorkspace() {
   const t = (await requestMessages()).billing.errors;
   const { data: ws } = await supabase
     .from("workspaces")
-    .select("id, name, stripe_customer_id, stripe_subscription_id")
+    .select(
+      "id, name, plan, stripe_customer_id, stripe_subscription_id, subscription_status",
+    )
     .order("created_at")
     .limit(1)
     .single();
@@ -193,7 +203,10 @@ export async function buyPack(
           quantity: 1,
           price_data: {
             currency: "usd",
-            unit_amount: pack.usd * 100,
+            // Paid plans get packs for less (src/lib/pricing.ts).
+            unit_amount: Math.round(
+              packPrice(pack.usd, discountPlan(ws)) * 100,
+            ),
             product_data: {
               name: `Gooidy credits: ${pack.credits.toLocaleString("en-US")}`,
             },
@@ -235,4 +248,112 @@ export async function openPortal(): Promise<BillingState> {
     return { error: userMessage(err, t.portal) };
   }
   redirect(url);
+}
+
+// Cancel the plan in Stripe's portal, which confirms it and keeps the plan
+// until the end of the paid period.
+export async function cancelPlan(): Promise<BillingState> {
+  let url: string;
+  const t = (await requestMessages()).billing.errors;
+  try {
+    const { ws, email } = await ownerWorkspace();
+    if (!ws.stripe_subscription_id) return { error: t.portal };
+    const back = `${await siteOrigin()}/dashboard/billing`;
+    const session = await stripe().billingPortal.sessions.create({
+      customer: await customerFor(ws, email),
+      locale: await stripeLocale(),
+      configuration: process.env.STRIPE_PORTAL_CONFIGURATION || undefined,
+      return_url: back,
+      flow_data: {
+        type: "subscription_cancel",
+        subscription_cancel: { subscription: ws.stripe_subscription_id },
+        after_completion: { type: "redirect", redirect: { return_url: back } },
+      },
+    });
+    url = session.url;
+  } catch (err) {
+    unstable_rethrow(err);
+    console.error("cancelPlan failed", err);
+    return { error: userMessage(err, t.portal) };
+  }
+  redirect(url);
+}
+
+// Turns auto-reload on with a threshold and a pack. With a card on file it
+// switches on at once; otherwise Stripe Checkout saves a card first.
+export async function turnOnAutoReload(
+  _prev: BillingState,
+  formData: FormData,
+): Promise<BillingState> {
+  let url: string | null = null;
+  const t = (await requestMessages()).billing.errors;
+  try {
+    const pack = formData.get("pack");
+    const threshold = Number(formData.get("threshold"));
+    if (
+      !isPackKey(pack) ||
+      !(RELOAD_THRESHOLDS as readonly number[]).includes(threshold)
+    ) {
+      return { error: t.pickPlan };
+    }
+    if (!paymentsOpen()) throw new UserError(t.notSetUp);
+    const { ws, email } = await ownerWorkspace();
+    const customer = await customerFor(ws, email);
+    if (await savedCard(customer)) {
+      const { error } = await createAdminClient()
+        .from("workspaces")
+        .update({
+          auto_reload_enabled: true,
+          auto_reload_threshold: threshold,
+          auto_reload_pack: pack,
+          auto_reload_error: null,
+        })
+        .eq("id", ws.id);
+      if (error) throw error;
+      await maybeAutoReload(ws.id);
+    } else {
+      const session = await stripe().checkout.sessions.create({
+        customer,
+        client_reference_id: ws.id,
+        locale: await stripeLocale(),
+        mode: "setup",
+        currency: "usd",
+        metadata: {
+          workspace_id: ws.id,
+          kind: "auto_reload",
+          pack,
+          threshold: String(threshold),
+        },
+        success_url: `${await siteOrigin()}/dashboard/billing?checkout=reload`,
+        cancel_url: `${await siteOrigin()}/dashboard/billing`,
+      });
+      if (!session.url) throw new Error("Checkout session has no URL");
+      url = session.url;
+    }
+  } catch (err) {
+    unstable_rethrow(err);
+    console.error("turnOnAutoReload failed", err);
+    return { error: userMessage(err, t.checkout) };
+  }
+  if (url) redirect(url);
+  revalidatePath("/dashboard/billing");
+  return { error: null, saved: true };
+}
+
+export async function turnOffAutoReload(): Promise<BillingState> {
+  const t = (await requestMessages()).billing.errors;
+  try {
+    const { ws } = await ownerWorkspace();
+    const { error } = await createAdminClient()
+      .from("workspaces")
+      .update({ auto_reload_enabled: false })
+      .eq("id", ws.id);
+    if (error) throw error;
+  } catch (err) {
+    unstable_rethrow(err);
+    console.error("turnOffAutoReload failed", err);
+    return { error: userMessage(err, t.portal) };
+  }
+  revalidatePath("/dashboard/billing");
+  return { error: null };
 }

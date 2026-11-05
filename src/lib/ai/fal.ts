@@ -37,6 +37,10 @@ export async function generateAdImage(opts: {
   // take a single image and for uploads, which have no description.
   styleImageUrl?: string | null;
   style?: string | null;
+  // An AI avatar the owner picked to feature as the ad's model; `person`
+  // describes them in words, for models that take a single image.
+  personImageUrl?: string | null;
+  person?: string | null;
 }): Promise<string> {
   const referenceImageUrl = opts.referenceImageUrl
     ? (await verifyPublicUrl(opts.referenceImageUrl)).toString() : null;
@@ -45,26 +49,44 @@ export async function generateAdImage(opts: {
   const styleImageUrl = opts.styleImageUrl && !opts.sameScene
     ? (await verifyPublicUrl(opts.styleImageUrl)).toString() : null;
   const styleText = opts.sameScene ? null : opts.style?.trim() || null;
+  // A new framing already shows the avatar, so only the first shot takes it.
+  const personImageUrl = opts.personImageUrl && !opts.sameScene
+    ? (await verifyPublicUrl(opts.personImageUrl)).toString() : null;
+  const personText = opts.sameScene ? null : opts.person?.trim() || null;
   const prompt = `${opts.prompt}. Professional advertising photograph with sharp product detail, believable material texture, natural skin and coherent lighting. Keep every visible face fully inside the image with comfortable headroom. Compose a full-frame photograph with quiet negative space around the subject for separately rendered ad copy; do not shrink the subject into a framed inset. Preserve the product silhouette, color, material, construction and genuine branding from the reference. Keep natural pairs and sets intact, with no duplicated extra variants. Hands should look natural; fingers may be naturally occluded. No added headlines, captions, invented lettering or watermarks.${opts.avoid ? ` Avoid these problems: ${opts.avoid}.` : ""}`;
   const models = IMAGE_MODELS[opts.quality];
   const flux = opts.quality === "good";
-  // Flux Kontext takes one image, so it gets the style in words only.
-  const styleImages = styleImageUrl && !flux ? [styleImageUrl] : [];
-  const styleGuide = styleImages.length
-    ? ` Use the second image only as a style reference: match its composition, camera angle, kind of setting, lighting and mood. Do not copy its product, its people's faces, or any text or logo from it.${styleText ? ` Style: ${styleText}.` : ""}`
-    : styleText ? ` Visual style to follow: ${styleText}.` : "";
+  // Flux Kontext takes one image, so it gets the avatar and style in words only.
+  // The other models see them as extra images after the product photo (with
+  // no product photo, the text models get words too).
+  const images = !flux && referenceImageUrl;
+  const extraImages: string[] = [];
+  let guide = "";
+  const nth = () => ["second", "third", "fourth"][extraImages.length - 1];
+  if (personImageUrl && images) {
+    extraImages.push(personImageUrl);
+    guide += ` Feature the person from the ${nth()} image as the model in this ad, keeping their face, hair, skin tone and build recognizably the same and styling them naturally for the scene. They replace any other person the scene describes; no other people appear. Do not copy that image's background.${personText ? ` They are ${personText}.` : ""}`;
+  } else if (personText) {
+    guide += ` Feature this person as the model in the ad: ${personText}.`;
+  }
+  if (styleImageUrl && images) {
+    extraImages.push(styleImageUrl);
+    guide += ` Use the ${nth()} image only as a style reference: match its composition, camera angle, kind of setting, lighting and mood. Do not copy its product, its people's faces, or any text or logo from it.${styleText ? ` Style: ${styleText}.` : ""}`;
+  } else if (styleText) {
+    guide += ` Visual style to follow: ${styleText}.`;
+  }
   const editBase = opts.sameScene
     ? `Show the same person, wearing exactly the same outfit, in the same setting and light as this image, from a new framing. The product keeps its color, fabric and design unchanged: ${prompt}`
     : `Place this exact product in a new scene, keeping its color, fabric and design unchanged. Keep natural pairs or sets intact, without duplicating the product or introducing a different color variant: ${prompt}`;
-  const editPrompt = editBase + styleGuide;
+  const editPrompt = editBase + guide;
 
   const google = opts.quality === "good" ? null : geminiKey();
   if (google) {
     // Nano Banana direct from Google costs less than fal; fal is the backup.
     try {
       return await generateGoogleImage({
-        prompt: referenceImageUrl ? editPrompt : prompt + styleGuide,
-        referenceImageUrls: referenceImageUrl ? [referenceImageUrl, ...styleImages] : [],
+        prompt: referenceImageUrl ? editPrompt : prompt + guide,
+        referenceImageUrls: referenceImageUrl ? [referenceImageUrl, ...extraImages] : [],
         aspect: opts.aspect,
         ...GOOGLE_IMAGE_MODELS[opts.quality as "better" | "best"],
         key: google,
@@ -79,12 +101,12 @@ export async function generateAdImage(opts: {
       ? fal.subscribe(opts.retry ? models.retry : models.edit, {
           input: flux
             ? { prompt: editPrompt, image_url: referenceImageUrl, aspect_ratio: opts.aspect, output_format: "jpeg" }
-            : { prompt: editPrompt, image_urls: [referenceImageUrl, ...styleImages], aspect_ratio: opts.aspect, output_format: "jpeg", num_images: 1, ...models.input },
+            : { prompt: editPrompt, image_urls: [referenceImageUrl, ...extraImages], aspect_ratio: opts.aspect, output_format: "jpeg", num_images: 1, ...models.input },
         })
       : fal.subscribe(models.text, {
           input: flux
-            ? { prompt: prompt + styleGuide, image_size: opts.aspect === "1:1" ? { width: 1024, height: 1024 } : { width: 768, height: 1344 }, output_format: "jpeg" }
-            : { prompt: prompt + styleGuide, aspect_ratio: opts.aspect, output_format: "jpeg", num_images: 1, ...models.input },
+            ? { prompt: prompt + guide, image_size: opts.aspect === "1:1" ? { width: 1024, height: 1024 } : { width: 768, height: 1344 }, output_format: "jpeg" }
+            : { prompt: prompt + guide, aspect_ratio: opts.aspect, output_format: "jpeg", num_images: 1, ...models.input },
         }),
   );
 
@@ -93,19 +115,24 @@ export async function generateAdImage(opts: {
   return url;
 }
 
-// One image for Gooidy's style library, drawn from text alone at 3:4.
-// Nano Banana 2 (Google direct when set up, else fal): a few cents each.
-export async function generateLibraryImage(prompt: string): Promise<string> {
+// One image for Gooidy's style or avatar library, or a custom avatar, at 3:4.
+// Nano Banana 2 by default (a few cents); custom avatars ask for Nano Banana
+// Pro. A reference photo (an owner's own portrait) is followed when given.
+// Google direct when set up, else fal.
+export async function generateLibraryImage(prompt: string, opts: { quality?: "better" | "best"; referenceImageUrl?: string | null } = {}): Promise<string> {
+  const quality = opts.quality ?? "better";
+  const reference = opts.referenceImageUrl ? (await verifyPublicUrl(opts.referenceImageUrl)).toString() : null;
   const google = geminiKey();
   if (google) {
     try {
-      return await generateGoogleImage({ prompt, referenceImageUrls: [], aspect: "3:4", ...GOOGLE_IMAGE_MODELS.better, key: google });
+      return await generateGoogleImage({ prompt, referenceImageUrls: reference ? [reference] : [], aspect: "3:4", ...GOOGLE_IMAGE_MODELS[quality], key: google });
     } catch (err) {
       console.error("Gemini library image failed, drawing on fal instead", err);
     }
   }
-  const result = await callFal(() => fal.subscribe("fal-ai/nano-banana-2", {
-    input: { prompt, aspect_ratio: "3:4", output_format: "jpeg", num_images: 1, resolution: "1K" },
+  const model = IMAGE_MODELS[quality];
+  const result = await callFal(() => fal.subscribe(reference ? model.edit : model.text, {
+    input: { prompt, ...(reference ? { image_urls: [reference] } : {}), aspect_ratio: "3:4", output_format: "jpeg", num_images: 1, resolution: "1K" },
   }));
   const url = (result.data as FalImageOutput).images?.[0]?.url;
   if (!url) throw new Error("Image generation returned no image.");

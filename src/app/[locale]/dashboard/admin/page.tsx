@@ -8,10 +8,11 @@ import { providerBalances } from "@/lib/admin-balances";
 import { USD_PER_CREDIT_ESTIMATE, customerRows, overview, planLabel, planPrice, searchCustomers } from "@/lib/admin-stats";
 import { platformName } from "@/lib/social/platforms";
 import { libraryStatus } from "@/lib/style-references";
+import { avatarLibraryStatus } from "@/lib/avatars";
 import { StyleLibraryButton } from "./style-library-button";
 import { DayBars, PlanChip, Section, Stat, Table, cell, day, firstCell, num, usd } from "./admin-ui";
 
-// The style library button draws up to 15 images in one request.
+// The library buttons draw up to 16 images in one request.
 export const maxDuration = 300;
 
 export const metadata: Metadata = { title: "Admin · Gooidy", robots: { index: false, follow: false } };
@@ -33,7 +34,7 @@ async function Admin({ searchParams }: { searchParams: PageProps<"/[locale]/dash
   const sp = await searchParams;
   const q = typeof sp.q === "string" ? sp.q.slice(0, 200) : "";
   const plan = typeof sp.plan === "string" ? sp.plan : "";
-  const [data, grants, library] = await Promise.all([loadAdminData(), creditGrants(null), libraryStatus()]);
+  const [data, grants, library, avatars] = await Promise.all([loadAdminData(), creditGrants(null), libraryStatus(), avatarLibraryStatus()]);
   const granted = grants.reduce((s, g) => s + g.amount, 0);
   const o = overview(data);
   const all = customerRows(data);
@@ -58,6 +59,10 @@ async function Admin({ searchParams }: { searchParams: PageProps<"/[locale]/dash
 
       <Section title="Style library" note="Original AI reference images customers pick in Create ads. Drawn once on your Google or fal key, about $0.03 to $0.08 each.">
         <StyleLibraryButton made={library.made} total={library.total} />
+      </Section>
+
+      <Section title="Avatar library" note="Original AI people (never real people) customers can feature in image ads. Drawn once on your Google or fal key, about $0.03 to $0.08 each.">
+        <StyleLibraryButton kind="avatar" made={avatars.made} total={avatars.total} />
       </Section>
 
       <dl className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-4">

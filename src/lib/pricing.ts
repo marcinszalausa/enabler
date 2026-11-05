@@ -12,6 +12,22 @@ export const PLAN_PRICES = {
 export const YEARLY_DISCOUNT = 0.2;
 export const PACK_PRICES = { small: 35, large: 95 } as const;
 export const PACK_CREDITS = { small: 300, large: 1000 } as const;
+// Credit packs cost less on a paid plan: Launch 10%, Grow 20%, Scale 30% off.
+// Even at 30% off, a pack credit ($0.0665) stays above the worst-case cost of
+// a credit (about $0.05, see the unit-economics notes).
+export const PACK_DISCOUNTS: Record<"free" | PaidPlanId, number> = {
+  free: 0,
+  starter: 0.1,
+  plus: 0.2,
+  growth: 0.3,
+};
+export const MAX_PACK_DISCOUNT = Math.max(...Object.values(PACK_DISCOUNTS));
+
+// A pack's price for a plan, rounded to the cent: $95 on Scale is $66.50.
+export function packPrice(base: number, plan: string | null | undefined) {
+  const off = PACK_DISCOUNTS[plan as PaidPlanId] ?? 0;
+  return Math.round(base * (1 - off) * 100) / 100;
+}
 // The first payment for a plan can be refunded in full within this many days.
 export const MONEY_BACK_DAYS = 30;
 

@@ -183,7 +183,7 @@ function Hero({
           </span>
           {t.home.badge}
         </p>
-        <h1 className="mt-6 max-w-4xl text-[2.6rem] font-semibold leading-[1.02] tracking-[-0.035em] sm:text-7xl lg:text-[5.25rem]">
+        <h1 className="mt-6 max-w-5xl text-[2.6rem] font-semibold leading-[1.02] tracking-[-0.028em] sm:text-7xl lg:text-[5.25rem]">
           {t.home.titleLine1}
           <br />
           {t.home.titleBefore}
@@ -584,11 +584,11 @@ function FinalCta({ t, locale }: { t: Messages; locale: Locale }) {
             type="text"
             inputMode="url"
             placeholder={t.urlForm.placeholder}
-            className="min-w-0 flex-1 rounded-xl bg-white px-4 py-3 text-[#0f1222] outline-none placeholder:text-[#596078]"
+            className="min-w-0 flex-1 rounded-xl bg-white px-4 py-3 text-[#1d1d1f] outline-none placeholder:text-[#6e6e73]"
           />
           <button
             type="submit"
-            className="rounded-xl bg-[#0f1222] px-6 py-3 font-medium text-white transition hover:bg-black"
+            className="rounded-xl bg-[#1d1d1f] px-6 py-3 font-medium text-white transition hover:bg-black"
           >
             {t.urlForm.submit}
           </button>

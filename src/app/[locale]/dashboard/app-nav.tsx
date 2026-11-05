@@ -8,7 +8,7 @@ import { isLocale } from "@/i18n/config";
 export type AppNavItem = { href: string; label: string };
 
 const tab =
-  "flex min-h-11 min-w-0 items-center gap-3 rounded-xl px-3 py-2 text-sm leading-tight transition hover:bg-surface hover:text-fg focus-visible:outline-2 focus-visible:outline-accent";
+  "flex min-h-11 min-w-0 items-center gap-3 rounded-xl px-3 py-2 text-sm leading-tight transition hover:bg-surface hover:text-fg focus-visible:outline-2 focus-visible:outline-accent in-data-collapsed:justify-center in-data-collapsed:px-0";
 
 // The app's sections, listed down the sidebar (the drawer on phones).
 export function AppNav({ items }: { items: AppNavItem[] }) {
@@ -44,10 +44,11 @@ function Tabs({ items, path }: { items: AppNavItem[]; path: string }) {
       key={item.href}
       href={item.href}
       aria-current={item.href === current ? "page" : undefined}
+      title={item.label}
       className={`${tab} ${item.href === current ? "bg-accent-soft font-medium text-accent" : "text-muted"}`}
     >
       <NavIcon href={item.href}/>
-      <span className="break-words">{item.label}</span>
+      <span className="break-words in-data-collapsed:sr-only">{item.label}</span>
     </Link>
   ));
 }

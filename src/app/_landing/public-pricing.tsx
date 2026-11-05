@@ -8,7 +8,7 @@ import {PAID_PLANS,TRY_MODE} from "@/lib/paid-plans";
 import {planTools} from "@/lib/plan-value";
 import {ACCOUNT_LIMITS} from "@/lib/social/limits";
 import {LANGUAGES} from "@/lib/video-options";
-import {YEARLY_DISCOUNT,yearlyPrice,usd,type Interval} from "@/lib/pricing";
+import {PACK_DISCOUNTS,YEARLY_DISCOUNT,yearlyPrice,usd,type Interval} from "@/lib/pricing";
 import {LocalPrice} from "./local-price";
 
 // The plan cards: Free plus the paid plans in a row, a monthly/yearly switch
@@ -62,6 +62,7 @@ export function PublicPricing(){
       {previous&&<p className="mb-3 text-sm font-semibold">{fmt(p.everythingIn,{plan:previous})}</p>}
       <ul data-plan-included={card.id} className="space-y-2.5 text-sm">
        {card.features.map((feature,i)=><li key={feature} className="flex gap-2.5"><Check/><span className={i===0?"font-semibold":""}>{fmt(feature,values)}</span></li>)}
+       {card.price>0&&PACK_DISCOUNTS[card.id as keyof typeof PACK_DISCOUNTS]>0&&<li className="flex gap-2.5"><Check/><span>{fmt(p.packOff,{percent:Math.round(PACK_DISCOUNTS[card.id as keyof typeof PACK_DISCOUNTS]*100)})}</span></li>}
        {card.soon&&<li className="flex gap-2.5"><Check/><span>{card.soon} <span className="ms-1 whitespace-nowrap rounded-md border border-line px-1.5 py-0.5 text-[11px] font-medium text-muted">{p.soon}</span></span></li>}
       </ul>
      </div>
