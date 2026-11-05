@@ -139,7 +139,12 @@ export async function runGeneration({
     prompt = angles.map((a) => a.image_prompt).join("\n");
     failure = failed > 0 ? failureNote(results, failed) : null;
   } catch (err) {
-    failure = userMessage(err, "Generation failed. Please try again.");
+    // Say why, so a run that the quality check stopped does not look broken.
+    failure = err instanceof QualityError
+      ? `The quality check rejected every image: ${err.message}`
+      : err instanceof QualityReviewUnavailableError
+        ? err.message
+        : userMessage(err, "Generation failed. Please try again.");
     console.error("generation failed", generationId, err);
   }
 
