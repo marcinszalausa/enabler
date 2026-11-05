@@ -133,7 +133,7 @@ grant execute on function public.fail_auto_reload(uuid, uuid, text) to service_r
 create or replace function public.credit_activity(ws uuid, max_rows integer default 30)
 returns table (
   happened_at timestamptz,
-  kind text,          -- image_ads, video_ads, redo, plan, pack, reload, free or adjust
+  kind text,          -- image_ads, video_ads, redo, avatar, plan, pack, reload, free or adjust
   credits integer,    -- added (positive) or used (negative)
   product text,       -- the product an ad run was for
   status text         -- an ad run's status
@@ -150,6 +150,7 @@ begin
   return query
   select a.happened_at, a.kind, a.credits, a.product, a.status
   from (
+    -- Ad runs: the charge, less what was returned and any free redo.
     select g.created_at as happened_at,
            case when fr.generation_id is not null then 'redo' else g.type end as kind,
            case when g.status = 'failed' then 0
@@ -168,11 +169,16 @@ begin
     left join public.products p on p.id = g.product_id
     where g.workspace_id = ws
     union all
+    select av.created_at, 'avatar', -av.credits, av.name, null
+    from public.avatars av
+    where av.workspace_id = ws and av.credits > 0
+    union all
     select pg.created_at, 'plan', pg.credits, null, null
     from public.plan_credit_grants pg
     where pg.workspace_id = ws and pg.credits > 0
     union all
-    select cp.created_at, case when cp.source = 'auto_reload' then 'reload' else 'pack' end,
+    select cp.created_at,
+           case when cp.source = 'auto_reload' then 'reload' else 'pack' end,
            cp.credits, null, null
     from public.credit_purchases cp
     where cp.workspace_id = ws
