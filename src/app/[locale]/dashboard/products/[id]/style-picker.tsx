@@ -25,7 +25,7 @@ export function StyleRow({ style, onPick }: { style: PickedStyle | null; onPick:
           ? <img src={style.src} alt="" className="size-full object-cover" />
           : <SparkIcon />}
       </button>
-      <div className="min-w-0 flex-1">
+      <div className="min-w-0 flex-1 contain-inline-size">
         <p className="text-sm font-medium">{t.styles.title}</p>
         <p className="truncate text-sm text-muted">{style ? t.styles.picked : t.styles.auto}</p>
       </div>

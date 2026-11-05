@@ -33,7 +33,7 @@ export function PhotoRow({
           ? <img src={photo.src} alt="" className="size-full object-cover" />
           : <PhotoIcon className="m-auto size-5 text-muted" />}
       </button>
-      <div className="min-w-0 flex-1">
+      <div className="min-w-0 flex-1 contain-inline-size">
         <p className="text-sm font-medium">{t.picker.photo}</p>
         <p className="truncate text-sm text-muted">{photo ? (photo.uploaded ? t.picker.fromUpload : t.picker.fromStore) : t.picker.none}</p>
       </div>
