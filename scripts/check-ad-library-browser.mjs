@@ -75,7 +75,7 @@ try{
   await page.locator('[data-library-ad="'+favoriteId+'"] [data-favorite-form] button').click();
   await page.waitForFunction(id=>document.querySelector('[data-library-ad="'+id+'"] [data-favorite-form] button')?.getAttribute("aria-pressed")!=="true",favoriteId);
   await page.reload({waitUntil:"networkidle"});assert.equal(await page.locator("[data-library-ad]").count(),2);
-  await visit("?kind=video&favorites=1");assert.equal(await page.locator("[data-library-ad]").count(),0);assert.equal(await page.locator('a[href="/dashboard/ads"]:visible').count(),2); // My ads tab and reset link.
+  await visit("?kind=video&favorites=1");assert.equal(await page.locator("[data-library-ad]").count(),0);assert.equal(await page.locator('a[href="/dashboard/ads"]:visible').count(),width<1024?1:2); // Reset link, plus the My ads section in the desktop sidebar (phones keep it in the closed drawer).
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),"No horizontal overflow");
   assert.equal(paid,0);assert.deepEqual(errors,[]);
   console.log("PASS library pagination, filters, private persistent favorites, error recovery, previews, deep links and no paid side effects",width,locale,theme);
