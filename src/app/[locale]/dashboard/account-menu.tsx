@@ -13,7 +13,7 @@ export function AccountMenu({admin,email=""}:{admin?:ReactNode;email?:string}={}
   document.addEventListener("pointerdown",close);return()=>document.removeEventListener("pointerdown",close);
  },[]);
  const initial=(email.trim()[0]??"").toUpperCase();
- return <details ref={root} className="group relative" data-account-menu onKeyDown={event=>{if(event.key==="Escape"){event.currentTarget.open=false;event.currentTarget.querySelector("summary")?.focus();}}}>
+ return <details ref={root} className="group relative" data-account-menu onKeyDown={event=>{if(event.key==="Escape"&&event.currentTarget.open){event.preventDefault();event.currentTarget.open=false;event.currentTarget.querySelector("summary")?.focus();}}}>
   <summary className="flex min-h-14 cursor-pointer list-none items-center gap-3 rounded-2xl border border-line px-3 py-2 text-start transition hover:bg-surface focus-visible:outline-2 focus-visible:outline-accent group-open:bg-surface">
    <span aria-hidden="true" className="grid size-9 shrink-0 place-items-center rounded-full bg-accent text-sm font-semibold text-accent-fg">
     {initial||<svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.7"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2"/></svg>}

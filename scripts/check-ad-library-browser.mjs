@@ -41,7 +41,10 @@ try{
   const base="http://localhost:3111"+(locale==="en"?"":"/"+locale)+"/library-preview";
   const visit=async(query="")=>{await page.goto(base+query,{waitUntil:"networkidle",timeout:90000});await page.evaluate(theme=>{document.documentElement.dataset.theme=theme;},theme);};
   await visit();
+  // Desktop shows the sidebar; phones open it as a drawer from the menu button.
+  if(width<1024)await page.click("[data-app-menu]");
   assert.equal(await page.locator("[data-app-tab]:visible").count(),5);
+  if(width<1024){await page.keyboard.press("Escape");assert.equal(await page.evaluate(()=>[...document.querySelectorAll("[data-app-drawer]")].some(d=>d.open)),false);}
   assert.equal(await page.locator("[data-library-ad]").count(),24);
   assert.equal(await page.locator("video").count(),0);
   const next=page.locator('a[href="/dashboard/ads?page=2"]');assert.equal(await next.count(),1);
