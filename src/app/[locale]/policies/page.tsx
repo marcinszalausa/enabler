@@ -12,7 +12,7 @@ export async function generateMetadata({params}:PageProps<"/[locale]/policies">)
 export default async function Page({params}:PageProps<"/[locale]/policies">){
  const {locale}=await params;if(!isLocale(locale))notFound();
  return <LegalPage locale={locale} title="Policies and Privacy" updated={data.updated}>
-  <p>Read how Gooidy handles your content, account and information. Privacy requests are handled manually during pre-launch.</p>
+  <p>Read how Gooidy handles your content, account and information. Contact support to request a copy, correction or deletion of your information.</p>
   <ul data-policy-directory className="mt-7 !list-none space-y-3 !pl-0">
    {POLICY_IDS.map(id=><li key={id}><Link href={localePath(locale,policyPath(id))} className="block rounded-2xl border border-line bg-surface p-5 !no-underline hover:bg-raised">
     <span className="block font-semibold">{data.documents[id].title}</span><span className="mt-2 block text-sm text-muted">{data.documents[id].summary}</span>

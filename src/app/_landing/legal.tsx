@@ -44,11 +44,7 @@ export async function LegalPage({
               {t.legal.englishOnly}
             </p>
           )}
-          <aside data-prelaunch-legal lang="en" className="mt-7 rounded-2xl border border-accent/30 bg-accent-soft p-5 text-sm leading-relaxed">
-            <p className="font-semibold">Pre-launch · Paid checkout is disabled</p>
-            <p className="mt-2">Operator details are unspecified pending entity formation. These policies are being prepared for the US launch and are not finalized paid-subscription terms. They do not authorize a charge.</p>
-            <p className="mt-2">Version {LEGAL_POLICY_VERSION} · <Link href={localePath(locale,"/policies")} className="underline">All policies and privacy requests</Link></p>
-          </aside>
+          <p data-policy-version className="mt-4 text-sm text-muted">Version {LEGAL_POLICY_VERSION} · <Link href={localePath(locale,"/policies")} className="underline">All policies and privacy requests</Link></p>
           <div className="mt-10">{children}</div>
         </article>
       </main>

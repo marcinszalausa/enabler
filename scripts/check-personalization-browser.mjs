@@ -20,7 +20,7 @@ try{
   await page.goto("http://localhost:3100"+(locale==="en"?"":"/"+locale)+"/personalization-preview",{waitUntil:"networkidle",timeout:90000});
   await page.evaluate(theme=>{document.documentElement.dataset.theme=theme;},theme);
   const required=page.locator("[data-required]"),form=required.locator("form");
-  assert.equal(await required.locator("details").getAttribute("open"),"");
+  assert.equal(await form.count(),1);
   assert.equal(await form.locator('[name="audience"]').inputValue(),"People seeking comfortable everyday clothing");
   assert.equal(await form.locator('[name="focus"]').inputValue(),"Soft fabric for relaxed mornings");
   assert.equal(await form.locator('input[name="promotion"]:checked').inputValue(),"product");
@@ -48,8 +48,10 @@ try{
   const data=await form.evaluate(f=>{const d=new FormData(f);return Object.fromEntries(["promotion","audience","focus","offer"].map(k=>[k,d.get(k)]));});
   assert.equal(data.promotion,"offer");assert.ok(data.offer.startsWith("10%"));
   const saved=page.locator("[data-saved]");
-  assert.equal(await saved.locator("details").getAttribute("open"),null);
-  await saved.locator("summary").click();
+  assert.equal(await saved.locator("form").count(),0);
+  // The Next.js dev badge sits in a bottom corner, over Edit in RTL.
+  await page.addStyleTag({content:"nextjs-portal{display:none!important}"});
+  await saved.locator("[data-ad-direction] button").click();
   assert.equal(await saved.locator('[name="audience"]').inputValue(),"Returning shoppers");
   assert.equal(await saved.locator('input[name="promotion"]:checked').inputValue(),"collection");
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));

@@ -3,6 +3,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { createAdminClient } from "@/lib/supabase/admin";
 import type { ScrapedPage } from "@/lib/scrape";
 import { fetchPublicUrl } from "@/lib/public-fetch";
+import { parseBrandMemory, EMPTY_BRAND_MEMORY } from "@/lib/customer-workflow";
 import {
   DEFAULT_BRAND_KIT,
   LOGO_TYPES,
@@ -29,6 +30,12 @@ export async function getBrandKit(
       : DEFAULT_BRAND_KIT.accent_color,
     font: isFontKey(data.font) ? data.font : DEFAULT_BRAND_KIT.font,
   };
+}
+
+export async function getBrandMemory(supabase: SupabaseClient, workspaceId: string) {
+  const { data, error } = await supabase.from("brand_kits").select("profile").eq("workspace_id", workspaceId).maybeSingle();
+  if (error) throw error;
+  return parseBrandMemory(data?.profile) ?? { ...EMPTY_BRAND_MEMORY };
 }
 
 // Stores a logo under <workspace>/brand/ and returns its storage path.
@@ -85,3 +92,4 @@ export async function seedBrandKit(workspaceId: string, page: ScrapedPage) {
     accent_color: page.themeColor ?? DEFAULT_BRAND_KIT.accent_color,
   });
 }
+

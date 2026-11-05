@@ -1,0 +1,33 @@
+name: Detailed pricing catalog checks
+on:
+  push:
+    branches: [enhance/pricing-catalog]
+  pull_request:
+permissions:
+  contents: read
+concurrency:
+  group: pricing-catalog-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  pricing-catalog:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Read installed navigation and metadata guides
+        run: find node_modules/next/dist/docs/01-app -type f \( -name link.md -o -iname '*metadata*' -o -name generate-static-params.md \) | xargs cat
+      - name: Read installed forms and server guidance
+        run: find node_modules/next/dist/docs -type f \( -name forms.md -o -name updating-data.md -o -name server-actions-and-mutations.md \) | xargs cat
+      - name: Supabase changelog
+        run: curl --fail --silent --show-error https://supabase.com/changelog.md | head -c 20000
+      - run: npx next typegen && npx tsc --noEmit
+      - run: node --experimental-strip-types --test tests/pricing-catalog.test.ts
+      - run: npx eslint src/lib/pricing-catalog.ts src/app/_landing/detailed-plan-features.tsx src/app/_landing/public-pricing.tsx 'src/app/[locale]/pricing/page.tsx'
+      - run: npm install --prefix /tmp/catalog-browser --no-package-lock playwright@1.56.1
+      - run: /tmp/catalog-browser/node_modules/.bin/playwright install --with-deps chromium
+      - run: PLAYWRIGHT_MODULE_PATH=/tmp/catalog-browser/node_modules/playwright node scripts/check-pricing-catalog.mjs

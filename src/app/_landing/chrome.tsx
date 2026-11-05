@@ -1,6 +1,6 @@
 "use client";
 
-import {useState,type ReactNode} from "react";
+import {useEffect,useRef,useState,type ReactNode} from "react";
 import {productLink} from "@/lib/onboarding";
 import Link from "next/link";
 import { ThemeToggle } from "./theme-toggle";
@@ -65,69 +65,86 @@ export function Logo({ to, label }: { to?: string; label?: string } = {}) {
   );
 }
 
+const FEATURE_LINKS = [
+  ["image-ads", "Image ads"], ["video-ads", "Video ads"],
+  ["social-publishing", "Plan & publish"], ["campaigns", "Campaigns"],
+  ["brand-kit", "Brand kit"], ["results", "Post results"],
+  ["for-your-business", "For your business"],
+] as const;
+
 export function Nav() {
   const { t } = useI18n();
   const href = useHref();
+  const mobile = useRef<HTMLDetailsElement>(null);
+  const dialog = useRef<HTMLDialogElement>(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  function closeMenu() {
+    if (dialog.current?.open) dialog.current.close();
+    if (mobile.current) mobile.current.open = false;
+    mobile.current?.querySelector("summary")?.focus();
+  }
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const before = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    if (dialog.current && !dialog.current.open) {
+      dialog.current.showModal();
+      dialog.current.querySelector("button")?.focus();
+    }
+    const desktop = matchMedia("(min-width: 1024px)");
+    const resize = () => { if (desktop.matches && mobile.current) mobile.current.open = false; };
+    desktop.addEventListener("change", resize);
+    return () => {
+      document.body.style.overflow = before;
+      if (dialog.current?.open) dialog.current.close();
+      desktop.removeEventListener("change", resize);
+    };
+  }, [mobileOpen]);
   return (
     <NavShell>
       <a href="#main-content" className="skip-link">{t.nav.skip}</a>
       <nav className="site-nav relative mx-auto flex items-center justify-between gap-2 px-2 sm:gap-4 sm:px-4">
         <Logo />
-        <div className="hidden items-center gap-6 text-sm text-muted lg:flex">
-          <Link href={href("/use-cases")} className="hover:text-fg">
-            {t.nav.examples}
-          </Link>
-          <Link href={`${href("/")}#how`} className="hover:text-fg">
-            {t.nav.how}
-          </Link>
-          <Link href={`${href("/")}#angles`} className="hover:text-fg">
-            {t.nav.angles}
-          </Link>
-          <Link href={`${href("/")}#pricing`} className="hover:text-fg">
-            {t.nav.pricing}
-          </Link>
+        <div className="hidden items-center gap-5 text-sm text-muted lg:flex">
+          <details className="relative" data-feature-menu onKeyDown={event=>{if(event.key==="Escape"){event.currentTarget.open=false;event.currentTarget.querySelector("summary")?.focus();}}}>
+            <summary className="flex min-h-11 cursor-pointer list-none items-center gap-1 font-medium hover:text-fg">Features <span aria-hidden>⌄</span></summary>
+            <div className="absolute start-0 top-full z-40 w-80 rounded-2xl border border-line bg-bg p-3 shadow-xl" onClick={event=>{if((event.target as HTMLElement).closest("a"))event.currentTarget.closest("details")?.removeAttribute("open");}}>
+              {FEATURE_LINKS.map(([slug,label])=><Link key={slug} href={href("/features/"+slug)} prefetch={false} className="flex min-h-11 items-center justify-between rounded-lg px-3 hover:bg-surface hover:text-fg">{label}<span aria-hidden>↗</span></Link>)}
+              <Link href={href("/features")} prefetch={false} className="mt-2 flex min-h-11 items-center border-t border-line px-3 font-medium text-accent">Explore all features →</Link>
+            </div>
+          </details>
+          <Link href={href("/use-cases")} prefetch={false} className="flex min-h-11 items-center hover:text-fg">{t.nav.examples}</Link>
+          <Link href={href("/pricing")} prefetch={false} className="flex min-h-11 items-center hover:text-fg">{t.nav.pricing}</Link>
+          <Link href={href("/resources")} prefetch={false} className="flex min-h-11 items-center hover:text-fg">Resources</Link>
+          <Link href={href("/about")} prefetch={false} className="flex min-h-11 items-center hover:text-fg">About</Link>
         </div>
         <div className="flex items-center gap-1 sm:gap-2">
-          <LanguageSwitcher compact />
-          <ThemeToggle />
-          <Link
-            href="/login" prefetch={false}
-            className="hidden min-h-11 items-center rounded-lg px-3 py-2 text-sm font-medium whitespace-nowrap text-fg hover:bg-surface lg:flex"
-          >
-            {t.nav.signIn}
-          </Link>
-          <Link
-            href={href("/start")} prefetch={false}
-            className="btn-primary hidden min-h-11 items-center rounded-lg px-4 py-2 text-sm font-medium whitespace-nowrap lg:flex"
-          >
-            {t.nav.getStarted}
-          </Link>
-          <details className="mobile-nav lg:hidden"
-            onKeyDown={(event) => {
-              if (event.key === "Escape") {
-                event.currentTarget.open = false;
-                event.currentTarget.querySelector("summary")?.focus();
-              }
-            }}>
+          <LanguageSwitcher compact /><ThemeToggle />
+          <Link href="/login" prefetch={false} className="hidden min-h-11 items-center rounded-lg px-3 py-2 text-sm font-medium whitespace-nowrap text-fg hover:bg-surface lg:flex">{t.nav.signIn}</Link>
+          <Link href={href("/start")} prefetch={false} className="btn-primary hidden min-h-11 items-center rounded-lg px-4 py-2 text-sm font-medium whitespace-nowrap lg:flex">{t.nav.getStarted}</Link>
+          <details ref={mobile} className="mobile-nav lg:hidden" onToggle={event=>setMobileOpen(event.currentTarget.open)} onKeyDown={event=>{if(event.key==="Escape"){event.preventDefault();closeMenu();}}}>
             <summary className="flex min-h-11 cursor-pointer list-none items-center gap-1 rounded-lg px-2 text-sm font-medium">
-              <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={1.8} aria-hidden><path d="M4 6h16M4 12h16M4 18h16" /></svg>
-              <span className="sr-only sm:not-sr-only">{t.nav.menu}</span>
+              <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={1.8} aria-hidden><path d="M4 6h16M4 12h16M4 18h16" /></svg><span className="sr-only sm:not-sr-only">{t.nav.menu}</span>
             </summary>
-            <div className="absolute inset-x-0 top-[calc(100%+0.5rem)] rounded-2xl border border-line bg-bg p-3 shadow-xl"
-              onClick={(event) => {
-                if ((event.target as HTMLElement).closest("a")) event.currentTarget.closest("details")?.removeAttribute("open");
-              }}>
-              {[
-                [href("/use-cases"), t.nav.examples],
-                [href("/") + "#how", t.nav.how],
-                [href("/") + "#angles", t.nav.angles],
-                [href("/") + "#pricing", t.nav.pricing],
-                [href("/") + "#faq", t.nav.faq],
-                ["/login", t.nav.signIn],
-              ].map(([to, label]) => <Link key={to} href={to} prefetch={false}
-                className="flex min-h-11 items-center rounded-xl px-4 text-sm font-medium hover:bg-surface">{label}</Link>)}
-              <Link href={href("/start")} prefetch={false} className="btn-primary mt-2 flex min-h-11 items-center justify-center rounded-xl px-4 text-sm font-medium">{t.nav.getStarted}</Link>
-            </div>
+            <dialog ref={dialog} aria-label={t.nav.menu} aria-modal="true" onClose={closeMenu} onCancel={event=>{event.preventDefault();closeMenu();}} onKeyDown={event=>{
+              if(event.key!=="Tab")return;
+              const controls=Array.from(event.currentTarget.querySelectorAll<HTMLElement>('a[href],button:not([disabled]),select,input:not([disabled]),textarea,[tabindex="0"]')).filter(element=>element.getClientRects().length>0);
+              const first=controls[0],last=controls.at(-1);
+              if(event.shiftKey&&document.activeElement===first){event.preventDefault();last?.focus();}
+              else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first?.focus();}
+            }} className="fixed inset-0 m-0 h-dvh max-h-none w-screen max-w-none border-0 bg-bg p-0 text-fg backdrop:bg-bg open:flex open:flex-col" data-public-menu>
+              <div className="flex shrink-0 items-center justify-between border-b border-line px-5 py-4"><div onClick={closeMenu}><Logo/></div><button type="button" onClick={closeMenu} aria-label="Close menu" className="flex size-11 items-center justify-center rounded-full border border-line hover:bg-surface"><svg viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+              <nav aria-label="Explore Gooidy" className="min-h-0 flex-1 overflow-y-auto px-5" onClick={event=>{if((event.target as HTMLElement).closest("a"))closeMenu();}}>
+                {[
+                  [href("/features/image-ads"),"Image ads"], [href("/features/video-ads"),"Video ads"],
+                  [href("/features/social-publishing"),"Plan & publish"], [href("/features"),"Campaigns & brand kit"],
+                  [href("/industries"),"For your business"], [href("/platforms"),"Social platforms"], [href("/templates"),"Creative starting points"], [href("/use-cases"),t.nav.examples],
+                  [href("/about"),"About Gooidy"], [href("/pricing"),t.nav.pricing], [href("/resources"),"Guides & resources"], [href("/help"),"Help center"], [href("/blog"),"Ideas & articles"],
+                ].map(([to,label])=><Link key={to} href={to} prefetch={false} className="flex min-h-14 items-center justify-between gap-3 border-b border-line py-3 text-lg font-medium">{label}<span aria-hidden className="text-muted">→</span></Link>)}
+                <div className="flex flex-wrap gap-5 py-3 text-sm text-muted"><Link href={href("/")+"#how"} prefetch={false}>{t.nav.how}</Link><Link href={href("/")+"#faq"} prefetch={false}>{t.nav.faq}</Link></div>
+              </nav>
+              <div className="grid shrink-0 grid-cols-2 gap-3 border-t border-line bg-bg px-5 pt-4 pb-[max(1rem,env(safe-area-inset-bottom))]" onClick={event=>{if((event.target as HTMLElement).closest("a"))closeMenu();}}><Link href="/login" prefetch={false} className="flex min-h-12 items-center justify-center rounded-full border border-line-strong px-3 text-sm font-medium">{t.nav.signIn}</Link><Link href={href("/start")} prefetch={false} className="btn-primary flex min-h-12 items-center justify-center rounded-full px-3 text-center text-sm font-medium">{t.nav.getStarted}</Link></div>
+            </dialog>
           </details>
         </div>
       </nav>
@@ -205,7 +222,15 @@ export function Footer() {
       links: [
         { href: `${home}#how`, label: t.nav.how },
         { href: href("/use-cases"), label: t.nav.examples },
-        { href: `${home}#pricing`, label: t.nav.pricing },
+        { href: href("/pricing"), label: t.nav.pricing },
+        { href: href("/features"), label: "Features" },
+        { href: href("/resources"), label: "Guides & resources" },
+        { href: href("/templates"), label: "Creative starting points" },
+        { href: href("/industries"), label: "For your business" },
+        { href: href("/platforms"), label: "Social platforms" },
+        { href: href("/help"), label: "Help center" },
+        { href: href("/blog"), label: "Ideas & articles" },
+        { href: href("/about"), label: "About Gooidy" },
         { href: `${home}#faq`, label: t.nav.faq },
       ],
     },
@@ -294,3 +319,5 @@ export function AppBar({
     </header>
   );
 }
+
+

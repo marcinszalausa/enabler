@@ -1,0 +1,13 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import {readFile} from "node:fs/promises";
+import ts from "typescript";
+import {PAID_PLANS,TRY_MODE,paidPlan} from "../src/lib/paid-plans.ts";
+test("three stable monthly plans share a one-time try allowance",()=>{assert.deepEqual(PAID_PLANS.map(p=>[p.id,p.price,p.credits,p.accounts]),[["starter",39,300,1],["plus",69,600,1],["growth",99,1000,1]]);assert.deepEqual(PAID_PLANS.filter(p=>p.recommended).map(p=>p.id),["plus"]);assert.equal(TRY_MODE.credits,100);for(const input of [null,"free","admin","constructor",{id:"growth"}])assert.equal(paidPlan(input),null);});
+function compile(source:string,dependencies:Record<string,unknown>,result:string){const clean=source.replace(/^import[\s\S]*?;\r?$/gm,"").replace(/\bexport /g,"");const js=ts.transpileModule(clean,{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.None}}).outputText;return new Function(...Object.keys(dependencies),js+";return "+result)(...Object.values(dependencies));}
+test("actual product action carries plan preference without a tier change or credit grant",async()=>{
+ let insert:any=null;const tables:string[]=[];
+ const db={auth:{getUser:async()=>({data:{user:{id:"owner"}}})},from:(table:string)=>{tables.push(table);assert.ok(["workspaces","products"].includes(table));const q:any={select:()=>q,order:()=>q,limit:()=>q,insert:(value:unknown)=>{assert.equal(table,"products");insert=value;return q;},single:async()=>({data:{id:table==="workspaces"?"workspace":"product"}})};return q;}};
+ const {createProduct}=compile(await readFile("src/app/[locale]/dashboard/actions.ts","utf8"),{paidPlan,createClient:async()=>db,canEditWorkspace:async()=>true,WORKSPACE_WRITE_DENIED:"denied",scrapePage:async(url:string)=>({url,imageUrls:[]}),extractBrandBrief:async()=>({product_name:"Product",summary:"Real product"}),after:()=>{},seedBrandKit:()=>{},redirect:(path:string)=>{throw Object.assign(new Error("redirect"),{path});},userMessage:(e:Error)=>e.message},"{createProduct}");
+ const f=new FormData();f.set("url","https://example.invalid/product");f.set("onboardingKind","image");f.set("selectedPlan","growth");await assert.rejects(createProduct({},f),(e:any)=>e.path==="/dashboard/products/product?setup=image&plan=growth");assert.equal(insert.brand_brief.onboarding_plan,undefined);assert.equal(insert.plan,undefined);assert.equal(insert.credits,undefined);assert.deepEqual(tables,["workspaces","products"]);
+});

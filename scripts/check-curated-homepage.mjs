@@ -7,7 +7,7 @@ const require=createRequire(import.meta.url);
 const {chromium}=require(process.env.PLAYWRIGHT_MODULE_PATH);
 const path="src/lib/showcase.ts",original=await readFile(path,"utf8");
 const types=original.slice(original.indexOf("export type ShowcaseAd"),original.indexOf("type Row"));
-await writeFile(path,types+'\nexport const SHOWCASE_TAG="showcase";export function isShowcaseAdmin(){return false;}\nexport async function getShowcase(type="image_ads"):Promise<ShowcaseRun[]>{return '+JSON.stringify(runs)+'.filter(r=>r.type===type) as ShowcaseRun[];}');
+await writeFile(path,'import type {Quality} from "@/lib/quality";\n'+types+'\nexport async function getTierExamples():Promise<Record<Quality,ShowcaseRun|null>>{return {good:null,better:null,best:null};}\nexport const SHOWCASE_TAG="showcase";export function isShowcaseAdmin(){return false;}\nexport async function getShowcase(type="image_ads"):Promise<ShowcaseRun[]>{return '+JSON.stringify(runs)+'.filter(r=>r.type===type) as ShowcaseRun[];}');
 const server=spawn("node",["node_modules/next/dist/bin/next","dev","-p","3113"],{env:{...process.env,NEXT_PUBLIC_SUPABASE_URL:"https://example.supabase.co",NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:"example-public-key"}});
 let output="";server.stdout.on("data",d=>output+=d);server.stderr.on("data",d=>output+=d);
 let browser;

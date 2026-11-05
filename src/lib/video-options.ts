@@ -2,6 +2,7 @@
 // and the pipeline (server), so it stays free of server imports.
 
 import { DEFAULT_LANGUAGE, LANGUAGES, type LanguageKey } from "@/lib/languages";
+import { DEFAULT_VIDEO_QUALITY, VIDEO_CREDITS_PER_SECOND, parseQuality, type Quality } from "@/lib/quality";
 
 export { LANGUAGES, type LanguageKey };
 
@@ -122,22 +123,39 @@ export const LENGTHS = {
 } as const satisfies Record<string, readonly number[]>;
 
 export const VIDEOS_PER_GENERATION = 2;
-// Credits scale with length, rounded to 5: 7 s is 20, 30 s is 90.
-export const CREDITS_PER_SECOND = 3;
+// Credits scale with length and quality tier, rounded to 5 per video.
+// Earlier flat prices, newest first: runs made before `until` used
+// `perSecond`. Only needed for runs that didn't store their length.
+const PRICE_HISTORY = [
+  { until: Date.parse("2026-11-04T00:30:28Z"), perSecond: 3 },
+];
+const LEGACY_PER_SECOND = 4;
 
-export function creditsPerVideo(length: LengthKey) {
-  return Math.round((Number(length) * CREDITS_PER_SECOND) / 5) * 5;
+function videoCostAt(length: LengthKey, perSecond: number) {
+  return Math.round((Number(length) * perSecond) / 5) * 5;
 }
 
-export function videoRunCost(length: LengthKey) {
-  return VIDEOS_PER_GENERATION * creditsPerVideo(length);
+export function creditsPerVideo(length: LengthKey, quality: Quality = DEFAULT_VIDEO_QUALITY) {
+  return videoCostAt(length, VIDEO_CREDITS_PER_SECOND[quality]);
 }
 
-// The length of a run from what it cost; null if no length matches.
-export function lengthForRunCost(cost: number): LengthKey | null {
+export function videoRunCost(length: LengthKey, quality: Quality = DEFAULT_VIDEO_QUALITY) {
+  return VIDEOS_PER_GENERATION * creditsPerVideo(length, quality);
+}
+
+// The length of a run: the one it stored, or for older runs, read from what
+// it cost when it was made; null if neither tells.
+export function runLength(
+  run: { cost_credits: number; created_at?: string; request_options?: unknown },
+): LengthKey | null {
+  const stored = (run.request_options as { length?: unknown } | null | undefined)?.length;
+  if (typeof stored === "string" && stored in LENGTHS) return stored as LengthKey;
+  const at = run.created_at ? Date.parse(run.created_at) : NaN;
+  let perSecond = LEGACY_PER_SECOND;
+  for (const era of PRICE_HISTORY) if (at < era.until) perSecond = era.perSecond;
   return (
     (Object.keys(LENGTHS) as LengthKey[]).find(
-      (l) => videoRunCost(l) === cost,
+      (l) => VIDEOS_PER_GENERATION * videoCostAt(l, perSecond) === run.cost_credits,
     ) ?? null
   );
 }
@@ -167,6 +185,7 @@ export type VideoOptions = {
   energy: EnergyKey;
   person: PersonKey;
   length: LengthKey;
+  quality: Quality;
 };
 
 export const MAX_MESSAGE_LENGTH = 300;
@@ -179,6 +198,7 @@ export const DEFAULT_VIDEO_OPTIONS: VideoOptions = {
   energy: "upbeat",
   person: "auto",
   length: "7",
+  quality: DEFAULT_VIDEO_QUALITY,
 };
 
 export function parseVideoOptions(form: FormData): VideoOptions {
@@ -204,6 +224,7 @@ export function parseVideoOptions(form: FormData): VideoOptions {
     energy: pick(form.get("energy"), ENERGIES, DEFAULT_VIDEO_OPTIONS.energy),
     person: pick(form.get("person"), PEOPLE, DEFAULT_VIDEO_OPTIONS.person),
     length: pick(form.get("length"), LENGTHS, DEFAULT_VIDEO_OPTIONS.length),
+    quality: parseQuality(form.get("quality"), DEFAULT_VIDEO_OPTIONS.quality),
   };
 }
 

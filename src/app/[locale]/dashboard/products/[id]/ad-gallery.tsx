@@ -8,9 +8,12 @@ import {PublishOneButton} from "./publish-dialog";
 import {DownloadIcon,smallButton} from "../../ui";
 import type {Creative,AdPost} from "./generation-block";
 import {platformName} from "@/lib/social/platforms";
-export function AdGallery({creatives,generationId,imageVersion,seconds,canPublish=false,workspaceId,productId,posts}:{
+import {AdRevisions} from "./ad-revisions";
+import {DeleteButton} from "../../delete-button";
+import {FavoriteButton} from "../../ads/favorite-button";
+export function AdGallery({creatives,generationId,imageVersion,seconds,canPublish=false,canEdit=false,canDelete=false,favorites=[],workspaceId,productId,posts}:{
  creatives:Creative[];generationId:string;imageVersion:string;seconds:number;canPublish?:boolean;
- workspaceId?:string;productId?:string;posts:Record<string,AdPost>;
+ workspaceId?:string;productId?:string;canEdit?:boolean;canDelete?:boolean;favorites?:string[];posts:Record<string,AdPost>;
 }){
  const {t}=useI18n();const [selectedId,setSelectedId]=useState<string|null>(null);
  const {choice,favorite}=useAdChoice(workspaceId);
@@ -37,7 +40,10 @@ export function AdGallery({creatives,generationId,imageVersion,seconds,canPublis
    <div className="mt-5 flex flex-wrap items-center gap-3">
     {canPublish&&<PublishOneButton generationId={generationId} creativeId={selected.id} primary onPrepare={()=>remember(selected.id)}/>}
     <a href={`/api/creatives/${selected.id}/${video?"video":"image"}?download=1&layout=face-aware-v2`} className={smallButton}><DownloadIcon/>{video?t.app.downloadMp4:t.app.download}</a>
+    <FavoriteButton key={"fav-"+selected.id} creativeId={selected.id} favorite={favorites.includes(selected.id)}/>
+    {canDelete&&<DeleteButton key={"del-"+selected.id} target="ad" id={selected.id} onDeleted={()=>setSelectedId(null)}/>}
    </div>
+   {canEdit&&productId&&<AdRevisions key={selected.id+JSON.stringify([selected.headline,selected.primary_text,selected.cta])} creative={selected} productId={productId}/>}
    <div className="mt-6 grid grid-cols-4 gap-2 sm:grid-cols-5" aria-label={t.choose.title} data-ad-choices>{creatives.map((c,i)=><button key={c.id} type="button" aria-pressed={c.id===selected.id} aria-label={fmt(t.choose.preview,{number:i+1})} onClick={()=>{setSelectedId(c.id);remember(c.id);}} className={"relative min-w-0 overflow-hidden rounded-lg border-2 bg-surface p-1 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent "+(c.id===selected.id?"border-accent":"border-transparent hover:border-line-strong")}>
      {c.kind==="video"?<video src={`/api/creatives/${c.id}/video`} muted playsInline preload="metadata" className="aspect-[4/5] w-full object-contain"/>:
      // eslint-disable-next-line @next/next/no-img-element -- bounded private thumbnails
@@ -47,3 +53,4 @@ export function AdGallery({creatives,generationId,imageVersion,seconds,canPublis
   </div>
  </div></div>;
 }
+

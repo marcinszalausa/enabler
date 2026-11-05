@@ -1,3 +1,4 @@
+import {paidPlan,paidPlanName} from "@/lib/paid-plans";
 import { Suspense } from "react";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
@@ -17,9 +18,11 @@ async function Setup({params,searchParams}:PageProps<"/[locale]/dashboard/setup"
   const {locale}=await params;if(!isLocale(locale))notFound();
   await getCurrentUser();
   const t=await getMessages(locale),query=await searchParams;
+  const selectedPlan=paidPlan(query.plan);
   const url=productLink(query.url),kind=adKind(query.kind);
   if(!url)redirect(localePath(locale,"/start"));
   return <section className="rounded-2xl border border-line bg-raised p-6 sm:p-8">
+    {selectedPlan&&<p data-selected-plan={selectedPlan} className="mb-4 text-sm font-medium text-accent">{paidPlanName(selectedPlan)} · Free preview · no automatic subscription</p>}
     <p className="text-sm font-medium text-ok">✓ {t.footer.account}</p>
     <h1 className="mt-3 text-2xl font-semibold">{t.onboard.prepareTitle}</h1>
     <p className="mt-3 text-sm leading-relaxed text-muted">{t.personal.setupNote}</p>
@@ -27,7 +30,7 @@ async function Setup({params,searchParams}:PageProps<"/[locale]/dashboard/setup"
       <p className="font-medium">{fmt(kind==="image"?t.app.imageAds:t.app.videoAds,{count:kind==="image"?10:VIDEOS_PER_GENERATION})}</p>
       <p className="mt-1 text-muted">{fmt(t.app.credits,{count:kind==="image"?GENERATION_COST:videoRunCost(DEFAULT_VIDEO_OPTIONS.length)})}</p>
     </div>
-    <ProductUrlForm defaultUrl={url} onboardingKind={kind}/>
-    <Link href={localePath(locale,"/start")+"?"+new URLSearchParams({url,kind})} className="mt-5 inline-flex min-h-11 items-center text-sm text-accent hover:underline">{t.onboard.back}</Link>
+    <ProductUrlForm defaultUrl={url} onboardingKind={kind} selectedPlan={selectedPlan}/>
+    <Link href={localePath(locale,"/start")+"?"+new URLSearchParams({url,kind,...(selectedPlan?{plan:selectedPlan}:{})})} className="mt-5 inline-flex min-h-11 items-center text-sm text-accent hover:underline">{t.onboard.back}</Link>
   </section>;
 }

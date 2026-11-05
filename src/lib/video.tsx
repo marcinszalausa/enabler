@@ -1,10 +1,14 @@
 import "server-only";
+import {revisionFromOptions} from "@/lib/creative-revision";
+import { generationDirection } from "@/lib/generation-direction";
+import {sampleVideoShots} from "@/lib/media-quality";
+import {requireReview} from "@/lib/media-quality-policy";
 import { withCreativePreferences, type CreativePreferences } from "@/lib/creative-preferences";
 import { transitionVideoJob } from "@/lib/video-job-state";
 import { fetchPublicUrl } from "@/lib/public-fetch";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { claimGeneration, finalizeGeneration } from "@/lib/generation-credits";
-import { writeVideoAds, type BrandBrief, type VideoAd } from "@/lib/ai/claude";
+import { reviewAdVideo, writeVideoAds, type BrandBrief, type VideoAd } from "@/lib/ai/claude";
 import {
   generateMusic,
   generateVoiceover,
@@ -12,6 +16,7 @@ import {
   submitAdVideo,
 } from "@/lib/ai/fal";
 import { QualityError, generateCheckedImage } from "@/lib/pipeline";
+import type { Quality } from "@/lib/quality";
 import { getBrandKit } from "@/lib/brand-kit";
 import { FONTS, loadFont, textColorOn } from "@/lib/brand";
 import { editVideoAd } from "@/lib/video-edit";
@@ -75,15 +80,22 @@ export async function runVideoGeneration({
       .single();
     if (error || !product?.brand_brief) throw new Error("Product not found.");
 
-    const brief = withCreativePreferences(product.brand_brief as BrandBrief, creativePreferences);
+    const direction = await generationDirection(db, generationId, workspaceId);
+    if(direction.revision&&direction.revision.kind!=="video")throw new Error("Revision media type mismatch.");
+    const brief = { ...withCreativePreferences(product.brand_brief as BrandBrief, creativePreferences), ...direction };
+    if (direction.brand_memory?.tone) brief.tone = direction.brand_memory.tone;
+    if (!brief.creative_preferences && direction.brand_memory?.audience) brief.audience = direction.brand_memory.audience;
     const referenceImageUrl = (product.image_urls as string[])[0] ?? null;
     const shotSeconds = LENGTHS[options.length];
-    const ads = await writeVideoAds(
+    const written = await writeVideoAds(
       brief,
-      VIDEOS_PER_GENERATION,
+      direction.revision?1:VIDEOS_PER_GENERATION,
       shotSeconds,
       options,
     );
+
+    const ads=direction.revision?written.slice(0,1):written;
+    if(direction.revision&&ads.length!==1)throw new Error("No revision script was created.");
 
     const { data: jobs, error: insertError } = await db
       .from("video_jobs")
@@ -125,7 +137,7 @@ export async function runVideoGeneration({
         const jobId = jobs[i].id;
         try {
           const [requestIds, sound] = await Promise.all([
-            filmShots(ad, shotSeconds, referenceImageUrl, brief.product_name),
+            filmShots(ad, shotSeconds, referenceImageUrl, brief.product_name, options.quality),
             recordSound(
               options,
               ad,
@@ -170,35 +182,27 @@ async function filmShots(
   shotSeconds: readonly number[],
   referenceImageUrl: string | null,
   product: string,
+  quality: Quality,
 ): Promise<string[]> {
   const check = (prompt: string, reference: string | null, sameScene = false) =>
     generateCheckedImage({
       prompt,
       aspect: "9:16",
+      quality,
       referenceImageUrl: reference,
+      productReferenceImageUrl:referenceImageUrl,
       sameScene,
       product,
     });
   const first = await check(ad.shots[0].image_prompt, referenceImageUrl);
-  let rest: string[];
-  try {
-    rest = await Promise.all(
-      ad.shots.slice(1).map((s) => check(s.image_prompt, first, true)),
-    );
-  } catch (err) {
-    if (!(err instanceof QualityError)) throw err;
-    // A later shot kept failing the check; start every shot from the first
-    // frame rather than drop the ad. The shot count stays, so the edit
-    // still knows the ad's length.
-    console.warn("later shot rejected, filming from the first", err.message);
-    rest = ad.shots.slice(1).map(() => first);
-  }
+  const rest=await Promise.all(ad.shots.slice(1).map(s=>check(s.image_prompt,first,true)));
   return Promise.all(
     [first, ...rest].map((frame, i) =>
       submitAdVideo({
         startImageUrl: frame,
         prompt: ad.shots[i].motion_prompt,
         seconds: shotSeconds[i],
+        quality,
       }),
     ),
   );
@@ -246,7 +250,7 @@ export async function advanceVideoGeneration(generationId: string) {
   const db = createAdminClient();
   const { data: generation } = await db
     .from("generations")
-    .select("id, workspace_id, status, created_at")
+    .select("id, workspace_id, status, created_at, product_id")
     .eq("id", generationId)
     .eq("type", "video_ads")
     .maybeSingle();
@@ -297,12 +301,13 @@ export async function advanceVideoGeneration(generationId: string) {
         await saveVideo(
           generation.workspace_id,
           generationId,
+          generation.product_id,
           job,
           clipUrls as string[],
         );
       } catch (err) {
         console.error("video job failed", job.id, err);
-        await failJob(job, userMessage(err, "The video couldn't be made."));
+        await failJob(job, err instanceof QualityError ? "The video did not pass quality review: "+err.message : userMessage(err, "The video couldn't be made."));
       }
     }),
   );
@@ -337,7 +342,7 @@ async function finishGeneration(
 ) {
   const db = createAdminClient();
   const { data: generation, error: readError } = await db
-    .from("generations").select("cost_credits")
+    .from("generations").select("cost_credits,request_options")
     .eq("id", generationId).eq("workspace_id", workspaceId).single();
   if (readError || !generation) throw readError ?? new Error("Generation not found.");
   const { count, error: countError } = await db.from("creatives")
@@ -346,19 +351,22 @@ async function finishGeneration(
   if (countError || count === null) throw countError ?? new Error("Missing video output count.");
   // A creative insert may commit even when its response is lost.
   done = count;
-  if (done === VIDEOS_PER_GENERATION) error = null;
+  const revision=revisionFromOptions(generation.request_options);
+  const expected=revision?1:VIDEOS_PER_GENERATION;
+  if (done === expected) error = null;
   else if (done > 0) error = "Some videos could not be completed. Undelivered videos were refunded.";
   const cost = generation.cost_credits as number;
-  const refund = cost - done * (cost / VIDEOS_PER_GENERATION);
+  const refund = cost - done * (cost / expected);
   const closed = await finalizeGeneration(
     db, generationId, done > 0 ? "succeeded" : "failed", refund, error,
   );
-  if (closed && done > 0) await autopilotRun(workspaceId, generationId);
+  if (closed && done > 0 && !revision) await autopilotRun(workspaceId, generationId);
 }
 
 async function saveVideo(
   workspaceId: string,
   generationId: string,
+  productId:string,
   job: VideoJob,
   clipUrls: string[],
 ) {
@@ -374,6 +382,15 @@ async function saveVideo(
     loadFont(kit.font),
   ]);
 
+  const {data:product,error:productError}=await db.from("products").select("name,brand_brief,image_urls")
+   .eq("id",productId).eq("workspace_id",workspaceId).abortSignal(AbortSignal.timeout(5000)).single();
+  if(productError||!product)throw productError??new Error("Original product is unavailable.");
+  const frames=await sampleVideoShots(clips,shotSecondsFor(clipUrls.length));
+  const verdict=await requireReview(()=>reviewAdVideo({
+   frames,referenceImageUrl:(product.image_urls as string[]|null)?.[0]??null,
+   product:(product.brand_brief as BrandBrief|null)?.product_name??product.name??"Product"
+  }));
+  if(!verdict.ok)throw new QualityError(verdict.issues||"The finished video did not pass visual review.");
   const video = await editVideoAd({
     clips,
     shotSeconds: [...shotSecondsFor(clipUrls.length)],

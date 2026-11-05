@@ -1,17 +1,19 @@
 "use client";
 
+import type {PaidPlanId} from "@/lib/paid-plans";
 import { useActionState } from "react";
 import { createProduct, type FormState } from "./actions";
 import { useI18n } from "@/i18n/client";
 
 const initialState: FormState = { error: null };
 
-export function ProductUrlForm({ defaultUrl, onboardingKind }: { defaultUrl: string; onboardingKind?: "image" | "video" }) {
+export function ProductUrlForm({ defaultUrl, onboardingKind, selectedPlan }: { defaultUrl: string; onboardingKind?: "image" | "video";selectedPlan?:PaidPlanId|null }) {
   const [state, action, pending] = useActionState(createProduct, initialState);
   const { t } = useI18n();
 
   return (
     <form action={action} className="flex flex-col gap-2">
+      {selectedPlan&&<input type="hidden" name="selectedPlan" value={selectedPlan}/>}
       {onboardingKind && <input type="hidden" name="onboardingKind" value={onboardingKind}/>}
       <label htmlFor="url" className="sr-only">
         {t.app.urlLabel}

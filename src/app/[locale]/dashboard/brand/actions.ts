@@ -8,6 +8,7 @@ import { LOGO_TYPES, MAX_LOGO_BYTES, isFontKey, isHexColor } from "@/lib/brand";
 import { userMessage } from "@/lib/errors";
 import { requestMessages } from "@/i18n/server";
 import { canEditWorkspace, WORKSPACE_WRITE_DENIED } from "@/lib/workspace-access";
+import { parseBrandMemory } from "@/lib/customer-workflow";
 
 export type BrandFormState = { error: string | null; saved: boolean };
 
@@ -31,6 +32,8 @@ export async function saveBrandKit(
   if (!(await canEditWorkspace(supabase, ws.id))) return { error: WORKSPACE_WRITE_DENIED, saved: false };
 
   const accent = String(formData.get("accent_color") ?? "").toLowerCase();
+  const profile = parseBrandMemory(Object.fromEntries(["name", "audience", "tone", "avoid"].map(key => [key, formData.get(key) ?? ""])));
+  if (!profile) return { error: "Keep each brand preference under 240 characters.", saved: false };
   const font = formData.get("font");
   if (!isHexColor(accent)) return { error: errors.color, saved: false };
   if (!isFontKey(font)) return { error: errors.font, saved: false };
@@ -48,6 +51,7 @@ export async function saveBrandKit(
   const { error } = await supabase.from("brand_kits").upsert({
     workspace_id: ws.id,
     accent_color: accent,
+    profile,
     font,
     updated_at: new Date().toISOString(),
     ...(formData.get("remove_logo") === "on" && !hasLogo
@@ -83,3 +87,4 @@ export async function saveBrandKit(
   revalidatePath("/dashboard", "layout");
   return { error: null, saved: true };
 }
+

@@ -8,7 +8,7 @@ const folder="src/app/[locale]/trial-preview";
 let server,browser,log="";
 try{
  await mkdir(folder,{recursive:true});
- await writeFile(folder+"/page.tsx",'import {TrialCampaign} from "@/app/[locale]/dashboard/trial-campaign";import {GenerateControls} from "@/app/[locale]/dashboard/products/[id]/generate-controls";export default function Preview(){const props={productId:"fixture",imageRequestId:"71000000-0000-4000-8000-000000000001",videoRequestId:"71000000-0000-4000-8000-000000000002",imageCost:10,videoCost:40,videoLabel:"Create 2 videos",defaultLanguage:"english" as const};return <main className="mx-auto max-w-5xl p-4"><div data-new><TrialCampaign credits={100} hasAds={false} published={false}/></div><div data-free className="mt-6"><GenerateControls {...props} credits={100} freeTrial/></div><div data-complete><TrialCampaign credits={95} hasAds published/></div><div data-paid className="mt-6"><GenerateControls {...props} credits={100}/></div><div data-zero className="mt-6"><GenerateControls {...props} credits={0} freeTrial initialKind="video"/></div></main>}');
+ await writeFile(folder+"/page.tsx",'import {GenerateControls} from "@/app/[locale]/dashboard/products/[id]/generate-controls";export default function Preview(){const props={productId:"fixture",imageRequestId:"71000000-0000-4000-8000-000000000001",videoRequestId:"71000000-0000-4000-8000-000000000002",imageCost:20,videoCost:60,videoLabel:"Create 2 videos",defaultLanguage:"english" as const};return <main className="mx-auto max-w-5xl p-4"><div data-free className="mt-6"><GenerateControls {...props} credits={100} freeTrial/></div><div data-paid className="mt-6"><GenerateControls {...props} credits={100}/></div><div data-zero className="mt-6"><GenerateControls {...props} credits={0} freeTrial initialKind="video"/></div></main>}');
  server=spawn(process.execPath,["node_modules/next/dist/bin/next","dev","-p","3100"],{env:{...process.env,NEXT_PUBLIC_SUPABASE_URL:"https://example.supabase.co",NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:"sb_publishable_fixture",ANTHROPIC_API_KEY:"fixture-never-used"},detached:true,stdio:["ignore","pipe","pipe"]});
  const capture=b=>{log=(log+b).slice(-12000);};server.stdout.on("data",capture);server.stderr.on("data",capture);
  let ready=false;for(let i=0;i<100;i++){try{if((await fetch("http://localhost:3100/trial-preview",{signal:AbortSignal.timeout(2000)})).ok){ready=true;break;}}catch{}await pause(1000);}assert.ok(ready);
@@ -19,14 +19,9 @@ try{
   page.on("pageerror",e=>errors.push(e.message));page.on("request",r=>{if(r.method()==="POST")posts++;});
   await page.goto("http://localhost:3100"+(locale==="en"?"":"/"+locale)+"/trial-preview",{waitUntil:"networkidle",timeout:90000});
   await page.evaluate(theme=>{document.documentElement.dataset.theme=theme;},theme);
-  const free=page.locator("[data-free]"),fresh=page.locator("[data-new]"),complete=page.locator("[data-complete]");
+  const free=page.locator("[data-free]");
   assert.equal(await free.locator("form").count(),1);
   assert.equal(await free.locator('input[name="kind"]').count(),0);
-  assert.equal(await fresh.locator('a[href="/#pricing"]').count(),0);
-  assert.equal(await complete.locator('a[href="/#pricing"]').count(),1);
-  assert.ok((await fresh.locator("[data-image-capacity]").innerText()).includes("100"));
-  assert.ok((await complete.locator("[data-image-capacity]").innerText()).includes("90"));
-  assert.equal(await fresh.locator("ol li svg").count(),3);
   await free.locator('button[aria-pressed="false"]').click();
   assert.equal(await free.locator('input[name="kind"]').inputValue(),"video");
   assert.ok((await free.locator("[data-video-balance]").innerText()).includes("60"));
@@ -34,7 +29,7 @@ try{
   await free.locator('label:has(input[name="length"][value="30"])').click();
   assert.equal(await free.locator('input[name="length"][value="30"]').isChecked(),true);
   assert.equal(await free.locator('button[type="submit"]').isDisabled(),true);
-  assert.ok((await free.locator("[data-video-balance]").innerText()).includes("180"));
+  assert.ok((await free.locator("[data-video-balance]").innerText()).includes("240"));
   await free.locator('label:has(input[name="length"][value="7"])').click();
   assert.equal(await free.locator('input[name="length"][value="7"]').isChecked(),true);
   assert.equal(await free.locator('button[type="submit"]').isEnabled(),true);
@@ -43,7 +38,7 @@ try{
   assert.equal(await page.locator('[data-paid] form').count(),1);
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
   assert.equal(posts,0);assert.deepEqual(errors,[]);
-  console.log("PASS trial image default, usable capacity, video cost/insufficient balance, post-value plans and layout",width,locale,theme);
+  console.log("PASS trial image default, video cost/insufficient balance and layout",width,locale,theme);
   await context.close();
  }
 }catch(error){console.error(log);throw error;}

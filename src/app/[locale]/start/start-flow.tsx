@@ -1,4 +1,5 @@
 "use client";
+import {paidPlan,paidPlanName} from "@/lib/paid-plans";
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useI18n } from "@/i18n/client";
@@ -11,6 +12,7 @@ type Preview = {url:string;title:string;photo:string|null};
 export function StartFlow(){
   const search=useSearchParams(),router=useRouter();
   const {t}=useI18n();
+  const selectedPlan=paidPlan(search.get("plan"));
   const raw=search.get("url")??"";
   const initial=productLink(raw);
   const [url,setUrl]=useState(initial??raw);
@@ -41,10 +43,11 @@ export function StartFlow(){
   },[step,url]);
   const cost=kind==="image"?GENERATION_COST:videoRunCost(DEFAULT_VIDEO_OPTIONS.length);
   function updateAddress(nextUrl:string,nextKind:AdKind){
-    const query=new URLSearchParams({url:nextUrl,kind:nextKind});
+    const query=new URLSearchParams({url:nextUrl,kind:nextKind,...(selectedPlan?{plan:selectedPlan}:{})});
     window.history.replaceState(null,"",window.location.pathname+"?"+query);
   }
   return <div data-onboarding-step={step}>
+    {selectedPlan&&<section data-selected-plan={selectedPlan} className="mb-6 rounded-xl border border-line bg-surface p-4 text-sm"><p className="font-medium">{paidPlanName(selectedPlan)} · Free preview</p><p className="mt-2 text-xs leading-relaxed text-muted">100 one-time starter credits shared across your account. No subscription starts automatically. Paid plan tools and monthly allowances require paid activation.</p></section>}
     <SetupSteps t={t} current={step}/>
     <p className="text-sm font-medium text-accent">{t.home.finalSub}</p>
     <h1 ref={heading} tabIndex={-1} className="mt-3 text-3xl font-semibold tracking-tight outline-none sm:text-4xl">{step===1?t.onboard.title:t.onboard.confirm}</h1>
@@ -84,7 +87,7 @@ export function StartFlow(){
         </div>
       </fieldset>
       <div className="mt-7 flex flex-wrap items-center gap-3">
-        <button data-continue-account type="button" onClick={()=>router.push("/login?"+new URLSearchParams({next:setupPath(url,kind)}))}
+        <button data-continue-account type="button" onClick={()=>router.push("/login?"+new URLSearchParams({next:setupPath(url,kind,selectedPlan)}))}
           className="btn-primary min-h-12 rounded-xl px-6 py-3 font-medium">{t.onboard.accountContinue}</button>
         <button type="button" onClick={()=>{setStep(1);setTimeout(()=>heading.current?.focus(),0);}}
           className="min-h-12 rounded-xl border border-line px-5 py-3 text-sm font-medium">{t.onboard.back}</button>

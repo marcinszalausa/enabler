@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -9,6 +10,7 @@ import { createClient } from "@/lib/supabase/server";
 import { ProductUrlForm } from "./product-url-form";
 import { ProductCard, type ProductSummary } from "./product-card";
 import { CreditsBadge, EmptyState } from "./ui";
+import { planName } from "@/lib/pricing";
 
 // Server actions on this page scrape and call the AI; allow time for that.
 export const maxDuration = 120;
@@ -48,7 +50,7 @@ async function Dashboard({
 }) {
   const user = await getCurrentUser();
   // A link pasted on the landing page arrives as ?url=...
-  const { url } = await searchParams;
+  const { url, deleted, favorites: favoritesOnly } = await searchParams;
   const supabase = await createClient();
 
   const { data: workspace } = await supabase
@@ -66,6 +68,18 @@ async function Dashboard({
         .order("created_at", { ascending: false })
         .returns<ProductSummary[]>()
     : { data: [] as ProductSummary[] };
+  // Missing table (before its migration) simply means no favorites yet.
+  const { data: favoriteRows } = await supabase
+    .from("product_favorites")
+    .select("product_id")
+    .eq("user_id", user.id);
+  const favoriteIds = new Set((favoriteRows ?? []).map((f) => f.product_id as string));
+  // Favorites first, newest first within each group.
+  const allProducts = (products ?? [])
+    .map((p) => ({ ...p, favorite: favoriteIds.has(p.id) }))
+    .sort((a, b) => Number(b.favorite) - Number(a.favorite));
+  const showFavorites = favoritesOnly === "1" && favoriteIds.size > 0;
+  const shown = showFavorites ? allProducts.filter((p) => p.favorite) : allProducts;
 
   return (
     <>
@@ -81,10 +95,13 @@ async function Dashboard({
         <CreditsBadge
           credits={fmt(t.app.credits, { count: workspace?.credits ?? 0 })}
           plan={fmt(t.app.plan, { plan: planName(t, workspace?.plan) })}
+          href="/dashboard/billing"
         />
       </header>
 
+      {deleted === "1" && <p role="status" data-product-deleted className="mt-4 rounded-xl border border-line bg-surface px-4 py-3 text-sm">{t.remove.productDeleted}</p>}
       <p className="mt-4 max-w-2xl text-sm text-muted">{t.journey.addHint}</p>
+      <div className="mt-5 flex flex-wrap gap-3"><Link href="/dashboard/campaigns" className="inline-flex min-h-11 items-center rounded-xl border border-line-strong px-4 text-sm font-medium text-accent">Plan my next campaign →</Link><Link href="/dashboard/brand" className="inline-flex min-h-11 items-center px-2 text-sm text-muted">Save my brand preferences</Link></div>
 
       <section className="edge mt-8 p-6 sm:p-8">
         <h2 className="text-lg font-medium">{t.app.addTitle}</h2>
@@ -103,9 +120,15 @@ async function Dashboard({
             </span>
           )}
         </h2>
-        {products && products.length > 0 ? (
-          <ul className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {products.map((p) => (
+        {favoriteIds.size > 0 && (
+          <div className="mt-4 flex flex-wrap gap-2" data-product-filters>
+            <Link href="/dashboard" aria-current={!showFavorites ? "page" : undefined} className={"inline-flex min-h-11 items-center rounded-xl border px-4 text-sm font-medium " + (!showFavorites ? "border-accent bg-accent-soft text-accent" : "border-line")}>{t.app.allProducts}</Link>
+            <Link href="/dashboard?favorites=1" aria-current={showFavorites ? "page" : undefined} className={"inline-flex min-h-11 items-center rounded-xl border px-4 text-sm font-medium " + (showFavorites ? "border-accent bg-accent-soft text-accent" : "border-line")}>{t.library.favorites} {favoriteIds.size}</Link>
+          </div>
+        )}
+        {shown.length > 0 ? (
+          <ul className="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {shown.map((p) => (
               <li key={p.id}>
                 <ProductCard product={p} />
               </li>
@@ -121,10 +144,4 @@ async function Dashboard({
       </section>
     </>
   );
-}
-
-// Plan names are the pricing table's, in the page's language.
-function planName(t: Messages, plan: string | null | undefined) {
-  const i = ["free", "starter", "growth"].indexOf(plan ?? "free");
-  return t.home.plans[i]?.name ?? plan ?? "";
 }

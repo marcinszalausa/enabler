@@ -21,8 +21,9 @@ try{
    const response=await page.goto("http://localhost:3115"+prefix+path,{waitUntil:"domcontentloaded",timeout:90000});assert.equal(response.status(),200);
    await page.locator("[data-policy-document]").waitFor();
    assert.equal(await page.locator("article").getAttribute("lang"),"en");
-   assert.ok((await page.locator("[data-prelaunch-legal]").innerText()).includes("Operator details are unspecified"));
-   assert.ok((await page.locator("[data-prelaunch-legal]").innerText()).includes("2026-11-04-prelaunch"));
+   assert.equal(await page.locator("[data-prelaunch-legal]").count(),0);
+   assert.ok((await page.locator("[data-policy-version]").innerText()).includes("2026-11-05-r5"));
+   assert.ok(!/pre[-\s]?launch|unspecified|pending entity formation|not (?:yet )?finalized|draft (?:terms|policies)/i.test(await page.locator("main").innerText()));
    const anchors=await page.locator('nav[aria-label="On this page"] a').evaluateAll(xs=>xs.map(x=>x.getAttribute("href")));
    for(const anchor of anchors)assert.equal(await page.locator(anchor).count(),1);
    assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
@@ -36,10 +37,17 @@ try{
   await page.goto("http://localhost:3115"+prefix+"/policies/no-such-policy");
   assert.equal(await page.locator("[data-policy-document]").count(),0);
   await page.goto("http://localhost:3115"+prefix+"/");
-  await page.locator("#pricing [data-checkout-unavailable]").waitFor();
-  const paid=await page.locator('#pricing a[href$="/policies/billing"]').count();assert.equal(paid,3);
+  await page.locator("#pricing").waitFor();
+  assert.equal(await page.locator("[data-checkout-unavailable]").count(),0);
+  assert.equal(await page.locator("#pricing button[data-buy-plan]:disabled").count(),3);assert.equal(await page.locator("#pricing a[data-buy-plan]").count(),0);
+  const paid=page.locator('#pricing a[data-try-plan]');assert.equal(await paid.count(),3);for(const link of await paid.all()){assert.equal(await link.innerText(),"Try for free");const target=new URL(await link.getAttribute("href"),"https://gooidy.com");assert.ok(target.pathname.endsWith("/start"));assert.ok(["starter","plus","growth"].includes(target.searchParams.get("plan")));}
   const offers=await page.locator('script[type="application/ld+json"]').evaluateAll(xs=>xs.map(x=>JSON.parse(x.textContent)));
-  assert.ok(!JSON.stringify(offers).includes('"price":29'));assert.ok(!JSON.stringify(offers).includes('"price":79'));
+  assert.ok(!JSON.stringify(offers).includes('"price":39'));assert.ok(!JSON.stringify(offers).includes('"price":99'));
+  await page.goto("http://localhost:3115"+prefix+"/pricing");assert.ok(await page.locator('main a[href$="/policies/billing"]').count()>0,"Billing terms remain accessible from plan details");
+  await page.goto("http://localhost:3115/login");
+  await page.locator("[data-account-form]").waitFor();
+  assert.equal(await page.locator("[data-checkout-unavailable]").count(),0);
+  assert.ok(!/pre[-\s]?launch|unspecified|pending entity formation|not (?:yet )?finalized|draft (?:terms|policies)/i.test(await page.locator("main").innerText()));
   assert.deepEqual(mutations,[]);assert.deepEqual(external,[]);assert.deepEqual(errors,[]);
   console.log("LEGAL_BROWSER_VERIFIED",JSON.stringify({width,locale,documents:6,mailDrafts:4,externalRequests:0}));
   await context.close();
