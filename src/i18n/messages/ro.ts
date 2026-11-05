@@ -476,6 +476,9 @@ export const ro: Messages = {
     check: "Verifică progresul",
   },
   app: {
+    campaigns: "Campanii",
+    createNew: "Creează",
+    closeMenu: "Închide meniul",
     products: "Produse",
     brandKit: "Kit de brand",
     signOut: "Deconectare",

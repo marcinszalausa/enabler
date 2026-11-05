@@ -475,6 +475,9 @@ export const es: Messages = {
     check: "Consultar progreso",
   },
   app: {
+    campaigns: "Campañas",
+    createNew: "Crear",
+    closeMenu: "Cerrar menú",
     products: "Productos",
     brandKit: "Kit de marca",
     signOut: "Cerrar sesión",

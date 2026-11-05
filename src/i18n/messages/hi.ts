@@ -468,6 +468,9 @@ export const hi: Messages = {
     check: "प्रगति देखें",
   },
   app: {
+    campaigns: "कैंपेन",
+    createNew: "नया बनाएँ",
+    closeMenu: "मेनू बंद करें",
     products: "प्रोडक्ट",
     brandKit: "ब्रांड किट",
     signOut: "साइन आउट",

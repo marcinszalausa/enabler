@@ -395,7 +395,8 @@ async function saveVideo(
    frames,referenceImageUrl:sourceUrl,
    product:(product.brand_brief as BrandBrief|null)?.product_name??product.name??"Product"
   }));
-  if(!verdict.ok)throw new QualityError(verdict.issues||"The finished video did not pass visual review.");
+  // Small flaws still ship: the clips are already filmed and paid for.
+  if(!verdict.ok&&!verdict.minor)throw new QualityError(verdict.issues||"The finished video did not pass visual review.");
   const video = await editVideoAd({
     clips,
     shotSeconds: [...shotSecondsFor(clipUrls.length)],

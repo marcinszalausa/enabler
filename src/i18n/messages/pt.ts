@@ -473,6 +473,9 @@ export const pt: Messages = {
     check: "Verificar progresso",
   },
   app: {
+    campaigns: "Campanhas",
+    createNew: "Criar novo",
+    closeMenu: "Fechar menu",
     products: "Produtos",
     brandKit: "Kit da marca",
     signOut: "Sair",

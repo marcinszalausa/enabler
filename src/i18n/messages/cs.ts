@@ -472,6 +472,9 @@ export const cs: Messages = {
     check: "Zkontrolovat průběh",
   },
   app: {
+    campaigns: "Kampaně",
+    createNew: "Vytvořit nový",
+    closeMenu: "Zavřít menu",
     products: "Produkty",
     brandKit: "Firemní styl",
     signOut: "Odhlásit se",

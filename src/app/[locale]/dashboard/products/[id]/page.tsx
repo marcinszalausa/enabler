@@ -43,7 +43,8 @@ import { ProductMenu } from "./product-menu";
 import { FailedBatches } from "./failed-batches";
 import { fmt } from "@/i18n/format";
 
-export const maxDuration = 300;
+// Best-quality runs of 10 images need more than 5 minutes (Vercel Pro allows 800 s).
+export const maxDuration = 800;
 
 export default function ProductPage({
   params,

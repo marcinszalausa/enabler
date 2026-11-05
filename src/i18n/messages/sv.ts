@@ -470,6 +470,9 @@ export const sv: Messages = {
     check: "Kontrollera förloppet",
   },
   app: {
+    campaigns: "Kampanjer",
+    createNew: "Skapa ny",
+    closeMenu: "Stäng menyn",
     products: "Produkter",
     brandKit: "Varumärkeskit",
     signOut: "Logga ut",

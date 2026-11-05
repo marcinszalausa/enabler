@@ -41,7 +41,10 @@ try{
   const base="http://localhost:3111"+(locale==="en"?"":"/"+locale)+"/library-preview";
   const visit=async(query="")=>{await page.goto(base+query,{waitUntil:"networkidle",timeout:90000});await page.evaluate(theme=>{document.documentElement.dataset.theme=theme;},theme);};
   await visit();
+  // Desktop shows the sidebar; phones open it as a drawer from the menu button.
+  if(width<1024)await page.click("[data-app-menu]");
   assert.equal(await page.locator("[data-app-tab]:visible").count(),5);
+  if(width<1024){await page.keyboard.press("Escape");assert.equal(await page.evaluate(()=>[...document.querySelectorAll("[data-app-drawer]")].some(d=>d.open)),false);}
   assert.equal(await page.locator("[data-library-ad]").count(),24);
   assert.equal(await page.locator("video").count(),0);
   const next=page.locator('a[href="/dashboard/ads?page=2"]');assert.equal(await next.count(),1);
@@ -52,12 +55,12 @@ try{
   await page.locator("dialog[open] video").waitFor();
   await page.waitForFunction(()=>document.querySelector("dialog video")?.readyState>=2);
   assert.equal(videoRequests.length,1);
-  await page.locator("dialog").press("Escape");await page.waitForFunction(()=>!document.querySelector("dialog video"));
+  await page.locator("dialog[open]").press("Escape");await page.waitForFunction(()=>!document.querySelector("dialog video"));
   await visit();
   const card=page.locator('[data-library-ad="'+favoriteId+'"]');
   const open=await card.locator('a[href*="favorite="]').getAttribute("href");assert.ok(open.includes("favorite="+favoriteId));assert.ok(open.includes("#ad-83000000-0000-4000-8000-000000000001"));
   assert.ok(await card.locator('a[href*="download=1"]').count());
-  await card.locator("[data-library-preview]").click();await page.locator("dialog[open] img").waitFor();assert.equal(await page.locator("dialog[open] img").count(),1);await page.locator("dialog").press("Escape");
+  await card.locator("[data-library-preview]").click();await page.locator("dialog[open] img").waitFor();assert.equal(await page.locator("dialog[open] img").count(),1);await page.locator("dialog[open]").press("Escape");
   let save=card.locator("[data-favorite-form] button");
   if(width===320){
    sql("revoke insert on public.creative_favorites from authenticated");
@@ -72,7 +75,7 @@ try{
   await page.locator('[data-library-ad="'+favoriteId+'"] [data-favorite-form] button').click();
   await page.waitForFunction(id=>document.querySelector('[data-library-ad="'+id+'"] [data-favorite-form] button')?.getAttribute("aria-pressed")!=="true",favoriteId);
   await page.reload({waitUntil:"networkidle"});assert.equal(await page.locator("[data-library-ad]").count(),2);
-  await visit("?kind=video&favorites=1");assert.equal(await page.locator("[data-library-ad]").count(),0);assert.equal(await page.locator('a[href="/dashboard/ads"]:visible').count(),2); // My ads tab and reset link.
+  await visit("?kind=video&favorites=1");assert.equal(await page.locator("[data-library-ad]").count(),0);assert.equal(await page.locator('a[href="/dashboard/ads"]:visible').count(),width<1024?1:2); // Reset link, plus the My ads section in the desktop sidebar (phones keep it in the closed drawer).
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),"No horizontal overflow");
   assert.equal(paid,0);assert.deepEqual(errors,[]);
   console.log("PASS library pagination, filters, private persistent favorites, error recovery, previews, deep links and no paid side effects",width,locale,theme);
