@@ -1,6 +1,6 @@
 {
-  "version": "2026-11-04-r4",
-  "updated": "November 4, 2026",
+  "version": "2026-11-05-r5",
+  "updated": "November 5, 2026",
   "documents": {
     "terms": {
       "title": "Terms of Service",
@@ -171,6 +171,24 @@
           ]
         },
         {
+          "title": "Visitors and users in the EU, EEA and UK",
+          "paragraphs": [
+            "This section applies when the EU or UK General Data Protection Regulation (GDPR) applies to our processing, for example because we offer the service to people in the European Economic Area or the United Kingdom. The controller is the operator of Gooidy, which you can contact at hello@gooidy.com. Where the law requires a representative in the EU or UK, its contact details will be listed here.",
+            "If a business uses Gooidy to process personal information about its own customers or staff, that business decides how that information is used, and we process it on its behalf."
+          ],
+          "items": [
+            "Contract (Art. 6(1)(b)): your account, workspace, product preparation, ad generation, storage, downloads, publishing you request, billing and support.",
+            "Legitimate interests (Art. 6(1)(f)): security, abuse and fraud prevention, preview rate limits, troubleshooting, service reliability, keeping records needed for legal claims, and placing ad text so it avoids covering faces. You can object to processing based on legitimate interests.",
+            "Legal obligation (Art. 6(1)(c)): tax, accounting and responding to lawful requests.",
+            "Consent (Art. 6(1)(a)): only where we ask for it, such as optional marketing emails or showing your ads as public examples. You can withdraw consent at any time without affecting earlier processing.",
+            "Your rights: access, correction, deletion, restriction, portability, objection, and not being subject to decisions based solely on automated processing that significantly affect you. Gooidy does not make such decisions about people. Send requests to hello@gooidy.com; we respond within one month, extendable by two further months for complex requests, and tell you if we extend.",
+            "Complaints: you can complain to the data protection authority where you live or work (in Poland, the UODO; in the UK, the ICO). We would appreciate the chance to resolve your concern first.",
+            "International transfers: our providers process information in the United States and other countries. Where information leaves the EEA or UK, we rely on the EU-US Data Privacy Framework and UK Extension where a provider is certified, or on the European Commission's Standard Contractual Clauses and the UK Addendum, with supplementary safeguards where needed. Contact us for more information about these safeguards.",
+            "Retention: account, workspace, product and ad records are kept while your account is active and deleted or anonymized after a verified deletion request, subject to the backup cycles and legal holds described above. Billing records are kept for as long as tax law requires.",
+            "Providing information: an email address is needed to create an account. Product links and content are needed for generation. Other information is optional."
+          ]
+        },
+        {
           "title": "Locations, security and children",
           "paragraphs": [
             "Gooidy and its providers may process information in the United States and other countries where they operate. Data is not promised to remain only in Texas or only in the United States. Where applicable, required contractual and transfer safeguards must be used.",
@@ -282,6 +300,51 @@
           "paragraphs": [
             "Do not attack or overload the service, access someone else's data, bypass credit controls, evade account restrictions or create repeated accounts to obtain additional trial allowances.",
             "Suspected misuse may lead to restricted content or access while it is investigated. You can request review by contacting hello@gooidy.com. Report a rights complaint with the affected URL, your contact information and a description of the rights at issue; do not include unrelated sensitive documents."
+          ]
+        }
+      ]
+    },
+    "copyright": {
+      "title": "Copyright and Takedown",
+      "summary": "How to report content that infringes your copyright, trademark or other rights, and how to respond to a report.",
+      "sections": [
+        {
+          "title": "Report content",
+          "paragraphs": [
+            "Gooidy creates ads from product links and materials that customers submit. Customers must have the rights to everything they submit, but if you believe content made or stored with Gooidy infringes your copyright, trademark, image or other rights, tell us and we will review it promptly.",
+            "Send notices to hello@gooidy.com with the subject “Copyright notice” (or “Trademark notice” or “Rights notice”). Notices about content in the EU are handled under the same process, and we will confirm receipt and tell you our decision."
+          ]
+        },
+        {
+          "title": "What a copyright notice must include",
+          "items": [
+            "Your physical or electronic signature, or that of the person authorized to act for the rights owner.",
+            "Identification of the copyrighted work you believe is infringed, or a representative list if several works are involved.",
+            "The specific content you want removed and enough information to find it, such as the public URL, a screenshot, or the product link it was made from.",
+            "Your name, address, telephone number and email address.",
+            "A statement that you have a good-faith belief that the use is not authorized by the rights owner, its agent or the law.",
+            "A statement that the information in the notice is accurate and, under penalty of perjury, that you are the owner or authorized to act for the owner."
+          ]
+        },
+        {
+          "title": "What happens next",
+          "paragraphs": [
+            "When we receive a complete notice, we remove or disable access to the content we control, such as stored ads, previews and public examples, and tell the customer who submitted it. Content already published on a social platform is controlled by that platform and the customer's account; we will tell you which platform it is on where we can.",
+            "Submitting a notice that knowingly misrepresents that content is infringing can make you liable for damages. Consider whether the use may be permitted, for example as fair use, before sending a notice."
+          ]
+        },
+        {
+          "title": "Counter-notice",
+          "paragraphs": [
+            "If your content was removed and you believe it was a mistake or misidentification, you can send a counter-notice to hello@gooidy.com with the subject “Counter-notice”. Include your signature, identification of the removed content and where it appeared, a statement under penalty of perjury that you have a good-faith belief it was removed by mistake or misidentification, and your name, address and telephone number, with a statement that you consent to the jurisdiction of the appropriate court and will accept service from the person who sent the original notice.",
+            "We forward a valid counter-notice to the person who sent the notice. Unless they tell us within 10 to 14 business days that they have filed a court action, we may restore the content."
+          ]
+        },
+        {
+          "title": "Repeat infringers and trademarks",
+          "paragraphs": [
+            "We terminate, in appropriate circumstances, the accounts of customers who repeatedly infringe others' rights.",
+            "For trademark, image or publicity concerns, describe the mark or the person concerned, the content and why its use is not authorized. We review these reports in the same way and may remove content or restrict accounts that misuse another business's brand or another person's likeness."
           ]
         }
       ]

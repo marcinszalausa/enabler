@@ -498,6 +498,8 @@ export const it: Messages = {
     noProductsBody:
       "Incolla qui sopra il link di un prodotto. In circa due minuti avrai i tuoi primi cinque annunci, pronti a portare nuovi clienti.",
     urlLabel: "Link del prodotto o del sito",
+    rightsConfirm: "Questo prodotto è mio o ho il permesso di pubblicizzarlo, incluse foto, logo e marchio.",
+    rightsRules: "Regole sui contenuti",
     reading: "Lettura della pagina…",
     addProduct: "Aggiungi prodotto",
     readingNote:
@@ -595,6 +597,7 @@ export const it: Messages = {
       "Genera annunci per un prodotto per vedere qui il tuo kit del brand.",
     errors: {
       pasteLink: "Incolla il link di un prodotto o di un sito.",
+      confirmRights: "Conferma di poter pubblicizzare questo prodotto.",
       notFound: "Prodotto non trovato.",
       noCredits:
         "Crediti insufficienti. Questa generazione ne usa {cost}. Ottienine altri nella pagina Fatturazione.",
@@ -750,6 +753,34 @@ export const it: Messages = {
       "{count} saltati: nessuno degli account scelti accetta quel formato.",
     tiktokConsent:
       "Pubblicando su TikTok accetti la Music Usage Confirmation di TikTok.",
+    tiktok: {
+      title: "Impostazioni TikTok",
+      privacy: "Chi può vedere questo post",
+      privacyPick: "Scegli…",
+      privacyOptions: {
+        PUBLIC_TO_EVERYONE: "Tutti",
+        MUTUAL_FOLLOW_FRIENDS: "Amici",
+        FOLLOWER_OF_CREATOR: "Follower",
+        SELF_ONLY: "Solo io",
+      },
+      allow: "Consenti agli spettatori di",
+      comment: "Commentare",
+      duet: "Duetto",
+      stitch: "Stitch",
+      promo: "Questo post promuove un marchio, un prodotto o un servizio",
+      promoHint: "Le pubblicità del tuo negozio devono averlo attivo. TikTok mostra poi un'etichetta promozionale.",
+      yourBrand: "Il tuo marchio",
+      yourBrandHint: "Promuovi la tua attività. Etichetta “Contenuto promozionale”.",
+      branded: "Contenuto brandizzato",
+      brandedHint: "Promuovi un altro marchio in cambio di qualcosa. Etichetta “Partnership retribuita”.",
+      aiLabel: "Etichetta come generato con IA",
+      aiLabelHint: "TikTok chiede questa etichetta per i video realistici creati con IA, e i video pubblicitari di Gooidy sono creati con IA.",
+      brandedConsent: "Pubblicando, accetti la Normativa sui contenuti brandizzati e la Music Usage Confirmation di TikTok.",
+      errors: {
+        privacy: "Scegli chi può vedere il tuo post su TikTok.",
+        brandedPrivate: "I contenuti brandizzati non possono essere privati. Scegli un altro pubblico.",
+      },
+    },
     noAccountsYet:
       "Collega i tuoi account social una volta, poi pubblica ogni annuncio con un clic.",
     goConnect: "Collega account",

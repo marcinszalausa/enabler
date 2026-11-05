@@ -3,13 +3,15 @@
 import type {PaidPlanId} from "@/lib/paid-plans";
 import { useActionState, useEffect } from "react";
 import { createProduct, type FormState } from "./actions";
+import Link from "next/link";
 import { useI18n } from "@/i18n/client";
+import { localePath } from "@/i18n/config";
 
 const initialState: FormState = { error: null };
 
 export function ProductUrlForm({ defaultUrl, onboardingKind, selectedPlan }: { defaultUrl: string; onboardingKind?: "image" | "video";selectedPlan?:PaidPlanId|null }) {
   const [state, action, pending] = useActionState(createProduct, initialState);
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   // "Create new" in the top bar opens Products at #add: have the box ready.
   useEffect(() => {
     if (window.location.hash === "#add") document.getElementById("url")?.focus();
@@ -41,6 +43,13 @@ export function ProductUrlForm({ defaultUrl, onboardingKind, selectedPlan }: { d
           {pending ? t.app.reading : onboardingKind ? t.onboard.prepare : t.app.addProduct}
         </button>
       </div>
+      <label className="flex min-h-11 cursor-pointer items-start gap-2 text-sm text-muted">
+        <input type="checkbox" name="rightsConfirmed" required className="mt-1 accent-accent" />
+        <span>
+          {t.app.rightsConfirm}{" "}
+          <Link href={localePath(locale, "/policies/acceptable-use")} target="_blank" className="underline underline-offset-4">{t.app.rightsRules}</Link>
+        </span>
+      </label>
       {pending && <p className="text-sm text-muted">{t.app.readingNote}</p>}
       {state.error && (
         <p role="alert" className="text-sm text-danger">

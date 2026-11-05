@@ -21,6 +21,10 @@ Owner instruction: keep the legal operator and business mailing address unspecif
 9. Complete selected-provider commercial license, music, face/voice and model-training/retention review. Consider a customer DPA when processing personal data for business customers. No executed DPA is represented here.
 10. Perform a production cookie/network inventory including provider dashboard settings; classify any new tracking and implement required preferences/signals before activating it.
 
+## EU, EEA and UK (owner chose global coverage, November 4, 2026)
+- The privacy policy now has a GDPR section: legal bases, rights, one-month response, complaints, transfers and retention.
+- Before paid EU/UK service: appoint and list an EU (Art. 27) and UK representative, publish the controller's name and address, confirm each provider's DPF certification or SCCs, have counsel review the section, and translate final consumer terms for main markets.
+
 Do not add copied arbitration or class-action waivers from another service without tailored legal advice. No LLC formation or copyright clearance is implied by these drafts.
 
 ## Research references (reviewed November 3, 2026)

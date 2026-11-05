@@ -1,4 +1,5 @@
 import type { NextRequest } from "next/server";
+import { markImageResponseAsAi } from "@/lib/ai-disclosure";
 import { createHash } from "node:crypto";
 import { getBrandKit } from "@/lib/brand-kit";
 import { FACE_SAFE_LAYOUT_VERSION } from "@/lib/face-safe-layout";
@@ -66,14 +67,16 @@ export async function GET(
     if (etag) preview.headers.set("etag", etag);
     return preview;
   }
-  if (etag) image.headers.set("etag", etag);
+  // The full-size file carries machine-readable "made with AI" metadata.
+  const marked = await markImageResponseAsAi(image);
+  if (etag) marked.headers.set("etag", etag);
 
   if (request.nextUrl.searchParams.get("download")) {
-    image.headers.set(
+    marked.headers.set(
       "content-disposition",
       `attachment; filename="enabler-ad-${id.slice(0, 8)}-${creative.aspect.replace(":", "x")}.png"`,
     );
   }
-  return image;
+  return marked;
 }
 

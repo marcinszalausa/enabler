@@ -492,6 +492,8 @@ export const nl: Messages = {
     noProductsBody:
       "Plak hierboven een productlink. In ongeveer twee minuten heb je je eerste vijf advertenties, klaar om nieuwe klanten binnen te halen.",
     urlLabel: "Link naar product of website",
+    rightsConfirm: "Dit product is van mij of ik heb toestemming om het te adverteren, inclusief foto's, logo en merk.",
+    rightsRules: "Contentregels",
     reading: "Pagina lezen…",
     addProduct: "Product toevoegen",
     readingNote:
@@ -590,6 +592,7 @@ export const nl: Messages = {
       "Maak advertenties voor een product om je merkkit hier te zien.",
     errors: {
       pasteLink: "Plak een link naar een product of website.",
+      confirmRights: "Bevestig dat je dit product mag adverteren.",
       notFound: "Product niet gevonden.",
       noCredits:
         "Niet genoeg credits. Deze run gebruikt er {cost}. Koop er meer op de pagina Facturering.",
@@ -746,6 +749,34 @@ export const nl: Messages = {
       "{count} overgeslagen: geen van de gekozen accounts ondersteunt dat formaat.",
     tiktokConsent:
       "Door op TikTok te plaatsen ga je akkoord met TikToks Music Usage Confirmation.",
+    tiktok: {
+      title: "TikTok-instellingen",
+      privacy: "Wie dit bericht kan zien",
+      privacyPick: "Kies…",
+      privacyOptions: {
+        PUBLIC_TO_EVERYONE: "Iedereen",
+        MUTUAL_FOLLOW_FRIENDS: "Vrienden",
+        FOLLOWER_OF_CREATOR: "Volgers",
+        SELF_ONLY: "Alleen ik",
+      },
+      allow: "Kijkers toestaan om",
+      comment: "Reageren",
+      duet: "Duet",
+      stitch: "Stitch",
+      promo: "Dit bericht promoot een merk, product of dienst",
+      promoHint: "Advertenties voor je eigen winkel moeten dit aan hebben. TikTok toont dan een promotielabel.",
+      yourBrand: "Je merk",
+      yourBrandHint: "Je promoot je eigen bedrijf. Label ‘Promotionele content’.",
+      branded: "Merkcontent",
+      brandedHint: "Je promoot een ander merk in ruil voor iets. Label ‘Betaald partnerschap’.",
+      aiLabel: "Labelen als door AI gemaakt",
+      aiLabelHint: "TikTok vraagt dit label bij realistische AI-video, en Gooidy-videoadvertenties worden met AI gemaakt.",
+      brandedConsent: "Door te posten ga je akkoord met TikToks Beleid voor merkcontent en de Music Usage Confirmation.",
+      errors: {
+        privacy: "Kies wie je TikTok-bericht kan zien.",
+        brandedPrivate: "Merkcontent kan niet privé zijn. Kies een ander publiek.",
+      },
+    },
     noAccountsYet:
       "Koppel je social-media-accounts één keer en publiceer daarna elke advertentie met één klik.",
     goConnect: "Accounts koppelen",

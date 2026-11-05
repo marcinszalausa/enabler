@@ -479,6 +479,8 @@ export const ja: Messages = {
     noProductsBody:
       "上に商品リンクを貼り付けてください。約2分で、新しいお客様を呼び込む最初の5つの広告ができあがります。",
     urlLabel: "商品またはサイトのリンク",
+    rightsConfirm: "この商品は自分のものか、写真・ロゴ・ブランドを含めて広告する許可を得ています。",
+    rightsRules: "コンテンツのルール",
     reading: "ページを読み取り中…",
     addProduct: "商品を追加",
     readingNote:
@@ -576,6 +578,7 @@ export const ja: Messages = {
       "商品の広告を作成すると、ここでブランドキットの見え方を確認できます。",
     errors: {
       pasteLink: "商品またはサイトのリンクを貼り付けてください。",
+      confirmRights: "この商品を広告できることを確認してください。",
       notFound: "商品が見つかりません。",
       noCredits:
         "クレジットが足りません。この生成には{cost}クレジットが必要です。お支払いページで追加できます。",
@@ -729,6 +732,34 @@ export const ja: Messages = {
       "{count}件をスキップしました（選択したアカウントがその形式に対応していません）。",
     tiktokConsent:
       "TikTokに投稿すると、TikTokのMusic Usage Confirmationに同意したことになります。",
+    tiktok: {
+      title: "TikTokの設定",
+      privacy: "この投稿を見られる人",
+      privacyPick: "選択…",
+      privacyOptions: {
+        PUBLIC_TO_EVERYONE: "全員",
+        MUTUAL_FOLLOW_FRIENDS: "友達",
+        FOLLOWER_OF_CREATOR: "フォロワー",
+        SELF_ONLY: "自分のみ",
+      },
+      allow: "視聴者に許可する操作",
+      comment: "コメント",
+      duet: "デュエット",
+      stitch: "リミックス",
+      promo: "この投稿はブランド・商品・サービスを宣伝しています",
+      promoHint: "自分のショップの広告ではオンにしてください。TikTokにプロモーションのラベルが表示されます。",
+      yourBrand: "自分のブランド",
+      yourBrandHint: "自分のビジネスを宣伝します。「プロモーションコンテンツ」と表示されます。",
+      branded: "ブランドコンテンツ",
+      brandedHint: "対価を受けて他社ブランドを宣伝します。「タイアップ投稿」と表示されます。",
+      aiLabel: "AI生成としてラベルを付ける",
+      aiLabelHint: "TikTokはリアルなAI動画にこのラベルを求めています。Gooidyの動画広告はAIで作られています。",
+      brandedConsent: "投稿すると、TikTokのブランドコンテンツポリシーとMusic Usage Confirmationに同意したことになります。",
+      errors: {
+        privacy: "TikTok投稿を見られる人を選んでください。",
+        brandedPrivate: "ブランドコンテンツは非公開にできません。別の公開範囲を選んでください。",
+      },
+    },
     noAccountsYet:
       "SNSアカウントを一度つなげば、どの広告もワンクリックで投稿できます。",
     goConnect: "アカウントを連携",

@@ -497,6 +497,8 @@ export const ro: Messages = {
     noProductsBody:
       "Lipește mai sus linkul unui produs. În aproximativ două minute vei avea primele cinci reclame, gata să aducă clienți noi.",
     urlLabel: "Linkul produsului sau al site-ului",
+    rightsConfirm: "Produsul îmi aparține sau am permisiunea să îl promovez, inclusiv fotografiile, logoul și marca.",
+    rightsRules: "Reguli de conținut",
     reading: "Citesc pagina…",
     addProduct: "Adaugă produsul",
     readingNote:
@@ -595,6 +597,7 @@ export const ro: Messages = {
       "Generează reclame pentru un produs ca să vezi aici kitul tău de brand.",
     errors: {
       pasteLink: "Lipește linkul unui produs sau site.",
+      confirmRights: "Confirmă că ai voie să promovezi acest produs.",
       notFound: "Produsul nu a fost găsit.",
       noCredits:
         "Nu ai destule credite. Această generare folosește {cost}. Obține mai multe pe pagina Facturare.",
@@ -741,6 +744,34 @@ export const ro: Messages = {
       "{count} omise: niciunul dintre conturile alese nu acceptă acel format.",
     tiktokConsent:
       "Publicând pe TikTok, accepți Music Usage Confirmation a TikTok.",
+    tiktok: {
+      title: "Setări TikTok",
+      privacy: "Cine poate vedea postarea",
+      privacyPick: "Alege…",
+      privacyOptions: {
+        PUBLIC_TO_EVERYONE: "Toată lumea",
+        MUTUAL_FOLLOW_FRIENDS: "Prieteni",
+        FOLLOWER_OF_CREATOR: "Urmăritori",
+        SELF_ONLY: "Doar eu",
+      },
+      allow: "Permite spectatorilor să",
+      comment: "Comenteze",
+      duet: "Duet",
+      stitch: "Stitch",
+      promo: "Postarea promovează o marcă, un produs sau un serviciu",
+      promoHint: "Reclamele pentru magazinul tău trebuie să aibă asta activat. TikTok afișează apoi o etichetă promoțională.",
+      yourBrand: "Marca ta",
+      yourBrandHint: "Îți promovezi propria afacere. Etichetă „Conținut promoțional”.",
+      branded: "Conținut de marcă",
+      brandedHint: "Promovezi altă marcă în schimbul a ceva. Etichetă „Parteneriat plătit”.",
+      aiLabel: "Etichetează ca generat cu AI",
+      aiLabelHint: "TikTok cere eticheta pentru videoclipuri AI realiste, iar reclamele video Gooidy sunt create cu AI.",
+      brandedConsent: "Prin postare, accepți Politica privind conținutul de marcă și Music Usage Confirmation a TikTok.",
+      errors: {
+        privacy: "Alege cine poate vedea postarea ta pe TikTok.",
+        brandedPrivate: "Conținutul de marcă nu poate fi privat. Alege alt public.",
+      },
+    },
     noAccountsYet:
       "Conectează-ți conturile sociale o dată, apoi publică orice reclamă cu un clic.",
     goConnect: "Conectează conturi",

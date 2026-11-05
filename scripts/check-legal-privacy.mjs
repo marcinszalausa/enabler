@@ -3,7 +3,7 @@ import {spawn} from "node:child_process";
 import {createRequire} from "node:module";
 import {setTimeout as pause} from "node:timers/promises";
 const require=createRequire(import.meta.url),{chromium}=require(process.env.PLAYWRIGHT_MODULE_PATH);
-const documents=["/terms","/privacy","/policies/billing","/policies/cookies","/policies/acceptable-use","/policies/privacy-requests"];
+const documents=["/terms","/privacy","/policies/billing","/policies/cookies","/policies/acceptable-use","/policies/copyright","/policies/privacy-requests"];
 let browser,server,log="";
 try{
  server=spawn(process.execPath,["node_modules/next/dist/bin/next","dev","-p","3115"],{env:{...process.env,NEXT_PUBLIC_SUPABASE_URL:"https://example.supabase.co",NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:"sb_publishable_fixture",BILLING_ENABLED:"true",STRIPE_SECRET_KEY:"not-a-real-key"},detached:true,stdio:["ignore","pipe","pipe"]});
@@ -16,13 +16,13 @@ try{
   page.on("pageerror",e=>errors.push(e.message));
   page.on("request",r=>{const u=new URL(r.url());if(r.method()==="POST"&&!u.pathname.startsWith("/__nextjs")&&!u.pathname.startsWith("/_next"))mutations.push(u.pathname);if(!["localhost","127.0.0.1"].includes(u.hostname))external.push(u.hostname);});
   await page.goto("http://localhost:3115"+prefix+"/policies");
-  assert.equal(await page.locator("[data-policy-directory] a").count(),6);
+  assert.equal(await page.locator("[data-policy-directory] a").count(),7);
   for(const path of documents){
    const response=await page.goto("http://localhost:3115"+prefix+path,{waitUntil:"domcontentloaded",timeout:90000});assert.equal(response.status(),200);
    await page.locator("[data-policy-document]").waitFor();
    assert.equal(await page.locator("article").getAttribute("lang"),"en");
    assert.equal(await page.locator("[data-prelaunch-legal]").count(),0);
-   assert.ok((await page.locator("[data-policy-version]").innerText()).includes("2026-11-04-r4"));
+   assert.ok((await page.locator("[data-policy-version]").innerText()).includes("2026-11-05-r5"));
    assert.ok(!/pre[-\s]?launch|unspecified|pending entity formation|not (?:yet )?finalized|draft (?:terms|policies)/i.test(await page.locator("main").innerText()));
    const anchors=await page.locator('nav[aria-label="On this page"] a').evaluateAll(xs=>xs.map(x=>x.getAttribute("href")));
    for(const anchor of anchors)assert.equal(await page.locator(anchor).count(),1);
@@ -49,7 +49,7 @@ try{
   assert.equal(await page.locator("[data-checkout-unavailable]").count(),0);
   assert.ok(!/pre[-\s]?launch|unspecified|pending entity formation|not (?:yet )?finalized|draft (?:terms|policies)/i.test(await page.locator("main").innerText()));
   assert.deepEqual(mutations,[]);assert.deepEqual(external,[]);assert.deepEqual(errors,[]);
-  console.log("LEGAL_BROWSER_VERIFIED",JSON.stringify({width,locale,documents:6,mailDrafts:4,externalRequests:0}));
+  console.log("LEGAL_BROWSER_VERIFIED",JSON.stringify({width,locale,documents:7,mailDrafts:4,externalRequests:0}));
   await context.close();
  }
  for(const body of ["","not-json",JSON.stringify({plan:"growth",accepted:true,country:"US"})]){

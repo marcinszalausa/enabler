@@ -22,7 +22,7 @@ jobs:
       - run: npx next typegen && npx tsc --noEmit
       - run: |
           if test -f scripts/check-legal-privacy.mjs; then
-            node --experimental-strip-types --test tests/legal-policy.test.ts
+            node --experimental-strip-types --test tests/legal-policy.test.ts tests/tiktok-settings.test.ts tests/ai-disclosure.test.ts
             npx eslint src/app/_landing/legal.tsx src/app/_landing/chrome.tsx src/lib/legal-policy.ts src/app/_landing/policy-content.tsx 'src/app/[locale]/terms/page.tsx' 'src/app/[locale]/privacy/page.tsx' 'src/app/[locale]/policies/[document]/page.tsx' src/app/api/billing/checkout/route.ts
             npm install --prefix /tmp/legal-browser --no-package-lock playwright@1.56.1
             /tmp/legal-browser/node_modules/.bin/playwright install --with-deps chromium

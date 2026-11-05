@@ -490,6 +490,8 @@ export const de: Messages = {
     noProductsBody:
       "Füge oben einen Produktlink ein. In etwa zwei Minuten hast du deine ersten fünf Anzeigen, bereit, neue Kunden zu bringen.",
     urlLabel: "Link zu Produkt oder Website",
+    rightsConfirm: "Das Produkt gehört mir oder ich darf dafür werben, einschließlich Fotos, Logo und Marke.",
+    rightsRules: "Inhaltsregeln",
     reading: "Seite wird gelesen…",
     addProduct: "Produkt hinzufügen",
     readingNote:
@@ -589,6 +591,7 @@ export const de: Messages = {
       "Erstelle Anzeigen für ein Produkt, um dein Brand-Kit hier zu sehen.",
     errors: {
       pasteLink: "Füge einen Link zu Produkt oder Website ein.",
+      confirmRights: "Bestätige, dass du für dieses Produkt werben darfst.",
       notFound: "Produkt nicht gefunden.",
       noCredits:
         "Nicht genug Credits. Dieser Durchlauf braucht {cost}. Mehr bekommst du auf der Seite Abrechnung.",
@@ -746,6 +749,34 @@ export const de: Messages = {
       "{count} übersprungen: Keines der gewählten Konten nimmt dieses Format an.",
     tiktokConsent:
       "Mit dem Posten auf TikTok stimmst du TikToks Music Usage Confirmation zu.",
+    tiktok: {
+      title: "TikTok-Einstellungen",
+      privacy: "Wer diesen Beitrag sehen kann",
+      privacyPick: "Auswählen…",
+      privacyOptions: {
+        PUBLIC_TO_EVERYONE: "Alle",
+        MUTUAL_FOLLOW_FRIENDS: "Freunde",
+        FOLLOWER_OF_CREATOR: "Follower",
+        SELF_ONLY: "Nur ich",
+      },
+      allow: "Zuschauern erlauben",
+      comment: "Kommentieren",
+      duet: "Duett",
+      stitch: "Stitch",
+      promo: "Dieser Beitrag bewirbt eine Marke, ein Produkt oder eine Dienstleistung",
+      promoHint: "Bei Werbung für deinen eigenen Shop sollte das an sein. TikTok zeigt dann einen Werbehinweis.",
+      yourBrand: "Deine Marke",
+      yourBrandHint: "Du bewirbst dein eigenes Unternehmen. Hinweis „Werbeinhalt“.",
+      branded: "Markeninhalt",
+      brandedHint: "Du bewirbst eine andere Marke gegen eine Gegenleistung. Hinweis „Bezahlte Partnerschaft“.",
+      aiLabel: "Als KI-generiert kennzeichnen",
+      aiLabelHint: "TikTok verlangt diese Kennzeichnung bei realistischen KI-Videos, und Gooidy-Videoanzeigen werden mit KI erstellt.",
+      brandedConsent: "Mit dem Posten stimmst du TikToks Richtlinie für Markeninhalte und der Music Usage Confirmation zu.",
+      errors: {
+        privacy: "Wähle, wer deinen TikTok-Beitrag sehen kann.",
+        brandedPrivate: "Markeninhalte können nicht privat sein. Wähle ein anderes Publikum.",
+      },
+    },
     noAccountsYet:
       "Verbinde deine Social-Media-Konten einmal und veröffentliche dann jede Anzeige mit einem Klick.",
     goConnect: "Konten verbinden",
