@@ -24,7 +24,7 @@ export function ScheduleForm({
   slots: Slot[];
   autopilot: boolean;
   autopilotAccounts: string[];
-  accounts: { id: string; label: string }[];
+  accounts: { id: string; platform: string; label: string }[];
 }) {
   const { t } = useI18n();
   const [state, action, pending] = useActionState(saveSchedule, initialState);
@@ -124,6 +124,9 @@ export function ScheduleForm({
             <span className="mt-0.5 block text-muted">
               {t.publish.autopilotHelp}
             </span>
+            {accounts.some((a) => a.platform === "tiktok") && (
+              <span className="mt-0.5 block text-muted">{t.publish.autopilotTiktok}</span>
+            )}
           </span>
         </label>
         {/* Hidden, not removed, so the picks survive switching it off. */}

@@ -762,6 +762,8 @@ export const es: Messages = {
     autopilot: "Piloto automático",
     autopilotHelp:
       "Cuando haya anuncios nuevos, las imágenes para el feed y los vídeos entran en la cola de estas cuentas. Sin clics.",
+    autopilotTiktok:
+      "TikTok los recibe como borradores en tu bandeja de TikTok: abre TikTok para elegir quién ve cada uno y publicarlo.",
     to: "Publicar en",
     saveSchedule: "Guardar calendario",
     saved: "Guardado.",

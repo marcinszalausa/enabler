@@ -30,7 +30,8 @@ test("promotion disclosure and AI label map to TikTok settings", () => {
   assert.equal(photo.allow_duet, false);
   assert.deepEqual(parseTikTokChoice(form({ tiktokPrivacy: "SELF_ONLY", tiktokPromo: "on", tiktokCommercial: "brand_content" })), { ok: false, reason: "brandedPrivate" });
   const auto = tiktokSettings(AUTOPILOT_TIKTOK, "video");
-  assert.equal(auto.allow_comment, false);
-  assert.equal(auto.commercialContentType, "brand_organic");
-  assert.equal(auto.videoMadeWithAi, true);
+  assert.deepEqual(auto, { draft: true, commercialContentType: "brand_organic", videoMadeWithAi: true });
+  assert.deepEqual(tiktokSettings(AUTOPILOT_TIKTOK, "image"), { draft: true, commercialContentType: "brand_organic" });
+  // A draft never claims the customer's posting consent.
+  assert.equal("express_consent_given" in auto, false);
 });

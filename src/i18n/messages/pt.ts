@@ -760,6 +760,8 @@ export const pt: Messages = {
     autopilot: "Piloto automático",
     autopilotHelp:
       "Quando novos anúncios ficarem prontos, as imagens de feed e os vídeos entram na fila destas contas. Sem cliques.",
+    autopilotTiktok:
+      "O TikTok recebe como rascunhos na sua caixa do TikTok: abra o TikTok para escolher quem vê cada um e publicar.",
     to: "Publicar em",
     saveSchedule: "Salvar agenda",
     saved: "Salvo.",

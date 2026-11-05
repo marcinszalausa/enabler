@@ -18,7 +18,7 @@ import { CAPTION_LIMITS, takesKind } from "./platforms";
 import { trackedLink } from "./tracked-link";
 import { accountLimit } from "./limits";
 import { nextSlots, parseSlots, toLocal, fromLocal } from "./schedule";
-import { AUTOPILOT_TIKTOK, tiktokSettings, type TikTokChoice } from "./tiktok-settings";
+import { AUTOPILOT_TIKTOK, tiktokSettings, type TikTokPost } from "./tiktok-settings";
 
 type Db = ReturnType<typeof createAdminClient>;
 
@@ -143,8 +143,9 @@ export async function publishCreatives({
   when: When;
   // Replaces the ad's own text; only when publishing a single ad.
   caption?: string;
-  // What the customer chose for TikTok; required when posting there.
-  tiktok?: TikTokChoice;
+  // What the customer chose for TikTok (or Autopilot's drafts); required
+  // when posting there.
+  tiktok?: TikTokPost;
 }) {
   const db = createAdminClient();
   const [{ data: accounts }, { data: creatives }] = await Promise.all([

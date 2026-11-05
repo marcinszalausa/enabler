@@ -744,6 +744,8 @@ export const ja: Messages = {
     autopilot: "オートパイロット",
     autopilotHelp:
       "新しい広告ができあがると、フィード用画像と動画をこれらのアカウントのキューに自動で追加します。クリック不要です。",
+    autopilotTiktok:
+      "TikTokには下書きとしてTikTokの受信トレイに届きます。TikTokで公開範囲を選んで投稿してください。",
     to: "投稿先",
     saveSchedule: "スケジュールを保存",
     saved: "保存しました。",

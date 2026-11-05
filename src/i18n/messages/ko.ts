@@ -747,6 +747,8 @@ export const ko: Messages = {
     autopilot: "오토파일럿",
     autopilotHelp:
       "새 광고가 준비되면 피드 이미지와 동영상을 이 계정들의 대기열에 넣습니다. 클릭할 필요가 없습니다.",
+    autopilotTiktok:
+      "TikTok에는 TikTok 받은편지함에 임시 저장으로 들어갑니다. TikTok에서 공개 대상을 고르고 게시하세요.",
     to: "게시할 곳",
     saveSchedule: "일정 저장",
     saved: "저장했습니다.",

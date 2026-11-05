@@ -767,6 +767,8 @@ export const fr: Messages = {
     autopilot: "Autopilote",
     autopilotHelp:
       "Quand de nouvelles pubs sont prêtes, les images pour le fil et les vidéos sont ajoutées à la file de ces comptes. Sans aucun clic.",
+    autopilotTiktok:
+      "TikTok les reçoit en brouillons dans votre boîte TikTok : ouvrez TikTok pour choisir qui voit chacun et le publier.",
     to: "Publier sur",
     saveSchedule: "Enregistrer le planning",
     saved: "Enregistré.",

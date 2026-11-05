@@ -215,6 +215,7 @@ export function PublishingView({
           }
           accounts={(accounts ?? []).map((a) => ({
             id: a.id,
+            platform: a.platform,
             label: `${platformName(a.platform)} · ${a.display_name ?? a.username ?? ""}`,
           }))}
         />
