@@ -1,5 +1,6 @@
 "use server";
 import {after} from "next/server";
+import {maybeAutoReload} from "@/lib/auto-reload";
 import {revalidatePath} from "next/cache";
 import {createClient} from "@/lib/supabase/server";
 import {createAdminClient} from "@/lib/supabase/admin";
@@ -40,6 +41,7 @@ export async function startSingleRevision(_previous:SingleRevisionState,form:For
   ?await admin.rpc("reserve_free_redo",{ws:source.workspace_id,request_id:requestId,product:run.product_id,generation_model:model,amount:cost,options:snapshot})
   :await admin.rpc("reserve_generation",{ws:source.workspace_id,request_id:requestId,product:run.product_id,generation_type:video?"video_ads":"image_ads",generation_model:model,amount:cost,options:snapshot});
  if(error){console.error("reserve single revision failed",error.code);return no(error.message==="FREE_REDO_LIMIT"?"You’ve used this month’s 3 free redos. Untick the box to recreate it with credits.":error.message==="TRIAL_BATCH_ACTIVE"?"Let your current batch finish before creating a revision.":error.message==="TRIAL_BATCH_RATE"?"You have reached the hourly generation limit. Try again later.":"We couldn’t start this revision. Refresh and try again.");}
+ after(()=>maybeAutoReload(source.workspace_id));
  if(!generationId)return no(`This revision needs ${cost} credits. Check your balance before trying again.`);
  const job={generationId:String(generationId),workspaceId:source.workspace_id,productId:run.product_id,creativePreferences};
  after(()=>options?runVideoGeneration({...job,options}):runGeneration({...job,language,quality}));

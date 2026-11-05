@@ -10,6 +10,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { scrapePage } from "@/lib/scrape";
 import { extractBrandBrief } from "@/lib/ai/claude";
 import { runGeneration } from "@/lib/pipeline";
+import { maybeAutoReload } from "@/lib/auto-reload";
 import { imageRunCost, parseIdeas } from "@/lib/image-pricing";
 import { DEFAULT_RATIO, isRatio, parseFocus, parseVariations, variationRunCost } from "@/lib/create-options";
 import { DEFAULT_IMAGE_QUALITY, parseQuality } from "@/lib/quality";
@@ -186,6 +187,8 @@ export async function startGeneration(
     console.error("reserve generation failed", error);
     return { error: (await requestMessages()).app.errors.couldntStart };
   }
+  // Tops the balance up with the saved card when auto-reload is on.
+  after(() => maybeAutoReload(workspaceId));
   if (!generationId) {
     return { error: fmt((await requestMessages()).app.errors.noCredits, { cost }) };
   }
