@@ -5,6 +5,7 @@ import { LANGUAGES, languageOption, type LanguageKey } from "@/lib/languages";
 import { useI18n } from "@/i18n/client";
 import { GenerateButton } from "./generate-button";
 import { VideoAdForm } from "./video-ad-form";
+import { PhotoRow, type PickedPhoto } from "./image-picker";
 import { fmt } from "@/i18n/format";
 import { ADS_PER_GENERATION, ASPECTS, IDEA_COUNTS, imageRunCost, type IdeaCount } from "@/lib/image-pricing";
 import { DEFAULT_VIDEO_OPTIONS, videoRunCost } from "@/lib/video-options";
@@ -26,6 +27,7 @@ export function GenerateControls({
   credits,
   freeTrial = false,
   examples,
+  defaultPhoto,
 }: {
   productId: string;
   campaignId?: string;
@@ -40,7 +42,10 @@ export function GenerateControls({
   credits?: number;
   freeTrial?: boolean;
   examples?: TierExampleIds;
+  // The product's first store photo, the default starting photo.
+  defaultPhoto?: string | null;
 }) {
+  const [photo, setPhoto] = useState<PickedPhoto | null>(defaultPhoto ? { value: `product:${defaultPhoto}`, src: defaultPhoto, uploaded: false } : null);
   const [language, setLanguage] = useState<LanguageKey>(defaultLanguage);
   const { t } = useI18n();
   const [kind, setKind] = useState(initialKind ?? "image");
@@ -60,6 +65,9 @@ export function GenerateControls({
 
   return (
     <div className="flex w-full flex-col gap-4 text-sm lg:grid lg:grid-cols-2 lg:gap-x-8 lg:gap-y-5">
+      <div className="lg:col-span-2">
+        <PhotoRow productId={productId} photo={photo} onPick={setPhoto} />
+      </div>
       <div>
       <p aria-hidden className={label + " hidden lg:block"}>{t.app.kind}</p>
       <div role="group" aria-label={t.app.kind} className="flex w-full rounded-xl bg-surface p-1">
@@ -143,6 +151,7 @@ export function GenerateControls({
         credits={credits}
         language={language}
         quality={quality}
+        source={photo?.value}
       />}
       {kind === "video" && <VideoAdForm
         credits={credits}
@@ -152,6 +161,7 @@ export function GenerateControls({
         label={videoLabel}
         language={language}
         quality={quality}
+        source={photo?.value}
       />}
       </div>
     </div>

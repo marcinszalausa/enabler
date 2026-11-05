@@ -22,6 +22,7 @@ import { FONTS, loadFont, textColorOn } from "@/lib/brand";
 import { editVideoAd } from "@/lib/video-edit";
 import { userMessage } from "@/lib/errors";
 import { autopilotRun } from "@/lib/social/publish";
+import { runSourceImage, sourceImageUrl } from "@/lib/source-image";
 import {
   DEFAULT_VIDEO_OPTIONS,
   LENGTHS,
@@ -85,7 +86,9 @@ export async function runVideoGeneration({
     const brief = { ...withCreativePreferences(product.brand_brief as BrandBrief, creativePreferences), ...direction };
     if (direction.brand_memory?.tone) brief.tone = direction.brand_memory.tone;
     if (!brief.creative_preferences && direction.brand_memory?.audience) brief.audience = direction.brand_memory.audience;
-    const referenceImageUrl = (product.image_urls as string[])[0] ?? null;
+    // The photo the owner picked for this run, else the product's first.
+    const referenceImageUrl = await sourceImageUrl(db, workspaceId,
+      await runSourceImage(db, generationId, workspaceId), (product.image_urls as string[])[0] ?? null);
     const shotSeconds = LENGTHS[options.length];
     const written = await writeVideoAds(
       brief,
@@ -386,8 +389,10 @@ async function saveVideo(
    .eq("id",productId).eq("workspace_id",workspaceId).abortSignal(AbortSignal.timeout(5000)).single();
   if(productError||!product)throw productError??new Error("Original product is unavailable.");
   const frames=await sampleVideoShots(clips,shotSecondsFor(clipUrls.length));
+  // Compare against the photo the run started from.
+  const sourceUrl=await sourceImageUrl(db,workspaceId,await runSourceImage(db,generationId,workspaceId),(product.image_urls as string[]|null)?.[0]??null);
   const verdict=await requireReview(()=>reviewAdVideo({
-   frames,referenceImageUrl:(product.image_urls as string[]|null)?.[0]??null,
+   frames,referenceImageUrl:sourceUrl,
    product:(product.brand_brief as BrandBrief|null)?.product_name??product.name??"Product"
   }));
   if(!verdict.ok)throw new QualityError(verdict.issues||"The finished video did not pass visual review.");

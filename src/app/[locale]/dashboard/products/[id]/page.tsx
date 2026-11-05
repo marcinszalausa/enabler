@@ -224,6 +224,7 @@ async function Product({
               videoRequestId={randomUUID()}
               productId={product.id}
               examples={tierExamples}
+              defaultPhoto={photo ?? null}
               videoLabel={fmt(t.app.generateVideos, {
                 count: VIDEOS_PER_GENERATION,
               })}
