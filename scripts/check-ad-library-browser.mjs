@@ -55,12 +55,12 @@ try{
   await page.locator("dialog[open] video").waitFor();
   await page.waitForFunction(()=>document.querySelector("dialog video")?.readyState>=2);
   assert.equal(videoRequests.length,1);
-  await page.locator("dialog").press("Escape");await page.waitForFunction(()=>!document.querySelector("dialog video"));
+  await page.locator("dialog[open]").press("Escape");await page.waitForFunction(()=>!document.querySelector("dialog video"));
   await visit();
   const card=page.locator('[data-library-ad="'+favoriteId+'"]');
   const open=await card.locator('a[href*="favorite="]').getAttribute("href");assert.ok(open.includes("favorite="+favoriteId));assert.ok(open.includes("#ad-83000000-0000-4000-8000-000000000001"));
   assert.ok(await card.locator('a[href*="download=1"]').count());
-  await card.locator("[data-library-preview]").click();await page.locator("dialog[open] img").waitFor();assert.equal(await page.locator("dialog[open] img").count(),1);await page.locator("dialog").press("Escape");
+  await card.locator("[data-library-preview]").click();await page.locator("dialog[open] img").waitFor();assert.equal(await page.locator("dialog[open] img").count(),1);await page.locator("dialog[open]").press("Escape");
   let save=card.locator("[data-favorite-form] button");
   if(width===320){
    sql("revoke insert on public.creative_favorites from authenticated");
