@@ -476,6 +476,18 @@ export const fr: Messages = {
     retrying: "Impossible de vérifier l’avancement. Nous réessaierons.",
     check: "Vérifier l’avancement",
   },
+  activity: {
+    title: "Activité",
+    hide: "Masquer l’activité",
+    makingNow: "En cours de création",
+    comingUp: "À venir",
+    justFinished: "Tout juste terminées",
+    nothingNow: "Rien n’est en cours de création.",
+    noPosts: "Aucune publication programmée pour l’instant.",
+    planPosts: "Planifier des publications",
+    noAds: "Vos pubs les plus récentes apparaîtront ici.",
+    seeAll: "Voir toutes les pubs",
+  },
   app: {
     campaigns: "Campagnes",
     createNew: "Créer",

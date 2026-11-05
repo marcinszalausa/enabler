@@ -468,6 +468,18 @@ export const tr: Messages = {
     retrying: "İlerleme kontrol edilemedi. Tekrar deneyeceğiz.",
     check: "İlerlemeyi kontrol et",
   },
+  activity: {
+    title: "Etkinlik",
+    hide: "Etkinliği gizle",
+    makingNow: "Şu an hazırlanıyor",
+    comingUp: "Yaklaşanlar",
+    justFinished: "Yeni bitenler",
+    nothingNow: "Şu anda hazırlanan bir şey yok.",
+    noPosts: "Henüz planlanmış gönderi yok.",
+    planPosts: "Gönderi planla",
+    noAds: "En yeni reklamların burada görünecek.",
+    seeAll: "Tüm reklamları gör",
+  },
   app: {
     campaigns: "Kampanyalar",
     createNew: "Yeni oluştur",

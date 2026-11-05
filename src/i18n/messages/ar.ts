@@ -454,6 +454,18 @@ export const ar: Messages = {
     retrying: "تعذّر التحقق من التقدم. سنحاول مجددًا.",
     check: "تحقق من التقدم",
   },
+  activity: {
+    title: "النشاط",
+    hide: "إخفاء النشاط",
+    makingNow: "قيد الإنشاء الآن",
+    comingUp: "قادم",
+    justFinished: "اكتمل للتو",
+    nothingNow: "لا يتم إنشاء أي شيء الآن.",
+    noPosts: "لا توجد منشورات مجدولة بعد.",
+    planPosts: "خطّط للمنشورات",
+    noAds: "ستظهر أحدث إعلاناتك هنا.",
+    seeAll: "عرض كل الإعلانات",
+  },
   app: {
     campaigns: "الحملات",
     createNew: "إنشاء جديد",

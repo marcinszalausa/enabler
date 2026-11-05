@@ -470,6 +470,18 @@ export const nl: Messages = {
     retrying: "Voortgang kon niet worden gecontroleerd. We proberen het opnieuw.",
     check: "Voortgang bekijken",
   },
+  activity: {
+    title: "Activiteit",
+    hide: "Activiteit verbergen",
+    makingNow: "Nu in de maak",
+    comingUp: "Binnenkort",
+    justFinished: "Net klaar",
+    nothingNow: "Er wordt nu niets gemaakt.",
+    noPosts: "Nog geen berichten ingepland.",
+    planPosts: "Berichten plannen",
+    noAds: "Je nieuwste advertenties verschijnen hier.",
+    seeAll: "Alle advertenties bekijken",
+  },
   app: {
     campaigns: "Campagnes",
     createNew: "Nieuw maken",

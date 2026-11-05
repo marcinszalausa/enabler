@@ -467,6 +467,18 @@ export const hi: Messages = {
     retrying: "प्रगति नहीं देख सके। हम फिर कोशिश करेंगे।",
     check: "प्रगति देखें",
   },
+  activity: {
+    title: "गतिविधि",
+    hide: "गतिविधि छिपाएँ",
+    makingNow: "अभी बन रहे हैं",
+    comingUp: "आने वाले",
+    justFinished: "अभी तैयार",
+    nothingNow: "अभी कुछ नहीं बन रहा है।",
+    noPosts: "अभी कोई पोस्ट शेड्यूल नहीं है।",
+    planPosts: "पोस्ट प्लान करें",
+    noAds: "आपके सबसे नए विज्ञापन यहाँ दिखेंगे।",
+    seeAll: "सभी विज्ञापन देखें",
+  },
   app: {
     campaigns: "कैंपेन",
     createNew: "नया बनाएँ",

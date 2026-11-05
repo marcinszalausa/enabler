@@ -452,6 +452,18 @@ export const zh: Messages = {
     retrying: "无法查看进度，我们会重试。",
     check: "查看进度",
   },
+  activity: {
+    title: "动态",
+    hide: "隐藏动态",
+    makingNow: "正在制作",
+    comingUp: "即将发布",
+    justFinished: "刚刚完成",
+    nothingNow: "目前没有正在制作的内容。",
+    noPosts: "还没有已安排的帖子。",
+    planPosts: "安排帖子",
+    noAds: "你最新的广告会显示在这里。",
+    seeAll: "查看全部广告",
+  },
   app: {
     campaigns: "营销活动",
     createNew: "新建",

@@ -9,6 +9,8 @@ import { Suspense } from "react";
 import { CreditsLink } from "./credits-link";
 import { BoostCard, BoostTeaser, CreateNew, MobileMenu, SidebarBody } from "./app-shell";
 import { createClient } from "@/lib/supabase/server";
+import { ActivityAside, ActivityProvider, ActivityToggle } from "./activity-panel";
+import { ActivityFeed } from "./activity-feed";
 
 export default async function DashboardLayout({
   children,
@@ -38,6 +40,7 @@ export default async function DashboardLayout({
   // may shrink below their content (a long, truncated product name), so a
   // phone never scrolls sideways.
   return (
+    <ActivityProvider>
     <div className="landing flex flex-1 bg-bg text-fg [&_.grid>*]:min-w-0">
       <a href="#app-content" className="skip-link">{t.nav.skip}</a>
       {/* Desktop: the sections live in a sidebar on the start side. */}
@@ -57,6 +60,7 @@ export default async function DashboardLayout({
               <Suspense fallback={null}>
                 <CreditsLink locale={locale} className="inline-flex" />
               </Suspense>
+              <ActivityToggle />
             </div>
           </div>
         </header>
@@ -64,8 +68,16 @@ export default async function DashboardLayout({
           {children}
         </div>
       </div>
+      {/* Wide screens: a third column with what's happening; smaller screens
+          open it from the top bar. */}
+      <ActivityAside>
+        <Suspense fallback={<p className="text-sm text-muted">{t.app.loading}</p>}>
+          <ActivityFeed locale={locale} />
+        </Suspense>
+      </ActivityAside>
       <Spotlight />
     </div>
+    </ActivityProvider>
   );
 }
 
