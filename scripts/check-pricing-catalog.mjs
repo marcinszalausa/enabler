@@ -12,7 +12,7 @@ try{
  const match=raw.match(/<script\b[^>]*data-pricing-structured[^>]*>([\s\S]*?)<\/script>/);assert.ok(match,"JSON-LD is server-rendered");const data=JSON.parse(match[1]);assert.equal(data["@type"],"FAQPage");assert.ok(!JSON.stringify(data).includes('"offers"'));
  const polish=await(await fetch("http://localhost:3126/pl/pricing")).text();assert.ok(polish.includes("Cennik")&&polish.includes("Wszystko z Launch, a do tego:"),"Pricing is translated");
  browser=await chromium.launch({headless:true});
- for(const [width,locale]of [[320,"en"],[390,"en"],[390,"ar"],[1440,"en"]]){
+ for(const [width,locale]of [[320,"en"],[390,"en"],[390,"ja"],[1440,"en"]]){
   const page=await browser.newPage({viewport:{width,height:950},reducedMotion:"reduce"});const errors=[];page.on("pageerror",e=>errors.push(e.message));await page.goto("http://localhost:3126"+(locale==="en"?"":"/"+locale)+"/pricing",{waitUntil:"networkidle"});
   assert.equal(await page.locator("[data-buy-plan]").count(),0);assert.equal(await page.locator("[data-plan]").count(),4);
   for(const [id,count] of [["free",7],["starter",5],["plus",5],["growth",5]])assert.equal(await page.locator(`[data-plan-included="${id}"] li`).count(),count,id);

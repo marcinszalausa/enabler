@@ -127,7 +127,7 @@ export const it: Messages = {
       },
       {
         title: "Una voce che parla la lingua dei tuoi clienti",
-        body: "Voce narrante in {count} lingue, dallo spagnolo e dal polacco al giapponese e all'arabo, con sottotitoli da leggere senza audio.",
+        body: "Voce narrante in {count} lingue, dallo spagnolo e dal polacco al giapponese e all'hindi, con sottotitoli da leggere senza audio.",
       },
       {
         title: "Musica e schermata finale",
@@ -207,7 +207,7 @@ export const it: Messages = {
       },
       {
         q: "In quali lingue possono essere i miei annunci?",
-        a: "In {count} lingue, tra cui inglese, spagnolo, portoghese, francese, tedesco, polacco, giapponese, coreano, cinese, hindi e arabo. Ne scegli una per ogni giro.",
+        a: "In {count} lingue, tra cui inglese, spagnolo, portoghese, francese, tedesco, polacco, giapponese, coreano, cinese e hindi. Ne scegli una per ogni giro.",
       },
       {
         q: "Dove posso usare gli annunci?",
@@ -812,7 +812,7 @@ export const it: Messages = {
     cards: [
       { title: "Scegli la qualità", body: "Buona, Migliore o Massima per ogni annuncio, con i migliori modelli per immagini e video. Vedi il costo esatto in crediti prima di creare qualsiasi cosa." },
       { title: "Il tuo prodotto, com'è davvero", body: "Partiamo dalla vera pagina del tuo prodotto e ne manteniamo colore, forma e dettagli. Ogni immagine e ogni video finito vengono controllati automaticamente prima di arrivare a te." },
-      { title: "Parla la lingua dei tuoi clienti", body: "Annunci, didascalie e voci fuori campo in 17 lingue, dallo spagnolo e polacco al giapponese, hindi e arabo." },
+      { title: "Parla la lingua dei tuoi clienti", body: "Annunci, didascalie e voci fuori campo in 16 lingue, dallo spagnolo e polacco al giapponese e hindi." },
       { title: "Il tuo brand, ricordato", body: "Salva una volta logo, colori, font e tono di voce. Ogni nuova campagna parte già in linea con il tuo brand." },
       { title: "Fatti vedere ogni settimana", body: "Pianifica campagne, programma post su 10 social o attiva il pilota automatico, poi scopri quali post hanno ottenuto clic. I link ai prodotti sono tracciati, così le statistiche del tuo negozio mostrano le visite da ogni post." },
       { title: "Onesti fin dal primo clic", body: "Prezzi chiari, crediti restituiti quando un annuncio non può essere consegnato e nessuna recensione, sconto o promessa inventata nei tuoi annunci." },

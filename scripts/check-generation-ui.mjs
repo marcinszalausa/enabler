@@ -16,7 +16,7 @@ try {
  assert.ok(ready,"Generation fixture starts");
  browser=await chromium.launch({headless:true});
  const jpeg=await readFile("public/reels/softmila-cardigan.jpg");
- for(const [width,locale,theme] of [[390,"en","light"],[1440,"en","dark"],[390,"ar","light"]]){
+ for(const [width,locale,theme] of [[390,"en","light"],[1440,"en","dark"],[390,"ja","light"]]){
   const context=await browser.newContext({viewport:{width,height:1000},locale:"en-US",reducedMotion:"reduce"});
   const page=await context.newPage();const errors=[];page.on("pageerror",e=>errors.push(e.message));
   let calls=0,fail=false;

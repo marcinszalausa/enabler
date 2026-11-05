@@ -23,7 +23,7 @@ try{
  const capture=b=>{log=(log+b).slice(-16000);};server.stdout.on("data",capture);server.stderr.on("data",capture);
  let ready=false;for(let i=0;i<90;i++){try{if((await fetch("http://localhost:3115/workflow-preview",{signal:AbortSignal.timeout(2000)})).ok){ready=true;break;}}catch{}await pause(1000);}assert.ok(ready,"Fixture ready");
  browser=await chromium.launch({headless:true});
- for(const [width,locale,theme] of [[320,"en","light"],[390,"en","dark"],[390,"ar","light"],[1440,"en","light"]]){
+ for(const [width,locale,theme] of [[320,"en","light"],[390,"en","dark"],[390,"ja","light"],[1440,"en","light"]]){
   const page=await browser.newPage({viewport:{width,height:950},reducedMotion:"reduce"});const errors=[];let posts=0;
   page.on("pageerror",e=>errors.push(e.message));page.on("request",r=>{if(r.method()==="POST"&&!new URL(r.url()).pathname.startsWith("/__nextjs")&&!new URL(r.url()).pathname.startsWith("/_next"))posts++;});
   await page.goto("http://localhost:3115"+(locale==="en"?"":"/"+locale)+"/workflow-preview",{waitUntil:"networkidle",timeout:90000});

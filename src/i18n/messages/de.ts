@@ -127,7 +127,7 @@ export const de: Messages = {
       },
       {
         title: "Eine Stimme, die die Sprache deiner Kunden spricht",
-        body: "Sprecher in {count} Sprachen, von Spanisch und Polnisch bis Japanisch und Arabisch, mit Untertiteln für Ton aus.",
+        body: "Sprecher in {count} Sprachen, von Spanisch und Polnisch bis Japanisch und Hindi, mit Untertiteln für Ton aus.",
       },
       {
         title: "Musik und Abspann",
@@ -202,7 +202,7 @@ export const de: Messages = {
       },
       {
         q: "In welchen Sprachen können meine Anzeigen sein?",
-        a: "In {count} Sprachen, darunter Englisch, Spanisch, Portugiesisch, Französisch, Deutsch, Polnisch, Japanisch, Koreanisch, Chinesisch, Hindi und Arabisch. Du wählst eine pro Durchlauf.",
+        a: "In {count} Sprachen, darunter Englisch, Spanisch, Portugiesisch, Französisch, Deutsch, Polnisch, Japanisch, Koreanisch, Chinesisch und Hindi. Du wählst eine pro Durchlauf.",
       },
       {
         q: "Wo kann ich die Anzeigen nutzen?",
@@ -808,7 +808,7 @@ export const de: Messages = {
     cards: [
       { title: "Wähle deine Qualität", body: "Gut, Besser oder Beste für jede Anzeige, erstellt mit führenden Bild- und Videomodellen. Du siehst die genauen Credit-Kosten, bevor etwas erstellt wird." },
       { title: "Dein Produkt, wie es wirklich ist", body: "Wir starten mit deiner echten Produktseite und bewahren Farbe, Form und Details. Jedes Bild und jedes fertige Video wird automatisch geprüft, bevor es bei dir ankommt." },
-      { title: "Sprich die Sprache deiner Kunden", body: "Anzeigen, Texte und Video-Sprecher in 17 Sprachen, von Spanisch und Polnisch bis Japanisch, Hindi und Arabisch." },
+      { title: "Sprich die Sprache deiner Kunden", body: "Anzeigen, Texte und Video-Sprecher in 16 Sprachen, von Spanisch und Polnisch bis Japanisch und Hindi." },
       { title: "Deine Marke, gespeichert", body: "Speichere Logo, Farben, Schrift und Markenstimme einmal. Jede neue Kampagne startet im Stil deiner Marke." },
       { title: "Jede Woche präsent", body: "Plane Kampagnen, plane Beiträge auf 10 Netzwerken oder schalte den Autopiloten ein und sieh, welche Beiträge Klicks gebracht haben. Produktlinks werden markiert, damit die Analyse deines Shops die Besuche aus jedem Beitrag zeigt." },
       { title: "Ehrlich ab dem ersten Klick", body: "Klare Preise, Credits zurück, wenn eine Anzeige nicht geliefert werden kann, und keine erfundenen Bewertungen, Rabatte oder Versprechen in deinen Anzeigen." },

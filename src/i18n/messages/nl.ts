@@ -127,7 +127,7 @@ export const nl: Messages = {
       },
       {
         title: "Een stem die de taal van je klant spreekt",
-        body: "Voice-over in {count} talen, van Spaans en Pools tot Japans en Arabisch, met ondertitels om zonder geluid te kijken.",
+        body: "Voice-over in {count} talen, van Spaans en Pools tot Japans en Hindi, met ondertitels om zonder geluid te kijken.",
       },
       {
         title: "Muziek en eindbeeld",
@@ -206,7 +206,7 @@ export const nl: Messages = {
       },
       {
         q: "In welke talen kunnen mijn advertenties zijn?",
-        a: "In {count} talen, waaronder Engels, Spaans, Portugees, Frans, Duits, Pools, Japans, Koreaans, Chinees, Hindi en Arabisch. Je kiest er één per ronde.",
+        a: "In {count} talen, waaronder Engels, Spaans, Portugees, Frans, Duits, Pools, Japans, Koreaans, Chinees en Hindi. Je kiest er één per ronde.",
       },
       {
         q: "Waar kan ik de advertenties gebruiken?",
@@ -808,7 +808,7 @@ export const nl: Messages = {
     cards: [
       { title: "Kies je kwaliteit", body: "Goed, Beter of Best voor elke advertentie, gemaakt met toonaangevende beeld- en videomodellen. Je ziet de exacte creditkosten voordat er iets wordt gemaakt." },
       { title: "Je product zoals het echt is", body: "We beginnen bij je echte productpagina en behouden kleur, vorm en details. Elke afbeelding en elke afgeronde video wordt automatisch gecontroleerd voordat je die krijgt." },
-      { title: "Spreek de taal van je klanten", body: "Advertenties, bijschriften en voice-overs in 17 talen, van Spaans en Pools tot Japans, Hindi en Arabisch." },
+      { title: "Spreek de taal van je klanten", body: "Advertenties, bijschriften en voice-overs in 16 talen, van Spaans en Pools tot Japans en Hindi." },
       { title: "Je merk, onthouden", body: "Sla je logo, kleuren, lettertype en merkstem één keer op. Elke nieuwe campagne begint in jouw stijl." },
       { title: "Elke week zichtbaar", body: "Plan campagnes, plan berichten op 10 netwerken of zet de automatische piloot aan en zie welke berichten klikken opleverden. Productlinks worden gemarkeerd, zodat de statistieken van je winkel de bezoeken per bericht tonen." },
       { title: "Eerlijk vanaf de eerste klik", body: "Duidelijke prijzen, credits terug als een advertentie niet geleverd kan worden, en geen verzonnen reviews, kortingen of beweringen in je advertenties." },

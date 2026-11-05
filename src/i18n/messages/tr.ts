@@ -126,7 +126,7 @@ export const tr: Messages = {
       },
       {
         title: "Müşterinizin dilini konuşan bir ses",
-        body: "İspanyolca ve Lehçeden Japonca ve Arapçaya {count} dilde seslendirme, sessizde okunabilen altyazılarla.",
+        body: "İspanyolca ve Lehçeden Japonca ve Hintçeye {count} dilde seslendirme, sessizde okunabilen altyazılarla.",
       },
       {
         title: "Müzik ve kapanış ekranı",
@@ -201,7 +201,7 @@ export const tr: Messages = {
       },
       {
         q: "Reklamlarım hangi dillerde olabilir?",
-        a: "İngilizce, İspanyolca, Portekizce, Fransızca, Almanca, Lehçe, Japonca, Korece, Çince, Hintçe ve Arapça dahil {count} dilde. Her çalıştırma için bir dil seçersiniz.",
+        a: "İngilizce, İspanyolca, Portekizce, Fransızca, Almanca, Lehçe, Japonca, Korece, Çince ve Hintçe dahil {count} dilde. Her çalıştırma için bir dil seçersiniz.",
       },
       {
         q: "Reklamları nerede kullanabilirim?",
@@ -803,7 +803,7 @@ export const tr: Messages = {
     cards: [
       { title: "Kaliteyi siz seçin", body: "Her reklam için İyi, Daha İyi veya En İyi; önde gelen görsel ve video modelleriyle. Hiçbir şey üretilmeden önce kesin kredi maliyetini görürsünüz." },
       { title: "Ürününüz, olduğu gibi", body: "Gerçek ürün sayfanızdan başlar, rengini, biçimini ve ayrıntılarını koruruz. Her görsel ve tamamlanan her video size ulaşmadan önce otomatik olarak kontrol edilir." },
-      { title: "Müşterilerinizin dilini konuşun", body: "İspanyolca ve Lehçeden Japonca, Hintçe ve Arapçaya kadar 17 dilde reklam, açıklama ve video seslendirme." },
+      { title: "Müşterilerinizin dilini konuşun", body: "İspanyolca ve Lehçeden Japonca ve Hintçeye kadar 16 dilde reklam, açıklama ve video seslendirme." },
       { title: "Markanız hatırlanır", body: "Logonuzu, renklerinizi, yazı tipinizi ve marka dilinizi bir kez kaydedin. Her yeni kampanya markanıza uygun başlar." },
       { title: "Her hafta görünür olun", body: "Kampanya planlayın, 10 ağda gönderi zamanlayın ya da otomatik pilotu açın, sonra hangi gönderilerin tıklama aldığını görün. Ürün bağlantıları etiketlenir, böylece mağaza analitiğiniz her gönderiden gelen ziyaretleri gösterir." },
       { title: "İlk tıklamadan itibaren dürüst", body: "Net fiyatlar, teslim edilemeyen reklamlar için iade edilen krediler ve reklamlarınızda uydurma yorum, indirim veya iddia yok." },

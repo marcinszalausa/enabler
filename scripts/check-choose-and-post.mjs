@@ -16,7 +16,7 @@ try{
  const capture=b=>{log=(log+b).slice(-14000);};server.stdout.on("data",capture);server.stderr.on("data",capture);
  let ready=false;for(let i=0;i<100;i++){try{if((await fetch("http://localhost:3100/choose-preview",{signal:AbortSignal.timeout(2000)})).ok){ready=true;break;}}catch{}await pause(1000);}assert.ok(ready);
  browser=await chromium.launch({headless:true});const jpeg=await readFile("public/reels/softmila-cardigan.jpg");
- for(const [width,locale,theme] of [[320,"en","light"],[390,"en","light"],[1440,"en","dark"],[390,"ar","light"]]){
+ for(const [width,locale,theme] of [[320,"en","light"],[390,"en","light"],[1440,"en","dark"],[390,"ja","light"]]){
   const context=await browser.newContext({viewport:{width,height:1000},reducedMotion:"reduce"});
   const page=await context.newPage(),errors=[],images=[],unsafe=[];let posts=0;
   page.on("pageerror",e=>errors.push(e.message));

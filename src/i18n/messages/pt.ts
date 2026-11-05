@@ -128,7 +128,7 @@ export const pt: Messages = {
       },
       {
         title: "Uma voz que fala a língua do seu cliente",
-        body: "Locução em {count} idiomas, do espanhol e polonês ao japonês e árabe, com legendas para assistir sem som.",
+        body: "Locução em {count} idiomas, do espanhol e polonês ao japonês e hindi, com legendas para assistir sem som.",
       },
       {
         title: "Música e tela final",
@@ -207,7 +207,7 @@ export const pt: Messages = {
       },
       {
         q: "Em quais idiomas meus anúncios podem estar?",
-        a: "Em {count} idiomas, incluindo inglês, espanhol, português, francês, alemão, polonês, japonês, coreano, chinês, hindi e árabe. Você escolhe um a cada rodada.",
+        a: "Em {count} idiomas, incluindo inglês, espanhol, português, francês, alemão, polonês, japonês, coreano, chinês e hindi. Você escolhe um a cada rodada.",
       },
       {
         q: "Onde posso usar os anúncios?",
@@ -807,7 +807,7 @@ export const pt: Messages = {
     cards: [
       { title: "Escolha a sua qualidade", body: "Boa, Melhor ou Máxima em cada anúncio, com os principais modelos de imagem e vídeo. Você vê o custo exato em créditos antes de qualquer criação." },
       { title: "Seu produto, como ele é", body: "Partimos da página real do seu produto e mantemos cor, formato e detalhes. Cada imagem e cada vídeo finalizado são verificados automaticamente antes de chegar até você." },
-      { title: "Fale a língua dos seus clientes", body: "Anúncios, legendas e narrações em 17 idiomas, do espanhol e polonês ao japonês, hindi e árabe." },
+      { title: "Fale a língua dos seus clientes", body: "Anúncios, legendas e narrações em 16 idiomas, do espanhol e polonês ao japonês e hindi." },
       { title: "Sua marca, lembrada", body: "Salve seu logotipo, cores, fonte e tom de voz uma vez. Cada nova campanha já começa com a sua marca." },
       { title: "Apareça toda semana", body: "Planeje campanhas, agende posts em 10 redes ou ative o piloto automático e veja quais posts geraram cliques. Os links de produto são marcados para que a análise da sua loja mostre as visitas de cada post." },
       { title: "Honestidade desde o primeiro clique", body: "Preços claros, créditos devolvidos quando um anúncio não pode ser entregue e nenhuma avaliação, desconto ou promessa inventada nos seus anúncios." },

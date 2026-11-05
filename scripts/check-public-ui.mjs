@@ -24,7 +24,7 @@ try {
   }
   assert.ok(ready);
   browser = await chromium.launch({ headless: true });
-  for (const [width, locale, theme] of [[320,"en","light"],[390,"en","dark"],[768,"de","light"],[390,"ar","light"],[1440,"en","light"]]) {
+  for (const [width, locale, theme] of [[320,"en","light"],[390,"en","dark"],[768,"de","light"],[390,"ja","light"],[1440,"en","light"]]) {
     const page = await browser.newPage({ viewport: { width, height: 950 }, reducedMotion: "reduce", locale: "en-US" });
     const errors = []; page.on("pageerror", e => errors.push(e.message));
     const prefix = locale === "en" ? "" : "/" + locale;

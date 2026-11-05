@@ -126,7 +126,7 @@ export const en = {
       },
       {
         title: "A voice that speaks your buyer's language",
-        body: "Voiceover in {count} languages, from Spanish and Polish to Japanese and Arabic, with captions people can read on mute.",
+        body: "Voiceover in {count} languages, from Spanish and Polish to Japanese and Hindi, with captions people can read on mute.",
       },
       {
         title: "Music and an end card",
@@ -200,7 +200,7 @@ export const en = {
       },
       {
         q: "Which languages can my ads be in?",
-        a: "{count} languages, including English, Spanish, Portuguese, French, German, Polish, Japanese, Korean, Chinese, Hindi and Arabic. Pick one for each run.",
+        a: "{count} languages, including English, Spanish, Portuguese, French, German, Polish, Japanese, Korean, Chinese and Hindi. Pick one for each run.",
       },
       {
         q: "Where can I use the ads?",
@@ -796,7 +796,7 @@ export const en = {
     cards: [
       { title: "Choose your quality", body: "Good, Better or Best on every ad, made with leading image and video models. You see the exact credit cost before anything is made." },
       { title: "Your product, as it really is", body: "We start from your real product page and keep its color, shape and details. Every image and finished video is checked automatically before it reaches you." },
-      { title: "Speak your customers' language", body: "Ads, captions and video voiceovers in 17 languages, from Spanish and Polish to Japanese, Hindi and Arabic." },
+      { title: "Speak your customers' language", body: "Ads, captions and video voiceovers in 16 languages, from Spanish and Polish to Japanese and Hindi." },
       { title: "Your brand, remembered", body: "Save your logo, colors, font and brand voice once. Every new campaign starts on brand." },
       { title: "Show up every week", body: "Plan campaigns, schedule posts on 10 networks or turn on autopilot, then see which posts earned clicks. Product links are tagged so your store analytics show visits from each post." },
       { title: "Honest from the first click", body: "Clear prices, credits returned when an ad can't be delivered, and no invented reviews, discounts or claims in your ads." },

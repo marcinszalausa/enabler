@@ -127,7 +127,7 @@ export const ro: Messages = {
       },
       {
         title: "O voce care vorbește limba clientului tău",
-        body: "Voce în {count} limbi, de la spaniolă și poloneză la japoneză și arabă, cu subtitrări de citit fără sonor.",
+        body: "Voce în {count} limbi, de la spaniolă și poloneză la japoneză și hindi, cu subtitrări de citit fără sonor.",
       },
       {
         title: "Muzică și cadru final",
@@ -207,7 +207,7 @@ export const ro: Messages = {
       },
       {
         q: "În ce limbi pot fi reclamele mele?",
-        a: "În {count} limbi, printre care engleză, spaniolă, portugheză, franceză, germană, poloneză, japoneză, coreeană, chineză, hindi și arabă. Alegi una la fiecare rulare.",
+        a: "În {count} limbi, printre care engleză, spaniolă, portugheză, franceză, germană, poloneză, japoneză, coreeană, chineză și hindi. Alegi una la fiecare rulare.",
       },
       {
         q: "Unde pot folosi reclamele?",
@@ -803,7 +803,7 @@ export const ro: Messages = {
     cards: [
       { title: "Alege calitatea", body: "Bună, Mai bună sau Cea mai bună pentru fiecare reclamă, realizată cu modele de top pentru imagine și video. Vezi costul exact în credite înainte de a se crea ceva." },
       { title: "Produsul tău, așa cum este", body: "Pornim de la pagina reală a produsului și îi păstrăm culoarea, forma și detaliile. Fiecare imagine și fiecare video finalizat sunt verificate automat înainte să ajungă la tine." },
-      { title: "Vorbește limba clienților tăi", body: "Reclame, descrieri și voce din off în 17 limbi, de la spaniolă și poloneză la japoneză, hindi și arabă." },
+      { title: "Vorbește limba clienților tăi", body: "Reclame, descrieri și voce din off în 16 limbi, de la spaniolă și poloneză la japoneză și hindi." },
       { title: "Brandul tău, memorat", body: "Salvează o singură dată logo-ul, culorile, fontul și tonul brandului. Fiecare campanie nouă pornește în stilul tău." },
       { title: "Fii prezent în fiecare săptămână", body: "Planifică campanii, programează postări pe 10 rețele sau pornește pilotul automat, apoi vezi ce postări au adus clicuri. Linkurile de produs sunt etichetate, astfel încât statisticile magazinului arată vizitele din fiecare postare." },
       { title: "Onest de la primul clic", body: "Prețuri clare, credite returnate când o reclamă nu poate fi livrată și fără recenzii, reduceri sau afirmații inventate în reclamele tale." },

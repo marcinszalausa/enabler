@@ -127,7 +127,7 @@ export const es: Messages = {
       },
       {
         title: "Una voz que habla el idioma de tu cliente",
-        body: "Locución en {count} idiomas, del español y el polaco al japonés y el árabe, con subtítulos para verlo sin sonido.",
+        body: "Locución en {count} idiomas, del español y el polaco al japonés y el hindi, con subtítulos para verlo sin sonido.",
       },
       {
         title: "Música y cierre",
@@ -206,7 +206,7 @@ export const es: Messages = {
       },
       {
         q: "¿En qué idiomas pueden estar mis anuncios?",
-        a: "En {count} idiomas, entre ellos inglés, español, portugués, francés, alemán, polaco, japonés, coreano, chino, hindi y árabe. Eliges uno en cada tanda.",
+        a: "En {count} idiomas, entre ellos inglés, español, portugués, francés, alemán, polaco, japonés, coreano, chino e hindi. Eliges uno en cada tanda.",
       },
       {
         q: "¿Dónde puedo usar los anuncios?",
@@ -809,7 +809,7 @@ export const es: Messages = {
     cards: [
       { title: "Elige tu calidad", body: "Buena, Mejor o Máxima en cada anuncio, con modelos líderes de imagen y vídeo. Ves el coste exacto en créditos antes de crear nada." },
       { title: "Tu producto, tal como es", body: "Partimos de la página real de tu producto y mantenemos su color, forma y detalles. Cada imagen y cada vídeo terminado se revisan automáticamente antes de llegarte." },
-      { title: "Habla el idioma de tus clientes", body: "Anuncios, textos y voces en off en 17 idiomas, del español y el polaco al japonés, el hindi y el árabe." },
+      { title: "Habla el idioma de tus clientes", body: "Anuncios, textos y voces en off en 16 idiomas, del español y el polaco al japonés y el hindi." },
       { title: "Tu marca, recordada", body: "Guarda tu logotipo, colores, tipografía y tono de marca una sola vez. Cada nueva campaña empieza con tu estilo." },
       { title: "Preséntate cada semana", body: "Planifica campañas, programa publicaciones en 10 redes o activa el piloto automático, y mira qué publicaciones consiguieron clics. Los enlaces de producto van etiquetados para que la analítica de tu tienda muestre las visitas de cada publicación." },
       { title: "Honestidad desde el primer clic", body: "Precios claros, créditos devueltos cuando un anuncio no se puede entregar, y nada de reseñas, descuentos ni afirmaciones inventadas en tus anuncios." },

@@ -19,7 +19,7 @@ try{
  const capture=b=>{log=(log+b).slice(-18000);};server.stdout.on("data",capture);server.stderr.on("data",capture);
  let ready=false;for(let n=0;n<100;n++){try{if((await fetch("http://localhost:3114/recovery-form",{signal:AbortSignal.timeout(2000)})).ok){ready=true;break;}}catch{}await pause(1000);}assert.ok(ready);
  browser=await chromium.launch({headless:true});
- for(const [width,locale] of [[320,"en"],[390,"pl"],[390,"ar"],[1440,"en"]]){
+ for(const [width,locale] of [[320,"en"],[390,"pl"],[390,"ja"],[1440,"en"]]){
   const context=await browser.newContext({viewport:{width,height:900},reducedMotion:"reduce"});
   const page=await context.newPage(),prefix=locale==="en"?"":"/"+locale;
   const posts=[];page.on("request",r=>{const path=new URL(r.url()).pathname;if(r.method()==="POST"&&!path.startsWith("/__nextjs")&&!path.startsWith("/_next")&&path!=="/api/onboarding/preview")posts.push(path);});

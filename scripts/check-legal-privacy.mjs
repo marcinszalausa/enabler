@@ -10,7 +10,7 @@ try{
  const capture=b=>{log=(log+b).slice(-12000);};server.stdout.on("data",capture);server.stderr.on("data",capture);
  let ready=false;for(let n=0;n<100;n++){try{if((await fetch("http://localhost:3115/policies",{signal:AbortSignal.timeout(2000)})).ok){ready=true;break;}}catch{}await pause(1000);}assert.ok(ready);
  browser=await chromium.launch({headless:true});
- for(const [width,locale] of [[320,"en"],[390,"es"],[390,"ar"],[1440,"en"]]){
+ for(const [width,locale] of [[320,"en"],[390,"es"],[390,"ja"],[1440,"en"]]){
   const context=await browser.newContext({viewport:{width,height:900},reducedMotion:"reduce"}),page=await context.newPage();
   const prefix=locale==="en"?"":"/"+locale,errors=[],mutations=[],external=[];
   page.on("pageerror",e=>errors.push(e.message));

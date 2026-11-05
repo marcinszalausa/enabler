@@ -127,7 +127,7 @@ export const sv: Messages = {
       },
       {
         title: "En röst som talar din kunds språk",
-        body: "Speakerröst på {count} språk, från spanska och polska till japanska och arabiska, med textning som går att läsa utan ljud.",
+        body: "Speakerröst på {count} språk, från spanska och polska till japanska och hindi, med textning som går att läsa utan ljud.",
       },
       {
         title: "Musik och slutbild",
@@ -202,7 +202,7 @@ export const sv: Messages = {
       },
       {
         q: "Vilka språk kan mina annonser vara på?",
-        a: "{count} språk, bland annat engelska, spanska, portugisiska, franska, tyska, polska, japanska, koreanska, kinesiska, hindi och arabiska. Du väljer ett för varje körning.",
+        a: "{count} språk, bland annat engelska, spanska, portugisiska, franska, tyska, polska, japanska, koreanska, kinesiska och hindi. Du väljer ett för varje körning.",
       },
       {
         q: "Var kan jag använda annonserna?",
@@ -804,7 +804,7 @@ export const sv: Messages = {
     cards: [
       { title: "Välj din kvalitet", body: "Bra, Bättre eller Bäst för varje annons, skapad med ledande bild- och videomodeller. Du ser den exakta kreditkostnaden innan något skapas." },
       { title: "Din produkt som den verkligen är", body: "Vi utgår från din riktiga produktsida och behåller färg, form och detaljer. Varje bild och färdig video kontrolleras automatiskt innan den når dig." },
-      { title: "Tala dina kunders språk", body: "Annonser, bildtexter och speakerröst i 17 språk, från spanska och polska till japanska, hindi och arabiska." },
+      { title: "Tala dina kunders språk", body: "Annonser, bildtexter och speakerröst i 16 språk, från spanska och polska till japanska och hindi." },
       { title: "Ditt varumärke, ihågkommet", body: "Spara logotyp, färger, typsnitt och tonläge en gång. Varje ny kampanj börjar i din stil." },
       { title: "Synas varje vecka", body: "Planera kampanjer, schemalägg inlägg i 10 nätverk eller slå på autopiloten och se vilka inlägg som gav klick. Produktlänkar märks så att din butiks statistik visar besöken från varje inlägg." },
       { title: "Ärligt från första klicket", body: "Tydliga priser, krediter tillbaka när en annons inte kan levereras och inga påhittade omdömen, rabatter eller påståenden i dina annonser." },

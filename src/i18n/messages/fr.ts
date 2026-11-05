@@ -127,7 +127,7 @@ export const fr: Messages = {
       },
       {
         title: "Une voix qui parle la langue de vos clients",
-        body: "Voix off en {count} langues, de l'espagnol et du polonais au japonais et à l'arabe, avec des sous-titres lisibles sans le son.",
+        body: "Voix off en {count} langues, de l'espagnol et du polonais au japonais et à l'hindi, avec des sous-titres lisibles sans le son.",
       },
       {
         title: "Musique et écran de fin",
@@ -207,7 +207,7 @@ export const fr: Messages = {
       },
       {
         q: "Dans quelles langues mes pubs peuvent-elles être ?",
-        a: "En {count} langues, dont l'anglais, l'espagnol, le portugais, le français, l'allemand, le polonais, le japonais, le coréen, le chinois, l'hindi et l'arabe. Vous en choisissez une à chaque génération.",
+        a: "En {count} langues, dont l'anglais, l'espagnol, le portugais, le français, l'allemand, le polonais, le japonais, le coréen, le chinois et l'hindi. Vous en choisissez une à chaque génération.",
       },
       {
         q: "Où puis-je utiliser les pubs ?",
@@ -815,7 +815,7 @@ export const fr: Messages = {
     cards: [
       { title: "Choisissez votre qualité", body: "Bonne, Meilleure ou Maximale pour chaque publicité, avec les meilleurs modèles d'image et de vidéo. Vous voyez le coût exact en crédits avant toute création." },
       { title: "Votre produit, tel qu'il est", body: "Nous partons de la vraie page de votre produit et conservons sa couleur, sa forme et ses détails. Chaque image et chaque vidéo finale sont vérifiées automatiquement avant de vous parvenir." },
-      { title: "Parlez la langue de vos clients", body: "Publicités, légendes et voix off en 17 langues, de l'espagnol et du polonais au japonais, à l'hindi et à l'arabe." },
+      { title: "Parlez la langue de vos clients", body: "Publicités, légendes et voix off en 16 langues, de l'espagnol et du polonais au japonais et à l'hindi." },
       { title: "Votre marque, mémorisée", body: "Enregistrez une fois votre logo, vos couleurs, votre police et votre ton. Chaque nouvelle campagne démarre aux couleurs de votre marque." },
       { title: "Soyez présent chaque semaine", body: "Planifiez des campagnes, programmez vos publications sur 10 réseaux ou activez le pilote automatique, puis voyez quelles publications ont généré des clics. Les liens produit sont balisés pour que les statistiques de votre boutique montrent les visites de chaque publication." },
       { title: "Honnête dès le premier clic", body: "Des prix clairs, des crédits rendus quand une publicité ne peut pas être livrée, et aucun avis, remise ou argument inventé dans vos publicités." },
