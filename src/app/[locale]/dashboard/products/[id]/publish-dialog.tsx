@@ -10,6 +10,7 @@ import { smallButton } from "../../ui";
 import {notifyAdChoice} from "../../use-ad-choice";
 import {clearAdChoice} from "@/lib/ad-choice";
 import { useBrowserTimeZone } from "../../time-zone";
+import { TIKTOK_PRIVACY, type TikTokPrivacy } from "@/lib/social/tiktok-settings";
 
 export type PublishCreative = {
   id: string;
@@ -362,17 +363,7 @@ function PublishForm({
       )}
 
       {targets.some((a) => a.platform === "tiktok") && (
-        <p className="text-xs text-muted">
-          {/* TikTok requires this line before anything is posted there. */}
-          <a
-            href="https://www.tiktok.com/legal/page/global/music-usage-confirmation/en"
-            target="_blank"
-            rel="noreferrer"
-            className="underline underline-offset-4"
-          >
-            {t.publish.tiktokConsent}
-          </a>
-        </p>
+        <TikTokOptions hasVideo={kinds.has("video")} />
       )}
 
       <p className="text-xs leading-relaxed text-muted">{t.home.adSpend}</p>
@@ -462,4 +453,74 @@ function CreativePreview({creative}:{creative:PublishCreative}){
  // eslint-disable-next-line @next/next/no-img-element -- bounded private preview
  <img src={`/api/creatives/${creative.id}/image?preview=1&layout=face-aware-v2`} alt={t.choose.review} className="max-h-[45vh] max-w-full rounded-lg object-contain"/>}
  </figure>;
+}
+
+// TikTok's posting rules: the customer picks visibility and interactions
+// (nothing preselected), discloses promotion and labels AI video.
+function TikTokOptions({ hasVideo }: { hasVideo: boolean }) {
+  const { t } = useI18n();
+  const tt = t.publish.tiktok;
+  const [privacy, setPrivacy] = useState<TikTokPrivacy | "">("");
+  const [promo, setPromo] = useState(false);
+  const [commercial, setCommercial] = useState<"brand_organic" | "brand_content">("brand_organic");
+  const check = "flex min-h-11 cursor-pointer items-center gap-2";
+  return (
+    <fieldset data-tiktok-options className="flex flex-col gap-3 rounded-xl border border-line p-4">
+      <legend className="px-1 font-medium">{tt.title}</legend>
+      <label className="flex flex-col gap-1.5">
+        <span>{tt.privacy}</span>
+        <select
+          name="tiktokPrivacy"
+          required
+          value={privacy}
+          onChange={(e) => setPrivacy(e.target.value as TikTokPrivacy)}
+          className={field}
+        >
+          <option value="" disabled>{tt.privacyPick}</option>
+          {TIKTOK_PRIVACY.map((p) => (
+            <option key={p} value={p} disabled={promo && commercial === "brand_content" && p === "SELF_ONLY"}>
+              {tt.privacyOptions[p]}
+            </option>
+          ))}
+        </select>
+      </label>
+      <div className="flex flex-wrap gap-x-5">
+        <span className="w-full text-muted">{tt.allow}</span>
+        <label className={check}><input type="checkbox" name="tiktokComment" className="accent-accent" />{tt.comment}</label>
+        {hasVideo && <label className={check}><input type="checkbox" name="tiktokDuet" className="accent-accent" />{tt.duet}</label>}
+        {hasVideo && <label className={check}><input type="checkbox" name="tiktokStitch" className="accent-accent" />{tt.stitch}</label>}
+      </div>
+      <label className={check}>
+        <input type="checkbox" name="tiktokPromo" checked={promo} onChange={(e) => setPromo(e.target.checked)} className="accent-accent" />
+        <span>{tt.promo}</span>
+      </label>
+      <p className="-mt-2 pl-6 text-xs text-muted">{tt.promoHint}</p>
+      {promo && (
+        <div className="flex flex-col gap-1 pl-6">
+          <label className={check}>
+            <input type="radio" name="tiktokCommercial" value="brand_organic" checked={commercial === "brand_organic"} onChange={() => setCommercial("brand_organic")} className="accent-accent" />
+            <span>{tt.yourBrand}<span className="block text-xs text-muted">{tt.yourBrandHint}</span></span>
+          </label>
+          <label className={check}>
+            <input type="radio" name="tiktokCommercial" value="brand_content" checked={commercial === "brand_content"} onChange={() => { setCommercial("brand_content"); if (privacy === "SELF_ONLY") setPrivacy(""); }} className="accent-accent" />
+            <span>{tt.branded}<span className="block text-xs text-muted">{tt.brandedHint}</span></span>
+          </label>
+        </div>
+      )}
+      {hasVideo && (
+        <label className={check}>
+          <input type="checkbox" name="tiktokAiLabel" defaultChecked className="accent-accent" />
+          <span>{tt.aiLabel}<span className="block text-xs text-muted">{tt.aiLabelHint}</span></span>
+        </label>
+      )}
+      <p className="text-xs text-muted">
+        {/* TikTok requires this line before anything is posted there. */}
+        {promo && commercial === "brand_content" ? (
+          <a href="https://www.tiktok.com/legal/page/global/bc-policy/en" target="_blank" rel="noreferrer" className="underline underline-offset-4">{tt.brandedConsent}</a>
+        ) : (
+          <a href="https://www.tiktok.com/legal/page/global/music-usage-confirmation/en" target="_blank" rel="noreferrer" className="underline underline-offset-4">{t.publish.tiktokConsent}</a>
+        )}
+      </p>
+    </fieldset>
+  );
 }

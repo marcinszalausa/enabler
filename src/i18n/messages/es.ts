@@ -493,6 +493,8 @@ export const es: Messages = {
     noProductsBody:
       "Pega arriba el enlace de un producto. En unos dos minutos tendrás tus primeros cinco anuncios, listos para atraer nuevos clientes.",
     urlLabel: "Enlace del producto o web",
+    rightsConfirm: "Soy dueño de este producto o tengo permiso para anunciarlo, incluidas sus fotos, logotipo y marca.",
+    rightsRules: "Normas de contenido",
     reading: "Leyendo la página…",
     addProduct: "Añadir producto",
     readingNote:
@@ -590,6 +592,7 @@ export const es: Messages = {
       "Genera anuncios para un producto y verás aquí tu kit de marca aplicado.",
     errors: {
       pasteLink: "Pega el enlace de un producto o web.",
+      confirmRights: "Confirma que puedes anunciar este producto.",
       notFound: "No se encontró el producto.",
       noCredits:
         "No tienes suficientes créditos. Esta tanda usa {cost}. Consigue más en la página de Facturación.",
@@ -744,6 +747,34 @@ export const es: Messages = {
       "{count} omitido(s): ninguna de las cuentas elegidas admite ese formato.",
     tiktokConsent:
       "Al publicar en TikTok, aceptas la Music Usage Confirmation de TikTok.",
+    tiktok: {
+      title: "Ajustes de TikTok",
+      privacy: "Quién puede ver esta publicación",
+      privacyPick: "Elige…",
+      privacyOptions: {
+        PUBLIC_TO_EVERYONE: "Todos",
+        MUTUAL_FOLLOW_FRIENDS: "Amigos",
+        FOLLOWER_OF_CREATOR: "Seguidores",
+        SELF_ONLY: "Solo yo",
+      },
+      allow: "Permitir a los espectadores",
+      comment: "Comentar",
+      duet: "Dúo",
+      stitch: "Stitch",
+      promo: "Esta publicación promociona una marca, producto o servicio",
+      promoHint: "Los anuncios de tu propia tienda deben tener esto activado. TikTok mostrará una etiqueta promocional.",
+      yourBrand: "Tu marca",
+      yourBrandHint: "Promocionas tu propio negocio. Se etiqueta como “Contenido promocional”.",
+      branded: "Contenido de marca",
+      brandedHint: "Promocionas otra marca a cambio de algo. Se etiqueta como “Colaboración pagada”.",
+      aiLabel: "Etiquetar como generado por IA",
+      aiLabelHint: "TikTok pide esta etiqueta en vídeos realistas creados con IA, y los anuncios en vídeo de Gooidy se crean con IA.",
+      brandedConsent: "Al publicar, aceptas la Política de contenido de marca y la Music Usage Confirmation de TikTok.",
+      errors: {
+        privacy: "Elige quién puede ver tu publicación de TikTok.",
+        brandedPrivate: "El contenido de marca no puede ser privado. Elige otro público.",
+      },
+    },
     noAccountsYet:
       "Conecta tus cuentas sociales una vez y publica cualquier anuncio con un clic.",
     goConnect: "Conectar cuentas",

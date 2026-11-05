@@ -490,6 +490,8 @@ export const cs: Messages = {
     noProductsBody:
       "Vložte výše odkaz na produkt. Asi za dvě minuty budete mít prvních pět reklam, připravených přivést nové zákazníky.",
     urlLabel: "Odkaz na produkt nebo web",
+    rightsConfirm: "Tento produkt je můj nebo mám svolení ho propagovat, včetně fotek, loga a značky.",
+    rightsRules: "Pravidla obsahu",
     reading: "Čtu stránku…",
     addProduct: "Přidat produkt",
     readingNote: "Čtu stránku a píšu brief značky. Trvá to zhruba 20 sekund.",
@@ -586,6 +588,7 @@ export const cs: Messages = {
       "Vytvořte reklamy pro produkt a uvidíte tu svůj firemní styl.",
     errors: {
       pasteLink: "Vložte odkaz na produkt nebo web.",
+      confirmRights: "Potvrďte, že tento produkt smíte propagovat.",
       notFound: "Produkt nebyl nalezen.",
       noCredits:
         "Nemáte dost kreditů. Toto generování spotřebuje {cost}. Další získáte na stránce Platby.",
@@ -739,6 +742,34 @@ export const cs: Messages = {
       "Přeskočeno {count}: žádný z vybraných účtů tento formát nepodporuje.",
     tiktokConsent:
       "Publikováním na TikTok souhlasíte s Music Usage Confirmation TikToku.",
+    tiktok: {
+      title: "Nastavení TikToku",
+      privacy: "Kdo může příspěvek vidět",
+      privacyPick: "Vyberte…",
+      privacyOptions: {
+        PUBLIC_TO_EVERYONE: "Všichni",
+        MUTUAL_FOLLOW_FRIENDS: "Přátelé",
+        FOLLOWER_OF_CREATOR: "Sledující",
+        SELF_ONLY: "Jen já",
+      },
+      allow: "Povolit divákům",
+      comment: "Komentovat",
+      duet: "Duet",
+      stitch: "Stitch",
+      promo: "Příspěvek propaguje značku, produkt nebo službu",
+      promoHint: "Reklamy vlastního obchodu by to měly mít zapnuté. TikTok pak zobrazí propagační štítek.",
+      yourBrand: "Vaše značka",
+      yourBrandHint: "Propagujete vlastní firmu. Štítek „Propagační obsah“.",
+      branded: "Značkový obsah",
+      brandedHint: "Propagujete jinou značku za protihodnotu. Štítek „Placené partnerství“.",
+      aiLabel: "Označit jako vytvořené AI",
+      aiLabelHint: "TikTok vyžaduje tento štítek u realistických AI videí a videoreklamy Gooidy vytváří AI.",
+      brandedConsent: "Zveřejněním souhlasíte se Zásadami značkového obsahu a Music Usage Confirmation TikToku.",
+      errors: {
+        privacy: "Vyberte, kdo může vidět váš příspěvek na TikToku.",
+        brandedPrivate: "Značkový obsah nemůže být soukromý. Vyberte jiné publikum.",
+      },
+    },
     noAccountsYet:
       "Propojte své sociální účty jednou a pak publikujte každou reklamu jedním kliknutím.",
     goConnect: "Propojit účty",

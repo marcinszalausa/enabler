@@ -478,6 +478,8 @@ export const ko: Messages = {
     noProductsBody:
       "위에 상품 링크를 붙여 넣으세요. 약 2분이면 새 고객을 데려올 첫 다섯 개의 광고가 준비됩니다.",
     urlLabel: "상품 또는 웹사이트 링크",
+    rightsConfirm: "이 상품은 제 것이거나 사진, 로고, 브랜드를 포함해 광고할 권한이 있습니다.",
+    rightsRules: "콘텐츠 규칙",
     reading: "페이지 읽는 중…",
     addProduct: "상품 추가",
     readingNote:
@@ -575,6 +577,7 @@ export const ko: Messages = {
       "상품의 광고를 만들면 여기서 브랜드 키트가 적용된 모습을 볼 수 있습니다.",
     errors: {
       pasteLink: "상품 또는 웹사이트 링크를 붙여 넣으세요.",
+      confirmRights: "이 상품을 광고할 권한이 있는지 확인해 주세요.",
       notFound: "상품을 찾을 수 없습니다.",
       noCredits:
         "크레딧이 부족합니다. 이번 생성에는 {cost}크레딧이 필요합니다. 결제 페이지에서 더 받으세요.",
@@ -728,6 +731,34 @@ export const ko: Messages = {
       "{count}개를 건너뛰었습니다. 선택한 계정이 그 형식을 지원하지 않습니다.",
     tiktokConsent:
       "TikTok에 게시하면 TikTok의 Music Usage Confirmation에 동의하게 됩니다.",
+    tiktok: {
+      title: "TikTok 설정",
+      privacy: "이 게시물을 볼 수 있는 사람",
+      privacyPick: "선택…",
+      privacyOptions: {
+        PUBLIC_TO_EVERYONE: "모두",
+        MUTUAL_FOLLOW_FRIENDS: "친구",
+        FOLLOWER_OF_CREATOR: "팔로워",
+        SELF_ONLY: "나만 보기",
+      },
+      allow: "시청자에게 허용",
+      comment: "댓글",
+      duet: "듀엣",
+      stitch: "스티치",
+      promo: "이 게시물은 브랜드, 제품 또는 서비스를 홍보합니다",
+      promoHint: "내 쇼핑몰 광고라면 켜 두세요. TikTok에 홍보 라벨이 표시됩니다.",
+      yourBrand: "내 브랜드",
+      yourBrandHint: "내 비즈니스를 홍보합니다. ‘홍보 콘텐츠’로 표시됩니다.",
+      branded: "브랜디드 콘텐츠",
+      brandedHint: "대가를 받고 다른 브랜드를 홍보합니다. ‘유료 파트너십’으로 표시됩니다.",
+      aiLabel: "AI 생성으로 표시",
+      aiLabelHint: "TikTok은 사실적인 AI 동영상에 이 라벨을 요구하며, Gooidy 동영상 광고는 AI로 만들어집니다.",
+      brandedConsent: "게시하면 TikTok의 브랜디드 콘텐츠 정책 및 Music Usage Confirmation에 동의하게 됩니다.",
+      errors: {
+        privacy: "TikTok 게시물을 볼 수 있는 사람을 선택하세요.",
+        brandedPrivate: "브랜디드 콘텐츠는 비공개로 할 수 없습니다. 다른 공개 대상을 선택하세요.",
+      },
+    },
     noAccountsYet:
       "소셜 계정을 한 번 연결하면 클릭 한 번으로 모든 광고를 게시할 수 있습니다.",
     goConnect: "계정 연결",

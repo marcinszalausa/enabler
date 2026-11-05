@@ -491,6 +491,8 @@ export const pt: Messages = {
     noProductsBody:
       "Cole acima o link de um produto. Em cerca de dois minutos você terá seus cinco primeiros anúncios, prontos para trazer novos clientes.",
     urlLabel: "Link do produto ou site",
+    rightsConfirm: "Sou dono deste produto ou tenho permissão para anunciá-lo, incluindo fotos, logotipo e marca.",
+    rightsRules: "Regras de conteúdo",
     reading: "Lendo a página…",
     addProduct: "Adicionar produto",
     readingNote:
@@ -589,6 +591,7 @@ export const pt: Messages = {
       "Gere anúncios para um produto para ver seu kit da marca aplicado aqui.",
     errors: {
       pasteLink: "Cole o link de um produto ou site.",
+      confirmRights: "Confirme que você pode anunciar este produto.",
       notFound: "Produto não encontrado.",
       noCredits:
         "Créditos insuficientes. Esta geração usa {cost}. Consiga mais na página de Cobrança.",
@@ -742,6 +745,34 @@ export const pt: Messages = {
       "{count} ignorado(s): nenhuma das contas escolhidas aceita esse formato.",
     tiktokConsent:
       "Ao publicar no TikTok, você concorda com a Music Usage Confirmation do TikTok.",
+    tiktok: {
+      title: "Configurações do TikTok",
+      privacy: "Quem pode ver esta publicação",
+      privacyPick: "Escolha…",
+      privacyOptions: {
+        PUBLIC_TO_EVERYONE: "Todos",
+        MUTUAL_FOLLOW_FRIENDS: "Amigos",
+        FOLLOWER_OF_CREATOR: "Seguidores",
+        SELF_ONLY: "Só eu",
+      },
+      allow: "Permitir que os espectadores",
+      comment: "Comentem",
+      duet: "Dueto",
+      stitch: "Stitch",
+      promo: "Esta publicação promove uma marca, produto ou serviço",
+      promoHint: "Anúncios da sua própria loja devem ter isto ativado. O TikTok mostra então um rótulo promocional.",
+      yourBrand: "Sua marca",
+      yourBrandHint: "Você promove o seu próprio negócio. Rótulo “Conteúdo promocional”.",
+      branded: "Conteúdo de marca",
+      brandedHint: "Você promove outra marca em troca de algo. Rótulo “Parceria paga”.",
+      aiLabel: "Rotular como gerado por IA",
+      aiLabelHint: "O TikTok pede este rótulo em vídeos realistas feitos com IA, e os anúncios em vídeo do Gooidy são feitos com IA.",
+      brandedConsent: "Ao publicar, você aceita a Política de Conteúdo de Marca e a Music Usage Confirmation do TikTok.",
+      errors: {
+        privacy: "Escolha quem pode ver sua publicação no TikTok.",
+        brandedPrivate: "Conteúdo de marca não pode ser privado. Escolha outro público.",
+      },
+    },
     noAccountsYet:
       "Conecte suas contas sociais uma vez e publique qualquer anúncio com um clique.",
     goConnect: "Conectar contas",

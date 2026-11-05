@@ -1,6 +1,7 @@
 "use server";
 
 import { cookies, headers } from "next/headers";
+import { parseTikTokChoice, type TikTokChoice } from "@/lib/social/tiktok-settings";
 import { newSocialConnectNonce, hashSocialConnectNonce, callbackUrlForOrigin, socialConnectCookie } from "@/lib/social/oauth-state";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
@@ -197,6 +198,28 @@ export async function publishAds(
     .eq("workspace_id", ws.id);
   if (!creatives?.length) return { error: t.errors.pickAds, done: null };
 
+  // TikTok needs the customer's own privacy, interaction and disclosure picks.
+  let tiktok: TikTokChoice | undefined;
+  const { data: tiktokAccounts } = await supabase
+    .from("social_accounts")
+    .select("id")
+    .eq("workspace_id", ws.id)
+    .eq("platform", "tiktok")
+    .in("id", accountIds);
+  if (tiktokAccounts?.length) {
+    const parsed = parseTikTokChoice(formData);
+    if (!parsed.ok) {
+      return {
+        error:
+          parsed.reason === "privacy"
+            ? t.tiktok.errors.privacy
+            : t.tiktok.errors.brandedPrivate,
+        done: null,
+      };
+    }
+    tiktok = parsed.choice;
+  }
+
   try {
     const caption = String(formData.get("caption") ?? "");
     const { posted, skipped } = await publishCreatives({
@@ -205,6 +228,7 @@ export async function publishAds(
       accountIds,
       when,
       caption: creatives.length === 1 ? caption : undefined,
+      tiktok,
     });
     for (const productId of new Set(
       creatives.map(

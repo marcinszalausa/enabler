@@ -490,6 +490,8 @@ export const pl: Messages = {
     noProductsBody:
       "Wklej powyżej link do produktu. W około dwie minuty będziesz mieć pierwsze pięć reklam, gotowych przyciągać nowych klientów.",
     urlLabel: "Link do produktu lub strony",
+    rightsConfirm: "Ten produkt należy do mnie lub mam zgodę na jego reklamowanie, w tym na użycie zdjęć, logo i marki.",
+    rightsRules: "Zasady treści",
     reading: "Czytam stronę…",
     addProduct: "Dodaj produkt",
     readingNote: "Czytam stronę i piszę opis marki. To potrwa około 20 sekund.",
@@ -587,6 +589,7 @@ export const pl: Messages = {
       "Wygeneruj reklamy dla produktu, aby zobaczyć tu swoją identyfikację marki.",
     errors: {
       pasteLink: "Wklej link do produktu lub strony.",
+      confirmRights: "Potwierdź, że możesz reklamować ten produkt.",
       notFound: "Nie znaleziono produktu.",
       noCredits:
         "Za mało kredytów. To generowanie zużywa {cost}. Więcej kupisz na stronie Płatności.",
@@ -742,6 +745,34 @@ export const pl: Messages = {
       "Pominięto {count}: żadne z wybranych kont nie przyjmuje tego formatu.",
     tiktokConsent:
       "Publikując na TikToku, akceptujesz potwierdzenie użycia muzyki TikToka (Music Usage Confirmation).",
+    tiktok: {
+      title: "Ustawienia TikToka",
+      privacy: "Kto może zobaczyć ten post",
+      privacyPick: "Wybierz…",
+      privacyOptions: {
+        PUBLIC_TO_EVERYONE: "Wszyscy",
+        MUTUAL_FOLLOW_FRIENDS: "Znajomi",
+        FOLLOWER_OF_CREATOR: "Obserwujący",
+        SELF_ONLY: "Tylko ja",
+      },
+      allow: "Pozwól widzom",
+      comment: "Komentować",
+      duet: "Duet",
+      stitch: "Stitch",
+      promo: "Ten post promuje markę, produkt lub usługę",
+      promoHint: "Reklamy Twojego sklepu powinny mieć to włączone. TikTok pokaże wtedy oznaczenie promocyjne.",
+      yourBrand: "Twoja marka",
+      yourBrandHint: "Promujesz własną firmę. Oznaczenie „Treść promocyjna”.",
+      branded: "Treść sponsorowana",
+      brandedHint: "Promujesz inną markę w zamian za coś. Oznaczenie „Płatna współpraca”.",
+      aiLabel: "Oznacz jako wygenerowane przez AI",
+      aiLabelHint: "TikTok wymaga tego oznaczenia przy realistycznych filmach AI, a reklamy wideo Gooidy są tworzone przez AI.",
+      brandedConsent: "Publikując, akceptujesz Zasady dotyczące treści sponsorowanych i Music Usage Confirmation TikToka.",
+      errors: {
+        privacy: "Wybierz, kto może zobaczyć Twój post na TikToku.",
+        brandedPrivate: "Treść sponsorowana nie może być prywatna. Wybierz inną grupę odbiorców.",
+      },
+    },
     noAccountsYet:
       "Połącz konta społecznościowe raz, a potem publikuj każdą reklamę jednym kliknięciem.",
     goConnect: "Połącz konta",

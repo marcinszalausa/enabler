@@ -488,6 +488,8 @@ export const sv: Messages = {
     noProductsBody:
       "Klistra in en produktlänk ovan. Om ungefär två minuter har du dina första fem annonser, redo att dra in nya kunder.",
     urlLabel: "Länk till produkt eller webbplats",
+    rightsConfirm: "Produkten är min eller så har jag tillåtelse att marknadsföra den, inklusive bilder, logotyp och varumärke.",
+    rightsRules: "Innehållsregler",
     reading: "Läser sidan…",
     addProduct: "Lägg till produkt",
     readingNote:
@@ -585,6 +587,7 @@ export const sv: Messages = {
       "Skapa annonser för en produkt så ser du ditt varumärkeskit här.",
     errors: {
       pasteLink: "Klistra in en länk till en produkt eller webbplats.",
+      confirmRights: "Bekräfta att du får marknadsföra produkten.",
       notFound: "Produkten hittades inte.",
       noCredits:
         "Inte tillräckligt med krediter. Den här körningen använder {cost}. Skaffa fler på sidan Betalning.",
@@ -739,6 +742,34 @@ export const sv: Messages = {
       "{count} hoppades över: inget av de valda kontona tar det formatet.",
     tiktokConsent:
       "Genom att publicera på TikTok godkänner du TikToks Music Usage Confirmation.",
+    tiktok: {
+      title: "TikTok-inställningar",
+      privacy: "Vem som kan se inlägget",
+      privacyPick: "Välj…",
+      privacyOptions: {
+        PUBLIC_TO_EVERYONE: "Alla",
+        MUTUAL_FOLLOW_FRIENDS: "Vänner",
+        FOLLOWER_OF_CREATOR: "Följare",
+        SELF_ONLY: "Bara jag",
+      },
+      allow: "Låt tittare",
+      comment: "Kommentera",
+      duet: "Duett",
+      stitch: "Stitch",
+      promo: "Inlägget marknadsför ett varumärke, en produkt eller tjänst",
+      promoHint: "Annonser för din egen butik ska ha detta på. TikTok visar då en reklammärkning.",
+      yourBrand: "Ditt varumärke",
+      yourBrandHint: "Du marknadsför ditt eget företag. Märks ”Reklaminnehåll”.",
+      branded: "Varumärkesinnehåll",
+      brandedHint: "Du marknadsför ett annat varumärke mot ersättning. Märks ”Betalt samarbete”.",
+      aiLabel: "Märk som AI-genererat",
+      aiLabelHint: "TikTok kräver märkningen för realistisk AI-video, och Gooidys videoannonser skapas med AI.",
+      brandedConsent: "Genom att publicera godkänner du TikToks policy för varumärkesinnehåll och Music Usage Confirmation.",
+      errors: {
+        privacy: "Välj vem som kan se ditt TikTok-inlägg.",
+        brandedPrivate: "Varumärkesinnehåll kan inte vara privat. Välj en annan publik.",
+      },
+    },
     noAccountsYet:
       "Koppla dina sociala konton en gång och publicera sedan valfri annons med ett klick.",
     goConnect: "Koppla konton",

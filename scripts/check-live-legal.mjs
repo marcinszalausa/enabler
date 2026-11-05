@@ -9,7 +9,7 @@ for(let n=0;n<36;n++){
  await pause(10000);
 }
 assert.ok(ready,"Deployment ready");
-const paths=["/policies","/terms","/privacy","/policies/billing","/policies/cookies","/policies/acceptable-use","/policies/privacy-requests"];
+const paths=["/policies","/terms","/privacy","/policies/billing","/policies/cookies","/policies/acceptable-use","/policies/copyright","/policies/privacy-requests"];
 for(const path of paths){
  const r=await fetch("https://gooidy.com"+path,{headers:{"user-agent":"GooidyLegalVerificationBot/1.0"}});assert.equal(r.status,200,path);
  const html=await r.text();assert.ok(html.includes("2026-11-05-r5"),path);assert.ok(!html.includes("data-prelaunch-legal"),path);assert.ok(html.includes("data-policy-version"),path);assert.ok(!html.includes("Zeely, Inc."),path);

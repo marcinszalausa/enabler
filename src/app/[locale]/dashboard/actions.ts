@@ -35,7 +35,7 @@ async function currentWorkspaceId() {
     .limit(1)
     .single();
   if (!ws) throw new Error("No workspace found.");
-  return { supabase, workspaceId: ws.id as string, canEdit: await canEditWorkspace(supabase, ws.id) };
+  return { supabase, userId: auth.user.id, workspaceId: ws.id as string, canEdit: await canEditWorkspace(supabase, ws.id) };
 }
 
 export async function createProduct(
@@ -44,8 +44,13 @@ export async function createProduct(
 ): Promise<FormState> {
   const rawUrl = String(formData.get("url") ?? "").trim();
   if (!rawUrl) return { error: (await requestMessages()).app.errors.pasteLink };
+  // The customer confirms they may advertise this product and use its
+  // photos and brand; we keep who confirmed it and when.
+  if (formData.get("rightsConfirmed") !== "on") {
+    return { error: (await requestMessages()).app.errors.confirmRights };
+  }
 
-  const { supabase, workspaceId, canEdit } = await currentWorkspaceId();
+  const { supabase, userId, workspaceId, canEdit } = await currentWorkspaceId();
   if (!canEdit) return { error: WORKSPACE_WRITE_DENIED };
 
   let productId: string;
@@ -63,6 +68,8 @@ export async function createProduct(
         image_urls: page.imageUrls,
         brand_brief: {
           ...brief,
+          rights_confirmed_at: new Date().toISOString(),
+          rights_confirmed_by: userId,
           ...(formData.get("onboardingKind") === "image" || formData.get("onboardingKind") === "video" ? { requires_personalization: true } : {}),
         },
       })

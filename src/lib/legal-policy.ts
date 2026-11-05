@@ -4,7 +4,7 @@ export const PAID_CHECKOUT_STATUS = "unavailable" as const;
 export const LEGAL_DOCUMENT_STATUS = "prelaunch-review" as const;
 export const LEGAL_OPERATOR_NAME: string|null = null;
 export const LEGAL_BUSINESS_ADDRESS: string|null = null;
-export const POLICY_IDS = ["terms","privacy","billing","cookies","acceptable-use","privacy-requests"] as const;
+export const POLICY_IDS = ["terms","privacy","billing","cookies","acceptable-use","copyright","privacy-requests"] as const;
 export type PolicyId = typeof POLICY_IDS[number];
 export function isPolicyId(value:unknown):value is PolicyId{
  return typeof value==="string"&&(POLICY_IDS as readonly string[]).includes(value);

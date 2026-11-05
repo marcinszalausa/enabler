@@ -10,6 +10,7 @@ import { join } from "node:path";
 import { promisify } from "node:util";
 import type { ReactElement } from "react";
 import ffmpegPath from "ffmpeg-static";
+import { AI_VIDEO_METADATA_ARGS } from "./ai-disclosure";
 import { ImageResponse } from "next/og";
 import {voiceTempo} from "@/lib/media-quality-policy";
 import {chooseOverlays,chooseCaption,type Rect} from "@/lib/face-safe-layout";
@@ -214,6 +215,7 @@ export async function editVideoAd(edit: VideoEdit): Promise<Buffer> {
       "2",
       "-ar",
       "44100",
+      ...AI_VIDEO_METADATA_ARGS,
       "-movflags",
       "+faststart",
       file("out.mp4"),

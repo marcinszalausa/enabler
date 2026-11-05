@@ -304,6 +304,51 @@
         }
       ]
     },
+    "copyright": {
+      "title": "Copyright and Takedown",
+      "summary": "How to report content that infringes your copyright, trademark or other rights, and how to respond to a report.",
+      "sections": [
+        {
+          "title": "Report content",
+          "paragraphs": [
+            "Gooidy creates ads from product links and materials that customers submit. Customers must have the rights to everything they submit, but if you believe content made or stored with Gooidy infringes your copyright, trademark, image or other rights, tell us and we will review it promptly.",
+            "Send notices to hello@gooidy.com with the subject “Copyright notice” (or “Trademark notice” or “Rights notice”). Notices about content in the EU are handled under the same process, and we will confirm receipt and tell you our decision."
+          ]
+        },
+        {
+          "title": "What a copyright notice must include",
+          "items": [
+            "Your physical or electronic signature, or that of the person authorized to act for the rights owner.",
+            "Identification of the copyrighted work you believe is infringed, or a representative list if several works are involved.",
+            "The specific content you want removed and enough information to find it, such as the public URL, a screenshot, or the product link it was made from.",
+            "Your name, address, telephone number and email address.",
+            "A statement that you have a good-faith belief that the use is not authorized by the rights owner, its agent or the law.",
+            "A statement that the information in the notice is accurate and, under penalty of perjury, that you are the owner or authorized to act for the owner."
+          ]
+        },
+        {
+          "title": "What happens next",
+          "paragraphs": [
+            "When we receive a complete notice, we remove or disable access to the content we control, such as stored ads, previews and public examples, and tell the customer who submitted it. Content already published on a social platform is controlled by that platform and the customer's account; we will tell you which platform it is on where we can.",
+            "Submitting a notice that knowingly misrepresents that content is infringing can make you liable for damages. Consider whether the use may be permitted, for example as fair use, before sending a notice."
+          ]
+        },
+        {
+          "title": "Counter-notice",
+          "paragraphs": [
+            "If your content was removed and you believe it was a mistake or misidentification, you can send a counter-notice to hello@gooidy.com with the subject “Counter-notice”. Include your signature, identification of the removed content and where it appeared, a statement under penalty of perjury that you have a good-faith belief it was removed by mistake or misidentification, and your name, address and telephone number, with a statement that you consent to the jurisdiction of the appropriate court and will accept service from the person who sent the original notice.",
+            "We forward a valid counter-notice to the person who sent the notice. Unless they tell us within 10 to 14 business days that they have filed a court action, we may restore the content."
+          ]
+        },
+        {
+          "title": "Repeat infringers and trademarks",
+          "paragraphs": [
+            "We terminate, in appropriate circumstances, the accounts of customers who repeatedly infringe others' rights.",
+            "For trademark, image or publicity concerns, describe the mark or the person concerned, the content and why its use is not authorized. We review these reports in the same way and may remove content or restrict accounts that misuse another business's brand or another person's likeness."
+          ]
+        }
+      ]
+    },
     "privacy-requests": {
       "title": "Privacy Requests",
       "summary": "Ask for a copy, correction, deletion or review of your information.",

@@ -487,6 +487,8 @@ export const tr: Messages = {
     noProductsBody:
       "Yukarıya bir ürün linki yapıştırın. Yaklaşık iki dakika içinde yeni müşteri getirmeye hazır ilk beş reklamınız olur.",
     urlLabel: "Ürün veya web sitesi linki",
+    rightsConfirm: "Bu ürün bana ait veya fotoğrafları, logosu ve markası dahil reklamını yapma iznim var.",
+    rightsRules: "İçerik kuralları",
     reading: "Sayfa okunuyor…",
     addProduct: "Ürün ekle",
     readingNote:
@@ -584,6 +586,7 @@ export const tr: Messages = {
       "Marka kitinizi burada görmek için bir ürün için reklam oluşturun.",
     errors: {
       pasteLink: "Bir ürün veya web sitesi linki yapıştırın.",
+      confirmRights: "Bu ürünün reklamını yapmaya yetkili olduğunu onayla.",
       notFound: "Ürün bulunamadı.",
       noCredits:
         "Yeterli krediniz yok. Bu işlem {cost} kredi kullanır. Faturalandırma sayfasından daha fazlasını alın.",
@@ -738,6 +741,34 @@ export const tr: Messages = {
       "{count} atlandı: seçilen hesapların hiçbiri bu biçimi desteklemiyor.",
     tiktokConsent:
       "TikTok'ta paylaşarak TikTok'un Music Usage Confirmation koşullarını kabul edersin.",
+    tiktok: {
+      title: "TikTok ayarları",
+      privacy: "Bu gönderiyi kimler görebilir",
+      privacyPick: "Seç…",
+      privacyOptions: {
+        PUBLIC_TO_EVERYONE: "Herkes",
+        MUTUAL_FOLLOW_FRIENDS: "Arkadaşlar",
+        FOLLOWER_OF_CREATOR: "Takipçiler",
+        SELF_ONLY: "Yalnızca ben",
+      },
+      allow: "İzleyicilerin şunlarına izin ver",
+      comment: "Yorum",
+      duet: "Düet",
+      stitch: "Stitch",
+      promo: "Bu gönderi bir markayı, ürünü veya hizmeti tanıtıyor",
+      promoHint: "Kendi mağazanın reklamlarında bu açık olmalı. TikTok bir tanıtım etiketi gösterir.",
+      yourBrand: "Kendi markan",
+      yourBrandHint: "Kendi işini tanıtıyorsun. “Tanıtım içeriği” etiketi.",
+      branded: "Markalı içerik",
+      brandedHint: "Karşılığında bir şey alarak başka bir markayı tanıtıyorsun. “Ücretli iş birliği” etiketi.",
+      aiLabel: "Yapay zekâ ile üretildi olarak etiketle",
+      aiLabelHint: "TikTok gerçekçi yapay zekâ videolarında bu etiketi ister; Gooidy video reklamları yapay zekâ ile üretilir.",
+      brandedConsent: "Paylaşarak TikTok'un Markalı İçerik Politikası'nı ve Music Usage Confirmation koşullarını kabul edersin.",
+      errors: {
+        privacy: "TikTok gönderini kimlerin görebileceğini seç.",
+        brandedPrivate: "Markalı içerik gizli olamaz. Başka bir kitle seç.",
+      },
+    },
     noAccountsYet:
       "Sosyal medya hesaplarını bir kez bağla, sonra her reklamı tek tıkla yayınla.",
     goConnect: "Hesapları bağla",

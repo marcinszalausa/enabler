@@ -2,6 +2,7 @@ import "server-only";
 import { randomUUID } from "node:crypto";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { renderAdImage } from "@/lib/ad-image";
+import { markPngAsAi } from "@/lib/ai-disclosure";
 import { UserError } from "@/lib/errors";
 import {
   createPost,
@@ -16,6 +17,7 @@ import { CAPTION_LIMITS, takesKind } from "./platforms";
 import { trackedLink } from "./tracked-link";
 import { accountLimit } from "./limits";
 import { nextSlots, parseSlots, toLocal, fromLocal } from "./schedule";
+import { AUTOPILOT_TIKTOK, tiktokSettings, type TikTokChoice } from "./tiktok-settings";
 
 type Db = ReturnType<typeof createAdminClient>;
 
@@ -132,6 +134,7 @@ export async function publishCreatives({
   accountIds,
   when,
   caption,
+  tiktok,
 }: {
   workspaceId: string;
   creativeIds: string[];
@@ -139,6 +142,8 @@ export async function publishCreatives({
   when: When;
   // Replaces the ad's own text; only when publishing a single ad.
   caption?: string;
+  // What the customer chose for TikTok; required when posting there.
+  tiktok?: TikTokChoice;
 }) {
   const db = createAdminClient();
   const [{ data: accounts }, { data: creatives }] = await Promise.all([
@@ -160,6 +165,9 @@ export async function publishCreatives({
   const allowed = (accounts ?? []).filter((a) => covered.includes(a.id));
   if (!allowed.length) throw new UserError("Pick at least one account.");
   if (!creatives?.length) throw new UserError("Pick at least one ad.");
+  if (!tiktok && allowed.some((a) => a.platform === "tiktok")) {
+    throw new UserError("Choose who can see your TikTok post.");
+  }
 
   // Keep the order the customer saw them in.
   creatives.sort(
@@ -193,17 +201,11 @@ export async function publishCreatives({
       ...(time
         ? { scheduledFor: time.local, timezone: time.timeZone }
         : { publishNow: true }),
-      ...(targets.some((a) => a.platform === "tiktok")
+      ...(tiktok && targets.some((a) => a.platform === "tiktok")
         ? {
-            // The customer ticks TikTok's consent line before publishing.
-            tiktokSettings: {
-              privacy_level: "PUBLIC_TO_EVERYONE",
-              allow_comment: true,
-              allow_duet: true,
-              allow_stitch: true,
-              content_preview_confirmed: true,
-              express_consent_given: true,
-            },
+            // The customer picked these in the dialog (or turned on
+            // Autopilot) and saw TikTok's consent line.
+            tiktokSettings: tiktokSettings(tiktok, creative.kind),
           }
         : {}),
       metadata: { workspaceId, creativeId: creative.id },
@@ -299,7 +301,8 @@ async function mediaFor(db: Db, creative: CreativeRow) {
   }
   const image = await renderAdImage(db, creative);
   if (!image) throw new UserError("The ad image is missing.");
-  return uploadMedia(await image.arrayBuffer(), "image/png", `${name}.png`);
+  const marked = markPngAsAi(new Uint8Array(await image.arrayBuffer()));
+  return uploadMedia(marked.buffer.slice(marked.byteOffset, marked.byteOffset + marked.byteLength) as ArrayBuffer, "image/png", `${name}.png`);
 }
 
 function platformOptions(
@@ -453,6 +456,7 @@ export async function autopilotRun(workspaceId: string, generationId: string) {
       creativeIds: ids,
       accountIds: schedule.autopilot_accounts,
       when: { type: "queue" },
+      tiktok: AUTOPILOT_TIKTOK,
     });
   } catch (err) {
     // The run itself succeeded; a publishing problem shows on the posts.

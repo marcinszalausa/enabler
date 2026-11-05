@@ -483,6 +483,8 @@ export const en = {
     noProductsBody:
       "Paste a product link above. In about two minutes you'll have your first five ads, ready to bring in new customers.",
     urlLabel: "Product or website link",
+    rightsConfirm: "I own this product or have permission to advertise it, including its photos, logo and brand.",
+    rightsRules: "Content rules",
     reading: "Reading page…",
     addProduct: "Add product",
     readingNote:
@@ -580,6 +582,7 @@ export const en = {
       "Generate ads for a product to see your brand kit on one here.",
     errors: {
       pasteLink: "Paste a product or website link.",
+      confirmRights: "Confirm you're allowed to advertise this product.",
       notFound: "Product not found.",
       noCredits:
         "Not enough credits. This run uses {cost}. Get more on the Billing page.",
@@ -731,6 +734,34 @@ export const en = {
     skipped: "{count} skipped: none of the chosen accounts take that format.",
     tiktokConsent:
       "By posting to TikTok, you agree to TikTok's Music Usage Confirmation.",
+    tiktok: {
+      title: "TikTok settings",
+      privacy: "Who can see this post",
+      privacyPick: "Choose…",
+      privacyOptions: {
+        PUBLIC_TO_EVERYONE: "Everyone",
+        MUTUAL_FOLLOW_FRIENDS: "Friends",
+        FOLLOWER_OF_CREATOR: "Followers",
+        SELF_ONLY: "Only me",
+      },
+      allow: "Allow viewers to",
+      comment: "Comment",
+      duet: "Duet",
+      stitch: "Stitch",
+      promo: "This post promotes a brand, product or service",
+      promoHint: "Ads for your own shop should have this on. TikTok then shows a promotional label.",
+      yourBrand: "Your brand",
+      yourBrandHint: "You're promoting your own business. Labeled “Promotional content”.",
+      branded: "Branded content",
+      brandedHint: "You're promoting another brand in exchange for something. Labeled “Paid partnership”.",
+      aiLabel: "Label as AI-generated",
+      aiLabelHint: "TikTok asks for this label on realistic AI video, and Gooidy video ads are made with AI.",
+      brandedConsent: "By posting, you agree to TikTok's Branded Content Policy and Music Usage Confirmation.",
+      errors: {
+        privacy: "Choose who can see your TikTok post.",
+        brandedPrivate: "Branded content can't be private. Choose another audience.",
+      },
+    },
     noAccountsYet:
       "Connect your social accounts once, then publish any ad in one click.",
     goConnect: "Connect accounts",

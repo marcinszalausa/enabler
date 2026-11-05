@@ -495,6 +495,8 @@ export const fr: Messages = {
     noProductsBody:
       "Collez le lien d'un produit ci-dessus. En deux minutes environ, vous aurez vos cinq premières pubs, prêtes à attirer de nouveaux clients.",
     urlLabel: "Lien du produit ou du site",
+    rightsConfirm: "Ce produit m'appartient ou j'ai l'autorisation d'en faire la publicité, y compris ses photos, son logo et sa marque.",
+    rightsRules: "Règles de contenu",
     reading: "Lecture de la page…",
     addProduct: "Ajouter le produit",
     readingNote:
@@ -592,6 +594,7 @@ export const fr: Messages = {
       "Générez des pubs pour un produit pour voir votre kit de marque appliqué ici.",
     errors: {
       pasteLink: "Collez le lien d'un produit ou d'un site.",
+      confirmRights: "Confirmez que vous avez le droit de faire la publicité de ce produit.",
       notFound: "Produit introuvable.",
       noCredits:
         "Crédits insuffisants. Cette génération en utilise {cost}. Obtenez-en plus sur la page Facturation.",
@@ -750,6 +753,34 @@ export const fr: Messages = {
       "{count} ignorée(s) : aucun des comptes choisis n'accepte ce format.",
     tiktokConsent:
       "En publiant sur TikTok, vous acceptez la Music Usage Confirmation de TikTok.",
+    tiktok: {
+      title: "Réglages TikTok",
+      privacy: "Qui peut voir cette publication",
+      privacyPick: "Choisir…",
+      privacyOptions: {
+        PUBLIC_TO_EVERYONE: "Tout le monde",
+        MUTUAL_FOLLOW_FRIENDS: "Amis",
+        FOLLOWER_OF_CREATOR: "Abonnés",
+        SELF_ONLY: "Moi uniquement",
+      },
+      allow: "Autoriser les spectateurs à",
+      comment: "Commenter",
+      duet: "Duo",
+      stitch: "Collage",
+      promo: "Cette publication fait la promotion d'une marque, d'un produit ou d'un service",
+      promoHint: "Les publicités de votre propre boutique doivent l'activer. TikTok affiche alors une mention promotionnelle.",
+      yourBrand: "Votre marque",
+      yourBrandHint: "Vous faites la promotion de votre propre activité. Mention « Contenu promotionnel ».",
+      branded: "Contenu de marque",
+      brandedHint: "Vous faites la promotion d'une autre marque en échange de quelque chose. Mention « Partenariat rémunéré ».",
+      aiLabel: "Indiquer que c'est généré par IA",
+      aiLabelHint: "TikTok demande cette mention pour les vidéos réalistes créées par IA, et les vidéos publicitaires Gooidy sont créées par IA.",
+      brandedConsent: "En publiant, vous acceptez la Politique relative au contenu de marque et la Music Usage Confirmation de TikTok.",
+      errors: {
+        privacy: "Choisissez qui peut voir votre publication TikTok.",
+        brandedPrivate: "Le contenu de marque ne peut pas être privé. Choisissez une autre audience.",
+      },
+    },
     noAccountsYet:
       "Connectez vos comptes sociaux une fois, puis publiez chaque pub en un clic.",
     goConnect: "Connecter des comptes",
