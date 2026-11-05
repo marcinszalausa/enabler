@@ -477,6 +477,9 @@ export const it: Messages = {
     check: "Controlla avanzamento",
   },
   app: {
+    campaigns: "Campagne",
+    createNew: "Crea nuovo",
+    closeMenu: "Chiudi menu",
     products: "Prodotti",
     brandKit: "Kit del brand",
     signOut: "Esci",

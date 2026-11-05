@@ -1,6 +1,6 @@
 "use client";
 
-import {useEffect,useRef,useState,type ReactNode} from "react";
+import {useEffect,useId,useRef,useState,type ReactNode} from "react";
 import {productLink} from "@/lib/onboarding";
 import Link from "next/link";
 import { ThemeToggle } from "./theme-toggle";
@@ -30,6 +30,9 @@ const OOIDY_PATH =
 export function Logo({ to, label }: { to?: string; label?: string } = {}) {
   const { t } = useI18n();
   const href = useHref();
+  // Each logo has its own gradient id: a page can show several, and a hidden
+  // one (the desktop sidebar on a phone) can't lend its gradient to the rest.
+  const gradient = "gooidy-g" + useId().replace(/:/g, "");
   return (
     <Link
       href={to ?? href("/")}
@@ -40,7 +43,7 @@ export function Logo({ to, label }: { to?: string; label?: string } = {}) {
         <title>Gooidy</title>
         <defs>
           <linearGradient
-            id="gooidy-g"
+            id={gradient}
             x1="0"
             y1="-62.6"
             x2="86.8"
@@ -56,7 +59,7 @@ export function Logo({ to, label }: { to?: string; label?: string } = {}) {
           width="86.8"
           height="86.8"
           rx="20.8"
-          fill="url(#gooidy-g)"
+          fill={`url(#${gradient})`}
         />
         <path fill="#fff" d={G_PATH} />
         <path fill="currentColor" d={OOIDY_PATH} />

@@ -458,6 +458,9 @@ export const ja: Messages = {
     check: "進捗を確認",
   },
   app: {
+    campaigns: "キャンペーン",
+    createNew: "新規作成",
+    closeMenu: "メニューを閉じる",
     products: "商品",
     brandKit: "ブランドキット",
     signOut: "ログアウト",
