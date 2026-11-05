@@ -16,6 +16,7 @@ import { userMessage } from "@/lib/errors";
 import { autopilotRun } from "@/lib/social/publish";
 import type { LanguageKey } from "@/lib/languages";
 import type { Quality } from "@/lib/quality";
+import type { Focus, Ratio } from "@/lib/create-options";
 
 import { ASPECTS, ADS_PER_GENERATION, GENERATION_COST, type IdeaCount } from "@/lib/image-pricing";
 export { ASPECTS, ADS_PER_GENERATION, CREDITS_PER_IMAGE, GENERATION_COST } from "@/lib/image-pricing";
@@ -32,6 +33,11 @@ type Job = {
   quality: Quality;
   // Ad ideas to write; each is made in every size.
   ideas?: IdeaCount;
+  // Variations of one idea in one size (the create card's chips). When set,
+  // they replace ideas × every size.
+  variations?: number;
+  ratio?: Ratio;
+  focus?: Focus;
   creativePreferences?: CreativePreferences | null;
 };
 
@@ -44,9 +50,14 @@ export async function runGeneration({
   language,
   quality,
   ideas = ADS_PER_GENERATION,
+  variations,
+  ratio,
+  focus,
   creativePreferences,
 }: Job) {
-  let expected = ideas * ASPECTS.length;
+  const sizes: Aspect[] = variations && ratio ? [ratio] : ASPECTS;
+  const adCount = variations && ratio ? variations : ideas;
+  let expected = adCount * sizes.length;
   let isRevision=false;
   const db = createAdminClient();
   if (!(await claimGeneration(db, generationId))) return;
@@ -83,12 +94,12 @@ export async function runGeneration({
       if(signError||!signed?.signedUrl)throw signError??new Error("Revision source is unavailable.");
       referenceImageUrl=signed.signedUrl;
     }
-    const written = await writeAdAngles(brief, revision?1:ideas, language);
+    const written = await writeAdAngles(brief, revision?1:adCount, language, variations && ratio ? focus : undefined);
     const angles = revision?written.slice(0,1).map(ad=>({...ad,headline:revision.headline,primary_text:revision.primary_text,cta:revision.cta,angle:revision.angle})):written;
     if(revision&&angles.length!==1)throw new Error("No revision direction was created.");
 
     const tasks = angles.flatMap((ad, i) =>
-      (revision?[revision.aspect]:ASPECTS).map((aspect) => async () => {
+      (revision?[revision.aspect]:sizes).map((aspect) => async () => {
         const imageUrl = await generateCheckedImage({
           prompt: ad.image_prompt,
           aspect,

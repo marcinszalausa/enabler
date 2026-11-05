@@ -23,7 +23,7 @@ async function bundle(file,append=""){
   name:"offline-quality-fixture",
   setup(b){
    b.onResolve({filter:/^(server-only|@\/lib\/(?:ai\/claude|ai\/fal|public-fetch|supabase\/admin|social\/publish|brand-kit|brand|video-job-state|video-edit))$/},args=>({path:args.path,namespace:"quality-mock"}));
-   b.onLoad({filter:/.*/,namespace:"quality-mock"},args=>({contents:(names[args.path]??[]).map(n=>'export const '+n+'=(...args)=>globalThis.__qualityMocks.'+n+'(...args);').join("\n")+(args.path==="@/lib/brand"?'\nexport const FONTS={inter:{name:"Inter"}};':""),loader:"js"}));
+   b.onLoad({filter:/.*/,namespace:"quality-mock"},args=>({contents:(names[args.path]??[]).map(n=>'export const '+n+'=(...args)=>globalThis.__qualityMocks.'+n+'(...args);').join("\n")+(args.path==="@/lib/brand"?'\nexport const FONTS={inter:{name:"Inter"}};export const DEFAULT_BRAND_KIT={logo_path:null,accent_color:"#ffffff",font:"inter"};':""),loader:"js"}));
    if(append)b.onLoad({filter:/src\/lib\/video\.tsx$/},async args=>({contents:(await readFile(args.path,"utf8"))+"\n"+append,loader:"tsx"}));
   }
  }]});

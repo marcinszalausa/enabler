@@ -2,6 +2,7 @@ import "server-only";
 import { randomUUID } from "node:crypto";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { renderAdImage } from "@/lib/ad-image";
+import { publishedByDefault } from "@/lib/create-options";
 import { markPngAsAi } from "@/lib/ai-disclosure";
 import { UserError } from "@/lib/errors";
 import {
@@ -122,7 +123,7 @@ type CreativeRow = {
   headline: string | null;
   primary_text: string | null;
   cta: string | null;
-  generations: { products: { url: string } | null } | null;
+  generations: { request_options?: unknown; products: { url: string } | null } | null;
 };
 
 // Sends ads to the chosen accounts: now, at a time, or into the next free
@@ -155,7 +156,7 @@ export async function publishCreatives({
     db
       .from("creatives")
       .select(
-        "id, workspace_id, kind, aspect, storage_path, headline, primary_text, cta, generations(products(url))",
+        "id, workspace_id, kind, aspect, storage_path, headline, primary_text, cta, generations(request_options, products(url))",
       )
       .eq("workspace_id", workspaceId)
       .in("id", creativeIds)
@@ -447,7 +448,7 @@ export async function autopilotRun(workspaceId: string, generationId: string) {
       .eq("generation_id", generationId)
       .order("created_at");
     const ids = (creatives ?? [])
-      .filter((c) => c.kind === "video" || c.aspect === "1:1")
+      .filter(publishedByDefault)
       .map((c) => c.id);
     if (ids.length === 0) return;
 

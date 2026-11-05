@@ -4,6 +4,8 @@ import {NO_OVERLAYS,type OverlayPlan} from "@/lib/face-safe-layout";
 
 export const AD_SIZES = {
   "1:1": { width: 1080, height: 1080 },
+  "2:3": { width: 1080, height: 1620 },
+  "4:5": { width: 1080, height: 1350 },
   "9:16": { width: 1080, height: 1920 },
 } as const;
 export type AdAspect = keyof typeof AD_SIZES;

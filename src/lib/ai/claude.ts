@@ -6,6 +6,7 @@ import { creativeDirection, type CreativePreferences } from "@/lib/creative-pref
 import { workflowDirection, type BrandMemory, type CampaignPlan } from "@/lib/customer-workflow";
 import { verifyPublicUrl } from "@/lib/public-fetch";
 import { UserError } from "@/lib/errors";
+import type { Focus } from "@/lib/create-options";
 import Anthropic from "@anthropic-ai/sdk";
 import { betaZodOutputFormat } from "@anthropic-ai/sdk/helpers/beta/zod";
 import { z } from "zod";
@@ -165,10 +166,21 @@ function languageDirection(language: LanguageKey, fields: string) {
     .join(" ");
 }
 
+// What changes between variations of one idea (the create card's focus).
+const FOCUS_DIRECTIONS: Record<Focus, string> = {
+  text: "Variation focus: the words. Every ad shares one visual concept: give each the same image_prompt scene (same setting, subject, light and framing). Make the headlines, primary texts and calls to action clearly different, each on its own angle.",
+  visual: "Variation focus: the visual. Keep one core message and angle for every ad, with close but not identical headlines. Give each ad a clearly different scene in image_prompt: a different setting, moment or props.",
+  audience: "Variation focus: the audience. Each ad speaks to a different realistic customer group for this product. Adapt both the copy and the scene (who appears, where, and how they use it) to that group.",
+  style: "Variation focus: the style. Keep one core message and angle. Give each ad a clearly different visual style in image_prompt, for example bright minimal studio, warm lifestyle, moody editorial, bold color block or soft natural daylight.",
+  composition: "Variation focus: the composition. Keep one message and one setting. Vary the framing and camera in image_prompt: close detail, wide environmental shot, overhead flat lay, low angle, centered hero shot.",
+};
+
 export async function writeAdAngles(
   brief: BrandBrief,
   count = 5,
   language: LanguageKey = "english",
+  // Variations of one idea: what differs between them.
+  focus?: Focus,
 ): Promise<AdAngle[]> {
   const response = await callClaude(() =>
     client.beta.messages.parse({
@@ -181,12 +193,16 @@ export async function writeAdAngles(
         format: betaZodOutputFormat(AdAnglesSchema),
       },
       system:
-        "You write high-converting Meta and TikTok ads for small and medium businesses. Each ad uses a different angle. Headlines are punchy and at most 40 characters; primary text is at most 125 characters; no hashtags, no emoji, no false claims or invented reviews. Do not invent offers, shipping promises, scarcity, results or endorsements; use only supported product facts. Match the brand's tone.",
+        "You write high-converting Meta and TikTok ads for small and medium businesses. Each ad uses a different angle unless the request says to keep one. Headlines are punchy and at most 40 characters; primary text is at most 125 characters; no hashtags, no emoji, no false claims or invented reviews. Do not invent offers, shipping promises, scarcity, results or endorsements; use only supported product facts. Match the brand's tone.",
       messages: [
         {
           role: "user",
           content: [
-            `Write ${count} ${count === 1 ? "ad" : "ads"}, ${count >= 5 ? "one per angle (pain, benefit, social_proof, offer, curiosity)" : "each on a different angle, choosing the strongest for this product from pain, benefit, social_proof, offer and curiosity"}, for this brand brief:\n\n${JSON.stringify(brief, null, 2)}`,
+            focus && count > 1
+              ? `Write ${count} variations of one ad idea for this brand brief. ${FOCUS_DIRECTIONS[focus]}\n\n${JSON.stringify(brief, null, 2)}`
+              : focus
+                ? `Write 1 ad on the strongest angle for this product (pain, benefit, social_proof, offer or curiosity), for this brand brief:\n\n${JSON.stringify(brief, null, 2)}`
+                : `Write ${count} ${count === 1 ? "ad" : "ads"}, ${count >= 5 ? "one per angle (pain, benefit, social_proof, offer, curiosity)" : "each on a different angle, choosing the strongest for this product from pain, benefit, social_proof, offer and curiosity"}, for this brand brief:\n\n${JSON.stringify(brief, null, 2)}`,
             creativeDirection(brief.creative_preferences),
             workflowDirection(brief.brand_memory, brief.campaign),
             language !== "english" &&

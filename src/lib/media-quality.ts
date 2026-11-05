@@ -8,12 +8,16 @@ import {tmpdir} from "node:os";
 import {join} from "node:path";
 import {QualityError,QualityReviewUnavailableError,sampleTimes} from "./media-quality-policy";
 const exec=promisify(execFile);
-export async function inspectAdImage(bytes:Buffer,aspect:"1:1"|"9:16"){
+// Width over height per ad size. A 4:5 ad may come back 3:4 (FLUX Kontext has
+// no 4:5); the renderer crops it.
+const RATIOS={"1:1":[1],"2:3":[2/3],"4:5":[4/5,3/4],"9:16":[9/16]} as const;
+export async function inspectAdImage(bytes:Buffer,aspect:keyof typeof RATIOS){
  try{
   const source=sharp(bytes,{limitInputPixels:24000000,failOn:"error"}),meta=await source.metadata();
-  const width=meta.width??0,height=meta.height??0,ratio=aspect==="1:1"?1:9/16;
-  if(width<(aspect==="1:1"?960:720)||height<(aspect==="1:1"?960:1280))throw new QualityError("The image resolution is too low for the requested ad format.");
-  if(Math.abs(width/height/ratio-1)>.04)throw new QualityError("The image has the wrong proportions for the ad.");
+  const width=meta.width??0,height=meta.height??0,ratios:readonly number[]=RATIOS[aspect]??RATIOS["1:1"];
+  const minWidth=aspect==="1:1"?960:720;
+  if(width<minWidth||height<Math.round(minWidth/ratios[ratios.length-1]*.98))throw new QualityError("The image resolution is too low for the requested ad format.");
+  if(!ratios.some(ratio=>Math.abs(width/height/ratio-1)<=.04))throw new QualityError("The image has the wrong proportions for the ad.");
   const stats=await source.resize({width:96,height:96,fit:"inside"}).removeAlpha().stats();
   if(stats.channels.slice(0,3).every(c=>c.stdev<1))throw new QualityError("The image is blank or almost uniform.");
   return {width,height};

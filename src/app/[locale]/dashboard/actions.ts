@@ -12,6 +12,7 @@ import { extractBrandBrief } from "@/lib/ai/claude";
 import { runGeneration } from "@/lib/pipeline";
 import { maybeAutoReload } from "@/lib/auto-reload";
 import { imageRunCost, parseIdeas } from "@/lib/image-pricing";
+import { DEFAULT_RATIO, isRatio, parseFocus, parseVariations, variationRunCost } from "@/lib/create-options";
 import { DEFAULT_IMAGE_QUALITY, parseQuality } from "@/lib/quality";
 import { runVideoGeneration } from "@/lib/video";
 import { parseVideoOptions, videoRunCost } from "@/lib/video-options";
@@ -103,7 +104,15 @@ export async function startGeneration(
   const options = video ? parseVideoOptions(formData) : null;
   const quality = options?.quality ?? parseQuality(formData.get("quality"), DEFAULT_IMAGE_QUALITY);
   const ideas = parseIdeas(formData.get("ideas"));
-  const cost = options ? videoRunCost(options.length, quality) : imageRunCost(quality, ideas);
+  // The create card's chips: variations of one idea in one size.
+  const variations = video ? null : parseVariations(formData.get("variations"));
+  const ratioField = formData.get("ratio");
+  const ratio = isRatio(ratioField) ? ratioField : DEFAULT_RATIO;
+  const focus = parseFocus(formData.get("focus"));
+  // Brand DNA off: no logo, colors, font or saved voice in this run's ads.
+  const brandDna = formData.get("brand") !== "off";
+  const cost = options ? videoRunCost(options.length, quality)
+    : variations ? variationRunCost(quality, variations) : imageRunCost(quality, ideas);
   const requested = formData.get("language");
   const language =
     options?.language ??
@@ -170,7 +179,7 @@ export async function startGeneration(
     generation_type: video ? "video_ads" : "image_ads",
     generation_model: `claude + fal ${video ? "video" : "image"} ${quality}`,
     amount: cost,
-    options: { ...(options ?? { language, quality, ideas }), ...(creativePreferences ? { creative_preferences: creativePreferences } : {}), brand_memory: brandMemory, ...(campaign ? { campaign } : {}), ...(sourceImage ? { source_image: sourceImage } : {}), ...(styleId ? { style_reference: { id: styleId } } : {}), ...(avatarId ? { avatar: { id: avatarId } } : {}) },
+    options: { ...(options ?? (variations ? { language, quality, variations, ratio, focus } : { language, quality, ideas })), ...(creativePreferences ? { creative_preferences: creativePreferences } : {}), ...(brandDna ? { brand_memory: brandMemory } : { brand_dna: false }), ...(campaign ? { campaign } : {}), ...(sourceImage ? { source_image: sourceImage } : {}), ...(styleId ? { style_reference: { id: styleId } } : {}), ...(avatarId ? { avatar: { id: avatarId } } : {}) },
   });
   if (error) {
     if(error.code==="P0001"&&error.message==="TRIAL_BATCH_ACTIVE")return {error:(await requestMessages()).trial.busy};
@@ -188,7 +197,7 @@ export async function startGeneration(
   after(() =>
     options
       ? runVideoGeneration({ ...job, options })
-      : runGeneration({ ...job, language, quality, ideas }),
+      : runGeneration({ ...job, language, quality, ideas, ...(variations ? { variations, ratio, focus } : {}) }),
   );
 
   revalidatePath(`/dashboard/products/${productId}`);

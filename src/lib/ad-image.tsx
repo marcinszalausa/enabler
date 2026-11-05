@@ -5,7 +5,8 @@ import {chooseOverlays,FACE_SAFE_LAYOUT_VERSION} from "@/lib/face-safe-layout";
 import { ImageResponse } from "next/og";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { getBrandKit } from "@/lib/brand-kit";
-import { FONTS, loadFont, textColorOn } from "@/lib/brand";
+import { DEFAULT_BRAND_KIT, FONTS, loadFont, textColorOn } from "@/lib/brand";
+import { brandDnaOff } from "@/lib/create-options";
 import {
   AD_SIZES,
   AdLayout,
@@ -20,6 +21,8 @@ export type AdImageCreative = {
   aspect: string;
   headline: string | null;
   cta: string | null;
+  // The run it came from, to honour Brand DNA off.
+  generations?: unknown;
 };
 
 // Renders the finished ad: generated photo + headline + call to action + logo.
@@ -31,7 +34,7 @@ export async function renderAdImage(
   creative: AdImageCreative,
   headers?: Record<string, string>,
 ) {
-  const kit = await getBrandKit(supabase, creative.workspace_id);
+  const kit = brandDnaOff(creative.generations) ? DEFAULT_BRAND_KIT : await getBrandKit(supabase, creative.workspace_id);
   const [photo, logo, font] = await Promise.all([
     supabase.storage
       .from("creatives")
