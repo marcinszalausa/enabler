@@ -9,7 +9,7 @@ import { Suspense } from "react";
 import { CreditsLink } from "./credits-link";
 import { BoostCard, BoostTeaser, CreateNew, MobileMenu, SidebarBody } from "./app-shell";
 import { createClient } from "@/lib/supabase/server";
-import { ActivityAside, ActivityProvider, ActivityToggle } from "./activity-panel";
+import { ActivityAside, ActivityProvider, ActivityToggle, MenuFold, MenuFrame } from "./activity-panel";
 import { ActivityFeed } from "./activity-feed";
 
 export default async function DashboardLayout({
@@ -44,9 +44,9 @@ export default async function DashboardLayout({
     <div className="landing flex flex-1 bg-bg text-fg [&_.grid>*]:min-w-0">
       <a href="#app-content" className="skip-link">{t.nav.skip}</a>
       {/* Desktop: the sections live in a sidebar on the start side. */}
-      <aside className="sticky top-0 hidden h-dvh w-60 shrink-0 border-e border-line bg-bg lg:block" data-app-sidebar>
-        <SidebarBody nav={nav} account={account} />
-      </aside>
+      <MenuFrame>
+        <SidebarBody nav={nav} account={account} fold={<MenuFold />} />
+      </MenuFrame>
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="sticky top-0 z-30 border-b border-line bg-bg/85 backdrop-blur">
           <div className="flex h-16 items-center gap-2 px-2 sm:px-6">
@@ -64,7 +64,9 @@ export default async function DashboardLayout({
             </div>
           </div>
         </header>
-        <div id="app-content" tabIndex={-1} className="flex flex-1 flex-col focus:outline-none">
+        {/* Pages use more of the screen than their own column asks for; narrow
+            forms (max-w-xl) keep their width. */}
+        <div id="app-content" tabIndex={-1} className="flex flex-1 flex-col focus:outline-none [&>main:not(.max-w-xl)]:max-w-[90rem] sm:[&>main]:px-6 xl:[&>main]:px-10">
           {children}
         </div>
       </div>
