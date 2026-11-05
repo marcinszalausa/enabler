@@ -5,6 +5,7 @@ import {IMAGE_QUALITY_ATTEMPTS,QualityError,QualityReviewUnavailableError,review
 export {QualityError} from "@/lib/media-quality-policy";
 import { withCreativePreferences, type CreativePreferences } from "@/lib/creative-preferences";
 import { fetchPublicUrl } from "@/lib/public-fetch";
+import { runSourceImage, sourceImageUrl } from "@/lib/source-image";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { claimGeneration, finalizeGeneration } from "@/lib/generation-credits";
 import { reviewAdImage, writeAdAngles, type BrandBrief } from "@/lib/ai/claude";
@@ -66,7 +67,9 @@ export async function runGeneration({
     const brief = { ...withCreativePreferences(product.brand_brief as BrandBrief, creativePreferences), ...direction };
     if (direction.brand_memory?.tone) brief.tone = direction.brand_memory.tone;
     if (!brief.creative_preferences && direction.brand_memory?.audience) brief.audience = direction.brand_memory.audience;
-    const productReferenceImageUrl = (product.image_urls as string[])[0] ?? null;
+    // The photo the owner picked for this run, else the product's first.
+    const productReferenceImageUrl = await sourceImageUrl(db, workspaceId,
+      await runSourceImage(db, generationId, workspaceId), (product.image_urls as string[])[0] ?? null);
     let referenceImageUrl=productReferenceImageUrl;
     if(revision){
       if(!revision.storage_path.startsWith(workspaceId+"/"))throw new Error("Revision source is unavailable.");

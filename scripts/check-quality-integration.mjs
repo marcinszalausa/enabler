@@ -40,6 +40,9 @@ try{
   from:table=>table==="products"?{
    select(){return this;},eq(){return this;},abortSignal(){return this;},
    async single(){return {data:{name:"Fixture product",brand_brief:{product_name:"Fixture product"},image_urls:["https://example.com/original.jpg"]},error:null};}
+  }:table==="generations"?{
+   select(){return this;},eq(){return this;},
+   async maybeSingle(){return {data:{request_options:{}},error:null};}
   }:{async upsert(){uploads++;return {error:null};}}
  };
  globalThis.__qualityMocks={

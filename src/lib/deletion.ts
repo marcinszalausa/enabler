@@ -91,6 +91,8 @@ export async function deleteProduct(deps: DeleteDeps, productId: string): Promis
 
   const files = new Set(ads.map((a) => a.storage_path).filter(owned(ws)));
   for (const r of list) for (const path of await listFolder(deps.admin, runFolder(ws, r.id))) files.add(path);
+  // Photos uploaded for this product (their rows went with the product).
+  for (const path of await listFolder(deps.admin, `${ws}/uploads/${product.id}`)) files.add(path);
   await removeFiles(deps.admin, [...files]);
   return "ok";
 }

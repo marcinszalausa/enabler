@@ -15,6 +15,7 @@ export function GenerateButton({
   quality,
   credits,
   ideas,
+  source,
 }: {
   productId: string;
   campaignId?: string;
@@ -24,6 +25,8 @@ export function GenerateButton({
   quality: Quality;
   credits?: number;
   ideas?: number;
+  // The picked starting photo; none means the product's first.
+  source?: string;
 }) {
   const { state, action, pending, requestId } = useGenerationAction(initialRequestId);
   const { t } = useI18n();
@@ -35,6 +38,7 @@ export function GenerateButton({
       {campaignId && <input type="hidden" name="campaignId" value={campaignId}/>}
       <input type="hidden" name="language" value={language} />
       <input type="hidden" name="quality" value={quality} />
+      {source && <input type="hidden" name="source" value={source} />}
       {ideas !== undefined && <input type="hidden" name="ideas" value={ideas} />}
       <button
         type="submit"

@@ -29,6 +29,7 @@ export function VideoAdForm({
   language,
   quality,
   credits,
+  source,
 }: {
   productId: string;
   campaignId?: string;
@@ -39,6 +40,8 @@ export function VideoAdForm({
   // Chosen next to the buttons; shared with image runs.
   language: string;
   credits?: number;
+  // The picked starting photo; none means the product's first.
+  source?: string;
 }) {
   const [length, setLength] = useState<LengthKey>(DEFAULT_VIDEO_OPTIONS.length);
   const { t } = useI18n();
@@ -54,6 +57,7 @@ export function VideoAdForm({
       {campaignId && <input type="hidden" name="campaignId" value={campaignId}/>}
       <input type="hidden" name="kind" value="video" />
       <input type="hidden" name="quality" value={quality} />
+      {source && <input type="hidden" name="source" value={source} />}
 
       <p className="text-sm leading-relaxed text-muted">{fmt(t.onboard.videoChoice, { count: 2, seconds: length })}</p>
       <details><summary className="min-h-11 cursor-pointer content-center font-medium text-accent">{t.onboard.advanced}</summary><div className="flex flex-col gap-4 pt-2">
