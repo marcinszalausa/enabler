@@ -45,7 +45,9 @@ export async function sampleVideoShots(clips:Buffer[],seconds:readonly number[])
    try{const result=await exec(ffmpegPath,["-hide_banner","-i",path,"-map","0:v:0","-an","-f","null","-"],{timeout:timeout(),maxBuffer:2e6});report=result.stderr;}
    catch(error){if(error instanceof QualityReviewUnavailableError)throw error;throw new QualityError("A generated video shot could not be decoded.");}
    const probe=videoProbe(report);
-   if(probe.width<720||probe.height<1280||Math.abs(probe.width/probe.height/(9/16)-1)>.04)throw new QualityError("A generated video shot has insufficient resolution or incorrect framing.");
+   // The edit scales and crops every shot to 1080x1920, so allow the sizes
+   // video models really return (Kling follows the first frame's shape).
+   if(probe.width<540||probe.height<960||Math.abs(probe.width/probe.height/(9/16)-1)>.12)throw new QualityError(`A generated video shot has insufficient resolution or incorrect framing (${probe.width}x${probe.height}).`);
    if(!Number.isFinite(probe.seconds)||probe.seconds<seconds[shot]-.2)throw new QualityError("A generated video shot ends before its planned cut.");
    for(const time of sampleTimes(seconds[shot])){
     const result=await exec(ffmpegPath,["-v","error","-ss",String(time),"-i",path,"-frames:v","1","-vf","scale=640:1138:force_original_aspect_ratio=decrease","-q:v","3","-f","image2pipe","-vcodec","mjpeg","pipe:1"],{encoding:"buffer",timeout:timeout(),maxBuffer:1500000});
