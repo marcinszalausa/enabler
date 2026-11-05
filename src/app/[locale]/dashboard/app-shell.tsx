@@ -12,31 +12,40 @@ import { useI18n } from "@/i18n/client";
 // tablets the sidebar becomes a drawer behind the menu button.
 
 // What the sidebar holds, shared by the desktop sidebar and the phone drawer.
+// Inside a folded desktop sidebar ([data-collapsed]) only icons stay.
 export function SidebarBody({
   nav,
   account,
   extra,
+  fold,
 }: {
   nav: ReactNode;
   account: ReactNode;
   extra?: ReactNode;
+  // The desktop button that folds the sidebar into a rail.
+  fold?: ReactNode;
 }) {
   const { t } = useI18n();
   return (
     <div className="flex h-full min-h-0 flex-col">
-      <div className="flex h-16 shrink-0 items-center px-5">
-        <Logo to="/dashboard" label={t.app.products} />
+      <div className="flex h-16 shrink-0 items-center justify-between gap-2 ps-5 pe-3 in-data-collapsed:justify-center in-data-collapsed:px-0">
+        <div className="in-data-collapsed:hidden">
+          <Logo to="/dashboard" label={t.app.products} />
+        </div>
+        {fold}
       </div>
       <nav
         aria-label={t.app.dashboard}
-        className="flex min-h-0 flex-1 flex-col gap-0.5 overflow-y-auto px-3 py-3"
+        className="flex min-h-0 flex-1 flex-col gap-0.5 overflow-y-auto px-3 py-3 in-data-collapsed:px-2"
       >
         {nav}
       </nav>
-      <div className="flex shrink-0 flex-col gap-2 px-3 pb-3">
+      <div className="flex shrink-0 flex-col gap-2 px-3 pb-3 in-data-collapsed:px-2">
         {extra}
-        <div className="flex items-center justify-between gap-1 px-1">
-          <LanguageSwitcher />
+        <div className="flex items-center justify-between gap-1 px-1 in-data-collapsed:justify-center in-data-collapsed:px-0">
+          <div className="in-data-collapsed:hidden">
+            <LanguageSwitcher />
+          </div>
           <ThemeToggle />
         </div>
         {account}
