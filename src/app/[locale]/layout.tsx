@@ -1,17 +1,22 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist_Mono, Inter } from "next/font/google";
 import "../globals.css";
 import { THEME_BY_TIME } from "@/lib/theme";
 import { I18nProvider } from "@/i18n/client";
 import { HTML_LANG, LOCALES, dirOf, isLocale, localePath } from "@/i18n/config";
 import { getMessages } from "@/i18n/messages";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+// Inter, with its display cut for large headings (optical size axis): the
+// closest open font to Apple's SF Pro. Scripts it doesn't cover (Japanese,
+// Chinese, Korean, Hindi, Arabic) use the visitor's system font, see
+// --font-fallback in globals.css.
+const inter = Inter({
+  variable: "--font-inter",
   // Preload only the common subset; other Unicode subsets load as needed.
   subsets: ["latin"],
-  display: "optional",
+  axes: ["opsz"],
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
@@ -63,7 +68,7 @@ export default async function RootLayout({
       dir={dirOf(locale)}
       // The theme script sets data-theme before hydrating.
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${inter.variable} ${geistMono.variable} h-full antialiased`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_BY_TIME }} />
