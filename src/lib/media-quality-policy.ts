@@ -1,6 +1,7 @@
 export class QualityError extends Error {}
 export class QualityReviewUnavailableError extends Error {}
-export type QualityVerdict={ok:boolean;issues:string};
+// minor: the only issues are small ones a shopper would barely notice.
+export type QualityVerdict={ok:boolean;issues:string;minor?:boolean};
 export const IMAGE_QUALITY_ATTEMPTS=3;
 export const REVIEW_ATTEMPTS=2;
 export function qualityIssues(value:string){return value.replace(/\s+/g," ").trim().slice(0,400);}
@@ -11,7 +12,7 @@ export async function requireReview(review:()=>Promise<QualityVerdict>):Promise<
    if(!verdict||typeof verdict.ok!=="boolean"||typeof verdict.issues!=="string")throw new Error("Invalid quality verdict");
    const issues=qualityIssues(verdict.issues);
    if(verdict.ok&&issues)throw new Error("Contradictory quality verdict");
-   return {ok:verdict.ok,issues};
+   return {ok:verdict.ok,issues,minor:!verdict.ok&&verdict.minor===true};
   }catch{
    if(attempt===REVIEW_ATTEMPTS)throw new QualityReviewUnavailableError("Quality review could not be completed. Please try again.");
   }
@@ -23,7 +24,7 @@ export async function reviewedCandidate<T>(deps:{
  validate:(candidate:T)=>Promise<void>;
  review:(candidate:T)=>Promise<QualityVerdict>;
 }):Promise<T>{
- let avoid:string|undefined;
+ let avoid:string|undefined;let usable:T|undefined;
  for(let attempt=1;attempt<=IMAGE_QUALITY_ATTEMPTS;attempt++){
   const candidate=await deps.generate(attempt,avoid);
   try{await deps.validate(candidate);}catch(error){
@@ -32,8 +33,12 @@ export async function reviewedCandidate<T>(deps:{
   }
   const verdict=await requireReview(()=>deps.review(candidate));
   if(verdict.ok)return candidate;
+  // Keep a candidate with only small flaws, so the owner still gets an ad
+  // when no try comes out perfect. Hard defects are never delivered.
+  if(verdict.minor)usable??=candidate;
   avoid=verdict.issues||"Visible image defects";
  }
+ if(usable!==undefined)return usable;
  throw new QualityError(avoid??"The image did not pass quality review.");
 }
 export function voiceTempo(spoken:number,total:number,start=.3,maxTempo=1.2){
