@@ -51,6 +51,7 @@ const EVENTS = [
   "customer.subscription.updated",
   "customer.subscription.deleted",
   "invoice.paid",
+  "invoice.payment_failed",
   "checkout.session.completed",
   "checkout.session.async_payment_succeeded",
 ];
