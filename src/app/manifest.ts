@@ -8,7 +8,7 @@ export default function manifest(): MetadataRoute.Manifest {
       "Turn a product link into campaign images and videos, without arranging a shoot or designing every ad from scratch.",
     start_url: "/",
     display: "standalone",
-    background_color: "#0b0d14",
+    background_color: "#000000",
     theme_color: "#4f46e5",
     icons: [
       { src: "/brand/icon-192.png", sizes: "192x192", type: "image/png" },
