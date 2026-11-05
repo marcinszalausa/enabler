@@ -128,7 +128,7 @@ function PhotoPicker({
         )}
         <p className="text-sm text-muted">{t.picker.hint}</p>
         {error && <p role="alert" className="text-sm text-danger">{error}</p>}
-        <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4" data-photo-grid>
+        <ul className="grid shrink-0 grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4" data-photo-grid>
           <li>
             <button type="button" onClick={() => input.current?.click()} disabled={uploading} data-upload-tile
               className={"flex aspect-square w-full flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed p-3 text-center transition " + (dragging ? "border-accent bg-accent-soft" : "border-line-strong hover:border-accent hover:bg-accent-soft/50")}>
@@ -176,7 +176,7 @@ function ProductFilter({ products, value, onChange, counts }: {
   const total = [...counts.values()].reduce((a, b) => a + b, 0);
   const chip = (active: boolean) => "inline-flex min-h-10 max-w-56 shrink-0 items-center gap-2 rounded-full border px-3 text-sm transition " + (active ? "border-accent bg-accent-soft font-medium text-accent" : "border-line text-muted hover:border-line-strong hover:text-fg");
   return (
-    <div role="group" aria-label={t.picker.filter} className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 sm:-mx-6 sm:px-6" data-photo-filter>
+    <div role="group" aria-label={t.picker.filter} className="-mx-4 flex shrink-0 gap-2 overflow-x-auto px-4 pb-1 sm:-mx-6 sm:px-6" data-photo-filter>
       <button type="button" aria-pressed={value === "all"} onClick={() => onChange("all")} className={chip(value === "all")}>
         {t.picker.allProducts}<span className="text-xs opacity-70">{total}</span>
       </button>
@@ -203,7 +203,7 @@ function asPicked(i: PickerImage): PickedPhoto {
 
 // Scales a photo to at most 2048 px as a JPEG in the browser, so phone photos
 // of 5–10 MB upload fast. Formats the browser can't open are sent as they are.
-async function shrink(file: File): Promise<Blob> {
+export async function shrink(file: File): Promise<Blob> {
   let bitmap: ImageBitmap;
   try {
     bitmap = await createImageBitmap(file, { imageOrientation: "from-image" });
@@ -224,7 +224,7 @@ async function shrink(file: File): Promise<Blob> {
   return blob ?? file;
 }
 
-function UploadIcon() {
+export function UploadIcon() {
   return <svg aria-hidden viewBox="0 0 20 20" className="size-5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13V3.5M6 7.5l4-4 4 4M3.5 13v2a1.5 1.5 0 001.5 1.5h10a1.5 1.5 0 001.5-1.5v-2" /></svg>;
 }
 

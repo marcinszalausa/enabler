@@ -26,11 +26,11 @@ test("Seedance job results: waiting, hosted, inline and failed", () => {
 import { GOOGLE_IMAGE_MODELS, googleImageBody, googleImageResult } from "../src/lib/ai/google-image.ts";
 
 test("Gemini image request carries the product photo, aspect and size", () => {
-  const body = googleImageBody({ prompt: "Place it", image: { mimeType: "image/jpeg", data: "QUJD" }, aspect: "9:16", size: "2K" });
+  const body = googleImageBody({ prompt: "Place it", images: [{ mimeType: "image/jpeg", data: "QUJD" }], aspect: "9:16", size: "2K" });
   assert.deepEqual(body.contents[0].parts[0], { inline_data: { mime_type: "image/jpeg", data: "QUJD" } });
   assert.deepEqual(body.contents[0].parts[1], { text: "Place it" });
   assert.deepEqual(body.generationConfig.imageConfig, { aspectRatio: "9:16", imageSize: "2K" });
-  assert.equal(googleImageBody({ prompt: "Draw", image: null, aspect: "1:1", size: "1K" }).contents[0].parts.length, 1);
+  assert.equal(googleImageBody({ prompt: "Draw", images: [], aspect: "1:1", size: "1K" }).contents[0].parts.length, 1);
   assert.equal(GOOGLE_IMAGE_MODELS.best.size, "2K");
 });
 

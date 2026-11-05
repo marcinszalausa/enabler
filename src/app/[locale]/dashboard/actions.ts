@@ -22,6 +22,7 @@ import { requestMessages } from "@/i18n/server";
 import { fmt } from "@/i18n/format";
 import { canEditWorkspace, WORKSPACE_WRITE_DENIED } from "@/lib/workspace-access";
 import { ownsSourceImage, parseSourceField } from "@/lib/source-image";
+import { canUseStyle, parseStyleField } from "@/lib/style-references";
 
 export type FormState = { error: string | null };
 
@@ -129,6 +130,11 @@ export async function startGeneration(
   if (sourceImage && !(await ownsSourceImage(supabase, workspaceId, sourceImage))) {
     return { error: (await requestMessages()).picker.gone };
   }
+  // A style reference to follow (image ads only).
+  const styleId = video ? null : parseStyleField(formData.get("style"));
+  if (styleId && !(await canUseStyle(supabase, workspaceId, styleId))) {
+    return { error: (await requestMessages()).picker.gone };
+  }
 
   const requestId = String(formData.get("requestId") ?? "");
   if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(requestId)) {
@@ -157,7 +163,7 @@ export async function startGeneration(
     generation_type: video ? "video_ads" : "image_ads",
     generation_model: `claude + fal ${video ? "video" : "image"} ${quality}`,
     amount: cost,
-    options: { ...(options ?? { language, quality, ideas }), ...(creativePreferences ? { creative_preferences: creativePreferences } : {}), brand_memory: brandMemory, ...(campaign ? { campaign } : {}), ...(sourceImage ? { source_image: sourceImage } : {}) },
+    options: { ...(options ?? { language, quality, ideas }), ...(creativePreferences ? { creative_preferences: creativePreferences } : {}), brand_memory: brandMemory, ...(campaign ? { campaign } : {}), ...(sourceImage ? { source_image: sourceImage } : {}), ...(styleId ? { style_reference: { id: styleId } } : {}) },
   });
   if (error) {
     if(error.code==="P0001"&&error.message==="TRIAL_BATCH_ACTIVE")return {error:(await requestMessages()).trial.busy};
