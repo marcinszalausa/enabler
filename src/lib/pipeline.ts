@@ -6,6 +6,7 @@ export {QualityError} from "@/lib/media-quality-policy";
 import { withCreativePreferences, type CreativePreferences } from "@/lib/creative-preferences";
 import { fetchPublicUrl } from "@/lib/public-fetch";
 import { runSourceImage, sourceImageUrl } from "@/lib/source-image";
+import { runAvatar } from "@/lib/avatars";
 import { runStyle } from "@/lib/style-references";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { claimGeneration, finalizeGeneration } from "@/lib/generation-credits";
@@ -74,6 +75,8 @@ export async function runGeneration({
     let referenceImageUrl=productReferenceImageUrl;
     // The style reference the owner picked; a revision keeps its own look.
     const style=revision?null:await runStyle(db,generationId,workspaceId);
+    // The AI avatar to feature; a revision already shows them.
+    const avatar=revision?null:await runAvatar(db,generationId,workspaceId);
     if(revision){
       if(!revision.storage_path.startsWith(workspaceId+"/"))throw new Error("Revision source is unavailable.");
       const {data:signed,error:signError}=await db.storage.from("creatives").createSignedUrl(revision.storage_path,3600);
@@ -94,6 +97,8 @@ export async function runGeneration({
           productReferenceImageUrl,
           styleImageUrl: style?.url ?? null,
           style: style?.style ?? null,
+          personImageUrl: avatar?.url ?? null,
+          person: avatar?.description ?? null,
           product: brief.product_name,
         });
         const image = await fetchPublicUrl(imageUrl, { maxBytes: 8*1024*1024, timeoutMs: 30000, accept: "image/*" });
@@ -186,6 +191,7 @@ export async function generateCheckedImage(opts:{
  prompt:string;aspect:Aspect;quality:Quality;referenceImageUrl:string|null;
  productReferenceImageUrl?:string|null;sameScene?:boolean;product:string;
  styleImageUrl?:string|null;style?:string|null;
+ personImageUrl?:string|null;person?:string|null;
 }):Promise<string>{
  return reviewedCandidate({
   // The last try steps up one quality tier, at our cost, so a hard product
