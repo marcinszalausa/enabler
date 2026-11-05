@@ -21,8 +21,7 @@ import type { Focus, Ratio } from "@/lib/create-options";
 import { ASPECTS, ADS_PER_GENERATION, GENERATION_COST, type IdeaCount } from "@/lib/image-pricing";
 export { ASPECTS, ADS_PER_GENERATION, CREDITS_PER_IMAGE, GENERATION_COST } from "@/lib/image-pricing";
 
-// fal limits how many requests an account may run at once; stay under it.
-const IMAGE_CONCURRENCY = 3;
+import { imageLanes } from "@/lib/add-ons";
 
 
 type Job = {
@@ -39,6 +38,8 @@ type Job = {
   ratio?: Ratio;
   focus?: Focus;
   creativePreferences?: CreativePreferences | null;
+  // Priority runs make more images at once (see add-ons.ts).
+  priority?: boolean;
 };
 
 // Runs one ad generation end to end: copy, images, storage, rows.
@@ -54,6 +55,7 @@ export async function runGeneration({
   ratio,
   focus,
   creativePreferences,
+  priority,
 }: Job) {
   const sizes: Aspect[] = variations && ratio ? [ratio] : ASPECTS;
   const adCount = variations && ratio ? variations : ideas;
@@ -143,7 +145,7 @@ export async function runGeneration({
       }),
     );
 
-    const results = await settleWithLimit(tasks, IMAGE_CONCURRENCY);
+    const results = await settleWithLimit(tasks, imageLanes(priority));
     for (const r of results) {
       if (r.status === "rejected")
         console.error("image failed", generationId, r.reason);

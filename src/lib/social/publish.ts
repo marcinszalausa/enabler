@@ -436,6 +436,10 @@ export async function autopilotRun(workspaceId: string, generationId: string) {
   if (!process.env.ZERNIO_API_KEY) return;
   try {
     const db = createAdminClient();
+    // A plan can switch Autopilot off; a missing column reads as allowed.
+    const { data: unlocks } = await db
+      .from("workspaces").select("auto_publish").eq("id", workspaceId).maybeSingle();
+    if (unlocks?.auto_publish === false) return;
     const { data: schedule } = await db
       .from("publishing_schedules")
       .select("autopilot, autopilot_accounts")

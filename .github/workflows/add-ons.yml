@@ -1,0 +1,22 @@
+name: Add-on checks
+on:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  add-ons:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Priority pricing and lanes
+        run: node --experimental-strip-types --test tests/add-ons.test.ts
+      - name: Generate route types and typecheck
+        run: npx next typegen && npx tsc --noEmit
+      - name: Lint changed files
+        run: npx eslint src/lib/add-ons.ts src/lib/pipeline.ts src/lib/social/publish.ts 'src/app/[locale]/dashboard/actions.ts' tests/add-ons.test.ts
