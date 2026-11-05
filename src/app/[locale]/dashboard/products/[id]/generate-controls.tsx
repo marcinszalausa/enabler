@@ -114,7 +114,7 @@ export function GenerateControls({
       </div>
       <label className="block">
         <span className={label}>{t.app.adLanguage}</span>
-        <span className="relative flex items-center">
+        <span className="relative flex items-center [contain:inline-size]">
           <svg aria-hidden viewBox="0 0 20 20" className="pointer-events-none absolute start-3 size-4 text-muted" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="10" cy="10" r="7.5" /><path d="M2.5 10h15M10 2.5c2.2 2.4 2.2 12.6 0 15M10 2.5c-2.2 2.4-2.2 12.6 0 15" /></svg>
           <select
             value={language}
