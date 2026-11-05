@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { useGenerationAction } from "./use-generation-action";
 import { useI18n } from "@/i18n/client";
 import { fmt } from "@/i18n/format";
@@ -30,6 +30,8 @@ export function VideoAdForm({
   quality,
   credits,
   source,
+  brandOff = false,
+  chips,
 }: {
   productId: string;
   campaignId?: string;
@@ -42,6 +44,10 @@ export function VideoAdForm({
   credits?: number;
   // The picked starting photo; none means the product's first.
   source?: string;
+  // Brand DNA switched off for this run.
+  brandOff?: boolean;
+  // The create card's option chips, shown right above the button.
+  chips?: ReactNode;
 }) {
   const [length, setLength] = useState<LengthKey>(DEFAULT_VIDEO_OPTIONS.length);
   const { t } = useI18n();
@@ -58,6 +64,7 @@ export function VideoAdForm({
       <input type="hidden" name="kind" value="video" />
       <input type="hidden" name="quality" value={quality} />
       {source && <input type="hidden" name="source" value={source} />}
+      {brandOff && <input type="hidden" name="brand" value="off" />}
 
       <p className="text-sm leading-relaxed text-muted">{fmt(t.onboard.videoChoice, { count: 2, seconds: length })}</p>
       <details><summary className="min-h-11 cursor-pointer content-center font-medium text-accent">{t.onboard.advanced}</summary><div className="flex flex-col gap-4 pt-2">
@@ -175,6 +182,7 @@ export function VideoAdForm({
       </label>
 
       </div></details>
+      {chips}
       {credits !== undefined && <p data-video-balance role="status" className="rounded-lg bg-surface p-3 text-sm">{fmt(videoRunCost(length, quality)>credits?t.trial.notEnough:t.trial.afterVideo,{cost:videoRunCost(length, quality),remaining:Math.max(0,credits-videoRunCost(length, quality))})}</p>}
       <button
         type="submit"

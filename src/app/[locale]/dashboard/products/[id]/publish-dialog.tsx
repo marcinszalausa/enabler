@@ -9,6 +9,7 @@ import { fmt } from "@/i18n/format";
 import { smallButton } from "../../ui";
 import {notifyAdChoice} from "../../use-ad-choice";
 import {clearAdChoice} from "@/lib/ad-choice";
+import { ASPECT_CLASS, publishedByDefault } from "@/lib/create-options";
 import { useBrowserTimeZone } from "../../time-zone";
 import { TIKTOK_PRIVACY, type TikTokPrivacy } from "@/lib/social/tiktok-settings";
 
@@ -80,7 +81,7 @@ export function PublishDialog({
   const { t } = useI18n();
   const dialog = useRef<HTMLDialogElement>(null);
   const runDefault = creatives
-    .filter((c) => c.kind === "video" || c.aspect === "1:1")
+    .filter(publishedByDefault)
     .map((c) => c.id);
   // Each opening starts a fresh form (and clears the last result).
   const [opened, setOpened] = useState<{ at: number; ads: string[] }>({
@@ -247,7 +248,7 @@ function PublishForm({
                   alt=""
                   loading="lazy"
                   className={`w-full bg-surface object-cover ${
-                    c.aspect === "1:1" ? "aspect-square" : "aspect-[9/16]"
+                    ASPECT_CLASS[c.aspect] ?? "aspect-square"
                   }`}
                 />
               )}

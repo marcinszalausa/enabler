@@ -14,8 +14,11 @@ export type CreditReceipt = { charged_credits: number | null; returned_credits: 
 export function generationPresentation(g: RunSnapshot) {
   const video = g.type === "video_ads";
   const ideas = Number((g.request_options as { ideas?: unknown } | null | undefined)?.ideas);
-  // Each image idea comes in two sizes; runs before the choice made 5.
-  const total = revisionFromOptions(g.request_options) ? 1 : video ? 2 : 2 * ([1, 3, 5].includes(ideas) ? ideas : 5);
+  const variations = Number((g.request_options as { variations?: unknown } | null | undefined)?.variations);
+  // Variations come in one size. Otherwise each idea comes in two sizes;
+  // runs before the choice made 5.
+  const total = revisionFromOptions(g.request_options) ? 1 : video ? 2
+    : [1, 2, 3, 4, 5].includes(variations) ? variations : 2 * ([1, 3, 5].includes(ideas) ? ideas : 5);
   const saved = g.creatives.filter(c => c.kind === (video ? "video" : "image")).length;
   const active = g.status === "queued" || g.status === "running";
   let phase: "queued" | "preparing" | "creating" | "finishing" | "ready" | "partial" | "failed";

@@ -8,10 +8,13 @@ import { VideoAdForm } from "./video-ad-form";
 import { PhotoRow, type PickedPhoto } from "./image-picker";
 import { StyleRow, type PickedStyle } from "./style-picker";
 import { AvatarRow, type PickedAvatar } from "./avatar-picker";
-import { fmt } from "@/i18n/format";
-import { ADS_PER_GENERATION, ASPECTS, IDEA_COUNTS, imageRunCost, type IdeaCount } from "@/lib/image-pricing";
+import { CreateChips, type BrandSummary } from "./create-chips";
 import { DEFAULT_VIDEO_OPTIONS, videoRunCost } from "@/lib/video-options";
 import { DEFAULT_IMAGE_QUALITY, DEFAULT_VIDEO_QUALITY, QUALITIES, type Quality } from "@/lib/quality";
+import {
+  DEFAULT_FOCUS, DEFAULT_RATIO, DEFAULT_VARIATIONS, IMAGE_MODELS, VIDEO_MODELS, variationRunCost,
+  type Focus, type Ratio, type VariationCount,
+} from "@/lib/create-options";
 
 // A real showcased ad per tier: creative ids, null where none is shown yet.
 export type TierExampleIds = Record<"image" | "video", Record<Quality, string | null>>;
@@ -30,6 +33,7 @@ export function GenerateControls({
   freeTrial = false,
   examples,
   defaultPhoto,
+  brand = null,
 }: {
   productId: string;
   campaignId?: string;
@@ -46,6 +50,8 @@ export function GenerateControls({
   examples?: TierExampleIds;
   // The product's first store photo, the default starting photo.
   defaultPhoto?: string | null;
+  // The workspace brand for the Brand DNA picker.
+  brand?: BrandSummary | null;
 }) {
   const [style, setStyle] = useState<PickedStyle | null>(null);
   const [avatar, setAvatar] = useState<PickedAvatar | null>(null);
@@ -53,19 +59,37 @@ export function GenerateControls({
   const [language, setLanguage] = useState<LanguageKey>(defaultLanguage);
   const { t } = useI18n();
   const [kind, setKind] = useState(initialKind ?? "image");
-  // Each kind keeps its own tier, starting at its default, or at the best
-  // tier the balance still covers.
+  const [ratio, setRatio] = useState<Ratio>(DEFAULT_RATIO);
+  const [variations, setVariations] = useState<VariationCount>(DEFAULT_VARIATIONS);
+  const [focus, setFocus] = useState<Focus>(DEFAULT_FOCUS);
+  const [brandOn, setBrandOn] = useState(true);
+  // Each kind keeps its own model tier, starting at its default, or at the
+  // best tier the balance still covers.
   const [qualities, setQualities] = useState<Record<"image" | "video", Quality>>(() => ({
-    image: affordable(DEFAULT_IMAGE_QUALITY, imageRunCost, credits),
+    image: affordable(DEFAULT_IMAGE_QUALITY, (q) => variationRunCost(q, DEFAULT_VARIATIONS), credits),
     video: affordable(DEFAULT_VIDEO_QUALITY, (q) => videoRunCost(DEFAULT_VIDEO_OPTIONS.length, q), credits),
   }));
   const quality = qualities[kind];
-  const [ideas, setIdeas] = useState<IdeaCount>(ADS_PER_GENERATION);
   const example = examples?.[kind][quality] ?? null;
-
-  const segment = "flex min-h-11 flex-1 cursor-pointer flex-col justify-center border-line-strong px-2 py-1.5 text-center not-last:border-e has-checked:bg-accent-soft has-checked:text-accent has-focus-visible:ring-2 has-focus-visible:ring-inset has-focus-visible:ring-accent";
-  const group = "flex w-full overflow-hidden rounded-xl border border-line-strong";
   const label = "mb-1.5 block text-sm text-muted";
+
+  const chips = (
+    <div className="flex flex-col gap-2">
+      <CreateChips kind={kind} quality={quality} onQuality={(q) => setQualities((all) => ({ ...all, [kind]: q }))}
+        ratio={ratio} onRatio={setRatio} variations={variations} onVariations={setVariations}
+        focus={focus} onFocus={setFocus} brandOn={brandOn} onBrand={setBrandOn} brand={brand} />
+      {example && (
+        <a data-quality-example href={kind === "image" ? `/api/creatives/${example}/image?layout=face-aware-v2` : `/api/creatives/${example}/video`}
+          target="_blank" rel="noreferrer" className="flex max-w-sm items-center gap-3 rounded-xl border border-line p-2 pe-3 text-xs text-muted transition hover:border-accent hover:text-accent">
+          {kind === "image"
+            // eslint-disable-next-line @next/next/no-img-element
+            ? <img key={example} src={`/api/creatives/${example}/image?layout=face-aware-v2&preview=1`} alt="" width={40} height={40} className="size-10 rounded-lg bg-surface object-cover" />
+            : <video key={example} src={`/api/creatives/${example}/video`} muted loop autoPlay playsInline preload="metadata" className="h-14 w-8 rounded-lg bg-surface object-cover" />}
+          <span>{t.app.qualityExample} · {(kind === "image" ? IMAGE_MODELS : VIDEO_MODELS)[quality].name}</span>
+        </a>
+      )}
+    </div>
+  );
 
   return (
     <div className="flex w-full flex-col gap-4 text-sm lg:grid lg:grid-cols-2 lg:gap-x-8 lg:gap-y-5">
@@ -88,50 +112,6 @@ export function GenerateControls({
         ))}
       </div>
       </div>
-      {kind === "image" && (
-        <fieldset data-ideas>
-          <legend className={label} title={t.app.ideasHelp}>{t.app.howMany}</legend>
-          <div className={group} title={t.app.ideasHelp}>
-            {IDEA_COUNTS.map((count) => (
-              <label key={count} className={segment + " font-medium"}>
-                <input type="radio" name="ideas" value={count} checked={ideas === count} onChange={() => setIdeas(count)} className="sr-only" />
-                {count * ASPECTS.length}
-              </label>
-            ))}
-          </div>
-        </fieldset>
-      )}
-      <fieldset data-quality>
-        <legend className={label} title={t.app.qualityHelp}>{t.app.quality}</legend>
-        <div className={group} title={t.app.qualityHelp}>
-          {QUALITIES.map((tier) => (
-            <label key={tier} className={segment}>
-              <input
-                type="radio"
-                name={`quality-${kind}`}
-                value={tier}
-                checked={quality === tier}
-                onChange={() => setQualities((q) => ({ ...q, [kind]: tier }))}
-                className="peer sr-only"
-              />
-              <span className="font-medium">{t.app.qualities[tier]}</span>
-              <span className="text-[11px] leading-tight text-muted peer-checked:text-accent/80">
-                {fmt(t.app.credits, { count: kind === "image" ? imageRunCost(tier, ideas) : videoRunCost(DEFAULT_VIDEO_OPTIONS.length, tier) })}
-              </span>
-            </label>
-          ))}
-        </div>
-        {example && (
-          <a data-quality-example href={kind === "image" ? `/api/creatives/${example}/image?layout=face-aware-v2` : `/api/creatives/${example}/video`}
-            target="_blank" rel="noreferrer" className="mt-2 flex items-center gap-3 rounded-xl border border-line p-2 pe-3 text-xs text-muted transition hover:border-accent hover:text-accent">
-            {kind === "image"
-              // eslint-disable-next-line @next/next/no-img-element
-              ? <img key={example} src={`/api/creatives/${example}/image?layout=face-aware-v2&preview=1`} alt="" width={56} height={56} className="size-14 rounded-lg bg-surface object-cover" />
-              : <video key={example} src={`/api/creatives/${example}/video`} muted loop autoPlay playsInline preload="metadata" className="h-20 w-12 rounded-lg bg-surface object-cover" />}
-            <span>{t.app.qualityExample} · {t.app.qualities[quality]}</span>
-          </a>
-        )}
-      </fieldset>
       <label className="block">
         <span className={label}>{t.app.adLanguage}</span>
         <span className="relative flex items-center">
@@ -154,8 +134,12 @@ export function GenerateControls({
         initialRequestId={imageRequestId}
         productId={productId}
         campaignId={campaignId}
-        cost={imageRunCost(quality, ideas)}
-        ideas={ideas}
+        cost={variationRunCost(quality, variations)}
+        variations={variations}
+        ratio={ratio}
+        focus={variations > 1 ? focus : undefined}
+        brandOff={!brandOn}
+        chips={chips}
         credits={credits}
         language={language}
         quality={quality}
@@ -172,6 +156,8 @@ export function GenerateControls({
         language={language}
         quality={quality}
         source={photo?.value}
+        brandOff={!brandOn}
+        chips={chips}
       />}
       </div>
     </div>

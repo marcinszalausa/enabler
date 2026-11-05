@@ -7,7 +7,19 @@ import { gatewayKey, getGatewaySeedance, submitGatewaySeedance } from "@/lib/ai/
 import { GOOGLE_IMAGE_MODELS, geminiKey, googleImageBody, googleImageResult, googleImageUrl } from "@/lib/ai/google-image";
 import { createAdminClient } from "@/lib/supabase/admin";
 
-export type Aspect = "1:1" | "9:16";
+export type Aspect = "1:1" | "2:3" | "4:5" | "9:16";
+
+// FLUX Kontext has no 4:5; it draws 3:4 and the ad is cropped to 4:5.
+export function modelAspect(aspect: Aspect, quality: Quality): Aspect | "3:4" {
+  return quality === "good" && aspect === "4:5" ? "3:4" : aspect;
+}
+// FLUX dev takes pixel sizes (multiples of 16) instead of a ratio.
+const FLUX_TEXT_SIZES: Record<Aspect, { width: number; height: number }> = {
+  "1:1": { width: 1024, height: 1024 },
+  "2:3": { width: 832, height: 1248 },
+  "4:5": { width: 896, height: 1120 },
+  "9:16": { width: 768, height: 1344 },
+};
 
 type FalImageOutput = { images: { url: string }[] };
 
@@ -56,6 +68,7 @@ export async function generateAdImage(opts: {
   const prompt = `${opts.prompt}. Professional advertising photograph with sharp product detail, believable material texture, natural skin and coherent lighting. Keep every visible face fully inside the image with comfortable headroom. Compose a full-frame photograph with quiet negative space around the subject for separately rendered ad copy; do not shrink the subject into a framed inset. Preserve the product silhouette, color, material, construction and genuine branding from the reference. Keep natural pairs and sets intact, with no duplicated extra variants. Hands should look natural; fingers may be naturally occluded. No added headlines, captions, invented lettering or watermarks.${opts.avoid ? ` Avoid these problems: ${opts.avoid}.` : ""}`;
   const models = IMAGE_MODELS[opts.quality];
   const flux = opts.quality === "good";
+  const aspect = modelAspect(opts.aspect, opts.quality);
   // Flux Kontext takes one image, so it gets the avatar and style in words only.
   // The other models see them as extra images after the product photo (with
   // no product photo, the text models get words too).
@@ -87,7 +100,7 @@ export async function generateAdImage(opts: {
       return await generateGoogleImage({
         prompt: referenceImageUrl ? editPrompt : prompt + guide,
         referenceImageUrls: referenceImageUrl ? [referenceImageUrl, ...extraImages] : [],
-        aspect: opts.aspect,
+        aspect,
         ...GOOGLE_IMAGE_MODELS[opts.quality as "better" | "best"],
         key: google,
       });
@@ -100,13 +113,13 @@ export async function generateAdImage(opts: {
     referenceImageUrl
       ? fal.subscribe(opts.retry ? models.retry : models.edit, {
           input: flux
-            ? { prompt: editPrompt, image_url: referenceImageUrl, aspect_ratio: opts.aspect, output_format: "jpeg" }
-            : { prompt: editPrompt, image_urls: [referenceImageUrl, ...extraImages], aspect_ratio: opts.aspect, output_format: "jpeg", num_images: 1, ...models.input },
+            ? { prompt: editPrompt, image_url: referenceImageUrl, aspect_ratio: aspect, output_format: "jpeg" }
+            : { prompt: editPrompt, image_urls: [referenceImageUrl, ...extraImages], aspect_ratio: aspect, output_format: "jpeg", num_images: 1, ...models.input },
         })
       : fal.subscribe(models.text, {
           input: flux
-            ? { prompt: prompt + guide, image_size: opts.aspect === "1:1" ? { width: 1024, height: 1024 } : { width: 768, height: 1344 }, output_format: "jpeg" }
-            : { prompt: prompt + guide, aspect_ratio: opts.aspect, output_format: "jpeg", num_images: 1, ...models.input },
+            ? { prompt: prompt + guide, image_size: FLUX_TEXT_SIZES[opts.aspect], output_format: "jpeg" }
+            : { prompt: prompt + guide, aspect_ratio: aspect, output_format: "jpeg", num_images: 1, ...models.input },
         }),
   );
 

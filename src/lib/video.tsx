@@ -18,7 +18,8 @@ import {
 import { QualityError, generateCheckedImage } from "@/lib/pipeline";
 import type { Quality } from "@/lib/quality";
 import { getBrandKit } from "@/lib/brand-kit";
-import { FONTS, loadFont, textColorOn } from "@/lib/brand";
+import { DEFAULT_BRAND_KIT, FONTS, loadFont, textColorOn } from "@/lib/brand";
+import { brandDnaOff } from "@/lib/create-options";
 import { editVideoAd } from "@/lib/video-edit";
 import { userMessage } from "@/lib/errors";
 import { autopilotRun } from "@/lib/social/publish";
@@ -374,7 +375,9 @@ async function saveVideo(
   clipUrls: string[],
 ) {
   const db = createAdminClient();
-  const kit = await getBrandKit(db, workspaceId);
+  const { data: run } = await db.from("generations").select("request_options").eq("id", generationId).eq("workspace_id", workspaceId).maybeSingle();
+  // Brand DNA off: the video's end card uses Gooidy's neutral look.
+  const kit = brandDnaOff(run) ? DEFAULT_BRAND_KIT : await getBrandKit(db, workspaceId);
   const [clips, voice, music, logo, font] = await Promise.all([
     Promise.all(clipUrls.map(download)),
     downloadStored(job.voice_path!),

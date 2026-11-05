@@ -1,5 +1,6 @@
 import {AdGallery} from "./ad-gallery";
 import { setShowcase } from "./showcase-actions";
+import { ASPECT_CLASS, sizeLabel } from "@/lib/create-options";
 import { DEFAULT_VIDEO_OPTIONS, runLength } from "@/lib/video-options";
 import { isQuality } from "@/lib/quality";
 import { Chip, DownloadIcon, smallButton } from "../../ui";
@@ -174,9 +175,7 @@ export function GenerationBlock({
                 src={`/api/creatives/${c.id}/image?preview=1&layout=face-aware-v2&v=${imageVersion}`}
                 alt={c.headline ?? "Ad creative"}
                 loading="lazy"
-                className={`w-full rounded-xl object-cover ${
-                  c.aspect === "1:1" ? "aspect-square" : "aspect-[9/16]"
-                }`}
+                className={`w-full rounded-xl object-cover ${ASPECT_CLASS[c.aspect] ?? "aspect-square"}`}
               />
             )}
             <div className="flex flex-1 flex-col gap-2 px-1 pb-1">
@@ -190,9 +189,7 @@ export function GenerationBlock({
                 <span className="text-xs text-muted">
                   {video
                     ? fmt(t.app.reel, { seconds })
-                    : c.aspect === "1:1"
-                      ? t.app.feedSize
-                      : t.app.storySize}
+                    : sizeLabel(c.aspect, t.app)}
                 </span>
               </div>
               <p className="line-clamp-3 text-sm leading-relaxed">

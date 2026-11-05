@@ -20,7 +20,7 @@ export async function GET(
   // RLS: returns the row only for members of its workspace.
   let { data: creative } = await supabase
     .from("creatives")
-    .select("workspace_id, storage_path, aspect, headline, cta")
+    .select("workspace_id, storage_path, aspect, headline, cta, generations(request_options)")
     .eq("id", id)
     .eq("kind", "image")
     .maybeSingle();
@@ -32,7 +32,7 @@ export async function GET(
     ({ data: creative } = await supabase
       .from("creatives")
       .select(
-        "workspace_id, storage_path, aspect, headline, cta, generations!inner(showcased_at)",
+        "workspace_id, storage_path, aspect, headline, cta, generations!inner(showcased_at, request_options)",
       )
       .eq("id", id)
       .eq("kind", "image")

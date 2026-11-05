@@ -15,7 +15,8 @@ import {
   LENGTHS,
   VIDEOS_PER_GENERATION,
 } from "@/lib/video-options";
-import { getBrandKit } from "@/lib/brand-kit";
+import { getBrandKit, getBrandMemory } from "@/lib/brand-kit";
+import { DEFAULT_BRAND_KIT } from "@/lib/brand";
 import { DEFAULT_LANGUAGE, isLanguageKey } from "@/lib/languages";
 import { GenerateControls, type TierExampleIds } from "./generate-controls";
 import { AutoRefresh } from "./auto-refresh";
@@ -167,6 +168,20 @@ async function Product({
     video: Object.fromEntries(QUALITIES.map((q) => [q, videoTiers[q]?.ads[0]?.id ?? null])),
   } as TierExampleIds;
 
+  // The workspace brand for the Brand DNA picker.
+  const [brandMemory, productCount, signedLogo] = await Promise.all([
+    getBrandMemory(supabase, product.workspace_id).catch(() => null),
+    supabase.from("products").select("id", { count: "exact", head: true }).eq("workspace_id", product.workspace_id),
+    kit.logo_path ? supabase.storage.from("creatives").createSignedUrl(kit.logo_path, 3600) : null,
+  ]);
+  const brand = {
+    name: brandMemory?.name || product.url.replace(/^https?:\/\/(www\.)?/, "").split("/")[0],
+    logoUrl: signedLogo?.data?.signedUrl ?? null,
+    accent: kit.accent_color,
+    products: productCount.count ?? 1,
+    ready: Boolean(kit.logo_path || kit.accent_color !== DEFAULT_BRAND_KIT.accent_color || brandMemory?.name),
+  };
+
   const credits = workspace?.credits ?? 0;
   const creditNote = workspace?.plan === "free"
     ? `${fmt(t.app.creditsLeft, { count: credits })} · ${t.trial.oneTime}`
@@ -226,6 +241,7 @@ async function Product({
               productId={product.id}
               examples={tierExamples}
               defaultPhoto={photo ?? null}
+              brand={brand}
               videoLabel={fmt(t.app.generateVideos, {
                 count: VIDEOS_PER_GENERATION,
               })}

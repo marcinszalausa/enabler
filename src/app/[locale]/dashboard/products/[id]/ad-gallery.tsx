@@ -1,5 +1,6 @@
 "use client";
 import {useState} from "react";
+import { sizeLabel } from "@/lib/create-options";
 import {useAdChoice,notifyAdChoice} from "../../use-ad-choice";
 import {useI18n} from "@/i18n/client";
 import {fmt} from "@/i18n/format";
@@ -33,7 +34,7 @@ export function AdGallery({creatives,generationId,imageVersion,seconds,canPublis
    <img src={`/api/creatives/${selected.id}/image?preview=1&layout=face-aware-v2&v=${imageVersion}`} alt={selected.headline??t.choose.title} className="max-h-[65vh] w-auto max-w-full rounded-lg object-contain"/>}
   </div>
   <div className="min-w-0">
-   <p className="text-xs text-muted">{video?fmt(t.app.reel,{seconds}):selected.aspect==="1:1"?t.app.feedSize:t.app.storySize}</p>
+   <p className="text-xs text-muted">{video?fmt(t.app.reel,{seconds}):sizeLabel(selected.aspect,t.app)}</p>
    {selected.headline&&<p className="mt-2 break-words text-lg font-semibold">{selected.headline}</p>}
    <p className="mt-3 whitespace-pre-line break-words text-sm leading-relaxed text-muted">{selected.primary_text}</p>
    {post&&<p data-selected-post-status className={"mt-4 text-sm "+(post.status==="published"?"text-ok":post.status==="failed"||post.status==="partial"?"text-danger":"text-accent")}>{t.publish.status[post.status]}{post.platforms.length>0&&" · "+post.platforms.map(platformName).join(", ")}{post.when&&" · "+post.when}</p>}

@@ -1,5 +1,6 @@
 "use client";
 import {useEffect,useRef,useState} from "react";
+import { sizeLabel } from "@/lib/create-options";
 import Link from "next/link";
 import {useI18n} from "@/i18n/client";
 import {type LibraryAd} from "@/lib/ad-library";
@@ -24,7 +25,7 @@ export function LibraryGrid({ads}:{ads:LibraryAd[]}){
     <span className="flex flex-col items-center gap-3 text-accent"><svg viewBox="0 0 24 24" className="h-14 w-14" fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m10 7 7 5-7 5V7Z" fill="currentColor" stroke="none"/></svg><span className="text-sm font-medium">{t.library.previewVideo}</span></span>}
    </button>
    <div className="flex flex-1 flex-col gap-3 p-4">
-    <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-muted"><span>{ad.kind==="video"?t.library.videos:ad.aspect==="1:1"?t.app.feedSize:t.app.storySize}</span><time dateTime={ad.createdAt}>{new Date(ad.createdAt).toLocaleDateString(locale,{month:"short",day:"numeric",year:"numeric",timeZone:"UTC"})}</time></div>
+    <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-muted"><span>{ad.kind==="video"?t.library.videos:sizeLabel(ad.aspect,t.app)}</span><time dateTime={ad.createdAt}>{new Date(ad.createdAt).toLocaleDateString(locale,{month:"short",day:"numeric",year:"numeric",timeZone:"UTC"})}</time></div>
     <p className="line-clamp-2 break-words text-base font-semibold">{ad.headline??ad.productName}</p>
     <Link href={"/dashboard/products/"+ad.productId} className="truncate text-sm text-muted hover:text-accent">{ad.productName}</Link>
     <div className="mt-auto flex flex-wrap gap-2"><Link href={review(ad)} className="btn-primary inline-flex min-h-11 items-center rounded-xl px-4 text-sm font-medium">{t.library.open}</Link><a href={original(ad)} className="inline-flex min-h-11 items-center gap-1.5 rounded-xl border border-line px-3 text-sm"><DownloadIcon/>{t.app.download}</a><MoreMenu className="relative ms-auto" items={[{label:t.remove.deleteAd,onSelect:()=>setConfirm(ad.id),danger:true,icon:<TrashIcon/>,testId:"delete-ad"}]}/></div>

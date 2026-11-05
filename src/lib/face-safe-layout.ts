@@ -4,6 +4,9 @@ export const FACE_SAFE_LAYOUT_VERSION="face-aware-v2";
 export type Rect={x:number;y:number;width:number;height:number};
 export type TextRegion=Rect&{fontSize:number};
 export type OverlayPlan={headline:TextRegion|null;cta:Rect|null;logo:Rect|null};
+export type LayoutAspect="1:1"|"2:3"|"4:5"|"9:16";
+// Ad heights at 1080 px wide.
+const HEIGHTS:Record<LayoutAspect,number>={"1:1":1080,"2:3":1620,"4:5":1350,"9:16":1920};
 export const NO_OVERLAYS:OverlayPlan={headline:null,cta:null,logo:null};
 export function overlaps(a:Rect,b:Rect){return a.x<b.x+b.width&&a.x+a.width>b.x&&a.y<b.y+b.height&&a.y+a.height>b.y;}
 export function protectFaces(faces:Rect[],width:number,height:number):Rect[]{
@@ -13,9 +16,9 @@ export function protectFaces(faces:Rect[],width:number,height:number):Rect[]{
   return {x,y,width:Math.max(0,Math.min(width,Math.ceil(f.x+f.width+mx))-x),height:Math.max(0,Math.min(height,Math.ceil(f.y+f.height+my))-y)};
  });
 }
-export function chooseOverlays(aspect:"1:1"|"9:16",faces:Rect[]|null,options:{headline?:boolean;cta?:string;ctaWidth?:number;logo?:boolean;rtl?:boolean}={},blocked:Rect[]=[]):OverlayPlan{
+export function chooseOverlays(aspect:LayoutAspect,faces:Rect[]|null,options:{headline?:boolean;cta?:string;ctaWidth?:number;logo?:boolean;rtl?:boolean}={},blocked:Rect[]=[]):OverlayPlan{
  if(faces===null)return {...NO_OVERLAYS};
- const width=1080,height=aspect==="9:16"?1920:1080,story=aspect==="9:16",pad=72,top=story?150:64,bottom=height-(story?240:64);
+ const width=1080,height=HEIGHTS[aspect]??1080,story=aspect==="9:16",pad=72,top=story?150:64,bottom=height-(story?240:64);
  const forbidden=[...protectFaces(faces,width,height),...blocked],used:Rect[]=[];
  const clear=(r:Rect)=>r.x>=pad&&r.y>=top&&r.x+r.width<=width-pad&&r.y+r.height<=bottom&&!forbidden.some(f=>overlaps(r,f))&&!used.some(f=>overlaps(r,f));
  const headH=story?224:188,sideH=story?300:260;
@@ -32,9 +35,9 @@ export function chooseOverlays(aspect:"1:1"|"9:16",faces:Rect[]|null,options:{he
  const logo=options.logo?controlsY.flatMap(y=>[width-pad-200,pad].map(x=>({x,y,width:200,height:100}))).find(clear)??null:null;
  return {headline,cta,logo};
 }
-export function chooseCaption(aspect:"1:1"|"9:16",faces:Rect[]|null,blocked:Rect[]=[]):Rect|null{
+export function chooseCaption(aspect:LayoutAspect,faces:Rect[]|null,blocked:Rect[]=[]):Rect|null{
  if(faces===null)return null;
- const height=aspect==="9:16"?1920:1080,regions=protectFaces(faces,1080,height);
+ const height=HEIGHTS[aspect]??1080,regions=protectFaces(faces,1080,height);
  for(const y of [height-440,height-660,Math.round(height*.48),320,160]){
   const r={x:72,y,width:840,height:164};
   if(y>=140&&y+r.height<=height-220&&!regions.some(f=>overlaps(r,f))&&!blocked.some(f=>overlaps(r,f)))return r;
