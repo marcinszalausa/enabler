@@ -30,10 +30,10 @@ export function PublicPricing(){
  const {locale,t}=useI18n();const p=t.pricingPage;
  const [interval,setBilling]=useState<Interval>("month");
  const percent=Math.round(YEARLY_DISCOUNT*100);
- const cards=[
-  {id:"free",name:p.free.name,tagline:p.free.tagline,price:0,credits:TRY_MODE.credits,recommended:false,features:p.free.features,soon:null as string|null},
-  ...PAID_PLANS.map(plan=>({id:plan.id,name:plan.name,tagline:p[plan.id].tagline,price:plan.price,credits:plan.credits,recommended:plan.recommended,features:p[plan.id].features,soon:"soonFeature" in p[plan.id]?(p[plan.id] as {soonFeature:string}).soonFeature:null})),
- ];
+ // Every plan starts free, so there is no separate Free card: the free
+ // credits sit in one line above the plans, and Launch lists the basics.
+ const basics=p.free.features.slice(1,5);
+ const cards=PAID_PLANS.map((plan,i)=>({id:plan.id,name:plan.name,tagline:p[plan.id].tagline,price:plan.price,credits:plan.credits,recommended:plan.recommended,features:i===0?[p[plan.id].features[0],...basics,...p[plan.id].features.slice(1)]:p[plan.id].features,soon:"soonFeature" in p[plan.id]?(p[plan.id] as {soonFeature:string}).soonFeature:null}));
  return <div data-pricing-cards>
   <div className="flex justify-center">
    <div role="group" aria-label={p.monthly+" / "+p.yearly} data-billing-toggle className="inline-flex rounded-full border border-line bg-raised p-1 text-sm">
@@ -42,27 +42,28 @@ export function PublicPricing(){
     </button>)}
    </div>
   </div>
-  <div id="plans" data-public-plans className="mt-8 grid scroll-mt-24 items-stretch gap-4 sm:grid-cols-2 xl:grid-cols-4">
+  <p data-free-start className="mx-auto mt-5 flex w-fit max-w-full flex-wrap items-center justify-center gap-x-2 gap-y-1 rounded-full bg-accent-soft px-4 py-2 text-center text-sm text-accent"><Check/><span className="font-semibold">{fmt(p.free.features[0],{credits:TRY_MODE.credits.toLocaleString(locale)})}</span><span aria-hidden>·</span><span>{p.freeNote}</span></p>
+  <div id="plans" data-public-plans className="mx-auto mt-8 grid max-w-6xl scroll-mt-24 items-stretch gap-4 md:grid-cols-3">
    {cards.map((card,level)=>{
-    const tools=planTools(card.id),yearly=interval==="year"&&card.price>0;
+    const tools=planTools(card.id),yearly=interval==="year";
     const shown=yearly?Math.round(yearlyPrice(card.price)/12*100)/100:card.price;
     const values={credits:card.credits.toLocaleString(locale),accounts:ACCOUNT_LIMITS[card.id]??1,posts:tools.resultsLimit,languages:LANGUAGE_COUNT};
     const previous=level>0?cards[level-1].name:null;
     return <article key={card.id} id={"plan-"+card.id} data-plan={card.id} className={"relative flex min-w-0 scroll-mt-24 flex-col rounded-2xl border bg-raised p-6 "+(card.recommended?"border-accent shadow-[0_24px_70px_-42px_var(--t-accent)]":"border-line")}>
-     <div className="flex items-start justify-between gap-2"><PlanIcon level={level}/>{card.recommended&&<span data-recommended-plan className="rounded-full bg-accent-soft px-3 py-1 text-xs font-medium text-accent">{p.popular}</span>}</div>
+     <div className="flex items-start justify-between gap-2"><PlanIcon level={level+1}/>{card.recommended&&<span data-recommended-plan className="rounded-full bg-accent-soft px-3 py-1 text-xs font-medium text-accent">{p.popular}</span>}</div>
      <h3 className="mt-5 text-2xl font-semibold tracking-tight">{card.name}</h3>
      <p className="mt-1 text-sm text-muted">{card.tagline}</p>
      <p className="mt-5 text-3xl font-semibold tracking-tight" data-price={shown}>{usd(shown,locale)}</p>
      <p className="mt-1 min-h-10 text-xs leading-relaxed text-muted">
-      {card.price===0?p.freeNote:yearly?fmt(p.perMonthYearly,{total:usd(yearlyPrice(card.price),locale),monthly:usd(card.price,locale)}):p.perMonth}
-      {card.price>0&&<LocalPrice usd={shown} locale={locale} template={" · "+t.home.approx} />}
+      {yearly?fmt(p.perMonthYearly,{total:usd(yearlyPrice(card.price),locale),monthly:usd(card.price,locale)}):p.perMonth}
+      <LocalPrice usd={shown} locale={locale} template={" · "+t.home.approx} />
      </p>
-     <Link data-try-plan={card.price>0?card.id:undefined} href={localePath(locale,"/start")+(card.price>0?"?"+new URLSearchParams({plan:card.id}):"")} prefetch={false} className={"mt-5 inline-flex min-h-11 items-center justify-center rounded-xl px-4 py-2.5 text-sm font-medium transition "+(card.recommended?"btn-primary":"border border-line-strong bg-surface hover:border-accent")}>{p.cta}</Link>
+     <Link data-try-plan={card.id} href={localePath(locale,"/start")+"?"+new URLSearchParams({plan:card.id})} prefetch={false} className={"mt-5 inline-flex min-h-11 items-center justify-center rounded-xl px-4 py-2.5 text-sm font-medium transition "+(card.recommended?"btn-primary":"border border-line-strong bg-surface hover:border-accent")}>{p.cta}</Link>
      <div className="mt-6 flex-1 border-t border-line pt-5">
       {previous&&<p className="mb-3 text-sm font-semibold">{fmt(p.everythingIn,{plan:previous})}</p>}
       <ul data-plan-included={card.id} className="space-y-2.5 text-sm">
        {card.features.map((feature,i)=><li key={feature} className="flex gap-2.5"><Check/><span className={i===0?"font-semibold":""}>{fmt(feature,values)}</span></li>)}
-       {card.price>0&&PACK_DISCOUNTS[card.id as keyof typeof PACK_DISCOUNTS]>0&&<li className="flex gap-2.5"><Check/><span>{fmt(p.packOff,{percent:Math.round(PACK_DISCOUNTS[card.id as keyof typeof PACK_DISCOUNTS]*100)})}</span></li>}
+       {PACK_DISCOUNTS[card.id as keyof typeof PACK_DISCOUNTS]>0&&<li className="flex gap-2.5"><Check/><span>{fmt(p.packOff,{percent:Math.round(PACK_DISCOUNTS[card.id as keyof typeof PACK_DISCOUNTS]*100)})}</span></li>}
        {card.soon&&<li className="flex gap-2.5"><Check/><span>{card.soon} <span className="ms-1 whitespace-nowrap rounded-md border border-line px-1.5 py-0.5 text-[11px] font-medium text-muted">{p.soon}</span></span></li>}
       </ul>
      </div>
