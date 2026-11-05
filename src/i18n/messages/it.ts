@@ -476,6 +476,18 @@ export const it: Messages = {
     retrying: "Impossibile controllare l’avanzamento. Riproveremo.",
     check: "Controlla avanzamento",
   },
+  activity: {
+    title: "Attività",
+    hide: "Nascondi attività",
+    makingNow: "In creazione",
+    comingUp: "In arrivo",
+    justFinished: "Appena pronti",
+    nothingNow: "Al momento non si sta creando nulla.",
+    noPosts: "Nessun post programmato.",
+    planPosts: "Pianifica i post",
+    noAds: "I tuoi annunci più recenti appariranno qui.",
+    seeAll: "Vedi tutti gli annunci",
+  },
   app: {
     campaigns: "Campagne",
     createNew: "Crea nuovo",

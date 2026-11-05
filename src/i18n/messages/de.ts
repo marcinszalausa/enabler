@@ -468,6 +468,18 @@ export const de: Messages = {
     retrying: "Fortschritt konnte nicht geprüft werden. Wir versuchen es erneut.",
     check: "Fortschritt prüfen",
   },
+  activity: {
+    title: "Aktivität",
+    hide: "Aktivität ausblenden",
+    makingNow: "Wird gerade erstellt",
+    comingUp: "Demnächst",
+    justFinished: "Gerade fertig",
+    nothingNow: "Gerade wird nichts erstellt.",
+    noPosts: "Noch keine Beiträge geplant.",
+    planPosts: "Beiträge planen",
+    noAds: "Deine neuesten Anzeigen erscheinen hier.",
+    seeAll: "Alle Anzeigen ansehen",
+  },
   app: {
     campaigns: "Kampagnen",
     createNew: "Neu erstellen",

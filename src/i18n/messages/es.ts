@@ -474,6 +474,18 @@ export const es: Messages = {
     retrying: "No se pudo consultar el progreso. Volveremos a intentarlo.",
     check: "Consultar progreso",
   },
+  activity: {
+    title: "Actividad",
+    hide: "Ocultar actividad",
+    makingNow: "Creando ahora",
+    comingUp: "Próximamente",
+    justFinished: "Recién terminados",
+    nothingNow: "No se está creando nada ahora mismo.",
+    noPosts: "Aún no hay publicaciones programadas.",
+    planPosts: "Planificar publicaciones",
+    noAds: "Tus anuncios más nuevos aparecerán aquí.",
+    seeAll: "Ver todos los anuncios",
+  },
   app: {
     campaigns: "Campañas",
     createNew: "Crear",

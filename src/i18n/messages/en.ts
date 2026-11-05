@@ -464,6 +464,18 @@ export const en = {
     retrying: "Could not check progress. We’ll try again.",
     check: "Check progress",
   },
+  activity: {
+    title: "Activity",
+    hide: "Hide activity",
+    makingNow: "Making now",
+    comingUp: "Coming up",
+    justFinished: "Just finished",
+    nothingNow: "Nothing is being made right now.",
+    noPosts: "No posts scheduled yet.",
+    planPosts: "Plan posts",
+    noAds: "Your newest ads will show here.",
+    seeAll: "See all ads",
+  },
   app: {
     campaigns: "Campaigns",
     createNew: "Create new",

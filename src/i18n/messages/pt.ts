@@ -472,6 +472,18 @@ export const pt: Messages = {
     retrying: "Não foi possível verificar o progresso. Tentaremos novamente.",
     check: "Verificar progresso",
   },
+  activity: {
+    title: "Atividade",
+    hide: "Ocultar atividade",
+    makingNow: "Criando agora",
+    comingUp: "Em breve",
+    justFinished: "Acabados de sair",
+    nothingNow: "Nada está sendo criado agora.",
+    noPosts: "Ainda não há posts agendados.",
+    planPosts: "Planejar posts",
+    noAds: "Seus anúncios mais novos aparecerão aqui.",
+    seeAll: "Ver todos os anúncios",
+  },
   app: {
     campaigns: "Campanhas",
     createNew: "Criar novo",

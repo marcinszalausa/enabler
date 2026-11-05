@@ -459,6 +459,18 @@ export const ko: Messages = {
     retrying: "진행 상황을 확인하지 못했습니다. 다시 시도합니다.",
     check: "진행 상황 확인",
   },
+  activity: {
+    title: "활동",
+    hide: "활동 숨기기",
+    makingNow: "지금 만드는 중",
+    comingUp: "예정",
+    justFinished: "방금 완성",
+    nothingNow: "지금 만드는 항목이 없습니다.",
+    noPosts: "예약된 게시물이 아직 없습니다.",
+    planPosts: "게시물 계획하기",
+    noAds: "가장 최근 광고가 여기에 표시됩니다.",
+    seeAll: "모든 광고 보기",
+  },
   app: {
     campaigns: "캠페인",
     createNew: "새로 만들기",

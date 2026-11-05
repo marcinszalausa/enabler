@@ -469,6 +469,18 @@ export const sv: Messages = {
     retrying: "Kunde inte kontrollera förloppet. Vi försöker igen.",
     check: "Kontrollera förloppet",
   },
+  activity: {
+    title: "Aktivitet",
+    hide: "Dölj aktivitet",
+    makingNow: "Skapas nu",
+    comingUp: "Kommande",
+    justFinished: "Nyss klara",
+    nothingNow: "Inget skapas just nu.",
+    noPosts: "Inga inlägg schemalagda än.",
+    planPosts: "Planera inlägg",
+    noAds: "Dina nyaste annonser visas här.",
+    seeAll: "Se alla annonser",
+  },
   app: {
     campaigns: "Kampanjer",
     createNew: "Skapa ny",

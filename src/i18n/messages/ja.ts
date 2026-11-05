@@ -457,6 +457,18 @@ export const ja: Messages = {
     retrying: "進捗を確認できませんでした。再試行します。",
     check: "進捗を確認",
   },
+  activity: {
+    title: "アクティビティ",
+    hide: "アクティビティを隠す",
+    makingNow: "作成中",
+    comingUp: "予定",
+    justFinished: "完成したばかり",
+    nothingNow: "現在作成中のものはありません。",
+    noPosts: "予約投稿はまだありません。",
+    planPosts: "投稿を計画",
+    noAds: "最新の広告がここに表示されます。",
+    seeAll: "すべての広告を見る",
+  },
   app: {
     campaigns: "キャンペーン",
     createNew: "新規作成",

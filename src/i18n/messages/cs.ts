@@ -471,6 +471,18 @@ export const cs: Messages = {
     retrying: "Průběh se nepodařilo ověřit. Zkusíme to znovu.",
     check: "Zkontrolovat průběh",
   },
+  activity: {
+    title: "Aktivita",
+    hide: "Skrýt aktivitu",
+    makingNow: "Právě se vytváří",
+    comingUp: "Brzy",
+    justFinished: "Právě hotové",
+    nothingNow: "Právě se nic nevytváří.",
+    noPosts: "Zatím žádné naplánované příspěvky.",
+    planPosts: "Naplánovat příspěvky",
+    noAds: "Tady se objeví vaše nejnovější reklamy.",
+    seeAll: "Zobrazit všechny reklamy",
+  },
   app: {
     campaigns: "Kampaně",
     createNew: "Vytvořit nový",

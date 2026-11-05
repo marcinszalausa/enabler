@@ -475,6 +475,18 @@ export const ro: Messages = {
     retrying: "Progresul nu a putut fi verificat. Vom încerca din nou.",
     check: "Verifică progresul",
   },
+  activity: {
+    title: "Activitate",
+    hide: "Ascunde activitatea",
+    makingNow: "Se creează acum",
+    comingUp: "Urmează",
+    justFinished: "Tocmai gata",
+    nothingNow: "Nu se creează nimic acum.",
+    noPosts: "Nicio postare programată încă.",
+    planPosts: "Planifică postări",
+    noAds: "Cele mai noi reclame ale tale vor apărea aici.",
+    seeAll: "Vezi toate reclamele",
+  },
   app: {
     campaigns: "Campanii",
     createNew: "Creează",
