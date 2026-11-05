@@ -58,20 +58,21 @@ export function parseTikTokChoice(form: Form): TikTokParse {
   };
 }
 
-// Autopilot posts without a dialog. The customer turned it on to post
-// publicly; interactions stay off, the post is disclosed as their own brand
-// and video is labeled as AI-generated.
-export const AUTOPILOT_TIKTOK: TikTokChoice = {
-  privacy: "PUBLIC_TO_EVERYONE",
-  allowComment: false,
-  allowDuet: false,
-  allowStitch: false,
-  commercial: "brand_organic",
-  aiLabel: true,
-};
+// Autopilot posts without a dialog, so TikTok gets each ad as a draft in the
+// creator's TikTok inbox: the customer picks audience and settings and posts
+// it in the TikTok app, as TikTok's posting rules expect.
+export const AUTOPILOT_TIKTOK = "draft" as const;
+export type TikTokPost = TikTokChoice | typeof AUTOPILOT_TIKTOK;
 
-export function tiktokSettings(choice: TikTokChoice, kind: "image" | "video") {
+export function tiktokSettings(choice: TikTokPost, kind: "image" | "video"): Record<string, unknown> {
   const video = kind === "video";
+  if (choice === AUTOPILOT_TIKTOK) {
+    return {
+      draft: true,
+      commercialContentType: "brand_organic",
+      ...(video ? { videoMadeWithAi: true } : {}),
+    };
+  }
   return {
     privacy_level: choice.privacy,
     allow_comment: choice.allowComment,

@@ -756,6 +756,8 @@ export const ro: Messages = {
     autopilot: "Pilot automat",
     autopilotHelp:
       "Când reclamele noi sunt gata, imaginile pentru feed și videoclipurile intră în coada acestor conturi. Fără niciun clic.",
+    autopilotTiktok:
+      "TikTok le primește ca ciorne în inboxul tău TikTok: deschide TikTok ca să alegi cine le vede și să le postezi.",
     to: "Publică pe",
     saveSchedule: "Salvează programul",
     saved: "Salvat.",

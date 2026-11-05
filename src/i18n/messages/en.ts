@@ -751,6 +751,8 @@ export const en = {
     autopilot: "Autopilot",
     autopilotHelp:
       "When new ads are ready, put the feed images and videos into the queue for these accounts. No clicks needed.",
+    autopilotTiktok:
+      "TikTok gets them as drafts in your TikTok inbox: open TikTok to choose who sees each one and post it.",
     to: "Post to",
     saveSchedule: "Save schedule",
     saved: "Saved.",

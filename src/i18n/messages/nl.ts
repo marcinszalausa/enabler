@@ -761,6 +761,8 @@ export const nl: Messages = {
     autopilot: "Autopiloot",
     autopilotHelp:
       "Zodra nieuwe advertenties klaar zijn, gaan de feedafbeeldingen en video's in de wachtrij voor deze accounts. Zonder klikken.",
+    autopilotTiktok:
+      "TikTok krijgt ze als concepten in je TikTok-inbox: open TikTok om te kiezen wie ze ziet en plaats ze.",
     to: "Plaatsen op",
     saveSchedule: "Schema opslaan",
     saved: "Opgeslagen.",

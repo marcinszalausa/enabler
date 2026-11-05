@@ -757,6 +757,8 @@ export const sv: Messages = {
     autopilot: "Autopilot",
     autopilotHelp:
       "När nya annonser är klara hamnar flödesbilder och videor i kön för de här kontona. Inga klick behövs.",
+    autopilotTiktok:
+      "TikTok får dem som utkast i din TikTok-inkorg: öppna TikTok, välj vem som ser varje inlägg och publicera.",
     to: "Publicera på",
     saveSchedule: "Spara schema",
     saved: "Sparat.",

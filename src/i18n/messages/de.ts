@@ -761,6 +761,8 @@ export const de: Messages = {
     autopilot: "Autopilot",
     autopilotHelp:
       "Sobald neue Anzeigen fertig sind, kommen Feed-Bilder und Videos in die Warteschlange dieser Konten. Ganz ohne Klicks.",
+    autopilotTiktok:
+      "TikTok bekommt sie als Entwürfe in deinen TikTok-Posteingang: Öffne TikTok, wähle, wer sie sehen darf, und poste sie.",
     to: "Posten auf",
     saveSchedule: "Zeitplan speichern",
     saved: "Gespeichert.",

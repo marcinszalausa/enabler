@@ -765,6 +765,8 @@ export const it: Messages = {
     autopilot: "Pilota automatico",
     autopilotHelp:
       "Quando i nuovi annunci sono pronti, immagini per il feed e video entrano nella coda di questi account. Nessun clic.",
+    autopilotTiktok:
+      "TikTok li riceve come bozze nella tua casella TikTok: apri TikTok per scegliere chi vede ciascuno e pubblicarlo.",
     to: "Pubblica su",
     saveSchedule: "Salva calendario",
     saved: "Salvato.",

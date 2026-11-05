@@ -756,6 +756,8 @@ export const tr: Messages = {
     autopilot: "Otopilot",
     autopilotHelp:
       "Yeni reklamlar hazır olduğunda akış görselleri ve videolar bu hesapların sırasına eklenir. Tıklama gerekmez.",
+    autopilotTiktok:
+      "TikTok bunları TikTok gelen kutuna taslak olarak alır: kimlerin göreceğini seçip paylaşmak için TikTok'u aç.",
     to: "Paylaşılacak yer",
     saveSchedule: "Takvimi kaydet",
     saved: "Kaydedildi.",

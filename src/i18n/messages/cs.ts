@@ -757,6 +757,8 @@ export const cs: Messages = {
     autopilot: "Autopilot",
     autopilotHelp:
       "Jakmile jsou nové reklamy hotové, obrázky do feedu a videa se zařadí do fronty těchto účtů. Bez klikání.",
+    autopilotTiktok:
+      "TikTok je dostane jako koncepty do vaší schránky v TikToku: otevřete TikTok, vyberte, kdo je uvidí, a zveřejněte je.",
     to: "Publikovat na",
     saveSchedule: "Uložit plán",
     saved: "Uloženo.",

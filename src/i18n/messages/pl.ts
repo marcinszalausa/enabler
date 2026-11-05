@@ -760,6 +760,8 @@ export const pl: Messages = {
     autopilot: "Autopilot",
     autopilotHelp:
       "Gdy nowe reklamy będą gotowe, obrazy do feedu i filmy trafią do kolejki tych kont. Bez klikania.",
+    autopilotTiktok:
+      "TikTok dostaje je jako wersje robocze w Twojej skrzynce TikToka: otwórz TikToka, wybierz, kto je zobaczy, i opublikuj.",
     to: "Publikuj na",
     saveSchedule: "Zapisz harmonogram",
     saved: "Zapisano.",

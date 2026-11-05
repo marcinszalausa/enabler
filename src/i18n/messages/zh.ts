@@ -731,6 +731,8 @@ export const zh: Messages = {
     autopilot: "自动驾驶",
     autopilotHelp:
       "新广告生成后，会自动把信息流图片和视频加入这些账号的队列，无需点击。",
+    autopilotTiktok:
+      "TikTok 会以草稿形式收到，放在你的 TikTok 收件箱：打开 TikTok 选择谁能看并发布。",
     to: "发布到",
     saveSchedule: "保存时间表",
     saved: "已保存。",
