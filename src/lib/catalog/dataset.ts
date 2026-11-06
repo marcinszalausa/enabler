@@ -14,6 +14,7 @@ export async function prepareTrainingDataset(id:string){
  const db=createAdminClient();const {data:job,error}=await db.from("catalog_training_jobs").select("*,catalog_items(*)").eq("id",id).single();if(error||!job)throw new Error("CATALOG_JOB_NOT_FOUND");
  if(job.status!=="queued")return ["dataset_ready","submitting","submission_unknown","running","succeeded"].includes(job.status);
  const item=job.catalog_items;if(!item||!trainingAllowed(job.workspace_id,item.product_url))return false;
+ if(item.image_revision!==job.image_revision){await jobStatus(id,{status:"blocked",error_code:"STALE_SOURCE_REVISION"});return false;}
  const {data:connection}=await db.from("catalog_connections").select("enabled").eq("id",item.connection_id).single();if(!connection?.enabled)return false;
  const images=Array.isArray(item.images)?item.images.slice(0,30):[];if(images.length<MIN_TRAINING_IMAGES){await jobStatus(id,{status:"blocked",error_code:"INSUFFICIENT_SOURCE_IMAGES"});return false;}
  const files:Record<string,Uint8Array>={},digests:string[]=[],thumbs:Uint8Array[]=[];const started=Date.now();let total=0;

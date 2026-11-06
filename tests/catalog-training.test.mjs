@@ -38,7 +38,7 @@ test("insufficient source imagery blocks before download or paid submission",asy
  "server-only":{},"node:crypto":{createHash(){throw new Error("no hashing needed");}},
  sharp(){throw new Error("must not process");},fflate:{},
  "@/lib/public-fetch":{fetchPublicUrl(){throw new Error("must not fetch");}},
- "@/lib/supabase/admin":{createAdminClient:()=>({from(table){return {select(){return this;},eq(){return this;},async single(){return {data:table==="catalog_connections"?{enabled:true}:{status:"queued",workspace_id:"w",catalog_items:{product_url:"p",connection_id:"c",images:["single.jpg"]}}};}};}})},
+ "@/lib/supabase/admin":{createAdminClient:()=>({from(table){return {select(){return this;},eq(){return this;},async single(){return {data:table==="catalog_connections"?{enabled:true}:{status:"queued",workspace_id:"w",image_revision:"a",catalog_items:{image_revision:"a",product_url:"p",connection_id:"c",images:["single.jpg"]}}};}};}})},
  "./store":{async jobStatus(id,p){saved=p;}},"./security":{trainingAllowed:()=>true},"./replicate":{}
  });
  assert.equal(await dataset.prepareTrainingDataset("job"),false);
