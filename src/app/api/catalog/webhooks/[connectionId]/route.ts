@@ -4,7 +4,6 @@ import {catalogWebhook} from "@/lib/catalog/normalize";
 import {catalogBody,catalogEnabled,decryptCatalogSecret,verifyCatalogWebhook} from "@/lib/catalog/security";
 import {loadConnection,receiveCatalog} from "@/lib/catalog/store";
 import {inngest} from "@/inngest/client";
-export const runtime="nodejs";
 export const maxDuration=30;
 export async function POST(request:Request,{params}:{params:Promise<{connectionId:string}>}){
  if(!catalogEnabled())return Response.json({code:"CATALOG_NOT_CONFIGURED"},{status:503});

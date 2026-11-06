@@ -4,7 +4,6 @@ import {catalogBody,catalogEnabled} from "@/lib/catalog/security";
 import {catalogCsv} from "@/lib/catalog/normalize";
 import {loadConnection,receiveCatalog} from "@/lib/catalog/store";
 import {inngest} from "@/inngest/client";
-export const runtime="nodejs";
 export async function POST(request:Request){
  if(!catalogEnabled())return Response.json({code:"CATALOG_NOT_CONFIGURED"},{status:503});
  try{

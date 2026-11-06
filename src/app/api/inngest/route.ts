@@ -2,7 +2,6 @@ import {serve} from "inngest/next";
 import {inngest} from "@/inngest/client";
 import {applyCatalog,trainCatalog,reconcileCatalog} from "@/inngest/catalog";
 import {catalogEnabled} from "@/lib/catalog/security";
-export const runtime="nodejs";
 export const maxDuration=300;
 const handler=serve({client:inngest,functions:[applyCatalog,trainCatalog,reconcileCatalog]});
 const unavailable=()=>Response.json({code:"CATALOG_WORKERS_NOT_CONFIGURED"},{status:503});

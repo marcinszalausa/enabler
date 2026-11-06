@@ -2,7 +2,6 @@ import {createAdminClient} from "@/lib/supabase/admin";
 import {parsePublicHttpUrl} from "@/lib/public-fetch";
 import {catalogOwner,catalogSameOrigin} from "@/lib/catalog/auth";
 import {catalogBody,catalogEnabled,encryptCatalogSecret} from "@/lib/catalog/security";
-export const runtime="nodejs";
 export async function POST(request:Request){
  if(!catalogEnabled())return Response.json({code:"CATALOG_NOT_CONFIGURED"},{status:503});
  try{
