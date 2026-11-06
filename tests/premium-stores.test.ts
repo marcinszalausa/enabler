@@ -1,35 +1,39 @@
 import {test} from "node:test";
 import assert from "node:assert/strict";
-import {websiteOrigin,sameStoreUrl,sitemapLinks,catalogCandidates,robotsRules,robotsAllow,websiteProduct} from "../src/lib/catalog/website.ts";
-const origin="https://shop.example",connection={id:"source",workspace_id:"workspace",platform:"custom",store_origin:origin,webhook_domain:"shop.example",enabled:true};
-test("store addresses cannot target private networks or attach credentials",()=>{
- assert.equal(websiteOrigin("shop.example/products/example"),origin);
- for(const value of ["http://shop.example","https://127.0.0.1","https://169.254.169.254","https://user:pass@shop.example","https://[::1]"])assert.throws(()=>websiteOrigin(value));
- assert.equal(sameStoreUrl("https://another.example/product",origin),null);
- assert.equal(sameStoreUrl("/product/one",origin),origin+"/product/one");
+import {createHmac} from "node:crypto";
+import {Readable} from "node:stream";
+import {storeAddress,storeKey,providerInstallUrl,verifyWixInstance} from "../src/lib/stores/providers.ts";
+import {fetchPublicUrl} from "../src/lib/public-fetch.ts";
+test("native connections reject unsafe addresses and bind store identity",()=>{
+ assert.equal(storeKey("https://www.store.example/"),storeKey("https://store.example"));
+ assert.notEqual(storeKey("https://user.wixsite.com/site-a"),storeKey("https://user.wixsite.com/site-b"));
+ for(const value of ["http://store.example","https://127.0.0.1","https://169.254.169.254","https://user:pass@store.example","https://[::1]"])assert.throws(()=>storeAddress(value));
 });
-test("sitemaps support WooCommerce, Wix, Squarespace and ordinary product paths without cross-site crawling",()=>{
- const links=sitemapLinks("<urlset><url><loc>https://shop.example/product/one</loc></url><url><loc><![CDATA[https://shop.example/product-page/two]]></loc></url><url><loc>https://shop.example/shop/p/three</loc></url><url><loc>https://evil.example/product</loc></url></urlset>",origin);
- assert.equal(links.length,3);
- const candidates=catalogCandidates([...links,origin+"/checkout",origin+"/privacy",origin+"/blog/post",origin+"/plain-product/"],origin);
- assert.equal(candidates.length,4);assert.equal(new Set(candidates).size,4);
- assert.equal(catalogCandidates(Array.from({length:150},(_,i)=>origin+"/product/"+i),origin).length,100);
+test("platform buttons initiate native consent flows with read-only permissions",()=>{
+ process.env.SQUARESPACE_CLIENT_ID="ss-client";process.env.BIGCOMMERCE_CLIENT_ID="bc-client";process.env.WIX_CLIENT_ID="wix-app";process.env.WIX_INSTALL_URL="https://www.wix.com/installer/install";
+ const woo=new URL(providerInstallUrl("woocommerce","https://store.example","nonce"));
+ assert.equal(woo.pathname,"/wc-auth/v1/authorize");assert.equal(woo.searchParams.get("scope"),"read");assert.equal(woo.searchParams.get("user_id"),"nonce");
+ const ss=new URL(providerInstallUrl("squarespace","https://store.example","nonce"));
+ assert.equal(ss.hostname,"login.squarespace.com");assert.equal(ss.searchParams.get("state"),"nonce");assert.equal(ss.searchParams.get("scope"),"website.products.read,website.inventory.read");assert.equal(ss.searchParams.get("access_type"),"offline");
+ assert.equal(providerInstallUrl("bigcommerce","https://store.example","nonce"),"https://login.bigcommerce.com/app/bc-client/install");
+ const wix=new URL(providerInstallUrl("wix","https://store.example","nonce"));
+ assert.equal(new URL(wix.searchParams.get("postInstallationUrl")!).searchParams.get("state"),"nonce");assert.equal(wix.searchParams.has("redirectUrl"),false,"No deprecated Wix custom-auth flow");
 });
-test("robots rules honor site blocks and more specific allow rules",()=>{
- const rules=robotsRules("User-agent: *\nDisallow: /private/\nDisallow: /cart*\nAllow: /private/product");
- assert.equal(robotsAllow(origin+"/private/order",rules),false);
- assert.equal(robotsAllow(origin+"/private/product",rules),true);
- assert.equal(robotsAllow(origin+"/cart?add=1",rules),false);
- assert.equal(robotsAllow(origin+"/product/one",rules),true);
- assert.equal(robotsAllow(origin+"/product/one",robotsRules("User-agent: *\nDisallow: /")),false);
+test("Wix install proof must be signed, current and for the returned instance",()=>{
+ const secret="fixture-secret",instance="fixture-instance",payload=Buffer.from(JSON.stringify({instanceId:instance,signDate:new Date().toISOString()})).toString("base64url");
+ const signed=createHmac("sha256",secret).update(payload).digest("base64url")+"."+payload;
+ assert.equal(verifyWixInstance(signed,instance,secret).instanceId,instance);
+ assert.throws(()=>verifyWixInstance(signed,"different",secret));assert.throws(()=>verifyWixInstance(signed,instance,"wrong"));
+ const old=Buffer.from(JSON.stringify({instanceId:instance,signDate:"2020-01-01T00:00:00Z"})).toString("base64url");
+ assert.throws(()=>verifyWixInstance(createHmac("sha256",secret).update(old).digest("base64url")+"."+old,instance,secret));
 });
-test("imports actual product data, never a homepage hero or arbitrary metadata",()=>{
- const observed="2026-01-01T00:00:00Z",url=origin+"/product/one";
- assert.equal(websiteProduct('<meta property="og:image" content="https://cdn.example/hero.jpg">',url,connection,observed),null);
- const html='<script type="application/ld+json">'+JSON.stringify({"@graph":[{"@type":"Organization",name:"Store"},{"@type":"Product",name:"Real product",image:["https://cdn.example/product.jpg"]}]})+"</script>";
- const product=websiteProduct(html,url,connection,observed);
- assert.equal(product?.name,"Real product");assert.equal(product?.inventoryQuantity,null);assert.equal(product?.images.length,1);
- assert.equal(product?.imageRevision.length,64);
- const unsafe='<script type="application/ld+json">'+JSON.stringify({"@type":"Product",name:"Bad",image:"http://127.0.0.1/admin"})+"</script>";
- assert.equal(websiteProduct(unsafe,url,connection,observed),null);
+test("WooCommerce credentials are DNS-pinned and cannot follow a cross-origin redirect",async()=>{
+ const requests:{url:string;auth?:string}[]=[];
+ const deps={resolve:async()=>[{address:"93.184.216.34",family:4}],request:async(url:URL,address:unknown,signal:AbortSignal,options:{authorization?:string})=>{
+  requests.push({url:url.toString(),auth:options.authorization});
+  return {status:302,headers:{location:"https://attacker.example/steal"},body:Readable.from([])};
+ }};
+ await assert.rejects(fetchPublicUrl("https://store.example/wp-json/wc/v3/products",{maxBytes:1024,authorization:{origin:"https://store.example",value:"Basic Zml4dHVyZQ=="}},deps),/redirect|unsafe/i);
+ assert.equal(requests.length,1);assert.equal(requests[0].auth,"Basic Zml4dHVyZQ==");
+ await assert.rejects(fetchPublicUrl("https://store.example/wp-json/wc/v3/products",{maxBytes:1024,authorization:{origin:"https://different.example",value:"Basic Zml4dHVyZQ=="}},deps));
 });
