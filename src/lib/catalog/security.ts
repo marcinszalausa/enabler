@@ -1,0 +1,15 @@
+import {createCipheriv,createDecipheriv,createHmac,randomBytes,timingSafeEqual} from "node:crypto";
+import type {CatalogConnection} from "./normalize.ts";
+function key(){const value=process.env.CATALOG_ENCRYPTION_KEY??"";if(!/^[a-f0-9]{64}$/i.test(value))throw new Error("CATALOG_ENCRYPTION_NOT_CONFIGURED");return Buffer.from(value,"hex");}
+export function encryptCatalogSecret(secret:string){const iv=randomBytes(12),cipher=createCipheriv("aes-256-gcm",key(),iv);const value=Buffer.concat([cipher.update(secret,"utf8"),cipher.final()]);return ["v1",iv.toString("base64"),cipher.getAuthTag().toString("base64"),value.toString("base64")].join(".");}
+export function decryptCatalogSecret(value:string){const [v,i,t,c]=value.split(".");if(v!=="v1"||!i||!t||!c)throw new Error("CATALOG_CREDENTIAL_INVALID");const decipher=createDecipheriv("aes-256-gcm",key(),Buffer.from(i,"base64"));decipher.setAuthTag(Buffer.from(t,"base64"));return Buffer.concat([decipher.update(Buffer.from(c,"base64")),decipher.final()]).toString("utf8");}
+function equal(actual:Buffer,expected:Buffer){return actual.length===expected.length&&timingSafeEqual(actual,expected);}
+export function verifyCatalogWebhook(c:CatalogConnection,headers:Headers,body:Uint8Array,secret:string,now=Date.now()){
+ if(c.platform==="shopify"){if(headers.get("x-shopify-shop-domain")?.toLowerCase()!==c.webhook_domain)return false;const s=headers.get("x-shopify-hmac-sha256")??"";if(!/^[A-Za-z0-9+/]{43}=$/.test(s))return false;return equal(Buffer.from(s,"base64"),createHmac("sha256",secret).update(body).digest());}
+ if(c.platform==="woocommerce"){const s=headers.get("x-wc-webhook-signature")??"";if(!/^[A-Za-z0-9+/]{43}=$/.test(s))return false;return equal(Buffer.from(s,"base64"),createHmac("sha256",secret).update(body).digest());}
+ const match=/^t=(\d{10}),v1=([a-f0-9]{64})$/.exec(headers.get("x-gooidy-signature")??"");if(!match||Math.abs(now/1000-Number(match[1]))>300)return false;
+ return equal(Buffer.from(match[2],"hex"),createHmac("sha256",secret).update(match[1]+".").update(body).digest());
+}
+export async function catalogBody(request:Request,max=1048576){const reader=request.body?.getReader();if(!reader)throw new Error("CATALOG_BODY_REQUIRED");const chunks:Uint8Array[]=[];let bytes=0;for(;;){const {done,value}=await reader.read();if(done)break;bytes+=value.length;if(bytes>max){await reader.cancel();throw new Error("CATALOG_BODY_TOO_LARGE");}chunks.push(value);}return Buffer.concat(chunks);}
+export function catalogEnabled(){return process.env.CATALOG_INGESTION_ENABLED==="true"&&/^[a-f0-9]{64}$/i.test(process.env.CATALOG_ENCRYPTION_KEY??"");}
+export function trainingAllowed(workspaceId:string,url:string){return process.env.VERCEL_ENV==="production"&&catalogEnabled()&&process.env.CATALOG_TRAINING_ENABLED==="true"&&process.env.CATALOG_PILOT_WORKSPACE_ID===workspaceId&&process.env.CATALOG_PILOT_PRODUCT_URL===url&&/^[a-f0-9]{64}$/.test(process.env.REPLICATE_TRAINER_VERSION??"")&&!!process.env.REPLICATE_API_TOKEN&&!!process.env.REPLICATE_TRAINING_DESTINATION;}
