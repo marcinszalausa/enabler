@@ -28,6 +28,7 @@ jobs:
       - name: Installed Next route guidance
         run: find node_modules/next/dist/docs -type f -name route-handlers.md | xargs cat
       - run: node --experimental-strip-types --test tests/catalog-foundation.test.ts
+      - run: node --test tests/catalog-training.test.mjs
       - run: npx next typegen && npx tsc --noEmit
       - run: npx eslint src/lib/catalog src/inngest src/app/api/catalog src/app/api/inngest
       - run: bash scripts/test-catalog-foundation.sh
