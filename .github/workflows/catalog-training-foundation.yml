@@ -1,0 +1,30 @@
+name: Catalog training foundation
+on:
+  push:
+    branches: [feat/catalog-training-foundation]
+permissions:
+  contents: read
+jobs:
+  foundation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm install --save-exact inngest fflate
+      - name: Locked integration dependencies
+        run: node -e 'const fs=require("fs");console.log("FOUNDATION_PACKAGE "+JSON.stringify(fs.readFileSync("package.json","utf8")));console.log("FOUNDATION_LOCK "+JSON.stringify(fs.readFileSync("package-lock.json","utf8")))'
+      - name: Installed Next.js route and Inngest guidance
+        run: |
+          find node_modules/next/dist/docs -type f \( -name route-handlers.md -o -name route.md -o -name server-actions-and-mutations.md \) | xargs cat
+          node -e 'console.log("INNGEST_VERSION "+require("inngest/package.json").version)'
+      - name: Create migration filename with current CLI
+        run: |
+          npx --yes supabase --version
+          npx --yes supabase migration new catalog_training_foundation
+          ls supabase/migrations/*catalog_training_foundation.sql
+      - name: Current Supabase changelog
+        run: curl --fail --silent --show-error https://supabase.com/changelog.md | head -c 18000
