@@ -2,6 +2,7 @@ import {after} from "next/server";
 import {createAdminClient} from "@/lib/supabase/admin";
 import {catalogBody} from "@/lib/catalog/security";
 import {catalogOwner,catalogSameOrigin} from "@/lib/catalog/auth";
+import {shopifyConfigured} from "@/lib/shopify/security";
 import {storeToken,graph} from "@/lib/shopify/api";
 import {inngest} from "@/inngest/client";
 export const maxDuration=60;
@@ -20,6 +21,7 @@ export async function POST(request:Request){
    }
    const {error:disabled}=await db.rpc("disconnect_shopify_store",{store_id:id,install:store.installation_id});if(disabled)throw new Error("DISCONNECT");return finish("disconnected");
   }
+  if(!shopifyConfigured())return finish("unavailable");
   if(store.status==="syncing")return finish("syncing");
   if(["disconnected","reconnect"].includes(store.status))return finish("reconnect");
   const {error:update}=await db.from("shopify_stores").update({status:"syncing",sync_cursor:null,sync_started_at:new Date().toISOString(),error_code:null}).eq("id",id).eq("installation_id",store.installation_id);if(update)throw new Error("SYNC");
