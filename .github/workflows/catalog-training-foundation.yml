@@ -34,3 +34,10 @@ jobs:
       - run: bash scripts/test-catalog-foundation.sh
         env:
           CATALOG_TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/catalog_test
+      - name: Production build with integrations disabled
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://catalog-test.supabase.co
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: test-anon-key
+          CATALOG_INGESTION_ENABLED: 'false'
+          CATALOG_TRAINING_ENABLED: 'false'
