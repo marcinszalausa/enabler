@@ -2,7 +2,7 @@
 set -euo pipefail
 : "${CATALOG_TEST_DATABASE_URL:?Use a disposable test database}"
 psql "$CATALOG_TEST_DATABASE_URL" -X -v ON_ERROR_STOP=1 -f supabase/tests/catalog-bootstrap.sql
-psql "$CATALOG_TEST_DATABASE_URL" -X -v ON_ERROR_STOP=1 -f supabase/migrations/20261106214956_catalog_training_foundation.sql
+psql "$CATALOG_TEST_DATABASE_URL" -X -v ON_ERROR_STOP=1 -f supabase/migrations/20261106224914_catalog_training_foundation.sql
 psql "$CATALOG_TEST_DATABASE_URL" -X -v ON_ERROR_STOP=1 -f supabase/tests/catalog-foundation.sql
 output="$(mktemp -d)"
 trap 'rm -rf "$output"' EXIT
