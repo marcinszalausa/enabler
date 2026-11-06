@@ -1,0 +1,19 @@
+name: Premium store connections
+on:
+  push:
+    branches: [feat/premium-store-connections]
+permissions:
+  contents: read
+jobs:
+  stores:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx --yes supabase migration new premium_store_connections && ls supabase/migrations/*premium_store_connections.sql
+      - run: find node_modules/next/dist/docs -type f -name route-handlers.md | xargs cat
+      - run: curl --fail --silent --show-error https://supabase.com/changelog.md --output /tmp/supabase-changelog.md && head -c 15000 /tmp/supabase-changelog.md
