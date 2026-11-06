@@ -30,6 +30,7 @@ export const syncShopify=inngest.createFunction({id:"shopify-sync-catalog",trigg
   try{const result=await step.run("page-"+page,()=>syncShopifyPage(id,install));if(result.done)return {done:true};}
   catch(e){
    const code=e instanceof Error?e.message:"SHOPIFY_SYNC_FAILED";
+   if(code==="CATALOG_UPGRADE_REQUIRED")return {upgradeRequired:true};
    if(code==="SHOPIFY_RECONNECT_REQUIRED"){
     await step.run("require-reconnection",async()=>{const {error}=await createAdminClient().from("shopify_stores").update({status:"reconnect",error_code:code}).eq("id",id).eq("installation_id",install).neq("status","disconnected");if(error)throw new Error("SHOPIFY_STATE_SAVE_FAILED");});return {reconnect:true};
    }throw e;
@@ -46,6 +47,6 @@ export const recoverShopify=inngest.createFunction({id:"shopify-recover-sync",tr
  });
  if(pending.length)await step.sendEvent("resume-syncs",pending.map(s=>({id:"shopify-recover-"+s.id+"-"+Math.floor(Date.now()/300000),name:"shopify/sync.requested",data:{storeId:s.id,installationId:s.installation_id}})));
  const renew=await step.run("expiring-tokens",async()=>{const {data,error}=await createAdminClient().from("shopify_stores").select("id,installation_id").eq("status","connected").lt("access_expires_at",new Date(Date.now()+300000).toISOString()).order("access_expires_at").limit(25);if(error)throw new Error("SHOPIFY_REFRESH_READ_FAILED");return data??[];});
- for(const s of renew)await step.run("refresh-"+s.id,async()=>{try{await storeToken(s.id,s.installation_id);return true;}catch(e){if(e instanceof Error&&e.message==="SHOPIFY_RECONNECT_REQUIRED"){const {error}=await createAdminClient().from("shopify_stores").update({status:"reconnect",error_code:"SHOPIFY_RECONNECT_REQUIRED"}).eq("id",s.id).eq("installation_id",s.installation_id).eq("status","connected");if(error)throw new Error("SHOPIFY_STATE_SAVE_FAILED");return false;}throw e;}});
+ for(const s of renew)await step.run("refresh-"+s.id,async()=>{try{await storeToken(s.id,s.installation_id);return true;}catch(e){if(e instanceof Error&&e.message==="CATALOG_UPGRADE_REQUIRED")return false;if(e instanceof Error&&e.message==="SHOPIFY_RECONNECT_REQUIRED"){const {error}=await createAdminClient().from("shopify_stores").update({status:"reconnect",error_code:"SHOPIFY_RECONNECT_REQUIRED"}).eq("id",s.id).eq("installation_id",s.installation_id).eq("status","connected");if(error)throw new Error("SHOPIFY_STATE_SAVE_FAILED");return false;}throw e;}});
  return {queued:pending.length};
 });

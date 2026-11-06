@@ -1,10 +1,11 @@
 import {syncShopify,recoverShopify} from "@/inngest/shopify";
+import {importWebsiteStore,recoverWebsiteStores} from "@/inngest/website-stores";
 import {serve} from "inngest/next";
 import {inngest} from "@/inngest/client";
 import {applyCatalog,trainCatalog,reconcileCatalog} from "@/inngest/catalog";
 import {catalogEnabled} from "@/lib/catalog/security";
 export const maxDuration=300;
-const handler=serve({client:inngest,functions:[applyCatalog,trainCatalog,reconcileCatalog,syncShopify,recoverShopify]});
+const handler=serve({client:inngest,functions:[applyCatalog,trainCatalog,reconcileCatalog,syncShopify,recoverShopify,importWebsiteStore,recoverWebsiteStores]});
 const unavailable=()=>Response.json({code:"CATALOG_WORKERS_NOT_CONFIGURED"},{status:503});
 export const GET=(...args:Parameters<typeof handler.GET>)=>catalogEnabled()&&!!process.env.INNGEST_SIGNING_KEY?handler.GET(...args):unavailable();
 export const POST=(...args:Parameters<typeof handler.POST>)=>catalogEnabled()&&!!process.env.INNGEST_SIGNING_KEY?handler.POST(...args):unavailable();

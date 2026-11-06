@@ -16,7 +16,7 @@ function fixture({owner=true,cookie=true}={}){
  "next/headers":{cookies:async()=>({get:()=>({value:cookie?nonce:"wrong"}),delete(){}})},"next/server":{after(){}},
  "@/lib/supabase/server":{createClient:async()=>({auth:{getUser:async()=>({data:{user:{id:"user"}}})}})},
  "@/lib/supabase/admin":{createAdminClient:()=>db},
- "@/lib/catalog/auth":{catalogOwner:async ws=>{assert.equal(ws,"workspace");if(!owner)throw new Error("OWNER");}},
+ "@/lib/catalog/auth":{catalogStoreOwner:async ws=>{assert.equal(ws,"workspace");if(!owner)throw new Error("OWNER");}},
  "@/lib/catalog/security":{encryptCatalogSecret:()=>"encrypted"},
  "@/lib/shopify/security":{callbackValid:()=>true,shopDomain:v=>v,stateHash:()=>"hash",shopifyConfigured:()=>true,SHOPIFY_COOKIE:"state"},
  "@/lib/shopify/api":{tokenRequest:async()=>{tokenCalls++;return {expires_in:3600,refresh_token_expires_in:7776000,access_token:"token"};},graph:async()=>({shop:{id:"gid://shopify/Shop/1",name:"Store",myshopifyDomain:"store.myshopify.com",primaryDomain:{url:"https://store.example"}}})},
@@ -43,6 +43,7 @@ test("disconnect stops syncing even when Shopify access has expired",async()=>{
  "@/lib/supabase/admin":{createAdminClient:()=>({from(){return {select(){return this;},eq(){return this;},async single(){return {data:{id:"store",shop:"store.myshopify.com",installation_id:"install",status:"connected"}};}};},async rpc(name){assert.equal(name,"disconnect_shopify_store");stopped++;return {data:true};}})},
  "@/lib/catalog/security":{catalogBody:async()=>Buffer.from("workspaceId=workspace&storeId=store&action=disconnect")},
  "@/lib/catalog/auth":{catalogOwner:async()=>{},catalogSameOrigin(){}},
+ "@/lib/catalog/access":{requireStorePlan:async()=>{}},
  "@/lib/shopify/security":{shopifyConfigured:()=>true},
  "@/lib/shopify/api":{storeToken:async()=>{throw new Error("expired");},graph(){throw new Error("must not call without token");}},
  "@/inngest/client":{inngest:{}}

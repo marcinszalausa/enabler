@@ -1,4 +1,5 @@
 import "server-only";
+import {requireStorePlan} from "@/lib/catalog/access";
 import {createAdminClient} from "@/lib/supabase/admin";
 import {encryptCatalogSecret,decryptCatalogSecret} from "@/lib/catalog/security";
 import {SHOPIFY_API_VERSION,shopDomain,hasScopes} from "./security";
@@ -19,6 +20,7 @@ export async function graph<T>(shop:string,token:string,query:string,variables:R
 export async function storeToken(id:string,installation:string){
  const db=createAdminClient();const {data:store,error}=await db.from("shopify_stores").select("*").eq("id",id).eq("installation_id",installation).single();
  if(error||!store?.credentials_cipher||["disconnected","reconnect"].includes(store.status))throw new Error("SHOPIFY_RECONNECT_REQUIRED");
+ await requireStorePlan(store.workspace_id);
  const token=JSON.parse(decryptCatalogSecret(store.credentials_cipher)) as ShopifyToken;
  if(Date.parse(store.access_expires_at)>Date.now()+120000)return {store,token:token.access_token};
  if(Date.parse(store.refresh_expires_at)<=Date.now())throw new Error("SHOPIFY_RECONNECT_REQUIRED");

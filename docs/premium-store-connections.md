@@ -1,0 +1,15 @@
+# Premium store connections
+Grow (plus) and Scale (growth) include store connections; Free and Launch (starter) keep single product-link creation. Access requires a real Stripe subscription in the same active/trialing/past_due states used by billing; selecting a plan during signup grants nothing. Workspace billing columns are not writable by authenticated users.
+
+## Customer flow
+Dashboard → Stores offers Shopify authorization and a separate website-address form. The website form imports publicly discoverable product pages and photos from WooCommerce, Wix, Squarespace, BigCommerce and other sites publishing standard product structured data and crawlable links/sitemaps. This is a public catalog import, not an authenticated private-inventory adapter. It requires no keys or uploads. Some stores block bots, omit structured data or render product information only in JavaScript; those imports show a retry/product-link fallback rather than inventing products or claiming live syncing.
+
+Discovery honors robots rules, follows same-origin links/sitemaps and caps a run at three sitemap reads and 100 candidate pages. Only real Product structured data with usable HTTPS images becomes a catalog item. Homepage hero imagery and arbitrary Open Graph previews are not treated as products. Imports use durable Inngest steps, bounded requests and the existing DNS-pinned SSRF fetcher. Manual refresh takes another snapshot; no private stock counts or real-time inventory guarantee are implied. Existing ad projects are unchanged.
+
+## Entitlement and downgrade enforcement
+Ownership and paid-tier entitlement are checked on Shopify start/callback, website connect/refresh and catalog connection/import routes. Background workers, receipt ingestion and source loading recheck entitlement. Database guards reject enabling a source or inserting catalog data for an ineligible workspace, even through trusted server credentials. RLS hides connected catalogs on lower tiers. Billing downgrades disable sources, fail pending deliveries and pause active store imports. Disconnect remains available so the owner can remove old connections. Upgrade plus refresh/reconnect restores access; it does not automatically resume an unreviewed backlog.
+
+The database authorization helper is SECURITY INVOKER and respects workspace RLS when called by authenticated users. Activation guards lock the workspace row to serialize against concurrent billing changes. No subscription, credit allowance or payment is created by these changes.
+
+## Platform prerequisites
+Shopify still requires the platform-owned Shopify app configuration described in shopify-dashboard-connection.md. Website imports need the existing production Inngest event/signing keys, synced /api/inngest endpoint and catalog ingestion/encryption configuration. Customer flows never ask for those secrets. Connections remain unavailable until those platform prerequisites are configured. No real store, paid training or live billing operation is performed by CI.

@@ -1,3 +1,4 @@
+import {requireStorePlan} from "@/lib/catalog/access";
 import {after} from "next/server";
 import {createAdminClient} from "@/lib/supabase/admin";
 import {catalogBody} from "@/lib/catalog/security";
@@ -24,11 +25,13 @@ export async function POST(request:Request){
    }catch{}
    return finish("disconnected_local");
   }
+  await requireStorePlan(String(workspaceId));
   if(!shopifyConfigured())return finish("unavailable");
   if(store.status==="syncing")return finish("syncing");
   if(["disconnected","reconnect"].includes(store.status))return finish("reconnect");
+  const {error:enable}=await db.from("catalog_connections").update({enabled:true}).eq("id",store.connection_id);if(enable)throw new Error("SYNC");
   const {error:update}=await db.from("shopify_stores").update({status:"syncing",sync_cursor:null,sync_started_at:new Date().toISOString(),error_code:null}).eq("id",id).eq("installation_id",store.installation_id);if(update)throw new Error("SYNC");
   after(async()=>{try{await inngest.send({name:"shopify/sync.requested",data:{storeId:id,installationId:store.installation_id}});}catch{console.error("Shopify sync deferred",id);}});
   return finish("syncing");
- }catch{return finish("action_error");}
+ }catch(e){return finish(e instanceof Error&&e.message==="CATALOG_UPGRADE_REQUIRED"?"upgrade":"action_error");}
 }

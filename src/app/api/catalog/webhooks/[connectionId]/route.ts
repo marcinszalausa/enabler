@@ -18,5 +18,5 @@ export async function POST(request:Request,{params}:{params:Promise<{connectionI
   const id=await receiveCatalog(c,String(eventId??""),body,products);
   after(async()=>{if(process.env.INNGEST_EVENT_KEY)try{await inngest.send({id:"catalog-delivery-"+id,name:"catalog/delivery.received",data:{deliveryId:id}});}catch{console.error("Catalog dispatch deferred to durable outbox",id);}});
   return Response.json({received:true,id});
- }catch(e){const code=e instanceof Error?e.message:"CATALOG_ERROR";return Response.json({code:/^CATALOG_[A-Z_]+$/.test(code)?code:"CATALOG_INVALID_REQUEST"},{status:code==="CATALOG_EVENT_CONFLICT"?409:code.includes("WRITE_FAILED")||code.includes("SECRET_MISSING")?503:400});}
+ }catch(e){const code=e instanceof Error?e.message:"CATALOG_ERROR";return Response.json({code:/^CATALOG_[A-Z_]+$/.test(code)?code:"CATALOG_INVALID_REQUEST"},{status:code==="CATALOG_UPGRADE_REQUIRED"?200:code==="CATALOG_EVENT_CONFLICT"?409:code.includes("WRITE_FAILED")||code.includes("SECRET_MISSING")?503:400});}
 }
