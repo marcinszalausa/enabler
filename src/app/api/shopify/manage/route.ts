@@ -16,7 +16,7 @@ export async function POST(request:Request){
   if(action==="disconnect"){
    let token:string|null=null;
    if(store.status!=="disconnected")try{token=(await storeToken(id,store.installation_id)).token;}catch{}
-   const {error:disabled}=await db.rpc("disconnect_shopify_store",{store_id:id,install:store.installation_id});if(disabled)throw new Error("DISCONNECT");
+   const {data:disconnected,error:disabled}=await db.rpc("disconnect_shopify_store",{store_id:id,install:store.installation_id});if(disabled||disconnected!==true)throw new Error("DISCONNECT");
    if(store.status==="disconnected")return finish("disconnected");
    if(token)try{
     const result=await graph<{appUninstall:{userErrors:unknown[]}}>(store.shop,token,"mutation {appUninstall {userErrors {field message}}}");

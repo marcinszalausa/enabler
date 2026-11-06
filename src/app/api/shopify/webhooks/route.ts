@@ -20,7 +20,7 @@ export async function POST(request:Request){
    if(payloadShop!==shop||store.provider_shop_id!=="gid://shopify/Shop/"+payloadId)return new Response(null,{status:400});
    const triggered=request.headers.get("x-shopify-triggered-at");
    if(triggered&&Number.isFinite(Date.parse(triggered))&&Date.parse(triggered)<Date.parse(store.installed_at))return new Response(null,{status:200});
-   const {error:disabled}=await db.rpc("disconnect_shopify_store",{store_id:store.id,install:store.installation_id});if(disabled)throw new Error("DISABLE");
+   const {data:disconnected,error:disabled}=await db.rpc("disconnect_shopify_store",{store_id:store.id,install:store.installation_id});if(disabled)throw new Error("DISABLE");if(disconnected!==true)return new Response(null,{status:200});
    if(topic==="shop/redact"){
     const {data:jobs,error:read}=await db.from("catalog_training_jobs").select("dataset_path,provider_training_id,candidate_version,catalog_items!inner(connection_id)").eq("catalog_items.connection_id",store.connection_id);
     if(read)throw new Error("READ");
@@ -28,7 +28,7 @@ export async function POST(request:Request){
     if(jobs?.some(j=>j.provider_training_id||j.candidate_version))throw new Error("PROVIDER_ERASURE_REQUIRED");
     const paths=(jobs??[]).map(j=>j.dataset_path).filter((p):p is string=>typeof p==="string");
     if(paths.length){const {error:erasure}=await db.storage.from("catalog-training").remove(paths);if(erasure)throw new Error("STORAGE_ERASURE_FAILED");}
-    const {error:removed}=await db.from("catalog_connections").delete().eq("id",store.connection_id);if(removed)throw new Error("DELETE");
+    const {error:removed}=await db.from("catalog_connections").delete().eq("id",store.connection_id).eq("enabled",false);if(removed)throw new Error("DELETE");
    }
    return new Response(null,{status:200});
   }
