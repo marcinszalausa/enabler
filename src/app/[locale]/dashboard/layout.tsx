@@ -27,6 +27,7 @@ export default async function DashboardLayout({
         { href: "/dashboard/campaigns", label: t.app.campaigns },
         { href: "/dashboard/publishing", label: t.publish.title },
         { href: "/dashboard/brand", label: t.app.brandKit },
+        { href: "/dashboard/stores", label: "Stores" },
       ]}
     />
   );
