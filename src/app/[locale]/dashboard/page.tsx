@@ -101,6 +101,7 @@ async function Dashboard({
         <p className="mt-1 text-sm text-muted">{t.app.addBody}</p>
         <div className="mt-5">
           <ProductUrlForm defaultUrl={typeof url === "string" ? url : ""} />
+          <p className="mt-4 text-sm text-muted">Have a Shopify store? <Link href="/dashboard/stores" className="font-medium text-accent underline">Connect it to choose from your products →</Link></p>
         </div>
       </section>
 

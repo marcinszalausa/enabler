@@ -2,12 +2,25 @@ name: Shopify dashboard connection
 on:
   push:
     branches: [feat/dashboard-shopify-connect]
+  pull_request:
+    paths: ['src/lib/shopify/**', 'src/app/api/shopify/**', 'src/app/[locale]/dashboard/stores/**', 'src/inngest/shopify.ts', 'supabase/*/*shopify*', 'tests/shopify*']
 permissions:
   contents: read
+concurrency:
+  group: shopify-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   shopify:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: shopify_test
+        ports: ['5432:5432']
+        options: --health-cmd "pg_isready -U postgres" --health-interval 5s --health-timeout 5s --health-retries 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -16,8 +29,17 @@ jobs:
           cache: npm
       - run: npm ci
       - name: Installed Next guidance
-        run: find node_modules/next/dist/docs -type f \( -name route-handlers.md -o -name page.md -o -name server-actions-and-mutations.md \) | xargs cat
-      - name: Generate migration
-        run: npx --yes supabase migration new dashboard_shopify_connect && ls supabase/migrations/*dashboard_shopify_connect.sql
-      - name: Current Supabase changelog
-        run: curl --fail --silent --show-error https://supabase.com/changelog.md | head -c 15000
+        run: find node_modules/next/dist/docs -type f -name route-handlers.md | xargs cat
+      - run: node --experimental-strip-types --test tests/shopify-security.test.ts
+      - run: node --test tests/shopify-callback.test.mjs
+      - run: npx next typegen && npx tsc --noEmit
+      - run: npx eslint src/lib/shopify src/inngest/shopify.ts src/app/api/shopify 'src/app/[locale]/dashboard/stores'
+      - run: bash scripts/test-shopify-connect.sh
+        env:
+          CATALOG_TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/shopify_test
+      - run: npm run build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://catalog-test.supabase.co
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: test-anon-key
+          CATALOG_INGESTION_ENABLED: 'false'
+          SHOPIFY_CONNECT_ENABLED: 'false'
