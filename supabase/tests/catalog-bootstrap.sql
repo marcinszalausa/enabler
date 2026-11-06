@@ -1,0 +1,16 @@
+create role anon;
+create role authenticated;
+create role service_role bypassrls;
+create schema auth;
+create function auth.uid() returns uuid language sql stable as $$ select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid $$;
+grant usage on schema auth to authenticated;
+grant execute on function auth.uid() to authenticated;
+create type public.workspace_role as enum('owner','editor','viewer');
+create table public.workspaces(id uuid primary key);
+create table public.workspace_members(workspace_id uuid,user_id uuid,role public.workspace_role);
+create table public.products(id uuid primary key,workspace_id uuid not null references public.workspaces(id),url text,created_at timestamptz default now());
+create function public.is_workspace_member(ws uuid,min_role public.workspace_role default 'viewer') returns boolean language sql security definer set search_path='' as $$ select exists(select 1 from public.workspace_members where workspace_id=ws and user_id=auth.uid()) $$;
+create schema storage;
+create table storage.buckets(id text primary key,name text,public boolean,file_size_limit bigint,allowed_mime_types text[]);
+grant usage on schema public to service_role,authenticated,anon;
+grant all on public.products,public.workspaces,public.workspace_members to service_role;

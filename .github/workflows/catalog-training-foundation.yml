@@ -2,29 +2,34 @@ name: Catalog training foundation
 on:
   push:
     branches: [feat/catalog-training-foundation]
+  pull_request:
+    paths: ['src/lib/catalog/**', 'src/inngest/**', 'src/app/api/catalog/**', 'src/app/api/inngest/**', 'supabase/*/*catalog*', 'tests/catalog*']
 permissions:
   contents: read
 jobs:
   foundation:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: catalog_test
+        ports: ['5432:5432']
+        options: --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
-      - run: npm install --save-exact inngest fflate
-      - name: Locked integration dependencies
-        run: node -e 'const fs=require("fs");console.log("FOUNDATION_PACKAGE "+JSON.stringify(fs.readFileSync("package.json","utf8")));console.log("FOUNDATION_LOCK "+JSON.stringify(fs.readFileSync("package-lock.json","utf8")))'
-      - name: Installed Next.js route and Inngest guidance
-        run: |
-          find node_modules/next/dist/docs -type f \( -name route-handlers.md -o -name route.md -o -name server-actions-and-mutations.md \) | xargs cat
-          npm ls inngest fflate --depth=0
-      - name: Create migration filename with current CLI
-        run: |
-          npx --yes supabase --version
-          npx --yes supabase migration new catalog_training_foundation
-          ls supabase/migrations/*catalog_training_foundation.sql
-      - name: Current Supabase changelog
-        run: curl --fail --silent --show-error https://supabase.com/changelog.md | head -c 18000
+      - run: npm ci
+      - name: Installed Next route guidance
+        run: find node_modules/next/dist/docs -type f -name route-handlers.md | xargs cat
+      - run: node --experimental-strip-types --test tests/catalog-foundation.test.ts
+      - run: npx next typegen && npx tsc --noEmit
+      - run: npx eslint src/lib/catalog src/inngest src/app/api/catalog src/app/api/inngest
+      - run: bash scripts/test-catalog-foundation.sh
+        env:
+          CATALOG_TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/catalog_test
