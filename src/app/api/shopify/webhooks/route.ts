@@ -6,7 +6,7 @@ import {loadConnection,receiveCatalog} from "@/lib/catalog/store";
 import {catalogWebhook} from "@/lib/catalog/normalize";
 import {inngest} from "@/inngest/client";
 export async function POST(request:Request){
- const secret=process.env.SHOPIFY_CLIENT_SECRET;if(!secret)return new Response(null,{status:503});
+ const secret=process.env.SHOPIFY_CLIENT_SECRET;if(process.env.VERCEL_ENV!=="production"||!secret)return new Response(null,{status:503});
  try{
   const body=await catalogBody(request);if(!rawWebhookValid(body,request.headers.get("x-shopify-hmac-sha256")??"",secret))return new Response(null,{status:401});
   const shop=shopDomain(request.headers.get("x-shopify-shop-domain")),topic=request.headers.get("x-shopify-topic"),payload=JSON.parse(body.toString());

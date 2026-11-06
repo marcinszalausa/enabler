@@ -23,7 +23,7 @@ Catalog imports use bounded, paginated GraphQL requests and durable Inngest step
 
 The catalog is separate from saved ad projects. Selecting Create ads takes the merchant to the existing product onboarding; sync does not generate ads, spend generation credits or create duplicate saved ad projects.
 
-Disconnect invokes Shopify appUninstall, stops the connection and erases stored credentials. Signed app/uninstalled also disables sync. A disconnected store's saved Gooidy ads are retained. If access was already revoked/expired, reconnection or uninstalling from Shopify may be required to finish provider-side revocation.
+Disconnect stops the connection and erases stored credentials even when access is expired, then attempts Shopify appUninstall to revoke provider access. If provider revocation cannot be confirmed, the dashboard clearly directs the owner to remove the app in Shopify. Signed app/uninstalled also disables sync. A disconnected store's saved Gooidy ads are retained. If access was already revoked/expired, reconnection or uninstalling from Shopify may be required to finish provider-side revocation.
 
 ## Privacy before broader launch
 Customer data webhooks have no customer/order records to erase/export because those scopes are not requested. shop/redact clears connection data and private datasets. If a source has provider training artifacts, erasure deliberately remains unacknowledged until an operator removes them; full trained-model retention automation must be completed before enabling training with public distribution. Do not claim public-app compliance certification from these endpoints alone.

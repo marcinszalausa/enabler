@@ -34,3 +34,19 @@ test("wrong browser or revoked owner cannot exchange tokens",async()=>{
   const f=fixture(settings);assert.match((await f.handler.GET(f.request())).headers.get("location"),/notice=connect_error$/);assert.deepEqual(f.counts(),{tokenCalls:0,saved:0});
  }
 });
+
+test("disconnect stops syncing even when Shopify access has expired",async()=>{
+ process.env.VERCEL_ENV="production";
+ let stopped=0;
+ const handler=load("src/app/api/shopify/manage/route.ts",{
+ "next/server":{after(){}},
+ "@/lib/supabase/admin":{createAdminClient:()=>({from(){return {select(){return this;},eq(){return this;},async single(){return {data:{id:"store",shop:"store.myshopify.com",installation_id:"install",status:"connected"}};}};},async rpc(name){assert.equal(name,"disconnect_shopify_store");stopped++;return {data:true};}})},
+ "@/lib/catalog/security":{catalogBody:async()=>Buffer.from("workspaceId=workspace&storeId=store&action=disconnect")},
+ "@/lib/catalog/auth":{catalogOwner:async()=>{},catalogSameOrigin(){}},
+ "@/lib/shopify/security":{shopifyConfigured:()=>true},
+ "@/lib/shopify/api":{storeToken:async()=>{throw new Error("expired");},graph(){throw new Error("must not call without token");}},
+ "@/inngest/client":{inngest:{}}
+ });
+ const result=await handler.POST(new Request("https://gooidy.com/api/shopify/manage",{method:"POST",body:"fixture"}));
+ assert.equal(stopped,1);assert.match(result.headers.get("location"),/notice=disconnected_local$/);
+});

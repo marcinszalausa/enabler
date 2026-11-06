@@ -22,7 +22,7 @@ export function rawWebhookValid(body:Uint8Array,signature:string,secret:string){
  return timingSafeEqual(Buffer.from(signature,"base64"),createHmac("sha256",secret).update(body).digest());
 }
 export function shopifyConfigured(){
- return process.env.SHOPIFY_CONNECT_ENABLED==="true"&&!!process.env.SHOPIFY_CLIENT_ID&&!!process.env.SHOPIFY_CLIENT_SECRET&&process.env.SHOPIFY_APP_ORIGIN==="https://gooidy.com"&&process.env.CATALOG_INGESTION_ENABLED==="true"&&/^[a-f0-9]{64}$/i.test(process.env.CATALOG_ENCRYPTION_KEY??"")&&!!process.env.INNGEST_EVENT_KEY&&!!process.env.INNGEST_SIGNING_KEY;
+ return process.env.VERCEL_ENV==="production"&&process.env.SHOPIFY_CONNECT_ENABLED==="true"&&!!process.env.SHOPIFY_CLIENT_ID&&!!process.env.SHOPIFY_CLIENT_SECRET&&process.env.SHOPIFY_APP_ORIGIN==="https://gooidy.com"&&process.env.CATALOG_INGESTION_ENABLED==="true"&&/^[a-f0-9]{64}$/i.test(process.env.CATALOG_ENCRYPTION_KEY??"")&&!!process.env.INNGEST_EVENT_KEY&&!!process.env.INNGEST_SIGNING_KEY;
 }
 export function authorizationUrl(shop:string,state:string){
  const url=new URL("https://"+shopDomain(shop)+"/admin/oauth/authorize");

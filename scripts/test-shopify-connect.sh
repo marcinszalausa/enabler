@@ -3,7 +3,7 @@ set -euo pipefail
 : "${CATALOG_TEST_DATABASE_URL:?Use a disposable database}"
 psql "$CATALOG_TEST_DATABASE_URL" -X -v ON_ERROR_STOP=1 -f supabase/tests/catalog-bootstrap.sql
 psql "$CATALOG_TEST_DATABASE_URL" -X -v ON_ERROR_STOP=1 -f supabase/migrations/20261106224914_catalog_training_foundation.sql
-psql "$CATALOG_TEST_DATABASE_URL" -X -v ON_ERROR_STOP=1 -f supabase/migrations/20261106230610_dashboard_shopify_connect.sql
+psql "$CATALOG_TEST_DATABASE_URL" -X -v ON_ERROR_STOP=1 -f supabase/migrations/20261106231635_dashboard_shopify_connect.sql
 psql "$CATALOG_TEST_DATABASE_URL" -X -v ON_ERROR_STOP=1 -f supabase/tests/shopify-connect.sql
 output="$(mktemp -d)"
 trap 'rm -rf "$output"' EXIT
