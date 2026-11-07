@@ -17,7 +17,7 @@ try{
   page.on("pageerror",e=>errors.push(e.message));page.on("request",r=>{if(r.method()==="POST"&&!/^\/(_next|__nextjs)/.test(new URL(r.url()).pathname))posts++;});
   const base="http://localhost:3118"+(locale==="en"?"":"/"+locale);
   await page.goto(base+"/pricing",{waitUntil:"networkidle",timeout:90000});await page.evaluate(theme=>document.documentElement.dataset.theme=theme,theme);
-  assert.equal(await page.locator("[data-plan]").count(),4);assert.equal(await page.locator('[data-plan="starter"] [data-price]').getAttribute("data-price"),"39");assert.equal(await page.locator('[data-plan="plus"] [data-recommended-plan]').count(),1);assert.equal(await page.locator('[data-plan="growth"] [data-price]').getAttribute("data-price"),"99");
+  assert.equal(await page.locator("[data-plan]").count(),3);assert.equal(await page.locator('[data-plan="starter"] [data-price]').getAttribute("data-price"),"39");assert.equal(await page.locator('[data-plan="plus"] [data-recommended-plan]').count(),1);assert.equal(await page.locator('[data-plan="growth"] [data-price]').getAttribute("data-price"),"99");
   await page.locator("[data-billing-toggle] button").nth(1).click();await page.waitForFunction(()=>document.querySelector('[data-plan="growth"] [data-price]')?.getAttribute("data-price")==="79.2");await page.locator("[data-billing-toggle] button").nth(0).click();
   assert.equal(await page.locator('link[rel="canonical"]').getAttribute("href"),locale==="en"?"https://gooidy.com/pricing":"https://gooidy.com/"+locale+"/pricing");
   await page.evaluate(()=>scrollTo(0,0));
