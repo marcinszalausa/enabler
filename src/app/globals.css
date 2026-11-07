@@ -1053,3 +1053,5 @@ html {
  .minimal-output.featured {width:230px;}
  .minimal-output:not(:first-child) {display:none;}
 }
+
+.minimal-landing .edge {border:1px solid var(--t-line);}

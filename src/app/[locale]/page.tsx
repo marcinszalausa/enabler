@@ -19,7 +19,7 @@ import { Reveal } from "@/app/_landing/reveal";
 import { Placements, type PlacementAd } from "@/app/_landing/placements";
 import { StickyCta } from "@/app/_landing/sticky-cta";
 import { PublicPricing } from "@/app/_landing/public-pricing";
-import { TRY_MODE } from "@/lib/paid-plans";
+import { PAID_PLANS } from "@/lib/paid-plans";
 import { CreditGuide } from "@/app/_landing/credit-guide";
 import { ASPECTS, ADS_PER_GENERATION, GENERATION_COST } from "@/lib/image-pricing";
 import { BeforeAfter } from "@/app/_landing/before-after";
@@ -81,7 +81,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
             homeJsonLd(
               locale,
               t.meta.description,
-              [{name: TRY_MODE.name, price: TRY_MODE.price}],
+              PAID_PLANS.map(plan=>({name:plan.name,price:plan.price})),
             ),
           ).replace(/</g, "\\u003c"),
         }}

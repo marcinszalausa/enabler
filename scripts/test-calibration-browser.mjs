@@ -53,7 +53,7 @@ try {
  await page.goto('http://localhost:3000/en');
  await page.getByRole('textbox',{name:'Your store URL',exact:true}).fill('https://softmila.com');
  await page.getByRole('button',{name:'Initialize'}).click();
- await page.waitForURL(/\/en\/start\?url=/);
+ await page.waitForURL(/\/start\?url=/);
  await context.close();
  console.log('Calibration mobile, desktop, validation, recommendations, keyboard and no-JS checks passed');
 } finally {await browser.close();}

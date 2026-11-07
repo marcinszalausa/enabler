@@ -22,6 +22,7 @@ export function CalibrationFunnel() {
   const input = useRef<HTMLInputElement>(null);
   const reveal = useRef<HTMLDivElement>(null);
   const opener = useRef<HTMLButtonElement>(null);
+  const returnFocus = useRef<HTMLElement | null>(null);
   const [url, setUrl] = useState("");
   const [error, setError] = useState(false);
   const [open, setOpen] = useState(false);
@@ -40,7 +41,11 @@ export function CalibrationFunnel() {
 
   function close() {
     dialog.current?.close();
-    opener.current?.focus();
+    (returnFocus.current ?? opener.current)?.focus();
+  }
+  function show() {
+    returnFocus.current = document.activeElement instanceof HTMLElement ? document.activeElement : opener.current;
+    dialog.current?.showModal();
   }
   const link = productLink(url);
   const start = localePath(locale, "/start") + "?" + new URLSearchParams({url: link ?? "", ...(plan ? {plan: plan.id} : {})});
@@ -61,7 +66,7 @@ export function CalibrationFunnel() {
       // The normal GET form remains usable before hydration / without JS.
       if (!dialog.current?.showModal) return;
       event.preventDefault(); setError(false); setUrl(normalized);
-      dialog.current.showModal();
+      show();
     }}>
       <label htmlFor={id + "-url"} className="sr-only">Your store URL</label>
       <input ref={input} id={id + "-url"} name="url" required inputMode="url" maxLength={2048}
@@ -102,7 +107,7 @@ export function CalibrationFunnel() {
       <p className="calibration-note">{plan.id === "starter" ? "Paste a product link to explore. Full catalog connections are included with Grow and Scale." : "Sign in to connect. Store access requires an active Grow or Scale plan."} No purchase starts automatically.</p>
       {plan.id !== "starter" && <Link href={start} className="calibration-secondary">Explore with a product link first →</Link>}
       {plan.id === "growth" && <div className="calibration-custom"><p className="calibration-eyebrow">Need custom onboarding?</p><p>Discuss your catalog, creative workflow and integration requirements with us.</p><ol><li>01 · Review your store and catalog</li><li>02 · Map your creative workflow</li><li>03 · Define integration requirements</li></ol><a href={review} className="calibration-primary">Request Architectural Review →</a><p className="calibration-note">Opens an email request. We’ll arrange a time with you.</p></div>}
-      <button type="button" className="calibration-secondary" onClick={() => dialog.current?.showModal()}>Change ad-spend range</button>
+      <button type="button" className="calibration-secondary" onClick={show}>Change ad-spend range</button>
     </div>}
   </div>;
 }
