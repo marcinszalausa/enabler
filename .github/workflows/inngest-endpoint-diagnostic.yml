@@ -30,6 +30,9 @@ jobs:
               data=json.loads(body)
               if isinstance(data,dict):
                   result["catalog_not_configured"]=data.get("code")=="CATALOG_WORKERS_NOT_CONFIGURED"
+                  allowed=["CATALOG_INGESTION_ENABLED","CATALOG_ENCRYPTION_KEY","INNGEST_SIGNING_KEY"]
+                  supplied=data.get("missing_or_invalid_settings")
+                  if isinstance(supplied,list):result["missing_or_invalid_settings"]=[name for name in supplied if name in allowed]
                   for key in ["has_event_key","has_signing_key","authentication_succeeded"]:
                       if isinstance(data.get(key),bool):result[key]=data[key]
           except Exception:
