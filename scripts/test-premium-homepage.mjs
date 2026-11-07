@@ -49,6 +49,11 @@ try {
   const workflow=page.locator('[data-store-workflow-preview]');await workflow.getByRole('button',{name:'2 Choose',exact:true}).click();assert.equal(await workflow.locator('[data-store-preview-step]').getAttribute('data-store-preview-step'),'1');await workflow.getByRole('button',{name:'See the ad'}).click();assert.equal(await workflow.locator('[data-store-preview-step]').getAttribute('data-store-preview-step'),'2');
   const scale=page.locator('[data-scale-plan-preview]');await scale.getByRole('button',{name:'Campaign brief',exact:true}).click();assert.equal(await scale.getByRole('button',{name:'Download sample brief'}).count(),1);await scale.getByRole('button',{name:'Next move',exact:true}).click();assert.match(await scale.innerText(),/Sample preview/);
   await page.locator('#how').getByRole('button',{name:'Curiosity',exact:true}).click();assert.equal(await page.locator('[data-transformation-angle]').getAttribute('data-transformation-angle'),'curiosity');await page.locator('#how').getByRole('button',{name:'Lifestyle',exact:true}).click();assert.equal(await page.locator('[data-transformation-angle]').getAttribute('data-transformation-angle'),'social_proof');
+  const footer=page.locator('footer');await footer.scrollIntoViewIfNeeded();assert.equal(await footer.evaluate(el=>getComputedStyle(el).backgroundColor),'rgb(23, 23, 25)');
+  const gap=await page.evaluate(()=>document.querySelector('footer').getBoundingClientRect().top-document.querySelector('.studio-final').getBoundingClientRect().bottom);assert.ok(Math.abs(gap)<=1,'Final panel meets footer without a white gap');
+  const columns=await page.locator('[data-footer-product-links] li').evaluateAll(items=>[...new Set(items.map(el=>Math.round(el.getBoundingClientRect().left)))]);assert.equal(columns.length,2,'Product links use two columns');
+  if(width===390||width===1440)await footer.screenshot({path:'/tmp/studio-review/footer-'+width+'.png'});
+  await footer.locator('[data-back-to-top]').click();await page.waitForFunction(()=>scrollY<1);assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
   await page.evaluate(()=>window.scrollTo(0,0));
   await page.screenshot({path:'/tmp/studio-review/full-'+width+'.png',fullPage:true});
   if(width===390){
@@ -120,5 +125,6 @@ try {
  await pricing.close();
  console.log('Premium homepage: responsive layouts, static media and recovery, formats, store workflow, Scale sample, navigation, validation, no-JS, autoplay/visibility, motion/data preferences and locale checks passed.');
 }finally{await browser.close();}
+
 
 

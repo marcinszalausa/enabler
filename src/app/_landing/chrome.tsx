@@ -217,7 +217,8 @@ export function SectionHeading({
 }
 
 export function Footer({platformMarks=false}:{platformMarks?:boolean}={}) {
-  const { t } = useI18n();
+  const { t,locale } = useI18n();
+  const topLabel:Record<string,string>={en:"Back to top",pl:"Na górę",es:"Volver arriba",pt:"Voltar ao topo",fr:"Haut de page",de:"Nach oben",it:"Torna su",nl:"Naar boven",sv:"Till toppen",tr:"Başa dön",ro:"Sus",cs:"Nahoru",ja:"トップへ",ko:"맨 위로",zh:"回到顶部",hi:"ऊपर जाएँ",ar:"إلى الأعلى"};
   const href = useHref();
   const home = href("/");
   const columns = [
@@ -255,22 +256,23 @@ export function Footer({platformMarks=false}:{platformMarks?:boolean}={}) {
     },
   ];
   return (
-    <footer className="border-t border-line pb-24 sm:pb-0">
-      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr_1fr]">
+    <footer className="site-footer border-t border-line bg-bg pb-24 text-fg sm:pb-0">
+      <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 md:grid-cols-[1fr_2fr] md:gap-10">
         <div>
-          <div className="flex items-center justify-between gap-5"><Logo />{platformMarks&&<PlatformMarks label={t.home.whereTitle}/>}</div>
+          <div className="flex items-center justify-between gap-5"><Logo />{platformMarks&&<PlatformMarks label={t.home.whereTitle}/>}<a href="#" data-back-to-top className="inline-flex min-h-11 shrink-0 items-center gap-2 text-xs text-muted transition hover:text-fg">{topLabel[locale]??topLabel.en}<span aria-hidden>↑</span></a></div>
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted">
             {t.footer.tagline}
           </p>
           <a href={`mailto:${CONTACT_EMAIL}`} className="mt-4 inline-flex min-h-11 flex-col justify-center text-sm text-accent hover:underline"><span className="font-medium">{t.footer.contact}</span><span>{CONTACT_EMAIL}</span></a>
         </div>
-        {columns.map((col) => (
-          <nav key={col.title} aria-label={col.title}>
+        <div className="grid min-w-0 grid-cols-2 gap-x-6 gap-y-8 xl:grid-cols-4">
+        {columns.map((col,index) => (
+          <nav key={col.title} aria-label={col.title} className={index===0?"col-span-2":undefined}>
             <p className="text-sm font-medium">{col.title}</p>
-            <ul className="mt-4 space-y-3 text-sm text-muted">
+            <ul data-footer-product-links={index===0?true:undefined} className={"mt-4 text-sm text-muted "+(index===0?"grid grid-cols-2 gap-x-6 gap-y-1":"space-y-1")}>
               {col.links.map((l) => (
                 <li key={l.href}>
-                  <Link href={l.href} className="transition hover:text-fg">
+                  <Link href={l.href} className="inline-flex min-h-9 items-center transition hover:text-fg">
                     {l.label}
                   </Link>
                 </li>
@@ -278,6 +280,7 @@ export function Footer({platformMarks=false}:{platformMarks?:boolean}={}) {
             </ul>
           </nav>
         ))}
+        </div>
       </div>
       <div className="border-t border-line">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-6 text-sm text-muted">
@@ -323,6 +326,7 @@ export function AppBar({
     </header>
   );
 }
+
 
 
 
