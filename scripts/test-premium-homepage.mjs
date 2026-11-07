@@ -94,6 +94,8 @@ try {
  assert.ok(await animated.locator('video').first().evaluate(el=>el.currentTime)>moment,'visible preview video advances');
  await animated.locator('#pricing').scrollIntoViewIfNeeded();
  await animated.waitForFunction(()=>document.querySelector('video')?.paused);
+ await animated.evaluate(()=>window.scrollTo(0,0));
+ await animated.waitForFunction(()=>{const video=document.querySelector('video');return video&&video.readyState>=2&&!video.paused&&getComputedStyle(video).opacity==='1';});
  await animated.close();
  const recovered=await browser.newPage({viewport:{width:390,height:1000},reducedMotion:'reduce'});
  await recovered.route('**/showcase/ad-44358942-*',route=>route.abort());

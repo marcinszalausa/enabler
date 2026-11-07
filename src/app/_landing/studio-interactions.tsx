@@ -86,7 +86,7 @@ export function StudioCreative({ad,priority=false}:{ad:StudioAd;priority?:boolea
  return <figure ref={root} className="studio-creative" data-product-key={ad.product} data-studio-ad={ad.id}>
   <div className="studio-creative-media">
    <Image src={ad.image} alt={ad.alt} fill sizes="(min-width: 1440px) 252px, (min-width: 768px) 22vw, 62vw" preload={priority} loading={priority?undefined:"eager"} fetchPriority={priority?"high":"low"}/>
-   {ad.video&&<video ref={video} src={load?ad.video:undefined} loop muted={muted} playsInline preload="none" aria-label={ad.alt} onLoadedData={()=>setReady(true)} onPlaying={()=>setPlaying(true)} onPause={()=>setPlaying(false)} onError={()=>{setReady(false);setPlaying(false);}} style={{opacity:ready?1:0}}/>}
+   {ad.video&&<video ref={video} src={load?ad.video:undefined} loop muted={muted} playsInline preload="none" aria-label={ad.alt} onLoadStart={()=>setReady(false)} onLoadedData={()=>setReady(true)} onPlaying={()=>setPlaying(true)} onPause={()=>setPlaying(false)} onError={()=>{setReady(false);setPlaying(false);}} style={{opacity:load&&ready?1:0}}/>}
   </div>
   <figcaption>
    <div><span>{locale==="en"?ad.label:ad.video?t.home.videoKicker:t.publish.ads}</span><small>{ad.video?(locale==="en"?"Video ad":t.home.videoKicker):(locale==="en"?"Image ad":t.publish.ads)}</small></div>
