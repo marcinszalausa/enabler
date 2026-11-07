@@ -106,5 +106,13 @@ try {
  assert.equal(await spanish.locator('.studio-rail-track figure').count(),5);
  assert.ok(await spanish.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
  await spanish.close();
+ const pricing=await browser.newPage({viewport:{width:1440,height:1000},reducedMotion:'reduce'});
+ await pricing.goto('http://localhost:3000/pricing',{waitUntil:'networkidle'});
+ assert.equal(await pricing.locator('[data-buy-plan]:disabled').count(),3);
+ await pricing.getByRole('button',{name:/Yearly/}).click();
+ assert.ok(Number(await pricing.locator('[data-plan="starter"] [data-price]').getAttribute('data-price'))<39);
+ await pricing.getByRole('button',{name:'Monthly',exact:true}).click();
+ assert.equal(await pricing.locator('[data-plan="starter"] [data-price]').getAttribute('data-price'),'39');
+ await pricing.close();
  console.log('Premium homepage: responsive layouts, static media and recovery, formats, planner, navigation, validation, no-JS, autoplay/visibility, motion/data preferences and locale checks passed.');
 }finally{await browser.close();}
