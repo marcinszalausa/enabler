@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import {PAID_CHECKOUT_STATUS} from "./legal-policy";
 import { HTML_LANG, alternates, localePath, type Locale } from "@/i18n/config";
 import preview from "@/app/[locale]/opengraph-image.png";
 
@@ -72,6 +73,7 @@ export function homeJsonLd(
           name: p.name,
           price: p.price,
           priceCurrency: "USD",
+          availability: PAID_CHECKOUT_STATUS==="unavailable"?"https://schema.org/OutOfStock":"https://schema.org/InStock",
         })),
       },
     ],

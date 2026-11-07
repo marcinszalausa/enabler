@@ -1,0 +1,65 @@
+name: Premium homepage
+on:
+  push:
+    branches: [feat/premium-visual-home]
+  pull_request:
+    paths: ['src/app/_landing/studio-*','src/lib/studio-showcase.ts','src/app/_landing/ad-image.tsx','src/app/**/page.tsx','scripts/test-premium-homepage.mjs','.github/workflows/premium-homepage.yml']
+permissions:
+  contents: read
+jobs:
+  homepage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx next typegen && npx tsc --noEmit
+      - run: npx eslint src/app/_landing/studio-*.tsx src/app/_landing/studio-copy.ts src/app/_landing/ad-image.tsx src/app/_landing/public-pricing.tsx src/lib/studio-showcase.ts 'src/app/[locale]/page.tsx'
+      - name: Build without database credentials
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://catalog-test.supabase.co
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: sb_publishable_fixture
+      - run: |
+          npm install --prefix /tmp/gooidy-browser --no-save --package-lock=false playwright@1.56.1
+          /tmp/gooidy-browser/node_modules/.bin/playwright install --with-deps chrome
+      - name: Inspect public preview video encoding
+        run: |
+          node <<'JS'
+          const {spawnSync}=require('node:child_process');
+          const info=spawnSync(require('ffmpeg-static'),['-hide_banner','-i','public/showcase/walk-8b95514506eb.mp4'],{encoding:'utf8'});
+          process.stdout.write(info.stderr||'No video metadata');
+          JS
+      - name: Browser checks and visual review
+        run: |
+          mkdir -p /tmp/studio-review
+          npm run start >/tmp/studio-server.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" || true' EXIT
+          for attempt in $(seq 1 60); do
+            if curl -sf http://localhost:3000/ >/dev/null; then break; fi
+            sleep 1
+          done
+          node scripts/test-premium-homepage.mjs
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://catalog-test.supabase.co
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: sb_publishable_fixture
+      - name: Save visual review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: premium-homepage-review
+          path: /tmp/studio-review/*
+          retention-days: 3
+      - name: Verify legal, pricing and static image delivery regressions
+        run: |
+          node scripts/check-legal-privacy.mjs
+          node scripts/check-pricing-catalog.mjs
+          node scripts/check-curated-homepage.mjs
+        env:
+          PLAYWRIGHT_MODULE_PATH: /tmp/gooidy-browser/node_modules/playwright
+          BROWSER_CHANNEL: chrome

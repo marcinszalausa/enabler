@@ -9,7 +9,7 @@ try{
  server=spawn(process.execPath,["node_modules/next/dist/bin/next","dev","-p","3115"],{env:{...process.env,NEXT_PUBLIC_SUPABASE_URL:"https://example.supabase.co",NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:"sb_publishable_fixture",BILLING_ENABLED:"true",STRIPE_SECRET_KEY:"not-a-real-key"},detached:true,stdio:["ignore","pipe","pipe"]});
  const capture=b=>{log=(log+b).slice(-12000);};server.stdout.on("data",capture);server.stderr.on("data",capture);
  let ready=false;for(let n=0;n<100;n++){try{if((await fetch("http://localhost:3115/policies",{signal:AbortSignal.timeout(2000)})).ok){ready=true;break;}}catch{}await pause(1000);}assert.ok(ready);
- browser=await chromium.launch({headless:true});
+ browser=await chromium.launch({headless:true,channel:process.env.BROWSER_CHANNEL||undefined});
  for(const [width,locale] of [[320,"en"],[390,"es"],[390,"ja"],[1440,"en"]]){
   const context=await browser.newContext({viewport:{width,height:900},reducedMotion:"reduce"}),page=await context.newPage();
   const prefix=locale==="en"?"":"/"+locale,errors=[],mutations=[],external=[];
@@ -39,10 +39,13 @@ try{
   await page.goto("http://localhost:3115"+prefix+"/");
   await page.locator("#pricing").waitFor();
   assert.equal(await page.locator("[data-checkout-unavailable]").count(),0);
-  assert.equal(await page.locator("#pricing [data-buy-plan]").count(),0,"Nothing on the page looks purchasable while checkout is closed");
+  assert.equal(await page.locator("#pricing button[data-buy-plan]:disabled").count(),3,"All purchase controls stay disabled while checkout is closed");
+  assert.equal(await page.locator("#pricing a[data-buy-plan],#pricing button[data-buy-plan]:enabled").count(),0,"No active purchase action is exposed");
   const paid=page.locator('#pricing a[data-try-plan]');assert.equal(await paid.count(),3);for(const link of await paid.all()){const target=new URL(await link.getAttribute("href"),"https://gooidy.com");assert.ok(target.pathname.endsWith("/start"));assert.ok(["starter","plus","growth"].includes(target.searchParams.get("plan")));}
   const offers=await page.locator('script[type="application/ld+json"]').evaluateAll(xs=>xs.map(x=>JSON.parse(x.textContent)));
-  assert.ok(!JSON.stringify(offers).includes('"price":39'));assert.ok(!JSON.stringify(offers).includes('"price":99'));
+  const paidOffers=offers.flatMap(doc=>doc["@graph"]??[]).flatMap(item=>item.offers??[]);
+  assert.equal(paidOffers.length,3);assert.deepEqual(paidOffers.map(offer=>offer.name),["Launch","Grow","Scale"]);
+  assert.ok(paidOffers.every(offer=>offer.availability==="https://schema.org/OutOfStock"),"Search metadata marks paid plans unavailable while checkout is closed");
   await page.goto("http://localhost:3115"+prefix+"/pricing");assert.ok(await page.locator('main a[href$="/policies/billing"]').count()>0,"Billing terms remain accessible from plan details");
   await page.goto("http://localhost:3115/login");
   await page.locator("[data-account-form]").waitFor();
