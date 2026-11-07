@@ -1,0 +1,41 @@
+name: Catalog photo review
+on:
+  push:
+    branches: [feat/catalog-photo-review]
+  pull_request:
+    paths: ['src/lib/catalog/**', 'src/app/[locale]/dashboard/stores/**', 'tests/catalog-photo*', 'scripts/check-catalog-photo*', '.github/workflows/catalog-photo-review.yml']
+permissions:
+  contents: read
+concurrency:
+  group: catalog-photo-review-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  photo-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Read installed Next guides
+        run: |
+          find node_modules/next/dist/docs/01-app -type f \( -name '*page.md' -o -name '*forms.md' -o -name '*route-handlers.md' -o -name '*updating-data.md' -o -name '*server-and-client-components.md' \) -exec cat {} +
+      - name: Read Supabase changelog
+        run: curl --fail --silent --show-error https://supabase.com/changelog.md | head -c 20000
+      - run: npx next typegen && npx tsc --noEmit
+      - run: node --test tests/catalog-photo-review.test.mjs tests/catalog-training.test.mjs
+      - run: node --experimental-strip-types --test tests/catalog-foundation.test.ts
+      - run: npx eslint src/lib/catalog 'src/app/[locale]/dashboard/stores' src/app/api/catalog/photos
+      - name: Production build with integrations disabled
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://catalog-test.supabase.co
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: sb_publishable_fixture
+          CATALOG_INGESTION_ENABLED: 'false'
+          CATALOG_TRAINING_ENABLED: 'false'
+      - run: npm install --prefix /tmp/catalog-photo-browser --no-package-lock playwright@1.56.1
+      - run: /tmp/catalog-photo-browser/node_modules/.bin/playwright install --with-deps chromium
+      - run: PLAYWRIGHT_MODULE_PATH=/tmp/catalog-photo-browser/node_modules/playwright node scripts/check-catalog-photo-review.mjs
