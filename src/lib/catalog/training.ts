@@ -3,12 +3,14 @@ import {createAdminClient} from "@/lib/supabase/admin";
 import {createTraining,readTraining,cancelTraining,reconcileTraining} from "./replicate";
 import {jobStatus} from "./store";
 import {trainingAllowed} from "./security";
+import {trainingSetup} from "./training-policy";
 async function loadJob(id:string){const db=createAdminClient();const {data,error}=await db.from("catalog_training_jobs").select("*,catalog_items(product_url,connection_id)").eq("id",id).single();if(error||!data)throw new Error("CATALOG_JOB_NOT_FOUND");return data;}
 export async function submitCatalogTraining(id:string){
  const db=createAdminClient(),job=await loadJob(id);
  if(job.provider_training_id)return {submitted:true,unknown:false};
  if(["submitting","submission_unknown"].includes(job.status))return {submitted:false,unknown:true};
  if(job.status!=="dataset_ready"||!trainingAllowed(job.workspace_id,job.catalog_items.product_url))return {submitted:false,unknown:false};
+ if(!trainingSetup().spendingEnabled||!job.training_requested_at||!job.source_reviewed_at||!job.consent_user_id)return {submitted:false,unknown:false};
  const {data:connection}=await db.from("catalog_connections").select("enabled").eq("id",job.catalog_items.connection_id).single();if(!connection?.enabled)return {submitted:false,unknown:false};
  const {data:signed,error:signError}=await db.storage.from("catalog-training").createSignedUrl(job.dataset_path,3600);if(signError||!signed?.signedUrl)throw new Error("CATALOG_DATASET_SIGN_FAILED");
  const {data:claimed,error}=await db.rpc("claim_catalog_training",{job:id});if(error)throw new Error("CATALOG_CLAIM_FAILED");if(!claimed)return {submitted:false,unknown:false};
@@ -39,6 +41,6 @@ export async function pollCatalogTraining(id:string){
  }
  if(result.status==="failed"||result.status==="canceled"){await jobStatus(id,{status:result.status,finished_at:new Date().toISOString(),error_code:result.status==="failed"?"PROVIDER_TRAINING_FAILED":null});return {terminal:true,status:result.status};}
  const {data:connection}=await db.from("catalog_connections").select("enabled").eq("id",job.catalog_items.connection_id).single();
- if(!connection?.enabled||!trainingAllowed(job.workspace_id,job.catalog_items.product_url)||!job.submitted_at||Date.now()-Date.parse(job.submitted_at)>600000){await cancelTraining(job.provider_training_id);await jobStatus(id,{status:"cancel_pending",error_code:"CANCELLATION_AWAITING_PROVIDER_CONFIRMATION"});return {terminal:false,status:"cancel_pending"};}
+ if(!connection?.enabled||!trainingSetup().spendingEnabled||!trainingAllowed(job.workspace_id,job.catalog_items.product_url)||!job.submitted_at||Date.now()-Date.parse(job.submitted_at)>600000){await cancelTraining(job.provider_training_id);await jobStatus(id,{status:"cancel_pending",error_code:"CANCELLATION_AWAITING_PROVIDER_CONFIRMATION"});return {terminal:false,status:"cancel_pending"};}
  return {terminal:false,status:"running"};
 }

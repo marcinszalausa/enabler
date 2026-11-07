@@ -1,4 +1,5 @@
 import "server-only";
+import {generateCatalogModelImage,type CatalogModel} from "@/lib/catalog/model-inference";
 import { fetchPublicUrl, verifyPublicUrl } from "@/lib/public-fetch";
 import { ApiError, fal } from "@fal-ai/client";
 import { UserError } from "@/lib/errors";
@@ -33,6 +34,7 @@ const IMAGE_MODELS: Record<Quality, { edit: string; retry: string; text: string;
 };
 
 export async function generateAdImage(opts: {
+  catalogModel?:CatalogModel|null;
   prompt: string;
   quality: Quality;
   // Defects a reviewer found in an earlier try, to steer away from.
@@ -67,6 +69,9 @@ export async function generateAdImage(opts: {
   const personText = opts.sameScene ? null : opts.person?.trim() || null;
   const prompt = `${opts.prompt}. Professional advertising photograph with sharp product detail, believable material texture, natural skin and coherent lighting. Keep every visible face fully inside the image with comfortable headroom. Compose a full-frame photograph with quiet negative space around the subject for separately rendered ad copy; do not shrink the subject into a framed inset. Preserve the product silhouette, color, material, construction and genuine branding from the reference. Keep natural pairs and sets intact, with no duplicated extra variants. Hands should look natural; fingers may be naturally occluded. No added headlines, captions, invented lettering or watermarks.${opts.avoid ? ` Avoid these problems: ${opts.avoid}.` : ""}`;
   const models = IMAGE_MODELS[opts.quality];
+  if(opts.catalogModel&&!opts.sameScene&&!opts.personImageUrl&&!opts.person){
+    return generateCatalogModelImage(opts.catalogModel,prompt+(opts.style?" Visual style: "+opts.style:""),opts.aspect);
+  }
   const flux = opts.quality === "good";
   const aspect = modelAspect(opts.aspect, opts.quality);
   // Flux Kontext takes one image, so it gets the avatar and style in words only.

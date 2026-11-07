@@ -2,12 +2,22 @@ name: Phase one verification
 on:
   push:
     branches: [feat/phase-one]
+  pull_request:
+    paths: ['src/lib/catalog/**','src/inngest/**','src/app/api/catalog/**','src/app/api/shopify/**','src/app/**/stores/**','supabase/*/*phase_one*','tests/phase-one*','scripts/check-phase-one*','.github/workflows/phase-one.yml']
 permissions:
   contents: read
 jobs:
   phase-one:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: phase_one
+        ports: ['5432:5432']
+        options: --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -15,9 +25,14 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - name: Installed Next route and server guidance
-        run: |
-          find node_modules/next/dist/docs -type f | head -35
-          find node_modules/next/dist/docs -type f \( -iname '*route-handlers*' -o -iname '*server-and-client-components*' \) -exec cat {} +
       - run: npx next typegen && npx tsc --noEmit
-      - run: npx eslint src/lib/catalog/inventory*.ts src/lib/catalog/paid-ad-pause.ts src/inngest/inventory.ts src/inngest/stock-pauses.ts src/inngest/shopify.ts src/app/api/shopify/webhooks/route.ts
+      - run: npx eslint src/lib/catalog src/inngest src/app/api/catalog src/app/api/shopify 'src/app/[locale]/dashboard/stores'
+      - run: node --experimental-strip-types --test tests/phase-one.test.ts
+      - run: node --test tests/catalog-training.test.mjs tests/catalog-photo-review.test.mjs
+      - run: bash scripts/test-phase-one.sh
+        env:
+          CATALOG_TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/phase_one
+      - run: npm run build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://catalog-test.supabase.co
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: sb_publishable_fixture

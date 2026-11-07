@@ -4,12 +4,12 @@ import type {PhotoReport,PhotoVerdict} from "@/lib/catalog/photo-check";
 
 const labels:Record<PhotoVerdict,string>={usable:"Meets size and uniqueness checks",small:"Too small · use a larger original",duplicate:"Duplicate or very similar photo",unreadable:"Couldn’t read this photo",not_checked:"Not checked · check limit reached"};
 const errors:Record<string,string>={ACCESS_DENIED:"Ask the workspace owner to open this product from a connected store on Grow or Scale.",PHOTOS_CHANGED:"The store photos changed during this check. Refresh this page before checking again.",CHECK_BUSY:"Please wait a minute before checking again.",CHECK_UNAVAILABLE:"We couldn’t finish the check. Please try again.",INVALID_REQUEST:"Refresh this page and try again."};
-export function PhotoReview({itemId,images}:{itemId:string;images:string[]}){
+export function PhotoReview({itemId,images,includeUploads=false,showPhotos=true}:{itemId:string;images:string[];includeUploads?:boolean;showPhotos?:boolean}){
  const [report,setReport]=useState<PhotoReport|null>(null),[pending,setPending]=useState(false),[error,setError]=useState("");
  async function check(){
   setPending(true);setError("");setReport(null);
   try{
-   const response=await fetch("/api/catalog/photos/check",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({itemId}),signal:AbortSignal.timeout(60000)}),data=await response.json();
+   const response=await fetch("/api/catalog/photos/check",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({itemId,includeUploads}),signal:AbortSignal.timeout(60000)}),data=await response.json();
    if(!response.ok){setError(errors[data.code]??errors.CHECK_UNAVAILABLE);return;}setReport(data.report);
   }catch{setError(errors.CHECK_UNAVAILABLE);}finally{setPending(false);}
  }
@@ -24,10 +24,11 @@ export function PhotoReview({itemId,images}:{itemId:string;images:string[]}){
    {error&&<p className="rounded-xl border border-line p-4">{error}</p>}
    {report&&<div data-photo-summary className="rounded-xl border border-line bg-surface p-4"><p className="font-semibold">Suitable photos: {report.usable} · Minimum: {report.minimum}</p><p className="mt-2 text-muted">{report.ready?"Ready for a visual review. Check that every photo shows the correct product, color and details.":`Add or replace photos in your store, then sync again. You need at least ${Math.max(0,report.minimum-report.usable)} more suitable photos.`}</p>{!report.complete&&<p className="mt-2 text-muted">Some photos were not checked because the check reached its processing limit.</p>}<p className="mt-2 text-xs text-muted">Size and duplicate checks do not verify product accuracy or guarantee the quality of a trained model.</p></div>}
   </div>
-  {images.length===0?<p className="mt-5 text-sm text-muted">No photos were imported. Add photos to this product in your store, then sync again.</p>:<ul className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">{images.map((url,index)=>{const result=report?.photos.find(p=>p.index===index);return <li key={index} className="min-w-0 overflow-hidden rounded-xl border border-line">
+  {!showPhotos&&report&&<details className="mt-4"><summary className="min-h-11 cursor-pointer text-sm">See individual photo checks</summary><ol className="mt-2 space-y-2 text-sm text-muted">{report.photos.map(p=><li key={p.index}>Photo {p.index+1}: {labels[p.status]}</li>)}</ol></details>}
+  {showPhotos&&(images.length===0?<p className="mt-5 text-sm text-muted">No photos were imported. Add photos to this product in your store, then sync again.</p>:<ul className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">{images.map((url,index)=>{const result=report?.photos.find(p=>p.index===index);return <li key={index} className="min-w-0 overflow-hidden rounded-xl border border-line">
    {/* eslint-disable-next-line @next/next/no-img-element -- merchant catalog hosts vary; keep their photos outside the optimizer. */}
    <img src={url} alt={"Product photo "+(index+1)} width={240} height={280} loading="lazy" referrerPolicy="no-referrer" className="aspect-[6/7] w-full bg-surface object-contain"/>
    <div className="p-3"><p className="text-sm font-medium">Photo {index+1}</p><p data-photo-verdict className="mt-1 text-xs leading-relaxed text-muted">{result?labels[result.status]:"Not checked yet"}</p>{result?.width&&result?.height&&<p className="mt-1 text-xs text-muted">{result.width} × {result.height}</p>}</div>
-  </li>;})}</ul>}
+  </li>;})}</ul>)}
  </section>;
 }

@@ -117,6 +117,7 @@ export type When =
 
 type CreativeRow = {
   id: string;
+  generation_id: string;
   workspace_id: string;
   kind: "image" | "video";
   aspect: string;
@@ -158,7 +159,7 @@ export async function publishCreatives({
     db
       .from("creatives")
       .select(
-        "id, workspace_id, kind, aspect, storage_path, headline, primary_text, cta, generations(request_options, products(url))",
+        "id, generation_id, workspace_id, kind, aspect, storage_path, headline, primary_text, cta, generations(request_options, products(url))",
       )
       .eq("workspace_id", workspaceId)
       .in("id", creativeIds)

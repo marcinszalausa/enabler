@@ -11,11 +11,11 @@ function load(file,mocks){
 }
 test("lost paid submission response is never retried on replay",async()=>{
  let creates=0,claims=0;
- const job={status:"dataset_ready",workspace_id:"w",catalog_items:{product_url:"https://store.example/p",connection_id:"c"},dataset_path:"private.zip",destination:"private/model",trainer_version:"a".repeat(64)};
+ const job={status:"dataset_ready",training_requested_at:"2026-11-07T00:00:00Z",source_reviewed_at:"2026-11-07T00:00:00Z",consent_user_id:"owner",workspace_id:"w",catalog_items:{product_url:"https://store.example/p",connection_id:"c"},dataset_path:"private.zip",destination:"private/model",trainer_version:"a".repeat(64)};
  const chain={select(){return this;},eq(){return this;},is(){return this;},update(p){Object.assign(job,p);return this;},async single(){return {data:job,error:null};},then(resolve){resolve({error:null});}};
  const db={from(table){if(table==="catalog_connections")return {select(){return this;},eq(){return this;},async single(){return {data:{enabled:true}};}};return chain;},storage:{from(){return {async createSignedUrl(){return {data:{signedUrl:"https://private.example/signed"}};}};}},async rpc(){claims++;if(job.status!=="dataset_ready")return {data:false};job.status="submitting";return {data:true};}};
  const training=load("src/lib/catalog/training.ts",{
- "server-only":{},"@/lib/supabase/admin":{createAdminClient:()=>db},
+ "./training-policy":{trainingSetup:()=>({configured:true,spendingEnabled:true})},"server-only":{},"@/lib/supabase/admin":{createAdminClient:()=>db},
  "./replicate":{async createTraining(){creates++;throw new Error("response lost");}},
  "./store":{async jobStatus(id,p){Object.assign(job,p);}},"./security":{trainingAllowed:()=>true}
  });
@@ -26,7 +26,7 @@ test("lost paid submission response is never retried on replay",async()=>{
 });
 test("disabled training never signs data or submits",async()=>{
  const training=load("src/lib/catalog/training.ts",{
- "server-only":{},"@/lib/supabase/admin":{createAdminClient:()=>({from(){return {select(){return this;},eq(){return this;},async single(){return {data:{status:"dataset_ready",workspace_id:"w",catalog_items:{product_url:"p"}}};}};}})},
+ "./training-policy":{trainingSetup:()=>({configured:true,spendingEnabled:true})},"server-only":{},"@/lib/supabase/admin":{createAdminClient:()=>({from(){return {select(){return this;},eq(){return this;},async single(){return {data:{status:"dataset_ready",workspace_id:"w",catalog_items:{product_url:"p"}}};}};}})},
  "./replicate":{createTraining(){throw new Error("must not call provider");}},
  "./store":{},"./security":{trainingAllowed:()=>false}
  });
@@ -35,7 +35,7 @@ test("disabled training never signs data or submits",async()=>{
 test("insufficient source imagery blocks before download or paid submission",async()=>{
  let saved;
  const dataset=load("src/lib/catalog/dataset.ts",{
- "server-only":{},"node:crypto":{createHash(){throw new Error("no hashing needed");}},
+ "./training-policy":{trainingSetup:()=>({configured:true,spendingEnabled:true})},"server-only":{},"node:crypto":{createHash(){throw new Error("no hashing needed");}},
  fflate:{},"./photo-check":{MIN_TRAINING_IMAGES:10,scanCatalogPhotos(){throw new Error("must not process or fetch");}},
  "@/lib/public-fetch":{fetchPublicUrl(){throw new Error("must not fetch");}},
  "@/lib/supabase/admin":{createAdminClient:()=>({from(table){return {select(){return this;},eq(){return this;},async single(){return {data:table==="catalog_connections"?{enabled:true}:{status:"queued",workspace_id:"w",image_revision:"a",catalog_items:{image_revision:"a",product_url:"p",connection_id:"c",images:["single.jpg"]}}};}};}})},

@@ -7,6 +7,7 @@ import {loadConnection,receiveCatalog} from "@/lib/catalog/store";
 import {catalogWebhook} from "@/lib/catalog/normalize";
 import {inngest} from "@/inngest/client";
 import {INVENTORY_TOPICS,inventorySignalId} from "@/lib/catalog/inventory-policy";
+import {dispatchStockPauses} from "@/lib/catalog/stock-dispatch";
 export async function POST(request:Request){
  const secret=process.env.SHOPIFY_CLIENT_SECRET;if(process.env.VERCEL_ENV!=="production"||!secret)return new Response(null,{status:503});
  try{
@@ -39,8 +40,8 @@ export async function POST(request:Request){
   if(INVENTORY_TOPICS.includes(topic??"")){
    const event=request.headers.get("x-shopify-webhook-id")??"";if(!/^[A-Za-z0-9._:-]{1,180}$/.test(event))return new Response(null,{status:400});
    const inventoryId=inventorySignalId(payload.inventory_item_id);
-   const {error:save}=await db.from("catalog_inventory_signals").upsert({store_id:store.id,installation_id:store.installation_id,event_id:event,inventory_item_id:inventoryId},{onConflict:"store_id,installation_id,event_id",ignoreDuplicates:true});if(save)throw new Error("INVENTORY_SIGNAL_WRITE_FAILED");
-   const {data:signal,error:read}=await db.from("catalog_inventory_signals").select("id,inventory_item_id").eq("store_id",store.id).eq("installation_id",store.installation_id).eq("event_id",event).single();if(read||signal.inventory_item_id!==inventoryId)throw new Error("INVENTORY_SIGNAL_CONFLICT");
+   const {error:save}=await db.from("catalog_inventory_signals").upsert({store_id:store.id,installation_id:store.installation_id,event_id:event,resource_id:inventoryId},{onConflict:"store_id,installation_id,event_id",ignoreDuplicates:true});if(save)throw new Error("INVENTORY_SIGNAL_WRITE_FAILED");
+   const {data:signal,error:read}=await db.from("catalog_inventory_signals").select("id,resource_id").eq("store_id",store.id).eq("installation_id",store.installation_id).eq("event_id",event).single();if(read||signal.resource_id!==inventoryId)throw new Error("INVENTORY_SIGNAL_CONFLICT");
    after(async()=>{try{await inngest.send({id:"inventory-signal-"+signal.id,name:"catalog/inventory.changed",data:{signalId:signal.id}});}catch{console.error("Inventory reconciliation deferred",signal.id);}});
    return new Response(null,{status:200});
   }
@@ -51,10 +52,15 @@ export async function POST(request:Request){
   }
   if(!["products/create","products/update"].includes(topic??""))return new Response(null,{status:200});
   const c=await loadConnection(store.connection_id),products=catalogWebhook(payload,c,topic!);
-  if(payload.status&&payload.status!=="active")products.forEach(p=>p.inventoryQuantity=0);
+  const {data:prior,error:priorError}=await db.from("catalog_items").select("inventory_quantity,inventory_updated_at").eq("connection_id",c.id).eq("external_id",String(payload.id)).maybeSingle();if(priorError)throw new Error("CATALOG_READ_FAILED");
+  // Payloads may truncate variants. Preserve known stock until GraphQL
+  // confirms the aggregate; archived products are unavailable.
+  products.forEach(p=>{p.inventoryQuantity=payload.status&&payload.status!=="active"?0:prior?.inventory_quantity??null;p.inventoryUpdatedAt=payload.status&&payload.status!=="active"?p.updatedAt:prior?.inventory_updated_at??p.updatedAt;});
   const id=await receiveCatalog(c,request.headers.get("x-shopify-webhook-id")??"",body,products);
   const {error:apply}=await db.rpc("apply_catalog_delivery",{delivery:id});if(apply)throw new Error("CATALOG_DELIVERY_APPLY_FAILED");
-  after(async()=>{try{await inngest.send({name:"catalog/delivery.received",data:{deliveryId:id}});}catch{console.error("Shopify delivery deferred",id);}});
+  const productGid="gid://shopify/Product/"+String(payload.id);if(!/^gid:\/\/shopify\/Product\/[0-9]+$/.test(productGid))return new Response(null,{status:400});
+  const event="product:"+(request.headers.get("x-shopify-webhook-id")??"");const {error:stock}=await db.from("catalog_inventory_signals").upsert({store_id:store.id,installation_id:store.installation_id,event_id:event,resource_id:productGid},{onConflict:"store_id,installation_id,event_id",ignoreDuplicates:true});if(stock)throw new Error("INVENTORY_SIGNAL_WRITE_FAILED");
+  after(async()=>{try{await dispatchStockPauses(c.id);await inngest.send({name:"catalog/delivery.received",data:{deliveryId:id}});}catch{console.error("Shopify delivery deferred",id);}});
   return new Response(null,{status:200});
  }catch(e){return new Response(null,{status:e instanceof Error&&e.message==="CATALOG_UPGRADE_REQUIRED"?200:503});}
 }

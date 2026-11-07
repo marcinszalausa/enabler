@@ -6,18 +6,20 @@ import {canonicalProduct} from "@/lib/catalog/normalize";
 import {receiveCatalog,loadConnection} from "@/lib/catalog/store";
 import {createHash} from "node:crypto";
 import {shopifyQuantity} from "@/lib/catalog/inventory-policy";
-type ProductPage={products:{nodes:{id:string;handle:string;title:string;updatedAt:string;status:string;tracksInventory:boolean;totalInventory:number;images:{nodes:{url:string}[]}}[];pageInfo:{hasNextPage:boolean;endCursor:string|null}}};
+import {dispatchStockPauses} from "@/lib/catalog/stock-dispatch";
+type ProductPage={products:{nodes:{id:string;handle:string;title:string;updatedAt:string;status:string;tracksInventory:boolean;totalInventory:number;variants:{nodes:{inventoryItem:{tracked:boolean}}[];pageInfo:{hasNextPage:boolean}};images:{nodes:{url:string}[]}}[];pageInfo:{hasNextPage:boolean;endCursor:string|null}}};
 export async function syncShopifyPage(storeId:string,installationId:string){
  const db=createAdminClient(),auth=await storeToken(storeId,installationId),store=auth.store;
  if(store.status!=="syncing")return {done:true};
  const c=await loadConnection(store.connection_id);
  const observed=new Date().toISOString();
- const page=await graph<ProductPage>(store.shop,auth.token,`query Catalog($after:String){products(first:20,after:$after,sortKey:ID){nodes{id handle title updatedAt status tracksInventory totalInventory images(first:30){nodes{url}}}pageInfo{hasNextPage endCursor}}}`,{after:store.sync_cursor});
- const products=page.products.nodes.map(p=>canonicalProduct({externalId:p.id.split("/").pop(),name:p.title,url:c.store_origin+"/products/"+encodeURIComponent(p.handle),images:p.images.nodes.map(i=>i.url),inventoryQuantity:shopifyQuantity(p),inventoryUpdatedAt:observed,updatedAt:p.updatedAt},c));
+ const page=await graph<ProductPage>(store.shop,auth.token,`query Catalog($after:String){products(first:20,after:$after,sortKey:ID){nodes{id handle title updatedAt status tracksInventory totalInventory variants(first:20){nodes{inventoryItem{tracked}}pageInfo{hasNextPage}} images(first:30){nodes{url}}}pageInfo{hasNextPage endCursor}}}`,{after:store.sync_cursor});
+ const products=page.products.nodes.map(p=>canonicalProduct({externalId:p.id.split("/").pop(),name:p.title,url:c.store_origin+"/products/"+encodeURIComponent(p.handle),images:p.images.nodes.map(i=>i.url),inventoryQuantity:shopifyQuantity({...p,allVariantsTracked:!!p.variants&&!p.variants.pageInfo.hasNextPage&&p.variants.nodes.length>0&&p.variants.nodes.every(v=>v.inventoryItem.tracked)}),inventoryUpdatedAt:observed,updatedAt:p.updatedAt},c));
  if(products.length){
   const body=Buffer.from(JSON.stringify(products)),hash=createHash("sha256").update(body).digest("hex");
   const delivery=await receiveCatalog(c,"shopify-import:"+installationId+":"+hash,body,products);
   const {error}=await db.rpc("apply_catalog_delivery",{delivery});if(error)throw new Error("SHOPIFY_IMPORT_FAILED");
+  await dispatchStockPauses(c.id);
  }
  const done=!page.products.pageInfo.hasNextPage;
  if(!done&&(!page.products.pageInfo.endCursor||page.products.pageInfo.endCursor===store.sync_cursor))throw new Error("SHOPIFY_CURSOR_INVALID");
