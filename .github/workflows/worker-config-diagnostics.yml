@@ -1,7 +1,7 @@
 name: Worker configuration diagnostics
 on:
   push:
-    branches: [fix/inngest-config-diagnostic]
+    branches: [fix/inngest-config-diagnostic, fix/inngest-key-format-diagnostic]
   pull_request:
     paths: ['src/lib/catalog/security.ts','src/app/api/inngest/route.ts','tests/catalog-worker-config.test.ts','.github/workflows/worker-config-diagnostics.yml']
 permissions:

@@ -22,3 +22,13 @@ export function catalogWorkerConfigurationIssues(env:Record<string,string|undefi
  if(!env.INNGEST_SIGNING_KEY?.trim())issues.push("INNGEST_SIGNING_KEY");
  return issues;
 }
+
+/** Reasons contain no values or exact secret lengths. */
+export function catalogWorkerConfigurationDetails(env:Record<string,string|undefined>=process.env){
+ const details:Record<string,string>={};
+ for(const name of catalogWorkerConfigurationIssues(env)){
+  const value=env[name];
+  details[name]=!value?"missing":name==="CATALOG_ENCRYPTION_KEY"?(value.length!==64?"wrong_length":"not_hexadecimal"):name==="CATALOG_INGESTION_ENABLED"?"must_be_true":"blank";
+ }
+ return details;
+}
