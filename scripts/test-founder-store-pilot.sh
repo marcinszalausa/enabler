@@ -11,3 +11,6 @@ create policy fixture_member_read on public.workspace_members for select to auth
 SQL
 psql "$CATALOG_TEST_DATABASE_URL" -X -v ON_ERROR_STOP=1 -f supabase/migrations/20261107024517_founder_store_pilot.sql
 psql "$CATALOG_TEST_DATABASE_URL" -X -v ON_ERROR_STOP=1 -f supabase/tests/founder-store-pilot.sql
+
+psql "$CATALOG_TEST_DATABASE_URL" -X -v ON_ERROR_STOP=1 -f supabase/migrations/20261107051818_ongoing_founder_store_access.sql
+psql "$CATALOG_TEST_DATABASE_URL" -X -v ON_ERROR_STOP=1 -f supabase/tests/ongoing-founder-store-access.sql

@@ -1,10 +1,15 @@
-# Founder store connection pilot
-An operator can authorize one workspace owner to test one Shopify store for up to seven days using store_connection_pilots. Only service_role can write a grant. The database rejects longer grants; requests check expiry, revocation and current ownership. Grant metadata is readable only by the named current owner. No subscription, plan, credit balance, training allowance or other paid capability is granted.
+# Founder store access and limited pilots
 
-The normal Grow/Scale entitlement continues unchanged. The pilot opens the existing catalog-only access gate for its owner and trusted workers, and database write guards restrict pilot connections and ingestion to Shopify and the grant's store host (with or without www). Other platforms/domains are denied. The dashboard labels the founder test and expiry and hides other platform connection buttons for a pilot-only owner.
+An operator can authorize a verified workspace owner for one Shopify store using store_connection_pilots. Only service_role can write a grant. Grant metadata is readable only by the named current owner. This never creates a subscription, changes a plan, refills credits, or enables paid training.
 
-Workers check the entitlement before accessing provider tokens. Expired or revoked pilots cannot import or read catalog data, reconnect, or enable catalog sources. Disconnect remains available. Existing encrypted credentials are retained until disconnection or existing erasure procedures; the grant does not promise deletion at expiry.
+- access_kind=founder: ongoing access with expires_at NULL; no subscription or seven-day cutoff.
+- access_kind=pilot: expires_at is required and must be within seven days of granted_at.
+- Both require an unrevoked grant, a grant start in the past, and current ownership. Neither can be self-granted.
 
-Activation is an operator action after verified owner identity and explicit founder authorization. Production grants must not be inserted by the migration. An operator records granted_at and expires_at exactly seven days apart on the authorized workspace and Shopify store host. Renewals require a separate deliberate authorization.
+The normal Grow/Scale subscription entitlement is unchanged. Customers do not receive a seven-day store trial through this exception. Grants open catalog-only access for their named owner and trusted workers, with database write guards restricted to Shopify and the authorized store host (with or without www). Other platforms/domains are denied.
 
-Rollback: revoke the grant (set revoked_at). Do not change billing data or fabricate a Stripe subscription. Keep the table and policies while any deployed code references them.
+Workers check access before reading provider tokens. Revoked grants, expired pilots and ownership loss stop catalog reads/imports/reconnection. Disconnect remains available; encrypted credentials are retained until disconnection or existing erasure procedures.
+
+Activation or conversion to ongoing founder access requires explicit authorization and verified owner identity. Migrations never insert production grants. Set access_kind=founder and expires_at=NULL only for the authorized existing founder grant. Preserve the workspace's billing, credit and training fields.
+
+Rollback: set revoked_at. Keep the schema while deployed code references it. Never fabricate Stripe subscriptions or change customer plans as a shortcut.

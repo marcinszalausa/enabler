@@ -1,9 +1,9 @@
 name: Founder store pilot
 on:
   push:
-    branches: [feat/founder-store-pilot]
+    branches: [feat/founder-access-and-calibration]
   pull_request:
-    paths: ['supabase/*/*founder_store*','src/app/[locale]/dashboard/stores/page.tsx','scripts/test-founder-store-pilot.sh','.github/workflows/founder-store-pilot.yml']
+    paths: ['src/app/_landing/calibration-funnel.tsx','src/app/globals.css','src/app/[locale]/page.tsx','scripts/test-calibration-browser.mjs','supabase/*/*founder_store*','src/app/[locale]/dashboard/stores/page.tsx','scripts/test-founder-store-pilot.sh','.github/workflows/founder-store-pilot.yml']
 permissions:
   contents: read
 jobs:
@@ -34,7 +34,7 @@ jobs:
         env:
           CATALOG_TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/founder_pilot
       - run: npx next typegen && npx tsc --noEmit
-      - run: npx eslint 'src/app/[locale]/dashboard/stores/page.tsx'
+      - run: npx eslint 'src/app/[locale]/dashboard/stores/page.tsx' 'src/app/[locale]/page.tsx' src/app/_landing/calibration-funnel.tsx
       - name: Production build
         run: npm run build
         env:
@@ -42,3 +42,27 @@ jobs:
           NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: sb_publishable_fixture
           CATALOG_INGESTION_ENABLED: 'false'
           SHOPIFY_CONNECT_ENABLED: 'false'
+
+      - name: Install isolated browser test tools
+        run: |
+          npm install --prefix /tmp/gooidy-browser --no-save --package-lock=false playwright@1.56.1
+          /tmp/gooidy-browser/node_modules/.bin/playwright install --with-deps chromium
+      - name: Exercise calibration funnel in production server
+        run: |
+          npm run start >/tmp/gooidy-test-server.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" || true' EXIT
+          for attempt in $(seq 1 60); do
+            if curl -sf http://localhost:3000/en >/dev/null; then break; fi
+            sleep 1
+          done
+          node scripts/test-calibration-browser.mjs
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://catalog-test.supabase.co
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: sb_publishable_fixture
+      - name: Save browser previews
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: calibration-previews
+          path: /tmp/calibration-*.png
