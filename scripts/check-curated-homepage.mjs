@@ -26,7 +26,7 @@ try{
   for(let y=0;y<await page.evaluate(()=>document.documentElement.scrollHeight);y+=650){await page.evaluate(y=>scrollTo(0,y),y);await page.waitForTimeout(100);}
   await page.waitForFunction(()=>[...document.images].filter(i=>i.getBoundingClientRect().width>0).every(i=>i.complete&&i.naturalWidth>0),{},{timeout:30000});
   const snapshots=await page.locator("img[data-home-snapshot]").evaluateAll(imgs=>imgs.map(i=>({src:i.currentSrc,fit:getComputedStyle(i).objectFit})));
-  assert.ok(snapshots.length>=10);assert.ok(snapshots.every(i=>i.fit==="contain"));
+  assert.ok(snapshots.length>=8);assert.equal(await page.locator('#how img[data-home-snapshot]').count(),2);assert.equal(await page.locator('[data-store-workflow-preview] img[data-home-snapshot]').count(),1);assert.ok(snapshots.every(i=>i.fit==="contain"));
   assert.equal(await page.locator("[data-home-fallback]").count(),0);assert.deepEqual(dynamic,[]);assert.deepEqual(errors,[]);
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
   console.log("CURATED_BROWSER_VERIFIED",JSON.stringify({width,snapshots:snapshots.length,broken:0,databaseCredentials:false}));
