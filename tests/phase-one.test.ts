@@ -3,6 +3,16 @@ import assert from "node:assert/strict";
 import {shopifyQuantity,inventorySignalId} from "../src/lib/catalog/inventory-policy.ts";
 import {pausePaidAd,type PaidBinding} from "../src/lib/catalog/paid-ad-pause.ts";
 import {trainingSetup,selectedPhotoKeys} from "../src/lib/catalog/training-policy.ts";
+import {paidIntentMatches} from "../src/lib/catalog/paid-connect-policy.ts";
+import {createHash} from "node:crypto";
+test("paid OAuth receipt is bound to the same authenticated actor, browser nonce and expiry",()=>{
+ const nonce="a".repeat(64),now=Date.now(),intent={user_id:"owner",nonce_hash:createHash("sha256").update(nonce).digest("hex"),expires_at:new Date(now+60000).toISOString(),status:"authorized"};
+ assert.equal(paidIntentMatches(intent,"owner",nonce,now),true);
+ assert.equal(paidIntentMatches(intent,"other",nonce,now),false);
+ assert.equal(paidIntentMatches(intent,"owner","b".repeat(64),now),false);
+ assert.equal(paidIntentMatches({...intent,status:"consumed"},"owner",nonce,now),false);
+ assert.equal(paidIntentMatches(intent,"owner",nonce,now+60001),false);
+});
 test("zero stock is only authoritative after all variants are known tracked",()=>{
  assert.equal(shopifyQuantity({tracksInventory:false,totalInventory:0}),null);
  assert.equal(shopifyQuantity({tracksInventory:true,totalInventory:0}),null);

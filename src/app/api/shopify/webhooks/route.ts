@@ -55,7 +55,7 @@ export async function POST(request:Request){
   }
   if(topic==="products/delete"){
    const {data:item,error:read}=await db.from("catalog_items").select("id").eq("connection_id",store.connection_id).eq("external_id",String(payload.id)).maybeSingle();if(read)throw new Error("CATALOG_READ_FAILED");
-   if(item){const {error:save}=await db.rpc("apply_catalog_inventory",{connection:store.connection_id,external:String(payload.id),quantity:0,observed:request.headers.get("x-shopify-triggered-at")??new Date().toISOString()});if(save)throw new Error("CATALOG_DELETE_STOCK_FAILED");after(async()=>{try{await dispatchStockPauses(store.connection_id);}catch{console.error("Stock pause dispatch deferred",store.id);}});}
+   if(item){const {error:save}=await db.rpc("apply_catalog_inventory",{connection:store.connection_id,external:String(payload.id),quantity:0,observed:new Date().toISOString()});if(save)throw new Error("CATALOG_DELETE_STOCK_FAILED");after(async()=>{try{await dispatchStockPauses(store.connection_id);}catch{console.error("Stock pause dispatch deferred",store.id);}});}
    return new Response(null,{status:200});
   }
   if(!["products/create","products/update"].includes(topic??""))return new Response(null,{status:200});

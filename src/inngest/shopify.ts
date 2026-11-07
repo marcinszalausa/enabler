@@ -22,6 +22,12 @@ export async function syncShopifyPage(storeId:string,installationId:string){
   await dispatchStockPauses(c.id);
  }
  const done=!page.products.pageInfo.hasNextPage;
+ if(done){
+  // A complete scan also detects a missed deletion webhook. A concurrent
+  // product/inventory event updates updated_at and is excluded from this fence.
+  const {error:missing}=await db.from("catalog_items").update({inventory_quantity:0,inventory_updated_at:store.sync_started_at}).eq("connection_id",c.id).lt("updated_at",store.sync_started_at).or("inventory_updated_at.is.null,inventory_updated_at.lt."+store.sync_started_at);if(missing)throw new Error("SHOPIFY_RECONCILIATION_WRITE_FAILED");
+  await dispatchStockPauses(c.id);
+ }
  if(!done&&(!page.products.pageInfo.endCursor||page.products.pageInfo.endCursor===store.sync_cursor))throw new Error("SHOPIFY_CURSOR_INVALID");
  const {error}=await db.from("shopify_stores").update({sync_cursor:page.products.pageInfo.endCursor,status:done?"connected":"syncing",synced_at:done?new Date().toISOString():null,error_code:null}).eq("id",storeId).eq("installation_id",installationId).eq("status","syncing");
  if(error)throw new Error("SHOPIFY_IMPORT_SAVE_FAILED");return {done};

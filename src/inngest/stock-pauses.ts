@@ -19,6 +19,7 @@ export const pauseStockAds=inngest.createFunction({id:"catalog-pause-out-of-stoc
 });
 export const recoverStockPauses=inngest.createFunction({id:"catalog-stock-pause-recovery",triggers:{cron:"* * * * *"},retries:3,concurrency:{limit:1}},async({step})=>{
  const pending=await step.run("pending-pauses",async()=>{const {data,error}=await createAdminClient().from("catalog_stock_pauses").select("id").eq("status","pending").order("requested_at").limit(100);if(error)throw new Error("STOCK_PAUSE_RECOVERY_FAILED");return data??[];});
+ await step.run("erase-expired-account-intents",async()=>{const {error}=await createAdminClient().from("catalog_ad_connect_intents").delete().lt("expires_at",new Date().toISOString());if(error)throw new Error("PAID_CONNECT_CLEANUP_FAILED");});
  if(pending.length)await step.sendEvent("recover",pending.map(p=>({id:"stock-pause-"+p.id+"-"+Math.floor(Date.now()/60000),name:"catalog/stock.pause",data:{pauseId:p.id}})));
  return {pending:pending.length};
 });

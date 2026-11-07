@@ -206,7 +206,7 @@ language plpgsql security invoker set search_path='' as $$
 declare source uuid;begin
  perform pg_advisory_xact_lock(hashtextextended(ws::text||origin,714));
  if not public.can_connect_store(ws) then raise exception 'CATALOG_UPGRADE_REQUIRED';end if;
- select id into source from public.catalog_connections where workspace_id=ws and platform='custom' and store_origin=origin and enabled order by created_at limit 1;
+ select c.id into source from public.catalog_connections c where c.workspace_id=ws and c.platform='custom' and c.store_origin=origin and c.enabled and not exists(select 1 from public.platform_stores s where s.connection_id=c.id) order by c.created_at limit 1;
  if found then return source;end if;
  insert into public.catalog_connections(workspace_id,platform,store_origin,webhook_domain,enabled) values(ws,'custom',origin,substring(origin from 9),true) returning id into source;
  insert into public.catalog_connection_keys(connection_id,encrypted_secret) values(source,encrypted_key);return source;
@@ -243,3 +243,45 @@ end
 $fn$;
 revoke all on function public.apply_catalog_delivery(uuid) from public,anon,authenticated;
 grant execute on function public.apply_catalog_delivery(uuid) to service_role;
+
+alter table public.catalog_ad_accounts add column name text not null default '';
+alter table public.catalog_ad_accounts add column token_expires_at timestamptz;
+create index catalog_ad_accounts_workspace_idx on public.catalog_ad_accounts(workspace_id);
+create table public.catalog_ad_connect_intents(
+ id uuid primary key default gen_random_uuid(),workspace_id uuid not null references public.workspaces(id) on delete cascade,user_id uuid not null,
+ provider text not null check(provider in ('meta','tiktok')),state_hash text not null unique check(state_hash ~ '^[a-f0-9]{64}$'),nonce_hash text not null check(nonce_hash ~ '^[a-f0-9]{64}$'),
+ status text not null default 'pending' check(status in ('pending','exchanging','authorized','consumed')),
+ credentials_cipher text,expires_at timestamptz not null,created_at timestamptz not null default now()
+);
+create index catalog_ad_connect_intents_expiry_idx on public.catalog_ad_connect_intents(expires_at);
+create index catalog_ad_connect_intents_workspace_idx on public.catalog_ad_connect_intents(workspace_id);
+alter table public.catalog_ad_connect_intents enable row level security;
+revoke all on public.catalog_ad_connect_intents from public,anon,authenticated;
+grant all on public.catalog_ad_connect_intents to service_role;
+create policy service_access on public.catalog_ad_connect_intents for all to service_role using(true) with check(true);
+create function public.finalize_catalog_ad_account(intent_id uuid,actor uuid,nonce text,external text,account_name text,encrypted_token text,expiry timestamptz) returns uuid
+language plpgsql security invoker set search_path='' as $$
+declare intent public.catalog_ad_connect_intents;existing public.catalog_ad_accounts;saved uuid;begin
+ select * into intent from public.catalog_ad_connect_intents where id=intent_id and user_id=actor and nonce_hash=nonce and expires_at>now() and status='authorized' for update;
+ if not found or not public.can_connect_store(intent.workspace_id) or not public.is_workspace_member_for_catalog(intent.workspace_id,actor) then raise exception 'PAID_CONNECT_STATE_INVALID';end if;
+ perform pg_advisory_xact_lock(hashtextextended(intent.provider||external,715));
+ select * into existing from public.catalog_ad_accounts where provider=intent.provider and external_account_id=external;
+ if found and existing.workspace_id<>intent.workspace_id then raise exception 'PAID_ACCOUNT_WORKSPACE_CONFLICT';end if;
+ insert into public.catalog_ad_accounts(workspace_id,provider,external_account_id,credentials_cipher,enabled,name,token_expires_at)
+ values(intent.workspace_id,intent.provider,external,encrypted_token,true,left(account_name,200),expiry)
+ on conflict(provider,external_account_id) do update set credentials_cipher=excluded.credentials_cipher,enabled=true,name=excluded.name,token_expires_at=excluded.token_expires_at returning id into saved;
+ update public.catalog_ad_connect_intents set status='consumed',credentials_cipher=null where id=intent_id;return saved;
+end $$;
+create function public.bind_catalog_paid_ad(item uuid,account uuid,external text,actor uuid,binding_status text) returns uuid
+language plpgsql security invoker set search_path='' as $$
+declare ws uuid;saved uuid;previous public.catalog_ad_bindings;begin
+ select i.workspace_id into ws from public.catalog_items i join public.catalog_connections c on c.id=i.connection_id where i.id=item and c.enabled;
+ if ws is null or not public.can_connect_store(ws) or not public.is_workspace_member_for_catalog(ws,actor) or not exists(select 1 from public.catalog_ad_accounts where id=account and workspace_id=ws and enabled) or binding_status not in ('active','paused') then raise exception 'PAID_AD_ACCESS_DENIED';end if;
+ perform pg_advisory_xact_lock(hashtextextended(account::text||external,716));
+ select * into previous from public.catalog_ad_bindings where account_id=account and external_ad_id=external;
+ if found and (previous.workspace_id<>ws or previous.item_id<>item) then raise exception 'PAID_AD_ALREADY_BOUND';end if;
+ insert into public.catalog_ad_bindings(workspace_id,item_id,account_id,external_ad_id,status) values(ws,item,account,external,binding_status)
+ on conflict(account_id,external_ad_id) do update set status=excluded.status returning id into saved;return saved;
+end $$;
+revoke all on function public.finalize_catalog_ad_account(uuid,uuid,text,text,text,text,timestamptz),public.bind_catalog_paid_ad(uuid,uuid,text,uuid,text) from public,anon,authenticated;
+grant execute on function public.finalize_catalog_ad_account(uuid,uuid,text,text,text,text,timestamptz),public.bind_catalog_paid_ad(uuid,uuid,text,uuid,text) to service_role;

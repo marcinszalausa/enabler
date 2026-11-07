@@ -9,7 +9,7 @@ export function PhotoReview({itemId,images,includeUploads=false,showPhotos=true}
  async function check(){
   setPending(true);setError("");setReport(null);
   try{
-   const response=await fetch("/api/catalog/photos/check",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({itemId,includeUploads}),signal:AbortSignal.timeout(60000)}),data=await response.json();
+   const response=await fetch("/api/catalog/photos/check",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({itemId,...(includeUploads?{includeUploads:true}:{})}),signal:AbortSignal.timeout(60000)}),data=await response.json();
    if(!response.ok){setError(errors[data.code]??errors.CHECK_UNAVAILABLE);return;}setReport(data.report);
   }catch{setError(errors.CHECK_UNAVAILABLE);}finally{setPending(false);}
  }
