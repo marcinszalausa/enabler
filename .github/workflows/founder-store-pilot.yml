@@ -9,16 +9,36 @@ permissions:
 jobs:
   pilot:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: founder_pilot
+        ports: ['5432:5432']
+        options: --health-cmd "pg_isready -U postgres" --health-interval 5s --health-timeout 5s --health-retries 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Generate migration filename using pinned Supabase CLI
-        run: |
-          npx --yes supabase@2.81.0 --version
-          npx --yes supabase@2.81.0 migration new --help
-          npx --yes supabase@2.81.0 migration new founder_store_pilot
+          cache: npm
+      - run: npm ci
+      - name: Read installed Next server component guidance
+        run: find node_modules/next/dist/docs/01-app -type f \( -name '*server-and-client-components.md' -o -name '*page.md' \) -exec cat {} +
       - name: Read Supabase changelog
         run: curl --fail --silent --show-error https://supabase.com/changelog.md | head -c 20000
+      - name: Verify pilot, expiry, scope, billing invariants and existing premium access
+        run: bash scripts/test-founder-store-pilot.sh
+        env:
+          CATALOG_TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/founder_pilot
+      - run: npx next typegen && npx tsc --noEmit
+      - run: npx eslint 'src/app/[locale]/dashboard/stores/page.tsx'
+      - name: Production build
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://catalog-test.supabase.co
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: sb_publishable_fixture
+          CATALOG_INGESTION_ENABLED: 'false'
+          SHOPIFY_CONNECT_ENABLED: 'false'
