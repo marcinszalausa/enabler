@@ -3,10 +3,10 @@ import {syncPlatformStore,recoverPlatformStores} from "@/inngest/platform-stores
 import {serve} from "inngest/next";
 import {inngest} from "@/inngest/client";
 import {applyCatalog,trainCatalog,reconcileCatalog} from "@/inngest/catalog";
-import {catalogEnabled} from "@/lib/catalog/security";
+import {catalogWorkerConfigurationIssues} from "@/lib/catalog/security";
 export const maxDuration=300;
 const handler=serve({client:inngest,functions:[applyCatalog,trainCatalog,reconcileCatalog,syncShopify,recoverShopify,syncPlatformStore,recoverPlatformStores]});
-const unavailable=()=>Response.json({code:"CATALOG_WORKERS_NOT_CONFIGURED"},{status:503});
-export const GET=(...args:Parameters<typeof handler.GET>)=>catalogEnabled()&&!!process.env.INNGEST_SIGNING_KEY?handler.GET(...args):unavailable();
-export const POST=(...args:Parameters<typeof handler.POST>)=>catalogEnabled()&&!!process.env.INNGEST_SIGNING_KEY?handler.POST(...args):unavailable();
-export const PUT=(...args:Parameters<typeof handler.PUT>)=>catalogEnabled()&&!!process.env.INNGEST_SIGNING_KEY?handler.PUT(...args):unavailable();
+const unavailable=(settings:string[])=>Response.json({code:"CATALOG_WORKERS_NOT_CONFIGURED",missing_or_invalid_settings:settings},{status:503,headers:{"Cache-Control":"no-store"}});
+export const GET=(...args:Parameters<typeof handler.GET>)=>catalogWorkerConfigurationIssues().length===0?handler.GET(...args):unavailable(catalogWorkerConfigurationIssues());
+export const POST=(...args:Parameters<typeof handler.POST>)=>catalogWorkerConfigurationIssues().length===0?handler.POST(...args):unavailable(catalogWorkerConfigurationIssues());
+export const PUT=(...args:Parameters<typeof handler.PUT>)=>catalogWorkerConfigurationIssues().length===0?handler.PUT(...args):unavailable(catalogWorkerConfigurationIssues());

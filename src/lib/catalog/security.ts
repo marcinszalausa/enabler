@@ -13,3 +13,12 @@ export function verifyCatalogWebhook(c:CatalogConnection,headers:Headers,body:Ui
 export async function catalogBody(request:Request,max=1048576){const reader=request.body?.getReader();if(!reader)throw new Error("CATALOG_BODY_REQUIRED");const chunks:Uint8Array[]=[];let bytes=0;for(;;){const {done,value}=await reader.read();if(done)break;bytes+=value.length;if(bytes>max){await reader.cancel();throw new Error("CATALOG_BODY_TOO_LARGE");}chunks.push(value);}return Buffer.concat(chunks);}
 export function catalogEnabled(){return process.env.CATALOG_INGESTION_ENABLED==="true"&&/^[a-f0-9]{64}$/i.test(process.env.CATALOG_ENCRYPTION_KEY??"");}
 export function trainingAllowed(workspaceId:string,url:string){return process.env.VERCEL_ENV==="production"&&catalogEnabled()&&process.env.CATALOG_TRAINING_ENABLED==="true"&&process.env.CATALOG_PILOT_WORKSPACE_ID===workspaceId&&process.env.CATALOG_PILOT_PRODUCT_URL===url&&/^[a-f0-9]{64}$/.test(process.env.REPLICATE_TRAINER_VERSION??"")&&!!process.env.REPLICATE_API_TOKEN&&!!process.env.REPLICATE_TRAINING_DESTINATION;}
+
+/** Configuration names only; safe to expose in the disabled worker response. */
+export function catalogWorkerConfigurationIssues(env:Record<string,string|undefined>=process.env){
+ const issues:string[]=[];
+ if(env.CATALOG_INGESTION_ENABLED!=="true")issues.push("CATALOG_INGESTION_ENABLED");
+ if(!/^[a-f0-9]{64}$/i.test(env.CATALOG_ENCRYPTION_KEY??""))issues.push("CATALOG_ENCRYPTION_KEY");
+ if(!env.INNGEST_SIGNING_KEY?.trim())issues.push("INNGEST_SIGNING_KEY");
+ return issues;
+}
