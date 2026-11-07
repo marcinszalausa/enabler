@@ -14,7 +14,7 @@ create table public.store_connect_intents(
  provider text not null check(provider in('woocommerce','wix','squarespace','bigcommerce')),
  expected_url text,
  expected_key text,
- check(provider not in(\'woocommerce\',\'bigcommerce\') or (expected_key is not null and expected_url is not null)),
+ check(provider not in('woocommerce','bigcommerce') or (expected_key is not null and expected_url is not null)),
  receipt_hash text,
  expires_at timestamptz not null
 );
