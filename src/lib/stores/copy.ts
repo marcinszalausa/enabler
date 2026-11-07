@@ -1,0 +1,4 @@
+const labels:Record<string,string>={
+ en:"Connect your store and import products",pl:"Połącz swój sklep i importuj produkty",es:"Conecta tu tienda e importa productos",pt:"Conecte sua loja e importe produtos",fr:"Connectez votre boutique et importez vos produits",de:"Verbinde deinen Shop und importiere Produkte",it:"Collega il tuo negozio e importa i prodotti",nl:"Koppel je winkel en importeer producten",sv:"Anslut din butik och importera produkter",tr:"Mağazanızı bağlayın ve ürünleri içe aktarın",ro:"Conectează magazinul și importă produse",cs:"Propojte svůj obchod a importujte produkty",ja:"ストアを連携して商品を取り込む",ko:"스토어를 연결하고 상품 가져오기",zh:"连接店铺并导入商品",hi:"अपना स्टोर जोड़ें और उत्पाद आयात करें",ar:"اربط متجرك واستورد المنتجات"
+};
+export function storeConnectionFeature(locale:string){return labels[locale]??labels.en;}

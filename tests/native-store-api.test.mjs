@@ -49,3 +49,13 @@ test("native catalog normalization keeps original images and unknown stock, neve
  const wix=catalog.nativeProduct("wix",{id:"product",name:"Real",productPageUrl:{base:"https://store.example/mysite",path:"/product"},media:{items:[{image:{url:"https://static.wixstatic.com/media/source.jpg/v1/fit/w_50,h_50/file.jpg"}}]}},c,"2026-01-01T00:00:00Z","https://store.example");
  assert.equal(wix.images[0],"https://static.wixstatic.com/media/source.jpg");assert.equal(wix.url,"https://store.example/mysite/product");
 });
+
+test("BigCommerce exchanges an actual app code and uses the verified store context",async()=>{
+ const calls=[],scope="store_v2_information_read_only store_v2_products_read_only";
+ const api=moduleAt("src/lib/stores/api.ts",{"server-only":{},"./providers":providers,"@/lib/public-fetch":{}},async(url,options)=>{
+  calls.push({url,options});return Response.json(url.includes("/oauth2/token")?{access_token:"fixture",context:"stores/store123",scope:"store_v2_products_read_only store_v2_information_read_only"}:{name:"Store",secure_url:"https://store.example"});
+ });
+ const proof=await api.authorizeProof("bigcommerce",new URLSearchParams({context:"stores/store123",scope,code:"code"}),null,null);
+ assert.equal(proof.providerId,"stores/store123");assert.equal(proof.storeUrl,"https://store.example");
+ assert.equal(calls[1].url,"https://api.bigcommerce.com/stores/store123/v2/store");assert.equal(calls[1].options.headers["X-Auth-Token"],"fixture");
+});
