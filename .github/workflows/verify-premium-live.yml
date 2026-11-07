@@ -1,0 +1,62 @@
+name: Verify premium homepage in production
+on:
+  push:
+    branches: [ops/verify-premium-homepage]
+permissions:
+  contents: read
+jobs:
+  live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Verify live homepage, previews, video and checkout lock
+        run: |
+          python - <<'PY'
+          import json, re, time, urllib.request, urllib.error
+          from html.parser import HTMLParser
+          base='https://gooidy.com'
+          html=''
+          for attempt in range(24):
+              try:
+                  with urllib.request.urlopen(base+'/?release=be990849',timeout=20) as response:
+                      html=response.read().decode()
+                  if 'data-studio-home' in html and 'Made to stand out.' in html:
+                      break
+              except (urllib.error.URLError,TimeoutError):
+                  pass
+              time.sleep(5)
+          else:
+              raise AssertionError('New homepage is not live yet')
+          assert 'Your product.' in html and 'data-calibration' not in html
+          class Markup(HTMLParser):
+              def __init__(self):
+                  super().__init__();self.images=[];self.ads=[];self.buys=[]
+              def handle_starttag(self,tag,attrs):
+                  props=dict(attrs)
+                  if tag=='img' and props.get('data-home-snapshot'):
+                      self.images.append(props['data-home-snapshot'])
+                  if tag=='figure' and props.get('data-studio-ad'):
+                      self.ads.append(props['data-studio-ad'])
+                  if tag=='button' and props.get('data-buy-plan'):
+                      self.buys.append('disabled' in props)
+          page=Markup();page.feed(html)
+          assert len(page.ads)==5
+          assert len(page.buys)==3 and all(page.buys)
+          for path in list(dict.fromkeys(page.images))[:5]:
+              with urllib.request.urlopen(urllib.request.Request(base+path,method='HEAD'),timeout=20) as response:
+                  assert response.status==200
+                  assert response.headers.get('Content-Type','').startswith('image/webp')
+          video=urllib.request.Request(base+'/showcase/walk-8b95514506eb.mp4',headers={'Range':'bytes=0-1023'})
+          with urllib.request.urlopen(video,timeout=20) as response:
+              assert response.status in (200,206)
+              assert response.headers.get('Content-Type','').startswith('video/mp4')
+              assert response.read(1024)[4:8]==b'ftyp'
+          request=urllib.request.Request(base+'/api/billing/checkout',data=b'{}',headers={'Content-Type':'application/json'},method='POST')
+          try:
+              urllib.request.urlopen(request,timeout=20)
+              raise AssertionError('Checkout must remain blocked')
+          except urllib.error.HTTPError as response:
+              assert response.code==503
+              assert json.loads(response.read())['code']=='CHECKOUT_NOT_AVAILABLE'
+          print('LIVE_PREMIUM_HOMEPAGE_VERIFIED: HTTP 200; five ad examples; full image files; MP4 range delivery; three disabled Buy controls; checkout returns 503.')
+          PY
