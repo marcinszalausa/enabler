@@ -13,12 +13,11 @@ import { LANGUAGES } from "@/lib/video-options";
 import { DEFAULT_VIDEO_OPTIONS } from "@/lib/video-options";
 import { Nav, UrlForm, SectionHeading, Footer } from "@/app/_landing/chrome";
 import { AngleExplorer, type AngleAd } from "@/app/_landing/angle-explorer";
-import { HeroStage } from "@/app/_landing/hero-stage";
+import { CalibrationFunnel } from "@/app/_landing/calibration-funnel";
 import { RunDemo, type DemoRun } from "@/app/_landing/run-demo";
 import { Reveal } from "@/app/_landing/reveal";
 import { Placements, type PlacementAd } from "@/app/_landing/placements";
 import { StickyCta } from "@/app/_landing/sticky-cta";
-import { Spotlight } from "@/app/_landing/spotlight";
 import { PublicPricing } from "@/app/_landing/public-pricing";
 import { TRY_MODE } from "@/lib/paid-plans";
 import { CreditGuide } from "@/app/_landing/credit-guide";
@@ -54,10 +53,10 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
   const run = runs[0];
   const pictured = runs.find((r) => r.productImage && homepagePhoto(r.productImage));
   return (
-    <div className="landing flex flex-1 flex-col bg-bg text-fg">
+    <div className="landing minimal-landing flex flex-1 flex-col bg-bg text-fg">
       <Nav />
       <main id="main-content" tabIndex={-1} className="flex-1">
-        <Hero t={t} feed={hero.feed} left={hero.left} right={hero.right} />
+        <Hero t={t} locale={locale} feed={hero.feed} left={hero.left} right={hero.right} />
         <WorksWith t={t} />
         {pictured && <FromPhoto run={pictured} />}
         {run ? <HowItWorksLive t={t} run={run} /> : <HowItWorks t={t} />}
@@ -73,7 +72,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
       </main>
       <Footer />
       <StickyCta />
-      <Spotlight />
+
       <Reveal />
       <script
         type="application/ld+json"
@@ -156,60 +155,19 @@ function duration(seconds: number) {
   return `${m} min`;
 }
 
-function Hero({
-  t,
-  feed,
-  left,
-  right,
-}: {
-  t: Messages;
-  feed: FeedAd[];
-  left?: FeedAd;
-  right?: FeedAd;
-}) {
-  return (
-    <section className="relative isolate overflow-hidden">
-      <div className="aurora" aria-hidden>
-        <span />
-        <span />
-        <span />
-      </div>
-      <div className="grid-fade" aria-hidden />
-      <div className="mx-auto flex max-w-6xl flex-col items-center px-4 pt-14 text-center sm:pt-20">
-        <p className="glass inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm text-muted">
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60 motion-reduce:animate-none" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
-          </span>
-          {t.home.badge}
-        </p>
-        <h1 className="mt-6 max-w-5xl text-[2.6rem] font-semibold leading-[1.02] tracking-[-0.028em] sm:text-7xl lg:text-[5.25rem]">
-          {t.home.titleLine1}
-          <br />
-          {t.home.titleBefore}
-          <span className="text-shimmer">{t.home.titleWord}</span>
-          {t.home.titleAfter}
-        </h1>
-        <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-muted sm:text-xl">
-          {t.home.intro}
-        </p>
-        <div className="mt-9 flex w-full justify-center">
-          <UrlForm id="url-top" />
-        </div>
-        <ul className="mt-5 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-muted">
-          {t.home.facts.map((f) => (
-            <li key={f} className="flex items-center gap-2">
-              <span className="text-accent">✓</span>
-              {fmt(f, COUNTS)}
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="relative mx-auto mt-16 max-w-6xl px-4 pb-24">
-        {feed.length>0&&<HeroStage feed={feed} left={left} right={right} />}
-      </div>
-    </section>
-  );
+function Hero({t,locale,feed,left,right}:{t:Messages;locale:Locale;feed:FeedAd[];left?:FeedAd;right?:FeedAd}) {
+  const examples=[left,feed[0],right].filter((ad):ad is FeedAd=>!!ad);
+  const unique=distinctProducts(examples);
+  return <section className="minimal-hero">
+    <div className="mx-auto max-w-6xl px-5 text-center">
+      <p className="calibration-eyebrow">Gooidy · Your creative workspace</p>
+      <h1>{locale==="en"?"Product ads without the production work.":<>{t.home.titleLine1} {t.home.titleBefore}{t.home.titleWord}{t.home.titleAfter}</>}</h1>
+      <p className="minimal-hero-intro">{locale==="en"?"Bring your products. Create on-brand image and video ads, then plan and publish from one workspace.":t.home.intro}</p>
+      <div className="mx-auto mt-10 flex max-w-2xl justify-center">{locale==="en"?<CalibrationFunnel/>:<UrlForm id="url-top"/>}</div>
+      <p className="minimal-hero-meta">{locale==="en"?"Launch · Grow · Scale. Choose the tools that fit your business.":t.home.facts.map(f=>fmt(f,COUNTS)).join(" · ")}</p>
+    </div>
+    {unique.length>0&&<div className="minimal-outputs" data-product-group="hero">{unique.map((ad,i)=><div key={ad.productKey} data-product-key={ad.productKey} className={i===1?"minimal-output featured":"minimal-output"}><PhoneFeed ads={[ad]} bare preload={i===0} sizes="(min-width: 768px) 280px, 210px" className="w-full"/></div>)}</div>}
+  </section>;
 }
 
 function WorksWith({ t }: { t: Messages }) {
