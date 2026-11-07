@@ -1,7 +1,7 @@
 name: Premium homepage
 on:
   push:
-    branches: [feat/premium-visual-home]
+    branches: [feat/premium-visual-home, feat/full-width-homepage]
   pull_request:
     paths: ['src/app/_landing/studio-*','src/lib/studio-showcase.ts','src/app/_landing/ad-image.tsx','src/app/**/page.tsx','scripts/test-premium-homepage.mjs','.github/workflows/premium-homepage.yml']
 permissions:
