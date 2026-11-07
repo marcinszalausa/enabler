@@ -17,7 +17,7 @@ jobs:
       - run: npm ci
       - run: npx next typegen && npx tsc --noEmit
       - run: npx eslint src/app/_landing/offer-previews.tsx src/app/_landing/studio-*.tsx src/app/_landing/studio-copy.ts src/lib/offer-examples.ts src/lib/preview-offer.ts src/lib/studio-showcase.ts 'src/app/[locale]/start/start-flow.tsx' 'src/app/[locale]/dashboard/setup/page.tsx'
-      - run: npx --yes tsx@4.20.6 --test tests/preview-offer.test.ts tests/growth-testing.test.ts tests/plan-value.test.ts tests/simple-paid-plans.test.ts
+      - run: npx --yes tsx@4.20.6 --test tests/preview-offer.test.ts tests/credit-examples.test.ts tests/growth-testing.test.ts tests/plan-value.test.ts tests/simple-paid-plans.test.ts
       - run: node --test tests/preview-download.test.mjs
       - run: npm run build
         env:

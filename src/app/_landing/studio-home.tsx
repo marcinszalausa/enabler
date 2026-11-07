@@ -39,8 +39,8 @@ export function StudioHome({locale,t}:{locale:Locale;t:Messages}){
      <article className="studio-benefit-card studio-brand-card" data-studio-reveal>
       <h3>{c.brandTitle}</h3><p>{c.brandBody}</p>
       <div className="studio-brand-visual">
-       <div className="studio-brand-ad"><Image src={STUDIO_BRAND} alt={locale==="en"?"Soft Mila cardigan ad using the brand's natural colors":t.home.kitTitle} fill sizes="(min-width:768px) 350px, 75vw" loading="lazy"/></div>
-       <div className="studio-brand-kit"><div><strong>softmila</strong><span className="studio-brand-type" aria-hidden>Aa</span></div><div className="studio-palette" aria-label={locale==="en"?"Sage, cream, charcoal and warm gray brand colors":t.home.kitTitle}>{["#9da99b","#eae4d8","#33382f","#c3b9aa"].map(color=><span key={color} style={{background:color}}/>)}</div><small>{locale==="en"?"Example brand kit":t.home.kitTitle}</small></div>
+       <div className="studio-brand-ad"><Image src={STUDIO_BRAND} alt={t.home.kitTitle} fill sizes="(min-width:768px) 350px, 75vw" loading="lazy"/></div>
+       <div className="studio-brand-kit"><div><strong>softmila</strong><span className="studio-brand-type" aria-hidden>Aa</span></div><div className="studio-palette" aria-label={t.home.kitTitle}>{["#9da99b","#eae4d8","#33382f","#c3b9aa"].map(color=><span key={color} style={{background:color}}/>)}</div><small>{t.home.kitTitle}</small></div>
       </div>
      </article>
      <article className="studio-benefit-card studio-schedule-card" data-studio-reveal><h3>{c.planTitle}</h3><p>{c.planBody}</p><StudioPlanner/></article>
