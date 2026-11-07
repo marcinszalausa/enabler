@@ -41,3 +41,8 @@ jobs:
           NEXT_PUBLIC_SUPABASE_ANON_KEY: test-anon-key
           CATALOG_INGESTION_ENABLED: 'false'
           SHOPIFY_CONNECT_ENABLED: 'false'
+      - name: Native store dashboard browser checks
+        run: |
+          npm install --prefix /tmp/native-stores-browser --no-package-lock playwright@1.56.1
+          /tmp/native-stores-browser/node_modules/.bin/playwright install --with-deps chromium
+          PLAYWRIGHT_MODULE_PATH=/tmp/native-stores-browser/node_modules/playwright node scripts/check-native-stores.mjs
