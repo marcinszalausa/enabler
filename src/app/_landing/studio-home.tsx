@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "./ad-image";
 import {Footer} from "./chrome";
+import {OfferPreviews} from "./offer-previews";
 import {PublicPricing} from "./public-pricing";
 import {StudioMotion,StudioNav,StudioPlanner,StudioRail,StudioStart,StudioTransformation} from "./studio-interactions";
 import {studioCopy} from "./studio-copy";
@@ -34,7 +35,7 @@ export function StudioHome({locale,t}:{locale:Locale;t:Messages}){
 
    <section className="studio-section studio-benefits" aria-labelledby="studio-benefits-title">
     <div className="studio-section-heading" data-studio-reveal><h2 id="studio-benefits-title">{c.benefitsTitle}</h2></div>
-    <div className="studio-benefit-grid">
+    {locale==="en"?<OfferPreviews/>:<div className="studio-benefit-grid">
      <article className="studio-benefit-card studio-brand-card" data-studio-reveal>
       <h3>{c.brandTitle}</h3><p>{c.brandBody}</p>
       <div className="studio-brand-visual">
@@ -43,7 +44,7 @@ export function StudioHome({locale,t}:{locale:Locale;t:Messages}){
       </div>
      </article>
      <article className="studio-benefit-card studio-schedule-card" data-studio-reveal><h3>{c.planTitle}</h3><p>{c.planBody}</p><StudioPlanner/></article>
-    </div>
+    </div>}
    </section>
 
    <section id="how" className="studio-section studio-how" data-studio-reveal>
@@ -69,5 +70,6 @@ export function StudioHome({locale,t}:{locale:Locale;t:Messages}){
   <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(homeJsonLd(locale,t.meta.description,PAID_PLANS.map(plan=>({name:plan.name,price:plan.price})))).replace(/</g,"\\u003c")}}/>
  </div>;
 }
+
 
 

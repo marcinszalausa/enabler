@@ -15,3 +15,11 @@ export const STUDIO_SOURCE=Object.values(data.photos)[0].src;
 export const STUDIO_FEED=image("a48dc2a0-0f50-41b8-b193-8538286ec600");
 export const STUDIO_STORY=image("45b0071f-cfd7-48d5-bf4a-5cb4e8eec558");
 export const STUDIO_BRAND=image("833044a9-ccec-4b91-ac7a-fa297b4ce6d3");
+
+
+// Approved public creatives, verified to share the Hug Cardigan product.
+export const STUDIO_PRODUCT_ANGLES=[
+ {angle:"benefit",feed:image("a48dc2a0-0f50-41b8-b193-8538286ec600"),story:image("45b0071f-cfd7-48d5-bf4a-5cb4e8eec558"),alt:"From pajamas to jeans, one soft layer"},
+ {angle:"curiosity",feed:image("250c3780-9d5c-42d7-a8e5-1d780d632d0b"),story:image("6219e1e5-5564-4d9c-b129-6d6adcc7164c"),alt:"Why it's called The Hug Cardigan"},
+ {angle:"social_proof",feed:image("833044a9-ccec-4b91-ac7a-fa297b4ce6d3"),story:image("c9d45f6e-a74e-4f03-9515-412c68f1b5ae"),alt:"Made for the slow-morning crowd"},
+] as const;

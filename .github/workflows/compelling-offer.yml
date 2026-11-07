@@ -1,0 +1,54 @@
+name: Compelling offer previews
+on:
+  push:
+    branches: [ux/compelling-offer]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx next typegen && npx tsc --noEmit
+      - run: npx eslint src/app/_landing/offer-previews.tsx src/app/_landing/studio-*.tsx src/app/_landing/studio-copy.ts src/lib/offer-examples.ts src/lib/preview-offer.ts src/lib/studio-showcase.ts 'src/app/[locale]/start/start-flow.tsx' 'src/app/[locale]/dashboard/setup/page.tsx'
+      - run: npx --yes tsx@4.20.6 --test tests/preview-offer.test.ts tests/growth-testing.test.ts tests/plan-value.test.ts tests/simple-paid-plans.test.ts
+      - run: node --test tests/preview-download.test.mjs
+      - run: npm run build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: sb_publishable_fixture
+      - run: npm install --prefix /tmp/gooidy-browser --no-save --package-lock=false playwright@1.56.1
+      - run: /tmp/gooidy-browser/node_modules/.bin/playwright install --with-deps chrome
+      - name: Check pricing, previews and sample download
+        run: node scripts/check-pricing-catalog.mjs
+        env:
+          PLAYWRIGHT_MODULE_PATH: /tmp/gooidy-browser/node_modules/playwright
+          BROWSER_CHANNEL: chrome
+      - name: Check homepage in production
+        run: |
+          mkdir -p /tmp/studio-review
+          npm run start >/tmp/offer-server.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" || true' EXIT
+          for attempt in $(seq 1 60); do
+            if curl -sf http://localhost:3000/ >/dev/null; then break; fi
+            sleep 1
+          done
+          node scripts/test-premium-homepage.mjs
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: sb_publishable_fixture
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: compelling-offer
+          path: |
+            /tmp/premium-pricing/*
+            /tmp/studio-review/*
+          retention-days: 3
