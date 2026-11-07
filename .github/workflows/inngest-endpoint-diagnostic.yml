@@ -31,6 +31,9 @@ jobs:
               if isinstance(data,dict):
                   result["catalog_not_configured"]=data.get("code")=="CATALOG_WORKERS_NOT_CONFIGURED"
                   allowed=["CATALOG_INGESTION_ENABLED","CATALOG_ENCRYPTION_KEY","INNGEST_SIGNING_KEY"]
+                  errors=data.get("configuration_errors")
+                  reasons=["missing","wrong_length","not_hexadecimal","must_be_true","blank"]
+                  if isinstance(errors,dict):result["configuration_errors"]={name:reason for name,reason in errors.items() if name in allowed and reason in reasons}
                   supplied=data.get("missing_or_invalid_settings")
                   if isinstance(supplied,list):result["missing_or_invalid_settings"]=[name for name in supplied if name in allowed]
                   for key in ["has_event_key","has_signing_key","authentication_succeeded"]:
