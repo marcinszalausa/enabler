@@ -88,5 +88,11 @@
  .app-studio [data-library-ad] .btn-primary {padding-inline:13px;font-size:12px;}
  .app-studio [data-activity-panel][data-open] {width:min(320px,88vw);}
 }
+@media(max-width:399px) {
+ .app-workspace-toolbar {padding-inline:8px;gap:4px;}
+ .app-workspace-toolbar svg[role="img"] {height:24px;}
+ .app-workspace-toolbar [data-credits-balance] {padding-inline:8px;}
+ .app-workspace-toolbar [data-credits-balance] .tabular-nums {max-width:5ch;overflow:hidden;text-overflow:ellipsis;}
+}
 @media(max-width:359px) {.app-studio [data-library-grid] {grid-template-columns:1fr;}}
 @media(prefers-reduced-motion:reduce) {.app-studio :where(*,*::before,*::after) {transition:none!important;animation:none!important;scroll-behavior:auto!important;}}
