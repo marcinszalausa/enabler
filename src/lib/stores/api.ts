@@ -1,6 +1,6 @@
 import "server-only";
 import {fetchPublicUrl} from "@/lib/public-fetch";
-import {storeAddress,verifyWixInstance,callbackUrl,type StoreProvider} from "./providers";
+import {storeAddress,verifyWixInstance,callbackUrl,intentHash,type StoreProvider} from "./providers";
 export type Credentials={accessToken?:string;refreshToken?:string;accessExpiresAt?:number;refreshExpiresAt?:number;consumerKey?:string;consumerSecret?:string;instanceId?:string;context?:string};
 export type StoreProof={provider:StoreProvider;providerId:string;storeUrl:string;name:string;credentials:Credentials};
 export type ObjectData=Record<string,unknown>;
@@ -42,7 +42,7 @@ export async function authorizeProof(provider:StoreProvider,params:URLSearchPara
   if(params.get("appId")!==process.env.WIX_CLIENT_ID)throw new Error("STORE_PROOF_INVALID");
   const credentials=await wixToken(instanceId),info=await fixedJson("https://www.wixapis.com/apps/v1/instance",{headers:{Authorization:credentials.accessToken!}});
   const site=obj(info.site??obj(info.instance).site);
-  return {provider,providerId:instanceId,storeUrl:storeAddress(str(site.url)),name:typeof site.siteDisplayName==="string"?site.siteDisplayName:instanceId,credentials};
+  return {provider,providerId:intentHash(instanceId),storeUrl:storeAddress(str(site.url)),name:typeof site.siteDisplayName==="string"?site.siteDisplayName:instanceId,credentials};
  }
  if(provider==="squarespace"){
   const credentials=await squarespaceToken({grant_type:"authorization_code",code:str(params.get("code")),redirect_uri:callbackUrl(provider)});
