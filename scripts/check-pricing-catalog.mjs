@@ -11,7 +11,7 @@ try{
  const raw=await(await fetch("http://localhost:3126/pricing")).text();for(const phrase of ["Everything in Launch, plus:","Need more credits?","Every plan covers the whole journey","What if I run out of credits?"])assert.ok(raw.includes(phrase),"Server HTML contains "+phrase);
  const match=raw.match(/<script\b[^>]*data-pricing-structured[^>]*>([\s\S]*?)<\/script>/);assert.ok(match,"JSON-LD is server-rendered");const data=JSON.parse(match[1]);assert.equal(data["@type"],"FAQPage");assert.ok(!JSON.stringify(data).includes('"offers"'));
  const polish=await(await fetch("http://localhost:3126/pl/pricing")).text();assert.ok(polish.includes("Cennik")&&polish.includes("Wszystko z Launch, a do tego:"),"Pricing is translated");
- browser=await chromium.launch({headless:true});
+ browser=await chromium.launch({headless:true,channel:process.env.BROWSER_CHANNEL||undefined});
  for(const [width,locale]of [[320,"en"],[390,"en"],[390,"ja"],[1440,"en"]]){
   const page=await browser.newPage({viewport:{width,height:950},reducedMotion:"reduce"});const errors=[];page.on("pageerror",e=>errors.push(e.message));await page.goto("http://localhost:3126"+(locale==="en"?"":"/"+locale)+"/pricing",{waitUntil:"networkidle"});
   assert.equal(await page.locator("button[data-buy-plan]:disabled").count(),3);assert.equal(await page.locator("a[data-buy-plan],button[data-buy-plan]:enabled").count(),0);assert.equal(await page.locator("[data-plan]").count(),3);

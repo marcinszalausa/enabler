@@ -55,3 +55,11 @@ jobs:
           name: premium-homepage-review
           path: /tmp/studio-review/*
           retention-days: 3
+      - name: Verify legal, pricing and static image delivery regressions
+        run: |
+          node scripts/check-legal-privacy.mjs
+          node scripts/check-pricing-catalog.mjs
+          node scripts/check-curated-homepage.mjs
+        env:
+          PLAYWRIGHT_MODULE_PATH: /tmp/gooidy-browser/node_modules/playwright
+          BROWSER_CHANNEL: chrome

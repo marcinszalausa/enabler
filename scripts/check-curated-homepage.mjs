@@ -8,7 +8,7 @@ let output="";server.stdout.on("data",d=>output=(output+d).slice(-8000));server.
 let browser;
 try{
  for(let n=0;n<120;n++){try{if((await fetch("http://localhost:3113/")).ok)break;}catch{}await new Promise(r=>setTimeout(r,1000));}
- browser=await chromium.launch({headless:true});
+ browser=await chromium.launch({headless:true,channel:process.env.BROWSER_CHANNEL||undefined});
  for(const width of [390,1440]){
   const context=await browser.newContext({viewport:{width,height:900},deviceScaleFactor:width===390?3:1,reducedMotion:"reduce"});
   const page=await context.newPage(),errors=[],dynamic=[];

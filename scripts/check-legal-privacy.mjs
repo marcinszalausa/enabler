@@ -9,7 +9,7 @@ try{
  server=spawn(process.execPath,["node_modules/next/dist/bin/next","dev","-p","3115"],{env:{...process.env,NEXT_PUBLIC_SUPABASE_URL:"https://example.supabase.co",NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:"sb_publishable_fixture",BILLING_ENABLED:"true",STRIPE_SECRET_KEY:"not-a-real-key"},detached:true,stdio:["ignore","pipe","pipe"]});
  const capture=b=>{log=(log+b).slice(-12000);};server.stdout.on("data",capture);server.stderr.on("data",capture);
  let ready=false;for(let n=0;n<100;n++){try{if((await fetch("http://localhost:3115/policies",{signal:AbortSignal.timeout(2000)})).ok){ready=true;break;}}catch{}await pause(1000);}assert.ok(ready);
- browser=await chromium.launch({headless:true});
+ browser=await chromium.launch({headless:true,channel:process.env.BROWSER_CHANNEL||undefined});
  for(const [width,locale] of [[320,"en"],[390,"es"],[390,"ja"],[1440,"en"]]){
   const context=await browser.newContext({viewport:{width,height:900},reducedMotion:"reduce"}),page=await context.newPage();
   const prefix=locale==="en"?"":"/"+locale,errors=[],mutations=[],external=[];
