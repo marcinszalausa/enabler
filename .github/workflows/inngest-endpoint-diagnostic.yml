@@ -42,3 +42,15 @@ jobs:
               result["platform_error"]=any(marker in body for marker in ["FUNCTION_INVOCATION_FAILED","DEPLOYMENT_NOT_FOUND"])
           print(json.dumps(result))
           PY
+      - name: Read public Soft Mila store address
+        run: |
+          python - <<'PY'
+          import urllib.request,re,json
+          try:
+              response=urllib.request.urlopen("https://www.softmila.com/",timeout=25)
+              body=response.read(2097152).decode("utf-8","replace")
+              match=re.search(r"""Shopify[.]shop\s*=\s*["']([a-z0-9-]+[.]myshopify[.]com)""",body,re.I)
+              print(json.dumps({"public_shop_domain":match.group(1).lower() if match else None}))
+          except Exception as error:
+              print(json.dumps({"public_shop_domain":None,"error_type":type(error).__name__}))
+          PY
