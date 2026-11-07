@@ -292,3 +292,7 @@
 .offer-brief-lines li {display:flex;gap:12px;}
 .offer-brief-lines span {font-size:10px;color:#9999a1;}
 
+
+
+.studio-kicker-row {display:flex;align-items:center;justify-content:center;gap:12px;}
+.studio-kicker-row [role="group"] {border-inline-start:1px solid #dedee3;padding-inline-start:12px;}

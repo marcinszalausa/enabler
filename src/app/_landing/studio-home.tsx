@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "./ad-image";
 import {Footer} from "./chrome";
 import {OfferPreviews} from "./offer-previews";
+import {PlatformMarks} from "./platform-marks";
 import {PublicPricing} from "./public-pricing";
 import {StudioMotion,StudioNav,StudioPlanner,StudioRail,StudioStart,StudioTransformation} from "./studio-interactions";
 import {studioCopy} from "./studio-copy";
@@ -24,7 +25,7 @@ export function StudioHome({locale,t}:{locale:Locale;t:Messages}){
   <main id="main-content" tabIndex={-1} className="flex-1">
    <section className="studio-hero" aria-labelledby="studio-hero-title">
     <div className="studio-hero-copy">
-     <p className="studio-kicker"><span className="studio-kicker-dot" aria-hidden/>{c.eyebrow}</p>
+     <div className="studio-kicker-row"><p className="studio-kicker"><span className="studio-kicker-dot" aria-hidden/>{c.eyebrow}</p><PlatformMarks compact label={t.home.whereTitle}/></div>
      <h1 id="studio-hero-title"><span>{c.line1}</span><span>{c.line2}</span></h1>
      <p className="studio-hero-intro">{c.intro}</p>
      <StudioStart copy={c} id="create"/>
@@ -64,11 +65,12 @@ export function StudioHome({locale,t}:{locale:Locale;t:Messages}){
 
    <section className="studio-final" data-studio-reveal><h2>{c.finalTitle}</h2><Link href={localePath(locale,"/start")} className="studio-button" prefetch={false}>{c.create}<Arrow/></Link><p>{c.hint}</p></section>
   </main>
-  <Footer platformMarks/>
+  <Footer/>
   <StudioMotion/>
   <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(homeJsonLd(locale,t.meta.description,PAID_PLANS.map(plan=>({name:plan.name,price:plan.price})))).replace(/</g,"\\u003c")}}/>
  </div>;
 }
+
 
 
 
