@@ -78,8 +78,10 @@ try{
   await page.goto(base+'products',{waitUntil:'networkidle'});
   if(width<1024){
    await page.locator('[data-app-menu]').click();assert.ok(await page.locator('[data-app-drawer][open]').isVisible());await page.keyboard.press('Escape');assert.equal(await page.locator('[data-app-drawer][open]').count(),0);
-   await page.locator('[data-app-menu]').click();await page.locator('[data-app-tab]:visible').nth(1).click();await page.waitForURL(u=>u.pathname.endsWith('/ads'));assert.equal(await page.locator('[data-app-drawer][open]').count(),0);
-   await page.locator('[data-activity-toggle]').click();assert.ok(await page.locator('[data-activity-panel][data-open]').isVisible());await page.keyboard.press('Escape');assert.equal(await page.locator('[data-activity-panel]').isVisible(),false);
+   await page.locator('[data-app-menu]').click();await page.locator('[data-app-tab]:visible').nth(1).click();await page.waitForURL(u=>u.pathname.endsWith('/ads'));assert.equal(await page.locator('[data-app-drawer][open]:visible').count(),0);
+   // Next retains previous pages in hidden Activity boundaries after client
+   // navigation. Interact only with the currently visible frame.
+   await page.locator('[data-activity-toggle]:visible').click();assert.equal(await page.locator('[data-activity-panel][data-open]:visible').count(),1);await page.keyboard.press('Escape');assert.equal(await page.locator('[data-activity-panel]:visible').count(),0);
   }else{
    assert.equal(await page.locator('[data-activity-panel]').getAttribute('data-open'),null,'Activity defaults folded');
    await page.locator('[data-menu-fold]').click();assert.equal(await page.locator('[data-app-sidebar]').getAttribute('data-collapsed'),'');
