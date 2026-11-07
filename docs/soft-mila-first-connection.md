@@ -20,6 +20,7 @@ provider keys or upload a catalog file.
 | --- | --- |
 | App URL | https://gooidy.com/dashboard/stores |
 | Embedded | No; standalone app |
+| Use legacy install flow | Off; app-specific webhooks require managed scopes |
 | OAuth redirect URL | https://gooidy.com/api/shopify/callback |
 | Scopes | read_products,read_inventory |
 | API version | 2026-10 |

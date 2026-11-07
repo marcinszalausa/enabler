@@ -2,13 +2,14 @@ name: Publish Gooidy Shopify app
 on:
   workflow_dispatch:
   push:
-    branches: [ops/shopify-app-publish]
+    branches: [ops/shopify-app-publish, fix/shopify-managed-install, main]
+    paths: ['ops/shopify/**','scripts/render-shopify-config.py','tests/shopify-config-test.py','.github/workflows/shopify-app-publish.yml']
   pull_request:
     paths: ['ops/shopify/**','scripts/render-shopify-config.py','tests/shopify-config-test.py','.github/workflows/shopify-app-publish.yml']
 permissions:
   contents: read
 concurrency:
-  group: gooidy-shopify-app-publish-${{ github.event_name }}
+  group: gooidy-shopify-app-publish
   cancel-in-progress: false
 jobs:
   configuration:
@@ -30,11 +31,13 @@ jobs:
           node-version: 24
       - name: Test app configuration rendering
         run: python tests/shopify-config-test.py
+      - name: Verify standalone OAuth security
+        run: node --experimental-strip-types --test tests/shopify-security.test.ts
       - name: Render configuration
         env:
           SHOPIFY_APP_CLIENT_ID: ${{ vars.SHOPIFY_APP_CLIENT_ID }}
         run: |
-          if [ "$GITHUB_EVENT_NAME" != "workflow_dispatch" ]; then
+          if [ "$GITHUB_EVENT_NAME" != "workflow_dispatch" ] && { [ "$GITHUB_EVENT_NAME" != "push" ] || [ "$GITHUB_REF" != "refs/heads/main" ]; }; then
             export SHOPIFY_APP_CLIENT_ID=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
           fi
           python scripts/render-shopify-config.py
@@ -47,7 +50,7 @@ jobs:
           /tmp/gooidy-shopify-cli/node_modules/.bin/shopify app config validate --help
           /tmp/gooidy-shopify-cli/node_modules/.bin/shopify app deploy --help
       - name: Validate and publish Gooidy app configuration
-        if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' && (github.event_name == 'workflow_dispatch' || github.event_name == 'push')
         env:
           SHOPIFY_SERVICE_ACCOUNT_TOKEN: ${{ secrets.SHOPIFY_SERVICE_ACCOUNT_TOKEN }}
         run: |
