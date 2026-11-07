@@ -2,7 +2,7 @@ import {cookies} from "next/headers";
 import {after} from "next/server";
 import {createClient} from "@/lib/supabase/server";
 import {createAdminClient} from "@/lib/supabase/admin";
-import {catalogOwner} from "@/lib/catalog/auth";
+import {catalogStoreOwner} from "@/lib/catalog/auth";
 import {encryptCatalogSecret} from "@/lib/catalog/security";
 import {callbackValid,shopDomain,stateHash,shopifyConfigured,SHOPIFY_COOKIE} from "@/lib/shopify/security";
 import {tokenRequest,graph} from "@/lib/shopify/api";
@@ -17,7 +17,7 @@ export async function GET(request:Request){
   jar.delete(SHOPIFY_COOKIE);
   const shop=shopDomain(params.get("shop"));const db=createAdminClient();const {data:{user},error:authError}=await (await createClient()).auth.getUser();if(authError||!user)return finish("connect_error");
   const {data:pending,error:read}=await db.from("shopify_oauth_states").select("*").eq("state_hash",stateHash(state)).eq("user_id",user.id).eq("shop",shop).gt("expires_at",new Date().toISOString()).single();if(read||!pending)return finish("connect_error");
-  await catalogOwner(pending.workspace_id);
+  await catalogStoreOwner(pending.workspace_id);
   const {data:claimed,error:claim}=await db.from("shopify_oauth_states").delete().eq("state_hash",stateHash(state)).eq("user_id",user.id).select("state_hash").maybeSingle();if(claim||!claimed)return finish("connect_error");
   if(params.has("error"))return finish("canceled");
   const code=params.get("code");if(!code||code.length>2048)return finish("connect_error");

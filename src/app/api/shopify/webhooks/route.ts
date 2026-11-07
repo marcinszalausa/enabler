@@ -1,3 +1,4 @@
+import {canConnectStores} from "@/lib/catalog/access";
 import {after} from "next/server";
 import {catalogBody} from "@/lib/catalog/security";
 import {rawWebhookValid,shopDomain} from "@/lib/shopify/security";
@@ -10,7 +11,7 @@ export async function POST(request:Request){
  try{
   const body=await catalogBody(request);if(!rawWebhookValid(body,request.headers.get("x-shopify-hmac-sha256")??"",secret))return new Response(null,{status:401});
   const shop=shopDomain(request.headers.get("x-shopify-shop-domain")),topic=request.headers.get("x-shopify-topic"),payload=JSON.parse(body.toString());
-  const db=createAdminClient();const {data:store,error}=await db.from("shopify_stores").select("id,connection_id,installation_id,installed_at,provider_shop_id,status").eq("shop",shop).maybeSingle();if(error)throw new Error("READ");
+  const db=createAdminClient();const {data:store,error}=await db.from("shopify_stores").select("id,workspace_id,connection_id,installation_id,installed_at,provider_shop_id,status").eq("shop",shop).maybeSingle();if(error)throw new Error("READ");
   // These scopes collect no customer/order records.
   if(["customers/data_request","customers/redact"].includes(topic??""))return new Response(null,{status:200});
   if(!store)return new Response(null,{status:200});
@@ -33,10 +34,11 @@ export async function POST(request:Request){
    return new Response(null,{status:200});
   }
   if(!["products/create","products/update"].includes(topic??"")||store.status==="disconnected")return new Response(null,{status:200});
+  if(!await canConnectStores(store.workspace_id))return new Response(null,{status:200});
   const c=await loadConnection(store.connection_id),products=catalogWebhook(payload,c,topic!);
   if(payload.status&&payload.status!=="active")products.forEach(p=>p.inventoryQuantity=0);
   const id=await receiveCatalog(c,request.headers.get("x-shopify-webhook-id")??"",body,products);
   after(async()=>{try{await inngest.send({name:"catalog/delivery.received",data:{deliveryId:id}});}catch{console.error("Shopify delivery deferred",id);}});
   return new Response(null,{status:200});
- }catch{return new Response(null,{status:503});}
+ }catch(e){return new Response(null,{status:e instanceof Error&&e.message==="CATALOG_UPGRADE_REQUIRED"?200:503});}
 }

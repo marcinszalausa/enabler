@@ -80,7 +80,7 @@ export type PublicResponse = {
   headers: Record<string,string | string[] | undefined>;
   body: Readable;
 };
-export type PublicRequest = { method: "GET" | "PUT"; accept: string; contentType?: string; body?: Uint8Array };
+export type PublicRequest = { method: "GET" | "PUT"; accept: string; contentType?: string; body?: Uint8Array; authorization?: string };
 export type PublicFetchDependencies = {
   resolve: (host: string) => Promise<{ address: string; family: number }[]>;
   request: (url: URL, address: PublicAddress, signal: AbortSignal, options: PublicRequest) => Promise<PublicResponse>;
@@ -130,6 +130,7 @@ export function requestPinnedUrl(url: URL, address: PublicAddress, signal: Abort
       headers: {
         accept: options.accept, "accept-encoding": "gzip, deflate, br",
         "user-agent": "Mozilla/5.0 (compatible; GooidyBot/0.2; +https://gooidy.com)",
+        ...(options.authorization ? {authorization:options.authorization} : {}),
         ...(options.body ? {"content-length":String(options.body.byteLength)} : {}),
         ...(options.contentType ? {"content-type":options.contentType} : {}),
       },
@@ -193,7 +194,7 @@ async function boundedBody(response: PublicResponse, maxBytes: number, signal: A
 
 export async function fetchPublicUrl(
   raw: string | URL,
-  options: {maxBytes:number;timeoutMs?:number;maxRedirects?:number;accept?:string;method?:"GET"|"PUT";body?:Uint8Array;contentType?:string},
+  options: {maxBytes:number;timeoutMs?:number;maxRedirects?:number;accept?:string;method?:"GET"|"PUT";body?:Uint8Array;contentType?:string;authorization?:{origin:string;value:string}},
   deps: PublicFetchDependencies = dependencies,
 ): Promise<{url:URL;status:number;contentType:string;body:Buffer}> {
   if (!Number.isSafeInteger(options.maxBytes) || options.maxBytes<1 || options.maxBytes>128*1024*1024
@@ -202,13 +203,14 @@ export async function fetchPublicUrl(
   const redirects = options.maxRedirects ?? 5;
   if (!Number.isFinite(timeout) || timeout<1 || timeout>60000 || !Number.isInteger(redirects) || redirects<0 || redirects>5) throw new PublicFetchError("url");
   let current = parsePublicHttpUrl(raw);
+  if(options.authorization&&(current.protocol!=="https:"||options.authorization.origin!==current.origin||!/^Basic [A-Za-z0-9+/=]{1,4096}$/.test(options.authorization.value)))throw new PublicFetchError("url");
   const controller = new AbortController();
   const timer = setTimeout(()=>controller.abort(),timeout);
   try {
     for (let hop=0;;hop++) {
       const address = await publicAddress(current,deps.resolve,controller.signal);
       const response = await abortable(deps.request(current,address,controller.signal,{
-        method:options.method ?? "GET", accept:options.accept ?? "*/*",body:options.body,contentType:options.contentType,
+        method:options.method ?? "GET", accept:options.accept ?? "*/*",body:options.body,contentType:options.contentType,...(options.authorization?{authorization:options.authorization.value}:{}),
       }),controller.signal);
       if ([301,302,303,307,308].includes(response.status)) {
         response.body.destroy();
@@ -219,6 +221,7 @@ export async function fetchPublicUrl(
         try { next = parsePublicHttpUrl(new URL(location,current)); }
         catch { throw new PublicFetchError("redirect"); }
         if (current.protocol === "https:" && next.protocol !== "https:") throw new PublicFetchError("redirect");
+        if(options.authorization&&next.origin!==options.authorization.origin)throw new PublicFetchError("redirect");
         current = next;
         continue;
       }
