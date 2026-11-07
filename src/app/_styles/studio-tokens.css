@@ -1,0 +1,19 @@
+/* One visual foundation for the marketing site and the signed-in workspace. */
+.studio-home,.app-studio {
+ --t-bg:#fff;--t-fg:#161617;--t-muted:#737378;
+ --t-line:#e7e7ec;--t-line-strong:#c7c7cf;--t-surface:#f5f5f7;--t-raised:#fff;
+ --t-accent:#5b4bf7;--t-accent-strong:#4433e0;--t-accent-soft:#f0edff;--t-accent-fg:#fff;
+ --t-btn:#161617;--t-btn-hover:#353538;--t-btn-fg:#fff;--t-violet:#7b61ff;
+ --t-ok:#247447;--t-ok-bg:#edf7f0;--t-warn:#946000;--t-warn-bg:#fff5df;
+ --t-danger:#b82232;--t-danger-bg:#fff0f1;
+ color-scheme:light;
+}
+:root[data-theme="dark"] .app-studio {
+ --t-bg:#111113;--t-fg:#f5f5f7;--t-muted:#a6a6b0;
+ --t-line:#303036;--t-line-strong:#52525c;--t-surface:#202024;--t-raised:#19191d;
+ --t-accent:#b1a5ff;--t-accent-strong:#c5bbff;--t-accent-soft:#29243f;--t-accent-fg:#17151f;
+ --t-btn:#f5f5f7;--t-btn-hover:#dedee5;--t-btn-fg:#161617;--t-violet:#b1a5ff;
+ --t-ok:#8bd6aa;--t-ok-bg:#182c22;--t-warn:#edc36f;--t-warn-bg:#302818;
+ --t-danger:#ffa4ad;--t-danger-bg:#341e25;
+ color-scheme:dark;
+}

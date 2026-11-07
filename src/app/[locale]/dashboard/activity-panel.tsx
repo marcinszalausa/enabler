@@ -40,7 +40,7 @@ const Ctx = createContext<State | null>(null);
 const useActivity = () => useContext(Ctx)!;
 
 export function ActivityProvider({ children }: { children: ReactNode }) {
-  const [wide, setWide] = useState(true);
+  const [wide, setWide] = useState(false);
   const [sheet, setSheet] = useState(false);
   const [active, setActive] = useState(0);
   const [menu, setMenu] = useState(true);
@@ -48,7 +48,7 @@ export function ActivityProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     try {
       // eslint-disable-next-line react-hooks/set-state-in-effect
-      if (localStorage.getItem(KEY) === "hidden") setWide(false);
+      if (localStorage.getItem(KEY) === "shown") setWide(true);
       if (localStorage.getItem(MENU_KEY) === "folded") setMenu(false);
     } catch {}
   }, []);

@@ -1,0 +1,49 @@
+name: Signed-in studio design
+on:
+  push:
+    branches: [feat/studio-dashboard]
+  pull_request:
+    paths: ['src/app/**/dashboard/**','src/app/_styles/**','src/lib/theme.ts','scripts/check-app-studio.mjs','.github/workflows/app-studio.yml']
+permissions:
+  contents: read
+jobs:
+  dashboard-design:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx next typegen && npx tsc --noEmit
+      - run: npx eslint 'src/app/[locale]/dashboard/layout.tsx' 'src/app/[locale]/dashboard/dashboard-frame.tsx' 'src/app/[locale]/dashboard/app-shell.tsx' 'src/app/[locale]/dashboard/activity-panel.tsx' 'src/app/[locale]/dashboard/page.tsx' 'src/app/[locale]/dashboard/product-card.tsx' 'src/app/[locale]/dashboard/ui.tsx' src/lib/theme.ts
+      - name: Production build without database credentials
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://catalog-test.supabase.co
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: sb_publishable_fixture
+      - run: |
+          npm install --prefix /tmp/gooidy-browser --no-save --package-lock=false playwright@1.56.1
+          /tmp/gooidy-browser/node_modules/.bin/playwright install --with-deps chrome
+      - name: Responsive dashboard and interaction checks
+        run: node scripts/check-app-studio.mjs
+        env:
+          PLAYWRIGHT_MODULE_PATH: /tmp/gooidy-browser/node_modules/playwright
+          BROWSER_CHANNEL: chrome
+      - name: Preserve homepage, pricing and legal checks
+        run: |
+          node scripts/check-curated-homepage.mjs
+          node scripts/check-pricing-catalog.mjs
+          node scripts/check-legal-privacy.mjs
+        env:
+          PLAYWRIGHT_MODULE_PATH: /tmp/gooidy-browser/node_modules/playwright
+          BROWSER_CHANNEL: chrome
+      - name: Save visual review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: signed-in-studio-review
+          path: /tmp/app-studio-review/*
+          retention-days: 3
