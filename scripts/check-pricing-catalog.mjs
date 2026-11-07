@@ -28,7 +28,7 @@ try{
    for(const [id,images,videos]of [["starter",60,4],["plus",120,8],["growth",200,14]])assert.equal(await page.locator('[data-plan="'+id+'"] [data-credit-example]').innerText(),'e.g. '+images+' Best images or '+videos+' × 7s Better videos');
    await page.locator('[data-credit-example-details] summary').click();assert.match(await page.locator('[data-credit-example-details] p').innerText(),/Each image counts once/);await page.locator('[data-credit-example-details] summary').click();
   }
-  assert.equal(await page.locator("a[data-try-plan]").count(),1);assert.equal(await page.locator("[data-plan] a[data-try-plan]").count(),0);assert.equal(await page.locator("[data-shared-plan-benefits] li").count(),4);assert.equal(await page.locator("[data-plan-icon]").count(),3);assert.equal(await page.locator("[data-shared-plan-benefits] p").count(),0);
+  assert.equal(await page.locator("a[data-try-plan]").count(),1);assert.equal(await page.locator("[data-plan] a[data-try-plan]").count(),0);assert.equal(await page.locator("[data-shared-plan-benefits] li").count(),4);assert.equal(await page.locator("[data-plan-icon]").count(),0);assert.equal(await page.locator("[data-shared-plan-benefits] p").count(),0);
   if(locale==="en"&&(width===390||width===1440))await page.locator("[data-pricing-cards]").screenshot({path:"/tmp/premium-pricing/pricing-"+width+".png"});
   const questions=await page.locator("[data-pricing-faq] summary").allTextContents();const answers=await page.locator("[data-pricing-faq] details p").allTextContents();const faq=JSON.parse(await page.locator("script[data-pricing-structured]").textContent());assert.deepEqual(faq.mainEntity.map(q=>q.name),questions);assert.deepEqual(faq.mainEntity.map(q=>q.acceptedAnswer.text),answers);
   assert.equal(await page.locator("[data-pack]").count(),2);assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),"No page overflow");
@@ -67,6 +67,7 @@ try{
  assert.ok(await home.locator('#pricing [data-plan-included="starter"] li').count()>=4);assert.ok(await home.locator('#pricing [data-plan-included="growth"] li').count()>=4);await home.close();console.log("PASS plan cards on homepage without JavaScript");
  console.log("PASS raw HTML content is readable without JavaScript");
 }catch(error){console.error(log);throw error;}finally{await browser?.close();if(server?.pid)try{process.kill(-server.pid,"SIGTERM");}catch{}}
+
 
 
 
