@@ -28,7 +28,7 @@ jobs:
       - run: npx next typegen && npx tsc --noEmit
       - run: npx eslint src/lib/catalog src/inngest src/app/api/catalog src/app/api/shopify 'src/app/[locale]/dashboard/stores'
       - run: node --experimental-strip-types --test tests/phase-one.test.ts
-      - run: node --test tests/catalog-training.test.mjs tests/catalog-photo-review.test.mjs tests/phase-one-routes.test.mjs
+      - run: node --test tests/catalog-training.test.mjs tests/catalog-photo-review.test.mjs tests/phase-one-routes.test.mjs tests/paid-accounts.test.mjs
       - run: bash scripts/test-phase-one.sh
         env:
           CATALOG_TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/phase_one

@@ -36,13 +36,28 @@ Failures remain pending with an error code and durable retries. Restocking does
 not enable ads. A dispatch-time guard also blocks sending a known sold-out
 product through the existing social publishing path.
 
-**Paid-account connection is a live prerequisite.** The existing Zernio social
-connection is not a Meta Marketing/TikTok Ads account. The service-only
-catalog_ad_accounts/catalog_ad_bindings tables are populated only after that
-connector verifies ownership and binds actual ads to catalog items. No browser
-can supply an arbitrary account token/ad ID. Without those verified bindings,
-the product page explicitly says paid-ad pausing is not connected. The adapters
-are not evidence that account OAuth or app approval has been completed.
+**Paid-account activation is a live prerequisite.** The existing Zernio social
+connection is not a Meta Marketing/TikTok Ads account. Stores now provides a
+separate provider OAuth flow, an account selector and explicit stock-protection
+consent. Intents bind the initiating owner/workspace to an HttpOnly browser nonce,
+expire in ten minutes and are consumed once. Account choices come from the
+provider, not a browser-supplied token. Product pages list ads from the selected
+authorized account and recheck ad ownership before binding. A currently sold-out
+product's ad is paused and confirmed before its binding is saved. Cross-workspace
+account reuse and silently changing an existing ad's product binding are refused.
+Without verified bindings, the product page says paid pausing is not connected.
+
+Meta requires META_ADS_APP_ID, META_ADS_APP_SECRET, a verified current
+META_GRAPH_VERSION, and META_ADS_CONNECT_ENABLED=true only after app acceptance
+for ads_read/ads_management. TikTok requires TIKTOK_ADS_APP_ID,
+TIKTOK_ADS_APP_SECRET and TIKTOK_ADS_CONNECT_ENABLED=true after Marketing API app
+acceptance. Register callback URLs at
+https://gooidy.com/api/catalog/ad-accounts/meta/callback and
+https://gooidy.com/api/catalog/ad-accounts/tiktok/callback. These are confidential
+server-side integrations. They do not request Pages/social-posting credentials,
+create campaigns, enable ads or change budgets. A disconnected/expired account
+must be reauthorized; pending pauses are not falsely reported as confirmed.
+No live app registration/approval is implied by shipping these flows.
 
 Native real-time inventory for other platforms still requires each platform's
 webhook registration/acceptance; their periodic catalog refresh is not advertised
