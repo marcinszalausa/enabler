@@ -17,7 +17,6 @@ import { CalibrationFunnel } from "@/app/_landing/calibration-funnel";
 import { RunDemo, type DemoRun } from "@/app/_landing/run-demo";
 import { Reveal } from "@/app/_landing/reveal";
 import { Placements, type PlacementAd } from "@/app/_landing/placements";
-import { StickyCta } from "@/app/_landing/sticky-cta";
 import { PublicPricing } from "@/app/_landing/public-pricing";
 import { PAID_PLANS } from "@/lib/paid-plans";
 import { CreditGuide } from "@/app/_landing/credit-guide";
@@ -71,7 +70,6 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
         <FinalCta t={t} locale={locale} />
       </main>
       <Footer />
-      <StickyCta />
 
       <Reveal />
       <script

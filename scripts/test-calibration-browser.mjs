@@ -6,7 +6,9 @@ const browser=await chromium.launch({headless:true});
 try {
  for(const width of [390,1440]) {
   const page=await browser.newPage({viewport:{width,height:900},reducedMotion:'reduce'});
+  await page.addInitScript(mode=>localStorage.setItem('gooidy-theme',mode),width===390?'light':'dark');
   await page.goto('http://localhost:3000/en',{waitUntil:'networkidle'});
+  await page.screenshot({path:'/tmp/calibration-initial-'+width+'.png',fullPage:false});
   await page.getByRole('heading',{name:'Product ads without the production work.'}).waitFor();
   const input=page.getByRole('textbox',{name:'Your store URL',exact:true});
   await input.fill('javascript:alert(1)');
@@ -45,6 +47,7 @@ try {
   await page.keyboard.press('Shift+Tab');
   assert.equal(await page.getByRole('button',{name:'Not sure yet? Start with Launch'}).evaluate(el=>el===document.activeElement),true,'keyboard focus remains in modal');
   await page.keyboard.press('Escape');
+  await page.evaluate(()=>window.scrollTo(0,0));
   await page.screenshot({path:'/tmp/calibration-'+width+'.png',fullPage:true});
   await page.close();
  }
