@@ -4,7 +4,7 @@ const require=createRequire('/tmp/gooidy-browser/package.json');
 const {chromium}=require('playwright');
 const browser=await chromium.launch({channel:'chrome',headless:true});
 try {
- for(const width of [360,390,768,1440]) {
+ for(const width of [360,390,768,1440,1920]) {
   const page=await browser.newPage({viewport:{width,height:1000},reducedMotion:'reduce'});
   await page.addInitScript(()=>localStorage.setItem('gooidy-theme','dark'));
   const errors=[];
@@ -25,6 +25,9 @@ try {
   assert.equal(await page.locator('[data-buy-plan]:disabled').count(),3,'checkout stays disabled');
   assert.deepEqual(await page.locator('[data-plan]').evaluateAll(nodes=>nodes.map(n=>n.dataset.plan)),['starter','plus','growth']);
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'page must not overflow');
+  for(const selector of ['.studio-nav','.studio-rail','#how','.studio-benefits','#pricing','#faq','.studio-final']){
+   assert.ok(await page.locator(selector).evaluate(el=>el.getBoundingClientRect().width>=innerWidth-1),selector+' uses the available website width');
+  }
   assert.equal(await page.locator('[data-studio-home]').evaluate(el=>getComputedStyle(el).backgroundColor),'rgb(255, 255, 255)','homepage remains a bright canvas');
   const count=(await page.locator('main').innerText()).trim().split(/\s+/).length;
   assert.ok(count<750,'homepage stays concise: '+count+' words');
