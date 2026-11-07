@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import {mkdir} from "node:fs/promises";
+import {mkdir,readFile} from "node:fs/promises";
 import {spawn} from "node:child_process";
 import {createRequire} from "node:module";
 import {setTimeout as pause} from "node:timers/promises";
@@ -26,7 +26,7 @@ try{
   if(width>=1440){const tops=await page.locator("[data-plan]").evaluateAll(cards=>cards.map(card=>Math.round(card.getBoundingClientRect().top)));assert.equal(new Set(tops).size,1,"Plans sit in one row on desktop");const heights=await page.locator("[data-plan]").evaluateAll(cards=>cards.map(card=>Math.round(card.getBoundingClientRect().height)));assert.ok(Math.max(...heights)-Math.min(...heights)<=1,"Cards have equal height");const buttons=await page.locator("[data-buy-plan]").evaluateAll(items=>items.map(item=>Math.round(item.getBoundingClientRect().top)));assert.equal(new Set(buttons).size,1,"Purchase buttons align");}
   if(locale==="en"){
    for(const [id,images,videos]of [["starter",60,4],["plus",120,8],["growth",200,14]])assert.equal(await page.locator('[data-plan="'+id+'"] [data-credit-example]').innerText(),'e.g. '+images+' Best images or '+videos+' × 7s Better videos');
-   await page.locator('[data-credit-example-details] summary').click();assert.match(await page.locator('[data-credit-example-details] p').innerText(),/square and vertical exports/);await page.locator('[data-credit-example-details] summary').click();
+   await page.locator('[data-credit-example-details] summary').click();assert.match(await page.locator('[data-credit-example-details] p').innerText(),/Each image counts once/);await page.locator('[data-credit-example-details] summary').click();
   }
   assert.equal(await page.locator("a[data-try-plan]").count(),1);assert.equal(await page.locator("[data-plan] a[data-try-plan]").count(),0);assert.equal(await page.locator("[data-shared-plan-benefits] li").count(),4);assert.equal(await page.locator("[data-plan-icon]").count(),3);assert.equal(await page.locator("[data-shared-plan-benefits] p").count(),0);
   if(locale==="en"&&(width===390||width===1440))await page.locator("[data-pricing-cards]").screenshot({path:"/tmp/premium-pricing/pricing-"+width+".png"});
@@ -56,12 +56,18 @@ try{
  await proof.goto('http://localhost:3126/',{waitUntil:'networkidle'});assert.equal(await proof.locator('#how').evaluate(el=>el.nextElementSibling.id),'pricing','Real example immediately precedes pricing');
  await proof.locator('#how').scrollIntoViewIfNeeded();await proof.waitForFunction(()=>Array.from(document.querySelectorAll('#how img')).every(img=>img.complete&&img.naturalWidth>100));
  assert.equal(await proof.locator('#how [data-home-fallback]').count(),0);await proof.getByRole('button',{name:'Instagram Stories',exact:true}).click();await proof.waitForFunction(()=>document.querySelector('[data-transformation-format]')?.getAttribute('data-transformation-format')==='story');await proof.waitForFunction(()=>Array.from(document.querySelectorAll('#how img')).every(img=>img.complete&&img.naturalWidth>100));assert.deepEqual(assetErrors,[]);
+ const workflow=proof.locator('[data-store-workflow-preview]'),scale=proof.locator('[data-scale-plan-preview]');await workflow.getByRole('button',{name:'3 Create',exact:true}).click();
+ await scale.getByRole('button',{name:'Not enough data',exact:true}).click();assert.equal(await scale.getByRole('button',{name:'Download sample brief'}).count(),0);await scale.getByRole('button',{name:'Example plan',exact:true}).click();
+ const downloaded=proof.waitForEvent('download');await scale.getByRole('button',{name:'Download sample brief'}).click();const file=await downloaded;assert.equal(file.suggestedFilename(),'gooidy-sample-campaign-brief.txt');const contents=await readFile(await file.path(),'utf8');assert.ok(contents.startsWith('ILLUSTRATIVE SAMPLE — NOT CUSTOMER RESULTS'));assert.match(contents,/Starting post: sample-benefit/);
+ await proof.locator('#how').getByRole('button',{name:'Curiosity',exact:true}).click();assert.equal(await proof.locator('[data-transformation-angle]').getAttribute('data-transformation-angle'),'curiosity');await proof.locator('#how').getByRole('button',{name:'Lifestyle',exact:true}).click();assert.equal(await proof.locator('[data-transformation-angle]').getAttribute('data-transformation-angle'),'social_proof');
+ await proof.locator('.studio-benefits').screenshot({path:'/tmp/premium-pricing/grow-scale-preview.png'});
  await proof.locator('#how').screenshot({path:'/tmp/premium-pricing/product-to-ad.png'});await proof.close();
  const home=await browser.newPage({viewport:{width:390,height:950},javaScriptEnabled:false});await home.goto("http://localhost:3126/",{waitUntil:"domcontentloaded"});
  assert.equal(await home.locator("#pricing [data-plan-included]").count(),3);assert.equal(await home.locator("#pricing button[data-buy-plan]:disabled").count(),3);assert.equal(await home.locator("#pricing a[data-try-plan]").count(),1);assert.equal(await home.locator("#pricing [data-credit-example]").count(),3);
  assert.ok(await home.locator('#pricing [data-plan-included="starter"] li').count()>=4);assert.ok(await home.locator('#pricing [data-plan-included="growth"] li').count()>=4);await home.close();console.log("PASS plan cards on homepage without JavaScript");
  console.log("PASS raw HTML content is readable without JavaScript");
 }catch(error){console.error(log);throw error;}finally{await browser?.close();if(server?.pid)try{process.kill(-server.pid,"SIGTERM");}catch{}}
+
 
 
 

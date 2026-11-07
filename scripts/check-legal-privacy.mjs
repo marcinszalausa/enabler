@@ -41,7 +41,7 @@ try{
   assert.equal(await page.locator("[data-checkout-unavailable]").count(),0);
   assert.equal(await page.locator("#pricing button[data-buy-plan]:disabled").count(),3,"All purchase controls stay disabled while checkout is closed");
   assert.equal(await page.locator("#pricing a[data-buy-plan],#pricing button[data-buy-plan]:enabled").count(),0,"No active purchase action is exposed");
-  const paid=page.locator('#pricing a[data-try-plan]');assert.equal(await paid.count(),3);for(const link of await paid.all()){const target=new URL(await link.getAttribute("href"),"https://gooidy.com");assert.ok(target.pathname.endsWith("/start"));assert.ok(["starter","plus","growth"].includes(target.searchParams.get("plan")));}
+  const paid=page.locator('#pricing a[data-try-plan]');assert.equal(await paid.count(),1);for(const link of await paid.all()){const target=new URL(await link.getAttribute("href"),"https://gooidy.com");assert.ok(target.pathname.endsWith("/start"));assert.equal(target.searchParams.get("plan"),"starter");}
   const offers=await page.locator('script[type="application/ld+json"]').evaluateAll(xs=>xs.map(x=>JSON.parse(x.textContent)));
   const paidOffers=offers.flatMap(doc=>doc["@graph"]??[]).flatMap(item=>item.offers??[]);
   assert.equal(paidOffers.length,3);assert.deepEqual(paidOffers.map(offer=>offer.name),["Launch","Grow","Scale"]);
@@ -63,3 +63,4 @@ try{
  console.log("CHECKOUT_LOCK_VERIFIED",JSON.stringify({posts:3,sessionCreated:false,environmentCannotEnable:true}));
 } catch(e){console.log(log.slice(-10000));throw e;}
 finally{await browser?.close();if(server){try{process.kill(-server.pid,"SIGTERM");}catch{}}}
+

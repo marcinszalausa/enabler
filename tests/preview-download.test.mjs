@@ -1,0 +1,10 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {readFile} from 'node:fs/promises';import ts from 'typescript';import {createHash} from 'node:crypto';
+function compile(source,deps){const clean=source.replace(/^import[\s\S]*?;\r?$/gm,'').replace(/\bexport /g,'');return new Function(...Object.keys(deps),ts.transpileModule(clean,{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.None}}).outputText+';return GET;')(...Object.values(deps));}
+test('an owned preview image downloads without a subscription; private foreign images stay denied',async()=>{
+ let owned=true;const tables=[];const client={from:(table)=>{tables.push(table);const q={select:()=>q,eq:()=>q,maybeSingle:async()=>({data:owned?{workspace_id:'preview-workspace',storage_path:'private-image',aspect:'1:1',headline:'Your product'}:null})};return q;}};
+ const admin={from:()=>{const q={select:()=>q,eq:()=>q,not:()=>q,maybeSingle:async()=>({data:null})};return q;}};
+ const GET=compile(await readFile('src/app/api/creatives/[id]/image/route.ts','utf8'),{createHash,createClient:async()=>client,createAdminClient:()=>admin,getBrandKit:async()=>({accent_color:'#555',font:'Inter',logo_path:null}),FACE_SAFE_LAYOUT_VERSION:'test',renderAdImage:async()=>new Response(new Uint8Array([137,80,78,71]),{headers:{'content-type':'image/png'}}),wantsImagePreview:()=>false,makeImagePreview:()=>{throw Error('Not a preview response');},markImageResponseAsAi:async response=>response});
+ const request={nextUrl:new URL('https://gooidy.com/api/creatives/owned-image/image?download=1'),headers:new Headers()},ctx={params:Promise.resolve({id:'owned-image'})};
+ const result=await GET(request,ctx);assert.equal(result.status,200);assert.match(result.headers.get('content-disposition'),/attachment; filename=.*1x1.png/);assert.equal(result.headers.get('content-type'),'image/png');assert.deepEqual(tables,['creatives'],'No subscription lookup or purchase required');
+ owned=false;const denied=await GET(request,ctx);assert.equal(denied.status,404);
+});

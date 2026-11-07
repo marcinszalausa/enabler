@@ -6,8 +6,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { isLocale, localePath } from "@/i18n/config";
 import { getMessages } from "@/i18n/messages";
 import { adKind, productLink } from "@/lib/onboarding";
-import { GENERATION_COST } from "@/lib/image-pricing";
-import { DEFAULT_VIDEO_OPTIONS, videoRunCost, VIDEOS_PER_GENERATION } from "@/lib/video-options";
+import {PREVIEW_OFFER} from "@/lib/preview-offer";
 import { fmt } from "@/i18n/format";
 import { ProductUrlForm } from "../product-url-form";
 export const maxDuration = 120;
@@ -27,10 +26,11 @@ async function Setup({params,searchParams}:PageProps<"/[locale]/dashboard/setup"
     <h1 className="mt-3 text-2xl font-semibold">{t.onboard.prepareTitle}</h1>
     <p className="mt-3 text-sm leading-relaxed text-muted">{t.personal.setupNote}</p>
     <div className="my-6 rounded-xl bg-surface p-4 text-sm">
-      <p className="font-medium">{fmt(kind==="image"?t.app.imageAds:t.app.videoAds,{count:kind==="image"?10:VIDEOS_PER_GENERATION})}</p>
-      <p className="mt-1 text-muted">{fmt(t.app.credits,{count:kind==="image"?GENERATION_COST:videoRunCost(DEFAULT_VIDEO_OPTIONS.length)})}</p>
+      <p className="font-medium">{fmt(kind==="image"?t.app.imageAds:t.app.videoAds,{count:PREVIEW_OFFER[kind].count})}</p>
+      <p className="mt-1 text-muted">{fmt(t.app.credits,{count:PREVIEW_OFFER[kind].cost})}</p>
     </div>
     <ProductUrlForm defaultUrl={url} onboardingKind={kind} selectedPlan={selectedPlan}/>
     <Link href={localePath(locale,"/start")+"?"+new URLSearchParams({url,kind,...(selectedPlan?{plan:selectedPlan}:{})})} className="mt-5 inline-flex min-h-11 items-center text-sm text-accent hover:underline">{t.onboard.back}</Link>
   </section>;
 }
+

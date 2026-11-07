@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "./ad-image";
 import {Footer} from "./chrome";
+import {OfferPreviews} from "./offer-previews";
 import {PublicPricing} from "./public-pricing";
 import {StudioMotion,StudioNav,StudioPlanner,StudioRail,StudioStart,StudioTransformation} from "./studio-interactions";
 import {studioCopy} from "./studio-copy";
@@ -34,16 +35,16 @@ export function StudioHome({locale,t}:{locale:Locale;t:Messages}){
 
    <section className="studio-section studio-benefits" aria-labelledby="studio-benefits-title">
     <div className="studio-section-heading" data-studio-reveal><h2 id="studio-benefits-title">{c.benefitsTitle}</h2></div>
-    <div className="studio-benefit-grid">
+    {locale==="en"?<OfferPreviews/>:<div className="studio-benefit-grid">
      <article className="studio-benefit-card studio-brand-card" data-studio-reveal>
       <h3>{c.brandTitle}</h3><p>{c.brandBody}</p>
       <div className="studio-brand-visual">
-       <div className="studio-brand-ad"><Image src={STUDIO_BRAND} alt={locale==="en"?"Soft Mila cardigan ad using the brand's natural colors":t.home.kitTitle} fill sizes="(min-width:768px) 350px, 75vw" loading="lazy"/></div>
-       <div className="studio-brand-kit"><div><strong>softmila</strong><span className="studio-brand-type" aria-hidden>Aa</span></div><div className="studio-palette" aria-label={locale==="en"?"Sage, cream, charcoal and warm gray brand colors":t.home.kitTitle}>{["#9da99b","#eae4d8","#33382f","#c3b9aa"].map(color=><span key={color} style={{background:color}}/>)}</div><small>{locale==="en"?"Example brand kit":t.home.kitTitle}</small></div>
+       <div className="studio-brand-ad"><Image src={STUDIO_BRAND} alt={t.home.kitTitle} fill sizes="(min-width:768px) 350px, 75vw" loading="lazy"/></div>
+       <div className="studio-brand-kit"><div><strong>softmila</strong><span className="studio-brand-type" aria-hidden>Aa</span></div><div className="studio-palette" aria-label={t.home.kitTitle}>{["#9da99b","#eae4d8","#33382f","#c3b9aa"].map(color=><span key={color} style={{background:color}}/>)}</div><small>{t.home.kitTitle}</small></div>
       </div>
      </article>
      <article className="studio-benefit-card studio-schedule-card" data-studio-reveal><h3>{c.planTitle}</h3><p>{c.planBody}</p><StudioPlanner/></article>
-    </div>
+    </div>}
    </section>
 
    <section id="how" className="studio-section studio-how" data-studio-reveal>
@@ -69,5 +70,6 @@ export function StudioHome({locale,t}:{locale:Locale;t:Messages}){
   <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(homeJsonLd(locale,t.meta.description,PAID_PLANS.map(plan=>({name:plan.name,price:plan.price})))).replace(/</g,"\\u003c")}}/>
  </div>;
 }
+
 
 

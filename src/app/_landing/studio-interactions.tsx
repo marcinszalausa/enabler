@@ -8,7 +8,7 @@ import {LanguageSwitcher} from "./language-switcher";
 import {useI18n} from "@/i18n/client";
 import {localePath} from "@/i18n/config";
 import {productLink} from "@/lib/onboarding";
-import {STUDIO_ADS,STUDIO_FEED,STUDIO_SOURCE,STUDIO_STORY,type StudioAd} from "@/lib/studio-showcase";
+import {STUDIO_ADS,STUDIO_PRODUCT_ANGLES,STUDIO_SOURCE,type StudioAd} from "@/lib/studio-showcase";
 import {useMediaActivity} from "./use-media-activity";
 import {studioCopy,type StudioCopy} from "./studio-copy";
 
@@ -120,12 +120,14 @@ export function StudioRail({label}:{label:string}){
 }
 
 export function StudioTransformation({copy}:{copy:StudioCopy}){
- const [format,setFormat]=useState<"feed"|"story">("feed");
- return <div className="studio-transformation" data-transformation-format={format}>
+ const [format,setFormat]=useState<"feed"|"story">("feed"),[angle,setAngle]=useState(0);
+ const {locale,t}=useI18n(),selected=STUDIO_PRODUCT_ANGLES[angle];
+ return <div className="studio-transformation" data-transformation-format={format} data-transformation-angle={selected.angle}>
+  <div className="studio-angle-switch" role="group" aria-label={locale==="en"?"Choose an ad message":t.home.anglesTitle}>{STUDIO_PRODUCT_ANGLES.map((item,i)=><button key={item.angle} type="button" aria-pressed={angle===i} onClick={()=>setAngle(i)}>{locale==="en"&&item.angle==="social_proof"?"Lifestyle":t.angles[item.angle].name}</button>)}</div>
   <div className="studio-transformation-canvas">
    <figure className="studio-source-photo"><div><Image src={STUDIO_SOURCE} alt={copy.original} fill sizes="(min-width:768px) 190px, 30vw" loading="lazy"/></div><figcaption>{copy.original}</figcaption></figure>
    <svg className="studio-magic-arrow" viewBox="0 0 110 80" fill="none" aria-hidden><path d="M4 58C25 8 72 5 100 30m-19-2 21 4-3-21" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-   <figure className={"studio-transformed-ad "+format}><div><Image key={format} src={format==="feed"?STUDIO_FEED:STUDIO_STORY} alt={copy.result} fill sizes="(min-width:768px) 310px, 55vw" loading="lazy"/></div><figcaption><span className="studio-sparkle" aria-hidden>✦</span>{copy.result}</figcaption></figure>
+   <figure className={"studio-transformed-ad "+format}><div><Image key={format+angle} src={selected[format]} alt={selected.alt} fill sizes="(min-width:768px) 310px, 55vw" loading="lazy"/></div><figcaption><span className="studio-sparkle" aria-hidden>✦</span>{copy.result}</figcaption></figure>
   </div>
   <div className="studio-format-switch" role="group" aria-label="Ad format">{(["feed","story"] as const).map(value=><button key={value} type="button" aria-pressed={format===value} onClick={()=>setFormat(value)}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>{value==="feed"?<rect x="5" y="5" width="14" height="14" rx="3"/>:<rect x="7" y="3" width="10" height="18" rx="3"/>}</svg>{value==="feed"?copy.feed:copy.story}</button>)}</div>
  </div>;
@@ -158,3 +160,4 @@ export function StudioMotion(){
  },[]);
  return null;
 }
+

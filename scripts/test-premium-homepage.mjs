@@ -45,11 +45,10 @@ try {
   assert.equal(await page.locator('[data-transformation-format]').getAttribute('data-transformation-format'),'story');
   assert.equal((await canvas.boundingBox()).height,height,'format changes do not move the surrounding layout');
   await page.getByRole('button',{name:'Facebook feed',exact:true}).click();
-  await page.locator('[data-studio-planner]').scrollIntoViewIfNeeded();
-  const days=page.locator('.studio-calendar button');
-  await days.nth(1).click();
-  assert.equal(await days.nth(1).getAttribute('aria-pressed'),'true');
-  await page.locator('.studio-post-preview strong').filter({hasText:"Loungewear that's warm, not bulky"}).waitFor();
+  await page.locator('[data-store-workflow-preview]').scrollIntoViewIfNeeded();
+  const workflow=page.locator('[data-store-workflow-preview]');await workflow.getByRole('button',{name:'2 Choose',exact:true}).click();assert.equal(await workflow.locator('[data-store-preview-step]').getAttribute('data-store-preview-step'),'1');await workflow.getByRole('button',{name:'Preview the finished ad'}).click();assert.equal(await workflow.locator('[data-store-preview-step]').getAttribute('data-store-preview-step'),'2');
+  const scale=page.locator('[data-scale-plan-preview]');await scale.getByRole('button',{name:'Not enough data',exact:true}).click();assert.equal(await scale.getByRole('button',{name:'Download sample brief'}).count(),0);await scale.getByRole('button',{name:'Example plan',exact:true}).click();assert.match(await scale.innerText(),/Illustrative data · Not customer results/);
+  await page.locator('#how').getByRole('button',{name:'Curiosity',exact:true}).click();assert.equal(await page.locator('[data-transformation-angle]').getAttribute('data-transformation-angle'),'curiosity');await page.locator('#how').getByRole('button',{name:'Lifestyle',exact:true}).click();assert.equal(await page.locator('[data-transformation-angle]').getAttribute('data-transformation-angle'),'social_proof');
   await page.evaluate(()=>window.scrollTo(0,0));
   await page.screenshot({path:'/tmp/studio-review/full-'+width+'.png',fullPage:true});
   if(width===390){
@@ -119,5 +118,6 @@ try {
  await pricing.getByRole('button',{name:'Monthly',exact:true}).click();
  assert.equal(await pricing.locator('[data-plan="starter"] [data-price]').getAttribute('data-price'),'39');
  await pricing.close();
- console.log('Premium homepage: responsive layouts, static media and recovery, formats, planner, navigation, validation, no-JS, autoplay/visibility, motion/data preferences and locale checks passed.');
+ console.log('Premium homepage: responsive layouts, static media and recovery, formats, store workflow, Scale sample, navigation, validation, no-JS, autoplay/visibility, motion/data preferences and locale checks passed.');
 }finally{await browser.close();}
+
