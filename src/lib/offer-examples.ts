@@ -1,4 +1,4 @@
-import {growthTests,growthTestingBrief} from "./growth-testing";
+import {growthTests,growthTestingBrief} from "./growth-testing.ts";
 import type {ReportRow} from "./plan-value";
 
 // Deliberately synthetic inputs for a labeled public product preview.

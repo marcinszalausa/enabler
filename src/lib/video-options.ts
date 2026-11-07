@@ -1,8 +1,8 @@
 // Choices the owner makes for a video run. Shared by the form (browser)
 // and the pipeline (server), so it stays free of server imports.
 
-import { DEFAULT_LANGUAGE, LANGUAGES, type LanguageKey } from "@/lib/languages";
-import { DEFAULT_VIDEO_QUALITY, VIDEO_CREDITS_PER_SECOND, parseQuality, type Quality } from "@/lib/quality";
+import { DEFAULT_LANGUAGE, LANGUAGES, type LanguageKey } from "./languages.ts";
+import { DEFAULT_VIDEO_QUALITY, VIDEO_CREDITS_PER_SECOND, parseQuality, type Quality } from "./quality.ts";
 
 export { LANGUAGES, type LanguageKey };
 
@@ -241,3 +241,4 @@ export function voiceFor(options: VideoOptions) {
 export function isEnglish(options: Pick<VideoOptions, "language">) {
   return options.language === "english";
 }
+

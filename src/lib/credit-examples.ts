@@ -1,5 +1,5 @@
-import {variationRunCost} from "@/lib/create-options";
-import {VIDEOS_PER_GENERATION,videoRunCost} from "@/lib/video-options";
+import {variationRunCost} from "./create-options.ts";
+import {VIDEOS_PER_GENERATION,videoRunCost} from "./video-options.ts";
 
 // Examples use complete generation batches, not fractional videos or credits.
 // The formats are alternatives using the same monthly balance.
