@@ -1,0 +1,4 @@
+shopify.app.production.toml
+.shopify/
+.env*
+node_modules/

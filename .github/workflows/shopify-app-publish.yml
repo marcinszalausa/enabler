@@ -1,0 +1,59 @@
+name: Publish Gooidy Shopify app
+on:
+  workflow_dispatch:
+  push:
+    branches: [ops/shopify-app-publish]
+  pull_request:
+    paths: ['ops/shopify/**','scripts/render-shopify-config.py','tests/shopify-config-test.py','.github/workflows/shopify-app-publish.yml']
+permissions:
+  contents: read
+concurrency:
+  group: gooidy-shopify-app-publish-${{ github.event_name }}
+  cancel-in-progress: false
+jobs:
+  configuration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      SHOPIFY_CLI_NO_ANALYTICS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Require main for live publishing
+        if: github.event_name == 'workflow_dispatch' && github.ref != 'refs/heads/main'
+        run: |
+          echo 'Run the publish workflow from main.'
+          exit 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Test app configuration rendering
+        run: python tests/shopify-config-test.py
+      - name: Render configuration
+        env:
+          SHOPIFY_APP_CLIENT_ID: ${{ vars.SHOPIFY_APP_CLIENT_ID }}
+        run: |
+          if [ "$GITHUB_EVENT_NAME" != "workflow_dispatch" ]; then
+            export SHOPIFY_APP_CLIENT_ID=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+          fi
+          python scripts/render-shopify-config.py
+      - name: Install pinned Shopify CLI
+        run: npm install --prefix /tmp/gooidy-shopify-cli --no-package-lock --ignore-scripts @shopify/cli@5.0.1
+      - name: Inspect installed CLI and disable automatic upgrades
+        run: |
+          /tmp/gooidy-shopify-cli/node_modules/.bin/shopify version
+          /tmp/gooidy-shopify-cli/node_modules/.bin/shopify config autoupgrade off
+          /tmp/gooidy-shopify-cli/node_modules/.bin/shopify app config validate --help
+          /tmp/gooidy-shopify-cli/node_modules/.bin/shopify app deploy --help
+      - name: Validate and publish Gooidy app configuration
+        if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
+        env:
+          SHOPIFY_SERVICE_ACCOUNT_TOKEN: ${{ secrets.SHOPIFY_SERVICE_ACCOUNT_TOKEN }}
+        run: |
+          if [ -z "$SHOPIFY_SERVICE_ACCOUNT_TOKEN" ]; then
+            echo 'Add SHOPIFY_SERVICE_ACCOUNT_TOKEN to repository Actions secrets.'
+            exit 1
+          fi
+          /tmp/gooidy-shopify-cli/node_modules/.bin/shopify app config validate --path ops/shopify --config production --json --no-input
+          /tmp/gooidy-shopify-cli/node_modules/.bin/shopify app deploy --path ops/shopify --config production --allow-updates --no-input
