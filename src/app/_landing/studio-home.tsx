@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "./ad-image";
 import {Footer} from "./chrome";
 import {OfferPreviews} from "./offer-previews";
+import {PlatformMarks} from "./platform-marks";
 import {PublicPricing} from "./public-pricing";
 import {StudioMotion,StudioNav,StudioPlanner,StudioRail,StudioStart,StudioTransformation} from "./studio-interactions";
 import {studioCopy} from "./studio-copy";
@@ -30,7 +31,7 @@ export function StudioHome({locale,t}:{locale:Locale;t:Messages}){
      <StudioStart copy={c} id="create"/>
     </div>
     <StudioRail label={c.examples}/>
-    <div className="studio-platforms"><span>{locale==="en"?"Made for where your customers scroll":t.home.whereTitle}</span><strong>Instagram</strong><strong>TikTok</strong><strong>Facebook</strong></div>
+    <PlatformMarks label={t.home.whereTitle}/>
    </section>
 
    <section className="studio-section studio-benefits" aria-labelledby="studio-benefits-title">
@@ -70,6 +71,7 @@ export function StudioHome({locale,t}:{locale:Locale;t:Messages}){
   <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(homeJsonLd(locale,t.meta.description,PAID_PLANS.map(plan=>({name:plan.name,price:plan.price})))).replace(/</g,"\\u003c")}}/>
  </div>;
 }
+
 
 
 
