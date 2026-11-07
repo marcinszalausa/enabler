@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "stripe:setup": "node scripts/stripe-setup.mjs"
+    "stripe:setup": "node scripts/stripe-setup.mjs",
+    "catalog:setup:check": "node --experimental-strip-types scripts/check-catalog-setup.mjs"
   },
   "dependencies": {
     "@ai-sdk/gateway": "^4.0.135",

@@ -1,0 +1,19 @@
+name: Catalog service setup
+on:
+  push:
+    branches: [ops/catalog-service-setup]
+  pull_request:
+    paths: ['scripts/check-catalog-setup.mjs', 'tests/catalog-setup.test.mjs', 'docs/soft-mila-first-connection.md', '.github/workflows/catalog-service-setup.yml']
+permissions:
+  contents: read
+jobs:
+  setup-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node --check scripts/check-catalog-setup.mjs
+      - run: node --experimental-strip-types --test tests/catalog-setup.test.mjs
