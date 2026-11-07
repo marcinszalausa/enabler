@@ -1,0 +1,26 @@
+name: Catalog endpoint diagnostic
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/catalog-endpoint-diagnostic.yml']
+permissions:
+  contents: read
+jobs:
+  endpoint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Inspect public worker response without secrets
+        run: |
+          node --input-type=module <<'JS'
+          for(const host of ['gooidy.com','www.gooidy.com']){
+            try{
+              const response=await fetch('https://'+host+'/api/inngest',{redirect:'manual',signal:AbortSignal.timeout(12000)});
+              let body={};try{body=await response.json();}catch{}
+              console.log(JSON.stringify({host,status:response.status,location:response.headers.get('location'),count:body.function_count,mode:body.mode,code:body.code,settings:body.missing_or_invalid_settings}));
+            }catch(error){console.log(JSON.stringify({host,error:error.name,cause:error.cause?.code}));}
+          }
+          JS
