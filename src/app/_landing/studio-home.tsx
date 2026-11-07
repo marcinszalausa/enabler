@@ -32,11 +32,6 @@ export function StudioHome({locale,t}:{locale:Locale;t:Messages}){
     <div className="studio-platforms"><span>{locale==="en"?"Made for where your customers scroll":t.home.whereTitle}</span><strong>Instagram</strong><strong>TikTok</strong><strong>Facebook</strong></div>
    </section>
 
-   <section id="how" className="studio-section studio-how" data-studio-reveal>
-    <div><h2>{c.sourceTitle}</h2><p className="studio-section-lede">{c.sourceBody}</p><Link href={localePath(locale,"/start")} className="studio-text-link" prefetch={false}>{c.sourceCta}<Arrow/></Link></div>
-    <StudioTransformation copy={c}/>
-   </section>
-
    <section className="studio-section studio-benefits" aria-labelledby="studio-benefits-title">
     <div className="studio-section-heading" data-studio-reveal><h2 id="studio-benefits-title">{c.benefitsTitle}</h2></div>
     <div className="studio-benefit-grid">
@@ -49,6 +44,11 @@ export function StudioHome({locale,t}:{locale:Locale;t:Messages}){
      </article>
      <article className="studio-benefit-card studio-schedule-card" data-studio-reveal><h3>{c.planTitle}</h3><p>{c.planBody}</p><StudioPlanner/></article>
     </div>
+   </section>
+
+   <section id="how" className="studio-section studio-how" data-studio-reveal>
+    <div><h2>{c.sourceTitle}</h2><p className="studio-section-lede">{c.sourceBody}</p><Link href={localePath(locale,"/start")} className="studio-text-link" prefetch={false}>{c.sourceCta}<Arrow/></Link></div>
+    <StudioTransformation copy={c}/>
    </section>
 
    <section id="pricing" className="studio-section studio-pricing" aria-labelledby="studio-pricing-title" data-studio-reveal>
@@ -69,4 +69,5 @@ export function StudioHome({locale,t}:{locale:Locale;t:Messages}){
   <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(homeJsonLd(locale,t.meta.description,PAID_PLANS.map(plan=>({name:plan.name,price:plan.price})))).replace(/</g,"\\u003c")}}/>
  </div>;
 }
+
 

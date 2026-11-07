@@ -24,6 +24,10 @@ try{
   for(const [id,year] of [["starter","31.2"],["plus","55.2"],["growth","79.2"]])assert.equal(await page.locator(`[data-plan="${id}"] [data-price]`).getAttribute("data-price"),year);
   assert.equal(await page.locator('[data-plan="free"]').count(),0);
   if(width>=1440){const tops=await page.locator("[data-plan]").evaluateAll(cards=>cards.map(card=>Math.round(card.getBoundingClientRect().top)));assert.equal(new Set(tops).size,1,"Plans sit in one row on desktop");const heights=await page.locator("[data-plan]").evaluateAll(cards=>cards.map(card=>Math.round(card.getBoundingClientRect().height)));assert.ok(Math.max(...heights)-Math.min(...heights)<=1,"Cards have equal height");const buttons=await page.locator("[data-buy-plan]").evaluateAll(items=>items.map(item=>Math.round(item.getBoundingClientRect().top)));assert.equal(new Set(buttons).size,1,"Purchase buttons align");}
+  if(locale==="en"){
+   for(const [id,images,videos]of [["starter",60,4],["plus",120,8],["growth",200,14]])assert.equal(await page.locator('[data-plan="'+id+'"] [data-credit-example]').innerText(),'e.g. '+images+' Best images or '+videos+' × 7s Better videos');
+   await page.locator('[data-credit-example-details] summary').click();assert.match(await page.locator('[data-credit-example-details] p').innerText(),/square and vertical exports/);await page.locator('[data-credit-example-details] summary').click();
+  }
   assert.equal(await page.locator("a[data-try-plan]").count(),1);assert.equal(await page.locator("[data-plan] a[data-try-plan]").count(),0);assert.equal(await page.locator("[data-shared-plan-benefits] li").count(),4);assert.equal(await page.locator("[data-plan-icon]").count(),3);assert.equal(await page.locator("[data-shared-plan-benefits] p").count(),0);
   if(locale==="en"&&(width===390||width===1440))await page.locator("[data-pricing-cards]").screenshot({path:"/tmp/premium-pricing/pricing-"+width+".png"});
   const questions=await page.locator("[data-pricing-faq] summary").allTextContents();const answers=await page.locator("[data-pricing-faq] details p").allTextContents();const faq=JSON.parse(await page.locator("script[data-pricing-structured]").textContent());assert.deepEqual(faq.mainEntity.map(q=>q.name),questions);assert.deepEqual(faq.mainEntity.map(q=>q.acceptedAnswer.text),answers);
@@ -48,10 +52,16 @@ try{
   const next=new URL(new URL(page.url()).searchParams.get("next"),"https://gooidy.com");assert.equal(next.pathname,"/dashboard/setup");assert.equal(next.searchParams.get("plan"),plan);assert.equal(next.searchParams.get("kind"),"video");assert.equal(next.searchParams.get("url"),"https://example.invalid/product");
   console.log("PASS selected plan survives optional free preview to login",plan);await page.close();
  }
+ const proof=await browser.newPage({viewport:{width:1440,height:1000},reducedMotion:"reduce"});const assetErrors=[];proof.on('response',r=>{if(r.url().includes('/showcase/')&&r.status()>=400)assetErrors.push(r.status());});
+ await proof.goto('http://localhost:3126/',{waitUntil:'networkidle'});assert.equal(await proof.locator('#how').evaluate(el=>el.nextElementSibling.id),'pricing','Real example immediately precedes pricing');
+ await proof.locator('#how').scrollIntoViewIfNeeded();await proof.waitForFunction(()=>Array.from(document.querySelectorAll('#how img')).every(img=>img.complete&&img.naturalWidth>100));
+ assert.equal(await proof.locator('#how [data-home-fallback]').count(),0);await proof.getByRole('button',{name:'Instagram Stories',exact:true}).click();await proof.waitForFunction(()=>document.querySelector('[data-transformation-format]')?.getAttribute('data-transformation-format')==='story');await proof.waitForFunction(()=>Array.from(document.querySelectorAll('#how img')).every(img=>img.complete&&img.naturalWidth>100));assert.deepEqual(assetErrors,[]);
+ await proof.locator('#how').screenshot({path:'/tmp/premium-pricing/product-to-ad.png'});await proof.close();
  const home=await browser.newPage({viewport:{width:390,height:950},javaScriptEnabled:false});await home.goto("http://localhost:3126/",{waitUntil:"domcontentloaded"});
- assert.equal(await home.locator("#pricing [data-plan-included]").count(),3);assert.equal(await home.locator("#pricing button[data-buy-plan]:disabled").count(),3);assert.equal(await home.locator("#pricing a[data-try-plan]").count(),1);
+ assert.equal(await home.locator("#pricing [data-plan-included]").count(),3);assert.equal(await home.locator("#pricing button[data-buy-plan]:disabled").count(),3);assert.equal(await home.locator("#pricing a[data-try-plan]").count(),1);assert.equal(await home.locator("#pricing [data-credit-example]").count(),3);
  assert.ok(await home.locator('#pricing [data-plan-included="starter"] li').count()>=4);assert.ok(await home.locator('#pricing [data-plan-included="growth"] li').count()>=4);await home.close();console.log("PASS plan cards on homepage without JavaScript");
  console.log("PASS raw HTML content is readable without JavaScript");
 }catch(error){console.error(log);throw error;}finally{await browser?.close();if(server?.pid)try{process.kill(-server.pid,"SIGTERM");}catch{}}
+
 
 

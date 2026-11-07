@@ -6,6 +6,8 @@ import {useI18n} from "@/i18n/client";
 import {localePath} from "@/i18n/config";
 import {fmt} from "@/i18n/format";
 import {PAID_PLANS} from "@/lib/paid-plans";
+import {creditExamples} from "@/lib/credit-examples";
+import {creditExampleCopy} from "@/lib/credit-example-copy";
 import {planTools} from "@/lib/plan-value";
 import {pricingDisplayCopy} from "@/lib/pricing-display-copy";
 import {PAID_CHECKOUT_STATUS} from "@/lib/legal-policy";
@@ -24,7 +26,7 @@ function BenefitIcon({index}:{index:number}){return <svg viewBox="0 0 24 24" ari
 function Check(){return <svg viewBox="0 0 20 20" aria-hidden className="mt-0.5 h-4 w-4 shrink-0 text-muted" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="m4.5 10.5 3.5 3.5 7.5-8"/></svg>;}
 
 export function PublicPricing({compact=false}:{compact?:boolean}={}){
- const {locale,t}=useI18n(),p=t.pricingPage,copy=pricingDisplayCopy(locale);
+ const {locale,t}=useI18n(),p=t.pricingPage,copy=pricingDisplayCopy(locale),examplesCopy=creditExampleCopy(locale);
  const [interval,setBilling]=useState<Interval>("month");
  const percent=Math.round(YEARLY_DISCOUNT*100),unavailable=PAID_CHECKOUT_STATUS==="unavailable";
  return <div data-pricing-cards>
@@ -35,6 +37,7 @@ export function PublicPricing({compact=false}:{compact?:boolean}={}){
    {PAID_PLANS.map((card,level)=>{
     const tools=planTools(card.id),yearly=interval==="year",shown=yearly?Math.round(yearlyPrice(card.price)/12*100)/100:card.price;
     const values={credits:card.credits.toLocaleString(locale),accounts:1,posts:tools.resultsLimit,languages:LANGUAGE_COUNT};
+    const example=creditExamples(card.credits),exampleValues={images:example.images.toLocaleString(locale),videos:example.videos.toLocaleString(locale),seconds:example.seconds};
     const previous=level>0?PAID_PLANS[level-1].name:null,features=locale==="en"?EN_FEATURES[card.id]:p[card.id].features.slice(1);
     return <article key={card.id} id={"plan-"+card.id} data-plan={card.id} className={"relative flex min-w-0 scroll-mt-24 flex-col rounded-2xl border bg-raised p-6 sm:p-7 "+(card.recommended?"border-accent/40":"border-line")}>
      <div className="flex min-h-7 items-center justify-between gap-2"><PlanIcon level={level}/>{card.recommended&&<span data-recommended-plan className="rounded-full bg-accent-soft px-2.5 py-1 text-[11px] font-medium text-accent">{locale==="en"?"Recommended":p.popular}</span>}</div>
@@ -43,6 +46,7 @@ export function PublicPricing({compact=false}:{compact?:boolean}={}){
      <p className="mt-5 text-[2.75rem] leading-none font-semibold tracking-[-0.055em]" data-price={shown}>{usd(shown,locale)}</p>
      <p className="mt-2 min-h-10 text-xs leading-relaxed text-muted">{yearly?fmt(p.perMonthYearly,{total:usd(yearlyPrice(card.price),locale),monthly:usd(card.price,locale)}):p.perMonth}{!compact&&<LocalPrice usd={shown} locale={locale} template={" · "+t.home.approx}/>}</p>
      <p data-plan-credits className="mt-1 text-sm font-medium">{fmt(copy.credits,values)}</p>
+     <p data-credit-example className="mt-2 min-h-10 text-xs leading-5 text-muted">{fmt(examplesCopy.example,exampleValues)}</p>
      <button type="button" data-buy-plan={card.id} disabled={unavailable} title={unavailable?"Online payments are currently unavailable":undefined} className={"mt-6 inline-flex min-h-12 items-center justify-center rounded-full px-4 py-3 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-60 "+(unavailable?"border border-line bg-surface text-muted":card.recommended?"bg-accent text-accent-fg":"bg-fg text-bg")} lang="en">Choose {card.name}</button>
      <div className="mt-6 flex-1 border-t border-line pt-5">
       <p className="mb-4 min-h-10 text-xs leading-5 font-medium">{previous?fmt(p.everythingIn,{plan:previous}):locale==="en"?"Create and publish":"Launch"}</p>
@@ -62,9 +66,11 @@ export function PublicPricing({compact=false}:{compact?:boolean}={}){
    </ul>
   </section>
   <p data-pricing-note className="mx-auto mt-4 max-w-2xl text-center text-xs leading-relaxed text-muted">{copy.note}</p>
+  <details data-credit-example-details className="mx-auto mt-2 max-w-2xl text-center text-xs text-muted"><summary className="inline-flex min-h-11 cursor-pointer items-center gap-2">{examplesCopy.title}<span aria-hidden>+</span></summary><p className="pb-3 text-start leading-relaxed">{examplesCopy.body}</p></details>
   <div data-pricing-preview className="mt-5 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-center">
    <Link data-try-plan="starter" href={localePath(locale,"/start")+"?plan=starter"} prefetch={false} className="inline-flex min-h-11 items-center gap-2 text-sm font-medium text-accent">{copy.preview}<span aria-hidden>→</span></Link>
    <span className="text-xs text-muted">{copy.previewNote}</span>
   </div>
  </div>;
 }
+
