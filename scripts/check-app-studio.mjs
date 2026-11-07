@@ -68,7 +68,7 @@ try{
     if(width===390||width===1440)await page.screenshot({path:'/tmp/app-studio-review/ads-'+width+'-'+theme+'.png',fullPage:true});
    }
    if(section==='brand'){
-    const input=page.locator('input[name=name]');await input.fill('Example brand');assert.ok((await input.boundingBox()).height>=44);assert.ok((await page.getByRole('button',{name:/Save/i}).boundingBox()).height>=44);
+    const input=page.locator('input[name=name]');await input.fill('Example brand');assert.ok((await input.boundingBox()).height>=44);assert.ok((await page.locator('#app-content form button[type=submit]').boundingBox()).height>=44);
    }
    if(section==='stores'){
     assert.equal(await page.getByRole('button',{name:'Connect Shopify'}).isDisabled(),false);
