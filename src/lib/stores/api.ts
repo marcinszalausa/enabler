@@ -53,7 +53,7 @@ export async function authorizeProof(provider:StoreProvider,params:URLSearchPara
  const scopes=str(params.get("scope")),required=["store_v2_information_read_only","store_v2_products_read_only"];
  if(!required.every(scope=>scopes.split(" ").includes(scope))||scopes.split(" ").some(scope=>!required.includes(scope)&&scope!=="store_v2_default"))throw new Error("STORE_SCOPE_INVALID");
  const result=await fixedJson("https://login.bigcommerce.com/oauth2/token",{method:"POST",body:JSON.stringify({client_id:process.env.BIGCOMMERCE_CLIENT_ID,client_secret:process.env.BIGCOMMERCE_CLIENT_SECRET,code:str(params.get("code")),context,scope:scopes,grant_type:"authorization_code",redirect_uri:callbackUrl(provider)})});
- if(result.context!==context||result.scope!==scopes)throw new Error("STORE_PROOF_INVALID");
+ if(result.context!==context||typeof result.scope!=="string"||result.scope.split(" ").sort().join(" ")!==scopes.split(" ").sort().join(" "))throw new Error("STORE_PROOF_INVALID");
  const credentials={accessToken:str(result.access_token),context},info=await fixedJson("https://api.bigcommerce.com/"+context+"/v2/store",{headers:{"X-Auth-Token":credentials.accessToken}});
  return {provider,providerId:context,storeUrl:storeAddress(str(info.secure_url??info.domain)),name:typeof info.name==="string"?info.name:context,credentials};
 }

@@ -11,7 +11,7 @@ function photos(provider:StoreProvider,p:ObjectData){
  let values:unknown[]=[];
  if(provider==="woocommerce"||provider==="squarespace")values=Array.isArray(p.images)?p.images.map(x=>obj(x).src??obj(x).url):[];
  else if(provider==="bigcommerce")values=Array.isArray(p.images)?p.images.map(x=>obj(x).url_zoom??obj(x).url_standard):[];
- else{const media:ObjectData=p.media?obj(p.media):{},items:unknown[]=Array.isArray(media.items)?media.items:[];values=items.flatMap(x=>{const item=obj(x);return item.image?[obj(item.image).url]:[];});}
+ else{const media:ObjectData=p.media?obj(p.media):{},items:unknown[]=[...(Array.isArray(media.items)?media.items:[]),...(media.mainMedia?[media.mainMedia]:[])];values=items.flatMap(x=>{const item=obj(x);return item.image?[obj(item.image).url]:[];});}
  return [...new Set(values.flatMap(v=>{try{const u=parsePublicHttpUrl(str(v));if(u.protocol!=="https:")return [];if(provider==="wix"&&u.hostname==="static.wixstatic.com")u.pathname=u.pathname.split("/v1/")[0];return [u.toString()];}catch{return [];}}))].slice(0,30);
 }
 export function nativeProduct(provider:StoreProvider,p:ObjectData,c:CatalogConnection,observed:string,storeUrl:string){
@@ -19,11 +19,11 @@ export function nativeProduct(provider:StoreProvider,p:ObjectData,c:CatalogConne
  const name=p.name,id=p.id;
  if(provider==="woocommerce"){updated=typeof p.date_modified_gmt==="string"?p.date_modified_gmt+"Z":observed;if(p.stock_status==="outofstock")quantity=0;else if(p.manage_stock&&Number.isSafeInteger(p.stock_quantity))quantity=Math.max(0,Number(p.stock_quantity));}
  if(provider==="bigcommerce"){url=new URL(str(obj(p.custom_url).url),storeUrl+"/").toString();updated=p.date_modified;if(p.is_visible===false)quantity=0;else if(p.inventory_tracking==="product"&&Number.isSafeInteger(p.inventory_level))quantity=Math.max(0,Number(p.inventory_level));}
- if(provider==="wix"){const page=obj(p.productPageUrl);url=new URL(str(page.path),str(page.base)).toString();updated=p.lastUpdated;const stock:ObjectData=p.stock?obj(p.stock):{};if(p.visible===false||stock.inStock===false)quantity=0;}
+ if(provider==="wix"){const page=obj(p.productPageUrl);url=str(page.base).replace(/\/$/,"")+"/"+str(page.path).replace(/^\//,"");updated=p.lastUpdated;const stock:ObjectData=p.stock?obj(p.stock):{};if(p.visible===false||stock.inStock===false)quantity=0;}
  if(provider==="squarespace"&&p.isVisible===false)quantity=0;
  const images=photos(provider,p);if(!images.length)return null;
  const timestamp=typeof updated==="string"&&/T.*(?:Z|[+-]\d{2}:\d{2})$/.test(updated)?updated:observed;
- return canonicalProduct({externalId:id,name,url,images,inventoryQuantity:quantity,updatedAt:timestamp},c);
+ return canonicalProduct({externalId:id,name,url:new URL(str(url),storeUrl+"/").toString(),images,inventoryQuantity:quantity,updatedAt:timestamp},c);
 }
 export async function platformCredentials(id:string,installation:string){
  const db=createAdminClient();const {data:store,error}=await db.from("platform_stores").select("*").eq("id",id).eq("installation_id",installation).single();if(error||!store?.credentials_cipher||["disconnected","reconnect"].includes(store.status))throw new Error("STORE_RECONNECT_REQUIRED");

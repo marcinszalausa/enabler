@@ -46,6 +46,6 @@ test("native catalog normalization keeps original images and unknown stock, neve
  const c={store_origin:"https://store.example"};
  const woo=catalog.nativeProduct("woocommerce",{id:1,name:"Real product",permalink:"https://store.example/product",images:[{src:"https://cdn.example/original.jpg"}],manage_stock:false},c,"2026-01-01T00:00:00Z","https://store.example");
  assert.equal(woo.inventoryQuantity,null);assert.equal(woo.images[0],"https://cdn.example/original.jpg");
- const wix=catalog.nativeProduct("wix",{id:"product",name:"Real",productPageUrl:{base:"https://store.example",path:"/product"},media:{items:[{image:{url:"https://static.wixstatic.com/media/source.jpg/v1/fit/w_50,h_50/file.jpg"}}]}},c,"2026-01-01T00:00:00Z","https://store.example");
- assert.equal(wix.images[0],"https://static.wixstatic.com/media/source.jpg");
+ const wix=catalog.nativeProduct("wix",{id:"product",name:"Real",productPageUrl:{base:"https://store.example/mysite",path:"/product"},media:{items:[{image:{url:"https://static.wixstatic.com/media/source.jpg/v1/fit/w_50,h_50/file.jpg"}}]}},c,"2026-01-01T00:00:00Z","https://store.example");
+ assert.equal(wix.images[0],"https://static.wixstatic.com/media/source.jpg");assert.equal(wix.url,"https://store.example/mysite/product");
 });

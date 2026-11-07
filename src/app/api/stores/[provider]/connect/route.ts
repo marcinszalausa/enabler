@@ -1,7 +1,7 @@
 import {randomBytes} from "node:crypto";
 import {cookies} from "next/headers";
 import {createAdminClient} from "@/lib/supabase/admin";
-import {verifyPublicUrl} from "@/lib/public-fetch";
+import {verifyPublicUrl,fetchPublicUrl} from "@/lib/public-fetch";
 import {catalogBody} from "@/lib/catalog/security";
 import {catalogStoreOwner,catalogSameOrigin} from "@/lib/catalog/auth";
 import {storeProvider,storeAddress,storeKey,providerReady,providerInstallUrl,intentHash,STORE_COOKIE} from "@/lib/stores/providers";
@@ -13,8 +13,9 @@ export async function POST(request:Request,{params}:{params:Promise<{provider:st
   const client=await catalogStoreOwner(ws);if(!providerReady(provider))return finish("platform_unavailable");
   const {data:{user}}=await client.auth.getUser();if(!user)throw new Error("AUTH");
   const needsAddress=provider==="woocommerce"||provider==="bigcommerce";
-  const raw=form.get("storeUrl"),address=typeof raw==="string"&&raw.trim()?storeAddress(raw):null;
+  const raw=form.get("storeUrl");let address=typeof raw==="string"&&raw.trim()?storeAddress(raw):null;
   if(needsAddress&&!address)throw new Error("STORE_ADDRESS_REQUIRED");if(address)await verifyPublicUrl(address);
+  if(provider==="woocommerce"&&address){const home=await fetchPublicUrl(address,{maxBytes:2000000,timeoutMs:8000,accept:"text/html"});if(home.status<200||home.status>=300)throw new Error("STORE_ADDRESS_INVALID");address=storeAddress(home.url.origin+new URL(address).pathname);}
   const state=randomBytes(32).toString("hex");
   const {error}=await createAdminClient().from("store_connect_intents").insert({state_hash:intentHash(state),workspace_id:ws,user_id:user.id,provider,expected_url:address,expected_key:address?storeKey(address):null,expires_at:new Date(Date.now()+600000).toISOString()});if(error)throw new Error("STORE_STATE_FAILED");
   (await cookies()).set(STORE_COOKIE,state,{httpOnly:true,secure:true,sameSite:"lax",path:"/",maxAge:600});
