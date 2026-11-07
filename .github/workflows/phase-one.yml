@@ -15,15 +15,9 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - name: Read installed Next guides
+      - name: Installed Next route and server guidance
         run: |
-          find node_modules/next/dist/docs -type f \( -name route-handlers.md -o -name server-and-client-components.md \) -exec cat {} +
-      - name: Prepare migration
-        run: |
-          npm exec --yes --package=supabase@2.81.3 -- supabase --help
-          npm exec --yes --package=supabase@2.81.3 -- supabase migration new --help
-          npm exec --yes --package=supabase@2.81.3 -- supabase migration new phase_one_catalog_completion
-      - uses: actions/upload-artifact@v4
-        with:
-          name: phase-one-migration
-          path: supabase/migrations/*phase_one_catalog_completion.sql
+          find node_modules/next/dist/docs -type f | head -35
+          find node_modules/next/dist/docs -type f \( -iname '*route-handlers*' -o -iname '*server-and-client-components*' \) -exec cat {} +
+      - run: npx next typegen && npx tsc --noEmit
+      - run: npx eslint src/lib/catalog/inventory*.ts src/lib/catalog/paid-ad-pause.ts src/inngest/inventory.ts src/inngest/stock-pauses.ts src/inngest/shopify.ts src/app/api/shopify/webhooks/route.ts

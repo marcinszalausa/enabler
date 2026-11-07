@@ -1,11 +1,13 @@
-import {syncShopify,recoverShopify} from "@/inngest/shopify";
+import {syncShopify,recoverShopify,refreshShopify} from "@/inngest/shopify";
 import {syncPlatformStore,recoverPlatformStores} from "@/inngest/platform-stores";
+import {syncInventory,recoverInventory} from "@/inngest/inventory";
+import {pauseStockAds,recoverStockPauses} from "@/inngest/stock-pauses";
 import {serve} from "inngest/next";
 import {inngest} from "@/inngest/client";
 import {applyCatalog,trainCatalog,reconcileCatalog} from "@/inngest/catalog";
 import {catalogWorkerConfigurationIssues,catalogWorkerConfigurationDetails} from "@/lib/catalog/security";
 export const maxDuration=300;
-const handler=serve({client:inngest,functions:[applyCatalog,trainCatalog,reconcileCatalog,syncShopify,recoverShopify,syncPlatformStore,recoverPlatformStores]});
+const handler=serve({client:inngest,functions:[applyCatalog,trainCatalog,reconcileCatalog,syncShopify,recoverShopify,refreshShopify,syncPlatformStore,recoverPlatformStores,syncInventory,recoverInventory,pauseStockAds,recoverStockPauses]});
 const unavailable=(settings:string[])=>Response.json({code:"CATALOG_WORKERS_NOT_CONFIGURED",missing_or_invalid_settings:settings,configuration_errors:catalogWorkerConfigurationDetails()},{status:503,headers:{"Cache-Control":"no-store"}});
 export const GET=(...args:Parameters<typeof handler.GET>)=>catalogWorkerConfigurationIssues().length===0?handler.GET(...args):unavailable(catalogWorkerConfigurationIssues());
 export const POST=(...args:Parameters<typeof handler.POST>)=>catalogWorkerConfigurationIssues().length===0?handler.POST(...args):unavailable(catalogWorkerConfigurationIssues());

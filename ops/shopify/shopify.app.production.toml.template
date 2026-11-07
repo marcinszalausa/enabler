@@ -17,7 +17,7 @@ redirect_urls = ["https://gooidy.com/api/shopify/callback"]
 api_version = "2026-10"
 
 [[webhooks.subscriptions]]
-topics = ["products/create", "products/update", "app/uninstalled"]
+topics = ["products/create", "products/update", "products/delete", "inventory_levels/update", "inventory_levels/connect", "inventory_levels/disconnect", "app/uninstalled"]
 uri = "https://gooidy.com/api/shopify/webhooks"
 
 [[webhooks.subscriptions]]

@@ -23,7 +23,7 @@ export function nativeProduct(provider:StoreProvider,p:ObjectData,c:CatalogConne
  if(provider==="squarespace"&&p.isVisible===false)quantity=0;
  const images=photos(provider,p);if(!images.length)return null;
  const timestamp=typeof updated==="string"&&/T.*(?:Z|[+-]\d{2}:\d{2})$/.test(updated)?updated:observed;
- return canonicalProduct({externalId:id,name,url:new URL(str(url),storeUrl+"/").toString(),images,inventoryQuantity:quantity,updatedAt:timestamp},c);
+ return canonicalProduct({externalId:id,name,url:new URL(str(url),storeUrl+"/").toString(),images,inventoryQuantity:quantity,inventoryUpdatedAt:observed,updatedAt:timestamp},c);
 }
 export async function platformCredentials(id:string,installation:string){
  const db=createAdminClient();const {data:store,error}=await db.from("platform_stores").select("*").eq("id",id).eq("installation_id",installation).single();if(error||!store?.credentials_cipher||["disconnected","reconnect"].includes(store.status))throw new Error("STORE_RECONNECT_REQUIRED");

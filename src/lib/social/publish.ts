@@ -1,4 +1,5 @@
 import "server-only";
+import {assertCatalogStock} from "@/lib/catalog/inventory";
 import { randomUUID } from "node:crypto";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { renderAdImage } from "@/lib/ad-image";
@@ -228,6 +229,9 @@ export async function publishCreatives({
     if (insertError) throw insertError;
 
     try {
+      const {data:run,error:runError}=await db.from("generations").select("product_id").eq("id",creative.generation_id).eq("workspace_id",workspaceId).single();
+      if(runError||!run)throw new Error("CATALOG_STOCK_CHECK_FAILED");
+      await assertCatalogStock(workspaceId,run.product_id);
       const result = await createPost(post, id);
       await applyZernioPost(db, id, result);
       posted++;

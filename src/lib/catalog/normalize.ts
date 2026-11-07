@@ -1,6 +1,6 @@
 import {createHash} from "node:crypto";
 import {parsePublicHttpUrl} from "../public-fetch.ts";
-export type CatalogProduct={externalId:string;url:string;name:string;images:string[];inventoryQuantity:number|null;updatedAt:string;imageRevision:string};
+export type CatalogProduct={externalId:string;url:string;name:string;images:string[];inventoryQuantity:number|null;inventoryUpdatedAt:string;updatedAt:string;imageRevision:string};
 export type CatalogConnection={id:string;workspace_id:string;platform:string;store_origin:string;webhook_domain:string;enabled:boolean};
 const object=(v:unknown):Record<string,unknown>=>{if(!v||typeof v!=="object"||Array.isArray(v))throw new Error("CATALOG_OBJECT_REQUIRED");return v as Record<string,unknown>;};
 function text(v:unknown,max:number){if(typeof v!=="string"||!v.trim()||v.length>max||/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/.test(v))throw new Error("CATALOG_TEXT_INVALID");return v.trim();}
@@ -11,7 +11,7 @@ export function canonicalProduct(value:unknown,connection:CatalogConnection):Cat
  if(!Array.isArray(p.images)||p.images.length>30)throw new Error("CATALOG_IMAGES_INVALID");
  const images=[...new Set(p.images.map(url))].sort();
  let quantity:number|null=null;if(p.inventoryQuantity!==null&&p.inventoryQuantity!==undefined){if(!Number.isSafeInteger(p.inventoryQuantity)||Number(p.inventoryQuantity)<0||Number(p.inventoryQuantity)>2147483647)throw new Error("CATALOG_INVENTORY_INVALID");quantity=Number(p.inventoryQuantity);}
- return {externalId:text(String(p.externalId??""),128),url:productUrl,name:text(p.name,300),images,inventoryQuantity:quantity,updatedAt:date(p.updatedAt),imageRevision:createHash("sha256").update(JSON.stringify(images)).digest("hex")};
+ return {externalId:text(String(p.externalId??""),128),url:productUrl,name:text(p.name,300),images,inventoryQuantity:quantity,inventoryUpdatedAt:date(p.inventoryUpdatedAt??p.updatedAt),updatedAt:date(p.updatedAt),imageRevision:createHash("sha256").update(JSON.stringify(images)).digest("hex")};
 }
 export function catalogWebhook(body:unknown,c:CatalogConnection,topic:string):CatalogProduct[]{
  const p=object(body);

@@ -5,13 +5,15 @@ import {shopifyConfigured} from "@/lib/shopify/security";
 import {canonicalProduct} from "@/lib/catalog/normalize";
 import {receiveCatalog,loadConnection} from "@/lib/catalog/store";
 import {createHash} from "node:crypto";
-type ProductPage={products:{nodes:{id:string;handle:string;title:string;updatedAt:string;images:{nodes:{url:string}[]}}[];pageInfo:{hasNextPage:boolean;endCursor:string|null}}};
+import {shopifyQuantity} from "@/lib/catalog/inventory-policy";
+type ProductPage={products:{nodes:{id:string;handle:string;title:string;updatedAt:string;status:string;tracksInventory:boolean;totalInventory:number;images:{nodes:{url:string}[]}}[];pageInfo:{hasNextPage:boolean;endCursor:string|null}}};
 export async function syncShopifyPage(storeId:string,installationId:string){
  const db=createAdminClient(),auth=await storeToken(storeId,installationId),store=auth.store;
  if(store.status!=="syncing")return {done:true};
  const c=await loadConnection(store.connection_id);
- const page=await graph<ProductPage>(store.shop,auth.token,`query Catalog($after:String){products(first:20,after:$after,query:"status:active",sortKey:ID){nodes{id handle title updatedAt images(first:30){nodes{url}}}pageInfo{hasNextPage endCursor}}}`,{after:store.sync_cursor});
- const products=page.products.nodes.map(p=>canonicalProduct({externalId:p.id.split("/").pop(),name:p.title,url:c.store_origin+"/products/"+encodeURIComponent(p.handle),images:p.images.nodes.map(i=>i.url),inventoryQuantity:null,updatedAt:p.updatedAt},c));
+ const observed=new Date().toISOString();
+ const page=await graph<ProductPage>(store.shop,auth.token,`query Catalog($after:String){products(first:20,after:$after,sortKey:ID){nodes{id handle title updatedAt status tracksInventory totalInventory images(first:30){nodes{url}}}pageInfo{hasNextPage endCursor}}}`,{after:store.sync_cursor});
+ const products=page.products.nodes.map(p=>canonicalProduct({externalId:p.id.split("/").pop(),name:p.title,url:c.store_origin+"/products/"+encodeURIComponent(p.handle),images:p.images.nodes.map(i=>i.url),inventoryQuantity:shopifyQuantity(p),inventoryUpdatedAt:observed,updatedAt:p.updatedAt},c));
  if(products.length){
   const body=Buffer.from(JSON.stringify(products)),hash=createHash("sha256").update(body).digest("hex");
   const delivery=await receiveCatalog(c,"shopify-import:"+installationId+":"+hash,body,products);
@@ -49,4 +51,11 @@ export const recoverShopify=inngest.createFunction({id:"shopify-recover-sync",tr
  const renew=await step.run("expiring-tokens",async()=>{const {data,error}=await createAdminClient().from("shopify_stores").select("id,installation_id").eq("status","connected").lt("access_expires_at",new Date(Date.now()+300000).toISOString()).order("access_expires_at").limit(25);if(error)throw new Error("SHOPIFY_REFRESH_READ_FAILED");return data??[];});
  for(const s of renew)await step.run("refresh-"+s.id,async()=>{try{await storeToken(s.id,s.installation_id);return true;}catch(e){if(e instanceof Error&&e.message==="CATALOG_UPGRADE_REQUIRED")return false;if(e instanceof Error&&e.message==="SHOPIFY_RECONNECT_REQUIRED"){const {error}=await createAdminClient().from("shopify_stores").update({status:"reconnect",error_code:"SHOPIFY_RECONNECT_REQUIRED"}).eq("id",s.id).eq("installation_id",s.installation_id).eq("status","connected");if(error)throw new Error("SHOPIFY_STATE_SAVE_FAILED");return false;}throw e;}});
  return {queued:pending.length};
+});
+
+export const refreshShopify=inngest.createFunction({id:"shopify-hourly-reconciliation",triggers:{cron:"7 * * * *"},retries:3,concurrency:{limit:1}},async({step})=>{
+ if(!shopifyConfigured())return {disabled:true};
+ const stores=await step.run("claim-stale-catalogs",async()=>{const db=createAdminClient();const {data,error}=await db.from("shopify_stores").select("id,installation_id").eq("status","connected").or("synced_at.is.null,synced_at.lt."+new Date(Date.now()-3600000).toISOString()).limit(50);if(error)throw new Error("SHOPIFY_RECONCILIATION_READ_FAILED");const claimed=[];
+ for(const store of data??[]){const {data:row,error:save}=await db.from("shopify_stores").update({status:"syncing",sync_cursor:null,sync_started_at:new Date().toISOString()}).eq("id",store.id).eq("installation_id",store.installation_id).eq("status","connected").select("id,installation_id").maybeSingle();if(save)throw new Error("SHOPIFY_RECONCILIATION_SAVE_FAILED");if(row)claimed.push(row);}return claimed;});
+ if(stores.length)await step.sendEvent("refresh-catalogs",stores.map(s=>({id:"shopify-hourly-"+s.id+"-"+Math.floor(Date.now()/3600000),name:"shopify/sync.requested",data:{storeId:s.id,installationId:s.installation_id}})));return {queued:stores.length};
 });
