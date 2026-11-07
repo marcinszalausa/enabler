@@ -1,0 +1,38 @@
+name: Inngest endpoint diagnostic
+on:
+  push:
+    branches: [ops/inngest-endpoint-diagnostic]
+permissions:
+  contents: read
+jobs:
+  endpoint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Check public production endpoint without credentials
+        run: |
+          python - <<'PY'
+          import json, urllib.request, urllib.error
+          class NoRedirect(urllib.request.HTTPRedirectHandler):
+              def redirect_request(self, *args, **kwargs): return None
+          opener=urllib.request.build_opener(NoRedirect)
+          request=urllib.request.Request("https://gooidy.com/api/inngest", headers={"User-Agent":"Gooidy-Setup-Diagnostic","Accept":"application/json"})
+          try:
+              response=opener.open(request,timeout=30)
+          except urllib.error.HTTPError as error:
+              response=error
+          except Exception as error:
+              print(json.dumps({"reachable":False,"error_type":type(error).__name__}))
+              raise SystemExit(0)
+          body=response.read(65536).decode("utf-8","replace")
+          result={"reachable":True,"http_status":response.status,"content_type":response.headers.get("Content-Type","").split(";")[0]}
+          try:
+              data=json.loads(body)
+              if isinstance(data,dict):
+                  result["catalog_not_configured"]=data.get("code")=="CATALOG_WORKERS_NOT_CONFIGURED"
+                  for key in ["has_event_key","has_signing_key","authentication_succeeded"]:
+                      if isinstance(data.get(key),bool):result[key]=data[key]
+          except Exception:
+              result["platform_error"]=any(marker in body for marker in ["FUNCTION_INVOCATION_FAILED","DEPLOYMENT_NOT_FOUND"])
+          print(json.dumps(result))
+          PY
