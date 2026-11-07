@@ -1,7 +1,7 @@
 name: Founder store pilot
 on:
   push:
-    branches: [feat/founder-store-pilot]
+    branches: [feat/founder-access-and-calibration]
   pull_request:
     paths: ['supabase/*/*founder_store*','src/app/[locale]/dashboard/stores/page.tsx','scripts/test-founder-store-pilot.sh','.github/workflows/founder-store-pilot.yml']
 permissions:
@@ -27,6 +27,10 @@ jobs:
       - run: npm ci
       - name: Read installed Next server component guidance
         run: find node_modules/next/dist/docs/01-app -type f \( -name '*server-and-client-components.md' -o -name '*page.md' \) -exec cat {} +
+      - name: Generate ongoing access migration
+        run: |
+          npx --yes supabase@2.81.0 migration new --help
+          npx --yes supabase@2.81.0 migration new ongoing_founder_store_access
       - name: Read Supabase changelog
         run: curl --fail --silent --show-error https://supabase.com/changelog.md | head -c 20000
       - name: Verify pilot, expiry, scope, billing invariants and existing premium access
