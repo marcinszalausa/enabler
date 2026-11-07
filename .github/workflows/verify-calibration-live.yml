@@ -1,0 +1,23 @@
+name: Verify live calibration release
+on:
+  push:
+    branches: [ops/verify-calibration-release]
+permissions:
+  contents: read
+jobs:
+  live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Check production homepage
+        run: |
+          python - <<'PY'
+          import urllib.request
+          target = 'https://gooidy.com/?release=2c106e2'
+          with urllib.request.urlopen(target, timeout=45) as response:
+              assert response.status == 200
+              html = response.read().decode()
+          for marker in ('Product ads without the production work.', 'data-calibration', 'calibration-options', 'Launch', 'Grow', 'Scale'):
+              assert marker in html, 'Missing live release marker: ' + marker
+          print('Production homepage HTTP 200; new hero, calibration flow and Launch/Grow/Scale confirmed.')
+          PY
