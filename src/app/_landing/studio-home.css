@@ -1,9 +1,7 @@
+@import "../_styles/studio-tokens.css";
+
 .studio-home {
  --studio-gutter:clamp(16px,2vw,48px);
- --t-bg:#fff;--t-fg:#161617;--t-muted:#737378;--t-line:#e7e7ec;--t-line-strong:#c7c7cf;
- --t-surface:#f5f5f7;--t-raised:#fff;--t-accent:#5b4bf7;--t-accent-strong:#4433e0;
- --t-accent-soft:#f0edff;--t-accent-fg:#fff;--t-btn:#161617;--t-btn-hover:#353538;--t-btn-fg:#fff;
- --t-violet:#7b61ff;--t-ok:#247447;--t-danger:#b82232;
  background:#fff;color:#161617;color-scheme:light;isolation:isolate;overflow:clip;
  font-feature-settings:"ss01" on;
 }

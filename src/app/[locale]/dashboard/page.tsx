@@ -96,7 +96,7 @@ async function Dashboard({
       <p className="mt-4 max-w-2xl text-sm text-muted">{t.journey.addHint}</p>
       <div className="mt-5 flex flex-wrap gap-3"><Link href="/dashboard/campaigns" className="inline-flex min-h-11 items-center rounded-xl border border-line-strong px-4 text-sm font-medium text-accent">Plan my next campaign →</Link><Link href="/dashboard/brand" className="inline-flex min-h-11 items-center px-2 text-sm text-muted">Save my brand preferences</Link></div>
 
-      <section id="add" className="edge mt-8 scroll-mt-24 p-6 sm:p-8">
+      <section id="add" className="app-product-intake edge mt-8 scroll-mt-24 p-6 sm:p-8">
         <h2 className="text-lg font-medium">{t.app.addTitle}</h2>
         <p className="mt-1 text-sm text-muted">{t.app.addBody}</p>
         <div className="mt-5">
@@ -121,7 +121,7 @@ async function Dashboard({
           </div>
         )}
         {shown.length > 0 ? (
-          <ul className="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="app-product-grid mt-4 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {shown.map((p) => (
               <li key={p.id}>
                 <ProductCard product={p} />

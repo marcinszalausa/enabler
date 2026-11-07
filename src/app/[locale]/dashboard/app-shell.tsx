@@ -28,7 +28,7 @@ export function SidebarBody({
   const { t } = useI18n();
   return (
     <div className="flex h-full min-h-0 flex-col">
-      <div className="flex h-16 shrink-0 items-center justify-between gap-2 ps-5 pe-3 in-data-collapsed:justify-center in-data-collapsed:px-0">
+      <div className="app-sidebar-heading flex h-16 shrink-0 items-center justify-between gap-2 ps-5 pe-3 in-data-collapsed:justify-center in-data-collapsed:px-0">
         <div className="in-data-collapsed:hidden">
           <Logo to="/dashboard" label={t.app.products} />
         </div>
@@ -36,7 +36,7 @@ export function SidebarBody({
       </div>
       <nav
         aria-label={t.app.dashboard}
-        className="flex min-h-0 flex-1 flex-col gap-0.5 overflow-y-auto px-3 py-3 in-data-collapsed:px-2"
+        className="app-sidebar-nav flex min-h-0 flex-1 flex-col gap-0.5 overflow-y-auto px-3 py-3 in-data-collapsed:px-2"
       >
         {nav}
       </nav>

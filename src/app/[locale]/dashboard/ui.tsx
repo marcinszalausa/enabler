@@ -62,7 +62,7 @@ export function EmptyState({
   children: ReactNode;
 }) {
   return (
-    <div className="flex flex-col items-center rounded-2xl border border-dashed border-line-strong bg-surface/60 px-6 py-12 text-center">
+    <div className="app-empty-state flex flex-col items-center rounded-2xl border border-dashed border-line-strong bg-surface/60 px-6 py-12 text-center">
       <span
         className="flex h-11 w-11 items-center justify-center rounded-xl bg-accent-soft text-accent"
         aria-hidden

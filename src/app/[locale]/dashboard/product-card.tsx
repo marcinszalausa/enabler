@@ -28,7 +28,7 @@ export function ProductCard({ product: p }: { product: ProductSummary }) {
     <div className="relative">
     <Link
       href={`/dashboard/products/${p.id}`}
-      className="spot lift group block overflow-hidden rounded-2xl border border-line bg-raised"
+      className="app-product-card group block overflow-hidden rounded-2xl border border-line bg-raised"
     >
       <div className="relative aspect-[4/5] bg-surface">
         {photo ? (
