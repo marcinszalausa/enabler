@@ -3,12 +3,15 @@ import {createHash,randomBytes} from "node:crypto";
 import {cookies} from "next/headers";
 import {createAdminClient} from "@/lib/supabase/admin";
 import {createClient} from "@/lib/supabase/server";
-import {catalogStoreOwner} from "./auth";
+import {catalogOwner,catalogStoreOwner} from "./auth";
 import {encryptCatalogSecret,decryptCatalogSecret} from "./security";
 import {paidIntentMatches} from "./paid-connect-policy";
 export type PaidProvider="meta"|"tiktok";
 export type PaidAccountChoice={id:string;name:string};
 export type PaidAdChoice={id:string;name:string};
+export async function paidAccountSummaries(workspaceId:string){
+ await catalogOwner(workspaceId);const {data,error}=await createAdminClient().from("catalog_ad_accounts").select("id,provider,external_account_id,name,enabled,token_expires_at").eq("workspace_id",workspaceId).order("name");if(error)throw new Error("Could not load paid ad accounts");const now=Date.now();return (data??[]).map(a=>({...a,reconnectRequired:!!a.token_expires_at&&Date.parse(a.token_expires_at)<=now}));
+}
 type Receipt={token:string;accounts:PaidAccountChoice[];expiresAt:string|null};
 const COOKIE="gooidy-paid-ad-connect",base="https://gooidy.com",hash=(s:string)=>createHash("sha256").update(s).digest("hex");
 export function paidProvider(v:unknown):PaidProvider{if(v!=="meta"&&v!=="tiktok")throw new Error("PAID_PROVIDER_INVALID");return v;}
