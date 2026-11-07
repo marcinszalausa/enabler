@@ -36,7 +36,7 @@ test("insufficient source imagery blocks before download or paid submission",asy
  let saved;
  const dataset=load("src/lib/catalog/dataset.ts",{
  "server-only":{},"node:crypto":{createHash(){throw new Error("no hashing needed");}},
- sharp(){throw new Error("must not process");},fflate:{},
+ fflate:{},"./photo-check":{MIN_TRAINING_IMAGES:10,scanCatalogPhotos(){throw new Error("must not process or fetch");}},
  "@/lib/public-fetch":{fetchPublicUrl(){throw new Error("must not fetch");}},
  "@/lib/supabase/admin":{createAdminClient:()=>({from(table){return {select(){return this;},eq(){return this;},async single(){return {data:table==="catalog_connections"?{enabled:true}:{status:"queued",workspace_id:"w",image_revision:"a",catalog_items:{image_revision:"a",product_url:"p",connection_id:"c",images:["single.jpg"]}}};}};}})},
  "./store":{async jobStatus(id,p){saved=p;}},"./security":{trainingAllowed:()=>true},"./replicate":{}
