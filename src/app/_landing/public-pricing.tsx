@@ -17,11 +17,6 @@ import {LocalPrice} from "./local-price";
 
 const LANGUAGE_COUNT=Object.keys(LANGUAGES).length;
 const EN_FEATURES={starter:["Branded image and video ads","Weekly posting planner","Scheduled publishing"],plus:["Connect your store and import products","Compare up to {posts} recent posts","Download results as a CSV report"],growth:["Compare up to {posts} recent posts","Next-test action plan from your results","Download your next-campaign brief"]};
-function PlanIcon({level}:{level:number}){
- return <svg data-plan-icon={level} viewBox="0 0 24 24" aria-hidden className="h-6 w-6 text-muted" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-  {level===0?<path d="M8 4.5a1 1 0 0 1 1.5-.86l11 7.5a1 1 0 0 1 0 1.72l-11 7.5A1 1 0 0 1 8 19.5z"/>:level===1?<><path d="M4 20v-5m5 5v-8m5 8V9m5 11V5M4 10l5-4 5 1 6-5M15 2h5v5"/></>:<><rect x="3" y="8" width="13" height="13" rx="2"/><path d="M8 5V4a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1h-1"/></>}
- </svg>;
-}
 function Check(){return <svg viewBox="0 0 20 20" aria-hidden className="mt-0.5 h-4 w-4 shrink-0 text-muted" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="m4.5 10.5 3.5 3.5 7.5-8"/></svg>;}
 
 export function PublicPricing({compact=false}:{compact?:boolean}={}){
@@ -39,8 +34,7 @@ export function PublicPricing({compact=false}:{compact?:boolean}={}){
     const example=creditExamples(card.credits),exampleValues={images:example.images.toLocaleString(locale),videos:example.videos.toLocaleString(locale),seconds:example.seconds};
     const previous=level>0?PAID_PLANS[level-1].name:null,features=locale==="en"?EN_FEATURES[card.id]:p[card.id].features.slice(1);
     return <article key={card.id} id={"plan-"+card.id} data-plan={card.id} className={"relative flex min-w-0 scroll-mt-24 flex-col rounded-2xl border bg-raised p-6 sm:p-7 "+(card.recommended?"border-accent/40":"border-line")}>
-     <div className="flex min-h-7 items-center justify-between gap-2"><PlanIcon level={level}/>{card.recommended&&<span data-recommended-plan className="rounded-full bg-accent-soft px-2.5 py-1 text-[11px] font-medium text-accent">{locale==="en"?"Recommended":p.popular}</span>}</div>
-     <h3 className="mt-5 text-2xl font-semibold tracking-tight">{card.name}</h3>
+     <div className="flex min-h-8 items-start justify-between gap-2"><h3 className="text-2xl font-semibold tracking-tight">{card.name}</h3>{card.recommended&&<span data-recommended-plan className="mt-1 rounded-full bg-accent-soft px-2.5 py-1 text-[11px] font-medium text-accent">{locale==="en"?"Recommended":p.popular}</span>}</div>
      <p data-plan-tagline className="mt-1 min-h-10 text-sm leading-5 text-muted">{locale==="en"?card.outcome:p[card.id].tagline}</p>
      <p className="mt-5 text-[2.75rem] leading-none font-semibold tracking-[-0.055em]" data-price={shown}>{usd(shown,locale)}</p>
      <p className="mt-2 min-h-10 text-xs leading-relaxed text-muted">{yearly?fmt(p.perMonthYearly,{total:usd(yearlyPrice(card.price),locale),monthly:usd(card.price,locale)}):p.perMonth}{!compact&&<LocalPrice usd={shown} locale={locale} template={" · "+t.home.approx}/>}</p>
@@ -72,5 +66,6 @@ export function PublicPricing({compact=false}:{compact?:boolean}={}){
   </div>
  </div>;
 }
+
 
 
