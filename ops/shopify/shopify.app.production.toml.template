@@ -1,0 +1,25 @@
+name = "Gooidy"
+client_id = "__GOOIDY_CLIENT_ID__"
+application_url = "https://gooidy.com/dashboard/stores"
+embedded = false
+
+[build]
+automatically_update_urls_on_dev = false
+
+[access_scopes]
+scopes = "read_products,read_inventory"
+use_legacy_install_flow = true
+
+[auth]
+redirect_urls = ["https://gooidy.com/api/shopify/callback"]
+
+[webhooks]
+api_version = "2026-10"
+
+[[webhooks.subscriptions]]
+topics = ["products/create", "products/update", "app/uninstalled"]
+uri = "https://gooidy.com/api/shopify/webhooks"
+
+[[webhooks.subscriptions]]
+compliance_topics = ["customers/data_request", "customers/redact", "shop/redact"]
+uri = "https://gooidy.com/api/shopify/webhooks"
