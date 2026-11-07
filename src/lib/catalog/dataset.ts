@@ -4,6 +4,7 @@ import {zipSync} from "fflate";
 import {createAdminClient} from "@/lib/supabase/admin";
 import {jobStatus} from "./store";
 import {trainingAllowed} from "./security";
+import {trainingSetup} from "./training-policy";
 import {trainingTrigger} from "./replicate";
 import {MIN_TRAINING_IMAGES,scanCatalogPhotos} from "./photo-check";
 export {MIN_TRAINING_IMAGES} from "./photo-check";
@@ -11,10 +12,18 @@ const hash=(bytes:Uint8Array)=>createHash("sha256").update(bytes).digest("hex");
 export async function prepareTrainingDataset(id:string){
  const db=createAdminClient();const {data:job,error}=await db.from("catalog_training_jobs").select("*,catalog_items(*)").eq("id",id).single();if(error||!job)throw new Error("CATALOG_JOB_NOT_FOUND");
  if(job.status!=="queued")return ["dataset_ready","submitting","submission_unknown","running","succeeded"].includes(job.status);
- const item=job.catalog_items;if(!item||!trainingAllowed(job.workspace_id,item.product_url))return false;
- if(item.image_revision!==job.image_revision){await jobStatus(id,{status:"blocked",error_code:"STALE_SOURCE_REVISION"});return false;}
+ const item=job.catalog_items;if(!item||(!trainingAllowed(job.workspace_id,item.product_url)&&!trainingSetup().configured))return false;
+ if(item.image_revision!==(job.source_revision??job.image_revision)){await jobStatus(id,{status:"blocked",error_code:"STALE_SOURCE_REVISION"});return false;}
  const {data:connection}=await db.from("catalog_connections").select("enabled").eq("id",item.connection_id).single();if(!connection?.enabled)return false;
- const images=Array.isArray(item.images)?item.images.slice(0,30):[];if(images.length<MIN_TRAINING_IMAGES){await jobStatus(id,{status:"blocked",error_code:"INSUFFICIENT_SOURCE_IMAGES"});return false;}
+ let images=Array.isArray(item.images)?item.images.slice(0,30):[];
+ if(Array.isArray(job.training_photos)){
+  images=[];for(const photo of job.training_photos){if(typeof photo.path==="string"){
+   if(!photo.path.startsWith(job.workspace_id+"/"+item.id+"/"))throw new Error("TRAINING_PHOTO_PATH_INVALID");
+   const {data,error}=await db.storage.from("catalog-photos").createSignedUrl(photo.path,3600);if(error||!data)throw new Error("TRAINING_PHOTO_SIGN_FAILED");images.push(data.signedUrl);
+  }else if(typeof photo.url==="string"&&Array.isArray(item.images)&&item.images.includes(photo.url))images.push(photo.url);else throw new Error("TRAINING_PHOTO_SELECTION_INVALID");}
+ }
+ if(images.length<MIN_TRAINING_IMAGES){await jobStatus(id,{status:"blocked",error_code:"INSUFFICIENT_SOURCE_IMAGES"});return false;}
+ if(!job.source_reviewed_at||!job.consent_user_id){await jobStatus(id,{status:"blocked",error_code:"PHOTO_REVIEW_REQUIRED"});return false;}
  const {accepted}=await scanCatalogPhotos(images);
  const files:Record<string,Uint8Array>={},digests=accepted.map(image=>image.hash);
  for(const [index,image] of accepted.entries()){

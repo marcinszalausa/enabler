@@ -1,4 +1,5 @@
 import "server-only";
+import {assertCatalogStock} from "@/lib/catalog/inventory";
 import { randomUUID } from "node:crypto";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { renderAdImage } from "@/lib/ad-image";
@@ -116,6 +117,7 @@ export type When =
 
 type CreativeRow = {
   id: string;
+  generation_id: string;
   workspace_id: string;
   kind: "image" | "video";
   aspect: string;
@@ -157,7 +159,7 @@ export async function publishCreatives({
     db
       .from("creatives")
       .select(
-        "id, workspace_id, kind, aspect, storage_path, headline, primary_text, cta, generations(request_options, products(url))",
+        "id, generation_id, workspace_id, kind, aspect, storage_path, headline, primary_text, cta, generations(request_options, products(url))",
       )
       .eq("workspace_id", workspaceId)
       .in("id", creativeIds)
@@ -228,6 +230,9 @@ export async function publishCreatives({
     if (insertError) throw insertError;
 
     try {
+      const {data:run,error:runError}=await db.from("generations").select("product_id").eq("id",creative.generation_id).eq("workspace_id",workspaceId).single();
+      if(runError||!run)throw new Error("CATALOG_STOCK_CHECK_FAILED");
+      await assertCatalogStock(workspaceId,run.product_id);
       const result = await createPost(post, id);
       await applyZernioPost(db, id, result);
       posted++;

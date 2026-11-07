@@ -16,6 +16,7 @@ import {
   submitAdVideo,
 } from "@/lib/ai/fal";
 import { QualityError, generateCheckedImage } from "@/lib/pipeline";
+import {approvedCatalogModel,type CatalogModel} from "@/lib/catalog/model-inference";
 import type { Quality } from "@/lib/quality";
 import { getBrandKit } from "@/lib/brand-kit";
 import { DEFAULT_BRAND_KIT, FONTS, loadFont, textColorOn } from "@/lib/brand";
@@ -91,6 +92,7 @@ export async function runVideoGeneration({
     const referenceImageUrl = await sourceImageUrl(db, workspaceId,
       await runSourceImage(db, generationId, workspaceId), (product.image_urls as string[])[0] ?? null);
     const shotSeconds = LENGTHS[options.length];
+    const catalogModel=direction.revision?null:await approvedCatalogModel(workspaceId,productId);
     const written = await writeVideoAds(
       brief,
       direction.revision?1:VIDEOS_PER_GENERATION,
@@ -141,7 +143,7 @@ export async function runVideoGeneration({
         const jobId = jobs[i].id;
         try {
           const [requestIds, sound] = await Promise.all([
-            filmShots(ad, shotSeconds, referenceImageUrl, brief.product_name, options.quality),
+            filmShots(ad, shotSeconds, referenceImageUrl, brief.product_name, options.quality,catalogModel),
             recordSound(
               options,
               ad,
@@ -187,9 +189,11 @@ async function filmShots(
   referenceImageUrl: string | null,
   product: string,
   quality: Quality,
+  catalogModel?:CatalogModel|null,
 ): Promise<string[]> {
   const check = (prompt: string, reference: string | null, sameScene = false) =>
     generateCheckedImage({
+      catalogModel:sameScene?null:catalogModel,
       prompt,
       aspect: "9:16",
       quality,

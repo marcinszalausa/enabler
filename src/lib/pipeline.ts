@@ -1,4 +1,5 @@
 import "server-only";
+import {approvedCatalogModel,type CatalogModel} from "@/lib/catalog/model-inference";
 import { generationDirection } from "@/lib/generation-direction";
 import {inspectAdImage} from "@/lib/media-quality";
 import {IMAGE_QUALITY_ATTEMPTS,QualityError,QualityReviewUnavailableError,reviewedCandidate} from "@/lib/media-quality-policy";
@@ -86,6 +87,7 @@ export async function runGeneration({
     let referenceImageUrl=productReferenceImageUrl;
     // The style reference the owner picked; a revision keeps its own look.
     const style=revision?null:await runStyle(db,generationId,workspaceId);
+    const catalogModel=revision?null:await approvedCatalogModel(workspaceId,productId);
     // The AI avatar to feature; a revision already shows them.
     const avatar=revision?null:await runAvatar(db,generationId,workspaceId);
     if(revision){
@@ -101,6 +103,7 @@ export async function runGeneration({
     const tasks = angles.flatMap((ad, i) =>
       (revision?[revision.aspect]:sizes).map((aspect) => async () => {
         const imageUrl = await generateCheckedImage({
+          catalogModel,
           prompt: ad.image_prompt,
           aspect,
           quality,
@@ -199,6 +202,7 @@ export async function runGeneration({
 // Both local decoding and a visual verdict are required before delivery.
 // Review outages retry the same candidate, never approve or regenerate it.
 export async function generateCheckedImage(opts:{
+ catalogModel?:CatalogModel|null;
  prompt:string;aspect:Aspect;quality:Quality;referenceImageUrl:string|null;
  productReferenceImageUrl?:string|null;sameScene?:boolean;product:string;
  styleImageUrl?:string|null;style?:string|null;

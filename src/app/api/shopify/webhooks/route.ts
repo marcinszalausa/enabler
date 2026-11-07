@@ -6,6 +6,8 @@ import {createAdminClient} from "@/lib/supabase/admin";
 import {loadConnection,receiveCatalog} from "@/lib/catalog/store";
 import {catalogWebhook} from "@/lib/catalog/normalize";
 import {inngest} from "@/inngest/client";
+import {INVENTORY_TOPICS,inventorySignalId} from "@/lib/catalog/inventory-policy";
+import {dispatchStockPauses} from "@/lib/catalog/stock-dispatch";
 export async function POST(request:Request){
  const secret=process.env.SHOPIFY_CLIENT_SECRET;if(process.env.VERCEL_ENV!=="production"||!secret)return new Response(null,{status:503});
  try{
@@ -29,16 +31,48 @@ export async function POST(request:Request){
     if(jobs?.some(j=>j.provider_training_id||j.candidate_version))throw new Error("PROVIDER_ERASURE_REQUIRED");
     const paths=(jobs??[]).map(j=>j.dataset_path).filter((p):p is string=>typeof p==="string");
     if(paths.length){const {error:erasure}=await db.storage.from("catalog-training").remove(paths);if(erasure)throw new Error("STORAGE_ERASURE_FAILED");}
+    // Supplementary uploads are separate from Shopify's public photos and
+    // must be erased before their catalog rows can cascade away.
+    for(let batch=0;batch<10;batch++){
+     const {data:photos,error:photoRead}=await db.from("catalog_training_photos").select("id,storage_path,catalog_items!inner(connection_id)").eq("catalog_items.connection_id",store.connection_id).limit(100);if(photoRead)throw new Error("PHOTO_ERASURE_READ_FAILED");if(!photos?.length)break;
+     const {error:remove}=await db.storage.from("catalog-photos").remove(photos.map(p=>p.storage_path));if(remove)throw new Error("PHOTO_ERASURE_FAILED");
+     const {error:rows}=await db.from("catalog_training_photos").delete().in("id",photos.map(p=>p.id));if(rows)throw new Error("PHOTO_ERASURE_FAILED");
+    }
+    const {count:remaining,error:countError}=await db.from("catalog_training_photos").select("id,catalog_items!inner(connection_id)",{count:"exact",head:true}).eq("catalog_items.connection_id",store.connection_id);if(countError||remaining!==0)throw new Error("PHOTO_ERASURE_PENDING");
     const {error:removed}=await db.from("catalog_connections").delete().eq("id",store.connection_id).eq("enabled",false);if(removed)throw new Error("DELETE");
    }
    return new Response(null,{status:200});
   }
-  if(!["products/create","products/update"].includes(topic??"")||store.status==="disconnected")return new Response(null,{status:200});
+  if(store.status==="disconnected")return new Response(null,{status:200});
   if(!await canConnectStores(store.workspace_id))return new Response(null,{status:200});
+  if(INVENTORY_TOPICS.includes(topic??"")){
+   const event=request.headers.get("x-shopify-webhook-id")??"";if(!/^[A-Za-z0-9._:-]{1,180}$/.test(event))return new Response(null,{status:400});
+   const inventoryId=inventorySignalId(payload.inventory_item_id);
+   const {error:save}=await db.from("catalog_inventory_signals").upsert({store_id:store.id,installation_id:store.installation_id,event_id:event,resource_id:inventoryId},{onConflict:"store_id,installation_id,event_id",ignoreDuplicates:true});if(save)throw new Error("INVENTORY_SIGNAL_WRITE_FAILED");
+   const {data:signal,error:read}=await db.from("catalog_inventory_signals").select("id,resource_id").eq("store_id",store.id).eq("installation_id",store.installation_id).eq("event_id",event).single();if(read||signal.resource_id!==inventoryId)throw new Error("INVENTORY_SIGNAL_CONFLICT");
+   after(async()=>{try{await inngest.send({id:"inventory-signal-"+signal.id,name:"catalog/inventory.changed",data:{signalId:signal.id}});}catch{console.error("Inventory reconciliation deferred",signal.id);}});
+   return new Response(null,{status:200});
+  }
+  if(topic==="products/delete"){
+   const {data:item,error:read}=await db.from("catalog_items").select("id").eq("connection_id",store.connection_id).eq("external_id",String(payload.id)).maybeSingle();if(read)throw new Error("CATALOG_READ_FAILED");
+   if(item){const {error:save}=await db.rpc("apply_catalog_inventory",{connection:store.connection_id,external:String(payload.id),quantity:0,observed:new Date().toISOString()});if(save)throw new Error("CATALOG_DELETE_STOCK_FAILED");after(async()=>{try{await dispatchStockPauses(store.connection_id);}catch{console.error("Stock pause dispatch deferred",store.id);}});}
+   return new Response(null,{status:200});
+  }
+  if(!["products/create","products/update"].includes(topic??""))return new Response(null,{status:200});
   const c=await loadConnection(store.connection_id),products=catalogWebhook(payload,c,topic!);
-  if(payload.status&&payload.status!=="active")products.forEach(p=>p.inventoryQuantity=0);
+  const {data:prior,error:priorError}=await db.from("catalog_items").select("inventory_quantity,inventory_updated_at").eq("connection_id",c.id).eq("external_id",String(payload.id)).maybeSingle();if(priorError)throw new Error("CATALOG_READ_FAILED");
+  // Payloads may truncate variants. Preserve known stock until GraphQL
+  // confirms the aggregate; archived products are unavailable.
+  products.forEach(p=>{p.inventoryQuantity=payload.status&&payload.status!=="active"?0:prior?.inventory_quantity??null;p.inventoryUpdatedAt=payload.status&&payload.status!=="active"?p.updatedAt:prior?.inventory_updated_at??p.updatedAt;});
   const id=await receiveCatalog(c,request.headers.get("x-shopify-webhook-id")??"",body,products);
-  after(async()=>{try{await inngest.send({name:"catalog/delivery.received",data:{deliveryId:id}});}catch{console.error("Shopify delivery deferred",id);}});
+  const {error:apply}=await db.rpc("apply_catalog_delivery",{delivery:id});if(apply)throw new Error("CATALOG_DELIVERY_APPLY_FAILED");
+  const productGid="gid://shopify/Product/"+String(payload.id);if(!/^gid:\/\/shopify\/Product\/[0-9]+$/.test(productGid))return new Response(null,{status:400});
+  const event="product:"+(request.headers.get("x-shopify-webhook-id")??"");const {error:stock}=await db.from("catalog_inventory_signals").upsert({store_id:store.id,installation_id:store.installation_id,event_id:event,resource_id:productGid},{onConflict:"store_id,installation_id,event_id",ignoreDuplicates:true});if(stock)throw new Error("INVENTORY_SIGNAL_WRITE_FAILED");
+  after(async()=>{try{
+   await dispatchStockPauses(c.id);
+   const {data:signal,error}=await db.from("catalog_inventory_signals").select("id").eq("store_id",store.id).eq("installation_id",store.installation_id).eq("event_id",event).single();if(error)throw new Error("INVENTORY_SIGNAL_READ_FAILED");
+   await inngest.send([{id:"inventory-signal-"+signal.id,name:"catalog/inventory.changed",data:{signalId:signal.id}},{name:"catalog/delivery.received",data:{deliveryId:id}}]);
+  }catch{console.error("Shopify delivery deferred",id);}});
   return new Response(null,{status:200});
  }catch(e){return new Response(null,{status:e instanceof Error&&e.message==="CATALOG_UPGRADE_REQUIRED"?200:503});}
 }
