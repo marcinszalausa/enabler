@@ -1,13 +1,14 @@
 name: Phase one verification
 on:
   push:
-    branches: [feat/phase-one]
+    branches: [feat/phase-one, main]
   pull_request:
     paths: ['src/lib/catalog/**','src/inngest/**','src/app/api/catalog/**','src/app/api/shopify/**','src/app/**/stores/**','supabase/*/*phase_one*','tests/phase-one*','scripts/check-phase-one*','.github/workflows/phase-one.yml']
 permissions:
   contents: read
 jobs:
   phase-one:
+    if: github.ref != 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     services:
@@ -52,3 +53,15 @@ jobs:
           name: phase-one-review
           path: /tmp/phase-one-review/*
           retention-days: 3
+
+  production-sync:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Verify production workers and sync Inngest
+        run: node scripts/sync-production-catalog.mjs

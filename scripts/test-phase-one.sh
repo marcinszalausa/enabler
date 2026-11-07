@@ -10,7 +10,7 @@ create table public.platform_stores(id uuid primary key default gen_random_uuid(
 grant all on public.platform_stores to service_role;
 create or replace function public.is_workspace_member(ws uuid,min_role public.workspace_role default 'viewer') returns boolean language sql stable security definer set search_path='' as $$select exists(select 1 from public.workspace_members where workspace_id=ws and user_id=auth.uid() and (role='owner' or min_role='viewer' or (role='editor' and min_role='editor')))$$;
 SQL
-psql "$CATALOG_TEST_DATABASE_URL" -X -v ON_ERROR_STOP=1 -f supabase/migrations/20261107101211_phase_one_catalog_completion.sql
+psql "$CATALOG_TEST_DATABASE_URL" -X -v ON_ERROR_STOP=1 -f supabase/migrations/20261107122433_phase_one_catalog_completion.sql
 psql "$CATALOG_TEST_DATABASE_URL" -X -v ON_ERROR_STOP=1 -f supabase/tests/phase-one.sql
 output="$(mktemp -d)"
 trap 'rm -rf "$output"' EXIT
