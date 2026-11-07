@@ -132,7 +132,7 @@ create policy service_access on public.catalog_model_samples for all to service_
 create policy owner_read on public.catalog_model_samples for select to authenticated using(public.is_workspace_member(workspace_id,'owner') and public.can_connect_store(workspace_id));
 
 create function public.is_workspace_member_for_catalog(ws uuid,actor uuid) returns boolean
-language sql stable security invoker set search_path='' as $select exists(select 1 from public.workspace_members where workspace_id=ws and user_id=actor and role='owner')$;
+language sql stable security invoker set search_path='' as $$select exists(select 1 from public.workspace_members where workspace_id=ws and user_id=actor and role='owner')$$;
 revoke all on function public.is_workspace_member_for_catalog(uuid,uuid) from public,anon,authenticated;
 grant execute on function public.is_workspace_member_for_catalog(uuid,uuid) to service_role;
 

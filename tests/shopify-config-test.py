@@ -37,7 +37,7 @@ class ShopifyConfigTests(unittest.TestCase):
             subscriptions = data["webhooks"]["subscriptions"]
             self.assertFalse(data["access_scopes"]["use_legacy_install_flow"], "Shopify rejects app-specific subscriptions with legacy installation")
             self.assertEqual(len(subscriptions), 2)
-            self.assertEqual(set(subscriptions[0]["topics"]), {"products/create", "products/update", "app/uninstalled"})
+            self.assertEqual(set(subscriptions[0]["topics"]), {"products/create", "products/update", "products/delete", "inventory_levels/update", "inventory_levels/connect", "inventory_levels/disconnect", "app/uninstalled"})
             self.assertEqual(set(subscriptions[1]["compliance_topics"]), {"customers/data_request", "customers/redact", "shop/redact"})
             for subscription in subscriptions:
                 self.assertEqual(subscription["uri"], "https://gooidy.com/api/shopify/webhooks")
