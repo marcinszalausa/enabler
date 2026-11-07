@@ -32,7 +32,7 @@ function SnapshotImage({asset,onError,...props}:ImageProps&{asset:HomepageImage}
  return <Image {...props} data-home-snapshot={asset.src} data-home-fallback={failed?"true":undefined}
   src={failed?asset.placeholder:asset.src} loader={({width})=>width<=480?asset.small:asset.src}
   unoptimized={failed} placeholder={asset.placeholder as `data:image/${string}`}
-  loading={props.preload?undefined:"eager"} fetchPriority={props.preload?"high":"low"}
+  loading={props.preload?undefined:(props.loading??"eager")} fetchPriority={props.fetchPriority??(props.preload?"high":props.loading==="lazy"?"low":"auto")}
   style={{...props.style,objectFit:"contain"}}
   onError={event=>{onError?.(event);setFailed(true);}}/>;
 }

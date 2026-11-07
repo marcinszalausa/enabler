@@ -2,12 +2,14 @@ name: Premium homepage
 on:
   push:
     branches: [feat/premium-visual-home]
+  pull_request:
+    paths: ['src/app/_landing/studio-*','src/lib/studio-showcase.ts','src/app/_landing/ad-image.tsx','src/app/**/page.tsx','scripts/test-premium-homepage.mjs','.github/workflows/premium-homepage.yml']
 permissions:
   contents: read
 jobs:
-  inspect:
+  homepage:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -15,44 +17,34 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - name: Read installed Next client, page and image guidance
-        run: find node_modules/next/dist/docs/01-app -type f \( -name '*server-and-client-components.md' -o -name '*page.md' -o -name '*image.md' \) -exec cat {} +
+      - run: npx next typegen && npx tsc --noEmit
+      - run: npx eslint src/app/_landing/studio-*.tsx src/app/_landing/studio-copy.ts src/app/_landing/ad-image.tsx src/lib/studio-showcase.ts 'src/app/[locale]/page.tsx'
+      - name: Build without database credentials
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://catalog-test.supabase.co
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: sb_publishable_fixture
       - run: |
           npm install --prefix /tmp/gooidy-browser --no-save --package-lock=false playwright@1.56.1
           /tmp/gooidy-browser/node_modules/.bin/playwright install --with-deps chromium
-      - name: Capture reference and live media
+      - name: Browser checks and visual review
         run: |
-          mkdir -p /tmp/design-review
-          node --input-type=module <<'JS'
-          import {createRequire} from 'node:module';
-          import fs from 'node:fs/promises';
-          const require=createRequire('/tmp/gooidy-browser/package.json');
-          const {chromium}=require('playwright');
-          const browser=await chromium.launch();
-          for(const site of ['zeely','gooidy']){
-            for(const width of [1440,390]){
-              const page=await browser.newPage({viewport:{width,height:1000},deviceScaleFactor:1,reducedMotion:'reduce'});
-              await page.addInitScript(()=>localStorage.setItem('gooidy-theme','light'));
-              await page.goto(site==='zeely'?'https://zeely.ai/':'https://gooidy.com/',{waitUntil:'domcontentloaded',timeout:60000});
-              await page.waitForTimeout(5000);
-              const media=await page.evaluate(()=>({
-                title:document.title,
-                headings:Array.from(document.querySelectorAll('h1,h2')).map(e=>e.textContent),
-                media:Array.from(document.querySelectorAll('img,video')).map(e=>({tag:e.tagName,src:e.currentSrc||e.src,poster:e.poster,alt:e.alt,width:e.getBoundingClientRect().width,height:e.getBoundingClientRect().height,loaded:e.tagName==='IMG'?e.naturalWidth:undefined,top:e.getBoundingClientRect().top}))
-              }));
-              await fs.writeFile('/tmp/design-review/'+site+'-'+width+'.json',JSON.stringify(media,null,2));
-              for(const [i,y] of (site==='zeely'?[0,850,1750,2800]:[0,900]).entries()){
-                await page.evaluate(y=>window.scrollTo(0,y),y);
-                await page.waitForTimeout(800);
-                await page.screenshot({path:'/tmp/design-review/'+site+'-'+width+'-'+i+'.png'});
-              }
-              await page.close();
-            }
-          }
-          await browser.close();
-          JS
-      - uses: actions/upload-artifact@v4
+          mkdir -p /tmp/studio-review
+          npm run start >/tmp/studio-server.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" || true' EXIT
+          for attempt in $(seq 1 60); do
+            if curl -sf http://localhost:3000/ >/dev/null; then break; fi
+            sleep 1
+          done
+          node scripts/test-premium-homepage.mjs
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://catalog-test.supabase.co
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: sb_publishable_fixture
+      - name: Save visual review
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
-          name: homepage-design-reference
-          path: /tmp/design-review/*
+          name: premium-homepage-review
+          path: /tmp/studio-review/*
           retention-days: 3
