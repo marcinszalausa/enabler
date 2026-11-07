@@ -1,0 +1,29 @@
+name: Phase one verification
+on:
+  push:
+    branches: [feat/phase-one]
+permissions:
+  contents: read
+jobs:
+  phase-one:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Read installed Next guides
+        run: |
+          find node_modules/next/dist/docs -type f \( -name route-handlers.md -o -name server-and-client-components.md \) -exec cat {} +
+      - name: Prepare migration
+        run: |
+          npm exec --yes --package=supabase@2.81.3 -- supabase --help
+          npm exec --yes --package=supabase@2.81.3 -- supabase migration new --help
+          npm exec --yes --package=supabase@2.81.3 -- supabase migration new phase_one_catalog_completion
+      - uses: actions/upload-artifact@v4
+        with:
+          name: phase-one-migration
+          path: supabase/migrations/*phase_one_catalog_completion.sql
