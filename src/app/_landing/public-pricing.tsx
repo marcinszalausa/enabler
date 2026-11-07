@@ -49,7 +49,7 @@ export function PublicPricing({compact=false}:{compact?:boolean}={}){
     const values={credits:card.credits.toLocaleString(locale),accounts:1,posts:tools.resultsLimit,languages:LANGUAGE_COUNT};
     const previous=level>0?cards[level-1].name:null;
     return <article key={card.id} id={"plan-"+card.id} data-plan={card.id} className={"relative flex min-w-0 scroll-mt-24 flex-col rounded-2xl border bg-raised p-6 "+(card.recommended?"border-accent shadow-[0_24px_70px_-42px_var(--t-accent)]":"border-line")}>
-     <div className="flex items-start justify-between gap-2"><PlanIcon level={level}/>{card.recommended&&<span data-recommended-plan className="rounded-full bg-accent-soft px-3 py-1 text-xs font-medium text-accent">{p.popular}</span>}</div>
+     <div className="flex items-start justify-between gap-2"><PlanIcon level={level}/>{card.recommended&&<span data-recommended-plan className="rounded-full bg-accent-soft px-3 py-1 text-xs font-medium text-accent">{locale==="en"?"Recommended":p.popular}</span>}</div>
      <h3 className="mt-5 text-2xl font-semibold tracking-tight">{card.name}</h3>
      <p className="mt-1 text-sm text-muted">{card.tagline}</p>
      <p className="mt-5 text-3xl font-semibold tracking-tight" data-price={shown}>{usd(shown,locale)}</p>

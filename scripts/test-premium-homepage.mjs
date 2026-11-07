@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import {createRequire} from 'node:module';
 const require=createRequire('/tmp/gooidy-browser/package.json');
 const {chromium}=require('playwright');
-const browser=await chromium.launch();
+const browser=await chromium.launch({channel:'chrome',headless:true});
 try {
  for(const width of [360,390,768,1440]) {
   const page=await browser.newPage({viewport:{width,height:1000},reducedMotion:'reduce'});

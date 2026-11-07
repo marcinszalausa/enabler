@@ -70,7 +70,7 @@ export function StudioStart({copy,id:providedId}:{copy:StudioCopy;id?:string}){
 export function StudioCreative({ad,priority=false}:{ad:StudioAd;priority?:boolean}){
  const root=useRef<HTMLElement>(null),video=useRef<HTMLVideoElement>(null);
  const activity=useMediaActivity(root);
- const [manual,setManual]=useState(false),[paused,setPaused]=useState(false),[ready,setReady]=useState(false),[muted,setMuted]=useState(true);
+ const [manual,setManual]=useState(false),[paused,setPaused]=useState(false),[ready,setReady]=useState(false),[muted,setMuted]=useState(true),[playing,setPlaying]=useState(false);
  const {locale,t}=useI18n();
  const load=!!ad.video&&(manual||(activity.nearby&&activity.idle&&!activity.restricted));
  const play=load&&activity.inView&&!paused&&(manual||!activity.restricted);
@@ -80,19 +80,19 @@ export function StudioCreative({ad,priority=false}:{ad:StudioAd;priority?:boolea
  },[play,load]);
  function toggle(){
   const el=video.current;if(!el||!ad.video)return;
-  if(!paused&&play){setPaused(true);el.pause();}
+  if(!el.paused){setPaused(true);el.pause();}
   else {setManual(true);setPaused(false);if(el.getAttribute("src")!==ad.video)el.src=ad.video;void el.play().catch(()=>{});}
  }
  return <figure ref={root} className="studio-creative" data-product-key={ad.product} data-studio-ad={ad.id}>
   <div className="studio-creative-media">
    <Image src={ad.image} alt={ad.alt} fill sizes="(min-width: 1440px) 252px, (min-width: 768px) 22vw, 62vw" preload={priority} loading={priority?undefined:"lazy"}/>
-   {ad.video&&<video ref={video} src={load?ad.video:undefined} loop muted={muted} playsInline preload="none" aria-label={ad.alt} onLoadedData={()=>setReady(true)} onError={()=>setReady(false)} style={{opacity:ready?1:0}}/>}
+   {ad.video&&<video ref={video} src={load?ad.video:undefined} loop muted={muted} playsInline preload="none" aria-label={ad.alt} onLoadedData={()=>setReady(true)} onPlaying={()=>setPlaying(true)} onPause={()=>setPlaying(false)} onError={()=>{setReady(false);setPlaying(false);}} style={{opacity:ready?1:0}}/>}
   </div>
   <figcaption>
    <div><span>{locale==="en"?ad.label:ad.video?t.home.videoKicker:t.publish.ads}</span><small>{ad.video?(locale==="en"?"Video ad":t.home.videoKicker):(locale==="en"?"Image ad":t.publish.ads)}</small></div>
    {ad.video&&<div className="studio-video-controls">
-    <button type="button" onClick={toggle} aria-label={play?"Pause video ad":"Play video ad"} aria-pressed={play} lang="en">
-     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden>{play?<path d="M7 5h3v14H7zm7 0h3v14h-3z"/>:<path d="m8 5 11 7-11 7Z"/>}</svg>
+    <button type="button" onClick={toggle} aria-label={playing?"Pause video ad":"Play video ad"} aria-pressed={playing} lang="en">
+     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden>{playing?<path d="M7 5h3v14H7zm7 0h3v14h-3z"/>:<path d="m8 5 11 7-11 7Z"/>}</svg>
     </button>
     <button type="button" aria-label={muted?t.feed.soundOn:t.feed.soundOff} aria-pressed={!muted} onClick={()=>{
      const el=video.current;const next=!muted;setMuted(next);setManual(true);setPaused(false);
