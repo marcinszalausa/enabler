@@ -15,7 +15,7 @@ export function studioCopy(locale:Locale,t:Messages){
   see:english?"See how it works":t.nav.how,
   examples:english?"Made with Gooidy":t.home.examplesTitle,
   sourceTitle:english?"One product photo.\nSo many possibilities.":t.beforeAfter.title,
-  sourceBody:english?"Fresh visuals. New angles. Ready for the feed.":t.beforeAfter.compareHint,
+  sourceBody:english?"A real Soft Mila product. Two finished ad formats.":t.beforeAfter.compareHint,
   original:english?"Your product photo":t.beforeAfter.before,
   result:english?"Your next ad":t.publish.ads,
   feed:t.feed.facebook,
@@ -34,3 +34,4 @@ export function studioCopy(locale:Locale,t:Messages){
  };
 }
 export type StudioCopy=ReturnType<typeof studioCopy>;
+
