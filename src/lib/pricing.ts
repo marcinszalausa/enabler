@@ -49,9 +49,8 @@ export function usd(amount: number, locale = "en") {
   }).format(amount);
 }
 
-// A plan's name: the free plan's as the pricing table shows it in the page's
-// language; paid plans keep their product names (Starter, Plus, Growth).
+// Paid product names stay consistent; unpaid accounts have no subscription.
 export function planName(t: Messages, plan: string | null | undefined) {
   const paid = PAID_PLANS.find((p) => p.id === plan);
-  return paid ? paid.name : (t.home.plans[0]?.name ?? "Free");
+  return paid ? paid.name : t.pricingPage.noSubscription;
 }

@@ -5,14 +5,14 @@ import Link from "next/link";
 import {useI18n} from "@/i18n/client";
 import {localePath} from "@/i18n/config";
 import {fmt} from "@/i18n/format";
-import {PAID_PLANS,TRY_MODE} from "@/lib/paid-plans";
+import {PAID_PLANS} from "@/lib/paid-plans";
 import {planTools} from "@/lib/plan-value";
 import {ACCOUNT_LIMITS} from "@/lib/social/limits";
 import {LANGUAGES} from "@/lib/video-options";
 import {PACK_DISCOUNTS,YEARLY_DISCOUNT,yearlyPrice,usd,type Interval} from "@/lib/pricing";
 import {LocalPrice} from "./local-price";
 
-// The plan cards: Free plus the paid plans in a row, a monthly/yearly switch
+// Three paid plans with an optional one-time preview, a monthly/yearly switch
 // above them, and "Everything in X, plus:" lists that only name what each
 // step up adds. Prices and allowances come from the plan catalogue.
 const LANGUAGE_COUNT=Object.keys(LANGUAGES).length;
@@ -32,7 +32,6 @@ export function PublicPricing(){
  const [interval,setBilling]=useState<Interval>("month");
  const percent=Math.round(YEARLY_DISCOUNT*100);
  const cards=[
-  {id:"free",name:p.free.name,tagline:p.free.tagline,price:0,credits:TRY_MODE.credits,recommended:false,features:p.free.features,soon:null as string|null},
   ...PAID_PLANS.map(plan=>({id:plan.id,name:plan.name,tagline:p[plan.id].tagline,price:plan.price,credits:plan.credits,recommended:plan.recommended,features:p[plan.id].features,soon:"soonFeature" in p[plan.id]?(p[plan.id] as {soonFeature:string}).soonFeature:null})),
  ];
  return <div data-pricing-cards>
@@ -43,7 +42,7 @@ export function PublicPricing(){
     </button>)}
    </div>
   </div>
-  <div id="plans" data-public-plans className="mt-8 grid scroll-mt-24 items-stretch gap-4 sm:grid-cols-2 xl:grid-cols-4">
+  <div id="plans" data-public-plans className="mt-8 grid scroll-mt-24 items-stretch gap-4 md:grid-cols-3">
    {cards.map((card,level)=>{
     const tools=planTools(card.id),yearly=interval==="year"&&card.price>0;
     const shown=yearly?Math.round(yearlyPrice(card.price)/12*100)/100:card.price;
@@ -55,10 +54,10 @@ export function PublicPricing(){
      <p className="mt-1 text-sm text-muted">{card.tagline}</p>
      <p className="mt-5 text-3xl font-semibold tracking-tight" data-price={shown}>{usd(shown,locale)}</p>
      <p className="mt-1 min-h-10 text-xs leading-relaxed text-muted">
-      {card.price===0?p.freeNote:yearly?fmt(p.perMonthYearly,{total:usd(yearlyPrice(card.price),locale),monthly:usd(card.price,locale)}):p.perMonth}
+      {yearly?fmt(p.perMonthYearly,{total:usd(yearlyPrice(card.price),locale),monthly:usd(card.price,locale)}):p.perMonth}
       {card.price>0&&<LocalPrice usd={shown} locale={locale} template={" · "+t.home.approx} />}
      </p>
-     <Link data-try-plan={card.price>0?card.id:undefined} href={localePath(locale,"/start")+(card.price>0?"?"+new URLSearchParams({plan:card.id}):"")} prefetch={false} className={"mt-5 inline-flex min-h-11 items-center justify-center rounded-xl px-4 py-2.5 text-sm font-medium transition "+(card.recommended?"btn-primary":"border border-line-strong bg-surface hover:border-accent")}>{p.cta}</Link>
+     <Link data-try-plan={card.id} href={localePath(locale,"/start")+(card.price>0?"?"+new URLSearchParams({plan:card.id}):"")} prefetch={false} className={"mt-5 inline-flex min-h-11 items-center justify-center rounded-xl px-4 py-2.5 text-sm font-medium transition "+(card.recommended?"btn-primary":"border border-line-strong bg-surface hover:border-accent")}>{p.cta}</Link>
      <div className="mt-6 flex-1 border-t border-line pt-5">
       {previous&&<p className="mb-3 text-sm font-semibold">{fmt(p.everythingIn,{plan:previous})}</p>}
       <ul data-plan-included={card.id} className="space-y-2.5 text-sm">

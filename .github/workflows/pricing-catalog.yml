@@ -1,7 +1,7 @@
 name: Detailed pricing catalog checks
 on:
   push:
-    branches: [enhance/pricing-catalog]
+    branches: [enhance/pricing-catalog, ux/three-paid-plans]
   pull_request:
 permissions:
   contents: read

@@ -147,7 +147,7 @@ export const en = {
     languagesBody:
       "Every ad is written in the language you pick, the way a local would write it, so you can sell beyond your home market. Video ads speak it too, with captions to match.",
     pricingTitle: "Simple pricing that grows with you",
-    pricingSub: "Start free. Upgrade as your business grows.",
+    pricingSub: "Choose Launch, Grow or Scale to match your business.",
     tierTitle: "Pick the quality for every ad",
     tierSub: "The same product at each tier, made by Gooidy and shown unedited. Higher tiers use the top-ranked AI models.",
     tierPerImage: "{count} credits per image",
@@ -910,11 +910,15 @@ export const en = {
     },
   },
   pricingPage: {
+    noSubscription: "No active subscription",
+    accountStatus: "Subscription",
+    previewLabel: "One-time preview",
+    previewAccountNote: "One-time preview credits only. Choose a paid plan for a monthly allowance.",
     metaTitle: "Pricing · Gooidy",
     metaDescription:
       "Start free with 100 credits. Launch, Grow and Scale plans for image and video ads, publishing and results, from $39 a month.",
     title: "Pricing",
-    sub: "Start free. Pick a plan when your business is ready for more.",
+    sub: "Choose Launch, Grow or Scale to match your business.",
     monthly: "Monthly",
     yearly: "Yearly",
     save: "Save {percent}%",

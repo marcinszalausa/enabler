@@ -7,7 +7,6 @@ import { fmt } from "@/i18n/format";
 import { getCurrentUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import {
-  FREE_PLAN,
   PACKS,
   PLANS,
   discountPlan,
@@ -162,14 +161,14 @@ async function Billing({
 
       <section className="edge mt-6 flex flex-col gap-4 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
         <div>
-          <p className="text-sm text-muted">{b.currentPlan}</p>
-          <p className="mt-1 text-xl font-semibold">{planName(t, ws.plan)}</p>
+          <p className="text-sm text-muted">{subscribed ? b.currentPlan : t.pricingPage.accountStatus}</p>
+          <p className="mt-1 text-xl font-semibold">{planName(t, pricePlan)}</p>
           <p className="mt-1 text-sm text-muted">
             {subscribed && renews
               ? ws.subscription_status === "past_due"
                 ? b.pastDue
                 : `${fmt(b.renews, { date: renews })} ${b.rollover}`
-              : fmt(b.freeNote, { count: n(FREE_PLAN.credits) })}
+              : t.pricingPage.previewAccountNote}
           </p>
         </div>
         {subscribed && (
