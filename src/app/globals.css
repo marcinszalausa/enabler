@@ -1055,3 +1055,20 @@ html {
 }
 
 .minimal-landing .edge {border:1px solid var(--t-line);}
+
+
+/* A clear page ending, with readable local colors in either site theme. */
+.site-footer {
+  --t-bg:#171719;
+  --t-fg:#f5f5f7;
+  --t-muted:#b6b6bf;
+  --t-line:#343438;
+  --t-line-strong:#505057;
+  --t-surface:#242427;
+  --t-raised:#242427;
+  --t-accent:#c2b8ff;
+  --t-accent-strong:#ded8ff;
+  --t-accent-soft:#292537;
+  --t-accent-fg:#171719;
+  color-scheme:dark;
+}

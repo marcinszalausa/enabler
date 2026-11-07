@@ -140,13 +140,12 @@
 .studio-faq summary>span {font-size:20px;color:#9b9ba2;transition:transform .2s;}
 .studio-faq details[open] summary>span {transform:rotate(45deg);}
 .studio-faq details>p {margin-top:14px;font-size:13px;line-height:1.8;color:#84848c;max-width:650px;}
-.studio-final {position:relative;width:100%;margin:0 0 32px;border-radius:0;background:#f5f4fa;padding:76px 24px;text-align:center;overflow:hidden;}
+.studio-final {position:relative;width:100%;margin:0;border-radius:0;background:#f5f4fa;padding:76px 24px;text-align:center;overflow:hidden;}
 .studio-final p {font-size:13px;color:#8b8798;margin-top:17px;}
 .studio-final .studio-button {margin-top:28px;}
-.studio-home footer {background:#fafafa;}
 .studio-home footer>div:first-child {max-width:none;width:100%;padding:48px var(--studio-gutter);}
 .studio-home footer>div:last-child>div {max-width:none;width:100%;padding-inline:var(--studio-gutter);}
-.studio-home footer a,.studio-home footer li,.studio-home footer p {font-size:12px;}
+.studio-home footer a,.studio-home footer li,.studio-home footer p {font-size:13px;}
 @media(min-width:768px) and (prefers-reduced-motion:no-preference) {
  .studio-hero-copy {animation:studio-enter .8s both;}
  .studio-creative {animation:studio-enter .8s both;animation-delay:.08s;}
@@ -249,7 +248,7 @@
  .studio-faq {padding-top:0;}
  .studio-faq h2 {font-size:34px;}
  .studio-faq summary {font-size:13px;}
- .studio-final {margin:0 0 24px;padding:54px var(--studio-gutter);border-radius:0;}
+ .studio-final {margin:0;padding:54px var(--studio-gutter);border-radius:0;}
  .studio-final h2 {font-size:36px;}
  .studio-final p {font-size:11px;}
  .studio-home footer {padding-bottom:0;}
@@ -296,3 +295,4 @@
 
 .studio-kicker-row {display:flex;align-items:center;justify-content:center;gap:12px;}
 .studio-kicker-row [role="group"] {border-inline-start:1px solid #dedee3;padding-inline-start:12px;}
+
