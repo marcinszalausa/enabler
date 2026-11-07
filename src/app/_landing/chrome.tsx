@@ -1,4 +1,5 @@
 "use client";
+import {PlatformMarks} from "./platform-marks";
 
 import {useEffect,useId,useRef,useState,type ReactNode} from "react";
 import {productLink} from "@/lib/onboarding";
@@ -215,7 +216,7 @@ export function SectionHeading({
   );
 }
 
-export function Footer() {
+export function Footer({platformMarks=false}:{platformMarks?:boolean}={}) {
   const { t } = useI18n();
   const href = useHref();
   const home = href("/");
@@ -257,7 +258,7 @@ export function Footer() {
     <footer className="border-t border-line pb-24 sm:pb-0">
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr_1fr]">
         <div>
-          <Logo />
+          <div className="flex items-center justify-between gap-5"><Logo />{platformMarks&&<PlatformMarks label={t.home.whereTitle}/>}</div>
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted">
             {t.footer.tagline}
           </p>
@@ -322,5 +323,6 @@ export function AppBar({
     </header>
   );
 }
+
 
 
