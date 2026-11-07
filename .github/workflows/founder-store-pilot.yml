@@ -1,0 +1,24 @@
+name: Founder store pilot
+on:
+  push:
+    branches: [feat/founder-store-pilot]
+  pull_request:
+    paths: ['supabase/*/*founder_store*','src/app/[locale]/dashboard/stores/page.tsx','scripts/test-founder-store-pilot.sh','.github/workflows/founder-store-pilot.yml']
+permissions:
+  contents: read
+jobs:
+  pilot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Generate migration filename using pinned Supabase CLI
+        run: |
+          npx --yes supabase@2.81.0 --version
+          npx --yes supabase@2.81.0 migration new --help
+          npx --yes supabase@2.81.0 migration new founder_store_pilot
+      - name: Read Supabase changelog
+        run: curl --fail --silent --show-error https://supabase.com/changelog.md | head -c 20000
