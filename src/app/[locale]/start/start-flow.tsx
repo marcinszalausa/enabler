@@ -47,7 +47,7 @@ export function StartFlow(){
     window.history.replaceState(null,"",window.location.pathname+"?"+query);
   }
   return <div data-onboarding-step={step}>
-    {selectedPlan&&<section data-selected-plan={selectedPlan} className="mb-6 rounded-xl border border-line bg-surface p-4 text-sm"><p className="font-medium">{paidPlanName(selectedPlan)} · Free preview</p><p className="mt-2 text-xs leading-relaxed text-muted">100 one-time starter credits shared across your account. No subscription starts automatically. Paid plan tools and monthly allowances require paid activation.</p></section>}
+    {selectedPlan&&<section data-selected-plan={selectedPlan} className="mb-6 rounded-xl border border-line bg-surface p-4 text-sm"><p className="font-medium">{paidPlanName(selectedPlan)} · {t.pricingPage.previewLabel}</p><p className="mt-2 text-xs leading-relaxed text-muted">100 one-time starter credits shared across your account. No subscription starts automatically. Paid plan tools and monthly allowances require paid activation.</p></section>}
     <SetupSteps t={t} current={step}/>
     <p className="text-sm font-medium text-accent">{t.home.finalSub}</p>
     <h1 ref={heading} tabIndex={-1} className="mt-3 text-3xl font-semibold tracking-tight outline-none sm:text-4xl">{step===1?t.onboard.title:t.onboard.confirm}</h1>
