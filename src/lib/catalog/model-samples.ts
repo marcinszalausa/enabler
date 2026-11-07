@@ -6,9 +6,9 @@ import {trainingAllowed} from "./security";
 import {trainingSetup,MODEL_REVIEW_SCENES} from "./training-policy";
 import {fetchPublicUrl} from "@/lib/public-fetch";
 export async function advanceModelSamples(jobId:string){
- const db=createAdminClient();const {data:job,error}=await db.from("catalog_training_jobs").select("*,catalog_items!inner(product_url)").eq("id",jobId).single();
+ const db=createAdminClient();const {data:job,error}=await db.from("catalog_training_jobs").select("*,catalog_items!inner(product_url,image_revision)").eq("id",jobId).single();
  if(error||!job)throw new Error("MODEL_JOB_MISSING");
- if(job.status!=="succeeded"||!job.candidate_version||!trainingSetup().spendingEnabled||!trainingAllowed(job.workspace_id,job.catalog_items.product_url))return {done:true,disabled:true};
+ if(job.status!=="succeeded"||!job.candidate_version||!job.source_reviewed_at||!job.training_requested_at||!job.consent_user_id||!job.budget_cents||job.source_revision!==job.catalog_items.image_revision||!trainingSetup().spendingEnabled||!trainingAllowed(job.workspace_id,job.catalog_items.product_url))return {done:true,disabled:true};
  if(!/^[-a-z0-9_]+\/[-a-z0-9_]+:[a-f0-9]{64}$/.test(job.candidate_version)||job.candidate_version.split(":")[0]!==job.destination)throw new Error("MODEL_VERSION_INVALID");
  for(let scenario=0;scenario<MODEL_REVIEW_SCENES.length;scenario++){
   const {error:reserve}=await db.from("catalog_model_samples").upsert({workspace_id:job.workspace_id,job_id:jobId,scenario},{onConflict:"job_id,scenario",ignoreDuplicates:true});if(reserve)throw new Error("MODEL_SAMPLE_RESERVE_FAILED");

@@ -39,7 +39,7 @@ export const reconcileCatalog=inngest.createFunction({id:"catalog-reconcile-outb
  const events=[...pending.deliveries.map(d=>({id:"catalog-recovery-"+d.id+"-"+bucket,name:"catalog/delivery.received",data:{deliveryId:d.id}})),...pending.jobs.map(j=>({id:"training-recovery-"+j.id+"-"+bucket,name:"catalog/training.requested",data:{jobId:j.id}}))];
  if(events.length)await step.sendEvent("recover-dispatch",events);
  for(const job of pending.active){const result=await step.run("reconcile-"+job.id,()=>pollCatalogTraining(job.id));if(result.status==="awaiting_review")await step.sendEvent("review-"+job.id,{name:"catalog/model.samples",data:{jobId:job.id}});}
- const reviews=await step.run("pending-model-reviews",async()=>{const {data,error}=await createAdminClient().from("catalog_training_jobs").select("id").eq("status","succeeded").eq("review_status","pending").limit(10);if(error)throw new Error("MODEL_REVIEW_RECOVERY_FAILED");return data??[];});
+ const reviews=await step.run("pending-model-reviews",async()=>{const {data,error}=await createAdminClient().from("catalog_training_jobs").select("id,catalog_model_samples(status)").eq("status","succeeded").eq("review_status","pending").not("source_reviewed_at","is",null).limit(10);if(error)throw new Error("MODEL_REVIEW_RECOVERY_FAILED");return (data??[]).filter(j=>j.catalog_model_samples.length<3||j.catalog_model_samples.some(s=>["queued","submitting","running"].includes(s.status)));});
  if(reviews.length)await step.sendEvent("recover-review-samples",reviews.map(j=>({id:"model-review-"+j.id+"-"+bucket,name:"catalog/model.samples",data:{jobId:j.id}})));
  return {dispatched:events.length,reconciled:pending.active.length};
 });

@@ -31,6 +31,14 @@ export async function POST(request:Request){
     if(jobs?.some(j=>j.provider_training_id||j.candidate_version))throw new Error("PROVIDER_ERASURE_REQUIRED");
     const paths=(jobs??[]).map(j=>j.dataset_path).filter((p):p is string=>typeof p==="string");
     if(paths.length){const {error:erasure}=await db.storage.from("catalog-training").remove(paths);if(erasure)throw new Error("STORAGE_ERASURE_FAILED");}
+    // Supplementary uploads are separate from Shopify's public photos and
+    // must be erased before their catalog rows can cascade away.
+    for(let batch=0;batch<10;batch++){
+     const {data:photos,error:photoRead}=await db.from("catalog_training_photos").select("id,storage_path,catalog_items!inner(connection_id)").eq("catalog_items.connection_id",store.connection_id).limit(100);if(photoRead)throw new Error("PHOTO_ERASURE_READ_FAILED");if(!photos?.length)break;
+     const {error:remove}=await db.storage.from("catalog-photos").remove(photos.map(p=>p.storage_path));if(remove)throw new Error("PHOTO_ERASURE_FAILED");
+     const {error:rows}=await db.from("catalog_training_photos").delete().in("id",photos.map(p=>p.id));if(rows)throw new Error("PHOTO_ERASURE_FAILED");
+    }
+    const {count:remaining,error:countError}=await db.from("catalog_training_photos").select("id,catalog_items!inner(connection_id)",{count:"exact",head:true}).eq("catalog_items.connection_id",store.connection_id);if(countError||remaining!==0)throw new Error("PHOTO_ERASURE_PENDING");
     const {error:removed}=await db.from("catalog_connections").delete().eq("id",store.connection_id).eq("enabled",false);if(removed)throw new Error("DELETE");
    }
    return new Response(null,{status:200});
