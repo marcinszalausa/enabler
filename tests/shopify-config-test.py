@@ -26,7 +26,7 @@ class ShopifyConfigTests(unittest.TestCase):
             self.assertEqual(data["application_url"], "https://gooidy.com/dashboard/stores")
             self.assertFalse(data["embedded"])
             self.assertEqual(data["access_scopes"]["scopes"], "read_products,read_inventory")
-            self.assertTrue(data["access_scopes"]["use_legacy_install_flow"])
+            self.assertFalse(data["access_scopes"]["use_legacy_install_flow"])
             self.assertEqual(data["auth"]["redirect_urls"], ["https://gooidy.com/api/shopify/callback"])
 
     def test_registers_operational_and_compliance_topics_at_the_signed_handler(self):
@@ -35,6 +35,7 @@ class ShopifyConfigTests(unittest.TestCase):
             data = tomllib.loads(text)
             self.assertEqual(data["webhooks"]["api_version"], "2026-10")
             subscriptions = data["webhooks"]["subscriptions"]
+            self.assertFalse(data["access_scopes"]["use_legacy_install_flow"], "Shopify rejects app-specific subscriptions with legacy installation")
             self.assertEqual(len(subscriptions), 2)
             self.assertEqual(set(subscriptions[0]["topics"]), {"products/create", "products/update", "app/uninstalled"})
             self.assertEqual(set(subscriptions[1]["compliance_topics"]), {"customers/data_request", "customers/redact", "shop/redact"})

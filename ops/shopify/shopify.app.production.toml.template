@@ -8,7 +8,7 @@ automatically_update_urls_on_dev = false
 
 [access_scopes]
 scopes = "read_products,read_inventory"
-use_legacy_install_flow = true
+use_legacy_install_flow = false
 
 [auth]
 redirect_urls = ["https://gooidy.com/api/shopify/callback"]

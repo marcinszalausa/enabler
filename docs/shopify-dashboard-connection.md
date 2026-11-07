@@ -9,6 +9,7 @@ Set production SHOPIFY_CLIENT_ID, SHOPIFY_CLIENT_SECRET, SHOPIFY_APP_ORIGIN=http
 Shopify app URL: https://gooidy.com/dashboard/stores
 Exact OAuth redirect URL: https://gooidy.com/api/shopify/callback
 App is standalone, not embedded. Scopes: read_products,read_inventory.
+Set use_legacy_install_flow=false in the published app configuration for app-specific webhooks. The standalone connection still uses authorization-code OAuth; do not enable legacy installation for this configuration.
 API version: 2026-10.
 App-specific webhook URL: https://gooidy.com/api/shopify/webhooks
 Topics: products/create, products/update, app/uninstalled.

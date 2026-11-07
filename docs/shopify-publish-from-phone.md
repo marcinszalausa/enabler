@@ -25,16 +25,20 @@ Vercel continues to host the website and callback handlers.
 
 Open the repository's Actions tab, select Publish Gooidy Shopify app,
 choose Run workflow on main, then Run workflow. The job tests the template,
-validates it with Shopify CLI 5.0.1, then publishes it. Publishing is manual;
-pushes and pull requests only run checks with a fixture app identifier and
-without deployment credentials. Shopify CLI validation itself requires the
+validates it with Shopify CLI 5.0.1, then publishes it. Publishing runs manually from main or automatically when app configuration,
+its renderer, tests or the release workflow change on main. Branch pushes and
+pull requests only run checks with a fixture app identifier and without
+deployment credentials. Shopify CLI validation itself requires the
 app-scoped service credential, so that validation runs immediately before
-publishing during a manual main-branch run. Unauthenticated CI checks do not
+publishing during a live main-branch run. Unauthenticated CI checks do not
 claim that Shopify has accepted the configuration.
 
-The workflow keeps the standalone legacy OAuth flow, read_products and
+The workflow keeps the standalone authorization-code OAuth flow, read_products and
 read_inventory scopes, API version 2026-10 and all six existing handler
-topics. It uses --allow-updates, not --allow-deletes. If Shopify reports that
+topics. The configuration sets use_legacy_install_flow=false because Shopify
+rejects app-specific webhook subscriptions when legacy installation is enabled.
+This flag manages installation scopes; the standalone authorization-code
+callback remains in use. It uses --allow-updates, not --allow-deletes. If Shopify reports that
 publishing would delete existing app components, stop and reconcile the
 app's existing configuration before changing the workflow. The new Gooidy
 app shown during setup has no app extensions configured.
