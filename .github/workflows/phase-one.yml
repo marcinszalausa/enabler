@@ -36,3 +36,19 @@ jobs:
         env:
           NEXT_PUBLIC_SUPABASE_URL: https://catalog-test.supabase.co
           NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: sb_publishable_fixture
+
+      - run: |
+          npm install --prefix /tmp/gooidy-browser --no-save --package-lock=false playwright@1.56.1
+          /tmp/gooidy-browser/node_modules/.bin/playwright install --with-deps chrome
+      - name: Phone and desktop workflow checks
+        run: node scripts/check-phase-one.mjs
+        env:
+          PLAYWRIGHT_MODULE_PATH: /tmp/gooidy-browser/node_modules/playwright
+          BROWSER_CHANNEL: chrome
+      - name: Save workflow screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase-one-review
+          path: /tmp/phase-one-review/*
+          retention-days: 3

@@ -47,7 +47,7 @@ export async function POST(request:Request){
   }
   if(topic==="products/delete"){
    const {data:item,error:read}=await db.from("catalog_items").select("id").eq("connection_id",store.connection_id).eq("external_id",String(payload.id)).maybeSingle();if(read)throw new Error("CATALOG_READ_FAILED");
-   if(item){const {error:save}=await db.rpc("apply_catalog_inventory",{connection:store.connection_id,external:String(payload.id),quantity:0,observed:request.headers.get("x-shopify-triggered-at")??new Date().toISOString()});if(save)throw new Error("CATALOG_DELETE_STOCK_FAILED");}
+   if(item){const {error:save}=await db.rpc("apply_catalog_inventory",{connection:store.connection_id,external:String(payload.id),quantity:0,observed:request.headers.get("x-shopify-triggered-at")??new Date().toISOString()});if(save)throw new Error("CATALOG_DELETE_STOCK_FAILED");after(async()=>{try{await dispatchStockPauses(store.connection_id);}catch{console.error("Stock pause dispatch deferred",store.id);}});}
    return new Response(null,{status:200});
   }
   if(!["products/create","products/update"].includes(topic??""))return new Response(null,{status:200});
@@ -60,7 +60,11 @@ export async function POST(request:Request){
   const {error:apply}=await db.rpc("apply_catalog_delivery",{delivery:id});if(apply)throw new Error("CATALOG_DELIVERY_APPLY_FAILED");
   const productGid="gid://shopify/Product/"+String(payload.id);if(!/^gid:\/\/shopify\/Product\/[0-9]+$/.test(productGid))return new Response(null,{status:400});
   const event="product:"+(request.headers.get("x-shopify-webhook-id")??"");const {error:stock}=await db.from("catalog_inventory_signals").upsert({store_id:store.id,installation_id:store.installation_id,event_id:event,resource_id:productGid},{onConflict:"store_id,installation_id,event_id",ignoreDuplicates:true});if(stock)throw new Error("INVENTORY_SIGNAL_WRITE_FAILED");
-  after(async()=>{try{await dispatchStockPauses(c.id);await inngest.send({name:"catalog/delivery.received",data:{deliveryId:id}});}catch{console.error("Shopify delivery deferred",id);}});
+  after(async()=>{try{
+   await dispatchStockPauses(c.id);
+   const {data:signal,error}=await db.from("catalog_inventory_signals").select("id").eq("store_id",store.id).eq("installation_id",store.installation_id).eq("event_id",event).single();if(error)throw new Error("INVENTORY_SIGNAL_READ_FAILED");
+   await inngest.send([{id:"inventory-signal-"+signal.id,name:"catalog/inventory.changed",data:{signalId:signal.id}},{name:"catalog/delivery.received",data:{deliveryId:id}}]);
+  }catch{console.error("Shopify delivery deferred",id);}});
   return new Response(null,{status:200});
  }catch(e){return new Response(null,{status:e instanceof Error&&e.message==="CATALOG_UPGRADE_REQUIRED"?200:503});}
 }
