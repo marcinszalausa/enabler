@@ -26,16 +26,16 @@
 .studio-hero-copy {max-width:1000px;margin:0 auto;padding:0 24px;text-align:center;}
 .studio-kicker {display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:600;letter-spacing:.11em;color:#727278;line-height:1.4;}
 .studio-kicker-dot {width:6px;height:6px;border-radius:50%;background:#796aff;}
-.studio-hero h1 {margin:16px auto 0;font-size:clamp(44px,6vw,80px);font-weight:600;line-height:1.04;letter-spacing:-.065em;text-wrap:balance;}
+.studio-hero h1 {margin:16px auto 0;font-size:clamp(44px,6vw,80px);font-weight:600;line-height:1.04;letter-spacing:-.048em;text-wrap:balance;}
 .studio-hero h1>span {display:block;}
 .studio-hero h1>span:last-child {color:#77777d;}
 .studio-hero-intro {margin:20px auto 0;max-width:560px;font-size:clamp(15px,1.35vw,18px);color:#6b6b71;line-height:1.5;text-wrap:balance;}
 .studio-start {max-width:600px;margin:28px auto 0;scroll-margin-top:100px;}
 .studio-start form {display:flex;align-items:center;gap:10px;padding:6px 6px 6px 18px;border:1px solid #dedee5;border-radius:999px;background:white;box-shadow:0 3px 15px rgb(20 20 40/.035);}
 .studio-start input {font-size:14px;min-height:46px;min-width:0;flex:1;color:#161617;background:transparent;}
-.studio-start input::placeholder {color:#8b8b93;}
+.studio-start input::placeholder {color:#75757b;}
 .studio-link-icon {display:block;flex-shrink:0;width:20px;height:20px;color:#9898a0;}
-.studio-start-hint {margin-top:12px;font-size:11px;color:#898990;text-align:center;}
+.studio-start-hint {margin-top:12px;font-size:11px;color:#76767d;text-align:center;}
 .studio-form-error {margin-top:12px;font-size:13px;color:var(--t-danger);}
 .studio-hero-see {display:inline-flex;align-items:center;gap:7px;min-height:44px;margin-top:8px;font-size:12px;color:#646469;}
 .studio-hero-see svg {width:13px;height:13px;}
@@ -65,7 +65,7 @@
 .studio-platforms>span:first-child {color:#aaaab1;font-size:11px;}
 .studio-platforms strong {font-weight:500;color:#73737b;}
 .studio-section {max-width:1240px;margin:auto;padding:clamp(68px,9vw,128px) 32px;scroll-margin-top:76px;}
-.studio-section h2,.studio-final h2 {font-size:clamp(34px,4.6vw,60px);font-weight:600;line-height:1.07;letter-spacing:-.055em;white-space:pre-line;text-wrap:balance;}
+.studio-section h2,.studio-final h2 {font-size:clamp(34px,4.6vw,60px);font-weight:600;line-height:1.07;letter-spacing:-.045em;white-space:pre-line;text-wrap:balance;}
 .studio-section-lede {margin-top:18px;color:#7b7b83;font-size:16px;line-height:1.6;max-width:380px;}
 .studio-how {display:grid;grid-template-columns:.9fr 1.1fr;align-items:center;gap:24px;}
 .studio-text-link {display:inline-flex;align-items:center;gap:8px;min-height:44px;margin-top:24px;font-size:14px;font-weight:500;color:#5b4bf7;}
@@ -90,7 +90,7 @@
 .studio-section-heading {text-align:center;max-width:720px;margin:0 auto 44px;}
 .studio-benefit-grid {display:grid;grid-template-columns:1fr 1fr;gap:24px;}
 .studio-benefit-card {min-width:0;overflow:hidden;border-radius:32px;padding:38px 32px 0;}
-.studio-benefit-card h3 {font-size:clamp(25px,2.7vw,36px);font-weight:600;letter-spacing:-.045em;line-height:1.12;max-width:430px;text-wrap:balance;}
+.studio-benefit-card h3 {font-size:clamp(25px,2.7vw,36px);font-weight:600;letter-spacing:-.035em;line-height:1.12;max-width:430px;text-wrap:balance;}
 .studio-benefit-card>p {margin-top:13px;color:#7b7b83;font-size:14px;line-height:1.6;}
 .studio-brand-card {background:#f4f1ed;}
 .studio-schedule-card {background:#edf2fc;}
@@ -102,15 +102,15 @@
 .studio-brand-kit span.studio-brand-type {font-family:Georgia,serif;font-size:23px;}
 .studio-palette {display:flex;gap:9px;margin-top:17px;}
 .studio-palette span {width:29px;height:29px;border-radius:50%;border:1px solid rgb(0 0 0/.04);}
-.studio-brand-kit small {display:block;margin-top:12px;font-size:9px;color:#95959b;}
+.studio-brand-kit small {display:block;margin-top:12px;font-size:10px;color:#76767d;}
 .studio-planner {background:white;padding:21px 18px 0;border:1px solid #e3e9f5;border-radius:24px 24px 0 0;margin-top:46px;box-shadow:0 10px 32px rgb(30 50 100/.04);}
 .studio-planner-heading {display:flex;justify-content:space-between;align-items:center;gap:8px;}
 .studio-planner-heading>span:first-child {font-size:14px;font-weight:600;letter-spacing:-.02em;}
-.studio-preview-label {font-size:9px;color:#a0a0a8;}
+.studio-preview-label {font-size:10px;color:#76767d;}
 .studio-calendar {display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;margin-top:20px;}
 .studio-calendar>button,.studio-calendar>div {min-width:0;padding:7px 2px 5px;border:1px solid transparent;border-radius:10px;display:flex;flex-direction:column;align-items:center;gap:6px;}
 .studio-calendar>button[aria-pressed=true] {border-color:#bdb1fa;background:#f7f5ff;}
-.studio-calendar>button>span:first-child,.studio-calendar>div>span:first-child {font-size:9px;color:#9696a0;}
+.studio-calendar>button>span:first-child,.studio-calendar>div>span:first-child {font-size:9px;color:#76767e;}
 .studio-day-thumb {position:relative;display:block;width:100%;height:59px;overflow:hidden;border-radius:5px;background:#f4f4f6;}
 .studio-calendar i {height:3px;width:3px;border-radius:50%;background:#a99af5;}
 .studio-empty-day {height:59px;display:flex;align-items:center;color:#d0d0da;}
@@ -190,7 +190,7 @@
  .studio-hero {padding-top:42px;}
  .studio-hero-copy {padding:0 20px;}
  .studio-kicker {font-size:9px;letter-spacing:.12em;}
- .studio-hero h1 {font-size:clamp(37px,10.7vw,69px);margin-top:15px;letter-spacing:-.065em;}
+ .studio-hero h1 {font-size:clamp(37px,10.7vw,69px);margin-top:15px;letter-spacing:-.045em;}
  .studio-hero-intro {font-size:14px;line-height:1.6;margin-top:18px;max-width:310px;}
  .studio-start {margin-top:24px;max-width:480px;}
  .studio-start form {display:grid;grid-template-columns:20px minmax(0,1fr);gap:0 8px;padding:8px;border-radius:23px;}

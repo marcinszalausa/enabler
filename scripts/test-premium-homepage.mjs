@@ -56,7 +56,7 @@ try {
    const input=page.getByRole('textbox',{name:'Product link',exact:true});
    await input.fill('javascript:alert(1)');
    await page.getByRole('button',{name:'Create your ads',exact:true}).click();
-   await page.getByRole('alert').waitFor();
+   await page.locator('.studio-form-error[role="alert"]').waitFor();
    assert.equal(new URL(page.url()).pathname,'/');
    await input.fill('softmila.com/products/test');
    await page.getByRole('button',{name:'Create your ads',exact:true}).click();
@@ -83,11 +83,25 @@ try {
  await saved.getByRole('button',{name:'Pause video ad',exact:true}).click();
  assert.equal(await saved.locator('video').first().evaluate(el=>el.paused),true);
  await saved.close();
+ const animated=await browser.newPage({viewport:{width:1440,height:1000}});
+ await animated.goto('http://localhost:3000/',{waitUntil:'networkidle'});
+ await animated.waitForFunction(()=>{const video=document.querySelector('video');return video&&video.readyState>=2&&!video.paused;});
+ const moment=await animated.locator('video').first().evaluate(el=>el.currentTime);
+ await animated.waitForTimeout(350);
+ assert.ok(await animated.locator('video').first().evaluate(el=>el.currentTime)>moment,'visible preview video advances');
+ await animated.locator('#pricing').scrollIntoViewIfNeeded();
+ await animated.waitForFunction(()=>document.querySelector('video')?.paused);
+ await animated.close();
+ const recovered=await browser.newPage({viewport:{width:390,height:1000},reducedMotion:'reduce'});
+ await recovered.route('**/showcase/ad-44358942-*',route=>route.abort());
+ await recovered.goto('http://localhost:3000/',{waitUntil:'networkidle'});
+ await recovered.waitForFunction(()=>{const image=document.querySelector('[data-studio-ad="robe"] img');return image?.dataset.homeFallback==='true'&&image.complete&&image.naturalWidth>0;});
+ await recovered.close();
  const spanish=await browser.newPage({viewport:{width:390,height:900},reducedMotion:'reduce'});
  await spanish.goto('http://localhost:3000/es',{waitUntil:'networkidle'});
  assert.equal(await spanish.locator('html').getAttribute('lang'),'es');
  assert.equal(await spanish.locator('.studio-rail-track figure').count(),5);
  assert.ok(await spanish.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
  await spanish.close();
- console.log('Premium homepage: responsive layouts, static media, formats, planner, navigation, validation, no-JS, motion/data preferences and locale checks passed.');
+ console.log('Premium homepage: responsive layouts, static media and recovery, formats, planner, navigation, validation, no-JS, autoplay/visibility, motion/data preferences and locale checks passed.');
 }finally{await browser.close();}
