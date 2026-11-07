@@ -10,7 +10,7 @@ try{
  server=spawn(process.execPath,["node_modules/next/dist/bin/next","dev","-p","3126"],{env:{...process.env,NEXT_PUBLIC_SUPABASE_URL:"https://example.supabase.co",NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:"sb_publishable_fixture"},detached:true,stdio:["ignore","pipe","pipe"]});
  const capture=b=>{log=(log+b).slice(-14000);};server.stdout.on("data",capture);server.stderr.on("data",capture);
  let ready=false;for(let i=0;i<90;i++){try{if((await fetch("http://localhost:3126/pricing",{signal:AbortSignal.timeout(2000)})).ok){ready=true;break;}}catch{}await pause(1000);}assert.ok(ready);
- const raw=await(await fetch("http://localhost:3126/pricing")).text();for(const phrase of ["Everything in Launch, plus:","Need more credits?","Included in every plan","What if I run out of credits?"])assert.ok(raw.includes(phrase),"Server HTML contains "+phrase);
+ const raw=await(await fetch("http://localhost:3126/pricing")).text();for(const phrase of ["Everything in Launch, plus:","Need more credits?","Every plan includes","What if I run out of credits?"])assert.ok(raw.includes(phrase),"Server HTML contains "+phrase);
  const match=raw.match(/<script\b[^>]*data-pricing-structured[^>]*>([\s\S]*?)<\/script>/);assert.ok(match,"JSON-LD is server-rendered");const data=JSON.parse(match[1]);assert.equal(data["@type"],"FAQPage");assert.ok(!JSON.stringify(data).includes('"offers"'));
  const polish=await(await fetch("http://localhost:3126/pl/pricing")).text();assert.ok(polish.includes("Cennik")&&polish.includes("Wszystko z Launch, a do tego:"),"Pricing is translated");
  browser=await chromium.launch({headless:true,channel:process.env.BROWSER_CHANNEL||undefined});
@@ -67,6 +67,7 @@ try{
  assert.ok(await home.locator('#pricing [data-plan-included="starter"] li').count()>=4);assert.ok(await home.locator('#pricing [data-plan-included="growth"] li').count()>=4);await home.close();console.log("PASS plan cards on homepage without JavaScript");
  console.log("PASS raw HTML content is readable without JavaScript");
 }catch(error){console.error(log);throw error;}finally{await browser?.close();if(server?.pid)try{process.kill(-server.pid,"SIGTERM");}catch{}}
+
 
 
 

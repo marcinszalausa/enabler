@@ -22,7 +22,6 @@ function PlanIcon({level}:{level:number}){
   {level===0?<path d="M8 4.5a1 1 0 0 1 1.5-.86l11 7.5a1 1 0 0 1 0 1.72l-11 7.5A1 1 0 0 1 8 19.5z"/>:level===1?<><path d="M4 20v-5m5 5v-8m5 8V9m5 11V5M4 10l5-4 5 1 6-5M15 2h5v5"/></>:<><rect x="3" y="8" width="13" height="13" rx="2"/><path d="M8 5V4a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1h-1"/></>}
  </svg>;
 }
-function BenefitIcon({index}:{index:number}){return <svg viewBox="0 0 24 24" aria-hidden className="h-5 w-5 shrink-0 text-muted" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">{index===0?<path d="m12 3 9 5-9 5-9-5 9-5zm-9 9 9 5 9-5m-18 5 9 5 9-5"/>:index===1?<path d="m4 16 12-12a2 2 0 0 1 3 3L7 19l-4 1 1-4zm10-10 4 4"/>:index===2?<path d="M12 3v12m-4-4 4 4 4-4M4 15v5h16v-5"/>:<><circle cx="12" cy="7" r="3"/><path d="M5 21v-2a7 7 0 0 1 14 0v2"/></>}</svg>;}
 function Check(){return <svg viewBox="0 0 20 20" aria-hidden className="mt-0.5 h-4 w-4 shrink-0 text-muted" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="m4.5 10.5 3.5 3.5 7.5-8"/></svg>;}
 
 export function PublicPricing({compact=false}:{compact?:boolean}={}){
@@ -59,10 +58,10 @@ export function PublicPricing({compact=false}:{compact?:boolean}={}){
     </article>;
    })}
   </div>
-  <section data-shared-plan-benefits className="mt-4 rounded-2xl border border-line bg-raised px-5 py-5 sm:px-6 lg:flex lg:items-center lg:gap-7">
-   <h3 className="shrink-0 text-sm font-semibold tracking-tight">{copy.shared}</h3>
-   <ul className="mt-4 grid min-w-0 flex-1 grid-cols-2 gap-x-4 gap-y-4 lg:mt-0 lg:grid-cols-4 lg:border-s lg:border-line lg:ps-7">
-    {copy.benefits.map((benefit,i)=><li key={benefit} className="flex min-w-0 items-center gap-2.5 text-xs leading-5"><BenefitIcon index={i}/><span>{benefit}</span></li>)}
+  <section data-shared-plan-benefits className="mt-5 flex flex-wrap items-baseline justify-center gap-x-4 gap-y-2 px-2 py-1 text-xs leading-5 text-muted">
+   <h3 className="font-medium text-fg">{copy.shared}:</h3>
+   <ul className="flex min-w-0 flex-wrap justify-center gap-x-3 gap-y-2">
+    {copy.benefits.map((benefit,i)=><li key={benefit} className="inline-flex items-baseline gap-3">{i>0&&<span aria-hidden>·</span>}<span>{benefit}</span></li>)}
    </ul>
   </section>
   <p data-pricing-note className="mx-auto mt-4 max-w-2xl text-center text-xs leading-relaxed text-muted">{copy.note}</p>
@@ -73,4 +72,5 @@ export function PublicPricing({compact=false}:{compact?:boolean}={}){
   </div>
  </div>;
 }
+
 

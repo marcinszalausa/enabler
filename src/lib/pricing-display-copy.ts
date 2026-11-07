@@ -1,6 +1,6 @@
 // Short display labels; plan prices, credits and access remain in their existing sources.
 const copy:Record<string,readonly [string,string,string,string,string,string,string,string,string]>={
- en:["Included in every plan","Your brand kit","Free text edits","Image + MP4 downloads","1 social account","Try creating an ad","One-time preview · No card needed","{credits} credits / month","Extra accounts & ad spend billed separately."],
+ en:["Every plan includes","Your brand kit","Free text edits","Downloads","1 social account","Try creating an ad","One-time preview · No card needed","{credits} credits / month","Extra accounts & ad spend billed separately."],
  pl:["W każdym planie","Identyfikacja marki","Bezpłatna edycja tekstu","Pobieranie grafik i MP4","1 konto społecznościowe","Wypróbuj tworzenie reklamy","Jednorazowy podgląd · Bez karty","{credits} kredytów / miesiąc","Dodatkowe konta i budżety reklamowe są płatne osobno."],
  es:["Incluido en todos los planes","Tu kit de marca","Edición de texto gratis","Descargas de imágenes y MP4","1 cuenta social","Prueba a crear un anuncio","Prueba única · Sin tarjeta","{credits} créditos / mes","Las cuentas extra y la inversión publicitaria se pagan aparte."],
  pt:["Incluído em todos os planos","Seu kit de marca","Edição de texto grátis","Download de imagens e MP4","1 conta social","Experimente criar um anúncio","Prévia única · Sem cartão","{credits} créditos / mês","Contas extras e investimento em anúncios são pagos à parte."],
@@ -19,4 +19,5 @@ const copy:Record<string,readonly [string,string,string,string,string,string,str
  ar:["متاح في كل خطة","هوية علامتك التجارية","تعديل النص مجانًا","تنزيل الصور وMP4","حساب اجتماعي واحد","جرّب إنشاء إعلان","معاينة لمرة واحدة · دون بطاقة","{credits} رصيد / شهر","الحسابات الإضافية وميزانية الإعلانات تُدفع بشكل منفصل."],
 };
 export function pricingDisplayCopy(locale:string){const [shared,brand,edits,downloads,account,preview,previewNote,credits,note]=copy[locale]??copy.en;return {shared,benefits:[brand,edits,downloads,account],preview,previewNote,credits,note};}
+
 
