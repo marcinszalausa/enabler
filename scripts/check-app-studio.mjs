@@ -5,7 +5,7 @@ import {createRequire} from 'node:module';
 import {setTimeout as pause} from 'node:timers/promises';
 const require=createRequire(import.meta.url),{chromium}=require(process.env.PLAYWRIGHT_MODULE_PATH);
 const folder='src/app/[locale]/app-studio-preview/[[...section]]';
-let server,browser,log='';
+let server,browser,currentPage,log='';
 const fixture=`import {Suspense} from 'react';
 import {DashboardFrame} from '@/app/[locale]/dashboard/dashboard-frame';
 import {AppNav} from '@/app/[locale]/dashboard/app-nav';
@@ -46,7 +46,7 @@ try{
  const manifest=JSON.parse(await readFile('src/lib/homepage-media.json','utf8')),asset=Object.values(manifest.images)[0].src;
  browser=await chromium.launch({channel:process.env.BROWSER_CHANNEL||undefined,headless:true});
  for(const [width,locale,theme] of [[320,'en','light'],[390,'en','light'],[390,'ja','dark'],[768,'de','light'],[1440,'en','light'],[1920,'en','dark']]){
-  const page=await browser.newPage({viewport:{width,height:1000},reducedMotion:'reduce'}),errors=[];let posts=0;
+  const page=await browser.newPage({viewport:{width,height:1000},reducedMotion:'reduce'}),errors=[];currentPage=page;let posts=0;
   page.on('pageerror',e=>errors.push(e.message));page.on('request',r=>{if(r.method()==='POST'&&!/\/(?:_next|__nextjs)/.test(new URL(r.url()).pathname))posts++;});
   await page.route('**/api/creatives/**/image?*',async route=>{const response=await route.fetch({url:'http://localhost:3121'+asset});await route.fulfill({response});});
   await page.addInitScript(theme=>{localStorage.setItem('gooidy-theme',theme);},theme);
@@ -55,7 +55,8 @@ try{
    await page.goto(base+section,{waitUntil:'networkidle',timeout:90000});
    assert.equal(await page.locator('[data-app-studio]').count(),1);
    assert.equal(await page.locator('[data-boost]').count(),0,'No unbuilt teaser in the workspace');
-   assert.equal(await page.locator('[data-create-new]').evaluate(e=>getComputedStyle(e).backgroundColor),theme==='light'?'rgb(22, 22, 23)':'rgb(245, 245, 247)');
+   const buttonColor=await page.locator('[data-create-new]').evaluate(e=>getComputedStyle(e).backgroundColor);
+   assert.ok((theme==='light'?['rgb(22, 22, 23)','rgb(53, 53, 56)']:['rgb(245, 245, 247)','rgb(222, 222, 229)']).includes(buttonColor),'Neutral primary button including its hover state');
    assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'No overflow '+width+' '+section);
    if(section==='products'){
     await page.locator('[data-create-new]').click();assert.equal(await page.locator('#url').evaluate(e=>document.activeElement===e),true);
@@ -92,4 +93,4 @@ try{
   }
   assert.equal(posts,0,'Visual navigation never spends credits, changes a store or publishes');assert.deepEqual(errors,[]);console.log('PASS signed-in design, forms, media, menus, permissions and themes',width,locale,theme);await page.close();
  }
-}catch(e){console.error(log);throw e;}finally{await browser?.close();if(server?.pid)try{process.kill(-server.pid,'SIGTERM');}catch{}await rm('src/app/[locale]/app-studio-preview',{recursive:true,force:true});}
+}catch(e){if(currentPage&&!currentPage.isClosed())await currentPage.screenshot({path:'/tmp/app-studio-review/failure.png',fullPage:true}).catch(()=>{});console.error(log);throw e;}finally{await browser?.close();if(server?.pid)try{process.kill(-server.pid,'SIGTERM');}catch{}await rm('src/app/[locale]/app-studio-preview',{recursive:true,force:true});}
