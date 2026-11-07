@@ -121,19 +121,20 @@
 .studio-preview-platform {font-size:9px;color:#9999a0;}
 .studio-planner-bottom {display:flex;align-items:center;justify-content:center;gap:9px;color:#a2a2aa;font-size:10px;min-height:54px;}
 .studio-pricing {padding-top:32px;}
-.studio-pricing .studio-section-heading {margin-bottom:32px;}
+.studio-pricing .studio-section-heading {margin-bottom:24px;}
+.studio-pricing .studio-section-heading h2 {font-size:clamp(28px,3.2vw,42px);letter-spacing:-.045em;line-height:1.12;}
 .studio-pricing .studio-section-heading p {font-size:15px;color:#808088;margin-top:15px;}
 .studio-pricing [data-pricing-cards] article {border-radius:26px;padding:28px;box-shadow:none!important;}
-.studio-pricing [data-plan="plus"] {border-color:#c4bafa;background:#fcfbff;}
+.studio-pricing [data-plan="plus"] {border-color:#c4bafa;background:#fff;}
 .studio-pricing [data-billing-toggle] {font-size:11px;}
 .studio-pricing [data-try-plan] {border-radius:999px;}
 .studio-pricing article h3 {font-size:25px;}
 .studio-pricing article [data-price] {font-size:45px;line-height:1.1;letter-spacing:-.055em;}
 .studio-pricing article li {font-size:12px;line-height:1.6;}
-.studio-pricing article>div:first-child svg {height:28px;width:28px;}
+.studio-pricing article>div:first-child svg {height:24px;width:24px;}
 .studio-pricing article>div:first-child>span {font-size:10px;}
 .studio-pricing-details {text-align:center;margin-top:20px;}
-.studio-pricing-note {max-width:610px;margin:20px auto 0;text-align:center;color:#76767e;font-size:11px;line-height:1.6;}
+
 .studio-faq {padding-top:16px;}
 .studio-faq h2 {font-size:38px;text-align:center;margin-bottom:28px;}
 .studio-faq details {border-bottom:1px solid #eaeaf0;padding:20px 0;}
@@ -258,3 +259,4 @@
  .studio-final p {font-size:11px;}
  .studio-home footer {padding-bottom:0;}
 }
+

@@ -54,7 +54,6 @@ export function StudioHome({locale,t}:{locale:Locale;t:Messages}){
    <section id="pricing" className="studio-section studio-pricing" aria-labelledby="studio-pricing-title" data-studio-reveal>
     <div className="studio-section-heading"><h2 id="studio-pricing-title">{c.pricingTitle}</h2><p>{c.pricingBody}</p></div>
     <PublicPricing compact/>
-    <p className="studio-pricing-note" lang="en">One social account included. Extra connections and advertising budgets are separate.</p>
     <p className="studio-pricing-details"><Link href={localePath(locale,"/pricing")} className="studio-text-link" prefetch={false}>{c.pricingDetails}<Arrow/></Link></p>
    </section>
 
@@ -70,3 +69,4 @@ export function StudioHome({locale,t}:{locale:Locale;t:Messages}){
   <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(homeJsonLd(locale,t.meta.description,PAID_PLANS.map(plan=>({name:plan.name,price:plan.price})))).replace(/</g,"\\u003c")}}/>
  </div>;
 }
+
