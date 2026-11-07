@@ -1,0 +1,45 @@
+name: Verify full width homepage release
+on:
+  push:
+    branches: [ops/verify-full-width-homepage]
+permissions:
+  contents: read
+jobs:
+  live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Confirm production serves the expanded layout stylesheet
+        run: |
+          python - <<'PY'
+          import time, urllib.request, urllib.error
+          from html.parser import HTMLParser
+          from urllib.parse import urljoin
+          base='https://gooidy.com'
+          class Links(HTMLParser):
+              def __init__(self):
+                  super().__init__();self.styles=[]
+              def handle_starttag(self,tag,attrs):
+                  p=dict(attrs)
+                  if tag=='link' and p.get('rel')=='stylesheet':
+                      self.styles.append(urljoin(base,p['href']))
+          for attempt in range(24):
+              try:
+                  with urllib.request.urlopen(base+'/?layout=427e718',timeout=20) as response:
+                      html=response.read().decode()
+                      assert response.status==200
+                  page=Links();page.feed(html)
+                  sheets=[]
+                  for url in page.styles:
+                      with urllib.request.urlopen(url,timeout=20) as response:
+                          sheets.append(response.read().decode())
+                  if any('--studio-gutter' in sheet for sheet in sheets):
+                      assert 'data-studio-home' in html
+                      print('LIVE_FULL_WIDTH_LAYOUT_VERIFIED: homepage HTTP 200; expanded layout CSS with responsive gutters is served in production.')
+                      break
+              except (urllib.error.URLError,TimeoutError):
+                  pass
+              time.sleep(5)
+          else:
+              raise AssertionError('Expanded layout CSS is not live yet')
+          PY
