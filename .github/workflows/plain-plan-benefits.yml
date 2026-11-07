@@ -1,0 +1,35 @@
+name: Plain plan benefits
+on:
+  push:
+    branches: [ux/plain-plan-benefits]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx next typegen && npx tsc --noEmit
+      - run: npx eslint src/app/_landing/public-pricing.tsx src/lib/pricing-display-copy.ts
+      - run: npm run build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: sb_publishable_fixture
+      - run: npm install --prefix /tmp/plain-benefits-browser --no-save --package-lock=false playwright@1.56.1
+      - run: /tmp/plain-benefits-browser/node_modules/.bin/playwright install --with-deps chrome
+      - run: node scripts/check-pricing-catalog.mjs
+        env:
+          PLAYWRIGHT_MODULE_PATH: /tmp/plain-benefits-browser/node_modules/playwright
+          BROWSER_CHANNEL: chrome
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: plain-plan-benefits
+          path: /tmp/premium-pricing/pricing-*.png
+          retention-days: 3
