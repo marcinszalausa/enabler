@@ -57,7 +57,7 @@ try{
  await proof.locator('#how').scrollIntoViewIfNeeded();await proof.waitForFunction(()=>Array.from(document.querySelectorAll('#how img')).every(img=>img.complete&&img.naturalWidth>100));
  assert.equal(await proof.locator('#how [data-home-fallback]').count(),0);await proof.getByRole('button',{name:'Instagram Stories',exact:true}).click();await proof.waitForFunction(()=>document.querySelector('[data-transformation-format]')?.getAttribute('data-transformation-format')==='story');await proof.waitForFunction(()=>Array.from(document.querySelectorAll('#how img')).every(img=>img.complete&&img.naturalWidth>100));assert.deepEqual(assetErrors,[]);
  const workflow=proof.locator('[data-store-workflow-preview]'),scale=proof.locator('[data-scale-plan-preview]');await workflow.getByRole('button',{name:'3 Create',exact:true}).click();
- await scale.getByRole('button',{name:'Not enough data',exact:true}).click();assert.equal(await scale.getByRole('button',{name:'Download sample brief'}).count(),0);await scale.getByRole('button',{name:'Example plan',exact:true}).click();
+ await scale.getByRole('button',{name:'Next move',exact:true}).click();assert.equal(await scale.getByRole('button',{name:'Download sample brief'}).count(),0);await scale.getByRole('button',{name:'Campaign brief',exact:true}).click();
  const downloaded=proof.waitForEvent('download');await scale.getByRole('button',{name:'Download sample brief'}).click();const file=await downloaded;assert.equal(file.suggestedFilename(),'gooidy-sample-campaign-brief.txt');const contents=await readFile(await file.path(),'utf8');assert.ok(contents.startsWith('ILLUSTRATIVE SAMPLE — NOT CUSTOMER RESULTS'));assert.match(contents,/Starting post: sample-benefit/);
  await proof.locator('#how').getByRole('button',{name:'Curiosity',exact:true}).click();assert.equal(await proof.locator('[data-transformation-angle]').getAttribute('data-transformation-angle'),'curiosity');await proof.locator('#how').getByRole('button',{name:'Lifestyle',exact:true}).click();assert.equal(await proof.locator('[data-transformation-angle]').getAttribute('data-transformation-angle'),'social_proof');
  await proof.locator('.studio-benefits').screenshot({path:'/tmp/premium-pricing/grow-scale-preview.png'});
@@ -67,6 +67,7 @@ try{
  assert.ok(await home.locator('#pricing [data-plan-included="starter"] li').count()>=4);assert.ok(await home.locator('#pricing [data-plan-included="growth"] li').count()>=4);await home.close();console.log("PASS plan cards on homepage without JavaScript");
  console.log("PASS raw HTML content is readable without JavaScript");
 }catch(error){console.error(log);throw error;}finally{await browser?.close();if(server?.pid)try{process.kill(-server.pid,"SIGTERM");}catch{}}
+
 
 
 
