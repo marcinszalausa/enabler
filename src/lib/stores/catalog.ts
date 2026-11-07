@@ -12,7 +12,7 @@ function photos(provider:StoreProvider,p:ObjectData){
  if(provider==="woocommerce"||provider==="squarespace")values=Array.isArray(p.images)?p.images.map(x=>obj(x).src??obj(x).url):[];
  else if(provider==="bigcommerce")values=Array.isArray(p.images)?p.images.map(x=>obj(x).url_zoom??obj(x).url_standard):[];
  else{const media=p.media&&obj(p.media),items=media&&Array.isArray(media.items)?media.items:[];values=items.flatMap(x=>{const item=obj(x);return item.image?[obj(item.image).url]:[];});}
- return [...new Set(values.flatMap(v=>{try{const u=parsePublicHttpUrl(str(v));if(u.protocol!=="https:")return [];if(provider==="wix"&&u.hostname==="static.wixstatic.com")u.pathname=u.pathname.split("/v1/")[0];return [u.toString()];}catch{return [];}))].slice(0,30);
+ return [...new Set(values.flatMap(v=>{try{const u=parsePublicHttpUrl(str(v));if(u.protocol!=="https:")return [];if(provider==="wix"&&u.hostname==="static.wixstatic.com")u.pathname=u.pathname.split("/v1/")[0];return [u.toString()];}catch{return [];}}))].slice(0,30);
 }
 export function nativeProduct(provider:StoreProvider,p:ObjectData,c:CatalogConnection,observed:string,storeUrl:string){
  let url:unknown=p.permalink??p.url,quantity:number|null=null,updated:unknown=p.modifiedOn;
