@@ -134,6 +134,7 @@
 .studio-pricing article>div:first-child svg {height:28px;width:28px;}
 .studio-pricing article>div:first-child>span {font-size:10px;}
 .studio-pricing-details {text-align:center;margin-top:20px;}
+.studio-pricing-note {max-width:610px;margin:20px auto 0;text-align:center;color:#76767e;font-size:11px;line-height:1.6;}
 .studio-faq {max-width:800px;padding-top:16px;}
 .studio-faq h2 {font-size:38px;text-align:center;margin-bottom:28px;}
 .studio-faq details {border-bottom:1px solid #eaeaf0;padding:20px 0;}

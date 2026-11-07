@@ -22,6 +22,7 @@ try {
   assert.equal(await page.locator('video').first().getAttribute('src'),null,'reduced motion prevents automatic video download');
   assert.equal(await page.locator('dialog').count(),0,'creation is not gated by calibration');
   assert.equal(await page.locator('[data-plan]').count(),3);
+  assert.equal(await page.locator('[data-buy-plan]:disabled').count(),3,'checkout stays disabled');
   assert.deepEqual(await page.locator('[data-plan]').evaluateAll(nodes=>nodes.map(n=>n.dataset.plan)),['starter','plus','growth']);
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'page must not overflow');
   assert.equal(await page.locator('[data-studio-home]').evaluate(el=>getComputedStyle(el).backgroundColor),'rgb(255, 255, 255)','homepage remains a bright canvas');
@@ -74,12 +75,14 @@ try {
  await basic.waitForURL(/\/start\?url=/);
  await noJs.close();
  const saved=await browser.newPage({viewport:{width:390,height:1000}});
+ saved.on('response',response=>{if(response.url().endsWith('.mp4'))console.log('Preview video response',response.status(),response.headers()['content-type']);});
  await saved.addInitScript(()=>Object.defineProperty(navigator,'connection',{value:{saveData:true,addEventListener(){},removeEventListener(){}}}));
  await saved.goto('http://localhost:3000/',{waitUntil:'networkidle'});
  await saved.waitForTimeout(1000);
  assert.equal(await saved.locator('video').first().getAttribute('src'),null,'data saving prevents background video download');
  await saved.getByRole('button',{name:'Play video ad',exact:true}).click();
- await saved.waitForFunction(()=>document.querySelector('video')?.readyState>=2);
+ try{await saved.waitForFunction(()=>document.querySelector('video')?.readyState>=2,{},{timeout:15000});}
+ catch(error){console.log('Preview video diagnostic',await saved.locator('video').first().evaluate(el=>({src:el.currentSrc,ready:el.readyState,network:el.networkState,paused:el.paused,error:el.error?.message,code:el.error?.code,canH264:el.canPlayType('video/mp4; codecs="avc1.42E01E"')})));throw error;}
  await saved.getByRole('button',{name:'Pause video ad',exact:true}).click();
  assert.equal(await saved.locator('video').first().evaluate(el=>el.paused),true);
  await saved.close();

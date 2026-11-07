@@ -18,7 +18,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx next typegen && npx tsc --noEmit
-      - run: npx eslint src/app/_landing/studio-*.tsx src/app/_landing/studio-copy.ts src/app/_landing/ad-image.tsx src/lib/studio-showcase.ts 'src/app/[locale]/page.tsx'
+      - run: npx eslint src/app/_landing/studio-*.tsx src/app/_landing/studio-copy.ts src/app/_landing/ad-image.tsx src/app/_landing/public-pricing.tsx src/lib/studio-showcase.ts 'src/app/[locale]/page.tsx'
       - name: Build without database credentials
         run: npm run build
         env:
@@ -27,6 +27,13 @@ jobs:
       - run: |
           npm install --prefix /tmp/gooidy-browser --no-save --package-lock=false playwright@1.56.1
           /tmp/gooidy-browser/node_modules/.bin/playwright install --with-deps chromium
+      - name: Inspect public preview video encoding
+        run: |
+          node <<'JS'
+          const {spawnSync}=require('node:child_process');
+          const info=spawnSync(require('ffmpeg-static'),['-hide_banner','-i','public/showcase/walk-8b95514506eb.mp4'],{encoding:'utf8'});
+          process.stdout.write(info.stderr||'No video metadata');
+          JS
       - name: Browser checks and visual review
         run: |
           mkdir -p /tmp/studio-review
