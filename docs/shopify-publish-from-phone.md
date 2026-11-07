@@ -27,7 +27,10 @@ Open the repository's Actions tab, select Publish Gooidy Shopify app,
 choose Run workflow on main, then Run workflow. The job tests the template,
 validates it with Shopify CLI 5.0.1, then publishes it. Publishing is manual;
 pushes and pull requests only run checks with a fixture app identifier and
-without deployment credentials.
+without deployment credentials. Shopify CLI validation itself requires the
+app-scoped service credential, so that validation runs immediately before
+publishing during a manual main-branch run. Unauthenticated CI checks do not
+claim that Shopify has accepted the configuration.
 
 The workflow keeps the standalone legacy OAuth flow, read_products and
 read_inventory scopes, API version 2026-10 and all six existing handler

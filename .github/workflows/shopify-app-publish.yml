@@ -46,9 +46,7 @@ jobs:
           /tmp/gooidy-shopify-cli/node_modules/.bin/shopify config autoupgrade off
           /tmp/gooidy-shopify-cli/node_modules/.bin/shopify app config validate --help
           /tmp/gooidy-shopify-cli/node_modules/.bin/shopify app deploy --help
-      - name: Validate Shopify app configuration without credentials
-        run: /tmp/gooidy-shopify-cli/node_modules/.bin/shopify app config validate --path ops/shopify --config production --json --no-input
-      - name: Publish Gooidy app configuration
+      - name: Validate and publish Gooidy app configuration
         if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
         env:
           SHOPIFY_SERVICE_ACCOUNT_TOKEN: ${{ secrets.SHOPIFY_SERVICE_ACCOUNT_TOKEN }}
@@ -57,4 +55,5 @@ jobs:
             echo 'Add SHOPIFY_SERVICE_ACCOUNT_TOKEN to repository Actions secrets.'
             exit 1
           fi
+          /tmp/gooidy-shopify-cli/node_modules/.bin/shopify app config validate --path ops/shopify --config production --json --no-input
           /tmp/gooidy-shopify-cli/node_modules/.bin/shopify app deploy --path ops/shopify --config production --allow-updates --no-input
