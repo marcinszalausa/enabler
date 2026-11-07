@@ -26,6 +26,8 @@ import { canEditWorkspace, WORKSPACE_WRITE_DENIED } from "@/lib/workspace-access
 import { ownsSourceImage, parseSourceField } from "@/lib/source-image";
 import { canUseStyle, parseStyleField } from "@/lib/style-references";
 import { canUseAvatar, parseAvatarField } from "@/lib/avatars";
+import { addOnsFor, parsePriorityField, priorityFor } from "@/lib/add-ons";
+import { ASPECTS } from "@/lib/image-pricing";
 
 export type FormState = { error: string | null };
 
@@ -111,7 +113,7 @@ export async function startGeneration(
   const focus = parseFocus(formData.get("focus"));
   // Brand DNA off: no logo, colors, font or saved voice in this run's ads.
   const brandDna = formData.get("brand") !== "off";
-  const cost = options ? videoRunCost(options.length, quality)
+  const adsCost = options ? videoRunCost(options.length, quality)
     : variations ? variationRunCost(quality, variations) : imageRunCost(quality, ideas);
   const requested = formData.get("language");
   const language =
@@ -157,6 +159,19 @@ export async function startGeneration(
     return { error: (await requestMessages()).app.errors.couldntStart };
   }
   const admin = createAdminClient();
+  // Priority: plan-included, or paid per image when the owner switched it on.
+  // A missing column (migration not run yet) reads as "not included".
+  const { data: unlocks } = await admin.from("workspaces")
+    .select("priority_queue").eq("id", workspaceId).maybeSingle();
+  const priority = priorityFor({
+    requested: parsePriorityField(formData.get("priority")),
+    included: unlocks?.priority_queue === true,
+    images: variations ?? ideas * ASPECTS.length,
+    video,
+  });
+  const addOns = addOnsFor(priority);
+  // Add-on credits are reserved with the ads in one charge, before the run starts.
+  const cost = adsCost + priority.credits;
   const brandMemory = await getBrandMemory(supabase, workspaceId);
   const campaignId = String(formData.get("campaignId") ?? "");
   let campaign = null;
@@ -179,7 +194,7 @@ export async function startGeneration(
     generation_type: video ? "video_ads" : "image_ads",
     generation_model: `claude + fal ${video ? "video" : "image"} ${quality}`,
     amount: cost,
-    options: { ...(options ?? (variations ? { language, quality, variations, ratio, focus } : { language, quality, ideas })), ...(creativePreferences ? { creative_preferences: creativePreferences } : {}), ...(brandDna ? { brand_memory: brandMemory } : { brand_dna: false }), ...(campaign ? { campaign } : {}), ...(sourceImage ? { source_image: sourceImage } : {}), ...(styleId ? { style_reference: { id: styleId } } : {}), ...(avatarId ? { avatar: { id: avatarId } } : {}) },
+    options: { ...(options ?? (variations ? { language, quality, variations, ratio, focus } : { language, quality, ideas })), ...(creativePreferences ? { creative_preferences: creativePreferences } : {}), ...(brandDna ? { brand_memory: brandMemory } : { brand_dna: false }), ...(campaign ? { campaign } : {}), ...(sourceImage ? { source_image: sourceImage } : {}), ...(styleId ? { style_reference: { id: styleId } } : {}), ...(avatarId ? { avatar: { id: avatarId } } : {}), ...(addOns ? { add_ons: addOns } : {}) },
   });
   if (error) {
     if(error.code==="P0001"&&error.message==="TRIAL_BATCH_ACTIVE")return {error:(await requestMessages()).trial.busy};
@@ -197,7 +212,7 @@ export async function startGeneration(
   after(() =>
     options
       ? runVideoGeneration({ ...job, options })
-      : runGeneration({ ...job, language, quality, ideas, ...(variations ? { variations, ratio, focus } : {}) }),
+      : runGeneration({ ...job, language, quality, ideas, priority: priority.priority, ...(variations ? { variations, ratio, focus } : {}) }),
   );
 
   revalidatePath(`/dashboard/products/${productId}`);
