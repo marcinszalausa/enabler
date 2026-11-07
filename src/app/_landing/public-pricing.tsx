@@ -65,11 +65,17 @@ export function PublicPricing({compact=false}:{compact?:boolean}={}){
        {card.features.map((feature,i)=><li key={feature} className="flex gap-2.5"><Check/><span className={i===0?"font-semibold":""}>{fmt(feature,values)}</span></li>)}
        {locale!=="en"&&card.id==="plus"&&<li className="flex gap-2.5"><Check/><span>{storeConnectionFeature(locale)}</span></li>}
        {card.price>0&&PACK_DISCOUNTS[card.id as keyof typeof PACK_DISCOUNTS]>0&&<li className="flex gap-2.5"><Check/><span>{fmt(p.packOff,{percent:Math.round(PACK_DISCOUNTS[card.id as keyof typeof PACK_DISCOUNTS]*100)})}</span></li>}
-       {!compact&&card.soon&&<li className="flex gap-2.5"><Check/><span>{card.soon} <span className="ms-1 whitespace-nowrap rounded-md border border-line px-1.5 py-0.5 text-[11px] font-medium text-muted">{p.soon}</span></span></li>}
       </ul>
      </div>
     </article>;
    })}
   </div>
+  <section data-shared-plan-benefits className="mt-6 rounded-2xl border border-line bg-raised p-6">
+   <h3 className="text-lg font-semibold tracking-tight">{p.journeyTitle}</h3>
+   <ul className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+    {p.journey.map(stage=><li key={stage.name} className="min-w-0"><p className="font-medium">{stage.name}</p><p className="mt-1 text-sm leading-relaxed text-muted">{fmt(stage.body,{languages:LANGUAGE_COUNT})}</p></li>)}
+   </ul>
+  </section>
  </div>;
 }
+

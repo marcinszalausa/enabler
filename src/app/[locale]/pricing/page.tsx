@@ -20,12 +20,6 @@ export async function generateMetadata({params}:PageProps<"/[locale]/pricing">):
 }
 
 const VALUES={imageMin:IMAGE_CREDITS.good,imageMax:IMAGE_CREDITS.best,videoMin:VIDEO_CREDITS_PER_SECOND.good,videoMax:VIDEO_CREDITS_PER_SECOND.best,days:MONEY_BACK_DAYS,percent:Math.round(YEARLY_DISCOUNT*100),languages:Object.keys(LANGUAGES).length};
-const JOURNEY_ICONS=[
- <path key="c" d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M6 18l2.5-2.5M15.5 8.5 18 6"/>,
- <g key="e"><path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/></g>,
- <g key="p"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16M9 15l2 2 4-4"/></g>,
- <path key="a" d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>,
-];
 
 export default async function Pricing({params}:PageProps<"/[locale]/pricing">){
  const {locale}=await params;if(!isLocale(locale))notFound();
@@ -55,16 +49,6 @@ export default async function Pricing({params}:PageProps<"/[locale]/pricing">){
     </div>
    </div>
   </section>
-  <section data-plan-journey className="mx-auto max-w-5xl px-4 pt-16">
-   <h2 className="text-center text-2xl font-semibold tracking-tight">{p.journeyTitle}</h2>
-   <ol className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-    {p.journey.map((stage,i)=><li key={stage.name} className="min-w-0 rounded-2xl border border-line bg-raised p-5">
-     <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-accent-soft text-accent"><svg viewBox="0 0 24 24" aria-hidden className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">{JOURNEY_ICONS[i]}</svg></span>
-     <h3 className="mt-4 font-semibold">{stage.name}</h3>
-     <p className="mt-1.5 text-sm leading-relaxed text-muted">{fmt(stage.body,VALUES)}</p>
-    </li>)}
-   </ol>
-  </section>
   <section className="mx-auto max-w-3xl px-4 py-16">
    <h2 className="text-center text-2xl font-semibold tracking-tight">{p.faqTitle}</h2>
    <div data-pricing-faq className="mt-8 divide-y divide-line border-y border-line">
@@ -74,3 +58,4 @@ export default async function Pricing({params}:PageProps<"/[locale]/pricing">){
   </section>
  </InformationPage>;
 }
+

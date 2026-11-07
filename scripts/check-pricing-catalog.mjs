@@ -16,7 +16,7 @@ try{
   const page=await browser.newPage({viewport:{width,height:950},reducedMotion:"reduce"});const errors=[];page.on("pageerror",e=>errors.push(e.message));await page.goto("http://localhost:3126"+(locale==="en"?"":"/"+locale)+"/pricing",{waitUntil:"networkidle"});
   assert.equal(await page.locator("button[data-buy-plan]:disabled").count(),3);assert.equal(await page.locator("a[data-buy-plan],button[data-buy-plan]:enabled").count(),0);assert.equal(await page.locator("[data-plan]").count(),3);
   for(const id of ["starter","plus","growth"])assert.ok(await page.locator(`[data-plan-included="${id}"] li`).count()>=4,id+" explains its key benefits");
-  if(locale==="en"){const plus=page.locator('[data-plan="plus"]'),growth=page.locator('[data-plan="growth"]');assert.match(await plus.innerText(),/Everything in Launch, plus/);assert.match(await growth.innerText(),/Everything in Grow, plus/);assert.match(await growth.innerText(),/30 recent posts/);assert.match(await page.locator('[data-plan="starter"]').innerText(),/One social account included/);assert.match(await page.locator('[data-plan="starter"]').innerText(),/Soon/);}
+  if(locale==="en"){const plus=page.locator('[data-plan="plus"]'),growth=page.locator('[data-plan="growth"]');assert.match(await plus.innerText(),/Everything in Launch, plus/);assert.match(await growth.innerText(),/Everything in Grow, plus/);assert.match(await growth.innerText(),/30 recent posts/);assert.match(await page.locator('[data-plan="starter"]').innerText(),/One social account included/);assert.equal(await page.locator('[data-plan] li').filter({hasText:/Boost your best posts/}).count(),0);}
   for(const [id,month,year] of [["starter","39","31.2"],["plus","69","55.2"],["growth","99","79.2"]]){assert.equal(await page.locator(`[data-plan="${id}"] [data-price]`).getAttribute("data-price"),month);}
   await page.locator("[data-billing-toggle] button").nth(1).click();
   for(const [id,year] of [["starter","31.2"],["plus","55.2"],["growth","79.2"]])assert.equal(await page.locator(`[data-plan="${id}"] [data-price]`).getAttribute("data-price"),year);
@@ -48,3 +48,4 @@ try{
  assert.ok(await home.locator('#pricing [data-plan-included="starter"] li').count()>=4);assert.ok(await home.locator('#pricing [data-plan-included="growth"] li').count()>=4);await home.close();console.log("PASS plan cards on homepage without JavaScript");
  console.log("PASS raw HTML content is readable without JavaScript");
 }catch(error){console.error(log);throw error;}finally{await browser?.close();if(server?.pid)try{process.kill(-server.pid,"SIGTERM");}catch{}}
+

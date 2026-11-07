@@ -916,9 +916,9 @@ export const en = {
     previewAccountNote: "One-time preview credits only. Choose a paid plan for a monthly allowance.",
     metaTitle: "Pricing · Gooidy",
     metaDescription:
-      "Start free with 100 credits. Launch, Grow and Scale plans for image and video ads, publishing and results, from $39 a month.",
+      "Compare Launch, Grow and Scale: generation credits, store imports, publishing and results tools, from $39 a month.",
     title: "Pricing",
-    sub: "Choose Launch, Grow or Scale to match your business.",
+    sub: "Create with Launch. Connect and compare with Grow. Plan your next campaign with Scale.",
     monthly: "Monthly",
     yearly: "Yearly",
     save: "Save {percent}%",
@@ -954,7 +954,7 @@ export const en = {
       soonFeature: "Boost your best posts",
     },
     plus: {
-      tagline: "For learning what works",
+      tagline: "For shops ready to learn what works",
       features: [
         "{credits} credits every month",
         "Connect up to {accounts} social accounts",
@@ -964,7 +964,7 @@ export const en = {
       ],
     },
     growth: {
-      tagline: "For running more tests",
+      tagline: "For more ads and your next campaign",
       features: [
         "{credits} credits every month",
         "Connect up to {accounts} social accounts",
@@ -974,9 +974,9 @@ export const en = {
       ],
     },
     footnotes: [
-      "Credits work for images and videos. An image uses {imageMin}–{imageMax} credits and a second of video {videoMin}–{videoMax}, depending on the quality you pick. You see the cost before you create.",
+      "Monthly credits are the total allowance, not an addition to the previous plan. Images use {imageMin}–{imageMax} credits; video uses {videoMin}–{videoMax} per second. Quality affects usage; see the cost before generating.",
       "{days}-day money-back guarantee on your first payment. Cancel anytime.",
-      "Prices are in US dollars and don't include applicable taxes. Checkout shows the amount in your currency. Paid plans open soon; until then every account starts free.",
+      "One social account is included in every plan. Additional connections, credit packs and advertising spend cost extra. Prices are in USD, before applicable taxes.",
       "Results depend on your products, ads and audience, and aren't guaranteed.",
     ],
     packsTitle: "Need more credits?",
@@ -987,23 +987,31 @@ export const en = {
     journey: [
       {
         name: "Create",
-        body: "Paste a product link. Get images and videos in your brand, in {languages} languages.",
+        body: "Branded image and video ads in {languages} languages. The same quality choices on every plan; generation uses credits.",
       },
       {
         name: "Edit",
-        body: "Change headlines and captions for free, redo a scene, download what you like.",
+        body: "Free headline and caption edits. Download images and MP4s; generating new media uses credits.",
       },
       {
         name: "Publish",
-        body: "Post now or schedule on 10 social networks, in your time zone.",
+        body: "One social account included. Post now, schedule posts and plan your week on supported networks.",
       },
       {
         name: "Analyze",
-        body: "See impressions, clicks and views for each post. Make more of what works.",
+        body: "Basic post results where the network provides data. Grow adds comparisons; Scale adds next-test planning.",
       },
     ],
     faqTitle: "Questions about pricing",
     faq: [
+      {
+        q: "Are store connections included in Launch?",
+        a: "Store connections, catalog imports and private product-photo checks are included in Grow and Scale. Launch supports creating ads from individual product links. Platform availability depends on the connection shown in your dashboard.",
+      },
+      {
+        q: "Does my plan include product-model training or automatic ad management?",
+        a: "No. Product-model training, automatic inventory-based ad pausing and autonomous campaign or budget management are not included subscription benefits. Do not choose a plan expecting these services. Advertising spend is always separate.",
+      },
       {
         q: "What is a credit?",
         a: "Credits pay for making ads. An image uses {imageMin} to {imageMax} credits and a second of video {videoMin} to {videoMax}, depending on quality. Images and videos share one balance, and the cost is shown before you create.",
@@ -1014,7 +1022,7 @@ export const en = {
       },
       {
         q: "Do higher plans make better ads?",
-        a: "Every plan has the same quality choices. Higher plans add more credits, more social accounts and deeper results tools.",
+        a: "Every plan has the same image and video quality choices. Grow adds store connections and comparison of up to 16 recent posts. Scale raises this to 30 and adds a next-test plan and downloadable campaign brief. Each plan includes one social account; additional connections cost extra.",
       },
       {
         q: "Can I pay yearly?",
@@ -1111,3 +1119,4 @@ export const en = {
     focuses: { text: "Text", visual: "Visual", audience: "Audience", style: "Style", composition: "Composition" },
   },
 };
+
