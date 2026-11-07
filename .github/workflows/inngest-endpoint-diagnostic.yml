@@ -1,4 +1,4 @@
-name: Inngest endpoint diagnostic
+name: Shopify connection readiness diagnostic
 on:
   push:
     branches: [ops/inngest-endpoint-diagnostic]
@@ -16,7 +16,7 @@ jobs:
           class NoRedirect(urllib.request.HTTPRedirectHandler):
               def redirect_request(self, *args, **kwargs): return None
           opener=urllib.request.build_opener(NoRedirect)
-          request=urllib.request.Request("https://gooidy.com/api/inngest", headers={"User-Agent":"Gooidy-Setup-Diagnostic","Accept":"application/json"})
+          request=urllib.request.Request("https://gooidy.com/api/shopify/connect", data=b"", method="POST", headers={"User-Agent":"Gooidy-Setup-Diagnostic","Accept":"application/json","Content-Type":"application/x-www-form-urlencoded"})
           try:
               response=opener.open(request,timeout=30)
           except urllib.error.HTTPError as error:
